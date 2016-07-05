@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 
 @SideOnly(Side.CLIENT)
-@Mod(modid = ShoulderSurfing.MODID, name = ShoulderSurfing.NAME, acceptedMinecraftVersions = ShoulderSurfing.MC_VERSION, version = ShoulderSurfing.VERSION, canBeDeactivated = false, guiFactory = "com.teamderpy.shouldersurfing.gui.GuiShoulderSurfingConfigFactory")
+@Mod(modid = ShoulderSurfing.MODID, name = ShoulderSurfing.NAME, acceptedMinecraftVersions = "[" + ShoulderSurfing.MC_VERSION + ",)", version = ShoulderSurfing.VERSION, canBeDeactivated = false, guiFactory = "com.teamderpy.shouldersurfing.gui.GuiShoulderSurfingConfigFactory")
 public class ShoulderSurfing
 {
 	@Instance(MODID)
@@ -42,8 +42,8 @@ public class ShoulderSurfing
 	
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
-	public static final String MC_VERSION = "[1.9,)";
-	public static final String VERSION = "v1";
+	public static final String MC_VERSION = "1.10";
+	public static final String VERSION = "1.2";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	
 	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
@@ -51,7 +51,7 @@ public class ShoulderSurfing
 	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera adj closer", Keyboard.KEY_I, "key.categories.misc");
 	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera adj farther", Keyboard.KEY_K, "key.categories.misc");
 	
-	public static Logger logger = LogManager.getLogger("Shoulder Surfing");
+	public static Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -80,12 +80,12 @@ public class ShoulderSurfing
 		
 		if(ShoulderTransformations.modifications != expMods)
 		{
-			this.logger.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + expMods);
-			this.logger.error("ShoulderSurfing should be disabled!");
+			this.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + expMods);
+			this.LOGGER.error("ShoulderSurfing should be disabled!");
 		}
 		else
 		{
-			this.logger.info("Loaded " + ShoulderTransformations.modifications + " code injections, ShoulderSurfing good to go!");
+			this.LOGGER.info("Loaded " + ShoulderTransformations.modifications + " code injections, ShoulderSurfing good to go!");
 		}
 	}
 	
