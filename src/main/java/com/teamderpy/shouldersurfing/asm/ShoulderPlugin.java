@@ -2,8 +2,6 @@ package com.teamderpy.shouldersurfing.asm;
 
 import java.util.Map;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
-
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

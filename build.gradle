@@ -1,0 +1,44 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'com.teamderpy.shouldersurfing.asm.ShoulderPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'false'
+
+    }
+}
+
+
+
+/*
+// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
+plugins {
+    id "net.minecraftforge.gradle.forge" version "2.0.2"
+}
+*/
+version = "1.10.2-1.0"
+archivesBaseName = "ShoulderSurfing"
+
+minecraft {
+    version = "1.10.2-12.18.2.2099"
+    runDir = "run"
+    mappings = 'snapshot_20161102'
+
+}

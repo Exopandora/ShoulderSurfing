@@ -12,7 +12,11 @@ import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.POP;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -35,11 +39,14 @@ import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing;
 import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions;
 import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions.JsonMappings.JsonMapping;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -58,49 +65,37 @@ public class ShoulderTransformations implements IClassTransformer
 	public ShoulderTransformations()
 	{
 		this.mappings = new HashMap<String, JsonMapping>();
-		
-		File file = new File(ShoulderTransformations.class.getClassLoader().getResource("assets/shouldersurfing/mappings/mappings.json").getFile());
-		String content = "";
-		
-		try 
-		{
-			Scanner scanner = new Scanner(file);
-			
-			while(scanner.hasNextLine())
-			{
-				content += scanner.nextLine();
-			}
-			
-			scanner.close();
-		}
-		catch(Exception e)
-		{
+		JsonShoulderSurfing json = null;
+		try {
+			InputStream in;
+			in = getClass().getClassLoader().getResourceAsStream("assets/shouldersurfing/mappings/mappings.json");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			json = new Gson().fromJson(reader, JsonShoulderSurfing.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		JsonShoulderSurfing json = new Gson().fromJson(content, JsonShoulderSurfing.class);
+
+
 		
 		for(JsonVersions versions : json.getVersions())
 		{
 			if(versions.getVersion().equals(ForgeVersion.mcVersion))
-			{
-//				System.out.println("Found version " + versions.getVersion());
+		{
+			System.out.println("Found version " + versions.getVersion());
 				
 				for(JsonMapping clazz : versions.getMappings().getClasses())
 				{
-//					System.out.println("Found class " + clazz.getName());
 					mappings.put(clazz.getName() + "Class", clazz); 
 				}
 				
 				for(JsonMapping method : versions.getMappings().getMethods())
 				{
-//					System.out.println("Found method " + method.getName());
 					mappings.put(method.getName() + "Method", method);
 				}
 				
 				for(JsonMapping field : versions.getMappings().getFields())
 				{
-//					System.out.println("Found field " + field.getName());
 					mappings.put(field.getName() + "Field", field);
 				}
 				
