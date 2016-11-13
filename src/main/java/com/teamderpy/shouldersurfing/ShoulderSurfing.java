@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.versioning.VersionRange;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,10 +45,10 @@ public class ShoulderSurfing
 	public static final String VERSION = "1.2";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	
-	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
-	public static KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera adj right", Keyboard.KEY_L, "key.categories.misc");
-	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera adj closer", Keyboard.KEY_I, "key.categories.misc");
-	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera adj farther", Keyboard.KEY_K, "key.categories.misc");
+	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = null;
+	public static KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = null;
+	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = null;
+	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = null;
 	
 	public static Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
@@ -60,7 +59,10 @@ public class ShoulderSurfing
 		this.config.load();
 		
 		this.syncConfig();
-		
+	 KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
+		 KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera adj right", Keyboard.KEY_L, "key.categories.misc");
+		KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera adj closer", Keyboard.KEY_I, "key.categories.misc");
+		 KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera adj farther", Keyboard.KEY_K, "key.categories.misc");
 		ClientRegistry.registerKeyBinding(this.KEYBIND_ROTATE_CAMERA_LEFT);
 		ClientRegistry.registerKeyBinding(this.KEYBIND_ROTATE_CAMERA_RIGHT);
 		ClientRegistry.registerKeyBinding(this.KEYBIND_ZOOM_CAMERA_OUT);

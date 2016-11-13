@@ -1,19 +1,11 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-
 import com.teamderpy.shouldersurfing.ShoulderCamera;
 import com.teamderpy.shouldersurfing.ShoulderSettings;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

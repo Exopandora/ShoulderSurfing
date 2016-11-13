@@ -2,7 +2,7 @@
 	"versions":
 	[
 		{
-			"version": "1.10",
+			"version": "1.10.2",
 			"mappings":
 			{
 				"classes":
@@ -12,7 +12,7 @@
 						"desc": "(F)V",
 						"pkg": "net.minecraft.client.renderer.EntityRenderer",
 						"path": "net/minecraft/client/renderer/EntityRenderer",
-						"obf": "bnd"
+						"obf": "bnz"
 					},
 					{
 						"name": "Entity",
