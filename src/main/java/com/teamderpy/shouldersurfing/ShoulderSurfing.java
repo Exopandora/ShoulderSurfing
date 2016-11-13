@@ -79,7 +79,7 @@ public class ShoulderSurfing
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		int expMods = ShoulderTransformations.CODE_MODIFICATIONS;
-		System.out.println("culo1");
+		
 		if(ShoulderTransformations.modifications != expMods)
 		{
 			this.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + expMods);
