@@ -35,9 +35,9 @@ public class ShoulderEventHandler
 		
 		if(ShoulderRenderBin.rayTraceHit != null)
 		{
-			if(Minecraft.getMinecraft().thePlayer != null)
+			if(Minecraft.getMinecraft().player != null)
 			{
-				ShoulderRenderBin.rayTraceHit = ShoulderRenderBin.rayTraceHit.subtract(new Vec3d(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ));
+				ShoulderRenderBin.rayTraceHit = ShoulderRenderBin.rayTraceHit.subtract(new Vec3d(Minecraft.getMinecraft().player.posX, Minecraft.getMinecraft().player.posY, Minecraft.getMinecraft().player.posZ));
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class ShoulderEventHandler
 			int l = sr.getScaledWidth();
 			int i1 = sr.getScaledHeight();
 			
-			if(Minecraft.getMinecraft().gameSettings.showDebugInfo && !Minecraft.getMinecraft().gameSettings.hideGUI && !Minecraft.getMinecraft().thePlayer.hasReducedDebug() && !Minecraft.getMinecraft().gameSettings.reducedDebugInfo)
+			if(Minecraft.getMinecraft().gameSettings.showDebugInfo && !Minecraft.getMinecraft().gameSettings.hideGUI && !Minecraft.getMinecraft().player.hasReducedDebug() && !Minecraft.getMinecraft().gameSettings.reducedDebugInfo)
 			{
 				GlStateManager.pushMatrix();
 				GlStateManager.translate((float) (l / 2), (float) (i1 / 2), 300);
@@ -152,7 +152,7 @@ public class ShoulderEventHandler
 					
 					if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
 					{
-						float f = Minecraft.getMinecraft().thePlayer.getCooledAttackStrength(0.0F);
+						float f = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
 						
 						if(f < 1.0F)
 						{
@@ -168,83 +168,58 @@ public class ShoulderEventHandler
 				}
 				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
 				{
-					if(ShoulderRenderBin.projectedVector != null)
+					GlStateManager.pushMatrix();
+					GlStateManager.enableBlend();
+					bind(Gui.ICONS);
+					
+					if(ShoulderRenderBin.rayTraceInReach)
 					{
-						GlStateManager.pushMatrix();
-						GlStateManager.enableBlend();
-						bind(Gui.ICONS);
-						
-						if(ShoulderRenderBin.rayTraceInReach)
-						{
-							// GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR,
-							// GL11.GL_ONE_MINUS_SRC_COLOR);
-							GL14.glBlendColor(0.2f, 0.2f, 1.0f, 1.0f);
-							GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-						}
-						else
-						{
-							GL14.glBlendColor(1.0f, 0.2f, 0.2f, 1.0f);
-							GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-						}
-						
-						float diffX = (ShoulderRenderBin.projectedVector.x - lastX) * tick;
-						float diffY = (ShoulderRenderBin.projectedVector.y - lastY) * tick;
-						
-						int crosshairWidth = (int) ((lastX + diffX) / sr.getScaleFactor() - 7);
-						int crosshairHeight = (int) ((lastY + diffY) / sr.getScaleFactor() - 7);
-						
-						g.drawTexturedModalRect(crosshairWidth, crosshairHeight, 0, 0, 16, 16);
-						
-						if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
-						{
-							float f = Minecraft.getMinecraft().thePlayer.getCooledAttackStrength(0.0F);
-							
-							if(f < 1.0F)
-							{
-								int k = (int) (f * 17.0F);
-								g.drawTexturedModalRect(crosshairWidth, crosshairHeight + 16, 36, 94, 16, 4);
-								g.drawTexturedModalRect(crosshairWidth, crosshairHeight + 16, 52, 94, k, 4);
-							}
-						}
-						
-						lastX = lastX + diffX;
-						lastY = lastY + diffY;
-						
-						GlStateManager.disableBlend();
-						GlStateManager.popMatrix();
+						// GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR,
+						// GL11.GL_ONE_MINUS_SRC_COLOR);
+						GL14.glBlendColor(0.2f, 0.2f, 1.0f, 1.0f);
+						GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 					}
-					else if(ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT)
+					else
 					{
-						bind(Gui.ICONS);
-						GlStateManager.enableBlend();
 						GL14.glBlendColor(1.0f, 0.2f, 0.2f, 1.0f);
 						GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-						
-						float diffX = (sr.getScaledWidth() * sr.getScaleFactor() / 2 - lastX) * tick;
-						float diffY = (sr.getScaledHeight() * sr.getScaleFactor() / 2 - lastY) * tick;
-						
-						int crosshairWidth = (int) ((lastX + diffX) / sr.getScaleFactor() - 7);
-						int crosshairHeight = (int) ((lastY + diffY) / sr.getScaleFactor() - 7);
-						
-						g.drawTexturedModalRect(crosshairWidth, crosshairHeight, 0, 0, 16, 16);
-						
-						if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
-						{
-							float f = Minecraft.getMinecraft().thePlayer.getCooledAttackStrength(0.0F);
-							
-							if(f < 1.0F)
-							{
-								int k = (int) (f * 17.0F);
-								g.drawTexturedModalRect(crosshairWidth, crosshairHeight + 16, 36, 94, 16, 4);
-								g.drawTexturedModalRect(crosshairWidth, crosshairHeight + 16, 52, 94, k, 4);
-							}
-						}
-						
-						lastX = lastX + diffX;
-						lastY = lastY + diffY;
-						
-						GlStateManager.disableBlend();
 					}
+					
+					float diffX = (sr.getScaledWidth() * sr.getScaleFactor() / 2 - lastX) * tick;
+					float diffY = (sr.getScaledHeight() * sr.getScaleFactor() / 2 - lastY) * tick;
+					
+					if(ShoulderRenderBin.projectedVector != null)
+					{
+						diffX = (ShoulderRenderBin.projectedVector.x - lastX) * tick;
+						diffY = (ShoulderRenderBin.projectedVector.y - lastY) * tick;
+					}
+					
+					float crosshairWidth = (lastX + diffX) / sr.getScaleFactor() - 7;
+					float crosshairHeight = (lastY + diffY) / sr.getScaleFactor() - 7;
+					
+					GlStateManager.scale(1.0 / sr.getScaleFactor(), 1.0 / sr.getScaleFactor(), 1.0 / sr.getScaleFactor());
+					GlStateManager.translate(crosshairWidth * sr.getScaleFactor(), crosshairHeight * sr.getScaleFactor(), 0);
+					GlStateManager.scale(sr.getScaleFactor(), sr.getScaleFactor(), sr.getScaleFactor());
+					
+					g.drawTexturedModalRect(0, 0, 0, 0, 16, 16);
+					
+					if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
+					{
+						float f = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
+						
+						if(f < 1.0F)
+						{
+							int k = (int) (f * 17.0F);
+							g.drawTexturedModalRect(0, 16, 36, 94, 16, 4);
+							g.drawTexturedModalRect(0, 16, 52, 94, k, 4);
+						}
+					}
+					
+					lastX = lastX + diffX;
+					lastY = lastY + diffY;
+					
+					GlStateManager.disableBlend();
+					GlStateManager.popMatrix();
 				}
 			}
 			
