@@ -11,12 +11,12 @@
 						"name": "EntityRenderer",
 						"pkg": "net.minecraft.client.renderer.EntityRenderer",
 						"path": "net/minecraft/client/renderer/EntityRenderer",
-						"obf": "bqc"
+						"obf": "bqe"
 					},
 					{
 						"name": "Entity",
 						"path": "net/minecraft/entity/Entity",
-						"obf": "sm"
+						"obf": "sn"
 					},
 					{
 						"name": "InjectionDelegation",
@@ -31,12 +31,12 @@
 					{
 						"name": "ClippingHelperImpl",
 						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
-						"obf": "btk"
+						"obf": "btm"
 					},
 					{
 						"name": "ClippingHelper",
 						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
-						"obf": "btm"
+						"obf": "bto"
 					}
 				],
 				"methods":
