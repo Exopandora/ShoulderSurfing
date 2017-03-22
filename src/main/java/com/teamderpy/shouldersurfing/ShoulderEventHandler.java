@@ -1,7 +1,5 @@
 package com.teamderpy.shouldersurfing;
 
-import org.lwjgl.opengl.GL14;
-
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
@@ -12,7 +10,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -119,20 +117,21 @@ public class ShoulderEventHandler
 		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 		{
 			float tick = event.getPartialTicks();
-			GuiIngame g = Minecraft.getMinecraft().ingameGUI;
+			GuiIngame gui = Minecraft.getMinecraft().ingameGUI;
 			
-			ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+			ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 			
-			int l = sr.getScaledWidth();
-			int i1 = sr.getScaledHeight();
+			int width = resolution.getScaledWidth();
+			int height = resolution.getScaledHeight();
+			int scale = resolution.getScaleFactor();
 			
 			if(Minecraft.getMinecraft().gameSettings.showDebugInfo && !Minecraft.getMinecraft().gameSettings.hideGUI && !Minecraft.getMinecraft().player.hasReducedDebug() && !Minecraft.getMinecraft().gameSettings.reducedDebugInfo)
 			{
 				GlStateManager.pushMatrix();
-				GlStateManager.translate((float) (l / 2), (float) (i1 / 2), 300);
+				GlStateManager.translate((float) (width / 2), (float) (height / 2), 300);
 				Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-				GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * sr.getScaleFactor(), -1.0F, 0.0F, 0.0F);
-				GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * sr.getScaleFactor(), 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * scale, -1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * scale, 0.0F, 1.0F, 0.0F);
 				GlStateManager.scale(-1.0F, -1.0F, -1.0F);
 				OpenGlHelper.renderDirections(10);
 				GlStateManager.popMatrix();
@@ -141,84 +140,37 @@ public class ShoulderEventHandler
 			{
 				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == 1))
 				{
-					lastX = sr.getScaledWidth() * sr.getScaleFactor() / 2;;
-					lastY = sr.getScaledHeight() * sr.getScaleFactor() / 2;
+					this.lastX = width * scale / 2;
+					this.lastY = height * scale / 2;
 					
-					bind(Gui.ICONS);
-					GlStateManager.enableBlend();
-					GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-					
-					g.drawTexturedModalRect(sr.getScaledWidth() / 2 - 7, sr.getScaledHeight() / 2 - 7, 0, 0, 16, 16);
-					
-					if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
-					{
-						float f = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
-						
-						if(f < 1.0F)
-						{
-							int i = i1 / 2 - 7 + 16;
-							int j = l / 2 - 7;
-							int k = (int) (f * 17.0F);
-							g.drawTexturedModalRect(j, i, 36, 94, 16, 4);
-							g.drawTexturedModalRect(j, i, 52, 94, k, 4);
-						}
-					}
-					
-					GlStateManager.disableBlend();
+	                this.renderCrosshair(gui, resolution);
 				}
 				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
 				{
 					GlStateManager.pushMatrix();
-					GlStateManager.enableBlend();
-					bind(Gui.ICONS);
 					
-					if(ShoulderRenderBin.rayTraceInReach)
-					{
-						// GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR,
-						// GL11.GL_ONE_MINUS_SRC_COLOR);
-						GL14.glBlendColor(0.2f, 0.2f, 1.0f, 1.0f);
-						GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-					}
-					else
-					{
-						GL14.glBlendColor(1.0f, 0.2f, 0.2f, 1.0f);
-						GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-					}
-					
-					float diffX = (sr.getScaledWidth() * sr.getScaleFactor() / 2 - lastX) * tick;
-					float diffY = (sr.getScaledHeight() * sr.getScaleFactor() / 2 - lastY) * tick;
+					float diffX = (width * scale / 2 - this.lastX) * tick;
+					float diffY = (height * scale / 2 - this.lastY) * tick;
 					
 					if(ShoulderRenderBin.projectedVector != null)
 					{
-						diffX = (ShoulderRenderBin.projectedVector.x - lastX) * tick;
-						diffY = (ShoulderRenderBin.projectedVector.y - lastY) * tick;
+						diffX = (ShoulderRenderBin.projectedVector.x - this.lastX) * tick;
+						diffY = (ShoulderRenderBin.projectedVector.y - this.lastY) * tick;
 					}
 					
-					float crosshairWidth = (lastX + diffX) / sr.getScaleFactor() - 7;
-					float crosshairHeight = (lastY + diffY) / sr.getScaleFactor() - 7;
+					float crosshairWidth = (this.lastX + diffX) / scale - 7;
+					float crosshairHeight = (this.lastY + diffY) / scale - 7;
 					
-					GlStateManager.scale(1.0 / sr.getScaleFactor(), 1.0 / sr.getScaleFactor(), 1.0 / sr.getScaleFactor());
-					GlStateManager.translate(crosshairWidth * sr.getScaleFactor(), crosshairHeight * sr.getScaleFactor(), 0);
-					GlStateManager.scale(sr.getScaleFactor(), sr.getScaleFactor(), sr.getScaleFactor());
+					GlStateManager.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
+					GlStateManager.translate(crosshairWidth * scale, crosshairHeight * scale, 0.0F);
+					GlStateManager.scale(scale, scale, scale);
+					GlStateManager.translate(-width / 2 + 7, -height / 2 + 7, 0.0F);
 					
-					g.drawTexturedModalRect(0, 0, 0, 0, 16, 16);
+	                this.renderCrosshair(gui, resolution);
+	                
+					this.lastX = this.lastX + diffX;
+					this.lastY = this.lastY + diffY;
 					
-					if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
-					{
-						float f = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
-						
-						if(f < 1.0F)
-						{
-							int k = (int) (f * 17.0F);
-							g.drawTexturedModalRect(0, 16, 36, 94, 16, 4);
-							g.drawTexturedModalRect(0, 16, 52, 94, k, 4);
-						}
-					}
-					
-					lastX = lastX + diffX;
-					lastY = lastY + diffY;
-					
-					GlStateManager.disableBlend();
 					GlStateManager.popMatrix();
 				}
 			}
@@ -231,8 +183,47 @@ public class ShoulderEventHandler
 		}
 	}
 	
-	private void bind(ResourceLocation res)
+	private void renderCrosshair(GuiIngame gui, ScaledResolution resolution)
 	{
-		Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+		int width = resolution.getScaledWidth();
+		int height = resolution.getScaledHeight();
+		
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        
+		Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.ICONS);
+		
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.enableAlpha();
+        
+        gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
+        
+        if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
+        {
+            float cooledAttackStrength = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
+            boolean flag = false;
+
+            if(Minecraft.getMinecraft().pointedEntity != null && Minecraft.getMinecraft().pointedEntity instanceof EntityLivingBase && cooledAttackStrength >= 1.0F)
+            {
+                flag = Minecraft.getMinecraft().player.getCooldownPeriod() > 5.0F;
+                flag = flag & ((EntityLivingBase)Minecraft.getMinecraft().pointedEntity).isEntityAlive();
+            }
+
+            int y = height / 2 - 7 + 16;
+            int x = width / 2 - 8;
+            
+            if(flag)
+            {
+            	gui.drawTexturedModalRect(x, y, 68, 94, 16, 16);
+            }
+            else if(cooledAttackStrength < 1.0F)
+            {
+                int offset = (int)(cooledAttackStrength * 17.0F);
+                gui.drawTexturedModalRect(x, y, 36, 94, 16, 4);
+                gui.drawTexturedModalRect(x, y, 52, 94, offset, 4);
+            }
+        }
+        
+		GlStateManager.disableBlend();
 	}
 }
