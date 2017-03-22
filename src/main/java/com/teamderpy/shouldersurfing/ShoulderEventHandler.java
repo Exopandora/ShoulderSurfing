@@ -143,7 +143,7 @@ public class ShoulderEventHandler
 					this.lastX = width * scale / 2;
 					this.lastY = height * scale / 2;
 					
-	                this.renderCrosshair(gui, resolution);
+					this.renderCrosshair(gui, resolution);
 				}
 				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
 				{
@@ -166,8 +166,8 @@ public class ShoulderEventHandler
 					GlStateManager.scale(scale, scale, scale);
 					GlStateManager.translate(-width / 2 + 7, -height / 2 + 7, 0.0F);
 					
-	                this.renderCrosshair(gui, resolution);
-	                
+					this.renderCrosshair(gui, resolution);
+					
 					this.lastX = this.lastX + diffX;
 					this.lastY = this.lastY + diffY;
 					
@@ -188,42 +188,42 @@ public class ShoulderEventHandler
 		int width = resolution.getScaledWidth();
 		int height = resolution.getScaledHeight();
 		
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.ICONS);
 		
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.enableAlpha();
-        
-        gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
-        
-        if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
-        {
-            float cooledAttackStrength = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
-            boolean flag = false;
+		GlStateManager.enableBlend();
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		GlStateManager.enableAlpha();
+		
+		gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
+		
+		if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
+		{
+			float cooledAttackStrength = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
+			boolean flag = false;
 
-            if(Minecraft.getMinecraft().pointedEntity != null && Minecraft.getMinecraft().pointedEntity instanceof EntityLivingBase && cooledAttackStrength >= 1.0F)
-            {
-                flag = Minecraft.getMinecraft().player.getCooldownPeriod() > 5.0F;
-                flag = flag & ((EntityLivingBase)Minecraft.getMinecraft().pointedEntity).isEntityAlive();
-            }
+			if(Minecraft.getMinecraft().pointedEntity != null && Minecraft.getMinecraft().pointedEntity instanceof EntityLivingBase && cooledAttackStrength >= 1.0F)
+			{
+				flag = Minecraft.getMinecraft().player.getCooldownPeriod() > 5.0F;
+				flag = flag & ((EntityLivingBase)Minecraft.getMinecraft().pointedEntity).isEntityAlive();
+			}
 
-            int y = height / 2 - 7 + 16;
-            int x = width / 2 - 8;
-            
-            if(flag)
-            {
-            	gui.drawTexturedModalRect(x, y, 68, 94, 16, 16);
-            }
-            else if(cooledAttackStrength < 1.0F)
-            {
-                int offset = (int)(cooledAttackStrength * 17.0F);
-                gui.drawTexturedModalRect(x, y, 36, 94, 16, 4);
-                gui.drawTexturedModalRect(x, y, 52, 94, offset, 4);
-            }
-        }
-        
+			int y = height / 2 - 7 + 16;
+			int x = width / 2 - 8;
+			
+			if(flag)
+			{
+				gui.drawTexturedModalRect(x, y, 68, 94, 16, 16);
+			}
+			else if(cooledAttackStrength < 1.0F)
+			{
+				int offset = (int)(cooledAttackStrength * 17.0F);
+				gui.drawTexturedModalRect(x, y, 36, 94, 16, 4);
+				gui.drawTexturedModalRect(x, y, 52, 94, offset, 4);
+			}
+		}
+		
 		GlStateManager.disableBlend();
 	}
 }
