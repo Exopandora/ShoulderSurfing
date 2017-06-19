@@ -1,0 +1,11 @@
+# Ignore Everything
+/*
+
+# Except
+
+!/src/
+!build.gradle
+!README.md
+
+# Subdirs
+# !*/
