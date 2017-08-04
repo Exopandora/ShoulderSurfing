@@ -67,13 +67,13 @@ public final class RayTracer
 					Vec3d renderViewPos = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(tick);
 					
 					Vec3d sightVector = Minecraft.getMinecraft().getRenderViewEntity().getLook(tick);
-					Vec3d sightRay = renderViewPos.addVector(sightVector.xCoord * playerReach - 5, sightVector.yCoord * playerReach, sightVector.zCoord * playerReach);
+					Vec3d sightRay = renderViewPos.addVector(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
 					
 //					System.out.println(sightVector);
 					
 //					System.out.println(renderViewPos + " " + sightVector + " " + sightRay);
 					
-					List entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().addCoord(sightVector.xCoord * playerReach, sightVector.yCoord * playerReach, sightVector.zCoord * playerReach).expand(1.0D, 1.0D, 1.0D));
+					List entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach).expand(1.0D, 1.0D, 1.0D));
 					
 					for(int i = 0; i < entityList.size(); ++i)
 					{

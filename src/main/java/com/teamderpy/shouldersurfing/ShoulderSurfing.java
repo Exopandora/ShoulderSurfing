@@ -41,7 +41,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.2";
+	public static final String VERSION = "1.4";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	
 	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
@@ -100,9 +100,9 @@ public class ShoulderSurfing
 		ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE = config.get(Configuration.CATEGORY_GENERAL, "Show Crosshair Farther", ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE, "Whether or not to show the crosshairs farther than normal").getBoolean(ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE);
 		ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA = config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head", ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA, "Whether or not to hide the player model if the camera gets too close to it").getBoolean(ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA);
 		
-		if(config.hasChanged())
+		if(ShoulderSurfing.config.hasChanged())
 		{
-			config.save();
+			ShoulderSurfing.config.save();
 		}
 	}
 }

@@ -28,7 +28,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class InjectionDelegation
 {
 	private InjectionDelegation()
-	{}
+	{
+		
+	}
 	
 	/**
 	 * Called by injected code to modify the camera rotation
@@ -63,7 +65,7 @@ public final class InjectionDelegation
 	{
 		if(ShoulderRenderBin.rayTraceHit != null)
 		{
-			ShoulderRenderBin.projectedVector = VectorConverter.project2D((float) (ShoulderRenderBin.rayTraceHit.xCoord), (float) (ShoulderRenderBin.rayTraceHit.yCoord), (float) (ShoulderRenderBin.rayTraceHit.zCoord));
+			ShoulderRenderBin.projectedVector = VectorConverter.project2D((float) (ShoulderRenderBin.rayTraceHit.x), (float) (ShoulderRenderBin.rayTraceHit.y), (float) (ShoulderRenderBin.rayTraceHit.z));
 			
 			ShoulderRenderBin.rayTraceHit = null;
 		}
