@@ -44,4 +44,7 @@ public class ShoulderSettings
 	 * Whether or not the dynamic crosshair is enabled
 	 */
 	public static boolean IS_DYNAMIC_CROSSHAIR_ENABLED = true;
+	
+	public static boolean ENABLE_CROSSHAIR = true;
+	public static boolean ENABLE_ATTACK_INDICATOR = true;
 }

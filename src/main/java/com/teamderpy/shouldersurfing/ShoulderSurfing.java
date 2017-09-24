@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 
 @SideOnly(Side.CLIENT)
+@MCVersion(ShoulderSurfing.MC_VERSION)
 @Mod(modid = ShoulderSurfing.MODID, name = ShoulderSurfing.NAME, acceptedMinecraftVersions = "[" + ShoulderSurfing.MC_VERSION + ",)", version = ShoulderSurfing.VERSION, canBeDeactivated = false, guiFactory = "com.teamderpy.shouldersurfing.gui.GuiShoulderSurfingConfigFactory")
 public class ShoulderSurfing
 {
@@ -41,7 +43,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.4";
+	public static final String VERSION = "1.5";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	
 	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
@@ -99,6 +101,8 @@ public class ShoulderSurfing
 		ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT = config.get(Configuration.CATEGORY_GENERAL, "Always Show Crosshair", ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT, "Whether or not to show a crosshair in the center of the screen if nothing is in range of you").getBoolean(ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT);
 		ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE = config.get(Configuration.CATEGORY_GENERAL, "Show Crosshair Farther", ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE, "Whether or not to show the crosshairs farther than normal").getBoolean(ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE);
 		ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA = config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head", ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA, "Whether or not to hide the player model if the camera gets too close to it").getBoolean(ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA);
+		ShoulderSettings.ENABLE_CROSSHAIR = config.get(Configuration.CATEGORY_GENERAL, "Third Person Crosshair", ShoulderSettings.ENABLE_CROSSHAIR, "Enable or disable the crosshair in third person").getBoolean(ShoulderSettings.ENABLE_CROSSHAIR);
+		ShoulderSettings.ENABLE_ATTACK_INDICATOR = config.get(Configuration.CATEGORY_GENERAL, "Third Person Attack Indicator", ShoulderSettings.ENABLE_ATTACK_INDICATOR, "Enable or disable the attack indicator in third person").getBoolean(ShoulderSettings.ENABLE_ATTACK_INDICATOR);
 		
 		if(ShoulderSurfing.config.hasChanged())
 		{

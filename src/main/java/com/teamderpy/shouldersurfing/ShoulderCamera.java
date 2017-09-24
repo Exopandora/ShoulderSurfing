@@ -18,7 +18,7 @@ public final class ShoulderCamera
 	
 	public static void adjustCameraLeft()
 	{
-		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ZOOM_MOD < ShoulderSettings.ROTATION_MAXIMUM)
+		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ROTATION < ShoulderSettings.ROTATION_MAXIMUM)
 		{
 			SHOULDER_ROTATION += 0.5F;
 		}
@@ -26,7 +26,7 @@ public final class ShoulderCamera
 	
 	public static void adjustCameraRight()
 	{
-		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ZOOM_MOD > ShoulderSettings.ROTATION_MINIMUM)
+		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ROTATION > ShoulderSettings.ROTATION_MINIMUM)
 		{
 			SHOULDER_ROTATION -= 0.5F;
 		}

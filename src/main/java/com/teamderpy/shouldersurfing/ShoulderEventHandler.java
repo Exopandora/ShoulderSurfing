@@ -140,6 +140,10 @@ public class ShoulderEventHandler
 			{
 				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == 1))
 				{
+					/**
+					 * Default Crosshair
+					 */
+					
 					this.lastX = width * scale / 2;
 					this.lastY = height * scale / 2;
 					
@@ -147,6 +151,10 @@ public class ShoulderEventHandler
 				}
 				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
 				{
+					/**
+					 * Dynamic Crosshair
+					 */
+					
 					GlStateManager.pushMatrix();
 					
 					float diffX = (width * scale / 2 - this.lastX) * tick;
@@ -196,9 +204,12 @@ public class ShoulderEventHandler
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.enableAlpha();
 		
-		gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
+		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != 1)
+		{
+			gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
+		}
 		
-		if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1)
+		if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1 && ShoulderSettings.ENABLE_ATTACK_INDICATOR)
 		{
 			float cooledAttackStrength = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
 			boolean flag = false;
