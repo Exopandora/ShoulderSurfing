@@ -11,13 +11,9 @@ import static org.objectweb.asm.Opcodes.FLOAD;
 import static org.objectweb.asm.Opcodes.FSTORE;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.POP;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.objectweb.asm.ClassReader;
@@ -32,15 +28,10 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import com.google.gson.Gson;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions.JsonMappings.JsonMapping;
-import com.teamderpy.shouldersurfing.util.Util;
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,74 +43,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderTransformations implements IClassTransformer
 {
-	private final HashMap<String, JsonMapping> mappings = new HashMap<String, JsonMapping>();
-	
-	public static final int CODE_MODIFICATIONS = 3;
-	
+	public static final int CODE_MODIFICATIONS = 4;
 	public static int modifications = 0;
-	
-	public ShoulderTransformations()
-	{
-		String version = ForgeVersion.mcVersion;
-		JsonShoulderSurfing json = new JsonShoulderSurfing();
-		
-		try
-		{
-			version = ForgeVersion.class.getDeclaredField("mcVersion").get(ForgeVersion.class).toString();
-			
-			InputStream in = getClass().getClassLoader().getResourceAsStream("assets/shouldersurfing/mappings/mappings.json");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			json = new Gson().fromJson(reader, JsonShoulderSurfing.class);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		for(JsonVersions versions : json.getVersions())
-		{			
-			if(versions.getVersion().equals(version))
-			{
-				// System.out.println("Found version " + versions.getVersion());
-				
-				for(JsonMapping clazz : versions.getMappings().getClasses())
-				{
-					// System.out.println("Found class " + clazz.getName());
-					this.mappings.put(clazz.getName() + "Class", clazz);
-				}
-				
-				for(JsonMapping method : versions.getMappings().getMethods())
-				{
-					// System.out.println("Found method " + method.getName());
-					this.mappings.put(method.getName() + "Method", method);
-				}
-				
-				for(JsonMapping field : versions.getMappings().getFields())
-				{
-					// System.out.println("Found field " + field.getName());
-					this.mappings.put(field.getName() + "Field", field);
-				}
-				
-				Util.LOGGER.info("Loaded mappings for Minecraft " + versions.getVersion());
-				return;
-			}
-		}
-		
-		Util.LOGGER.error("No mappings found for Minecraft " + ForgeVersion.mcVersion);
-	}
+	private final ShoulderMappings mappings = new ShoulderMappings();
 	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
-		if(name.equals(this.mappings.get("EntityRendererClass").getObf()))
+		if(name.equals(this.mappings.getObf("EntityRenderer")))
 		{
-			Util.LOGGER.info("Injecting into obfuscated code - EntityRendererClass");
-			return transformEntityRenderClass(bytes, true);
+			ShoulderSurfing.LOGGER.info("Injecting into obfuscated code");
+			this.mappings.setObfuscated(true);
+			return transformEntityRenderClass(bytes);
 		}
-		else if(name.equals(this.mappings.get("EntityRendererClass").getPackage()))
+		else if(name.equals(this.mappings.getPackage("EntityRenderer")))
 		{
-			Util.LOGGER.info("Injecting into non-obfuscated code - EntityRendererClass");
-			return transformEntityRenderClass(bytes, false);
+			ShoulderSurfing.LOGGER.info("Injecting into non-obfuscated code");
+			this.mappings.setObfuscated(false);
+			return transformEntityRenderClass(bytes);
 		}
 		
 		return bytes;
@@ -129,52 +70,54 @@ public class ShoulderTransformations implements IClassTransformer
 	 * Transforms {@link EntityRenderer}
 	 * 
 	 * @param bytes
-	 * @param hm
-	 * @return
+	 * @param isObfuscated
+	 * @return ClassWriter byte array
 	 */
-	private byte[] transformEntityRenderClass(byte[] bytes, boolean isObfuscated)
+	private byte[] transformEntityRenderClass(byte[] bytes)
 	{
-		Util.LOGGER.info("Attempting class transformation against EntityRender");
+		ShoulderSurfing.LOGGER.info("Attempting class transformation against EntityRender");
 		
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept(classNode, 0);
 		
-		// Find method
 		Iterator<MethodNode> methods = classNode.methods.iterator();
+		
 		while(methods.hasNext())
 		{
-			MethodNode m = methods.next();
-			if(m.name.equals(this.mappings.get("orientCameraMethod").getFieldOrMethod(isObfuscated)) && m.desc.equals(this.mappings.get("orientCameraMethod").getDescriptor()))
+			MethodNode method = methods.next();
+			
+			if(this.methodMatches(method, "EntityRenderer#orientCamera"))
 			{
-				Util.LOGGER.info("Located method " + m.name + m.desc + ", locating signature");
+				ShoulderSurfing.LOGGER.info("Located method " + method.name + method.desc + ", locating signature");
 				
-				// Locate injection point, after the yaw and pitch fields in the
-				// camera function
+				// Locate injection point, after the yaw and pitch fields in the camera function
+				
 				InsnList searchList = new InsnList();
 				searchList.add(new VarInsnNode(ALOAD, 2));
-				searchList.add(new FieldInsnNode(GETFIELD, this.mappings.get("EntityClass").getClassPath(isObfuscated), this.mappings.get("rotationYawField").getFieldOrMethod(isObfuscated), this.mappings.get("rotationYawField").getDescriptor()));
+				searchList.add(new FieldInsnNode(GETFIELD, this.mappings.getClassPath("Entity"), this.mappings.getFieldOrMethod("Entity#rotationYaw"), this.mappings.getDescriptor("Entity#rotationYaw")));
 				searchList.add(new VarInsnNode(FSTORE, 12));
 				searchList.add(new VarInsnNode(ALOAD, 2));
-				searchList.add(new FieldInsnNode(GETFIELD, this.mappings.get("EntityClass").getClassPath(isObfuscated), this.mappings.get("rotationPitchField").getFieldOrMethod(isObfuscated), this.mappings.get("rotationPitchField").getDescriptor()));
+				searchList.add(new FieldInsnNode(GETFIELD, this.mappings.getClassPath("Entity"), this.mappings.getFieldOrMethod("Entity#rotationPitch"), this.mappings.getDescriptor("Entity#rotationPitch")));
 				searchList.add(new VarInsnNode(FSTORE, 13));
 				
-				int offset = ShoulderASMHelper.locateOffset(m.instructions, searchList);
+				int offset = ShoulderASMHelper.locateOffset(method.instructions, searchList);
+				
 				if(offset == -1)
 				{
-					Util.LOGGER.error("Failed to locate first of two offsets in " + m.name + m.desc + "! Is base file changed?");
+					ShoulderSurfing.LOGGER.error("Failed to locate first of three offsets in " + method.name + method.desc + "! Is base file changed?");
 					return bytes;
 				}
 				else
 				{
-					Util.LOGGER.info("Located offset @ " + offset);
+					ShoulderSurfing.LOGGER.info("Located offset @" + offset);
 					InsnList hackCode = new InsnList();
 					
 					// net/minecraft/client/renderer/EntityRenderer:653
 					// f1 += InjectionDelegation.getShoulderRotation();
 					
 					hackCode.add(new VarInsnNode(FLOAD, 12));
-					hackCode.add(new MethodInsnNode(INVOKESTATIC, this.mappings.get("InjectionDelegationClass").getClassPath(isObfuscated), "getShoulderRotation", "()F", false));
+					hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderRotation", "()F", false));
 					hackCode.add(new InsnNode(FADD));
 					hackCode.add(new VarInsnNode(FSTORE, 12));
 					
@@ -182,59 +125,84 @@ public class ShoulderTransformations implements IClassTransformer
 					// d3 *= InjectionDelegation.getShoulderZoomMod();
 					
 					hackCode.add(new VarInsnNode(DLOAD, 10));
-					hackCode.add(new MethodInsnNode(INVOKESTATIC, this.mappings.get("InjectionDelegationClass").getClassPath(isObfuscated), "getShoulderZoomMod", "()F", false));
+					hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderZoomMod", "()F", false));
 					hackCode.add(new InsnNode(F2D));
 					hackCode.add(new InsnNode(DMUL));
 					hackCode.add(new VarInsnNode(DSTORE, 10));
 					
 					hackCode.add(new LabelNode(new Label()));
-					m.instructions.insertBefore(m.instructions.get(offset + 1), hackCode);
-					Util.LOGGER.info("Injected code for camera orientation!");
+					
+					method.instructions.insertBefore(method.instructions.get(offset + 1), hackCode);
+					
+					ShoulderSurfing.LOGGER.info("Injected code for camera orientation!");
 					this.modifications++;
 				}
 				
-				// Locate second injection point, after the reverse raytrace is
-				// performed
+				// Locate second injection point, after the reverse raytrace is performed
+				
 				searchList = new InsnList();
 				searchList.add(new VarInsnNode(DSTORE, 25));
 				searchList.add(new VarInsnNode(DLOAD, 25));
 				
-				offset = ShoulderASMHelper.locateOffset(m.instructions, searchList);
+				offset = ShoulderASMHelper.locateOffset(method.instructions, searchList);
+				
 				if(offset == -1)
 				{
-					Util.LOGGER.error("Failed to locate second of two offsets in " + m.name + m.desc + "! Is base file changed?");
+					ShoulderSurfing.LOGGER.error("Failed to locate second of three offsets in " + method.name + method.desc + "! Is base file changed?");
 					return bytes;
 				}
 				else
 				{
-					Util.LOGGER.info("Located offset @ " + offset);
+					ShoulderSurfing.LOGGER.info("Located offset @" + offset);
+					
 					InsnList hackCode = new InsnList();
 					hackCode.add(new VarInsnNode(DLOAD, 25));
-					hackCode.add(new MethodInsnNode(INVOKESTATIC, this.mappings.get("InjectionDelegationClass").getClassPath(isObfuscated), "verifyReverseBlockDist", "(D)V", false));
+					hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "verifyReverseBlockDist", "(D)V", false));
 					hackCode.add(new LabelNode(new Label()));
-					m.instructions.insertBefore(m.instructions.get(offset), hackCode);
-					Util.LOGGER.info("Injected code for camera distance check!");
+					
+					method.instructions.insertBefore(method.instructions.get(offset), hackCode);
+					
+					ShoulderSurfing.LOGGER.info("Injected code for camera distance check!");
+					this.modifications++;
+				}
+				
+				// Locate third injection point, when the ray trace is performed
+				
+				searchList = new InsnList();
+				searchList.add(new MethodInsnNode(INVOKEVIRTUAL, this.mappings.getClassPath("WorldClient"), this.mappings.getFieldOrMethod("WorldClient#rayTraceBlocks"), this.mappings.getDescriptor("WorldClient#rayTraceBlocks"), false));
+				
+				offset = ShoulderASMHelper.locateOffset(method.instructions, searchList);
+				
+				if(offset == -1)
+				{
+					ShoulderSurfing.LOGGER.error("Failed to locate third of three offsets in " + method.name + method.desc + "! Is base file changed?");
+					return bytes;
+				}
+				else
+				{
+					method.instructions.set(method.instructions.get(offset), new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getRayTraceResult", this.mappings.getDescriptor("InjectionDelegation#getRayTraceResult"), false));
+					
+					ShoulderSurfing.LOGGER.info("Injected code for ray trace!");
 					this.modifications++;
 				}
 			}
-			else if(m.name.equals(this.mappings.get("renderWorldPassMethod").getFieldOrMethod(isObfuscated)) && m.desc.equals(this.mappings.get("renderWorldPassMethod").getDescriptor()))
+			else if(this.methodMatches(method, "EntityRenderer#renderWorldPass"))
 			{
-				Util.LOGGER.info("Located method " + m.name + m.desc + ", locating signature");
+				ShoulderSurfing.LOGGER.info("Located method " + method.name + method.desc + ", locating signature");
 				
-				// Locate injection point, after the clipping helper returns an
-				// instance
+				// Locate injection point, after the clipping helper returns an instance
 				
 				InsnList searchList = new InsnList();
-				searchList.add(new MethodInsnNode(INVOKESTATIC, this.mappings.get("ClippingHelperImplClass").getClassPath(isObfuscated), this.mappings.get("getInstanceMethod").getFieldOrMethod(isObfuscated), this.mappings.get("getInstanceMethod").getDescriptor() + this.mappings.get("ClippingHelperClass").getClassPath(isObfuscated) + ";", false));
+				searchList.add(new MethodInsnNode(INVOKESTATIC, this.mappings.getClassPath("ClippingHelperImpl"), this.mappings.getFieldOrMethod("ClippingHelperImpl#getInstance"), this.mappings.getDescriptor("ClippingHelperImpl#getInstance"), false));
 				searchList.add(new InsnNode(POP));
 				
 				InsnList searchListOptifine = new InsnList();
-				searchListOptifine.add(new MethodInsnNode(INVOKESTATIC, this.mappings.get("ClippingHelperImplClass").getClassPath(isObfuscated), this.mappings.get("getInstanceMethod").getFieldOrMethod(isObfuscated), this.mappings.get("getInstanceMethod").getDescriptor() + this.mappings.get("ClippingHelperClass").getClassPath(isObfuscated) + ";", false));
+				searchListOptifine.add(new MethodInsnNode(INVOKESTATIC, this.mappings.getClassPath("ClippingHelperImpl"), this.mappings.getFieldOrMethod("ClippingHelperImpl#getInstance"), this.mappings.getDescriptor("ClippingHelperImpl#getInstance"), false));
 				searchListOptifine.add(new VarInsnNode(ASTORE, 9));
 				
 				int offset = -1;
-				int offsetVanilla = ShoulderASMHelper.locateOffset(m.instructions, searchList);				
-				int offsetOptifine = ShoulderASMHelper.locateOffset(m.instructions, searchListOptifine);
+				int offsetVanilla = ShoulderASMHelper.locateOffset(method.instructions, searchList);				
+				int offsetOptifine = ShoulderASMHelper.locateOffset(method.instructions, searchListOptifine);
 				
 				if(offsetVanilla != -1)
 				{
@@ -243,22 +211,25 @@ public class ShoulderTransformations implements IClassTransformer
 				else if(offsetOptifine != -1)
 				{
 					offset = offsetOptifine;
-					Util.LOGGER.info("Optifine detected");
+					ShoulderSurfing.LOGGER.info("Optifine detected");
 				}
 				
 				if(offset == -1)
 				{
-					Util.LOGGER.error("Failed to locate offset in " + m.name + m.desc + "! Is base file changed?");
+					ShoulderSurfing.LOGGER.error("Failed to locate offset in " + method.name + method.desc + "! Is base file changed?");
 					return bytes;
 				}
 				else
 				{
-					Util.LOGGER.info("Located offset @ " + offset);
+					ShoulderSurfing.LOGGER.info("Located offset @" + offset);
+					
 					InsnList hackCode = new InsnList();
-					hackCode.add(new MethodInsnNode(INVOKESTATIC, this.mappings.get("InjectionDelegationClass").getClassPath(isObfuscated), "calculateRayTraceProjection", "()V", false));
+					hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calculateRayTraceProjection", "()V", false));
 					hackCode.add(new LabelNode(new Label()));
-					m.instructions.insertBefore(m.instructions.get(offset + 1), hackCode);
-					Util.LOGGER.info("Injected code for ray trace projection!");
+					
+					method.instructions.insertBefore(method.instructions.get(offset + 1), hackCode);
+					
+					ShoulderSurfing.LOGGER.info("Injected code for raytrace projection!");
 					this.modifications++;
 				}
 			}
@@ -267,5 +238,10 @@ public class ShoulderTransformations implements IClassTransformer
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		classNode.accept(writer);
 		return writer.toByteArray();
+	}
+	
+	private boolean methodMatches(MethodNode method, String name)
+	{
+		return method.name.equals(this.mappings.getFieldOrMethod(name)) && method.desc.equals(this.mappings.getDescriptor(name));
 	}
 }

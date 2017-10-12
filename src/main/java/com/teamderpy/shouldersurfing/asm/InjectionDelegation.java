@@ -1,19 +1,14 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-
 import com.teamderpy.shouldersurfing.ShoulderCamera;
 import com.teamderpy.shouldersurfing.ShoulderSettings;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.Entity;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -87,5 +82,18 @@ public final class InjectionDelegation
 		{
 			ShoulderRenderBin.skipPlayerRender = true;
 		}
+	}
+	
+	/**
+	 * Called by injected code to perform the ray trace
+	 */
+	public static RayTraceResult getRayTraceResult(World world, Vec3d vec1, Vec3d vec2)
+	{
+		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
+		{
+			return world.rayTraceBlocks(vec1, vec2, false, true, false);
+		}
+		
+		return world.rayTraceBlocks(vec1, vec2);
 	}
 }

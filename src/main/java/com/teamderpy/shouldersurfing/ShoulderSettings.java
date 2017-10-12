@@ -1,5 +1,8 @@
 package com.teamderpy.shouldersurfing;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -11,6 +14,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderSettings
 {
+	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
+	public static KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera adj right", Keyboard.KEY_L, "key.categories.misc");
+	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera adj closer", Keyboard.KEY_I, "key.categories.misc");
+	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera adj farther", Keyboard.KEY_K, "key.categories.misc");
+	
 	/**
 	 * Whether or not zooming is unlimited
 	 */
@@ -47,4 +55,10 @@ public class ShoulderSettings
 	
 	public static boolean ENABLE_CROSSHAIR = true;
 	public static boolean ENABLE_ATTACK_INDICATOR = true;
+	
+	/**
+	 * Whether or not the camera distance in third person has to be adjusted when
+	 * the ray trace hits a block without collision
+	 */
+	public static boolean IGNORE_BLOCKS_WITHOUT_COLLISION = true;
 }

@@ -19,14 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderASMHelper
 {
-	public static void removeLastNInstructions(InsnList instructions, int startAt, int numberToRemove)
-	{
-		for(int i = 0; i < numberToRemove; i++)
-		{
-			instructions.remove(instructions.get(startAt - i));
-		}
-	}
-	
 	/**
 	 * Locates the offset of a set of instructions in the Java byte code.
 	 * Ignores label nodes and line number nodes by default.

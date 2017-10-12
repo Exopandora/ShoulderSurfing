@@ -1,5 +1,7 @@
 package com.teamderpy.shouldersurfing.json;
 
+import java.util.Map;
+
 public class JsonShoulderSurfing
 {
 	private JsonVersions[] versions;
@@ -11,37 +13,34 @@ public class JsonShoulderSurfing
 		
 		public static class JsonMappings
 		{
-			private JsonMapping[] classes;
-			private JsonMapping[] methods;
-			private JsonMapping[] fields;
+			private JsonClassMapping[] classes;
+			private JsonFieldMapping[] methods;
+			private JsonFieldMapping[] fields;
 			
-			public static class JsonMapping
+			public static abstract class JsonMapping
 			{
 				private String name;
 				private String obf;
-				private String desc;
 				
-				private String pkg;
+				public String getName()
+				{
+					return this.name;
+				}
+				
+				public String getObf()
+				{
+					return this.obf;
+				}
+			}
+			
+			public static class JsonClassMapping extends JsonMapping
+			{
 				private String path;
+				private String pkg;
 				
-				public String getClassPackage(boolean isObfuscated)
+				public String getPath()
 				{
-					return isObfuscated ? this.obf : this.pkg;
-				}
-				
-				public String getClassPath(boolean isObfuscated)
-				{
-					return isObfuscated ? this.obf : this.path;
-				}
-				
-				public String getFieldOrMethod(boolean isObfuscated)
-				{
-					return isObfuscated ? this.obf : this.name;
-				}
-				
-				public void setPackage(String pkg)
-				{
-					this.pkg = pkg;
+					return this.path;
 				}
 				
 				public String getPackage()
@@ -49,91 +48,61 @@ public class JsonShoulderSurfing
 					return this.pkg;
 				}
 				
-				public void setPath(String path)
+				public String getClassPackage(boolean isObfuscated)
 				{
-					this.path = path;
+					return isObfuscated ? this.getObf() : this.pkg;
 				}
 				
-				public String getPath()
+				public String getClassPath(boolean isObfuscated)
 				{
-					return this.path;
-				}
-				
-				public void setName(String name)
-				{
-					this.name = name;
-				}
-				
-				public String getName()
-				{
-					return this.name;
-				}
-				
-				public void setObf(String obf)
-				{
-					this.obf = obf;
-				}
-				
-				public String getObf()
-				{
-					return this.obf;
-				}
-				
-				public void setDescriptor(String desc)
-				{
-					this.desc = desc;
-				}
-				
-				public String getDescriptor()
-				{
-					return this.desc;
+					return isObfuscated ? this.getObf() : this.path;
 				}
 			}
 			
-			public void setClasses(JsonMapping[] classes)
+			public static class JsonFieldMapping extends JsonMapping
 			{
-				this.classes = classes;
+				private String desc;
+				
+				public String getDescriptor(Map<String, JsonClassMapping> mappings, boolean isObfuscated)
+				{
+					String result = this.desc;
+					
+					if(result != null)
+					{
+						for(JsonClassMapping mapping : mappings.values())
+						{
+							result = result.replaceAll("L\\$" + mapping.getName() + ";", "L" + mapping.getClassPath(isObfuscated) + ";");
+						}
+					}
+					
+					return result;
+				}
+				
+				public String getFieldOrMethod(boolean isObfuscated)
+				{
+					return isObfuscated ? this.getObf() : this.getName().split("#")[1];
+				}
 			}
 
-			public JsonMapping[] getClasses()
+			public JsonClassMapping[] getClasses()
 			{
 				return this.classes;
 			}
 
-			public void setMethods(JsonMapping[] methods)
-			{
-				this.methods = methods;
-			}
-
-			public JsonMapping[] getMethods()
+			public JsonFieldMapping[] getMethods()
 			{
 				return this.methods;
 			}
 
-			public void setFields(JsonMapping[] fields)
-			{
-				this.fields = fields;
-			}
-			
-			public JsonMapping[] getFields()
+			public JsonFieldMapping[] getFields()
 			{
 				return this.fields;
 			}
-		}
-
-		public void setVersion(String version)
-		{
-			this.version = version;
 		}
 		
 		public String getVersion()
 		{
 			return this.version;
-		}
-		
-		public void setMappings(JsonMappings mappings)
-		{
-			this.mappings = mappings;
 		}
 		
 		public JsonMappings getMappings()

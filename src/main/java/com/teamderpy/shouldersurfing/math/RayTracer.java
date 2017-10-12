@@ -49,11 +49,7 @@ public final class RayTracer
 					if(omo != null)
 					{
 						ShoulderRenderBin.rayTraceHit = omo.hitVec;
-						blockDist = omo.hitVec.distanceTo(new Vec3d(
-								Minecraft.getMinecraft().getRenderViewEntity().posX,
-								Minecraft.getMinecraft().getRenderViewEntity().posY,
-								Minecraft.getMinecraft().getRenderViewEntity().posZ));
-
+						blockDist = omo.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX,Minecraft.getMinecraft().getRenderViewEntity().posY,Minecraft.getMinecraft().getRenderViewEntity().posZ));
 						
 //						System.out.println("block dist: " + blockDist);
 						ShoulderRenderBin.rayTraceInReach = blockDist <= (double) Minecraft.getMinecraft().playerController.getBlockReachDistance();
@@ -65,12 +61,10 @@ public final class RayTracer
 					
 					// entity collision
 					Vec3d renderViewPos = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(tick);
-					
 					Vec3d sightVector = Minecraft.getMinecraft().getRenderViewEntity().getLook(tick);
 					Vec3d sightRay = renderViewPos.addVector(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
 					
 //					System.out.println(sightVector);
-					
 //					System.out.println(renderViewPos + " " + sightVector + " " + sightRay);
 					
 					List entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach).expand(1.0D, 1.0D, 1.0D));

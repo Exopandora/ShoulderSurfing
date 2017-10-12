@@ -47,19 +47,19 @@ public class ShoulderEventHandler
 		{
 			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
 			{
-				if(ShoulderSurfing.KEYBIND_ROTATE_CAMERA_LEFT.isKeyDown())
+				if(ShoulderSettings.KEYBIND_ROTATE_CAMERA_LEFT.isKeyDown())
 				{
 					ShoulderCamera.adjustCameraLeft();
 				}
-				else if(ShoulderSurfing.KEYBIND_ROTATE_CAMERA_RIGHT.isKeyDown())
+				else if(ShoulderSettings.KEYBIND_ROTATE_CAMERA_RIGHT.isKeyDown())
 				{
 					ShoulderCamera.adjustCameraRight();
 				}
-				else if(ShoulderSurfing.KEYBIND_ZOOM_CAMERA_IN.isKeyDown())
+				else if(ShoulderSettings.KEYBIND_ZOOM_CAMERA_IN.isKeyDown())
 				{
 					ShoulderCamera.adjustCameraIn();
 				}
-				else if(ShoulderSurfing.KEYBIND_ZOOM_CAMERA_OUT.isKeyDown())
+				else if(ShoulderSettings.KEYBIND_ZOOM_CAMERA_OUT.isKeyDown())
 				{
 					ShoulderCamera.adjustCameraOut();
 				}

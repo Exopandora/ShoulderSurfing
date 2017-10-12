@@ -1,12 +1,11 @@
 package com.teamderpy.shouldersurfing;
 
-import org.lwjgl.input.Keyboard;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformations;
 import com.teamderpy.shouldersurfing.proxy.CommonProxy;
-import com.teamderpy.shouldersurfing.util.Util;
 
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -17,9 +16,9 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -43,13 +42,9 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.5";
+	public static final String VERSION = "1.6";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
-	
-	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
-	public static KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera adj right", Keyboard.KEY_L, "key.categories.misc");
-	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera adj closer", Keyboard.KEY_I, "key.categories.misc");
-	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera adj farther", Keyboard.KEY_K, "key.categories.misc");
+	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -59,10 +54,10 @@ public class ShoulderSurfing
 		
 		this.syncConfig();
 		
-		ClientRegistry.registerKeyBinding(this.KEYBIND_ROTATE_CAMERA_LEFT);
-		ClientRegistry.registerKeyBinding(this.KEYBIND_ROTATE_CAMERA_RIGHT);
-		ClientRegistry.registerKeyBinding(this.KEYBIND_ZOOM_CAMERA_OUT);
-		ClientRegistry.registerKeyBinding(this.KEYBIND_ZOOM_CAMERA_IN);
+		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ROTATE_CAMERA_LEFT);
+		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ROTATE_CAMERA_RIGHT);
+		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ZOOM_CAMERA_OUT);
+		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ZOOM_CAMERA_IN);
 	}
 	
 	@EventHandler
@@ -78,12 +73,12 @@ public class ShoulderSurfing
 		
 		if(ShoulderTransformations.modifications != expMods)
 		{
-			Util.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + expMods);
-			Util.LOGGER.error("ShoulderSurfing should be disabled!");
+			ShoulderSurfing.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + expMods);
+			ShoulderSurfing.LOGGER.error("ShoulderSurfing should be disabled!");
 		}
 		else
 		{
-			Util.LOGGER.info("Loaded " + ShoulderTransformations.modifications + " code injections, ShoulderSurfing good to go!");
+			ShoulderSurfing.LOGGER.info("Loaded " + ShoulderTransformations.modifications + " code injections, ShoulderSurfing good to go!");
 		}
 	}
 	
@@ -103,6 +98,7 @@ public class ShoulderSurfing
 		ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA = config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head", ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA, "Whether or not to hide the player model if the camera gets too close to it").getBoolean(ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA);
 		ShoulderSettings.ENABLE_CROSSHAIR = config.get(Configuration.CATEGORY_GENERAL, "Third Person Crosshair", ShoulderSettings.ENABLE_CROSSHAIR, "Enable or disable the crosshair in third person").getBoolean(ShoulderSettings.ENABLE_CROSSHAIR);
 		ShoulderSettings.ENABLE_ATTACK_INDICATOR = config.get(Configuration.CATEGORY_GENERAL, "Third Person Attack Indicator", ShoulderSettings.ENABLE_ATTACK_INDICATOR, "Enable or disable the attack indicator in third person").getBoolean(ShoulderSettings.ENABLE_ATTACK_INDICATOR);
+		ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION = config.get(Configuration.CATEGORY_GENERAL, "Ignore Block Without Collision", ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION, "Whether or not the camera ignores blocks without collision").getBoolean(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION);
 		
 		if(ShoulderSurfing.config.hasChanged())
 		{
