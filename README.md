@@ -18,7 +18,7 @@ Features
 
 Download
 ========
-Compiled versions can be found here:
+Compiled and signed versions can be found here:
 https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded
 
 Required: Forge universal files for your minecraft version (http://files.minecraftforge.net/)
