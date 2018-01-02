@@ -27,7 +27,7 @@ Compatibility
 =============
 Mods that heavily modify certain base classes may break this mod. Your forge client log will show if the code injection fails or not.
 This mod modifies:
-* EntityRenderer#orentCamera
+* EntityRenderer#orientCamera
 * EntityRenderer#renderWorldPass
 * Minecraft#processKeyBinds
 
