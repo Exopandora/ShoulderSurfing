@@ -19,8 +19,8 @@ public class JsonShoulderSurfing
 			
 			public static abstract class JsonMapping
 			{
-				private String name;
-				private String obf;
+				protected String name;
+				protected String obf;
 				
 				public String getName()
 				{
@@ -36,26 +36,25 @@ public class JsonShoulderSurfing
 			public static class JsonClassMapping extends JsonMapping
 			{
 				private String path;
-				private String pkg;
 				
 				public String getPath()
 				{
-					return this.path;
+					return this.path + "/" + this.name;
 				}
 				
 				public String getPackage()
 				{
-					return this.pkg;
+					return this.path.replaceAll("/", ".") + "." + this.name;
 				}
 				
 				public String getClassPackage(boolean isObfuscated)
 				{
-					return isObfuscated ? this.getObf() : this.pkg;
+					return isObfuscated ? this.obf : this.getPackage();
 				}
 				
 				public String getClassPath(boolean isObfuscated)
 				{
-					return isObfuscated ? this.getObf() : this.path;
+					return isObfuscated ? this.obf : this.getPath();
 				}
 			}
 			
@@ -71,7 +70,7 @@ public class JsonShoulderSurfing
 					{
 						for(JsonClassMapping mapping : mappings.values())
 						{
-							result = result.replaceAll("L\\$" + mapping.getName() + ";", "L" + mapping.getClassPath(isObfuscated) + ";");
+							result = result.replaceAll("L\\$" + mapping.name + ";", "L" + mapping.getClassPath(isObfuscated) + ";");
 						}
 					}
 					
@@ -80,7 +79,7 @@ public class JsonShoulderSurfing
 				
 				public String getFieldOrMethod(boolean isObfuscated)
 				{
-					return isObfuscated ? this.getObf() : this.getName().split("#")[1];
+					return isObfuscated ? this.obf : this.name.split("#")[1];
 				}
 			}
 

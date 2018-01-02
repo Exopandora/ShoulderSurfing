@@ -9,44 +9,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "buq"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "vg"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bxz"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "byb"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "amu"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bsb"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bhe"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bhc"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bib"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bid"
 					}
 				],
 				"methods":
@@ -75,6 +84,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aE"
 					}
 				],
 				"fields":
@@ -88,6 +102,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "aw"
 					}
 				]
 			}
@@ -100,44 +119,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "buq"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "vg"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bxz"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "byb"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "amu"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bsb"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bhe"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bhc"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bhz"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bib"
 					}
 				],
 				"methods":
@@ -166,6 +194,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aE"
 					}
 				],
 				"fields":
@@ -179,6 +212,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "aw"
 					}
 				]
 			}
@@ -191,44 +229,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "buo"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "ve"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bxx"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bxz"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "ams"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "brz"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bhc"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bha"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bhz"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bib"
 					}
 				],
 				"methods":
@@ -257,6 +304,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aE"
 					}
 				],
 				"fields":
@@ -270,6 +322,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "aw"
 					}
 				]
 			}
@@ -282,44 +339,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "bqe"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "sn"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "btm"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bto"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "ajs"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bnq"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bdw"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bdu"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bes"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "beu"
 					}
 				],
 				"methods":
@@ -348,6 +414,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aA"
 					}
 				],
 				"fields":
@@ -361,6 +432,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "as"
 					}
 				]
 			}
@@ -373,44 +449,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "bqc"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "sm"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "btk"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "btm"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "ajq"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bno"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bdu"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bds"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "beq"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bes"
 					}
 				],
 				"methods":
@@ -439,6 +524,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aA"
 					}
 				],
 				"fields":
@@ -452,6 +542,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "as"
 					}
 				]
 			}
@@ -464,44 +559,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "bnz"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "rw"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "brg"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bri"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "aid"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bln"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bcb"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bbz"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bcx"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bcz"
 					}
 				],
 				"methods":
@@ -530,6 +634,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aA"
 					}
 				],
 				"fields":
@@ -543,6 +652,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "as"
 					}
 				]
 			}
@@ -555,44 +669,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "bnd"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "rr"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bqk"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bqm"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "aht"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bks"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bbh"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bbg"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bcd"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bcf"
 					}
 				],
 				"methods":
@@ -621,6 +744,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aA"
 					}
 				],
 				"fields":
@@ -634,6 +762,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "aq"
 					}
 				]
 			}
@@ -646,44 +779,53 @@
 				[
 					{
 						"name": "EntityRenderer",
-						"pkg": "net.minecraft.client.renderer.EntityRenderer",
-						"path": "net/minecraft/client/renderer/EntityRenderer",
+						"path": "net/minecraft/client/renderer",
 						"obf": "bng"
 					},
 					{
 						"name": "Entity",
-						"path": "net/minecraft/entity/Entity",
+						"path": "net/minecraft/entity",
 						"obf": "rr"
 					},
 					{
 						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bqn"
 					},
 					{
 						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling/ClippingHelper",
+						"path": "net/minecraft/client/renderer/culling",
 						"obf": "bqp"
 					},
 					{
 						"name": "World",
-						"path": "net/minecraft/world/World",
+						"path": "net/minecraft/world",
 						"obf": "aht"
 					},
 					{
 						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer/WorldClient",
+						"path": "net/minecraft/client/multiplayer",
 						"obf": "bku"
 					},
 					{
 						"name": "Vec3d",
-						"path": "net/minecraft/util/math/Vec3d",
+						"path": "net/minecraft/util/math",
 						"obf": "bbj"
 					},
 					{
 						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math/RayTraceResult",
+						"path": "net/minecraft/util/math",
 						"obf": "bbi"
+					},
+					{
+						"name": "Minecraft",
+						"path": "net/minecraft/client",
+						"obf": "bcf"
+					},
+					{
+						"name": "GameSettings",
+						"path": "net/minecraft/client/settings",
+						"obf": "bch"
 					}
 				],
 				"methods":
@@ -712,6 +854,11 @@
 						"name": "WorldClient#rayTraceBlocks",
 						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
 						"obf": "a"
+					},
+					{
+						"name": "Minecraft#processKeyBinds",
+						"desc": "()V",
+						"obf": "aA"
 					}
 				],
 				"fields":
@@ -725,6 +872,11 @@
 						"name": "Entity#rotationPitch",
 						"desc": "F",
 						"obf": "w"
+					},
+					{
+						"name": "GameSettings#thirdPersonView",
+						"desc": "I",
+						"obf": "ap"
 					}
 				]
 			}

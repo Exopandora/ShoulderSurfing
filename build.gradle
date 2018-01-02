@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.12.2-1.6"
+version = "1.12.2-1.7"
 group= "com.teamderpy.shouldersurfing.ShoulderSurfing" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ShoulderSurfing"
 
@@ -27,7 +27,7 @@ jar {
 }
 
 minecraft {
-    version = "1.12.2-14.23.0.2512"
+    version = "1.12.2-14.23.1.2583"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.

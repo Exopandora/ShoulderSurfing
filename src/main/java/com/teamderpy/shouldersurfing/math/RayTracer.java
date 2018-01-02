@@ -29,7 +29,7 @@ public final class RayTracer
 		{
 			if(Minecraft.getMinecraft().world != null)
 			{
-				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
+				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 				{
 					double playerReach = 1D;
 					

@@ -45,7 +45,7 @@ public class ShoulderEventHandler
 	{
 		if(Minecraft.getMinecraft() != null && Minecraft.getMinecraft().currentScreen == null)
 		{
-			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
+			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 			{
 				if(ShoulderSettings.KEYBIND_ROTATE_CAMERA_LEFT.isKeyDown())
 				{
@@ -62,6 +62,10 @@ public class ShoulderEventHandler
 				else if(ShoulderSettings.KEYBIND_ZOOM_CAMERA_OUT.isKeyDown())
 				{
 					ShoulderCamera.adjustCameraOut();
+				}
+				else if(ShoulderSettings.KEYBIND_SWAP_SHOULDER.isPressed())
+				{
+					ShoulderCamera.swapShoulder();
 				}
 				else
 				{
@@ -138,22 +142,18 @@ public class ShoulderEventHandler
 			}
 			else
 			{
-				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == 1))
+				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == 3))
 				{
-					/**
-					 * Default Crosshair
-					 */
+					//Default Crosshair
 					
 					this.lastX = width * scale / 2;
 					this.lastY = height * scale / 2;
 					
 					this.renderCrosshair(gui, resolution);
 				}
-				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
+				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 				{
-					/**
-					 * Dynamic Crosshair
-					 */
+					//Dynamic Crosshair
 					
 					GlStateManager.pushMatrix();
 					
@@ -204,7 +204,7 @@ public class ShoulderEventHandler
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.enableAlpha();
 		
-		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != 1)
+		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != 3)
 		{
 			gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
 		}

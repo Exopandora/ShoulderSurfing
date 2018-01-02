@@ -14,10 +14,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderSettings
 {
-	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera adj left", Keyboard.KEY_J, "key.categories.misc");
-	public static KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera adj right", Keyboard.KEY_L, "key.categories.misc");
-	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera adj closer", Keyboard.KEY_I, "key.categories.misc");
-	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera adj farther", Keyboard.KEY_K, "key.categories.misc");
+	public static KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera left", Keyboard.KEY_LEFT, "key.categories.misc");
+	public static KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera right", Keyboard.KEY_RIGHT, "key.categories.misc");
+	public static KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera closer", Keyboard.KEY_UP, "key.categories.misc");
+	public static KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera farther", Keyboard.KEY_DOWN, "key.categories.misc");
+	public static KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", Keyboard.KEY_O, "key.categories.misc");
 	
 	/**
 	 * Whether or not zooming is unlimited
@@ -61,4 +62,6 @@ public class ShoulderSettings
 	 * the ray trace hits a block without collision
 	 */
 	public static boolean IGNORE_BLOCKS_WITHOUT_COLLISION = true;
+	
+	public static String DEFAULT_PERSPECTIVE = "shoulder surfing";
 }

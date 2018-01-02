@@ -47,4 +47,9 @@ public final class ShoulderCamera
 			SHOULDER_ZOOM_MOD -= 0.01F;
 		}
 	}
+	
+	public static void swapShoulder()
+	{
+		SHOULDER_ROTATION = -SHOULDER_ROTATION;
+	}
 }

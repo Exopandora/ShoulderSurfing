@@ -22,17 +22,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class InjectionDelegation
 {
-	private InjectionDelegation()
-	{
-		
-	}
-	
 	/**
 	 * Called by injected code to modify the camera rotation
 	 */
 	public static float getShoulderRotation()
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 		{
 			return ShoulderCamera.SHOULDER_ROTATION;
 		}
@@ -45,7 +40,7 @@ public final class InjectionDelegation
 	 */
 	public static float getShoulderZoomMod()
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1)
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 		{
 			return ShoulderCamera.SHOULDER_ZOOM_MOD;
 		}

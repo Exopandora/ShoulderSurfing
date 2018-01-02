@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformations;
 import com.teamderpy.shouldersurfing.proxy.CommonProxy;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -42,7 +43,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.6";
+	public static final String VERSION = "1.7";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
@@ -58,6 +59,23 @@ public class ShoulderSurfing
 		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ROTATE_CAMERA_RIGHT);
 		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ZOOM_CAMERA_OUT);
 		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ZOOM_CAMERA_IN);
+		
+		if(ShoulderSettings.DEFAULT_PERSPECTIVE.equals("first person"))
+		{
+			Minecraft.getMinecraft().gameSettings.thirdPersonView = 0;
+		}
+		else if(ShoulderSettings.DEFAULT_PERSPECTIVE.equals("third person"))
+		{
+			Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
+		}
+		else if(ShoulderSettings.DEFAULT_PERSPECTIVE.equals("front third person"))
+		{
+			Minecraft.getMinecraft().gameSettings.thirdPersonView = 2;
+		}
+		else if(ShoulderSettings.DEFAULT_PERSPECTIVE.equals("shoulder surfing"))
+		{
+			Minecraft.getMinecraft().gameSettings.thirdPersonView = 3;
+		}
 	}
 	
 	@EventHandler
@@ -69,11 +87,9 @@ public class ShoulderSurfing
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		int expMods = ShoulderTransformations.CODE_MODIFICATIONS;
-		
-		if(ShoulderTransformations.modifications != expMods)
+		if(ShoulderTransformations.modifications != ShoulderTransformations.CODE_MODIFICATIONS)
 		{
-			ShoulderSurfing.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + expMods);
+			ShoulderSurfing.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + ShoulderTransformations.CODE_MODIFICATIONS);
 			ShoulderSurfing.LOGGER.error("ShoulderSurfing should be disabled!");
 		}
 		else
@@ -98,7 +114,8 @@ public class ShoulderSurfing
 		ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA = config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head", ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA, "Whether or not to hide the player model if the camera gets too close to it").getBoolean(ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA);
 		ShoulderSettings.ENABLE_CROSSHAIR = config.get(Configuration.CATEGORY_GENERAL, "Third Person Crosshair", ShoulderSettings.ENABLE_CROSSHAIR, "Enable or disable the crosshair in third person").getBoolean(ShoulderSettings.ENABLE_CROSSHAIR);
 		ShoulderSettings.ENABLE_ATTACK_INDICATOR = config.get(Configuration.CATEGORY_GENERAL, "Third Person Attack Indicator", ShoulderSettings.ENABLE_ATTACK_INDICATOR, "Enable or disable the attack indicator in third person").getBoolean(ShoulderSettings.ENABLE_ATTACK_INDICATOR);
-		ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION = config.get(Configuration.CATEGORY_GENERAL, "Ignore Block Without Collision", ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION, "Whether or not the camera ignores blocks without collision").getBoolean(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION);
+		ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION = config.get(Configuration.CATEGORY_GENERAL, "Ignore Blocks Without Collision", ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION, "Whether or not the camera ignores blocks without collision").getBoolean(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION);
+		ShoulderSettings.DEFAULT_PERSPECTIVE = config.get(Configuration.CATEGORY_GENERAL, "Default Perspective", ShoulderSettings.DEFAULT_PERSPECTIVE, "The default perspective when you load the game", new String[] {"First person", "Third person", "Front third person", "Shoulder surfing"}).getString();
 		
 		if(ShoulderSurfing.config.hasChanged())
 		{
