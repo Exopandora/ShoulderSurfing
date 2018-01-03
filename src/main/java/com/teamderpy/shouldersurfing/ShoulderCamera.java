@@ -9,7 +9,7 @@ public final class ShoulderCamera
 	/**
 	 * The number of degrees to rotate the camera
 	 */
-	public static float SHOULDER_ROTATION = -22.0F;
+	public static float SHOULDER_ROTATION;
 	
 	/**
 	 * How much the camera view distance should change

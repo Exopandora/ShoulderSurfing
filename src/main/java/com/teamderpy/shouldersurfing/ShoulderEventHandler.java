@@ -106,7 +106,7 @@ public class ShoulderEventHandler
 	@SubscribeEvent
 	public void preRenderPlayer(RenderPlayerEvent.Pre event)
 	{
-		if(ShoulderRenderBin.skipPlayerRender)
+		if(ShoulderRenderBin.skipPlayerRender && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getMinecraft().inGameHasFocus))
 		{
 			if(event.isCancelable())
 			{
@@ -144,7 +144,7 @@ public class ShoulderEventHandler
 			{
 				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == 3))
 				{
-					//Default Crosshair
+					/** Default Crosshair **/
 					
 					this.lastX = width * scale / 2;
 					this.lastY = height * scale / 2;
@@ -153,7 +153,7 @@ public class ShoulderEventHandler
 				}
 				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 				{
-					//Dynamic Crosshair
+					/** Dynamic Crosshair **/
 					
 					GlStateManager.pushMatrix();
 					
@@ -183,7 +183,7 @@ public class ShoulderEventHandler
 				}
 			}
 			
-			/** SHORT-CIRCUIT THE RENDER */
+			/** SHORT-CIRCUIT THE RENDER **/
 			if(event.isCancelable())
 			{
 				event.setCanceled(true);

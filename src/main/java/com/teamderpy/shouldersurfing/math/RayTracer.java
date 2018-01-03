@@ -49,7 +49,7 @@ public final class RayTracer
 					if(omo != null)
 					{
 						ShoulderRenderBin.rayTraceHit = omo.hitVec;
-						blockDist = omo.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX,Minecraft.getMinecraft().getRenderViewEntity().posY,Minecraft.getMinecraft().getRenderViewEntity().posZ));
+						blockDist = omo.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX, Minecraft.getMinecraft().getRenderViewEntity().posY, Minecraft.getMinecraft().getRenderViewEntity().posZ));
 						
 //						System.out.println("block dist: " + blockDist);
 						ShoulderRenderBin.rayTraceInReach = blockDist <= (double) Minecraft.getMinecraft().playerController.getBlockReachDistance();

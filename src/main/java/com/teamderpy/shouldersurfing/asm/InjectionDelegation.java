@@ -86,7 +86,7 @@ public final class InjectionDelegation
 	{
 		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
 		{
-			return world.rayTraceBlocks(vec1, vec2, false, true, false);
+			return world.rayTraceBlocks(vec1.addVector(1, 0.0, 0.0), vec2, false, true, false);
 		}
 		
 		return world.rayTraceBlocks(vec1, vec2);
