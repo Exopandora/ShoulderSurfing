@@ -2,9 +2,9 @@ package com.teamderpy.shouldersurfing;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -52,10 +52,9 @@ public class ShoulderSettings
 	/**
 	 * Whether or not the dynamic crosshair is enabled
 	 */
-	public static boolean IS_DYNAMIC_CROSSHAIR_ENABLED;
+	public static boolean IS_DYNAMIC_CROSSHAIR_ENABLED = true;
 	
 	public static boolean ENABLE_CROSSHAIR = true;
-	public static boolean ENABLE_ATTACK_INDICATOR = true;
 	
 	/**
 	 * Whether or not the camera distance in third person has to be adjusted when

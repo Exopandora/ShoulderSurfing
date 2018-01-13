@@ -3,14 +3,14 @@ package com.teamderpy.shouldersurfing.math;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector2f;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.util.Vec3;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -34,9 +34,9 @@ public class VectorConverter
 	 * @return Returns a {@link Vector2f} representing a 2D location on the
 	 *         screen, or null if the vector fails to be converted.
 	 */
-	public static Vector2f project2D(final Vec3d v3)
+	public static Vector2f project2D(final Vec3 v3)
 	{
-		return project2D((float) v3.x, (float) v3.y, (float) v3.z);
+		return project2D((float) v3.xCoord, (float) v3.yCoord, (float) v3.zCoord);
 	}
 	
 	/**

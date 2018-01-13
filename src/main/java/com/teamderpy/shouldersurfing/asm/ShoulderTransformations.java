@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.asm;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.DLOAD;
 import static org.objectweb.asm.Opcodes.DMUL;
 import static org.objectweb.asm.Opcodes.DSTORE;
@@ -33,9 +32,9 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -108,11 +107,11 @@ public class ShoulderTransformations implements IClassTransformer
 			
 			InsnList searchList = new InsnList();
 			searchList.add(new VarInsnNode(ALOAD, 2));
-			searchList.add(new FieldInsnNode(GETFIELD, this.mappings.getClassPath("Entity"), this.mappings.getFieldOrMethod("Entity#rotationYaw"), this.mappings.getDescriptor("Entity#rotationYaw")));
-			searchList.add(new VarInsnNode(FSTORE, 12));
-			searchList.add(new VarInsnNode(ALOAD, 2));
-			searchList.add(new FieldInsnNode(GETFIELD, this.mappings.getClassPath("Entity"), this.mappings.getFieldOrMethod("Entity#rotationPitch"), this.mappings.getDescriptor("Entity#rotationPitch")));
+			searchList.add(new FieldInsnNode(GETFIELD, this.mappings.getClassPath("EntityLivingBase"), this.mappings.getFieldOrMethod("EntityLivingBase#rotationYaw"), this.mappings.getDescriptor("EntityLivingBase#rotationYaw")));
 			searchList.add(new VarInsnNode(FSTORE, 13));
+			searchList.add(new VarInsnNode(ALOAD, 2));
+			searchList.add(new FieldInsnNode(GETFIELD, this.mappings.getClassPath("EntityLivingBase"), this.mappings.getFieldOrMethod("EntityLivingBase#rotationPitch"), this.mappings.getDescriptor("EntityLivingBase#rotationPitch")));
+			searchList.add(new VarInsnNode(FSTORE, 12));
 			
 			int offset = ShoulderASMHelper.locateOffset(method.instructions, searchList);
 			
@@ -129,10 +128,10 @@ public class ShoulderTransformations implements IClassTransformer
 				// net/minecraft/client/renderer/EntityRenderer.orientCamera:653
 				// f1 += InjectionDelegation.getShoulderRotation();
 				
-				hackCode.add(new VarInsnNode(FLOAD, 12));
+				hackCode.add(new VarInsnNode(FLOAD, 13));
 				hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderRotation", "()F", false));
 				hackCode.add(new InsnNode(FADD));
-				hackCode.add(new VarInsnNode(FSTORE, 12));
+				hackCode.add(new VarInsnNode(FSTORE, 13));
 				
 				// net/minecraft/client/renderer/EntityRenderer.orientCamera:654
 				// d3 *= InjectionDelegation.getShoulderZoomMod();
@@ -206,7 +205,7 @@ public class ShoulderTransformations implements IClassTransformer
 				this.modifications++;
 			}
 		}
-		else if(this.methodMatches(method, "EntityRenderer#renderWorldPass"))
+		else if(this.methodMatches(method, "EntityRenderer#renderWorld"))
 		{
 			ShoulderSurfing.LOGGER.info("Located method " + method.name + method.desc + ", locating signature");
 			
@@ -216,23 +215,7 @@ public class ShoulderTransformations implements IClassTransformer
 			searchList.add(new MethodInsnNode(INVOKESTATIC, this.mappings.getClassPath("ClippingHelperImpl"), this.mappings.getFieldOrMethod("ClippingHelperImpl#getInstance"), this.mappings.getDescriptor("ClippingHelperImpl#getInstance"), false));
 			searchList.add(new InsnNode(POP));
 			
-			InsnList searchListOptifine = new InsnList();
-			searchListOptifine.add(new MethodInsnNode(INVOKESTATIC, this.mappings.getClassPath("ClippingHelperImpl"), this.mappings.getFieldOrMethod("ClippingHelperImpl#getInstance"), this.mappings.getDescriptor("ClippingHelperImpl#getInstance"), false));
-			searchListOptifine.add(new VarInsnNode(ASTORE, 9));
-			
-			int offset = -1;
-			int offsetVanilla = ShoulderASMHelper.locateOffset(method.instructions, searchList);				
-			int offsetOptifine = ShoulderASMHelper.locateOffset(method.instructions, searchListOptifine);
-			
-			if(offsetVanilla != -1)
-			{
-				offset = offsetVanilla;
-			}
-			else if(offsetOptifine != -1)
-			{
-				offset = offsetOptifine;
-				ShoulderSurfing.LOGGER.info("Optifine detected");
-			}
+			int offset = ShoulderASMHelper.locateOffset(method.instructions, searchList);				
 			
 			if(offset == -1)
 			{
@@ -245,7 +228,7 @@ public class ShoulderTransformations implements IClassTransformer
 				
 				InsnList hackCode = new InsnList();
 				
-				// net/minecraft/client/renderer/EntityRenderer.renderWorldPass:1332
+				// net/minecraft/client/renderer/EntityRenderer.renderWorld:1332
 				// InjectionDelegation.calculateRayTraceProjection();
 				
 				hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calculateRayTraceProjection", "()V", false));
@@ -263,7 +246,7 @@ public class ShoulderTransformations implements IClassTransformer
 	
 	private boolean transformMinecraft(MethodNode method)
 	{
-		if(this.methodMatches(method, "Minecraft#processKeyBinds"))
+		if(this.methodMatches(method, "Minecraft#runTick"))
 		{
 			ShoulderSurfing.LOGGER.info("Located method " + method.name + method.desc + ", locating signature");
 			

@@ -5,13 +5,13 @@ import java.util.List;
 import com.teamderpy.shouldersurfing.ShoulderSettings;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -25,9 +25,9 @@ public final class RayTracer
 	{
 		ShoulderRenderBin.projectedVector = null;
 		
-		if(Minecraft.getMinecraft().getRenderViewEntity() != null)
+		if(Minecraft.getMinecraft().renderViewEntity != null)
 		{
-			if(Minecraft.getMinecraft().world != null)
+			if(Minecraft.getMinecraft().theWorld != null)
 			{
 				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
 				{
@@ -43,13 +43,13 @@ public final class RayTracer
 					}
 					
 					// block collision
-					RayTraceResult omo = Minecraft.getMinecraft().getRenderViewEntity().rayTrace(playerReach, tick);
+					MovingObjectPosition omo = Minecraft.getMinecraft().renderViewEntity.rayTrace(playerReach, tick);
 					double blockDist = 0;
 					
 					if(omo != null)
 					{
 						ShoulderRenderBin.rayTraceHit = omo.hitVec;
-						blockDist = omo.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX, Minecraft.getMinecraft().getRenderViewEntity().posY, Minecraft.getMinecraft().getRenderViewEntity().posZ));
+						blockDist = omo.hitVec.distanceTo(Vec3.createVectorHelper(Minecraft.getMinecraft().renderViewEntity.posX, Minecraft.getMinecraft().renderViewEntity.posY, Minecraft.getMinecraft().renderViewEntity.posZ));
 						
 //						System.out.println("block dist: " + blockDist);
 						ShoulderRenderBin.rayTraceInReach = blockDist <= (double) Minecraft.getMinecraft().playerController.getBlockReachDistance();
@@ -60,14 +60,14 @@ public final class RayTracer
 					}
 					
 					// entity collision
-					Vec3d renderViewPos = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(tick);
-					Vec3d sightVector = Minecraft.getMinecraft().getRenderViewEntity().getLook(tick);
-					Vec3d sightRay = renderViewPos.addVector(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
+					Vec3 renderViewPos = Minecraft.getMinecraft().renderViewEntity.getPosition(tick);
+					Vec3 sightVector = Minecraft.getMinecraft().renderViewEntity.getLook(tick);
+					Vec3 sightRay = renderViewPos.addVector(sightVector.xCoord * playerReach - 5, sightVector.yCoord * playerReach, sightVector.zCoord * playerReach);
 					
 //					System.out.println(sightVector);
 //					System.out.println(renderViewPos + " " + sightVector + " " + sightRay);
 					
-					List entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach).expand(1.0D, 1.0D, 1.0D));
+					List entityList = Minecraft.getMinecraft().theWorld.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().renderViewEntity, Minecraft.getMinecraft().renderViewEntity.boundingBox.expand(sightVector.xCoord * playerReach, sightVector.yCoord * playerReach, sightVector.zCoord * playerReach).expand(1.0D, 1.0D, 1.0D));
 					
 					for(int i = 0; i < entityList.size(); ++i)
 					{
@@ -77,12 +77,12 @@ public final class RayTracer
 						{
 							float collisionSize = ent.getCollisionBorderSize();
 							
-							AxisAlignedBB aabb = ent.getEntityBoundingBox().expand((double) collisionSize, (double) collisionSize, (double) collisionSize);
-							RayTraceResult potentialIntercept = aabb.calculateIntercept(renderViewPos, sightRay);
+							AxisAlignedBB aabb = ent.boundingBox.expand((double) collisionSize, (double) collisionSize, (double) collisionSize);
+							MovingObjectPosition potentialIntercept = aabb.calculateIntercept(renderViewPos, sightRay);
 							
 							if(potentialIntercept != null)
 							{
-								double entityDist = potentialIntercept.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX, Minecraft.getMinecraft().getRenderViewEntity().posY, Minecraft.getMinecraft().getRenderViewEntity().posZ));
+								double entityDist = potentialIntercept.hitVec.distanceTo(Vec3.createVectorHelper(Minecraft.getMinecraft().renderViewEntity.posX, Minecraft.getMinecraft().renderViewEntity.posY, Minecraft.getMinecraft().renderViewEntity.posZ));
 								
 								if(entityDist < blockDist)
 								{

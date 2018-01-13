@@ -5,12 +5,12 @@ import com.teamderpy.shouldersurfing.ShoulderSettings;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -55,18 +55,12 @@ public final class InjectionDelegation
 	{
 		if(ShoulderRenderBin.rayTraceHit != null)
 		{
-			ShoulderRenderBin.projectedVector = VectorConverter.project2D((float) (ShoulderRenderBin.rayTraceHit.x), (float) (ShoulderRenderBin.rayTraceHit.y), (float) (ShoulderRenderBin.rayTraceHit.z));
+			ShoulderRenderBin.projectedVector = VectorConverter.project2D((float) (ShoulderRenderBin.rayTraceHit.xCoord), (float) (ShoulderRenderBin.rayTraceHit.yCoord), (float) (ShoulderRenderBin.rayTraceHit.zCoord));
 			
 			ShoulderRenderBin.rayTraceHit = null;
 		}
 	}
 	
-	/**
-	 * Holds the last coordinate drawing position
-	 */
-	private static float lastX = 0.0F;
-	private static float lastY = 0.0F;
-
 	/**
 	 * Called by injected code to determine whether the camera is too close to
 	 * the player
@@ -82,11 +76,11 @@ public final class InjectionDelegation
 	/**
 	 * Called by injected code to perform the ray trace
 	 */
-	public static RayTraceResult getRayTraceResult(World world, Vec3d vec1, Vec3d vec2)
+	public static MovingObjectPosition getRayTraceResult(World world, Vec3 vec1, Vec3 vec2)
 	{
 		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
 		{
-			return world.rayTraceBlocks(vec1.addVector(1, 0.0, 0.0), vec2, false, true, false);
+			return world.func_147447_a(vec1.addVector(1, 0.0, 0.0), vec2, false, true, false);
 		}
 		
 		return world.rayTraceBlocks(vec1, vec2);

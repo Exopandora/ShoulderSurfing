@@ -15,9 +15,10 @@ import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions;
 import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions.JsonMappings.JsonClassMapping;
 import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions.JsonMappings.JsonFieldMapping;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.MinecraftForge;
 
 @SideOnly(Side.CLIENT)
 public class ShoulderMappings
@@ -35,7 +36,7 @@ public class ShoulderMappings
 	{
 		try
 		{
-			String version = ForgeVersion.class.getDeclaredField("mcVersion").get(ForgeVersion.class).toString();
+			String version = MinecraftForge.MC_VERSION;
 			InputStream in = this.getClass().getClassLoader().getResourceAsStream("assets/shouldersurfing/mappings/mappings.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			JsonShoulderSurfing json = new Gson().fromJson(reader, JsonShoulderSurfing.class);
@@ -74,7 +75,7 @@ public class ShoulderMappings
 			
 			if(CLASS_MAPPINGS.isEmpty() || FIELD_MAPPINGS.isEmpty())
 			{
-				ShoulderSurfing.LOGGER.error("No mappings found for Minecraft " + ForgeVersion.mcVersion);
+				ShoulderSurfing.LOGGER.error("No mappings found for Minecraft " + version);
 			}
 		}
 		catch(Exception e)

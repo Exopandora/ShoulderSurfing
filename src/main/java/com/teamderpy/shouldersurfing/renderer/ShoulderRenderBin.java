@@ -1,9 +1,10 @@
 package com.teamderpy.shouldersurfing.renderer;
 
 import org.lwjgl.util.vector.Vector2f;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.Vec3;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
@@ -18,7 +19,7 @@ public final class ShoulderRenderBin
 	/**
 	 * The last thing our line-of-sight collided with
 	 */
-	public static Vec3d rayTraceHit = null;
+	public static Vec3 rayTraceHit = null;
 	public static boolean rayTraceInReach = false;
 	
 	/**
