@@ -8,6 +8,7 @@ import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -80,9 +81,51 @@ public final class InjectionDelegation
 	{
 		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
 		{
-			return world.func_147447_a(vec1.addVector(1, 0.0, 0.0), vec2, false, true, false);
+			return world.func_147447_a(vec1, vec2, false, true, false);
 		}
 		
 		return world.rayTraceBlocks(vec1, vec2);
+	}
+	
+	public static double checkDistance(double distance, float yaw, double posX, double posY, double posZ, double cameraXoffset, double cameraYoffset, double cameraZoffset)
+	{
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+		{
+			double result = distance;
+			float radiant = (float) (Math.PI / 180F);
+			float offset = InjectionDelegation.getShoulderRotation();
+			float oldYaw = yaw - offset;
+			
+			double length = MathHelper.cos((-90.0F - offset) * radiant) * distance;
+			double addX = MathHelper.cos(oldYaw * radiant) * length;
+			double addZ = MathHelper.sin(oldYaw * radiant) * length;
+			
+			for(int i = 0; i < 8; i++)
+			{
+				float offsetX = (float)((i & 1) * 2 - 1);
+				float offsetY = (float)((i >> 1 & 1) * 2 - 1);
+				float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
+				
+				offsetX = offsetX * 0.1F;
+				offsetY = offsetY * 0.1F;
+				offsetZ = offsetZ * 0.1F;
+				
+				MovingObjectPosition raytraceresult = getRayTraceResult(Minecraft.getMinecraft().theWorld, Vec3.createVectorHelper(posX + offsetX, posY + offsetY, posZ + offsetZ), Vec3.createVectorHelper(posX - (cameraXoffset + addX) + offsetX + offsetZ, posY - cameraYoffset + offsetY, posZ - (cameraZoffset + addZ) + offsetZ));					
+				
+				if(raytraceresult != null)
+				{
+					double newDistance = raytraceresult.hitVec.distanceTo(Vec3.createVectorHelper(posX, posY, posZ));
+					
+					if(newDistance < result)
+					{
+						result = newDistance;
+					}
+				}
+			}
+			
+			return result;
+		}
+		
+		return distance;
 	}
 }

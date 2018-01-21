@@ -44,7 +44,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.7.10";
-	public static final String VERSION = "1.8";
+	public static final String VERSION = "1.9";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
@@ -89,14 +89,14 @@ public class ShoulderSurfing
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		if(ShoulderTransformations.modifications != ShoulderTransformations.CODE_MODIFICATIONS)
+		if(ShoulderTransformations.MODIFICATIONS != ShoulderTransformations.TOTAL_MODIFICATIONS)
 		{
-			ShoulderSurfing.LOGGER.error("Only found " + ShoulderTransformations.modifications + " code injections, but expected " + ShoulderTransformations.CODE_MODIFICATIONS);
+			ShoulderSurfing.LOGGER.error("Only found " + ShoulderTransformations.MODIFICATIONS + " code injections, but expected " + ShoulderTransformations.TOTAL_MODIFICATIONS);
 			ShoulderSurfing.LOGGER.error("ShoulderSurfing should be disabled!");
 		}
 		else
 		{
-			ShoulderSurfing.LOGGER.info("Loaded " + ShoulderTransformations.modifications + " code injections, ShoulderSurfing good to go!");
+			ShoulderSurfing.LOGGER.info("Loaded " + ShoulderTransformations.MODIFICATIONS + " code injections, ShoulderSurfing good to go!");
 		}
 	}
 	

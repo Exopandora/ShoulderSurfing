@@ -17,8 +17,8 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-1.8"
-group= "com.teamderpy.shouldersurfing.ShoulderSurfing" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "1.7.10-1.9"
+group = "com.teamderpy.shouldersurfing.ShoulderSurfing" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ShoulderSurfing"
 
 minecraft {
