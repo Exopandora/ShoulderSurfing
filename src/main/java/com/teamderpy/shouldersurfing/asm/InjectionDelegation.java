@@ -6,6 +6,7 @@ import com.teamderpy.shouldersurfing.math.VectorConverter;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -62,12 +63,6 @@ public final class InjectionDelegation
 	}
 	
 	/**
-	 * Holds the last coordinate drawing position
-	 */
-	private static float lastX = 0.0F;
-	private static float lastY = 0.0F;
-
-	/**
 	 * Called by injected code to determine whether the camera is too close to
 	 * the player
 	 */
@@ -86,9 +81,51 @@ public final class InjectionDelegation
 	{
 		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
 		{
-			return world.rayTraceBlocks(vec1.addVector(1, 0.0, 0.0), vec2, false, true, false);
+			return world.rayTraceBlocks(vec1, vec2, false, true, false);
 		}
 		
 		return world.rayTraceBlocks(vec1, vec2);
+	}
+	
+	public static double checkDistance(double distance, float yaw, double posX, double posY, double posZ, double cameraXoffset, double cameraYoffset, double cameraZoffset)
+	{
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+		{
+			double result = distance;
+			float radiant = (float) (Math.PI / 180F);
+			float offset = InjectionDelegation.getShoulderRotation();
+			float oldYaw = yaw - offset;
+			
+			double length = MathHelper.cos((-90.0F - offset) * radiant) * distance;
+			double addX = MathHelper.cos(oldYaw * radiant) * length;
+			double addZ = MathHelper.sin(oldYaw * radiant) * length;
+			
+			for(int i = 0; i < 8; i++)
+			{
+				float offsetX = (float)((i & 1) * 2 - 1);
+				float offsetY = (float)((i >> 1 & 1) * 2 - 1);
+				float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
+				
+				offsetX = offsetX * 0.1F;
+				offsetY = offsetY * 0.1F;
+				offsetZ = offsetZ * 0.1F;
+				
+				RayTraceResult raytraceresult = getRayTraceResult(Minecraft.getMinecraft().world, new Vec3d(posX + offsetX, posY + offsetY, posZ + offsetZ), new Vec3d(posX - (cameraXoffset + addX) + offsetX + offsetZ, posY - cameraYoffset + offsetY, posZ - (cameraZoffset + addZ) + offsetZ));					
+				
+				if(raytraceresult != null)
+				{
+					double newDistance = raytraceresult.hitVec.distanceTo(new Vec3d(posX, posY, posZ));
+					
+					if(newDistance < result)
+					{
+						result = newDistance;
+					}
+				}
+			}
+			
+			return result;
+		}
+		
+		return distance;
 	}
 }

@@ -95,15 +95,6 @@ public class ShoulderEventHandler
 	private static float lastY = 0.0F;
 	
 	@SubscribeEvent
-	public void postRenderCrosshairs(RenderGameOverlayEvent.Post event)
-	{
-		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
-		{
-			return;
-		}
-	}
-	
-	@SubscribeEvent
 	public void preRenderPlayer(RenderPlayerEvent.Pre event)
 	{
 		if(ShoulderRenderBin.skipPlayerRender && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getMinecraft().inGameHasFocus))
@@ -176,8 +167,8 @@ public class ShoulderEventHandler
 					
 					this.renderCrosshair(gui, resolution);
 					
-					this.lastX = this.lastX + diffX;
-					this.lastY = this.lastY + diffY;
+					this.lastX += diffX;
+					this.lastY += diffY;
 					
 					GlStateManager.popMatrix();
 				}

@@ -78,7 +78,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -188,7 +188,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -298,7 +298,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -408,7 +408,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -518,7 +518,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -628,7 +628,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -738,7 +738,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",
@@ -848,7 +848,7 @@
 					{
 						"name": "InjectionDelegation#getRayTraceResult",
 						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
+						"obf": "getRayTraceResult"
 					},
 					{
 						"name": "WorldClient#rayTraceBlocks",

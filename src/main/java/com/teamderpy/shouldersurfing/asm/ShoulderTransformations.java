@@ -8,6 +8,7 @@ import static org.objectweb.asm.Opcodes.DSTORE;
 import static org.objectweb.asm.Opcodes.F2D;
 import static org.objectweb.asm.Opcodes.FADD;
 import static org.objectweb.asm.Opcodes.FLOAD;
+import static org.objectweb.asm.Opcodes.FNEG;
 import static org.objectweb.asm.Opcodes.FSTORE;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.ICONST_2;
@@ -45,8 +46,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderTransformations implements IClassTransformer
 {
-	public static final int CODE_MODIFICATIONS = 5;
-	public static int modifications = 0;
+	public static final int TOTAL_MODIFICATIONS = 6;
+	public static int MODIFICATIONS = 0;
 	private final ShoulderMappings mappings = new ShoulderMappings();
 	
 	@Override
@@ -118,7 +119,7 @@ public class ShoulderTransformations implements IClassTransformer
 			
 			if(offset == -1)
 			{
-				ShoulderSurfing.LOGGER.error("Failed to locate first of three offsets in " + method.name + method.desc + "! Is base file changed?");
+				ShoulderSurfing.LOGGER.error("Failed to locate first of four offsets in " + method.name + method.desc + "! Is base file changed?");
 				return false;
 			}
 			else
@@ -148,7 +149,7 @@ public class ShoulderTransformations implements IClassTransformer
 				method.instructions.insertBefore(method.instructions.get(offset + 1), hackCode);
 				
 				ShoulderSurfing.LOGGER.info("Injected code for camera orientation!");
-				this.modifications++;
+				MODIFICATIONS++;
 			}
 			
 			// Locate second injection point, after the reverse ray trace is performed
@@ -161,7 +162,7 @@ public class ShoulderTransformations implements IClassTransformer
 			
 			if(offset == -1)
 			{
-				ShoulderSurfing.LOGGER.error("Failed to locate second of three offsets in " + method.name + method.desc + "! Is base file changed?");
+				ShoulderSurfing.LOGGER.error("Failed to locate second of four offsets in " + method.name + method.desc + "! Is base file changed?");
 				return false;
 			}
 			else
@@ -179,8 +180,8 @@ public class ShoulderTransformations implements IClassTransformer
 				
 				method.instructions.insertBefore(method.instructions.get(offset), hackCode);
 				
-				ShoulderSurfing.LOGGER.info("Injected code for camera distance check!");
-				this.modifications++;
+				ShoulderSurfing.LOGGER.info("Injected code for alternative camera distance check!");
+				MODIFICATIONS++;
 			}
 			
 			// Locate third injection point, when the ray trace is performed
@@ -192,18 +193,62 @@ public class ShoulderTransformations implements IClassTransformer
 			
 			if(offset == -1)
 			{
-				ShoulderSurfing.LOGGER.error("Failed to locate third of three offsets in " + method.name + method.desc + "! Is base file changed?");
+				ShoulderSurfing.LOGGER.error("Failed to locate third of four offsets in " + method.name + method.desc + "! Is base file changed?");
 				return false;
 			}
 			else
 			{
+				ShoulderSurfing.LOGGER.info("Located offset @" + offset);
+				
 				// net/minecraft/client/renderer/EntityRenderer.orientCamera:653
 				// InjectionDelegation.getRayTraceResult(this.mc.world, Vec3d, Vec3d);
 				
 				method.instructions.set(method.instructions.get(offset), new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getRayTraceResult", this.mappings.getDescriptor("InjectionDelegation#getRayTraceResult"), false));
 				
 				ShoulderSurfing.LOGGER.info("Injected code for ray trace!");
-				this.modifications++;
+				MODIFICATIONS++;
+			}
+			
+			// Locate fourth injection point before the distance check is performed
+			
+			searchList = new InsnList();
+			searchList.add(new InsnNode(FNEG));
+			searchList.add(new InsnNode(F2D));
+			searchList.add(new VarInsnNode(DLOAD, 10));
+			searchList.add(new InsnNode(DMUL));
+			searchList.add(new VarInsnNode(DSTORE, 18));
+			
+			offset = ShoulderASMHelper.locateOffset(method.instructions, searchList);
+			
+			if(offset == 1)
+			{
+				ShoulderSurfing.LOGGER.error("Failed to locate fourth of four offsets in " + method.name + method.desc + "! Is base file changed?");
+				return false;
+			}
+			else
+			{
+				ShoulderSurfing.LOGGER.info("Located offset @" + offset);
+				
+				InsnList hackCode = new InsnList();
+				
+				// net/minecraft/client/renderer/EntityRenderer.orientCamera:644
+				//d3 = InjectionDelegation.checkDistance(d3, f1, d0, d1, d2, d4, d5, d6);
+				
+				hackCode.add(new VarInsnNode(DLOAD, 10));
+				hackCode.add(new VarInsnNode(FLOAD, 12));
+				hackCode.add(new VarInsnNode(DLOAD, 4));
+				hackCode.add(new VarInsnNode(DLOAD, 6));
+				hackCode.add(new VarInsnNode(DLOAD, 8));
+				hackCode.add(new VarInsnNode(DLOAD, 14));
+				hackCode.add(new VarInsnNode(DLOAD, 18));
+				hackCode.add(new VarInsnNode(DLOAD, 16));
+				hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "checkDistance", "(DFDDDDDD)D", false));
+				hackCode.add(new VarInsnNode(DSTORE, 10));
+				
+				method.instructions.insert(method.instructions.get(offset + 1), hackCode);
+				
+				ShoulderSurfing.LOGGER.info("Injected code for camera distance check!");
+				MODIFICATIONS++;
 			}
 		}
 		else if(this.methodMatches(method, "EntityRenderer#renderWorldPass"))
@@ -251,10 +296,10 @@ public class ShoulderTransformations implements IClassTransformer
 				hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calculateRayTraceProjection", "()V", false));
 				hackCode.add(new LabelNode(new Label()));
 				
-				method.instructions.insertBefore(method.instructions.get(offset + 1), hackCode);
+				method.instructions.insert(method.instructions.get(offset + 1), hackCode);
 				
 				ShoulderSurfing.LOGGER.info("Injected code for raytrace projection!");
-				this.modifications++;
+				MODIFICATIONS++;
 			}
 		}
 		
@@ -286,7 +331,7 @@ public class ShoulderTransformations implements IClassTransformer
 				method.instructions.set(method.instructions.get(offset), new InsnNode(ICONST_3));
 				
 				ShoulderSurfing.LOGGER.info("Injected code new third person mode!");
-				this.modifications++;
+				MODIFICATIONS++;
 			}
 		}
 		
