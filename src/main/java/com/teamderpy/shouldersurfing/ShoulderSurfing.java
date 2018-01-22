@@ -43,7 +43,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.9";
+	public static final String VERSION = "1.10";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
