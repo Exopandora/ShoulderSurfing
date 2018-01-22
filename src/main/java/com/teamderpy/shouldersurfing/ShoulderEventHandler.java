@@ -197,7 +197,7 @@ public class ShoulderEventHandler
 		GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
 //		GL11.glEnable(GL11.GL_ALPHA);
 		
-		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != 3)
+		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != ShoulderSettings.getShoulderSurfing3ppId())
 		{
 			gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
 		}
