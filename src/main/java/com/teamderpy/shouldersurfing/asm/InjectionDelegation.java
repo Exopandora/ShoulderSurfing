@@ -28,7 +28,7 @@ public final class InjectionDelegation
 	 */
 	public static float getShoulderRotation()
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 		{
 			return ShoulderCamera.SHOULDER_ROTATION;
 		}
@@ -41,7 +41,7 @@ public final class InjectionDelegation
 	 */
 	public static float getShoulderZoomMod()
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 		{
 			return ShoulderCamera.SHOULDER_ZOOM_MOD;
 		}
@@ -87,9 +87,25 @@ public final class InjectionDelegation
 		return world.rayTraceBlocks(vec1, vec2);
 	}
 	
+	/**
+	 * Called by injected code to get the maximum value for third person
+	 */
+	public static int getMax3ppId()
+	{
+		if(ShoulderSettings.REPLACE_DEFAULT_3PP)
+		{
+			return 2;
+		}
+		
+		return 3;
+	}
+	
+	/**
+	 * Called by injected code to get the maximum possible distance for the camera
+	 */
 	public static double checkDistance(double distance, float yaw, double posX, double posY, double posZ, double cameraXoffset, double cameraYoffset, double cameraZoffset)
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 		{
 			double result = distance;
 			float radiant = (float) (Math.PI / 180F);

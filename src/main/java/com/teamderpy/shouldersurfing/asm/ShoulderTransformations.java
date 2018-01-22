@@ -327,8 +327,8 @@ public class ShoulderTransformations implements IClassTransformer
 			}
 			else
 			{
-				//Set comparison value to 3
-				method.instructions.set(method.instructions.get(offset), new InsnNode(ICONST_3));
+				//Set comparison value to InjectionDelegation.getMax3ppId()
+				method.instructions.set(method.instructions.get(offset), new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getMax3ppId", "()I", false));
 				
 				ShoulderSurfing.LOGGER.info("Injected code new third person mode!");
 				MODIFICATIONS++;

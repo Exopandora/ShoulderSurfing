@@ -45,7 +45,7 @@ public class ShoulderEventHandler
 	{
 		if(Minecraft.getMinecraft() != null && Minecraft.getMinecraft().currentScreen == null)
 		{
-			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 			{
 				if(ShoulderSettings.KEYBIND_ROTATE_CAMERA_LEFT.isKeyDown())
 				{
@@ -72,9 +72,9 @@ public class ShoulderEventHandler
 					return;
 				}
 				
-				ShoulderSurfing.config.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION, "Third person camera rotation").set(ShoulderCamera.SHOULDER_ROTATION);
-				ShoulderSurfing.config.get(Configuration.CATEGORY_GENERAL, "Zoom Offset", ShoulderCamera.SHOULDER_ZOOM_MOD, "Third person camera zoom").set(ShoulderCamera.SHOULDER_ZOOM_MOD);
-				ShoulderSurfing.config.save();
+				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION, "Third person camera rotation").set(ShoulderCamera.SHOULDER_ROTATION);
+				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Zoom Offset", ShoulderCamera.SHOULDER_ZOOM_MOD, "Third person camera zoom").set(ShoulderCamera.SHOULDER_ZOOM_MOD);
+				ShoulderSurfing.CONFIG.save();
 			}
 		}
 	}
@@ -84,7 +84,23 @@ public class ShoulderEventHandler
 	{
 		if(event.getModID().equals(ShoulderSurfing.MODID))
 		{
+			boolean prev = ShoulderSettings.REPLACE_DEFAULT_3PP;
+			
 			ShoulderSurfing.syncConfig();
+			
+			boolean ppChanged = ShoulderSettings.REPLACE_DEFAULT_3PP != prev;
+			
+			if(ShoulderSettings.REPLACE_DEFAULT_3PP != prev)
+			{
+				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3 && ShoulderSettings.REPLACE_DEFAULT_3PP)
+				{
+					Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
+				}
+				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 1 && !ShoulderSettings.REPLACE_DEFAULT_3PP)
+				{
+					Minecraft.getMinecraft().gameSettings.thirdPersonView = 3;
+				}
+			}
 		}
 	}
 	
@@ -133,7 +149,7 @@ public class ShoulderEventHandler
 			}
 			else
 			{
-				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == 3))
+				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId()))
 				{
 					/** Default Crosshair **/
 					
@@ -142,7 +158,7 @@ public class ShoulderEventHandler
 					
 					this.renderCrosshair(gui, resolution);
 				}
-				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 				{
 					/** Dynamic Crosshair **/
 					
@@ -195,7 +211,7 @@ public class ShoulderEventHandler
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.enableAlpha();
 		
-		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != 3)
+		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != ShoulderSettings.getShoulderSurfing3ppId())
 		{
 			gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
 		}
