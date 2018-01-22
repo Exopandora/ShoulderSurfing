@@ -29,7 +29,7 @@ public final class RayTracer
 		{
 			if(Minecraft.getMinecraft().theWorld != null)
 			{
-				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 3)
+				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 				{
 					double playerReach = 1D;
 					

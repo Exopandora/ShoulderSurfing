@@ -62,5 +62,17 @@ public class ShoulderSettings
 	 */
 	public static boolean IGNORE_BLOCKS_WITHOUT_COLLISION = true;
 	
+	public static boolean REPLACE_DEFAULT_3PP = false;
+	
 	public static String DEFAULT_PERSPECTIVE = "shoulder surfing";
+	
+	public static int getShoulderSurfing3ppId()
+	{
+		if(REPLACE_DEFAULT_3PP)
+		{
+			return 1;
+		}
+		
+		return 3;
+	}
 }
