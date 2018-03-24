@@ -10,59 +10,52 @@ import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions.JsonMappings.JsonClassMapping;
-import com.teamderpy.shouldersurfing.json.JsonShoulderSurfing.JsonVersions.JsonMappings.JsonFieldMapping;
+import com.teamderpy.shouldersurfing.asm.Mappings.JsonMapping.JsonVersions;
+import com.teamderpy.shouldersurfing.asm.Mappings.JsonMapping.JsonVersions.JsonMappings.JsonClassMapping;
+import com.teamderpy.shouldersurfing.asm.Mappings.JsonMapping.JsonVersions.JsonMappings.JsonFieldMapping;
 
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ShoulderMappings
+public class Mappings
 {
 	private final Map<String, JsonClassMapping> CLASS_MAPPINGS = new HashMap<String, JsonClassMapping>();
 	private final Map<String, JsonFieldMapping> FIELD_MAPPINGS = new HashMap<String, JsonFieldMapping>();
 	private boolean isObfuscated;
 	
-	public ShoulderMappings()
+	public Mappings(String... files)
 	{
-		this.init();
+		this.init(files);
 	}
 	
-	public void init()
+	private void init(String... files)
 	{
-		try
+		for(String file : files)
 		{
-			String version = ForgeVersion.class.getDeclaredField("mcVersion").get(ForgeVersion.class).toString();
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream("assets/shouldersurfing/mappings/mappings.json");
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream(file);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			JsonShoulderSurfing json = new Gson().fromJson(reader, JsonShoulderSurfing.class);
+			JsonMapping json = new Gson().fromJson(reader, JsonMapping.class);
 			
 			if(json != null)
 			{
 				for(JsonVersions versions : json.getVersions())
 				{
-					if(versions.getVersion().equals(version))
+					if(versions.getVersion().equals(ForgeVersion.mcVersion))
 					{
-						// System.out.println("Found version " + versions.getVersion());
-						
 						for(JsonClassMapping klass : versions.getMappings().getClasses())
 						{
-							// System.out.println("Found class " + clazz.getName());
 							CLASS_MAPPINGS.put(klass.getName(), klass);
 						}
 						
 						for(JsonFieldMapping method : versions.getMappings().getMethods())
 						{
-							// System.out.println("Found method " + method.getName());
 							FIELD_MAPPINGS.put(method.getName(), method);
 						}
 						
 						for(JsonFieldMapping field : versions.getMappings().getFields())
 						{
-							// System.out.println("Found field " + field.getName());
 							FIELD_MAPPINGS.put(field.getName(), field);
 						}
 						
@@ -77,17 +70,13 @@ public class ShoulderMappings
 				ShoulderSurfing.LOGGER.error("No mappings found for Minecraft " + ForgeVersion.mcVersion);
 			}
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	public void setObfuscated(boolean isObfuscated)
 	{
 		this.isObfuscated = isObfuscated;
 	}
-
+	
 	@Nullable
 	public String getClassPackage(String klass)
 	{
@@ -109,7 +98,7 @@ public class ShoulderMappings
 		
 		return null;
 	}
-
+	
 	@Nullable
 	public String getFieldOrMethod(String fieldOrMethod)
 	{
@@ -120,7 +109,7 @@ public class ShoulderMappings
 		
 		return null;
 	}
-
+	
 	@Nullable
 	public String getPackage(String klass)
 	{
@@ -142,7 +131,7 @@ public class ShoulderMappings
 		
 		return null;
 	}
-
+	
 	@Nullable
 	public String getName(String field)
 	{
@@ -158,7 +147,7 @@ public class ShoulderMappings
 		
 		return null;
 	}
-
+	
 	@Nullable
 	public String getObf(String field)
 	{
@@ -174,7 +163,7 @@ public class ShoulderMappings
 		
 		return null;
 	}
-
+	
 	@Nullable
 	public String getDescriptor(String field)
 	{
@@ -184,5 +173,124 @@ public class ShoulderMappings
 		}
 		
 		return null;
+	}
+	
+	public static class JsonMapping
+	{
+		private JsonVersions[] versions;
+		
+		public static class JsonVersions
+		{
+			private String version;
+			private JsonMappings mappings;
+			
+			public static class JsonMappings
+			{
+				private JsonClassMapping[] classes;
+				private JsonFieldMapping[] methods;
+				private JsonFieldMapping[] fields;
+				
+				public static abstract class JsonMappingBase
+				{
+					protected String name;
+					protected String obf;
+					
+					public String getName()
+					{
+						return this.name;
+					}
+					
+					public String getObf()
+					{
+						return this.obf;
+					}
+				}
+				
+				public static class JsonClassMapping extends JsonMappingBase
+				{
+					private String path;
+					
+					public String getPath()
+					{
+						return this.path + "/" + this.name;
+					}
+					
+					public String getPackage()
+					{
+						return this.path.replaceAll("/", ".") + "." + this.name;
+					}
+					
+					public String getClassPackage(boolean isObfuscated)
+					{
+						return isObfuscated ? this.obf : this.getPackage();
+					}
+					
+					public String getClassPath(boolean isObfuscated)
+					{
+						return isObfuscated ? this.obf : this.getPath();
+					}
+				}
+				
+				public static class JsonFieldMapping extends JsonMappingBase
+				{
+					private String desc;
+					
+					public String getDescriptor(Map<String, JsonClassMapping> mappings, boolean isObfuscated)
+					{
+						String result = this.desc;
+						
+						if(result != null)
+						{
+							for(JsonClassMapping mapping : mappings.values())
+							{
+								result = result.replaceAll("L\\$" + mapping.name + ";", "L" + mapping.getClassPath(isObfuscated) + ";");
+							}
+						}
+						
+						return result;
+					}
+					
+					public String getFieldOrMethod(boolean isObfuscated)
+					{
+						return isObfuscated ? this.obf : this.name.split("#")[1];
+					}
+				}
+
+				public JsonClassMapping[] getClasses()
+				{
+					return this.classes;
+				}
+
+				public JsonFieldMapping[] getMethods()
+				{
+					return this.methods;
+				}
+
+				public JsonFieldMapping[] getFields()
+				{
+					return this.fields;
+				}
+			}
+			
+			public String getVersion()
+			{
+				return this.version;
+			}
+			
+			public JsonMappings getMappings()
+			{
+				return this.mappings;
+			}
+		}
+		
+		public void setVersions(JsonVersions[] versions)
+		{
+			this.versions = versions;
+		}
+		
+		public JsonVersions[] getVersions()
+		{
+			return this.versions;
+		}
 	}
 }

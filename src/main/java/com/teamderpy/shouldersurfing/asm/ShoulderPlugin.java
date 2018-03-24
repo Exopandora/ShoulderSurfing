@@ -33,7 +33,10 @@ public class ShoulderPlugin implements IFMLLoadingPlugin
 	}
 	
 	@Override
-	public void injectData(Map<String, Object> data){}
+	public void injectData(Map<String, Object> data)
+	{
+		
+	}
 	
 	@Override
 	public String getAccessTransformerClass()

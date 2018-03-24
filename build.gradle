@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.12.2-1.10"
+version = "1.12.2-1.11"
 group = "com.teamderpy.shouldersurfing.ShoulderSurfing" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ShoulderSurfing"
 
@@ -25,6 +25,17 @@ jar {
         attributes 'FMLCorePlugin': 'com.teamderpy.shouldersurfing.asm.ShoulderPlugin', 'FMLCorePluginContainsFMLMod': 'false'
     }
 }
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+    keyStore = project.keyStore
+    alias = project.keyStoreAlias
+    storePass = project.keyStorePass
+    keyPass = project.keyStoreKeyPass
+	inputFile = jar.archivePath
+	outputFile = jar.archivePath
+}
+
+build.dependsOn signJar
 
 minecraft {
     version = "1.12.2-14.23.1.2583"

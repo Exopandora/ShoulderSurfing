@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import shadersmod.client.Shaders;
 
 @SideOnly(Side.CLIENT)
 public class ShoulderEventHandler
@@ -86,7 +87,7 @@ public class ShoulderEventHandler
 		{
 			boolean prev = ShoulderSettings.REPLACE_DEFAULT_3PP;
 			
-			ShoulderSurfing.syncConfig();
+			ShoulderSurfing.INSTACE.syncConfig();
 			
 			boolean ppChanged = ShoulderSettings.REPLACE_DEFAULT_3PP != prev;
 			
@@ -134,7 +135,12 @@ public class ShoulderEventHandler
 			
 			int width = resolution.getScaledWidth();
 			int height = resolution.getScaledHeight();
-			int scale = resolution.getScaleFactor();
+			float scale = resolution.getScaleFactor();
+			
+			if(ShoulderSurfing.INSTACE.areShadersEnabled())
+			{
+				scale *= Shaders.configRenderResMul;
+			}
 			
 			if(Minecraft.getMinecraft().gameSettings.showDebugInfo && !Minecraft.getMinecraft().gameSettings.hideGUI && !Minecraft.getMinecraft().player.hasReducedDebug() && !Minecraft.getMinecraft().gameSettings.reducedDebugInfo)
 			{

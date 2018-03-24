@@ -12,6 +12,26 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
+ * <b>Implemented bytecode instructions: </b>
+ * INSN,
+ * INT_INSN,
+ * VAR_INSN,
+ * FIELD_INSN,
+ * METHOD_INSN,
+ * LABEL,
+ * FRAME,
+ * LINE
+ * <br />
+ * <b>Unimplemented bytecode instructions: </b>
+ * TYPE_INSN,
+ * INVOKE_DYNAMIC_INSN,
+ * JUMP_INSN,
+ * LDC_INSN,
+ * IINC_INSN,
+ * TABLESWITCH_INSN,
+ * LOOKUPSWITCH_INSN,
+ * MULTIANEWARRAY_INSN
+ * 
  * @author Joshua Powers <jsh.powers@yahoo.com>
  * @version 1.0
  * @since 2012-12-30
@@ -24,7 +44,7 @@ public class ShoulderASMHelper
 	 * Ignores label nodes and line number nodes by default.
 	 * 
 	 * This performs a linear search.
-	 *
+	 * @deprecated
 	 * @param instructions
 	 *            {@link InsnList} containing Java byte instructions to go
 	 *            through
@@ -33,6 +53,7 @@ public class ShoulderASMHelper
 	 * @return Returns an integer with the byte offset after the matched code,
 	 *         or -1 if no match is found.
 	 */
+	@Deprecated
 	public static int locateOffset(InsnList instructions, InsnList search)
 	{
 		return locateOffset(instructions, search, true, true);
@@ -94,64 +115,56 @@ public class ShoulderASMHelper
 				break;
 			}
 			
-			if(ignoreLabel && instructions.get(i).getType() == AbstractInsnNode.LABEL)
+			AbstractInsnNode instruction = instructions.get(i);
+			
+			if(ignoreLabel && instruction.getType() == AbstractInsnNode.LABEL)
 			{
 				continue;
 			}
 			
-			if(ignoreLineNumber && instructions.get(i).getType() == AbstractInsnNode.LINE)
+			if(ignoreLineNumber && instruction.getType() == AbstractInsnNode.LINE)
 			{
 				continue;
 			}
 			
 			boolean match = false;
-			if(instructions.get(i).getType() == search.get(searchNdx).getType())
+			
+			AbstractInsnNode searchNode = search.get(searchNdx);
+			
+			if(instruction.getType() == searchNode.getType())
 			{
-				if(instructions.get(i).getType() == AbstractInsnNode.FIELD_INSN)
+				if(instruction.getType() == AbstractInsnNode.FIELD_INSN)
 				{
-					if(((FieldInsnNode) instructions.get(i)).desc.equals(((FieldInsnNode) search.get(searchNdx)).desc) && ((FieldInsnNode) instructions.get(i)).name.equals(((FieldInsnNode) search.get(searchNdx)).name) && ((FieldInsnNode) instructions.get(i)).owner.equals(((FieldInsnNode) search.get(searchNdx)).owner))
+					if(((FieldInsnNode) instruction).desc.equals(((FieldInsnNode) searchNode).desc) && ((FieldInsnNode) instruction).name.equals(((FieldInsnNode) searchNode).name) && ((FieldInsnNode) instruction).owner.equals(((FieldInsnNode) searchNode).owner))
 					{
-						// System.err.println("field hit");
 						match = true;
 					}
 				}
-				else if(instructions.get(i).getType() == AbstractInsnNode.VAR_INSN)
+				else if(instruction.getType() == AbstractInsnNode.VAR_INSN)
 				{
-					if(((VarInsnNode) instructions.get(i)).var == ((VarInsnNode) search.get(searchNdx)).var && instructions.get(i).getOpcode() == search.get(searchNdx).getOpcode())
+					if(((VarInsnNode) instruction).var == ((VarInsnNode) searchNode).var && instruction.getOpcode() == searchNode.getOpcode())
 					{
-						// System.err.println("var hit");
 						match = true;
 					}
 				}
-				else if(instructions.get(i).getType() == AbstractInsnNode.INSN)
+				else if(instruction.getType() == AbstractInsnNode.INSN)
 				{
-					if(((InsnNode) instructions.get(i)).getOpcode() == ((InsnNode) search.get(searchNdx)).getOpcode())
+					if(((InsnNode) instruction).getOpcode() == ((InsnNode) searchNode).getOpcode())
 					{
-						// System.err.println("insn hit");
 						match = true;
 					}
 				}
-				else if(instructions.get(i).getType() == AbstractInsnNode.METHOD_INSN)
+				else if(instruction.getType() == AbstractInsnNode.METHOD_INSN)
 				{
-					// System.err.println(((MethodInsnNode)
-					// instructions.get(i)).name + " " + ((MethodInsnNode)
-					// instructions.get(i)).owner + " " + ((MethodInsnNode)
-					// instructions.get(i)).desc);
-					// System.err.println(((MethodInsnNode)
-					// search.get(searchNdx)).name + " " + ((MethodInsnNode)
-					// search.get(searchNdx)).owner + " " + ((MethodInsnNode)
-					// search.get(searchNdx)).desc);
-					if(((MethodInsnNode) instructions.get(i)).desc.equals(((MethodInsnNode) search.get(searchNdx)).desc) && ((MethodInsnNode) instructions.get(i)).name.equals(((MethodInsnNode) search.get(searchNdx)).name) && ((MethodInsnNode) instructions.get(i)).owner.equals(((MethodInsnNode) search.get(searchNdx)).owner))
+					if(((MethodInsnNode) instruction).desc.equals(((MethodInsnNode) searchNode).desc) && ((MethodInsnNode) instruction).name.equals(((MethodInsnNode) searchNode).name) && ((MethodInsnNode) instruction).owner.equals(((MethodInsnNode) searchNode).owner))
 					{
-						// System.err.println("method hit");
 						match = true;
 					}
 				}
-				else if(instructions.get(i).getType() == AbstractInsnNode.INT_INSN)
+				else if(instruction.getType() == AbstractInsnNode.INT_INSN)
 				{
-					if(((IntInsnNode) instructions.get(i)).operand == ((IntInsnNode) search.get(searchNdx)).operand && instructions.get(i).getOpcode() == search.get(searchNdx).getOpcode())
+					if(((IntInsnNode) instruction).operand == ((IntInsnNode) searchNode).operand && instruction.getOpcode() == searchNode.getOpcode())
 					{
-						// System.err.println("int insn hit");
 						match = true;
 					}
 				}
@@ -161,6 +174,7 @@ public class ShoulderASMHelper
 					if(searchNdx < search.size() - 1)
 					{
 						int offset = locateOffset(instructions, search, searchNdx + 1, i + 1, 1, ignoreLabel, ignoreLineNumber);
+						
 						if(offset != -1)
 						{
 							return offset;
@@ -175,7 +189,6 @@ public class ShoulderASMHelper
 			
 			if(!match)
 			{
-				// System.err.println("miss");
 				attempts++;
 			}
 		}

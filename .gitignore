@@ -4,6 +4,7 @@
 # Except
 
 !/src/
+!/run/mods/ShoulderSurfingDummy.jar
 !build.gradle
 !README.md
 

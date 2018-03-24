@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
@@ -29,12 +30,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 @MCVersion(ShoulderSurfing.MC_VERSION)
-@Mod(modid = ShoulderSurfing.MODID, name = ShoulderSurfing.NAME, acceptedMinecraftVersions = "[" + ShoulderSurfing.MC_VERSION + ",)", version = ShoulderSurfing.VERSION, canBeDeactivated = false, guiFactory = "com.teamderpy.shouldersurfing.gui.GuiShoulderSurfingConfigFactory")
+@Mod(modid = ShoulderSurfing.MODID, name = ShoulderSurfing.NAME, acceptedMinecraftVersions = "[" + ShoulderSurfing.MC_VERSION + ",)", version = ShoulderSurfing.VERSION, canBeDeactivated = false, guiFactory = "com.teamderpy.shouldersurfing.gui.GuiShoulderSurfingConfigFactory", certificateFingerprint = ShoulderSurfing.CERTIFICATE)
 public class ShoulderSurfing
 {
-	@Instance(MODID)
-	public ShoulderSurfing INSTACE;
-	
 	@SidedProxy(clientSide = "com.teamderpy.shouldersurfing.proxy.ClientProxy", serverSide = "com.teamderpy.shouldersurfing.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
@@ -43,9 +41,15 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.10";
+	public static final String VERSION = "1.11";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
+	public static final String CERTIFICATE = "d6261bb645f41db84c74f98e512c2bb43f188af2";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
+	
+	@Instance(MODID)
+	public static ShoulderSurfing INSTACE;
+	
+	private boolean shadersEnabled = false;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -53,7 +57,7 @@ public class ShoulderSurfing
 		CONFIG = new Configuration(event.getSuggestedConfigurationFile());
 		CONFIG.load();
 		
-		syncConfig();
+		this.syncConfig();
 		
 		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ROTATE_CAMERA_LEFT);
 		ClientRegistry.registerKeyBinding(ShoulderSettings.KEYBIND_ROTATE_CAMERA_RIGHT);
@@ -99,7 +103,21 @@ public class ShoulderSurfing
 		}
 	}
 	
-	public static void syncConfig()
+	@EventHandler
+	public void loadComplete(FMLLoadCompleteEvent event)
+	{
+		try
+		{
+			Class.forName("shadersmod.client.Shaders");
+			this.shadersEnabled = true;
+		}
+		catch(Exception e)
+		{
+			this.shadersEnabled = false;
+		}
+	}
+	
+	public void syncConfig()
 	{
 		ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED = CONFIG.get(Configuration.CATEGORY_GENERAL, "Dynamic Crosshair", ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED, "If enabled, then the crosshair moves around to line up with the block you are facing.").getBoolean(ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED);
 		ShoulderCamera.SHOULDER_ROTATION = (float) CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION, "Third person camera rotation").getDouble((double) ShoulderCamera.SHOULDER_ROTATION);
@@ -123,5 +141,10 @@ public class ShoulderSurfing
 		{
 			ShoulderSurfing.CONFIG.save();
 		}
+	}
+	
+	public boolean areShadersEnabled()
+	{
+		return this.shadersEnabled;
 	}
 }
