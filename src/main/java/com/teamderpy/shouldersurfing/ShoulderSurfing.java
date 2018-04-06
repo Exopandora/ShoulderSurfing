@@ -41,7 +41,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.11";
+	public static final String VERSION = "1.12";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	public static final String CERTIFICATE = "d6261bb645f41db84c74f98e512c2bb43f188af2";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
@@ -120,7 +120,7 @@ public class ShoulderSurfing
 	public void syncConfig()
 	{
 		ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED = CONFIG.get(Configuration.CATEGORY_GENERAL, "Dynamic Crosshair", ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED, "If enabled, then the crosshair moves around to line up with the block you are facing.").getBoolean(ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED);
-		ShoulderCamera.SHOULDER_ROTATION = (float) CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION, "Third person camera rotation").getDouble((double) ShoulderCamera.SHOULDER_ROTATION);
+		ShoulderCamera.SHOULDER_ROTATION_YAW = (float) CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION_YAW, "Third person camera rotation").getDouble((double) ShoulderCamera.SHOULDER_ROTATION_YAW);
 		ShoulderCamera.SHOULDER_ZOOM_MOD = (float) CONFIG.get(Configuration.CATEGORY_GENERAL, "Zoom Offset", ShoulderCamera.SHOULDER_ZOOM_MOD, "Third person camera zoom").getDouble((double) ShoulderCamera.SHOULDER_ZOOM_MOD);
 		ShoulderSettings.IS_ROTATION_UNLIMITED = CONFIG.get(Configuration.CATEGORY_GENERAL, "Unlimited Rotation", ShoulderSettings.IS_ROTATION_UNLIMITED, "Whether or not rotation adjustment has limits").getBoolean(ShoulderSettings.IS_ROTATION_UNLIMITED);
 		ShoulderSettings.ROTATION_MAXIMUM = (float) CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Maximum", ShoulderSettings.ROTATION_MAXIMUM, "If rotation is limited this is the maximum amount").getDouble((double) ShoulderSettings.ROTATION_MAXIMUM);

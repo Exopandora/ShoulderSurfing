@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer;
+package com.teamderpy.shouldersurfing.asm.transformer.method;
 
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.POP;
@@ -11,8 +11,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
+import com.teamderpy.shouldersurfing.asm.transformer.IMethodTransformer;
 
-public class TransformerRayTraceProjection implements ITransformer
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class TransformerRayTraceProjection implements IMethodTransformer
 {
 	@Override
 	public String getClassName()

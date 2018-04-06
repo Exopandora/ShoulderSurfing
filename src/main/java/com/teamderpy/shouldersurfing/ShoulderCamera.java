@@ -9,7 +9,12 @@ public final class ShoulderCamera
 	/**
 	 * The number of degrees to rotate the camera
 	 */
-	public static float SHOULDER_ROTATION;
+	public static float SHOULDER_ROTATION_YAW;
+	
+	/**
+	 * The number of degrees to rotate the camera
+	 */
+	public static float SHOULDER_ROTATION_PITCH;
 	
 	/**
 	 * How much the camera view distance should change
@@ -18,17 +23,17 @@ public final class ShoulderCamera
 	
 	public static void adjustCameraLeft()
 	{
-		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ROTATION < ShoulderSettings.ROTATION_MAXIMUM)
+		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ROTATION_YAW < ShoulderSettings.ROTATION_MAXIMUM)
 		{
-			SHOULDER_ROTATION += 0.5F;
+			SHOULDER_ROTATION_YAW += 0.5F;
 		}
 	}
 	
 	public static void adjustCameraRight()
 	{
-		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ROTATION > ShoulderSettings.ROTATION_MINIMUM)
+		if(ShoulderSettings.IS_ROTATION_UNLIMITED || SHOULDER_ROTATION_YAW > ShoulderSettings.ROTATION_MINIMUM)
 		{
-			SHOULDER_ROTATION -= 0.5F;
+			SHOULDER_ROTATION_YAW -= 0.5F;
 		}
 	}
 	
@@ -50,6 +55,6 @@ public final class ShoulderCamera
 	
 	public static void swapShoulder()
 	{
-		SHOULDER_ROTATION = -SHOULDER_ROTATION;
+		SHOULDER_ROTATION_YAW = -SHOULDER_ROTATION_YAW;
 	}
 }

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -73,7 +74,7 @@ public class ShoulderEventHandler
 					return;
 				}
 				
-				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION, "Third person camera rotation").set(ShoulderCamera.SHOULDER_ROTATION);
+				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION_YAW, "Third person camera rotation").set(ShoulderCamera.SHOULDER_ROTATION_YAW);
 				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Zoom Offset", ShoulderCamera.SHOULDER_ZOOM_MOD, "Third person camera zoom").set(ShoulderCamera.SHOULDER_ZOOM_MOD);
 				ShoulderSurfing.CONFIG.save();
 			}
@@ -155,44 +156,47 @@ public class ShoulderEventHandler
 			}
 			else
 			{
-				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId()))
+				if(ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT || Minecraft.getMinecraft().objectMouseOver == null || Minecraft.getMinecraft().objectMouseOver.typeOfHit != Type.MISS)
 				{
-					/** Default Crosshair **/
-					
-					this.lastX = width * scale / 2;
-					this.lastY = height * scale / 2;
-					
-					this.renderCrosshair(gui, resolution);
-				}
-				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-				{
-					/** Dynamic Crosshair **/
-					
-					GlStateManager.pushMatrix();
-					
-					float diffX = (width * scale / 2 - this.lastX) * tick;
-					float diffY = (height * scale / 2 - this.lastY) * tick;
-					
-					if(ShoulderRenderBin.projectedVector != null)
+					if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId()))
 					{
-						diffX = (ShoulderRenderBin.projectedVector.x - this.lastX) * tick;
-						diffY = (ShoulderRenderBin.projectedVector.y - this.lastY) * tick;
+						/** Default Crosshair **/
+						
+						this.lastX = width * scale / 2;
+						this.lastY = height * scale / 2;
+						
+						this.renderCrosshair(gui, resolution);
 					}
-					
-					float crosshairWidth = (this.lastX + diffX) / scale - 7;
-					float crosshairHeight = (this.lastY + diffY) / scale - 7;
-					
-					GlStateManager.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
-					GlStateManager.translate(crosshairWidth * scale, crosshairHeight * scale, 0.0F);
-					GlStateManager.scale(scale, scale, scale);
-					GlStateManager.translate(-width / 2 + 7, -height / 2 + 7, 0.0F);
-					
-					this.renderCrosshair(gui, resolution);
-					
-					this.lastX += diffX;
-					this.lastY += diffY;
-					
-					GlStateManager.popMatrix();
+					else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
+					{
+						/** Dynamic Crosshair **/
+						
+						GlStateManager.pushMatrix();
+						
+						float diffX = (width * scale / 2 - this.lastX) * tick;
+						float diffY = (height * scale / 2 - this.lastY) * tick;
+						
+						if(ShoulderRenderBin.projectedVector != null)
+						{
+							diffX = (ShoulderRenderBin.projectedVector.x - this.lastX) * tick;
+							diffY = (ShoulderRenderBin.projectedVector.y - this.lastY) * tick;
+						}
+						
+						float crosshairWidth = (this.lastX + diffX) / scale - 7;
+						float crosshairHeight = (this.lastY + diffY) / scale - 7;
+						
+						GlStateManager.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
+						GlStateManager.translate(crosshairWidth * scale, crosshairHeight * scale, 0.0F);
+						GlStateManager.scale(scale, scale, scale);
+						GlStateManager.translate(-width / 2 + 7, -height / 2 + 7, 0.0F);
+						
+						this.renderCrosshair(gui, resolution);
+						
+						this.lastX += diffX;
+						this.lastY += diffY;
+						
+						GlStateManager.popMatrix();
+					}
 				}
 			}
 			
@@ -226,13 +230,13 @@ public class ShoulderEventHandler
 		{
 			float cooledAttackStrength = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
 			boolean flag = false;
-
+			
 			if(Minecraft.getMinecraft().pointedEntity != null && Minecraft.getMinecraft().pointedEntity instanceof EntityLivingBase && cooledAttackStrength >= 1.0F)
 			{
 				flag = Minecraft.getMinecraft().player.getCooldownPeriod() > 5.0F;
 				flag = flag & ((EntityLivingBase)Minecraft.getMinecraft().pointedEntity).isEntityAlive();
 			}
-
+			
 			int y = height / 2 - 7 + 16;
 			int x = width / 2 - 8;
 			

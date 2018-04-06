@@ -79,22 +79,19 @@ public class VectorConverter
 		 */
 		FloatBuffer projection = GLAllocation.createDirectFloatBuffer(16);
 		
-		/**
-		 * the return value of the gluProject call
-		 */
-		boolean ret;
-		
 		screen_coords.clear();
 		modelview.clear();
 		projection.clear();
-		
 		viewport.clear();
 		
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
 		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
 		
-		ret = GLU.gluProject(x, y, z, modelview, projection, viewport, screen_coords);
+		/**
+		 * the return value of the gluProject call
+		 */
+		boolean ret = GLU.gluProject(x, y, z, modelview, projection, viewport, screen_coords);
 		
 		if(ret)
 		{

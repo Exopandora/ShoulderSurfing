@@ -56,6 +56,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bid"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "aed"
 					}
 				],
 				"methods":
@@ -89,6 +94,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aE"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "f"
 					}
 				],
 				"fields":
@@ -166,6 +176,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bib"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "aed"
 					}
 				],
 				"methods":
@@ -199,6 +214,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aE"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "f"
 					}
 				],
 				"fields":
@@ -276,6 +296,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bib"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "aeb"
 					}
 				],
 				"methods":
@@ -309,6 +334,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aE"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "f"
 					}
 				],
 				"fields":
@@ -386,6 +416,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "beu"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "aay"
 					}
 				],
 				"methods":
@@ -419,6 +454,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aA"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "g"
 					}
 				],
 				"fields":
@@ -496,6 +536,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bes"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "aax"
 					}
 				],
 				"methods":
@@ -529,6 +574,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aA"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "g"
 					}
 				],
 				"fields":
@@ -606,6 +656,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bcz"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "zs"
 					}
 				],
 				"methods":
@@ -639,6 +694,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aA"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "g"
 					}
 				],
 				"fields":
@@ -716,6 +776,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bcf"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "zj"
 					}
 				],
 				"methods":
@@ -749,6 +814,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aA"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "g"
 					}
 				],
 				"fields":
@@ -826,6 +896,11 @@
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
 						"obf": "bch"
+					},
+					{
+						"name": "EntityPlayer",
+						"path": "net/minecraft/entity/player",
+						"obf": "zj"
 					}
 				],
 				"methods":
@@ -859,6 +934,11 @@
 						"name": "Minecraft#processKeyBinds",
 						"desc": "()V",
 						"obf": "aA"
+					},
+					{
+						"name": "EntityPlayer#getPositionEyes",
+						"desc": "(F)L$Vec3d;",
+						"obf": "g"
 					}
 				],
 				"fields":

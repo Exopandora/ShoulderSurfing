@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer;
+package com.teamderpy.shouldersurfing.asm.transformer.method;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.DLOAD;
@@ -21,13 +21,12 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.transformer.abstr.TransformerOrientCamera;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TransformerCameraOrientation extends TransformerOrientCamera
+public class TransformerCameraOrientation extends ATransformerOrientCamera
 {
 	@Override
 	public InsnList getSearchList(Mappings mappings)
@@ -50,12 +49,20 @@ public class TransformerCameraOrientation extends TransformerOrientCamera
 		InsnList hackCode = new InsnList();
 		
 		// net/minecraft/client/renderer/EntityRenderer.orientCamera:653
-		// f1 += InjectionDelegation.getShoulderRotation();
+		// f1 += InjectionDelegation.getShoulderRotationYaw();
 		
 		hackCode.add(new VarInsnNode(FLOAD, 12));
-		hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderRotation", "()F", false));
+		hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderRotationYaw", "()F", false));
 		hackCode.add(new InsnNode(FADD));
 		hackCode.add(new VarInsnNode(FSTORE, 12));
+
+		// net/minecraft/client/renderer/EntityRenderer.orientCamera:653
+		// f2 += InjectionDelegation.getShoulderRotationPitch();
+		
+		hackCode.add(new VarInsnNode(FLOAD, 13));
+		hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderRotationPitch", "()F", false));
+		hackCode.add(new InsnNode(FADD));
+		hackCode.add(new VarInsnNode(FSTORE, 13));
 		
 		// net/minecraft/client/renderer/EntityRenderer.orientCamera:654
 		// d3 *= InjectionDelegation.getShoulderZoomMod();

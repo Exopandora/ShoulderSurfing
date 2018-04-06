@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer;
+package com.teamderpy.shouldersurfing.asm.transformer.method;
 
 import static org.objectweb.asm.Opcodes.DLOAD;
 import static org.objectweb.asm.Opcodes.DMUL;
@@ -8,6 +8,7 @@ import static org.objectweb.asm.Opcodes.FLOAD;
 import static org.objectweb.asm.Opcodes.FNEG;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
+import org.objectweb.asm.tree.IincInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -15,20 +16,19 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.transformer.abstr.TransformerOrientCamera;
 
-public class TransformerDistanceCheck extends TransformerOrientCamera
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class TransformerDistanceCheck extends ATransformerOrientCamera
 {
 	@Override
 	public InsnList getSearchList(Mappings mappings)
 	{
 		InsnList searchList = new InsnList();
 		
-		searchList.add(new InsnNode(FNEG));
-		searchList.add(new InsnNode(F2D));
-		searchList.add(new VarInsnNode(DLOAD, 10));
-		searchList.add(new InsnNode(DMUL));
-		searchList.add(new VarInsnNode(DSTORE, 18));
+		searchList.add(new IincInsnNode(20, 1));
 		
 		return searchList;
 	}
@@ -55,6 +55,6 @@ public class TransformerDistanceCheck extends TransformerOrientCamera
 	@Override
 	public void transform(MethodNode method, InsnList hackCode, int offset)
 	{
-		method.instructions.insert(method.instructions.get(offset + 1), hackCode);
+		method.instructions.insert(method.instructions.get(offset + 4), hackCode);
 	}
 }

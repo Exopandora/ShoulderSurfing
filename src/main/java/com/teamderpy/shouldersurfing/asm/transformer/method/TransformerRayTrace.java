@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer;
+package com.teamderpy.shouldersurfing.asm.transformer.method;
 
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
@@ -8,9 +8,12 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.transformer.abstr.TransformerOrientCamera;
 
-public class TransformerRayTrace extends TransformerOrientCamera
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class TransformerRayTrace extends ATransformerOrientCamera
 {
 	@Override
 	public InsnList getSearchList(Mappings mappings)

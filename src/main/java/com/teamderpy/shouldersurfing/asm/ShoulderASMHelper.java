@@ -2,6 +2,7 @@ package com.teamderpy.shouldersurfing.asm;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.IincInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
@@ -20,14 +21,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * METHOD_INSN,
  * LABEL,
  * FRAME,
- * LINE
+ * LINE,
+ * IINC_INSN
  * <br />
  * <b>Unimplemented bytecode instructions: </b>
  * TYPE_INSN,
  * INVOKE_DYNAMIC_INSN,
  * JUMP_INSN,
  * LDC_INSN,
- * IINC_INSN,
  * TABLESWITCH_INSN,
  * LOOKUPSWITCH_INSN,
  * MULTIANEWARRAY_INSN
@@ -164,6 +165,13 @@ public class ShoulderASMHelper
 				else if(instruction.getType() == AbstractInsnNode.INT_INSN)
 				{
 					if(((IntInsnNode) instruction).operand == ((IntInsnNode) searchNode).operand && instruction.getOpcode() == searchNode.getOpcode())
+					{
+						match = true;
+					}
+				}
+				else if(instruction.getType() == AbstractInsnNode.IINC_INSN)
+				{
+					if(((IincInsnNode) instruction).var == ((IincInsnNode) searchNode).var && ((IincInsnNode) instruction).incr == ((IincInsnNode) searchNode).incr && instruction.getOpcode() == searchNode.getOpcode())
 					{
 						match = true;
 					}

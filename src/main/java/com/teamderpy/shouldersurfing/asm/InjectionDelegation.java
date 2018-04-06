@@ -6,6 +6,7 @@ import com.teamderpy.shouldersurfing.math.VectorConverter;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -24,13 +25,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class InjectionDelegation
 {
 	/**
-	 * Called by injected code to modify the camera rotation
+	 * Called by injected code to modify the camera rotation yaw
 	 */
-	public static float getShoulderRotation()
+	public static float getShoulderRotationYaw()
 	{
 		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 		{
-			return ShoulderCamera.SHOULDER_ROTATION;
+			return ShoulderCamera.SHOULDER_ROTATION_YAW;
+		}
+		
+		return 0F;
+	}
+	
+	/**
+	 * Called by injected code to modify the camera rotation pitch
+	 */
+	public static float getShoulderRotationPitch()
+	{
+		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
+		{
+			return ShoulderCamera.SHOULDER_ROTATION_PITCH;
 		}
 		
 		return 0F;
@@ -100,6 +114,8 @@ public final class InjectionDelegation
 		return 3;
 	}
 	
+	private static double CAMERA_DISTANCE = 0F;
+	
 	/**
 	 * Called by injected code to get the maximum possible distance for the camera
 	 */
@@ -109,12 +125,12 @@ public final class InjectionDelegation
 		{
 			double result = distance;
 			float radiant = (float) (Math.PI / 180F);
-			float offset = InjectionDelegation.getShoulderRotation();
-			float oldYaw = yaw - offset;
+			float offset = InjectionDelegation.getShoulderRotationYaw();
+			float newYaw = yaw - offset;
 			
 			double length = MathHelper.cos((-90.0F - offset) * radiant) * distance;
-			double addX = MathHelper.cos(oldYaw * radiant) * length;
-			double addZ = MathHelper.sin(oldYaw * radiant) * length;
+			double addX = MathHelper.cos(newYaw * radiant) * length;
+			double addZ = MathHelper.sin(newYaw * radiant) * length;
 			
 			for(int i = 0; i < 8; i++)
 			{
@@ -139,9 +155,25 @@ public final class InjectionDelegation
 				}
 			}
 			
-			return result;
+			return CAMERA_DISTANCE = result;
 		}
 		
-		return distance;
+		return CAMERA_DISTANCE = distance;
+	}
+	
+	public static Vec3d getPositionEyes(Entity entity, Vec3d positionEyes)
+	{
+		if(!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED)
+		{
+			float radiant = (float) (Math.PI / 180F);
+			
+			double length = MathHelper.cos((90F - InjectionDelegation.getShoulderRotationYaw()) * radiant) * CAMERA_DISTANCE;
+			double addX = MathHelper.cos(entity.rotationYaw * radiant) * length;
+			double addZ = MathHelper.sin(entity.rotationYaw * radiant) * length;
+			
+			return positionEyes.add(new Vec3d(addX, 0, addZ));
+		}
+		
+		return positionEyes;
 	}
 }

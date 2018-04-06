@@ -1,9 +1,9 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import java.util.Arrays;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.objectweb.asm.ClassReader;
@@ -11,16 +11,19 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.google.common.collect.Sets;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.asm.transformer.IClassTransformer;
+import com.teamderpy.shouldersurfing.asm.transformer.IMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.transformer.ITransformer;
-import com.teamderpy.shouldersurfing.asm.transformer.TransformerCameraDistanceCheck;
-import com.teamderpy.shouldersurfing.asm.transformer.TransformerCameraOrientation;
-import com.teamderpy.shouldersurfing.asm.transformer.TransformerDistanceCheck;
-import com.teamderpy.shouldersurfing.asm.transformer.TransformerRayTrace;
-import com.teamderpy.shouldersurfing.asm.transformer.TransformerRayTraceProjection;
-import com.teamderpy.shouldersurfing.asm.transformer.TransformerThirdPersonMode;
+import com.teamderpy.shouldersurfing.asm.transformer.clazz.TransformerPositionEyes;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerCameraDistanceCheck;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerCameraOrientation;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerDistanceCheck;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerRayTrace;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerRayTraceProjection;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerThirdPersonMode;
 
-import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,12 +33,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @since 2013-11-17
  */
 @SideOnly(Side.CLIENT)
-public class ShoulderTransformations implements IClassTransformer
+public class ShoulderTransformations implements net.minecraft.launchwrapper.IClassTransformer
 {
 	public static final int TOTAL_MODIFICATIONS = 6;
 	public static int MODIFICATIONS = 0;
 	
-	private final Map<String, Set<ITransformer>> transformers = new HashMap<String, Set<ITransformer>>();
+	private final Map<String, Entry<Set<IMethodTransformer>, Set<IClassTransformer>>> transformers = new HashMap<String, Entry<Set<IMethodTransformer>, Set<IClassTransformer>>>();
 	private final Mappings mappings = new Mappings("assets/shouldersurfing/mappings/mappings.json");
 	
 	public ShoulderTransformations()
@@ -46,6 +49,7 @@ public class ShoulderTransformations implements IClassTransformer
 		this.register(new TransformerRayTrace());
 		this.register(new TransformerRayTraceProjection());
 		this.register(new TransformerThirdPersonMode());
+		this.register(new TransformerPositionEyes());
 	}
 	
 	@Override
@@ -53,49 +57,61 @@ public class ShoulderTransformations implements IClassTransformer
 	{
 		if(this.transformers.containsKey(transformedName))
 		{
-			return this.transformMethods(bytes, name, this.transformers.get(transformedName));
+			Entry<Set<IMethodTransformer>, Set<IClassTransformer>> transformers = this.transformers.get(transformedName);
+			
+			ClassNode classNode = new ClassNode();
+			
+			ClassReader classReader = new ClassReader(bytes);
+			classReader.accept(classNode, 0);
+			
+			if(!transformers.getKey().isEmpty())
+			{
+				for(MethodNode method : classNode.methods)
+				{
+					for(IMethodTransformer transformer : transformers.getKey())
+					{
+						this.updateMappings(name, transformer);
+						
+						if(method.name.equals(this.mappings.getFieldOrMethod(transformer.getMethodName())) && method.desc.equals(this.mappings.getDescriptor(transformer.getMethodName())))
+						{
+							int offset = ShoulderASMHelper.locateOffset(method.instructions, transformer.getSearchList(this.mappings), transformer.ignoreLabels(), transformer.ignoreLineNumber());
+							
+							if(offset == -1)
+							{
+								ShoulderSurfing.LOGGER.error("Failed to locate offset in " + method.name + method.desc + " for " + transformer.getMethodName());
+							}
+							else
+							{
+								transformer.transform(method, transformer.getInjcetionList(this.mappings), offset);
+								MODIFICATIONS++;
+							}
+						}
+					}
+				}
+			}
+			
+			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+			
+			if(!transformers.getValue().isEmpty())
+			{
+				for(IClassTransformer transformer : transformers.getValue())
+				{
+					this.updateMappings(name, transformer);
+					transformer.transform(writer, this.mappings);
+				}
+			}
+			
+			classNode.accept(writer);
+			
+			return writer.toByteArray();
 		}
 		
 		return bytes;
 	}
 	
-	private byte[] transformMethods(byte[] bytes, String name, Set<ITransformer> transformers)
+	private void updateMappings(String name, ITransformer transformer)
 	{
-		ClassNode classNode = new ClassNode();
-		ClassReader classReader = new ClassReader(bytes);
-		classReader.accept(classNode, 0);
-		
-		for(MethodNode method : classNode.methods)
-		{
-			for(ITransformer transformer : transformers)
-			{
-				this.mappings.setObfuscated(!name.equals(this.mappings.getPackage(transformer.getClassName())));
-				
-				if(this.methodMatches(method, transformer.getMethodName()))
-				{
-					int offset = ShoulderASMHelper.locateOffset(method.instructions, transformer.getSearchList(this.mappings), transformer.ignoreLabels(), transformer.ignoreLineNumber());
-					
-					if(offset == -1)
-					{
-						ShoulderSurfing.LOGGER.error("Failed to locate offset in " + method.name + method.desc + " for " + transformer.getMethodName());
-					}
-					else
-					{
-						transformer.transform(method, transformer.getInjcetionList(this.mappings), offset);
-						MODIFICATIONS++;
-					}
-				}
-			}
-		}
-		
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		classNode.accept(writer);
-		return writer.toByteArray();
-	}
-	
-	private boolean methodMatches(MethodNode method, String name)
-	{
-		return method.name.equals(this.mappings.getFieldOrMethod(name)) && method.desc.equals(this.mappings.getDescriptor(name));
+		this.mappings.setObfuscated(!name.equals(this.mappings.getPackage(transformer.getClassName())));
 	}
 	
 	private void register(ITransformer transformer)
@@ -104,11 +120,25 @@ public class ShoulderTransformations implements IClassTransformer
 		
 		if(this.transformers.containsKey(mapping))
 		{
-			this.transformers.get(mapping).add(transformer);
+			if(transformer instanceof IMethodTransformer)
+			{
+				this.transformers.get(mapping).getKey().add((IMethodTransformer) transformer);
+			}
+			else if(transformer instanceof IClassTransformer)
+			{
+				this.transformers.get(mapping).getValue().add((IClassTransformer) transformer);
+			}
 		}
 		else
 		{
-			this.transformers.put(mapping, new HashSet<ITransformer>(Arrays.asList(transformer)));
+			if(transformer instanceof IMethodTransformer)
+			{
+				this.transformers.put(mapping, new SimpleEntry<Set<IMethodTransformer>, Set<IClassTransformer>>(Sets.newHashSet((IMethodTransformer) transformer), Sets.newHashSet()));
+			}
+			else if(transformer instanceof IClassTransformer)
+			{
+				this.transformers.put(mapping, new SimpleEntry<Set<IMethodTransformer>, Set<IClassTransformer>>(Sets.newHashSet(), Sets.newHashSet((IClassTransformer) transformer)));
+			}
 		}
 	}
 }
