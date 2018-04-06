@@ -27,13 +27,21 @@ public class Mappings
 	
 	public Mappings(String... files)
 	{
-		this.init(files);
+		try
+		{
+			this.init(files);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	private void init(String... files)
+	private void init(String... files) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
 	{
 		for(String file : files)
 		{
+			String version = ForgeVersion.class.getDeclaredField("mcVersion").get(ForgeVersion.class).toString();
 			InputStream in = this.getClass().getClassLoader().getResourceAsStream(file);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			JsonMapping json = new Gson().fromJson(reader, JsonMapping.class);
@@ -42,7 +50,7 @@ public class Mappings
 			{
 				for(JsonVersions versions : json.getVersions())
 				{
-					if(versions.getVersion().equals(ForgeVersion.mcVersion))
+					if(versions.getVersion().equals(version))
 					{
 						for(JsonClassMapping klass : versions.getMappings().getClasses())
 						{
