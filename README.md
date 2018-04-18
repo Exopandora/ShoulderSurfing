@@ -11,10 +11,9 @@ Features
 ========
 
 * Over-the-shoulder camera
-* Saved settings
-* Hotkeys to move the camera a bit (default Up-, Down-, Left-, Right-Arrow)
-* Corrective cross-hair positioning
-* Don't show player head if camera gets too close to it
+* Hotkeys to move the camera a bit (Default: Arrow keys, O to swap shoulders)
+* Corrective cross-hair positioning if dynamic crosshair is enabled
+* Hide player if the camera gets too close to it
 
 Download
 ========
