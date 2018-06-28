@@ -5,6 +5,9 @@
 
 !/src/
 !/run/mods/ShoulderSurfingDummy.jar
+!/gradle/
+!gradlew
+!gradlew.bat
 !build.gradle
 !README.md
 

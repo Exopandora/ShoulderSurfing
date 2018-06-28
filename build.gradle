@@ -26,16 +26,17 @@ jar {
     }
 }
 
-task signJar(type: SignJar, dependsOn: reobfJar) {
-    keyStore = project.keyStore
-    alias = project.keyStoreAlias
-    storePass = project.keyStorePass
-    keyPass = project.keyStoreKeyPass
-	inputFile = jar.archivePath
-	outputFile = jar.archivePath
+if(project.hasProperty('keyStore')) {
+	task signJar(type: SignJar, dependsOn: reobfJar) {
+		keyStore = project.keyStore
+		alias = project.keyStoreAlias
+		storePass = project.keyStorePass
+		keyPass = project.keyStoreKeyPass
+		inputFile = jar.archivePath
+		outputFile = jar.archivePath
+	}
+	build.dependsOn signJar
 }
-
-build.dependsOn signJar
 
 minecraft {
     version = "1.12.2-14.23.1.2583"
