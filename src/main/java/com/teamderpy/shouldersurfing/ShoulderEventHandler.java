@@ -115,7 +115,7 @@ public class ShoulderEventHandler
 	@SubscribeEvent
 	public void preRenderPlayer(RenderPlayerEvent.Pre event)
 	{
-		if(ShoulderRenderBin.skipPlayerRender && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getMinecraft().inGameHasFocus))
+		if(ShoulderRenderBin.skipPlayerRender && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getMinecraft().inGameHasFocus))
 		{
 			if(event.isCancelable())
 			{
