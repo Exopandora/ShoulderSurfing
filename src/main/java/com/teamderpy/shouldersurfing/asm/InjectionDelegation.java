@@ -46,7 +46,6 @@ public final class InjectionDelegation
 	{
 		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 		{
-//			return 20;
 			return ShoulderCamera.SHOULDER_ROTATION_PITCH;
 		}
 		
@@ -174,11 +173,6 @@ public final class InjectionDelegation
 			double addX = MathHelper.cos(entity.rotationYaw * radiant) * length;
 			double addZ = MathHelper.sin(entity.rotationYaw * radiant) * length;
 			
-			double fullY = MathHelper.sin(getShoulderRotationPitch() * radiant) * CAMERA_DISTANCE;
-			double addY = MathHelper.sin((90 - entity.rotationPitch) * radiant) * fullY;
-			
-//			Minecraft.getMinecraft().world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, positionEyes.x + addX, positionEyes.y + addY, positionEyes.z + addZ, 0, 0, 0);
-//			System.out.println(entity.rotationPitch);
 			return positionEyes.add(new Vec3d(addX, 0, addZ));
 		}
 		
