@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformations;
+import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.proxy.CommonProxy;
 
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,7 @@ public class ShoulderSurfing
 	public static final String NAME = "Shoulder Surfing";
 	public static final String MODID = "shouldersurfing";
 	public static final String MC_VERSION = "1.9";
-	public static final String VERSION = "1.13";
+	public static final String VERSION = "1.14";
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	public static final String CERTIFICATE = "d6261bb645f41db84c74f98e512c2bb43f188af2";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
@@ -49,7 +50,7 @@ public class ShoulderSurfing
 	@Instance(MODID)
 	public static ShoulderSurfing INSTACE;
 	
-	private boolean shadersEnabled = false;
+	private EnumShaderCompatibility shader = EnumShaderCompatibility.NONE;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -109,11 +110,21 @@ public class ShoulderSurfing
 		try
 		{
 			Class.forName("shadersmod.client.Shaders");
-			this.shadersEnabled = true;
+			this.shader = EnumShaderCompatibility.OLD;
 		}
-		catch(Exception e)
+		catch(ClassNotFoundException e)
 		{
-			this.shadersEnabled = false;
+			//Old shader not found
+		}
+		
+		try
+		{
+			Class.forName("net.optifine.shaders.Shaders");
+			this.shader = EnumShaderCompatibility.NEW;
+		}
+		catch(ClassNotFoundException e)
+		{
+			//New shader not found
 		}
 	}
 	
@@ -143,8 +154,16 @@ public class ShoulderSurfing
 		}
 	}
 	
-	public boolean areShadersEnabled()
+	public float getShadersResmul()
 	{
-		return this.shadersEnabled;
+		switch(this.shader)
+		{
+			case OLD:
+				return shadersmod.client.Shaders.configRenderResMul;
+			case NEW:
+				return net.optifine.shaders.Shaders.configRenderResMul;
+			default:
+				return 1.0F;
+		}
 	}
 }
