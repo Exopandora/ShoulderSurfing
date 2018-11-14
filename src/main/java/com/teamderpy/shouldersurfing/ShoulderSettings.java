@@ -53,8 +53,8 @@ public class ShoulderSettings
 	 * Whether or not the dynamic crosshair is enabled
 	 */
 	public static boolean IS_DYNAMIC_CROSSHAIR_ENABLED;
-	
-	public static boolean ENABLE_CROSSHAIR = true;
+	public static boolean ENABLE_3PP_CROSSHAIR = true;
+	public static boolean ENABLE_1PP_CROSSHAIR = true;
 	public static boolean ENABLE_ATTACK_INDICATOR = true;
 	
 	/**
@@ -62,10 +62,11 @@ public class ShoulderSettings
 	 * the ray trace hits a block without collision
 	 */
 	public static boolean IGNORE_BLOCKS_WITHOUT_COLLISION = true;
-	
 	public static boolean REPLACE_DEFAULT_3PP = false;
 	
 	public static String DEFAULT_PERSPECTIVE = "shoulder surfing";
+	
+	public static boolean OVERRIDE_MOD_CROSSHAIRS = true;
 	
 	public static int getShoulderSurfing3ppId()
 	{

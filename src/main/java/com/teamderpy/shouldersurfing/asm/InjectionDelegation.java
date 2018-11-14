@@ -173,6 +173,9 @@ public final class InjectionDelegation
 			double addX = MathHelper.cos(entity.rotationYaw * radiant) * length;
 			double addZ = MathHelper.sin(entity.rotationYaw * radiant) * length;
 			
+			double fullY = MathHelper.sin(getShoulderRotationPitch() * radiant) * CAMERA_DISTANCE;
+			double addY = MathHelper.sin((90 - entity.rotationPitch) * radiant) * fullY;
+			
 			return positionEyes.add(new Vec3d(addX, 0, addZ));
 		}
 		
@@ -187,16 +190,13 @@ public final class InjectionDelegation
 		{
 			result = 1;
 		}
-		else if(Minecraft.getMinecraft().gameSettings.thirdPersonView > 0)
+		else if(Minecraft.getMinecraft().gameSettings.thirdPersonView > 0 && !ShoulderSettings.ENABLE_3PP_CROSSHAIR)
 		{
-			if(!ShoulderSettings.ENABLE_CROSSHAIR)
-			{
-				result = 1;
-			}
-			else
-			{
-				Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.ICONS);
-			}
+			result = 1;
+		}
+		else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && !ShoulderSettings.ENABLE_1PP_CROSSHAIR)
+		{
+			result = 1;
 		}
 		
 		return result;
