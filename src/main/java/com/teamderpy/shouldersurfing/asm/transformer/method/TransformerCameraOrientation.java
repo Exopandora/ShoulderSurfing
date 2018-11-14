@@ -44,7 +44,7 @@ public class TransformerCameraOrientation extends ATransformerOrientCamera
 	}
 	
 	@Override
-	public InsnList getInjcetionList(Mappings mappings)
+	public void transform(MethodNode method, Mappings mappings, int offset)
 	{
 		InsnList hackCode = new InsnList();
 		
@@ -75,12 +75,6 @@ public class TransformerCameraOrientation extends ATransformerOrientCamera
 		
 		hackCode.add(new LabelNode(new Label()));
 		
-		return hackCode;
-	}
-	
-	@Override
-	public void transform(MethodNode method, InsnList hackCode, int offset)
-	{
 		method.instructions.insertBefore(method.instructions.get(offset + 1), hackCode);
 	}
 }

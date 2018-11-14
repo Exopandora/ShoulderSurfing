@@ -22,6 +22,8 @@ import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerCameraOri
 import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerDistanceCheck;
 import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerRayTrace;
 import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerRayTraceProjection;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerRenderAttackIndicator;
+import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerRenderCrosshair;
 import com.teamderpy.shouldersurfing.asm.transformer.method.TransformerThirdPersonMode;
 
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderTransformations implements net.minecraft.launchwrapper.IClassTransformer
 {
-	public static final int TOTAL_MODIFICATIONS = 6;
+	public static final int TOTAL_MODIFICATIONS = 8;
 	public static int MODIFICATIONS = 0;
 	
 	private final Map<String, Entry<Set<IMethodTransformer>, Set<IClassTransformer>>> transformers = new HashMap<String, Entry<Set<IMethodTransformer>, Set<IClassTransformer>>>();
@@ -50,6 +52,8 @@ public class ShoulderTransformations implements net.minecraft.launchwrapper.ICla
 		this.register(new TransformerRayTraceProjection());
 		this.register(new TransformerThirdPersonMode());
 		this.register(new TransformerPositionEyes());
+		this.register(new TransformerRenderCrosshair());
+		this.register(new TransformerRenderAttackIndicator());
 	}
 	
 	@Override
@@ -60,7 +64,6 @@ public class ShoulderTransformations implements net.minecraft.launchwrapper.ICla
 			Entry<Set<IMethodTransformer>, Set<IClassTransformer>> transformers = this.transformers.get(transformedName);
 			
 			ClassNode classNode = new ClassNode();
-			
 			ClassReader classReader = new ClassReader(bytes);
 			classReader.accept(classNode, 0);
 			
@@ -82,7 +85,7 @@ public class ShoulderTransformations implements net.minecraft.launchwrapper.ICla
 							}
 							else
 							{
-								transformer.transform(method, transformer.getInjcetionList(this.mappings), offset);
+								transformer.transform(method, this.mappings, offset);
 								MODIFICATIONS++;
 							}
 						}
@@ -90,7 +93,8 @@ public class ShoulderTransformations implements net.minecraft.launchwrapper.ICla
 				}
 			}
 			
-			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+			ClassWriter writer = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+			classNode.accept(writer);
 			
 			if(!transformers.getValue().isEmpty())
 			{
@@ -100,8 +104,6 @@ public class ShoulderTransformations implements net.minecraft.launchwrapper.ICla
 					transformer.transform(writer, this.mappings);
 				}
 			}
-			
-			classNode.accept(writer);
 			
 			return writer.toByteArray();
 		}

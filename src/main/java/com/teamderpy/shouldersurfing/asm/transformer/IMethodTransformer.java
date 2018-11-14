@@ -12,9 +12,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IMethodTransformer extends ITransformer
 {
 	InsnList getSearchList(Mappings mappings);
-	InsnList getInjcetionList(Mappings mappings);
 	
-	void transform(MethodNode method, InsnList hackCode, int offset);
+	void transform(MethodNode method, Mappings mappings, int offset);
 	
 	default boolean ignoreLabels()
 	{

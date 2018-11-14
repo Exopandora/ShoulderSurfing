@@ -1,17 +1,12 @@
 package com.teamderpy.shouldersurfing;
 
 import com.teamderpy.shouldersurfing.math.RayTracer;
+import com.teamderpy.shouldersurfing.math.Vec2;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -22,7 +17,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import shadersmod.client.Shaders;
 
 @SideOnly(Side.CLIENT)
 public class ShoulderEventHandler
@@ -125,133 +119,75 @@ public class ShoulderEventHandler
 	}
 	
 	@SubscribeEvent
-	public void preRenderCrosshairs(RenderGameOverlayEvent.Pre event)
+	public void preRenderCrosshairs(RenderGameOverlayEvent.Post event)
 	{
 		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 		{
-			float tick = event.getPartialTicks();
-			GuiIngame gui = Minecraft.getMinecraft().ingameGUI;
-			
 			ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-			
 			int width = resolution.getScaledWidth();
 			int height = resolution.getScaledHeight();
-			float scale = resolution.getScaleFactor();
+			float scale = resolution.getScaleFactor() * ShoulderSurfing.INSTACE.getShadersResmul();
 			
-			if(ShoulderSurfing.INSTACE.areShadersEnabled())
+			if(ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 			{
-				scale *= Shaders.configRenderResMul;
-			}
-			
-			if(Minecraft.getMinecraft().gameSettings.showDebugInfo && !Minecraft.getMinecraft().gameSettings.hideGUI && !Minecraft.getMinecraft().player.hasReducedDebug() && !Minecraft.getMinecraft().gameSettings.reducedDebugInfo)
-			{
-				GlStateManager.pushMatrix();
-				GlStateManager.translate((float) (width / 2), (float) (height / 2), 300);
-				Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-				GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * scale, -1.0F, 0.0F, 0.0F);
-				GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * scale, 0.0F, 1.0F, 0.0F);
-				GlStateManager.scale(-1.0F, -1.0F, -1.0F);
-				OpenGlHelper.renderDirections(10);
-				GlStateManager.popMatrix();
-			}
-			else
-			{
-				if(ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT || Minecraft.getMinecraft().objectMouseOver == null || Minecraft.getMinecraft().objectMouseOver.typeOfHit != Type.MISS)
-				{
-					if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 || (!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId()))
-					{
-						/** Default Crosshair **/
-						
-						this.lastX = width * scale / 2;
-						this.lastY = height * scale / 2;
-						
-						this.renderCrosshair(gui, resolution);
-					}
-					else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-					{
-						/** Dynamic Crosshair **/
-						
-						GlStateManager.pushMatrix();
-						
-						float diffX = (width * scale / 2 - this.lastX) * tick;
-						float diffY = (height * scale / 2 - this.lastY) * tick;
-						
-						if(ShoulderRenderBin.projectedVector != null)
-						{
-							diffX = (ShoulderRenderBin.projectedVector.x - this.lastX) * tick;
-							diffY = (ShoulderRenderBin.projectedVector.y - this.lastY) * tick;
-						}
-						
-						float crosshairWidth = (this.lastX + diffX) / scale - 7;
-						float crosshairHeight = (this.lastY + diffY) / scale - 7;
-						
-						GlStateManager.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
-						GlStateManager.translate(crosshairWidth * scale, crosshairHeight * scale, 0.0F);
-						GlStateManager.scale(scale, scale, scale);
-						GlStateManager.translate(-width / 2 + 7, -height / 2 + 7, 0.0F);
-						
-						this.renderCrosshair(gui, resolution);
-						
-						this.lastX += diffX;
-						this.lastY += diffY;
-						
-						GlStateManager.popMatrix();
-					}
-				}
-			}
-			
-			/** SHORT-CIRCUIT THE RENDER **/
-			if(event.isCancelable())
-			{
-				event.setCanceled(true);
+				Vec2<Float> diff = this.getDiff(width, height, scale, event.getPartialTicks());
+				Vec2<Float> translation = this.getTranslation(width, height, scale, diff);
+				
+				this.lastX += diff.getX();
+				this.lastY += diff.getY();
+				
+				GlStateManager.translate(-translation.getX(), -translation.getY(), 0.0F);
 			}
 		}
 	}
 	
-	private void renderCrosshair(GuiIngame gui, ScaledResolution resolution)
+	@SubscribeEvent
+	public void preRenderCrosshairs(RenderGameOverlayEvent.Pre event)
 	{
-		int width = resolution.getScaledWidth();
-		int height = resolution.getScaledHeight();
-		
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.ICONS);
-		
-		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		GlStateManager.enableAlpha();
-		
-		if(ShoulderSettings.ENABLE_CROSSHAIR || Minecraft.getMinecraft().gameSettings.thirdPersonView != ShoulderSettings.getShoulderSurfing3ppId())
+		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 		{
-			gui.drawTexturedModalRect(width / 2 - 7, height / 2 - 7, 0, 0, 16, 16);
-		}
-		
-		if(Minecraft.getMinecraft().gameSettings.attackIndicator == 1 && ShoulderSettings.ENABLE_ATTACK_INDICATOR)
-		{
-			float cooledAttackStrength = Minecraft.getMinecraft().player.getCooledAttackStrength(0.0F);
-			boolean flag = false;
+			ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+			int width = resolution.getScaledWidth();
+			int height = resolution.getScaledHeight();
+			float scale = resolution.getScaleFactor() * ShoulderSurfing.INSTACE.getShadersResmul();
 			
-			if(Minecraft.getMinecraft().pointedEntity != null && Minecraft.getMinecraft().pointedEntity instanceof EntityLivingBase && cooledAttackStrength >= 1.0F)
+			if(ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 			{
-				flag = Minecraft.getMinecraft().player.getCooldownPeriod() > 5.0F;
-				flag = flag & ((EntityLivingBase)Minecraft.getMinecraft().pointedEntity).isEntityAlive();
+				Vec2<Float> diff = this.getDiff(width, height, scale, event.getPartialTicks());
+				Vec2<Float> translation = this.getTranslation(width, height, scale, diff);
+				
+				GlStateManager.translate(translation.getX(), translation.getY(), 0.0F);
 			}
-			
-			int y = height / 2 - 7 + 16;
-			int x = width / 2 - 8;
-			
-			if(flag)
+			else
 			{
-				gui.drawTexturedModalRect(x, y, 68, 94, 16, 16);
-			}
-			else if(cooledAttackStrength < 1.0F)
-			{
-				int offset = (int)(cooledAttackStrength * 17.0F);
-				gui.drawTexturedModalRect(x, y, 36, 94, 16, 4);
-				gui.drawTexturedModalRect(x, y, 52, 94, offset, 4);
+				this.lastX = width * scale / 2;
+				this.lastY = height * scale / 2;
 			}
 		}
+	}
+	
+	private Vec2<Float> getDiff(int width, int height, float scale, float partial)
+	{
+		float diffX = (width * scale / 2 - this.lastX) * partial;
+		float diffY = (height * scale / 2 - this.lastY) * partial;
 		
-		GlStateManager.disableBlend();
+		if(ShoulderRenderBin.projectedVector != null)
+		{
+			diffX = (ShoulderRenderBin.projectedVector.x - this.lastX) * partial;
+			diffY = (ShoulderRenderBin.projectedVector.y - this.lastY) * partial;
+		}
+		
+		return new Vec2<Float>(diffX, diffY);
+	}
+	
+	private Vec2<Float> getTranslation(int width, int height, float scale, Vec2<Float> diff)
+	{
+		float crosshairWidth = (this.lastX + diff.getX()) / scale;
+		float crosshairHeight = (this.lastY + diff.getY()) / scale;
+		
+		float translationX = -width / 2 + crosshairWidth;
+		float translationY = -height / 2 + crosshairHeight;
+		
+		return new Vec2<Float>(translationX, translationY);
 	}
 }

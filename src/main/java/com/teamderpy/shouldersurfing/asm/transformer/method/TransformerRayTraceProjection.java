@@ -1,11 +1,9 @@
 package com.teamderpy.shouldersurfing.asm.transformer.method;
 
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.POP;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -41,22 +39,16 @@ public class TransformerRayTraceProjection implements IMethodTransformer
 	}
 	
 	@Override
-	public InsnList getInjcetionList(Mappings mappings)
+	public void transform(MethodNode method, Mappings mappings, int offset)
 	{
-		InsnList hackCode = new InsnList();
-		
 		// net/minecraft/client/renderer/EntityRenderer.renderWorldPass:1332
 		// InjectionDelegation.calculateRayTraceProjection();
+		
+		InsnList hackCode = new InsnList();
 		
 		hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calculateRayTraceProjection", "()V", false));
 		hackCode.add(new LabelNode(new Label()));
 		
-		return hackCode;
-	}
-	
-	@Override
-	public void transform(MethodNode method, InsnList hackCode, int offset)
-	{
 		method.instructions.insert(method.instructions.get(offset + 1), hackCode);
 	}
 }

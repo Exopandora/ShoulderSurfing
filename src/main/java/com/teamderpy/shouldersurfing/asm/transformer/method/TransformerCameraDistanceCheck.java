@@ -31,23 +31,17 @@ public class TransformerCameraDistanceCheck extends ATransformerOrientCamera
 	}
 	
 	@Override
-	public InsnList getInjcetionList(Mappings mappings)
+	public void transform(MethodNode method, Mappings mappings, int offset)
 	{
-		InsnList hackCode = new InsnList();
-		
 		// net/minecraft/client/renderer/EntityRenderer.orientCamera:658
 		// InjectionDelegation.verifyReverseBlockDist(d7);
+		
+		InsnList hackCode = new InsnList();
 		
 		hackCode.add(new VarInsnNode(DLOAD, 25));
 		hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "verifyReverseBlockDist", "(D)V", false));
 		hackCode.add(new LabelNode(new Label()));
 		
-		return hackCode;
-	}
-	
-	@Override
-	public void transform(MethodNode method, InsnList hackCode, int offset)
-	{
 		method.instructions.insertBefore(method.instructions.get(offset), hackCode);
 	}
 }

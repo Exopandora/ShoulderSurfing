@@ -43,17 +43,9 @@ public class TransformerThirdPersonMode implements IMethodTransformer
 	}
 	
 	@Override
-	public InsnList getInjcetionList(Mappings mappings)
+	public void transform(MethodNode method, Mappings mappings, int offset)
 	{
-		InsnList hackCode = new InsnList();
-		hackCode.add(new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getMax3ppId", "()I", false));
-		
-		return hackCode;
-	}
-	
-	@Override
-	public void transform(MethodNode method, InsnList hackCode, int offset)
-	{
-		method.instructions.set(method.instructions.get(offset), hackCode.getFirst());
+		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getMax3ppId", "()I", false);
+		method.instructions.set(method.instructions.get(offset), instruction);
 	}
 }

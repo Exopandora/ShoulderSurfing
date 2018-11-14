@@ -61,6 +61,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "aed"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "biq"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bit"
 					}
 				],
 				"methods":
@@ -99,6 +109,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "f"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -117,6 +132,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "aw"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "N"
 					}
 				]
 			}
@@ -170,17 +190,27 @@
 					{
 						"name": "Minecraft",
 						"path": "net/minecraft/client",
-						"obf": "bhz"
+						"obf": "bib"
 					},
 					{
 						"name": "GameSettings",
 						"path": "net/minecraft/client/settings",
-						"obf": "bib"
+						"obf": "bid"
 					},
 					{
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "aed"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "biq"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bit"
 					}
 				],
 				"methods":
@@ -219,6 +249,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "f"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -237,6 +272,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "aw"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "N"
 					}
 				]
 			}
@@ -301,6 +341,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "aeb"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "bio"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bir"
 					}
 				],
 				"methods":
@@ -339,6 +389,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "f"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -357,6 +412,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "aw"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "N"
 					}
 				]
 			}
@@ -421,6 +481,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "aay"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "bfh"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bfk"
 					}
 				],
 				"methods":
@@ -459,6 +529,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "g"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -477,6 +552,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "as"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "N"
 					}
 				]
 			}
@@ -541,6 +621,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "aax"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "bff"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bfi"
 					}
 				],
 				"methods":
@@ -579,6 +669,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "g"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -597,6 +692,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "as"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "N"
 					}
 				]
 			}
@@ -661,6 +761,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "zs"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "bdm"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bdp"
 					}
 				],
 				"methods":
@@ -699,6 +809,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "g"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -717,6 +832,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "as"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "N"
 					}
 				]
 			}
@@ -781,6 +901,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "zj"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "bcs"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bcv"
 					}
 				],
 				"methods":
@@ -819,6 +949,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "g"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -837,6 +972,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "aq"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "M"
 					}
 				]
 			}
@@ -901,6 +1041,16 @@
 						"name": "EntityPlayer",
 						"path": "net/minecraft/entity/player",
 						"obf": "zj"
+					},
+					{
+						"name": "GuiIngame",
+						"path": "net/minecraft/client/gui",
+						"obf": "bcu"
+					},
+					{
+						"name": "ScaledResolution",
+						"path": "net/minecraft/client/gui",
+						"obf": "bcx"
 					}
 				],
 				"methods":
@@ -939,6 +1089,11 @@
 						"name": "EntityPlayer#getPositionEyes",
 						"desc": "(F)L$Vec3d;",
 						"obf": "g"
+					},
+					{
+						"name": "GuiIngame#renderAttackIndicator",
+						"desc": "(FL$ScaledResolution;)V",
+						"obf": "a"
 					}
 				],
 				"fields":
@@ -957,6 +1112,11 @@
 						"name": "GameSettings#thirdPersonView",
 						"desc": "I",
 						"obf": "ap"
+					},
+					{
+						"name": "GameSettings#attackIndicator",
+						"desc": "I",
+						"obf": "M"
 					}
 				]
 			}
