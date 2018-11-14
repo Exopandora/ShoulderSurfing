@@ -1,4 +1,4 @@
-package shadersmod.client;
+package net.optifine.shaders;
 
 public class Shaders
 {
