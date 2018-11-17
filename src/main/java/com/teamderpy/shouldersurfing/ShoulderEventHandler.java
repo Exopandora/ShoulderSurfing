@@ -110,7 +110,7 @@ public class ShoulderEventHandler
 	private static Vec2<Float> diff;
 	private static Vec2<Float> translation;
 	
-	
+	@SubscribeEvent
 	public void preRenderPlayer(RenderPlayerEvent.Pre event)
 	{
 		if(ShoulderRenderBin.skipPlayerRender && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getMinecraft().inGameHasFocus))
