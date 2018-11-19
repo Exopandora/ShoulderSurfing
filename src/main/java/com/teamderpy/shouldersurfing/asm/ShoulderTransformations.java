@@ -37,7 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderTransformations implements net.minecraft.launchwrapper.IClassTransformer
 {
-	public static final int TOTAL_MODIFICATIONS = 8;
+	public static final int TOTAL_MODIFICATIONS = 9;
 	public static int MODIFICATIONS = 0;
 	
 	private final Map<String, Entry<Set<IMethodTransformer>, Set<IClassTransformer>>> transformers = new HashMap<String, Entry<Set<IMethodTransformer>, Set<IClassTransformer>>>();
