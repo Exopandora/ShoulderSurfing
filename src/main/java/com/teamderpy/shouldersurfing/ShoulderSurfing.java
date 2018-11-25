@@ -161,9 +161,9 @@ public class ShoulderSurfing
 		switch(this.shader)
 		{
 			case OLD:
-				return shadersmod.client.Shaders.configRenderResMul;
+				return shadersmod.client.Shaders.shaderPackLoaded ? shadersmod.client.Shaders.configRenderResMul : 1.0F;
 			case NEW:
-				return net.optifine.shaders.Shaders.configRenderResMul;
+				return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
 			default:
 				return 1.0F;
 		}
