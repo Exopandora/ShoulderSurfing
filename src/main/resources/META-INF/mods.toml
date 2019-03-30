@@ -1,13 +1,13 @@
 modLoader="javafml"
 loaderVersion="[25,)"
-displayURL="$url"
+displayURL="https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded"
 logoFile="logo.png"
 authors="Sabar, Exopandora (1.7.10+)"
 
 [[mods]]
 modId="shouldersurfing"
 displayName="Shoulder Surfing"
-version="${version}"
+version="1.13.2-1.16"
 description='''
 Changes the vanilla third person camera to an over-the-shoulder camera, as made popular by Capcom's \"Resident Evil 4\".
 Includes keybindings for adjusting the camera, along with various settings in the config file.
