@@ -3,21 +3,22 @@ package com.teamderpy.shouldersurfing.math;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import javax.vecmath.Vector2f;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.vector.Vector2f;
+
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author Joshua Powers <jsh.powers@yahoo.com>
  * @version 1.0
  * @since 2012-12-24
  */
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class VectorConverter
 {
 	/**
@@ -34,7 +35,7 @@ public class VectorConverter
 	 * @return Returns a {@link Vector2f} representing a 2D location on the
 	 *         screen, or null if the vector fails to be converted.
 	 */
-	public static Vector2f project2D(final Vec3d v3)
+	public static Vec2f project2D(final Vec3d v3)
 	{
 		return project2D((float) v3.x, (float) v3.y, (float) v3.z);
 	}
@@ -57,7 +58,7 @@ public class VectorConverter
 	 * @return Returns a {@link Vector2f} representing a 2D location on the
 	 *         screen, or null if the vector fails to be converted.
 	 */
-	public static Vector2f project2D(final float x, final float y, final float z)
+	public static Vec2f project2D(final float x, final float y, final float z)
 	{
 		/**
 		 * Buffer that will hold the screen coordinates
@@ -67,7 +68,7 @@ public class VectorConverter
 		/**
 		 * Buffer that holds the transformation matrix of the view port
 		 */
-		IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
+		IntBuffer viewport = GLAllocation.createDirectByteBuffer(64).asIntBuffer();
 		
 		/**
 		 * Buffer that holds the transformation matrix of the model view
@@ -84,20 +85,66 @@ public class VectorConverter
 		projection.clear();
 		viewport.clear();
 		
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
-		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
+		GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, modelview);
+		GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, projection);
+		GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
 		
-		/**
-		 * the return value of the gluProject call
-		 */
-		boolean ret = GLU.gluProject(x, y, z, modelview, projection, viewport, screen_coords);
-		
-		if(ret)
+		if(gluProject(x, y, z, modelview, projection, viewport, screen_coords))
 		{
-			return new Vector2f(screen_coords.get(0), screen_coords.get(1));
+			float screenX = screen_coords.get(0);
+			float screenY = screen_coords.get(1);
+			
+			if(!Float.isInfinite(screenX) && !Float.isInfinite(screenY))
+			{
+				return new Vec2f(screenX, screenY);
+			}
 		}
 		
 		return null;
+	}
+	
+	private static void multMatrixVecf(FloatBuffer m, float[] in, float[] out) {
+		for(int i = 0; i < 4; i++)
+		{
+			out[i] =
+				in[0] * m.get(m.position() + i)
+					+ in[1] * m.get(m.position() + 1 * 4 + i)
+					+ in[2] * m.get(m.position() + 2 * 4 + i)
+					+ in[3] * m.get(m.position() + 3 * 4 + i);
+
+		}
+	}
+	
+	private static boolean gluProject(float objx, float objy, float objz, FloatBuffer modelMatrix, FloatBuffer projMatrix, IntBuffer viewport, FloatBuffer win_pos)
+	{
+		float[] in = new float[4];
+		float[] out = new float[4];
+		
+		in[0] = objx;
+		in[1] = objy;
+		in[2] = objz;
+		in[3] = 1.0f;
+		
+		multMatrixVecf(modelMatrix, in, out);
+		multMatrixVecf(projMatrix, out, in);
+		
+		if(in[3] == 0.0)
+		{
+			return false;
+		}
+		
+		in[3] = (1.0f / in[3]) * 0.5F;
+		
+		// Map x, y and z to range 0-1
+		in[0] = in[0] * in[3] + 0.5F;
+		in[1] = in[1] * in[3] + 0.5F;
+		in[2] = in[2] * in[3] + 0.5F;
+		
+		// Map x,y to viewport
+		win_pos.put(0, in[0] * viewport.get(viewport.position() + 2) + viewport.get(viewport.position() + 0));
+		win_pos.put(1, in[1] * viewport.get(viewport.position() + 3) + viewport.get(viewport.position() + 1));
+		win_pos.put(2, in[2]);
+		
+		return true;
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"pack":
 	{
-		"pack_format": 3,
-		"description": "Shoulder Surfing"
+		"description": "Shoulder Surfing",
+		"pack_format": 4
 	}
 }

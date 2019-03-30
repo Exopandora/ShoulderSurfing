@@ -2,72 +2,79 @@ package com.teamderpy.shouldersurfing.math;
 
 import java.util.List;
 
-import com.teamderpy.shouldersurfing.ShoulderSettings;
-import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceFluidMode;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * @author Joshua Powers <jsh.powers@yahoo.com>
- * @version 1.1
- * @since 2013-01-12
- */
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public final class RayTracer
 {
-	public static void traceFromEyes(final float tick)
+	private boolean rayTraceInReach = false;
+	private boolean skipPlayerRender = false;
+	
+	private Vec2f projectedVector = null;
+	private Vec3d rayTraceHit = null;
+	
+	private static final RayTracer INSTANCE = new RayTracer();
+	
+	public static RayTracer getInstance()
 	{
-		ShoulderRenderBin.projectedVector = null;
+		return INSTANCE;
+	}
+	
+	public void traceFromEyes(final float tick)
+	{
+		this.projectedVector = null;
+		Entity renderView = Minecraft.getInstance().getRenderViewEntity();
 		
-		if(Minecraft.getMinecraft().getRenderViewEntity() != null)
+		if(renderView != null)
 		{
-			if(Minecraft.getMinecraft().world != null)
+			if(Minecraft.getInstance().world != null)
 			{
-				if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
+				if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 				{
 					double playerReach = 1D;
 					
-					if(ShoulderSettings.USE_CUSTOM_RAYTRACE_DISTANCE)
+					if(Config.CLIENT.showCrosshairFarther())
 					{
-						playerReach = ShoulderSettings.RAYTRACE_DISTANCE;
+						playerReach = ShoulderSurfing.RAYTRACE_DISTANCE;
 					}
 					else
 					{
-						playerReach = (double) Minecraft.getMinecraft().playerController.getBlockReachDistance();
+						playerReach = (double) Minecraft.getInstance().playerController.getBlockReachDistance();
 					}
 					
-					// block collision
-					RayTraceResult omo = Minecraft.getMinecraft().getRenderViewEntity().rayTrace(playerReach, tick);
+					RayTraceResult result = renderView.rayTrace(playerReach, tick, RayTraceFluidMode.NEVER);
 					double blockDist = 0;
 					
-					if(omo != null)
+					if(result != null)
 					{
-						ShoulderRenderBin.rayTraceHit = omo.hitVec;
-						blockDist = omo.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX, Minecraft.getMinecraft().getRenderViewEntity().posY, Minecraft.getMinecraft().getRenderViewEntity().posZ));
-						
-//						System.out.println("block dist: " + blockDist);
-						ShoulderRenderBin.rayTraceInReach = blockDist <= (double) Minecraft.getMinecraft().playerController.getBlockReachDistance();
+						this.rayTraceHit = result.hitVec;
+						blockDist = result.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
+						this.rayTraceInReach = blockDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
 					}
 					else
 					{
-						ShoulderRenderBin.rayTraceHit = null;
+						this.rayTraceHit = null;
 					}
 					
-					// entity collision
-					Vec3d renderViewPos = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(tick);
-					Vec3d sightVector = Minecraft.getMinecraft().getRenderViewEntity().getLook(tick);
-					Vec3d sightRay = renderViewPos.addVector(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
+					Vec3d renderViewPos = renderView.getEyePosition(tick);
+					Vec3d sightVector = renderView.getLook(tick);
+					Vec3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
 					
-//					System.out.println(sightVector);
-//					System.out.println(renderViewPos + " " + sightVector + " " + sightRay);
-					
-					List entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach).expand(1.0D, 1.0D, 1.0D));
+					List<Entity> entityList = Minecraft.getInstance().world
+							.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
+							.expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach)
+							.expand(1.0D, 1.0D, 1.0D));
 					
 					for(int i = 0; i < entityList.size(); ++i)
 					{
@@ -77,20 +84,20 @@ public final class RayTracer
 						{
 							float collisionSize = ent.getCollisionBorderSize();
 							
-							AxisAlignedBB aabb = ent.getEntityBoundingBox().expand((double) collisionSize, (double) collisionSize, (double) collisionSize);
+							AxisAlignedBB aabb = ent.getBoundingBox().expand((double) collisionSize, (double) collisionSize, (double) collisionSize);
 							RayTraceResult potentialIntercept = aabb.calculateIntercept(renderViewPos, sightRay);
 							
 							if(potentialIntercept != null)
 							{
-								double entityDist = potentialIntercept.hitVec.distanceTo(new Vec3d(Minecraft.getMinecraft().getRenderViewEntity().posX, Minecraft.getMinecraft().getRenderViewEntity().posY, Minecraft.getMinecraft().getRenderViewEntity().posZ));
+								double entityDist = potentialIntercept.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
 								
 								if(entityDist < blockDist)
 								{
-									ShoulderRenderBin.rayTraceHit = potentialIntercept.hitVec;
+									this.rayTraceHit = potentialIntercept.hitVec;
 									
 									// System.out.println("entity dist: " +
 									// entityDist);
-									ShoulderRenderBin.rayTraceInReach = entityDist <= (double) Minecraft.getMinecraft().playerController.getBlockReachDistance();
+									this.rayTraceInReach = entityDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
 								}
 							}
 						}
@@ -98,5 +105,45 @@ public final class RayTracer
 				}
 			}
 		}
+	}
+	
+	public boolean isRayTraceInReach()
+	{
+		return rayTraceInReach;
+	}
+	
+	public void setRayTraceInReach(boolean rayTraceInReach)
+	{
+		this.rayTraceInReach = rayTraceInReach;
+	}
+	
+	public boolean skipPlayerRender()
+	{
+		return this.skipPlayerRender;
+	}
+	
+	public void setSkipPlayerRender(boolean skipPlayerRender)
+	{
+		this.skipPlayerRender = skipPlayerRender;
+	}
+	
+	public Vec2f getProjectedVector()
+	{
+		return this.projectedVector;
+	}
+	
+	public void setProjectedVector(Vec2f projectedVector)
+	{
+		this.projectedVector = projectedVector;
+	}
+	
+	public Vec3d getRayTraceHit()
+	{
+		return this.rayTraceHit;
+	}
+	
+	public void setRayTraceHit(Vec3d rayTraceHit)
+	{
+		this.rayTraceHit = rayTraceHit;
 	}
 }
