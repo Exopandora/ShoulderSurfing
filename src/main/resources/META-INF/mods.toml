@@ -9,7 +9,7 @@ modId="shouldersurfing"
 displayName="Shoulder Surfing"
 version="1.13.2-1.16"
 description='''
-Changes the vanilla third person camera to an over-the-shoulder camera, as made popular by Capcom's \"Resident Evil 4\".
+Changes the vanilla third person camera to an over-the-shoulder camera, as made popular by Capcom's "Resident Evil 4".
 Includes keybindings for adjusting the camera, along with various settings in the config file.
 Code injection may fail if using mods that mess with the base files.
 '''
