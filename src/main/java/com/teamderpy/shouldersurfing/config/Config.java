@@ -454,7 +454,6 @@ public class Config
 	{
 		if(value != null && !value.equals(configValue.get()))
 		{
-			System.out.println("Config changed: " + configValue.getPath() + " " + configValue.get() + "->" + value);
 			Config.CONFIG_DATA.set(configValue.getPath(), value);
 		}
 	}
