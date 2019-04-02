@@ -40,9 +40,9 @@ public class ShoulderSurfing
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
-		ModLoadingContext.get().registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(Config::configLoad);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(Config::configReload);
+		ModLoadingContext.get().registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
 	}
 	
 	public void clientSetup(FMLClientSetupEvent event)

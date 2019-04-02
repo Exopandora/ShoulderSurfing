@@ -12,7 +12,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
@@ -188,7 +187,7 @@ public class Config
 			this.defaultPerspective = this.valueDefaultPerspective.get();
 		}
 		
-		public void write()
+		private void write()
 		{
 			Config.set(this.valueDynamicCrosshair, this.dynamicCrosshair);
 			Config.set(this.valueShoulderRotationYaw, this.shoulderRotationYaw);
@@ -458,7 +457,6 @@ public class Config
 		}
 	}
 	
-	@SubscribeEvent
 	public static void configLoad(ModConfig.Loading event)
 	{
 		if(event.getConfig().getType().equals(Type.CLIENT))
@@ -469,10 +467,9 @@ public class Config
 		}
 	}
 	
-	@SubscribeEvent
 	public static void configReload(ModConfig.ConfigReloading event)
 	{
-		if(event.getConfig().getType().equals(Type.CLIENT))
+		if(event.getConfig().getType().equals(Type.CLIENT) && Config.CONFIG_DATA != null)
 		{
 			Config.CONFIG_DATA.load();
 			Config.CLIENT.read();
