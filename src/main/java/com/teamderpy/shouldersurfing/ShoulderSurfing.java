@@ -6,7 +6,6 @@ import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.proxy.ClientProxy;
 import com.teamderpy.shouldersurfing.proxy.CommonProxy;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -52,23 +51,6 @@ public class ShoulderSurfing
 		ClientRegistry.registerKeyBinding(KEYBIND_ZOOM_CAMERA_OUT);
 		ClientRegistry.registerKeyBinding(KEYBIND_ZOOM_CAMERA_IN);
 		ClientRegistry.registerKeyBinding(KEYBIND_SWAP_SHOULDER);
-		
-		if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("first person"))
-		{
-			Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-		}
-		else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("third person"))
-		{
-			Minecraft.getInstance().gameSettings.thirdPersonView = 1;
-		}
-		else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("front third person"))
-		{
-			Minecraft.getInstance().gameSettings.thirdPersonView = 2;
-		}
-		else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("shoulder surfing"))
-		{
-			Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
-		}
 	}
 	
 	public void commonSetup(FMLCommonSetupEvent event)

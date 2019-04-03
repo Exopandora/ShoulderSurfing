@@ -464,6 +464,23 @@ public class Config
 			Config.MOD_CONFIG = event.getConfig();
 			Config.CONFIG_DATA = (CommentedFileConfig) Config.MOD_CONFIG.getConfigData();
 			Config.CLIENT.read();
+			
+			if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("first person"))
+			{
+				Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+			}
+			else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("third person"))
+			{
+				Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+			}
+			else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("front third person"))
+			{
+				Minecraft.getInstance().gameSettings.thirdPersonView = 2;
+			}
+			else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("shoulder surfing"))
+			{
+				Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
+			}
 		}
 	}
 	
