@@ -6,16 +6,16 @@ import com.teamderpy.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyHandler
 {
-	public static void keyInputEvent(ClientTickEvent event)
+	@SubscribeEvent
+	public static void keyInputEvent(KeyInputEvent event)
 	{
-		if(Minecraft.getInstance().isGameFocused() && event.type.equals(Type.CLIENT) && event.phase.equals(Phase.START))
+		if(Minecraft.getInstance() != null && Minecraft.getInstance().currentScreen == null)
 		{
 			if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{

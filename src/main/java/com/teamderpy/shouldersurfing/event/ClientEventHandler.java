@@ -11,6 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 @OnlyIn(Dist.CLIENT)
@@ -18,24 +19,23 @@ public class ClientEventHandler
 {
 	private static float lastX = 0.0F;
 	private static float lastY = 0.0F;
-	private static Vec2f delta = new Vec2f(0.0F, 0.0F);
-	private static Vec2f translation = new Vec2f(0.0F, 0.0F);
+	private static Vec2f delta = Vec2f.ZERO;
+	private static Vec2f translation = Vec2f.ZERO;
 	
+	@SubscribeEvent
 	public static void renderTickEvent(RenderTickEvent event)
 	{
 		RayTracer rayTracer = RayTracer.getInstance();
 		rayTracer.setSkipPlayerRender(false);
 		rayTracer.traceFromEyes(1.0F);
 		
-		if(rayTracer.getRayTraceHit() != null)
+		if(rayTracer.getRayTraceHit() != null && Minecraft.getInstance().player != null)
 		{
-			if(Minecraft.getInstance().player != null)
-			{
-				rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().player.getPositionVector()));
-			}
+			rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().player.getPositionVector()));
 		}
 	}
 	
+	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
 		if(RayTracer.getInstance().skipPlayerRender() && event.getEntityPlayer().equals(Minecraft.getInstance().player) && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getInstance().isGameFocused()))
@@ -47,20 +47,19 @@ public class ClientEventHandler
 		}
 	}
 	
+	@SubscribeEvent
 	public static void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
 			int width = Minecraft.getInstance().mainWindow.getScaledWidth();
 			int height = Minecraft.getInstance().mainWindow.getScaledHeight();
-			float scale = Minecraft.getInstance().mainWindow.getScaleFactor(Minecraft.getInstance().gameSettings.guiScale) * ShoulderSurfing.getShadersResmul();
+			float scale = Minecraft.getInstance().mainWindow.getScaleFactor(Minecraft.getInstance().gameSettings.guiScale) * ShoulderSurfing.getShadersResMul();
 			
 			delta = computeDelta(width, height, scale, event.getPartialTicks());
 			translation = computeTranslation(width, height, scale);
 			
-			boolean translate = Config.CLIENT.dynamicCrosshair() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId();
-			
-			if(translate)
+			if(Config.CLIENT.dynamicCrosshair() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{
 				GlStateManager.translatef(translation.x, translation.y, 0.0F);
 			}
@@ -72,6 +71,7 @@ public class ClientEventHandler
 		}
 	}
 	
+	@SubscribeEvent
 	public static void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
@@ -96,10 +96,12 @@ public class ClientEventHandler
 		float deltaX = (width * scale / 2 - lastX) * partial;
 		float deltaY = (height * scale / 2 - lastY) * partial;
 		
-		if(RayTracer.getInstance().getProjectedVector() != null)
+		RayTracer rayTracer = RayTracer.getInstance();
+		
+		if(rayTracer.getProjectedVector() != null)
 		{
-			deltaX = (RayTracer.getInstance().getProjectedVector().x - lastX) * partial;
-			deltaY = (RayTracer.getInstance().getProjectedVector().y - lastY) * partial;
+			deltaX = (rayTracer.getProjectedVector().x - lastX) * partial;
+			deltaY = (rayTracer.getProjectedVector().y - lastY) * partial;
 		}
 		
 		return new Vec2f(deltaX, deltaY);

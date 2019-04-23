@@ -69,10 +69,12 @@ public final class InjectionDelegation
 	 */
 	public static void calculateRayTraceProjection()
 	{
-		if(RayTracer.getInstance().getRayTraceHit() != null)
+		RayTracer rayTracer = RayTracer.getInstance();
+		
+		if(rayTracer.getRayTraceHit() != null)
 		{
-			RayTracer.getInstance().setProjectedVector(VectorConverter.project2D(RayTracer.getInstance().getRayTraceHit()));
-			RayTracer.getInstance().setRayTraceHit(null);
+			rayTracer.setProjectedVector(VectorConverter.project2D(rayTracer.getRayTraceHit()));
+			rayTracer.setRayTraceHit(null);
 		}
 	}
 	
@@ -124,11 +126,10 @@ public final class InjectionDelegation
 		if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 		{
 			double result = distance;
-			float radiant = (float) (Math.PI / 180F);
-			float offset = InjectionDelegation.getShoulderRotationYaw();
-			float newYaw = yaw - offset;
+			final float radiant = (float) (Math.PI / 180F);
+			float newYaw = yaw - InjectionDelegation.getShoulderRotationYaw();
 			
-			double length = MathHelper.cos((-90.0F - offset) * radiant) * distance;
+			double length = MathHelper.sin(-InjectionDelegation.getShoulderRotationYaw() * radiant) * distance;
 			double addX = MathHelper.cos(newYaw * radiant) * length;
 			double addZ = MathHelper.sin(newYaw * radiant) * length;
 			
@@ -165,13 +166,20 @@ public final class InjectionDelegation
 	{
 		if(!Config.CLIENT.dynamicCrosshair())
 		{
-			float radiant = (float) (Math.PI / 180F);
+			final float radiant = (float) (Math.PI / 180F);
+			final float radiantPitch = entity.rotationPitch * radiant;
+			final float radiantYaw = entity.rotationYaw * radiant;
 			
-			double length = MathHelper.cos((90F - InjectionDelegation.getShoulderRotationYaw()) * radiant) * CAMERA_DISTANCE;
-			double addX = MathHelper.cos(entity.rotationYaw * radiant) * length;
-			double addZ = MathHelper.sin(entity.rotationYaw * radiant) * length;
+			double pitchYLength = MathHelper.sin(InjectionDelegation.getShoulderRotationPitch() * radiant) * CAMERA_DISTANCE;
+			double pitchX = MathHelper.sin(radiantPitch) * MathHelper.sin(-radiantYaw) * pitchYLength;
+			double pitchY = MathHelper.cos(radiantPitch) * pitchYLength;
+			double pitchZ = MathHelper.sin(radiantPitch) * MathHelper.cos(-radiantYaw) * pitchYLength;
 			
-			return positionEyes.add(new Vec3d(addX, 0, addZ));
+			double yawXZlength = MathHelper.sin(InjectionDelegation.getShoulderRotationYaw() * radiant) * CAMERA_DISTANCE;
+			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
+			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
+			
+			return positionEyes.add(yawX, 0, yawZ).add(pitchX, pitchY, pitchZ);
 		}
 		
 		return positionEyes;

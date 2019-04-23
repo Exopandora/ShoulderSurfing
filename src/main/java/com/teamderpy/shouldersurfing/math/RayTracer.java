@@ -31,75 +31,52 @@ public final class RayTracer
 		return INSTANCE;
 	}
 	
-	public void traceFromEyes(final float tick)
+	public void traceFromEyes(final float partialTicks)
 	{
 		this.projectedVector = null;
 		Entity renderView = Minecraft.getInstance().getRenderViewEntity();
 		
-		if(renderView != null)
+		if(renderView != null && Minecraft.getInstance().world != null && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 		{
-			if(Minecraft.getInstance().world != null)
+			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : Minecraft.getInstance().playerController.getBlockReachDistance();
+			double blockDist = 0;
+			RayTraceResult result = renderView.rayTrace(playerReach, partialTicks, RayTraceFluidMode.NEVER);
+			
+			if(result != null)
 			{
-				if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+				this.rayTraceHit = result.hitVec;
+				blockDist = result.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
+				this.rayTraceInReach = blockDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
+			}
+			else
+			{
+				this.rayTraceHit = null;
+			}
+			
+			Vec3d renderViewPos = renderView.getEyePosition(partialTicks);
+			Vec3d sightVector = renderView.getLook(partialTicks);
+			Vec3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
+			
+			List<Entity> entityList = Minecraft.getInstance().world.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
+					.expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach)
+					.expand(1.0D, 1.0D, 1.0D));
+			
+			for(Entity entity : entityList)
+			{
+				if(entity.canBeCollidedWith())
 				{
-					double playerReach = 1D;
+					float collisionSize = entity.getCollisionBorderSize();
+					AxisAlignedBB aabb = entity.getBoundingBox().expand(collisionSize, collisionSize, collisionSize);
+					RayTraceResult potentialIntercept = aabb.calculateIntercept(renderViewPos, sightRay);
 					
-					if(Config.CLIENT.showCrosshairFarther())
+					if(potentialIntercept != null)
 					{
-						playerReach = ShoulderSurfing.RAYTRACE_DISTANCE;
-					}
-					else
-					{
-						playerReach = (double) Minecraft.getInstance().playerController.getBlockReachDistance();
-					}
-					
-					RayTraceResult result = renderView.rayTrace(playerReach, tick, RayTraceFluidMode.NEVER);
-					double blockDist = 0;
-					
-					if(result != null)
-					{
-						this.rayTraceHit = result.hitVec;
-						blockDist = result.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
-						this.rayTraceInReach = blockDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
-					}
-					else
-					{
-						this.rayTraceHit = null;
-					}
-					
-					Vec3d renderViewPos = renderView.getEyePosition(tick);
-					Vec3d sightVector = renderView.getLook(tick);
-					Vec3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
-					
-					List<Entity> entityList = Minecraft.getInstance().world
-							.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
-							.expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach)
-							.expand(1.0D, 1.0D, 1.0D));
-					
-					for(int i = 0; i < entityList.size(); ++i)
-					{
-						Entity ent = (Entity) entityList.get(i);
+						double entityDist = potentialIntercept.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
 						
-						if(ent.canBeCollidedWith())
+						if(entityDist < blockDist)
 						{
-							float collisionSize = ent.getCollisionBorderSize();
-							
-							AxisAlignedBB aabb = ent.getBoundingBox().expand((double) collisionSize, (double) collisionSize, (double) collisionSize);
-							RayTraceResult potentialIntercept = aabb.calculateIntercept(renderViewPos, sightRay);
-							
-							if(potentialIntercept != null)
-							{
-								double entityDist = potentialIntercept.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
-								
-								if(entityDist < blockDist)
-								{
-									this.rayTraceHit = potentialIntercept.hitVec;
-									
-									// System.out.println("entity dist: " +
-									// entityDist);
-									this.rayTraceInReach = entityDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
-								}
-							}
+							this.rayTraceHit = potentialIntercept.hitVec;
+							this.rayTraceInReach = entityDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
 						}
 					}
 				}

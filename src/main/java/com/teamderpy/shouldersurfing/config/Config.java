@@ -8,10 +8,13 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
@@ -30,6 +33,7 @@ public class Config
 		CLIENT = pair.getLeft();
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public static class ClientConfig
 	{
 		private boolean dynamicCrosshair;
@@ -457,6 +461,7 @@ public class Config
 		}
 	}
 	
+	@SubscribeEvent
 	public static void configLoad(ModConfig.Loading event)
 	{
 		if(event.getConfig().getType().equals(Type.CLIENT))
@@ -484,6 +489,7 @@ public class Config
 		}
 	}
 	
+	@SubscribeEvent
 	public static void configReload(ModConfig.ConfigReloading event)
 	{
 		if(event.getConfig().getType().equals(Type.CLIENT) && Config.CONFIG_DATA != null)
