@@ -1,13 +1,13 @@
 package com.teamderpy.shouldersurfing;
 
 import com.teamderpy.shouldersurfing.math.RayTracer;
-import com.teamderpy.shouldersurfing.math.Vec2;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -107,8 +107,8 @@ public class ShoulderEventHandler
 	 */
 	private static float lastX = 0.0F;
 	private static float lastY = 0.0F;
-	private static Vec2<Float> diff;
-	private static Vec2<Float> translation;
+	private static Vec2f delta;
+	private static Vec2f translation;
 	
 	@SubscribeEvent
 	public void preRenderPlayer(RenderPlayerEvent.Pre event)
@@ -132,22 +132,22 @@ public class ShoulderEventHandler
 			int height = resolution.getScaledHeight();
 			float scale = resolution.getScaleFactor() * ShoulderSurfing.INSTACE.getShadersResmul();
 			
-			this.diff = this.getDiff(width, height, scale, event.getPartialTicks());
-			this.translation = this.getTranslation(width, height, scale, this.diff);
+			delta = this.computeDelta(width, height, scale, event.getPartialTicks());
+			translation = this.computeTranslation(width, height, scale, delta);
 			
 			boolean translate = ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId();
 			
 			if(translate)
 			{
-				GlStateManager.translate(this.translation.getX(), this.translation.getY(), 0.0F);
+				GlStateManager.translate(this.translation.x, this.translation.y, 0.0F);
 			}
 			else
 			{
-				this.lastX = width * scale / 2;
-				this.lastY = height * scale / 2;
+				lastX = width * scale / 2;
+				lastY = height * scale / 2;
 			}
 			
-			if(ShoulderSettings.OVERRIDE_MOD_CROSSHAIRS)
+			if(ShoulderSettings.OVERRIDE_MOD_CROSSHAIRS && Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
 			{
 				GlStateManager.enableBlend();
 				GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -169,7 +169,7 @@ public class ShoulderEventHandler
 		}
 	}
 	
-	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
 	public void postRenderCrosshairs(RenderGameOverlayEvent.Post event)
 	{
 		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
@@ -183,34 +183,34 @@ public class ShoulderEventHandler
 	
 	private void translateBack()
 	{
-		this.lastX += this.diff.getX();
-		this.lastY += this.diff.getY();
+		lastX += delta.x;
+		lastY += delta.y;
 		
-		GlStateManager.translate(-this.translation.getX(), -this.translation.getY(), 0.0F);
+		GlStateManager.translate(-this.translation.x, -this.translation.y, 0.0F);
 	}
 	
-	private Vec2<Float> getDiff(int width, int height, float scale, float partial)
+	private Vec2f computeDelta(int width, int height, float scale, float partial)
 	{
-		float diffX = (width * scale / 2 - this.lastX) * partial;
-		float diffY = (height * scale / 2 - this.lastY) * partial;
+		float deltaX = (width * scale / 2 - lastX) * partial;
+		float deltaY = (height * scale / 2 - lastY) * partial;
 		
 		if(ShoulderRenderBin.projectedVector != null)
 		{
-			diffX = (ShoulderRenderBin.projectedVector.x - this.lastX) * partial;
-			diffY = (ShoulderRenderBin.projectedVector.y - this.lastY) * partial;
+			deltaX = (ShoulderRenderBin.projectedVector.x - lastX) * partial;
+			deltaY = (ShoulderRenderBin.projectedVector.y - lastY) * partial;
 		}
 		
-		return new Vec2<Float>(diffX, diffY);
+		return new Vec2f(deltaX, deltaY);
 	}
 	
-	private Vec2<Float> getTranslation(int width, int height, float scale, Vec2<Float> diff)
+	private Vec2f computeTranslation(int width, int height, float scale, Vec2f diff)
 	{
-		float crosshairWidth = (this.lastX + diff.getX()) / scale;
-		float crosshairHeight = (this.lastY + diff.getY()) / scale;
+		float crosshairWidth = (lastX + diff.x) / scale;
+		float crosshairHeight = (lastY + diff.y) / scale;
 		
 		float translationX = -width / 2 + crosshairWidth;
 		float translationY = -height / 2 + crosshairHeight;
 		
-		return new Vec2<Float>(translationX, translationY);
+		return new Vec2f(translationX, translationY);
 	}
 }
