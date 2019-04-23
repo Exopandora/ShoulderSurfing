@@ -6,7 +6,6 @@ import com.teamderpy.shouldersurfing.math.VectorConverter;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -172,9 +171,6 @@ public final class InjectionDelegation
 			double length = MathHelper.cos((90F - InjectionDelegation.getShoulderRotationYaw()) * radiant) * CAMERA_DISTANCE;
 			double addX = MathHelper.cos(entity.rotationYaw * radiant) * length;
 			double addZ = MathHelper.sin(entity.rotationYaw * radiant) * length;
-			
-			double fullY = MathHelper.sin(getShoulderRotationPitch() * radiant) * CAMERA_DISTANCE;
-			double addY = MathHelper.sin((90 - entity.rotationPitch) * radiant) * fullY;
 			
 			return positionEyes.add(new Vec3d(addX, 0, addZ));
 		}
