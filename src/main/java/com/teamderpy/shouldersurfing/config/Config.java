@@ -1,13 +1,12 @@
 package com.teamderpy.shouldersurfing.config;
 
-import java.util.List;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -36,7 +35,6 @@ public class Config
 	@OnlyIn(Dist.CLIENT)
 	public static class ClientConfig
 	{
-		private boolean dynamicCrosshair;
 		private double shoulderRotationYaw;
 		private double shoulderZoomMod;
 		private boolean unlimitedRotation;
@@ -53,9 +51,9 @@ public class Config
 		private boolean attackIndicator;
 		private boolean ignoreBlocksWithoutCollision;
 		private boolean replaceDefaultPerspective;
-		private String defaultPerspective;
+		private Perspective defaultPerspective;
+		private CrosshairType crosshairType;
 		
-		private final BooleanValue valueDynamicCrosshair;
 		private final DoubleValue valueShoulderRotationYaw;
 		private final DoubleValue valueShoulderZoomMod;
 		private final BooleanValue valueUnlimitedRotation;
@@ -72,15 +70,11 @@ public class Config
 		private final BooleanValue valueAttackIndicator;
 		private final BooleanValue valueIgnoreBlocksWithoutCollision;
 		private final BooleanValue valueReplaceDefaultPerspective;
-		private final ConfigValue<String> valueDefaultPerspective;
+		private final ConfigValue<Perspective> valueDefaultPerspective;
+		private final ConfigValue<CrosshairType> valueCrosshairType;
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
-			this.valueDynamicCrosshair = builder
-					.comment("If enabled, then the crosshair moves around to line up with the block you are facing.")
-					.translation("Dynamic Crosshair")
-					.define("dynamic_crosshair", false);
-			
 			this.valueShoulderRotationYaw = builder
 					.comment("Third person camera rotation")
 					.translation("Rotation Offset")
@@ -161,17 +155,45 @@ public class Config
 					.translation("Replace Default Perspective")
 					.define("replace_default_perspective", false);
 			
-			List<String> perspectives = Lists.newArrayList("first person", "third person", "front third person", "shoulder surfing");
-			
 			this.valueDefaultPerspective = builder
-					.comment("The default perspective when you load the game")
+					.comment("The default perspective when you load the game (FIRST_PERSON, THIRD_PERSON, FRONT_THIRD_PERSON, SHOULDER_SURFING)")
 					.translation("Default Perspective")
-					.defineInList("default_perspective", perspectives.get(perspectives.size() - 1), perspectives);
+					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
+			
+			this.valueCrosshairType = builder
+					.comment("Crosshair type to use in 3PP (ADAPTIVE, DYNAMIC, STATIC, STATIC_WITH_1PP)")
+					.translation("Crosshair type")
+					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
+		}
+		
+		public static enum CrosshairType
+		{
+			ADAPTIVE,
+			DYNAMIC,
+			STATIC,
+			STATIC_WITH_1PP;
+			
+			public boolean isDynamic(ItemStack stack)
+			{
+				if(this == CrosshairType.ADAPTIVE && stack.getItem().hasCustomProperties())
+				{
+					return stack.getItem().getPropertyGetter(new ResourceLocation("pull")) != null;
+				}
+				
+				return this == CrosshairType.DYNAMIC;
+			}
+		}
+		
+		public static enum Perspective
+		{
+			FIRST_PERSON,
+			THIRD_PERSON,
+			FRONT_THIRD_PERSON,
+			SHOULDER_SURFING;
 		}
 		
 		public void read()
 		{
-			this.dynamicCrosshair = this.valueDynamicCrosshair.get();
 			this.shoulderRotationYaw = this.valueShoulderRotationYaw.get();
 			this.shoulderZoomMod = this.valueShoulderZoomMod.get();
 			this.unlimitedRotation = this.valueUnlimitedRotation.get();
@@ -189,11 +211,11 @@ public class Config
 			this.ignoreBlocksWithoutCollision = this.valueIgnoreBlocksWithoutCollision.get();
 			this.replaceDefaultPerspective = this.valueReplaceDefaultPerspective.get();
 			this.defaultPerspective = this.valueDefaultPerspective.get();
+			this.crosshairType = this.valueCrosshairType.get();
 		}
 		
 		private void write()
 		{
-			Config.set(this.valueDynamicCrosshair, this.dynamicCrosshair);
 			Config.set(this.valueShoulderRotationYaw, this.shoulderRotationYaw);
 			Config.set(this.valueShoulderZoomMod, this.shoulderZoomMod);
 			Config.set(this.valueUnlimitedRotation, this.unlimitedRotation);
@@ -211,17 +233,7 @@ public class Config
 			Config.set(this.valueIgnoreBlocksWithoutCollision, this.ignoreBlocksWithoutCollision);
 			Config.set(this.valueReplaceDefaultPerspective, this.replaceDefaultPerspective);
 			Config.set(this.valueDefaultPerspective, this.defaultPerspective);
-		}
-		
-		public boolean dynamicCrosshair()
-		{
-			return this.dynamicCrosshair;
-		}
-		
-		public void setDynamicCrosshair(boolean enabled)
-		{
-			this.dynamicCrosshair = enabled;
-			this.write();
+			Config.set(this.valueCrosshairType, this.crosshairType);
 		}
 		
 		public double getShoulderRotationYaw()
@@ -400,9 +412,14 @@ public class Config
 			this.write();
 		}
 		
-		public String getDefaultPerspective()
+		public Perspective getDefaultPerspective()
 		{
 			return this.defaultPerspective;
+		}
+		
+		public CrosshairType getCrosshairType()
+		{
+			return this.crosshairType;
 		}
 		
 		public int getShoulderSurfing3ppId()
@@ -470,21 +487,20 @@ public class Config
 			Config.CONFIG_DATA = (CommentedFileConfig) Config.MOD_CONFIG.getConfigData();
 			Config.CLIENT.read();
 			
-			if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("first person"))
+			switch(Config.CLIENT.getDefaultPerspective())
 			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-			}
-			else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("third person"))
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = 1;
-			}
-			else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("front third person"))
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = 2;
-			}
-			else if(Config.CLIENT.getDefaultPerspective().equalsIgnoreCase("shoulder surfing"))
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
+				case FIRST_PERSON:
+					Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+					break;
+				case THIRD_PERSON:
+					Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+					break;
+				case FRONT_THIRD_PERSON:
+					Minecraft.getInstance().gameSettings.thirdPersonView = 2;
+					break;
+				case SHOULDER_SURFING:
+					Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
+					break;
 			}
 		}
 	}

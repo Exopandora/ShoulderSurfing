@@ -164,7 +164,7 @@ public final class InjectionDelegation
 	
 	public static Vec3d getEyePosition(Entity entity, Vec3d positionEyes)
 	{
-		if(!Config.CLIENT.dynamicCrosshair())
+		if(!Config.CLIENT.getCrosshairType().isDynamic(Minecraft.getInstance().player.getActiveItemStack()))
 		{
 			final float radiant = (float) (Math.PI / 180F);
 			final float radiantPitch = entity.rotationPitch * radiant;

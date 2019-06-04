@@ -2,6 +2,7 @@ package com.teamderpy.shouldersurfing.event;
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.Config.ClientConfig.CrosshairType;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 
 import net.minecraft.client.Minecraft;
@@ -11,7 +12,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 @OnlyIn(Dist.CLIENT)
@@ -21,6 +25,7 @@ public class ClientEventHandler
 	private static float lastY = 0.0F;
 	private static Vec2f delta = Vec2f.ZERO;
 	private static Vec2f translation = Vec2f.ZERO;
+	private static int itemUseTicks;
 	
 	@SubscribeEvent
 	public static void renderTickEvent(RenderTickEvent event)
@@ -32,6 +37,36 @@ public class ClientEventHandler
 		if(rayTracer.getRayTraceHit() != null && Minecraft.getInstance().player != null)
 		{
 			rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().player.getPositionVector()));
+		}
+	}
+	
+	@SubscribeEvent
+	public static void livingEntityUseItemEventTick(LivingEntityUseItemEvent.Tick event)
+	{
+		if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && ClientEventHandler.itemUseTicks < 2 && event.getEntity().equals(Minecraft.getInstance().player))
+		{
+			if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			{
+				Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+				ClientEventHandler.itemUseTicks = 2;
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void clientTickEvent(ClientTickEvent event)
+	{
+		if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && event.phase.equals(Phase.START))
+		{
+			if(ClientEventHandler.itemUseTicks > 0)
+			{
+				ClientEventHandler.itemUseTicks--;
+			}
+			
+			if(ClientEventHandler.itemUseTicks == 1)
+			{
+				Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
+			}
 		}
 	}
 	
@@ -56,17 +91,17 @@ public class ClientEventHandler
 			int height = Minecraft.getInstance().mainWindow.getScaledHeight();
 			float scale = Minecraft.getInstance().mainWindow.getScaleFactor(Minecraft.getInstance().gameSettings.guiScale) * ShoulderSurfing.getShadersResMul();
 			
-			delta = computeDelta(width, height, scale, event.getPartialTicks());
-			translation = computeTranslation(width, height, scale);
+			ClientEventHandler.delta = computeDelta(width, height, scale, event.getPartialTicks());
+			ClientEventHandler.translation = computeTranslation(width, height, scale);
 			
-			if(Config.CLIENT.dynamicCrosshair() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().isDynamic(Minecraft.getInstance().player.getActiveItemStack()) && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{
-				GlStateManager.translatef(translation.x, translation.y, 0.0F);
+				GlStateManager.translatef(ClientEventHandler.translation.x, ClientEventHandler.translation.y, 0.0F);
 			}
 			else
 			{
-				lastX = width * scale / 2;
-				lastY = height * scale / 2;
+				ClientEventHandler.lastX = width * scale / 2;
+				ClientEventHandler.lastY = height * scale / 2;
 			}
 		}
 	}
@@ -76,7 +111,7 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(Config.CLIENT.dynamicCrosshair() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().isDynamic(Minecraft.getInstance().player.getActiveItemStack()) && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{
 				translateBack();
 			}
@@ -85,23 +120,22 @@ public class ClientEventHandler
 	
 	private static void translateBack()
 	{
-		lastX += delta.x;
-		lastY += delta.y;
-		
-		GlStateManager.translatef(-translation.x, -translation.y, 0.0F);
+		ClientEventHandler.lastX += ClientEventHandler.delta.x;
+		ClientEventHandler.lastY += ClientEventHandler.delta.y;
+		GlStateManager.translatef(-ClientEventHandler.translation.x, -ClientEventHandler.translation.y, 0.0F);
 	}
 	
 	private static Vec2f computeDelta(int width, int height, float scale, float partial)
 	{
-		float deltaX = (width * scale / 2 - lastX) * partial;
-		float deltaY = (height * scale / 2 - lastY) * partial;
+		float deltaX = (width * scale / 2 - ClientEventHandler.lastX) * partial;
+		float deltaY = (height * scale / 2 - ClientEventHandler.lastY) * partial;
 		
 		RayTracer rayTracer = RayTracer.getInstance();
 		
 		if(rayTracer.getProjectedVector() != null)
 		{
-			deltaX = (rayTracer.getProjectedVector().x - lastX) * partial;
-			deltaY = (rayTracer.getProjectedVector().y - lastY) * partial;
+			deltaX = (rayTracer.getProjectedVector().x - ClientEventHandler.lastX) * partial;
+			deltaY = (rayTracer.getProjectedVector().y - ClientEventHandler.lastY) * partial;
 		}
 		
 		return new Vec2f(deltaX, deltaY);
@@ -109,8 +143,8 @@ public class ClientEventHandler
 	
 	private static Vec2f computeTranslation(int width, int height, float scale)
 	{
-		float crosshairWidth = (lastX + delta.x) / scale;
-		float crosshairHeight = (lastY + delta.y) / scale;
+		float crosshairWidth = (ClientEventHandler.lastX + delta.x) / scale;
+		float crosshairHeight = (ClientEventHandler.lastY + delta.y) / scale;
 		
 		float translationX = -width / 2 + crosshairWidth;
 		float translationY = -height / 2 + crosshairHeight;
