@@ -3,8 +3,8 @@
 
 # Except
 
+!/lib/
 !/src/
-!/run/mods/ShoulderSurfingDummy.jar
 !/gradle/
 !gradlew
 !gradlew.bat
