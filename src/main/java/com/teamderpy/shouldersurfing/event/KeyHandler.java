@@ -15,7 +15,7 @@ public class KeyHandler
 	@SubscribeEvent
 	public static void keyInputEvent(KeyInputEvent event)
 	{
-		if(Minecraft.getInstance() != null && Minecraft.getInstance().currentScreen == null)
+		if(Minecraft.getInstance() != null && Minecraft.getInstance().field_71462_r == null)
 		{
 			if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{

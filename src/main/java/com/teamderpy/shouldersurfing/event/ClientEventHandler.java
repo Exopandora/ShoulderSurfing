@@ -1,12 +1,12 @@
 package com.teamderpy.shouldersurfing.event;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.CrosshairType;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -36,7 +36,7 @@ public class ClientEventHandler
 		
 		if(rayTracer.getRayTraceHit() != null && Minecraft.getInstance().player != null)
 		{
-			rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().player.getPositionVector()));
+			rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().gameRenderer.func_215316_n().func_216785_c()));
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class ClientEventHandler
 		{
 			int width = Minecraft.getInstance().mainWindow.getScaledWidth();
 			int height = Minecraft.getInstance().mainWindow.getScaledHeight();
-			float scale = Minecraft.getInstance().mainWindow.getScaleFactor(Minecraft.getInstance().gameSettings.guiScale) * ShoulderSurfing.getShadersResMul();
+			float scale = Minecraft.getInstance().mainWindow.func_216521_a(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
 			
 			ClientEventHandler.delta = computeDelta(width, height, scale, event.getPartialTicks());
 			ClientEventHandler.translation = computeTranslation(width, height, scale);

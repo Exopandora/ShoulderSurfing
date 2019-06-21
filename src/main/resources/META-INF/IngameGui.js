@@ -3,7 +3,7 @@ function initializeCoreMod() {
 		'coremodone': {
 			'target': {
 				'type': 'CLASS',
-				'name': 'net.minecraft.client.gui.GuiIngame'
+				'name': 'net.minecraft.client.gui.IngameGui'
 			},
 			'transformer': function(classNode) {
 				var Opcodes = Java.type('org.objectweb.asm.Opcodes');

@@ -1,6 +1,7 @@
 package com.teamderpy.shouldersurfing.math;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
@@ -8,7 +9,6 @@ import com.teamderpy.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceFluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
@@ -38,15 +38,15 @@ public final class RayTracer
 		
 		if(renderView != null && Minecraft.getInstance().world != null && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 		{
-			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : Minecraft.getInstance().playerController.getBlockReachDistance();
+			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : Minecraft.getInstance().field_71442_b.getBlockReachDistance();
 			double blockDist = 0;
-			RayTraceResult result = renderView.rayTrace(playerReach, partialTicks, RayTraceFluidMode.NEVER);
+			RayTraceResult result = renderView.func_213324_a(playerReach, partialTicks, false);
 			
 			if(result != null)
 			{
-				this.rayTraceHit = result.hitVec;
-				blockDist = result.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
-				this.rayTraceInReach = blockDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
+				this.rayTraceHit = result.getHitVec();
+				blockDist = result.getHitVec().distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
+				this.rayTraceInReach = blockDist <= (double) Minecraft.getInstance().field_71442_b.getBlockReachDistance();
 			}
 			else
 			{
@@ -67,16 +67,16 @@ public final class RayTracer
 				{
 					float collisionSize = entity.getCollisionBorderSize();
 					AxisAlignedBB aabb = entity.getBoundingBox().expand(collisionSize, collisionSize, collisionSize);
-					RayTraceResult potentialIntercept = aabb.calculateIntercept(renderViewPos, sightRay);
+					Optional<Vec3d> intercept = aabb.func_216365_b(renderViewPos, sightRay);
 					
-					if(potentialIntercept != null)
+					if(intercept.isPresent())
 					{
-						double entityDist = potentialIntercept.hitVec.distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
+						double entityDist = intercept.get().distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
 						
 						if(entityDist < blockDist)
 						{
-							this.rayTraceHit = potentialIntercept.hitVec;
-							this.rayTraceInReach = entityDist <= (double) Minecraft.getInstance().playerController.getBlockReachDistance();
+							this.rayTraceHit = intercept.get();
+							this.rayTraceInReach = entityDist <= (double) Minecraft.getInstance().field_71442_b.getBlockReachDistance();
 						}
 					}
 				}

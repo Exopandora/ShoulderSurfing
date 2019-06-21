@@ -3,7 +3,7 @@ function initializeCoreMod() {
 		'coremodone': {
 			'target': {
 				'type': 'CLASS',
-				'name': 'net.minecraft.entity.player.EntityPlayer'
+				'name': 'net.minecraft.entity.player.PlayerEntity'
 			},
 			'transformer': function(classNode) {
 				var Opcodes = Java.type('org.objectweb.asm.Opcodes');

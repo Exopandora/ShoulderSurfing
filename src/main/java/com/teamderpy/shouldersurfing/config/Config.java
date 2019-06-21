@@ -49,7 +49,6 @@ public class Config
 		private boolean showCrosshairFarther;
 		private boolean keepCameraOutOfHead;
 		private boolean attackIndicator;
-		private boolean ignoreBlocksWithoutCollision;
 		private boolean replaceDefaultPerspective;
 		private Perspective defaultPerspective;
 		private CrosshairType crosshairType;
@@ -68,7 +67,6 @@ public class Config
 		private final BooleanValue valueShowCrosshairFarther;
 		private final BooleanValue valueKeepCameraOutOfHead;
 		private final BooleanValue valueAttackIndicator;
-		private final BooleanValue valueIgnoreBlocksWithoutCollision;
 		private final BooleanValue valueReplaceDefaultPerspective;
 		private final ConfigValue<Perspective> valueDefaultPerspective;
 		private final ConfigValue<CrosshairType> valueCrosshairType;
@@ -145,11 +143,6 @@ public class Config
 					.translation("Third Person Attack Indicator")
 					.define("third_person_attack_indicator", true);
 			
-			this.valueIgnoreBlocksWithoutCollision = builder
-					.comment("Whether or not the camera ignores blocks without collision")
-					.translation("Ignore Blocks Without Collision")
-					.define("third_person_attack_indicator", true);
-			
 			this.valueReplaceDefaultPerspective = builder
 					.comment("Whether or not to replace the default third person perspective")
 					.translation("Replace Default Perspective")
@@ -208,7 +201,6 @@ public class Config
 			this.showCrosshairFarther = this.valueShowCrosshairFarther.get();
 			this.keepCameraOutOfHead = this.valueKeepCameraOutOfHead.get();
 			this.attackIndicator = this.valueAttackIndicator.get();
-			this.ignoreBlocksWithoutCollision = this.valueIgnoreBlocksWithoutCollision.get();
 			this.replaceDefaultPerspective = this.valueReplaceDefaultPerspective.get();
 			this.defaultPerspective = this.valueDefaultPerspective.get();
 			this.crosshairType = this.valueCrosshairType.get();
@@ -230,7 +222,6 @@ public class Config
 			Config.set(this.valueShowCrosshairFarther, this.showCrosshairFarther);
 			Config.set(this.valueKeepCameraOutOfHead, this.keepCameraOutOfHead);
 			Config.set(this.valueAttackIndicator, this.attackIndicator);
-			Config.set(this.valueIgnoreBlocksWithoutCollision, this.ignoreBlocksWithoutCollision);
 			Config.set(this.valueReplaceDefaultPerspective, this.replaceDefaultPerspective);
 			Config.set(this.valueDefaultPerspective, this.defaultPerspective);
 			Config.set(this.valueCrosshairType, this.crosshairType);
@@ -387,17 +378,6 @@ public class Config
 		public void setShowAttackIndicator(boolean enabled)
 		{
 			this.attackIndicator = enabled;
-			this.write();
-		}
-		
-		public boolean ignoreBlocksWithoutCollision()
-		{
-			return this.ignoreBlocksWithoutCollision;
-		}
-		
-		public void setIgnoreBlocksWithoutCollision(boolean enabled)
-		{
-			this.ignoreBlocksWithoutCollision = enabled;
 			this.write();
 		}
 		

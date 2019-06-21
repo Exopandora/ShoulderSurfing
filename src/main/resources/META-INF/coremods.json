@@ -1,6 +1,7 @@
 {
-	"EntityPlayer": "META-INF/EntityPlayer.js",
+	"ActiveRenderInfo": "META-INF/ActiveRenderInfo.js",
+	"EntityPlayer": "META-INF/PlayerEntity.js",
 	"GameRenderer": "META-INF/GameRenderer.js",
-	"GuiIngame": "META-INF/GuiIngame.js",
+	"GuiIngame": "META-INF/IngameGui.js",
 	"Minecraft": "META-INF/Minecraft.js"
 }
