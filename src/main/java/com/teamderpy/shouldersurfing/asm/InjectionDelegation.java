@@ -103,7 +103,7 @@ public final class InjectionDelegation
 		if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 		{
 			final float radiant = (float) (Math.PI / 180F);
-			final float radiantYaw = info.func_216778_f() * radiant;
+			final float radiantYaw = info.getYaw() * radiant;
 			
 			double yawXZlength = MathHelper.sin(InjectionDelegation.getShoulderRotationYaw() * radiant) * distance;
 			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
@@ -119,14 +119,14 @@ public final class InjectionDelegation
 				offsetY = offsetY * 0.1F;
 				offsetZ = offsetZ * 0.1F;
 				
-				Vec3d vec3d = info.func_216785_c().add(offsetX, offsetY, offsetZ);
-				Vec3d vec3d1 = new Vec3d(info.func_216785_c().x - info.func_216787_l().x * distance + offsetX + offsetZ + yawX, info.func_216785_c().y - info.func_216787_l().y * distance + offsetY, info.func_216785_c().z - info.func_216787_l().z * distance + offsetZ + yawZ);
+				Vec3d vec3d = info.getProjectedView().add(offsetX, offsetY, offsetZ);
+				Vec3d vec3d1 = new Vec3d(info.getProjectedView().x - info.func_216787_l().x * distance + offsetX + offsetZ + yawX, info.getProjectedView().y - info.func_216787_l().y * distance + offsetY, info.getProjectedView().z - info.func_216787_l().z * distance + offsetZ + yawZ);
 				
-				RayTraceResult raytraceresult = Minecraft.getInstance().world.func_217299_a(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
+				RayTraceResult raytraceresult = Minecraft.getInstance().world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
 				
 				if(raytraceresult != null)
 				{
-					double newDistance = raytraceresult.getHitVec().distanceTo(info.func_216785_c());
+					double newDistance = raytraceresult.getHitVec().distanceTo(info.getProjectedView());
 					
 					if(newDistance < result)
 					{

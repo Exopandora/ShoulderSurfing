@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.14.2-1.18'
+version = '1.14.3-1.18'
 group = 'com.teamderpy.shouldersurfing' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ShoulderSurfing'
 
@@ -25,9 +25,9 @@ minecraft {
     // stable_#            Stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20190608-1.14.2'
+    mappings channel: 'snapshot', version: '20190621-1.14.2'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
+    
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
@@ -71,7 +71,7 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.14.2-26.0.33'
+    minecraft 'net.minecraftforge:forge:1.14.3-27.0.2'
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -90,7 +90,7 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-	compile files('lib/OptiFine-Dummy-1.14.2.jar')
+	compile files('lib/OptiFine-Dummy.jar')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

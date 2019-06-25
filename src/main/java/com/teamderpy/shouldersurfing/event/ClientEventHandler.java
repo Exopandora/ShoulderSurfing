@@ -36,7 +36,7 @@ public class ClientEventHandler
 		
 		if(rayTracer.getRayTraceHit() != null && Minecraft.getInstance().player != null)
 		{
-			rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().gameRenderer.func_215316_n().func_216785_c()));
+			rayTracer.setRayTraceHit(rayTracer.getRayTraceHit().subtract(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView()));
 		}
 	}
 	
