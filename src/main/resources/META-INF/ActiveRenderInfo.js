@@ -22,12 +22,12 @@ function initializeCoreMod() {
 				for(x in methods) {
 					var method = methods[x];
 					
-					if(method.name.equals("func_216772_a") || method.name.equals("func_216772_a")) {
+					if(method.name.equals("update") || method.name.equals("func_216772_a")) {
 						var code = method.instructions;
 						var offset1 = code.get(106);
 						
-						// net/minecraft/client/renderer/ActiveRenderInfo#func_216772_a:50
-						// this.func_216782_a(-this.func_216779_a(4.0D * InjectionDelegation.getShoulderZoomMod()), 0.0D, 0.0D);
+						// net/minecraft/client/renderer/ActiveRenderInfo#update:50
+						// this.movePosition(-this.calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()), 0.0D, 0.0D);
 						
 						code.insertBefore(offset1, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderZoomMod", "()F", false));
 						code.insertBefore(offset1, new InsnNode(Opcodes.F2D));
@@ -35,20 +35,20 @@ function initializeCoreMod() {
 						
 						var offset2 = code.get(110 + 3);
 						
-						// net/minecraft/client/renderer/ActiveRenderInfo#func_216772_a:50
-						// InjectionDelegation.translateView(this, -this.func_216779_a(4.0D * InjectionDelegation.getShoulderZoomMod()), 0.0D, 0.0D);
+						// net/minecraft/client/renderer/ActiveRenderInfo#update:50
+						// InjectionDelegation.movePosition(this, -this.calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()), 0.0D, 0.0D);
 						
-						code.set(offset2, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "translateView", "(Lnet/minecraft/client/renderer/ActiveRenderInfo;DDD)V", false));
-					} else if(method.name.equals("func_216779_a") || method.name.equals("func_216779_a")) {
+						code.set(offset2, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "movePosition", "(Lnet/minecraft/client/renderer/ActiveRenderInfo;DDD)V", false));
+					} else if(method.name.equals("calcCameraDistance") || method.name.equals("func_216779_a")) {
 						var code = method.instructions;
 						var offset = code.get(168);
 						
-						// net/minecraft/client/renderer/ActiveRenderInfo#func_216779_a:90
-						// return InjectionDelegation.checkDistance(p_216779_1_, this);
+						// net/minecraft/client/renderer/ActiveRenderInfo#calcCameraDistance:91
+						// return InjectionDelegation.calcCameraDistance(startingDistance, this);
 						
 						code.insertBefore(offset, new VarInsnNode(Opcodes.DLOAD, 1));
 						code.insertBefore(offset, new VarInsnNode(Opcodes.ALOAD, 0));
-						code.insertBefore(offset, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "checkDistance", "(DLnet/minecraft/client/renderer/ActiveRenderInfo;)D", false));
+						code.insertBefore(offset, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calcCameraDistance", "(DLnet/minecraft/client/renderer/ActiveRenderInfo;)D", false));
 						code.insertBefore(offset, new VarInsnNode(Opcodes.DSTORE, 1));
 					}
 				}

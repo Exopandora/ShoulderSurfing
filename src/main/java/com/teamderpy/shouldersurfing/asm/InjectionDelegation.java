@@ -96,7 +96,7 @@ public final class InjectionDelegation
 	/**
 	 * Called by injected code to get the maximum possible distance for the camera
 	 */
-	public static double checkDistance(double distance, ActiveRenderInfo info)
+	public static double calcCameraDistance(double distance, ActiveRenderInfo info)
 	{
 		double result = distance;
 		
@@ -120,7 +120,7 @@ public final class InjectionDelegation
 				offsetZ = offsetZ * 0.1F;
 				
 				Vec3d vec3d = info.getProjectedView().add(offsetX, offsetY, offsetZ);
-				Vec3d vec3d1 = new Vec3d(info.getProjectedView().x - info.func_216787_l().x * distance + offsetX + offsetZ + yawX, info.getProjectedView().y - info.func_216787_l().y * distance + offsetY, info.getProjectedView().z - info.func_216787_l().z * distance + offsetZ + yawZ);
+				Vec3d vec3d1 = new Vec3d(info.getProjectedView().x - info.getLookDirection().x * distance + offsetX + offsetZ + yawX, info.getProjectedView().y - info.getLookDirection().y * distance + offsetY, info.getProjectedView().z - info.getLookDirection().z * distance + offsetZ + yawZ);
 				
 				RayTraceResult raytraceresult = Minecraft.getInstance().world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
 				
@@ -187,7 +187,7 @@ public final class InjectionDelegation
 		return result;
 	}
 	
-	public static void translateView(ActiveRenderInfo info, double x, double y, double z)
+	public static void movePosition(ActiveRenderInfo info, double x, double y, double z)
 	{
 		final float radiant = (float) (Math.PI / 180F);
 		final float radiantYaw = InjectionDelegation.getShoulderRotationYaw() * radiant;
@@ -195,6 +195,6 @@ public final class InjectionDelegation
 		double yawX = MathHelper.cos(radiantYaw) * CAMERA_DISTANCE;
 		double yawZ = MathHelper.sin(radiantYaw) * CAMERA_DISTANCE;
 		
-		info.func_216782_a(-yawX, 0, yawZ);
+		info.movePosition(-yawX, 0, yawZ);
 	}
 }

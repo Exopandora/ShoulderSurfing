@@ -89,7 +89,7 @@ public class ClientEventHandler
 		{
 			int width = Minecraft.getInstance().mainWindow.getScaledWidth();
 			int height = Minecraft.getInstance().mainWindow.getScaledHeight();
-			float scale = Minecraft.getInstance().mainWindow.func_216521_a(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
+			float scale = Minecraft.getInstance().mainWindow.calcGuiScale(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
 			
 			ClientEventHandler.delta = computeDelta(width, height, scale, event.getPartialTicks());
 			ClientEventHandler.translation = computeTranslation(width, height, scale);
