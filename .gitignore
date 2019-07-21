@@ -3,7 +3,7 @@
 
 # Except
 
-!/lib/
+!/libs/
 !/src/
 !/gradle/
 !gradlew
