@@ -12,11 +12,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
@@ -73,7 +73,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(RayTracer.getInstance().skipPlayerRender() && event.getEntityPlayer().equals(Minecraft.getInstance().player) && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getInstance().isGameFocused()))
+		if(RayTracer.getInstance().skipPlayerRender() && event.getPlayer().equals(Minecraft.getInstance().player) && (event.getRenderer().getRenderManager().playerViewY != 180 || Minecraft.getInstance().isGameFocused()))
 		{
 			if(event.isCancelable())
 			{
