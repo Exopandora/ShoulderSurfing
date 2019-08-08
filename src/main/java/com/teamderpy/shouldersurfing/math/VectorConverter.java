@@ -94,7 +94,6 @@ public class VectorConverter
 		
 		return null;
 	}
-	
 	private static void multMatrixVecf(FloatBuffer m, float[] in, float[] out)
 	{
 		for(int i = 0; i < 4; i++)
