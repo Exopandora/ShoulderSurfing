@@ -8,6 +8,7 @@ function initializeCoreMod() {
 			'transformer': function(classNode) {
 				var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 				var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
+				var LabelNode = Java.type('org.objectweb.asm.tree.LabelNode');
 				var methods = classNode.methods;
 				
 				for(x in methods) {
@@ -19,6 +20,11 @@ function initializeCoreMod() {
 						
 						// net/minecraft/client/renderer/GameRenderer#updateCameraAndRender:668
 						// InjectionDelegation.calculateRayTraceProjection();
+						
+						if(!(offset instanceof LabelNode))
+						{
+							offset = code.get(150);
+						}
 						
 						code.insertBefore(offset, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calculateRayTraceProjection", "()V", false));
 					}

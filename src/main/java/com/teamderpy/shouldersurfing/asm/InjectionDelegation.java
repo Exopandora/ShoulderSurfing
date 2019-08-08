@@ -1,5 +1,7 @@
 package com.teamderpy.shouldersurfing.asm;
 
+import java.lang.reflect.Method;
+
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
@@ -187,7 +189,22 @@ public final class InjectionDelegation
 		return result;
 	}
 	
-	public static void movePosition(ActiveRenderInfo info, double x, double y, double z)
+	private static Method METHOD_MOVE_POSITION;
+	
+	static
+	{
+		try
+		{
+			InjectionDelegation.METHOD_MOVE_POSITION = ActiveRenderInfo.class.getDeclaredMethod("func_216782_a", double.class, double.class, double.class);
+			InjectionDelegation.METHOD_MOVE_POSITION.setAccessible(true);
+		}
+		catch(Exception e)
+		{
+			InjectionDelegation.METHOD_MOVE_POSITION = null;
+		}
+	}
+	
+	public static void movePosition(ActiveRenderInfo info, double x, double y, double z) throws Exception
 	{
 		final float radiant = (float) (Math.PI / 180F);
 		final float radiantYaw = InjectionDelegation.getShoulderRotationYaw() * radiant;
@@ -195,6 +212,13 @@ public final class InjectionDelegation
 		double yawX = MathHelper.cos(radiantYaw) * CAMERA_DISTANCE;
 		double yawZ = MathHelper.sin(radiantYaw) * CAMERA_DISTANCE;
 		
-		info.movePosition(-yawX, 0, yawZ);
+		if(InjectionDelegation.METHOD_MOVE_POSITION != null)
+		{
+			InjectionDelegation.METHOD_MOVE_POSITION.invoke(info, -yawX, 0, yawZ);
+		}
+		else
+		{
+			info.movePosition(-yawX, 0, yawZ);
+		}
 	}
 }
