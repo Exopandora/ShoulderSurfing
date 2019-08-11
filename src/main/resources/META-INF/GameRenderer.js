@@ -21,8 +21,7 @@ function initializeCoreMod() {
 						// net/minecraft/client/renderer/GameRenderer#updateCameraAndRender:668
 						// InjectionDelegation.calculateRayTraceProjection();
 						
-						if(!(offset instanceof LabelNode))
-						{
+						if(!(offset instanceof LabelNode)) {
 							offset = code.get(150);
 						}
 						
