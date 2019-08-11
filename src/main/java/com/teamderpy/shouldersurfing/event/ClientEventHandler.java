@@ -43,12 +43,13 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void livingEntityUseItemEventTick(LivingEntityUseItemEvent.Tick event)
 	{
-		if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && ClientEventHandler.itemUseTicks < 2 && event.getEntity().equals(Minecraft.getInstance().player))
+		if(ClientEventHandler.itemUseTicks < 2 && event.getEntity().equals(Minecraft.getInstance().player))
 		{
-			if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			ClientEventHandler.itemUseTicks = 2;
+			
+			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{
 				Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-				ClientEventHandler.itemUseTicks = 2;
 			}
 		}
 	}
@@ -56,14 +57,14 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
 	{
-		if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && event.phase.equals(Phase.START))
+		if(event.phase.equals(Phase.START))
 		{
 			if(ClientEventHandler.itemUseTicks > 0)
 			{
 				ClientEventHandler.itemUseTicks--;
 			}
 			
-			if(ClientEventHandler.itemUseTicks == 1)
+			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && ClientEventHandler.itemUseTicks == 1)
 			{
 				Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
 			}
@@ -112,7 +113,7 @@ public class ClientEventHandler
 			
 			ClientEventHandler.translation = new Vec2f(translationX, translationY);
 			
-			if(Config.CLIENT.getCrosshairType().isDynamic(Minecraft.getInstance().player.getActiveItemStack()) && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{
 				GlStateManager.translatef(ClientEventHandler.translation.x, ClientEventHandler.translation.y, 0.0F);
 			}
@@ -129,12 +130,17 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(Config.CLIENT.getCrosshairType().isDynamic(Minecraft.getInstance().player.getActiveItemStack()) && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
 			{
 				ClientEventHandler.lastX += ClientEventHandler.partial.x;
 				ClientEventHandler.lastY += ClientEventHandler.partial.y;
 				GlStateManager.translatef(-ClientEventHandler.translation.x, -ClientEventHandler.translation.y, 0.0F);
 			}
 		}
+	}
+	
+	public static boolean isAiming()
+	{
+		return ClientEventHandler.itemUseTicks > 0;
 	}
 }

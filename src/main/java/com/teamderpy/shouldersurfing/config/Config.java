@@ -1,12 +1,19 @@
 package com.teamderpy.shouldersurfing.config;
 
+import java.util.Arrays;
+import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -45,7 +52,7 @@ public class Config
 		private double zoomMax;
 		private boolean show3ppCrosshair;
 		private boolean show1ppCrosshair;
-		private boolean alwaysShowCrosshair;
+		private CrosshairVisibility crosshairVisibility;
 		private boolean showCrosshairFarther;
 		private boolean keepCameraOutOfHead;
 		private boolean attackIndicator;
@@ -63,7 +70,7 @@ public class Config
 		private final DoubleValue valueZoomMax;
 		private final BooleanValue valueShow3ppCrosshair;
 		private final BooleanValue valueShow1ppCrosshair;
-		private final BooleanValue valueAlwaysShowCrosshair;
+		private final ConfigValue<CrosshairVisibility> valueCrosshairVisibility;
 		private final BooleanValue valueShowCrosshairFarther;
 		private final BooleanValue valueKeepCameraOutOfHead;
 		private final BooleanValue valueAttackIndicator;
@@ -123,10 +130,10 @@ public class Config
 					.translation("First Person Crosshair")
 					.define("1pp_crosshair", true);
 			
-			this.valueAlwaysShowCrosshair = builder
-					.comment("Whether or not to show a crosshair in the center of the screen if nothing is in range of you")
-					.translation("Always Show Crosshair")
-					.define("always_show_crosshair", true);
+			this.valueCrosshairVisibility = builder
+					.comment("Crosshair visibility in 3PP (" + Config.listEnums(CrosshairVisibility.values()) + ")")
+					.translation("Crosshair Visibility")
+					.defineEnum("crosshair_visibility", CrosshairVisibility.ALWAYS, CrosshairVisibility.values());
 			
 			this.valueShowCrosshairFarther = builder
 					.comment("Whether or not to show the crosshairs farther than normal")
@@ -149,12 +156,12 @@ public class Config
 					.define("replace_default_perspective", false);
 			
 			this.valueDefaultPerspective = builder
-					.comment("The default perspective when you load the game (FIRST_PERSON, THIRD_PERSON, FRONT_THIRD_PERSON, SHOULDER_SURFING)")
+					.comment("The default perspective when you load the game (" + Config.listEnums(Perspective.values()) + ")")
 					.translation("Default Perspective")
 					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
 			
 			this.valueCrosshairType = builder
-					.comment("Crosshair type to use in 3PP (ADAPTIVE, DYNAMIC, STATIC, STATIC_WITH_1PP)")
+					.comment("Crosshair type to use in 3PP (" + Config.listEnums(CrosshairType.values()) + ")")
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 		}
@@ -166,14 +173,34 @@ public class Config
 			STATIC,
 			STATIC_WITH_1PP;
 			
-			public boolean isDynamic(ItemStack stack)
+			public boolean isDynamic()
 			{
-				if(this == CrosshairType.ADAPTIVE && stack.getItem().hasCustomProperties())
+				if(this == CrosshairType.ADAPTIVE)
 				{
-					return stack.getItem().getPropertyGetter(new ResourceLocation("pull")) != null;
+					Item active = Minecraft.getInstance().player.getActiveItemStack().getItem();
+					
+					if(active.hasCustomProperties())
+					{
+						if(active.getPropertyGetter(new ResourceLocation("pull")) != null || active.getPropertyGetter(new ResourceLocation("throwing")) != null)
+						{
+							return true;
+						}
+					}
+					
+					for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
+					{
+						if(held.getItem().hasCustomProperties() && held.getItem().getPropertyGetter(new ResourceLocation("charged")) != null)
+						{
+							return true;
+						}
+					}
+				}
+				else if(this == CrosshairType.DYNAMIC)
+				{
+					return true;
 				}
 				
-				return this == CrosshairType.DYNAMIC;
+				return false;
 			}
 		}
 		
@@ -183,6 +210,26 @@ public class Config
 			THIRD_PERSON,
 			FRONT_THIRD_PERSON,
 			SHOULDER_SURFING;
+		}
+		
+		public static enum CrosshairVisibility
+		{
+			ALWAYS(() -> true),
+			WHEN_AIMING(() -> ClientEventHandler.isAiming()),
+			WHEN_IN_RANGE(() -> Minecraft.getInstance().objectMouseOver != null && !Minecraft.getInstance().objectMouseOver.getType().equals(RayTraceResult.Type.MISS)),
+			WHEN_AIMING_OR_IN_RANGE(() -> CrosshairVisibility.WHEN_IN_RANGE.doRender() || CrosshairVisibility.WHEN_AIMING.doRender());
+			
+			private final BooleanSupplier doRender;
+			
+			private CrosshairVisibility(BooleanSupplier doRender)
+			{
+				this.doRender = doRender;
+			}
+			
+			public boolean doRender()
+			{
+				return this.doRender.getAsBoolean();
+			}
 		}
 		
 		public void read()
@@ -197,7 +244,7 @@ public class Config
 			this.zoomMax = this.valueZoomMax.get();
 			this.show3ppCrosshair = this.valueShow3ppCrosshair.get();
 			this.show1ppCrosshair = this.valueShow1ppCrosshair.get();
-			this.alwaysShowCrosshair = this.valueAlwaysShowCrosshair.get();
+			this.crosshairVisibility = this.valueCrosshairVisibility.get();
 			this.showCrosshairFarther = this.valueShowCrosshairFarther.get();
 			this.keepCameraOutOfHead = this.valueKeepCameraOutOfHead.get();
 			this.attackIndicator = this.valueAttackIndicator.get();
@@ -218,7 +265,7 @@ public class Config
 			Config.set(this.valueZoomMax, this.zoomMax);
 			Config.set(this.valueShow3ppCrosshair, this.show3ppCrosshair);
 			Config.set(this.valueShow1ppCrosshair, this.show1ppCrosshair);
-			Config.set(this.valueAlwaysShowCrosshair, this.alwaysShowCrosshair);
+			Config.set(this.valueCrosshairVisibility, this.crosshairVisibility);
 			Config.set(this.valueShowCrosshairFarther, this.showCrosshairFarther);
 			Config.set(this.valueKeepCameraOutOfHead, this.keepCameraOutOfHead);
 			Config.set(this.valueAttackIndicator, this.attackIndicator);
@@ -337,14 +384,14 @@ public class Config
 			this.write();
 		}
 		
-		public boolean alwaysShowCrosshair()
+		public CrosshairVisibility getCrosshairVisibility()
 		{
-			return this.alwaysShowCrosshair;
+			return this.crosshairVisibility;
 		}
 		
-		public void setAlwaysShowCrosshair(boolean enabled)
+		public void setCrosshairVisibility(CrosshairVisibility visibility)
 		{
-			this.alwaysShowCrosshair = enabled;
+			this.crosshairVisibility = visibility;
 			this.write();
 		}
 		
@@ -397,9 +444,21 @@ public class Config
 			return this.defaultPerspective;
 		}
 		
+		public void setDefaultPerspective(Perspective perspective)
+		{
+			this.defaultPerspective = perspective;
+			this.write();
+		}
+		
 		public CrosshairType getCrosshairType()
 		{
 			return this.crosshairType;
+		}
+		
+		public void setCrosshairType(CrosshairType type)
+		{
+			this.crosshairType = type;
+			this.write();
 		}
 		
 		public int getShoulderSurfing3ppId()
@@ -456,6 +515,11 @@ public class Config
 		{
 			Config.CONFIG_DATA.set(configValue.getPath(), value);
 		}
+	}
+	
+	private static String listEnums(Enum<?>[] enums)
+	{
+		return String.join(", ", Arrays.stream(enums).map(Enum::name).collect(Collectors.toList()));
 	}
 	
 	@SubscribeEvent
