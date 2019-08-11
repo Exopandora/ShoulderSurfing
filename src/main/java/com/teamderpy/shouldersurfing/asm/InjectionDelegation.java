@@ -12,7 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -148,7 +147,7 @@ public final class InjectionDelegation
 	
 	public static Vec3d getEyePosition(Entity entity, Vec3d positionEyes)
 	{
-		if(!Config.CLIENT.getCrosshairType().isDynamic(Minecraft.getInstance().player.getActiveItemStack()))
+		if(!Config.CLIENT.getCrosshairType().isDynamic())
 		{
 			final float radiant = (float) (Math.PI / 180F);
 			final float radiantPitch = entity.rotationPitch * radiant;
@@ -171,22 +170,22 @@ public final class InjectionDelegation
 	
 	public static int doRenderCrosshair()
 	{
-		int result = 0;
+		int skipRender = 0;
 		
-		if(!Config.CLIENT.alwaysShowCrosshair() && Minecraft.getInstance().objectMouseOver != null && !Minecraft.getInstance().objectMouseOver.getType().equals(Type.MISS))
+		if(!Config.CLIENT.getCrosshairVisibility().doRender())
 		{
-			result = 1;
+			skipRender = 1;
 		}
 		else if(Minecraft.getInstance().gameSettings.thirdPersonView > 0 && !Config.CLIENT.show3ppCrosshair())
 		{
-			result = 1;
+			skipRender = 1;
 		}
 		else if(Minecraft.getInstance().gameSettings.thirdPersonView == 0 && !Config.CLIENT.show1ppCrosshair())
 		{
-			result = 1;
+			skipRender = 1;
 		}
 		
-		return result;
+		return skipRender;
 	}
 	
 	private static Method METHOD_MOVE_POSITION;
