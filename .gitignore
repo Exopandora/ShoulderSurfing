@@ -6,9 +6,10 @@
 !/libs/
 !/src/
 !/gradle/
+!build.gradle
 !gradlew
 !gradlew.bat
-!build.gradle
+!LICENSE.txt
 !README.md
 
 # Subdirs
