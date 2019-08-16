@@ -37,7 +37,7 @@ Download ShoulderSurfing or build from source
 
 # Troubleshooting #
 
-**Optifine:** Set "Render Quality" to "1.0x" for Shader Pack "(internal)" and switch back to Shader Pack "OFF"
+**Optifine:** Set "Render Quality" to "1.0x" for Shader Pack "(internal)" and switch back to Shader Pack "OFF"  
 **BetterCombat:** Set "Enable 1PP Crosshair" to "false" and "Override Mod Crosshairs" to "true"
 
 # FAQ #
