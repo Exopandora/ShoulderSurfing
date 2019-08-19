@@ -8,7 +8,6 @@ import javax.vecmath.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

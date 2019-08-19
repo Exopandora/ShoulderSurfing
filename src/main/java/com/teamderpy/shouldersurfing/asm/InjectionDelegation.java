@@ -3,6 +3,7 @@ package com.teamderpy.shouldersurfing.asm;
 import java.lang.reflect.Method;
 
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
 
@@ -70,12 +71,10 @@ public final class InjectionDelegation
 	 */
 	public static void calculateRayTraceProjection()
 	{
-		RayTracer rayTracer = RayTracer.getInstance();
-		
-		if(rayTracer.getRayTraceHit() != null)
+		if(RayTracer.getRayTraceHit() != null)
 		{
-			rayTracer.setProjectedVector(VectorConverter.project2D(rayTracer.getRayTraceHit()));
-			rayTracer.setRayTraceHit(null);
+			RayTracer.setProjectedVector(VectorConverter.project2D(RayTracer.getRayTraceHit()));
+			RayTracer.setRayTraceHit(null);
 		}
 	}
 	
@@ -137,11 +136,7 @@ public final class InjectionDelegation
 			}
 		}
 		
-		if(distance < 0.80 && Config.CLIENT.keepCameraOutOfHead())
-		{
-			RayTracer.getInstance().setSkipPlayerRender(true);
-		}
-		
+		ClientEventHandler.SKIP_RENDER_PLAYER = distance < 0.80;
 		return CAMERA_DISTANCE = result;
 	}
 	
