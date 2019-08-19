@@ -136,7 +136,7 @@ public final class InjectionDelegation
 			}
 		}
 		
-		ClientEventHandler.SKIP_RENDER_PLAYER = distance < 0.80;
+		ClientEventHandler.skipRenderPlayer = distance < 0.80;
 		return CAMERA_DISTANCE = result;
 	}
 	

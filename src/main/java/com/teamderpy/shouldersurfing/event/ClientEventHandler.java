@@ -24,7 +24,7 @@ public class ClientEventHandler
 	private static Vec2f translation = Vec2f.ZERO;;
 	private static int itemUseTicks;
 	
-	public static boolean SKIP_RENDER_PLAYER = false;
+	public static boolean skipRenderPlayer = false;
 	
 	@SubscribeEvent
 	public static void livingEntityUseItemEventTick(LivingEntityUseItemEvent.Tick event)
@@ -55,7 +55,7 @@ public class ClientEventHandler
 				Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
 			}
 			
-			ClientEventHandler.SKIP_RENDER_PLAYER = false;
+			ClientEventHandler.skipRenderPlayer = false;
 			
 			RayTracer.traceFromEyes(1.0F);
 			
@@ -69,7 +69,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.getPlayer().equals(Minecraft.getInstance().player) && ClientEventHandler.SKIP_RENDER_PLAYER && Config.CLIENT.keepCameraOutOfHead())
+		if(event.getPlayer().equals(Minecraft.getInstance().player) && ClientEventHandler.skipRenderPlayer && Config.CLIENT.keepCameraOutOfHead())
 		{
 			if(event.isCancelable())
 			{
