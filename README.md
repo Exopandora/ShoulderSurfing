@@ -48,6 +48,9 @@ Download ShoulderSurfing or build from source
 **Q:** Can you port this to fabric, liteloader, rift, etc ?  
 **A:** No
 
+**Q:** Can you make the player aim at where the crosshair is pointing at ?  
+**A:** No as it would break server compatibility
+
 **Q:** Can i add this to my modpack ?  
 **A:** Yes
 
