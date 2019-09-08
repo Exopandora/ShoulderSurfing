@@ -35,6 +35,11 @@ Download ShoulderSurfing or build from source
 3. Join a world or server
 4. Use the `Arrow Keys` to adjust the perspective (`O` to swap shoulder)
 
+## Configuration ##
+
+≥ 1.13: Edit `..\.minecraft\config\shouldersurfing.toml`
+≤ 1.12: Edit `..\.minecraft\config\shouldersurfing.cfg`
+
 # Troubleshooting #
 
 **Optifine:** Set "Render Quality" to "1.0x" for Shader Pack "(internal)" and switch back to Shader Pack "OFF"  
