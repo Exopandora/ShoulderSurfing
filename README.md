@@ -37,8 +37,8 @@ Download ShoulderSurfing or build from source
 
 ## Configuration ##
 
-≥ 1.13: Edit `..\.minecraft\config\shouldersurfing.toml`  
-≤ 1.12: Edit `..\.minecraft\config\shouldersurfing.cfg`
+≥ 1.13: Manual: `..\.minecraft\config\shouldersurfing.toml`  
+≤ 1.12: Ingame: Mods -> ShoulderSurfing -> Config (Manual: `..\.minecraft\config\shouldersurfing.cfg`)
 
 # Troubleshooting #
 
