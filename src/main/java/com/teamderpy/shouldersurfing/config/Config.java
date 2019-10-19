@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.config;
 
 import java.util.Arrays;
-import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -166,6 +165,7 @@ public class Config
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 		}
 		
+		@OnlyIn(Dist.CLIENT)
 		public static enum CrosshairType
 		{
 			ADAPTIVE,
@@ -204,31 +204,49 @@ public class Config
 			}
 		}
 		
+		@OnlyIn(Dist.CLIENT)
 		public static enum Perspective
 		{
 			FIRST_PERSON,
 			THIRD_PERSON,
 			FRONT_THIRD_PERSON,
 			SHOULDER_SURFING;
+			
+			public int getPerspectiveId()
+			{
+				if(this == Perspective.SHOULDER_SURFING)
+				{
+					return Config.CLIENT.getShoulderSurfing3ppId();
+				}
+				
+				return this.ordinal();
+			}
 		}
 		
+		@OnlyIn(Dist.CLIENT)
 		public static enum CrosshairVisibility
 		{
-			ALWAYS(() -> true),
-			WHEN_AIMING(() -> ClientEventHandler.isAiming()),
-			WHEN_IN_RANGE(() -> Minecraft.getInstance().objectMouseOver != null && !Minecraft.getInstance().objectMouseOver.getType().equals(RayTraceResult.Type.MISS)),
-			WHEN_AIMING_OR_IN_RANGE(() -> CrosshairVisibility.WHEN_IN_RANGE.doRender() || CrosshairVisibility.WHEN_AIMING.doRender());
-			
-			private final BooleanSupplier doRender;
-			
-			private CrosshairVisibility(BooleanSupplier doRender)
-			{
-				this.doRender = doRender;
-			}
+			ALWAYS,
+			WHEN_AIMING,
+			WHEN_IN_RANGE,
+			WHEN_AIMING_OR_IN_RANGE;
 			
 			public boolean doRender()
 			{
-				return this.doRender.getAsBoolean();
+				if(this == CrosshairVisibility.WHEN_AIMING)
+				{
+					return ClientEventHandler.isAiming();
+				}
+				else if(this == CrosshairVisibility.WHEN_IN_RANGE)
+				{
+					return Minecraft.getInstance().objectMouseOver != null && !Minecraft.getInstance().objectMouseOver.getType().equals(RayTraceResult.Type.MISS);
+				}
+				else if(this == CrosshairVisibility.WHEN_AIMING_OR_IN_RANGE)
+				{
+					return CrosshairVisibility.WHEN_IN_RANGE.doRender() || CrosshairVisibility.WHEN_AIMING.doRender();
+				}
+				
+				return true;
 			}
 		}
 		
@@ -530,22 +548,7 @@ public class Config
 			Config.MOD_CONFIG = event.getConfig();
 			Config.CONFIG_DATA = (CommentedFileConfig) Config.MOD_CONFIG.getConfigData();
 			Config.CLIENT.read();
-			
-			switch(Config.CLIENT.getDefaultPerspective())
-			{
-				case FIRST_PERSON:
-					Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-					break;
-				case THIRD_PERSON:
-					Minecraft.getInstance().gameSettings.thirdPersonView = 1;
-					break;
-				case FRONT_THIRD_PERSON:
-					Minecraft.getInstance().gameSettings.thirdPersonView = 2;
-					break;
-				case SHOULDER_SURFING:
-					Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
-					break;
-			}
+			Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getDefaultPerspective().getPerspectiveId();
 		}
 	}
 	
