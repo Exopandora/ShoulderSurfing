@@ -1,6 +1,7 @@
 package com.teamderpy.shouldersurfing.asm;
 
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
@@ -30,7 +31,7 @@ public final class InjectionDelegation
 	 */
 	public static float getShoulderRotationYaw()
 	{
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 		{
 			return (float) Config.CLIENT.getShoulderRotationYaw();
 		}
@@ -43,7 +44,7 @@ public final class InjectionDelegation
 	 */
 	public static float getShoulderRotationPitch()
 	{
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 		{
 			return 0F;
 		}
@@ -56,7 +57,7 @@ public final class InjectionDelegation
 	 */
 	public static float getShoulderZoomMod()
 	{
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 		{
 			return (float) Config.CLIENT.getShoulderZoomMod();
 		}
@@ -98,7 +99,7 @@ public final class InjectionDelegation
 	{
 		double result = distance;
 		
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 		{
 			final float radiant = (float) (Math.PI / 180F);
 			final float radiantYaw = info.getYaw() * radiant;
@@ -169,11 +170,11 @@ public final class InjectionDelegation
 		{
 			skipRender = 1;
 		}
-		else if(Minecraft.getInstance().gameSettings.thirdPersonView > 0 && !Config.CLIENT.show3ppCrosshair())
+		else if(Minecraft.getInstance().gameSettings.thirdPersonView != Perspective.FIRST_PERSON.getPerspectiveId() && !Config.CLIENT.show3ppCrosshair())
 		{
 			skipRender = 1;
 		}
-		else if(Minecraft.getInstance().gameSettings.thirdPersonView == 0 && !Config.CLIENT.show1ppCrosshair())
+		else if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.FIRST_PERSON.getPerspectiveId() && !Config.CLIENT.show1ppCrosshair())
 		{
 			skipRender = 1;
 		}

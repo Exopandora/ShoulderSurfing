@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.CrosshairType;
+import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
@@ -33,9 +34,9 @@ public class ClientEventHandler
 		{
 			ClientEventHandler.itemUseTicks = 2;
 			
-			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+				Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.FIRST_PERSON.getPerspectiveId();
 			}
 		}
 	}
@@ -52,7 +53,7 @@ public class ClientEventHandler
 			
 			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && ClientEventHandler.itemUseTicks == 1)
 			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getShoulderSurfing3ppId();
+				Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.SHOULDER_SURFING.getPerspectiveId();
 			}
 			
 			ClientEventHandler.skipRenderPlayer = false;
@@ -94,7 +95,7 @@ public class ClientEventHandler
 				ClientEventHandler.translation = ClientEventHandler.lastTickTranslation.add(projectedOffset.subtract(ClientEventHandler.lastTickTranslation).scale(event.getPartialTicks()));
 			}
 			
-			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
 				GlStateManager.translatef(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
 				ClientEventHandler.lastTickTranslation = ClientEventHandler.translation;
@@ -111,7 +112,7 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Config.CLIENT.getShoulderSurfing3ppId())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
 				GlStateManager.translatef(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
 			}
