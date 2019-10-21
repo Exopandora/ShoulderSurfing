@@ -26,6 +26,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public final class InjectionDelegation
 {
+	private static double cameraDistance = 0F;
+	
 	/**
 	 * Called by injected code to modify the camera rotation yaw
 	 */
@@ -90,8 +92,6 @@ public final class InjectionDelegation
 		return 3;
 	}
 	
-	private static double CAMERA_DISTANCE = 0F;
-	
 	/**
 	 * Called by injected code to get the maximum possible distance for the camera
 	 */
@@ -136,7 +136,7 @@ public final class InjectionDelegation
 		}
 		
 		ClientEventHandler.skipRenderPlayer = distance < 0.80;
-		return CAMERA_DISTANCE = result;
+		return InjectionDelegation.cameraDistance = result;
 	}
 	
 	public static Vec3d getEyePosition(Entity entity, Vec3d positionEyes)
@@ -147,12 +147,12 @@ public final class InjectionDelegation
 			final float radiantPitch = entity.rotationPitch * radiant;
 			final float radiantYaw = entity.rotationYaw * radiant;
 			
-			double pitchYLength = MathHelper.sin(InjectionDelegation.getShoulderRotationPitch() * radiant) * CAMERA_DISTANCE;
+			double pitchYLength = MathHelper.sin(InjectionDelegation.getShoulderRotationPitch() * radiant) * InjectionDelegation.cameraDistance;
 			double pitchX = MathHelper.sin(radiantPitch) * MathHelper.sin(-radiantYaw) * pitchYLength;
 			double pitchY = MathHelper.cos(radiantPitch) * pitchYLength;
 			double pitchZ = MathHelper.sin(radiantPitch) * MathHelper.cos(-radiantYaw) * pitchYLength;
 			
-			double yawXZlength = MathHelper.sin(InjectionDelegation.getShoulderRotationYaw() * radiant) * CAMERA_DISTANCE;
+			double yawXZlength = MathHelper.sin(InjectionDelegation.getShoulderRotationYaw() * radiant) * InjectionDelegation.cameraDistance;
 			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
 			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
 			
@@ -187,8 +187,8 @@ public final class InjectionDelegation
 		final float radiant = (float) (Math.PI / 180F);
 		final float radiantYaw = InjectionDelegation.getShoulderRotationYaw() * radiant;
 		
-		double yawX = MathHelper.cos(radiantYaw) * CAMERA_DISTANCE;
-		double yawZ = MathHelper.sin(radiantYaw) * CAMERA_DISTANCE;
+		double yawX = MathHelper.cos(radiantYaw) * InjectionDelegation.cameraDistance;
+		double yawZ = MathHelper.sin(radiantYaw) * InjectionDelegation.cameraDistance;
 		
 		info.movePosition(-yawX, 0, yawZ);
 	}
