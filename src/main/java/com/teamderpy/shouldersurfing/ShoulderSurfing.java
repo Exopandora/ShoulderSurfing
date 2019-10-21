@@ -1,12 +1,9 @@
 package com.teamderpy.shouldersurfing;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
 
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,13 +19,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ShoulderSurfing
 {
 	public static final String MODID = "shouldersurfing";
-	
-	public static final KeyBinding KEYBIND_ROTATE_CAMERA_LEFT = new KeyBinding("Camera left", GLFW.GLFW_KEY_LEFT, "Shoulder Surfing");
-	public static final KeyBinding KEYBIND_ROTATE_CAMERA_RIGHT = new KeyBinding("Camera right", GLFW.GLFW_KEY_RIGHT, "Shoulder Surfing");
-	public static final KeyBinding KEYBIND_ZOOM_CAMERA_OUT = new KeyBinding("Camera closer", GLFW.GLFW_KEY_UP, "Shoulder Surfing");
-	public static final KeyBinding KEYBIND_ZOOM_CAMERA_IN = new KeyBinding("Camera farther", GLFW.GLFW_KEY_DOWN, "Shoulder Surfing");
-	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", GLFW.GLFW_KEY_O, "Shoulder Surfing");
-	
 	public static final float RAYTRACE_DISTANCE = 400.0F;
 	
 	private static boolean SHADER_ACTIVE;
@@ -44,11 +34,11 @@ public class ShoulderSurfing
 	@SubscribeEvent
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		ClientRegistry.registerKeyBinding(KEYBIND_ROTATE_CAMERA_LEFT);
-		ClientRegistry.registerKeyBinding(KEYBIND_ROTATE_CAMERA_RIGHT);
-		ClientRegistry.registerKeyBinding(KEYBIND_ZOOM_CAMERA_OUT);
-		ClientRegistry.registerKeyBinding(KEYBIND_ZOOM_CAMERA_IN);
-		ClientRegistry.registerKeyBinding(KEYBIND_SWAP_SHOULDER);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ROTATE_CAMERA_LEFT);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ROTATE_CAMERA_RIGHT);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ZOOM_CAMERA_OUT);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ZOOM_CAMERA_IN);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		
 		MinecraftForge.EVENT_BUS.addListener(KeyHandler::keyInputEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
@@ -57,12 +47,12 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGameOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::postRenderGameOverlayEvent);
 		
-		SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
+		ShoulderSurfing.SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
 	}
 	
 	public static float getShadersResMul()
 	{
-		if(SHADER_ACTIVE)
+		if(ShoulderSurfing.SHADER_ACTIVE)
 		{
 			return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
 		}
