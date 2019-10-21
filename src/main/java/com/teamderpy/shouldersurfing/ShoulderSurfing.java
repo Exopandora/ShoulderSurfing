@@ -39,6 +39,7 @@ public class ShoulderSurfing
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ZOOM_CAMERA_OUT);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ZOOM_CAMERA_IN);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
 		
 		MinecraftForge.EVENT_BUS.addListener(KeyHandler::keyInputEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
