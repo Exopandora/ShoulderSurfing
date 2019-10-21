@@ -3,19 +3,19 @@ package com.teamderpy.shouldersurfing;
 import org.lwjgl.glfw.GLFW;
 
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.proxy.ClientProxy;
-import com.teamderpy.shouldersurfing.proxy.CommonProxy;
+import com.teamderpy.shouldersurfing.event.ClientEventHandler;
+import com.teamderpy.shouldersurfing.event.KeyHandler;
 
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ShoulderSurfing.MODID)
@@ -31,15 +31,12 @@ public class ShoulderSurfing
 	
 	public static final float RAYTRACE_DISTANCE = 400.0F;
 	
-	private static CommonProxy SIDEPROXY;
 	private static boolean SHADER_ACTIVE;
 	
 	public ShoulderSurfing()
 	{
-		SIDEPROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(this::clientSetup);
-		modEventBus.addListener(this::commonSetup);
 		ModLoadingContext.get().registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
 		modEventBus.register(Config.class);
 	}
@@ -53,13 +50,14 @@ public class ShoulderSurfing
 		ClientRegistry.registerKeyBinding(KEYBIND_ZOOM_CAMERA_IN);
 		ClientRegistry.registerKeyBinding(KEYBIND_SWAP_SHOULDER);
 		
+		MinecraftForge.EVENT_BUS.addListener(KeyHandler::keyInputEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::livingEntityUseItemEventTick);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGameOverlayEvent);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::postRenderGameOverlayEvent);
+		
 		SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
-	}
-	
-	@SubscribeEvent
-	public void commonSetup(FMLCommonSetupEvent event)
-	{
-		SIDEPROXY.setup();
 	}
 	
 	public static float getShadersResMul()
