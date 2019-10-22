@@ -4,6 +4,7 @@ import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -49,6 +50,7 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::postRenderGameOverlayEvent);
 		
 		ShoulderSurfing.SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
+		Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getDefaultPerspective().getPerspectiveId();
 	}
 	
 	public static float getShadersResMul()

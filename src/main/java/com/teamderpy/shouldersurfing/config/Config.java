@@ -548,7 +548,6 @@ public class Config
 			Config.MOD_CONFIG = event.getConfig();
 			Config.CONFIG_DATA = (CommentedFileConfig) Config.MOD_CONFIG.getConfigData();
 			Config.CLIENT.read();
-			Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getDefaultPerspective().getPerspectiveId();
 		}
 	}
 	
