@@ -70,7 +70,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.getPlayer().equals(Minecraft.getInstance().player) && ClientEventHandler.skipRenderPlayer && Config.CLIENT.keepCameraOutOfHead())
+		if(event.getPlayer().equals(Minecraft.getInstance().player) && ClientEventHandler.skipRenderPlayer && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null)
 		{
 			if(event.isCancelable())
 			{
