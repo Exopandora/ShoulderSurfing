@@ -70,6 +70,12 @@ public class KeyHandler
 					Config.CLIENT.swapShoulder();
 				}
 			}
+			
+			if(KeyHandler.isPressed(Minecraft.getInstance().gameSettings.keyBindTogglePerspective) && Config.CLIENT.doRememberLastPerspective())
+			{
+				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView + 1));
+				KeyBinding.onTick(Minecraft.getInstance().gameSettings.keyBindTogglePerspective.getKey());
+			}
 		}
 	}
 	

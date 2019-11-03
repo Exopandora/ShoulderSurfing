@@ -55,6 +55,7 @@ public class Config
 		private boolean replaceDefaultPerspective;
 		private Perspective defaultPerspective;
 		private CrosshairType crosshairType;
+		private boolean rememberLastPerspective;
 		
 		private final DoubleValue valueShoulderRotationYaw;
 		private final DoubleValue valueShoulderZoomMod;
@@ -73,6 +74,7 @@ public class Config
 		private final BooleanValue valueReplaceDefaultPerspective;
 		private final ConfigValue<Perspective> valueDefaultPerspective;
 		private final ConfigValue<CrosshairType> valueCrosshairType;
+		private final BooleanValue valueRememberLastPerspective;
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
@@ -160,6 +162,11 @@ public class Config
 					.comment("Crosshair type to use in 3PP (" + Config.listEnums(CrosshairType.values()) + ")")
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
+			
+			this.valueRememberLastPerspective = builder
+					.comment("Whether or not to remember the last perspective used")
+					.translation("Remember Last Perspective")
+					.define("remember_last_perspective", true);
 		}
 		
 		@OnlyIn(Dist.CLIENT)
@@ -212,6 +219,20 @@ public class Config
 				
 				return this.ordinal();
 			}
+			
+			public static Perspective of(int id)
+			{
+				if(id == Perspective.SHOULDER_SURFING.getPerspectiveId())
+				{
+					return Perspective.SHOULDER_SURFING;
+				}
+				else if(id >= 0 && id <= 2)
+				{
+					return Perspective.values()[id];
+				}
+				
+				return FIRST_PERSON;
+			}
 		}
 		
 		@OnlyIn(Dist.CLIENT)
@@ -260,6 +281,7 @@ public class Config
 			this.replaceDefaultPerspective = this.valueReplaceDefaultPerspective.get();
 			this.defaultPerspective = this.valueDefaultPerspective.get();
 			this.crosshairType = this.valueCrosshairType.get();
+			this.rememberLastPerspective = this.valueRememberLastPerspective.get();
 		}
 		
 		private void write()
@@ -281,6 +303,7 @@ public class Config
 			Config.set(this.valueReplaceDefaultPerspective, this.replaceDefaultPerspective);
 			Config.set(this.valueDefaultPerspective, this.defaultPerspective);
 			Config.set(this.valueCrosshairType, this.crosshairType);
+			Config.set(this.valueRememberLastPerspective, this.rememberLastPerspective);
 		}
 		
 		public double getShoulderRotationYaw()
@@ -467,6 +490,17 @@ public class Config
 		public void setCrosshairType(CrosshairType type)
 		{
 			this.crosshairType = type;
+			this.write();
+		}
+		
+		public boolean doRememberLastPerspective()
+		{
+			return this.rememberLastPerspective;
+		}
+		
+		public void setRememberLastPerspective(boolean enabled)
+		{
+			this.rememberLastPerspective = enabled;
 			this.write();
 		}
 		
