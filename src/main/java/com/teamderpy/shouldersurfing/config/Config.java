@@ -1,8 +1,5 @@
 package com.teamderpy.shouldersurfing.config;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
@@ -129,7 +126,7 @@ public class Config
 					.define("1pp_crosshair", true);
 			
 			this.valueCrosshairVisibility = builder
-					.comment("Crosshair visibility in 3PP (" + Config.listEnums(CrosshairVisibility.values()) + ")")
+					.comment("Crosshair visibility in 3PP")
 					.translation("Crosshair Visibility")
 					.defineEnum("crosshair_visibility", CrosshairVisibility.ALWAYS, CrosshairVisibility.values());
 			
@@ -154,12 +151,12 @@ public class Config
 					.define("replace_default_perspective", false);
 			
 			this.valueDefaultPerspective = builder
-					.comment("The default perspective when you load the game (" + Config.listEnums(Perspective.values()) + ")")
+					.comment("The default perspective when you load the game")
 					.translation("Default Perspective")
 					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
 			
 			this.valueCrosshairType = builder
-					.comment("Crosshair type to use in 3PP (" + Config.listEnums(CrosshairType.values()) + ")")
+					.comment("Crosshair type to use in 3PP")
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 			
@@ -558,11 +555,6 @@ public class Config
 		{
 			Config.CONFIG_DATA.set(configValue.getPath(), value);
 		}
-	}
-	
-	private static String listEnums(Enum<?>[] enums)
-	{
-		return String.join(", ", Arrays.stream(enums).map(Enum::name).collect(Collectors.toList()));
 	}
 	
 	@SubscribeEvent
