@@ -3,57 +3,59 @@ package com.teamderpy.shouldersurfing.event;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.Config.ClientConfig.CrosshairType;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
 	private static Vec2f lastTickTranslation = Vec2f.ZERO;
-	private static Vec2f translation = Vec2f.ZERO;;
-	private static int itemUseTicks;
+	private static Vec2f translation = Vec2f.ZERO;
+	private static boolean switchPerspective;
 	
-	public static boolean skipRenderPlayer = false;
-	
-	@SubscribeEvent
-	public static void livingEntityUseItemEventTick(LivingEntityUseItemEvent.Tick event)
-	{
-		if(ClientEventHandler.itemUseTicks < 2 && event.getEntity().equals(Minecraft.getInstance().player))
-		{
-			ClientEventHandler.itemUseTicks = 2;
-			
-			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.FIRST_PERSON.getPerspectiveId();
-			}
-		}
-	}
+	public static boolean isAiming;
+	public static boolean skipRenderPlayer;
 	
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
 	{
 		if(event.phase.equals(Phase.START))
 		{
-			if(ClientEventHandler.itemUseTicks > 0)
+			if(Minecraft.getInstance().player != null)
 			{
-				ClientEventHandler.itemUseTicks--;
-			}
-			
-			if(Config.CLIENT.getCrosshairType().equals(CrosshairType.STATIC_WITH_1PP) && ClientEventHandler.itemUseTicks == 1)
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.SHOULDER_SURFING.getPerspectiveId();
+				if(!ClientEventHandler.isAiming && ClientEventHandler.isHoldingSpecialItem())
+				{
+					if(Config.CLIENT.getCrosshairType().doSwitchPerspective() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+					{
+						Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+						ClientEventHandler.switchPerspective = true;
+					}
+					
+					ClientEventHandler.isAiming = true;
+				}
+				else if(ClientEventHandler.isAiming && !ClientEventHandler.isHoldingSpecialItem())
+				{
+					if(!Config.CLIENT.getCrosshairType().doSwitchPerspective() && Minecraft.getInstance().gameSettings.thirdPersonView == 0 && ClientEventHandler.switchPerspective)
+					{
+						Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.SHOULDER_SURFING.getPerspectiveId();
+						ClientEventHandler.switchPerspective = false;
+					}
+					
+					ClientEventHandler.isAiming = false;
+				}
 			}
 			
 			ClientEventHandler.skipRenderPlayer = false;
@@ -119,8 +121,26 @@ public class ClientEventHandler
 		}
 	}
 	
-	public static boolean isAiming()
+	public static boolean isHoldingSpecialItem()
 	{
-		return ClientEventHandler.itemUseTicks > 0;
+		Item active = Minecraft.getInstance().player.getActiveItemStack().getItem();
+		
+		if(active.hasCustomProperties())
+		{
+			if(active.getPropertyGetter(new ResourceLocation("pull")) != null || active.getPropertyGetter(new ResourceLocation("throwing")) != null)
+			{
+				return true;
+			}
+		}
+		
+		for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
+		{
+			if(held.getItem().hasCustomProperties() && held.getItem().getPropertyGetter(new ResourceLocation("charged")) != null)
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

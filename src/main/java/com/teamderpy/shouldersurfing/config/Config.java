@@ -9,9 +9,6 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -177,27 +174,21 @@ public class Config
 			{
 				if(this == CrosshairType.ADAPTIVE)
 				{
-					Item active = Minecraft.getInstance().player.getActiveItemStack().getItem();
-					
-					if(active.hasCustomProperties())
-					{
-						if(active.getPropertyGetter(new ResourceLocation("pull")) != null || active.getPropertyGetter(new ResourceLocation("throwing")) != null)
-						{
-							return true;
-						}
-					}
-					
-					for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
-					{
-						if(held.getItem().hasCustomProperties() && held.getItem().getPropertyGetter(new ResourceLocation("charged")) != null)
-						{
-							return true;
-						}
-					}
+					return ClientEventHandler.isHoldingSpecialItem();
 				}
 				else if(this == CrosshairType.DYNAMIC)
 				{
 					return true;
+				}
+				
+				return false;
+			}
+			
+			public boolean doSwitchPerspective()
+			{
+				if(this == CrosshairType.STATIC_WITH_1PP)
+				{
+					return ClientEventHandler.isHoldingSpecialItem();
 				}
 				
 				return false;
@@ -235,7 +226,7 @@ public class Config
 			{
 				if(this == CrosshairVisibility.WHEN_AIMING)
 				{
-					return ClientEventHandler.isAiming();
+					return ClientEventHandler.isAiming;
 				}
 				else if(this == CrosshairVisibility.WHEN_IN_RANGE)
 				{
