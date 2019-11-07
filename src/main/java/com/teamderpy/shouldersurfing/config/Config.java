@@ -35,132 +35,113 @@ public class Config
 	@OnlyIn(Dist.CLIENT)
 	public static class ClientConfig
 	{
-		private double shoulderRotationYaw;
-		private double shoulderZoomMod;
-		private boolean unlimitedRotation;
-		private double rotationMin;
-		private double rotationMax;
-		private boolean unlimitedZoom;
-		private double zoomMin;
-		private double zoomMax;
-		private boolean show3ppCrosshair;
-		private boolean show1ppCrosshair;
-		private CrosshairVisibility crosshairVisibility;
-		private boolean showCrosshairFarther;
-		private boolean keepCameraOutOfHead;
-		private boolean attackIndicator;
-		private boolean replaceDefaultPerspective;
-		private Perspective defaultPerspective;
-		private CrosshairType crosshairType;
-		private boolean rememberLastPerspective;
-		
-		private final DoubleValue valueShoulderRotationYaw;
-		private final DoubleValue valueShoulderZoomMod;
-		private final BooleanValue valueUnlimitedRotation;
-		private final DoubleValue valueRotationMin;
-		private final DoubleValue valueRotationMax;
-		private final BooleanValue valueUnlimitedZoom;
-		private final DoubleValue valueZoomMin;
-		private final DoubleValue valueZoomMax;
-		private final BooleanValue valueShow3ppCrosshair;
-		private final BooleanValue valueShow1ppCrosshair;
-		private final ConfigValue<CrosshairVisibility> valueCrosshairVisibility;
-		private final BooleanValue valueShowCrosshairFarther;
-		private final BooleanValue valueKeepCameraOutOfHead;
-		private final BooleanValue valueAttackIndicator;
-		private final BooleanValue valueReplaceDefaultPerspective;
-		private final ConfigValue<Perspective> valueDefaultPerspective;
-		private final ConfigValue<CrosshairType> valueCrosshairType;
-		private final BooleanValue valueRememberLastPerspective;
+		private final DoubleValue shoulderRotationYaw;
+		private final DoubleValue shoulderZoomMod;
+		private final BooleanValue unlimitedRotation;
+		private final DoubleValue rotationMin;
+		private final DoubleValue rotationMax;
+		private final BooleanValue unlimitedZoom;
+		private final DoubleValue zoomMin;
+		private final DoubleValue zoomMax;
+		private final BooleanValue show3ppCrosshair;
+		private final BooleanValue show1ppCrosshair;
+		private final ConfigValue<CrosshairVisibility> crosshairVisibility;
+		private final BooleanValue showCrosshairFarther;
+		private final BooleanValue keepCameraOutOfHead;
+		private final BooleanValue attackIndicator;
+		private final BooleanValue replaceDefaultPerspective;
+		private final ConfigValue<Perspective> defaultPerspective;
+		private final ConfigValue<CrosshairType> crosshairType;
+		private final BooleanValue rememberLastPerspective;
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
-			this.valueShoulderRotationYaw = builder
+			this.shoulderRotationYaw = builder
 					.comment("Third person camera rotation")
 					.translation("Rotation Offset")
 					.defineInRange("rotation_offset", 0, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.valueShoulderZoomMod = builder
+			this.shoulderZoomMod = builder
 					.comment("Third person camera zoom")
 					.translation("Zoom Offset")
 					.defineInRange("zoom_offset", 0.7, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.valueUnlimitedRotation = builder
+			this.unlimitedRotation = builder
 					.comment("Whether or not rotation adjustment has limits")
 					.translation("Unlimited Rotation")
 					.define("unlimited_rotation", false);
 			
-			this.valueRotationMin = builder
+			this.rotationMin = builder
 					.comment("If rotation is limited this is the minimum amount")
 					.translation("Rotation Minimum")
 					.defineInRange("rotation_min", -60.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.valueRotationMax = builder
+			this.rotationMax = builder
 					.comment("If rotation is limited this is the maximum amount")
 					.translation("Rotation Maximum")
 					.defineInRange("rotation_max", 60.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.valueUnlimitedZoom = builder
+			this.unlimitedZoom = builder
 					.comment("Whether or not zoom adjustment has limits")
 					.translation("Unlimited Zoom")
 					.define("unlimited_zoom", false);
 			
-			this.valueZoomMin = builder
+			this.zoomMin = builder
 					.comment("If zoom is limited this is the minimum amount")
 					.translation("Zoom Minimum")
 					.defineInRange("zoom_min", 0.3, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.valueZoomMax = builder
+			this.zoomMax = builder
 					.comment("If zoom is limited this is the maximum amount")
 					.translation("Zoom Maximum")
 					.defineInRange("zoom_max", 2.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 						
-			this.valueShow3ppCrosshair = builder
+			this.show3ppCrosshair = builder
 					.comment("Enable or disable the crosshair in third person")
 					.translation("Third Person Crosshair")
 					.define("3pp_crosshair", true);
 			
-			this.valueShow1ppCrosshair = builder
+			this.show1ppCrosshair = builder
 					.comment("Enable or disable the crosshair in first person")
 					.translation("First Person Crosshair")
 					.define("1pp_crosshair", true);
 			
-			this.valueCrosshairVisibility = builder
+			this.crosshairVisibility = builder
 					.comment("Crosshair visibility in 3PP")
 					.translation("Crosshair Visibility")
 					.defineEnum("crosshair_visibility", CrosshairVisibility.ALWAYS, CrosshairVisibility.values());
 			
-			this.valueShowCrosshairFarther = builder
+			this.showCrosshairFarther = builder
 					.comment("Whether or not to show the crosshairs farther than normal")
 					.translation("Show Crosshair Farther")
 					.define("show_crosshair_farther", true);
 			
-			this.valueKeepCameraOutOfHead = builder
+			this.keepCameraOutOfHead = builder
 					.comment("Whether or not to hide the player model if the camera gets too close to it")
 					.translation("Keep Camera Out Of Head")
 					.define("keep_camera_out_of_head", true);
 			
-			this.valueAttackIndicator = builder
+			this.attackIndicator = builder
 					.comment("Enable or disable the attack indicator in third person")
 					.translation("Third Person Attack Indicator")
 					.define("third_person_attack_indicator", true);
 			
-			this.valueReplaceDefaultPerspective = builder
+			this.replaceDefaultPerspective = builder
 					.comment("Whether or not to replace the default third person perspective")
 					.translation("Replace Default Perspective")
 					.define("replace_default_perspective", false);
 			
-			this.valueDefaultPerspective = builder
+			this.defaultPerspective = builder
 					.comment("The default perspective when you load the game")
 					.translation("Default Perspective")
 					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
 			
-			this.valueCrosshairType = builder
+			this.crosshairType = builder
 					.comment("Crosshair type to use in 3PP")
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 			
-			this.valueRememberLastPerspective = builder
+			this.rememberLastPerspective = builder
 					.comment("Whether or not to remember the last perspective used")
 					.translation("Remember Last Perspective")
 					.define("remember_last_perspective", true);
@@ -228,7 +209,7 @@ public class Config
 					return Perspective.values()[id];
 				}
 				
-				return FIRST_PERSON;
+				return Perspective.FIRST_PERSON;
 			}
 		}
 		
@@ -259,246 +240,184 @@ public class Config
 			}
 		}
 		
-		public void read()
-		{
-			this.shoulderRotationYaw = this.valueShoulderRotationYaw.get();
-			this.shoulderZoomMod = this.valueShoulderZoomMod.get();
-			this.unlimitedRotation = this.valueUnlimitedRotation.get();
-			this.rotationMin = this.valueRotationMin.get();
-			this.rotationMax = this.valueRotationMax.get();
-			this.unlimitedZoom = this.valueUnlimitedZoom.get();
-			this.zoomMin = this.valueZoomMin.get();
-			this.zoomMax = this.valueZoomMax.get();
-			this.show3ppCrosshair = this.valueShow3ppCrosshair.get();
-			this.show1ppCrosshair = this.valueShow1ppCrosshair.get();
-			this.crosshairVisibility = this.valueCrosshairVisibility.get();
-			this.showCrosshairFarther = this.valueShowCrosshairFarther.get();
-			this.keepCameraOutOfHead = this.valueKeepCameraOutOfHead.get();
-			this.attackIndicator = this.valueAttackIndicator.get();
-			this.replaceDefaultPerspective = this.valueReplaceDefaultPerspective.get();
-			this.defaultPerspective = this.valueDefaultPerspective.get();
-			this.crosshairType = this.valueCrosshairType.get();
-			this.rememberLastPerspective = this.valueRememberLastPerspective.get();
-		}
-		
-		private void write()
-		{
-			Config.set(this.valueShoulderRotationYaw, this.shoulderRotationYaw);
-			Config.set(this.valueShoulderZoomMod, this.shoulderZoomMod);
-			Config.set(this.valueUnlimitedRotation, this.unlimitedRotation);
-			Config.set(this.valueRotationMin, this.rotationMin);
-			Config.set(this.valueRotationMax, this.rotationMax);
-			Config.set(this.valueUnlimitedZoom, this.unlimitedZoom);
-			Config.set(this.valueZoomMin, this.zoomMin);
-			Config.set(this.valueZoomMax, this.zoomMax);
-			Config.set(this.valueShow3ppCrosshair, this.show3ppCrosshair);
-			Config.set(this.valueShow1ppCrosshair, this.show1ppCrosshair);
-			Config.set(this.valueCrosshairVisibility, this.crosshairVisibility);
-			Config.set(this.valueShowCrosshairFarther, this.showCrosshairFarther);
-			Config.set(this.valueKeepCameraOutOfHead, this.keepCameraOutOfHead);
-			Config.set(this.valueAttackIndicator, this.attackIndicator);
-			Config.set(this.valueReplaceDefaultPerspective, this.replaceDefaultPerspective);
-			Config.set(this.valueDefaultPerspective, this.defaultPerspective);
-			Config.set(this.valueCrosshairType, this.crosshairType);
-			Config.set(this.valueRememberLastPerspective, this.rememberLastPerspective);
-		}
-		
 		public double getShoulderRotationYaw()
 		{
-			return this.shoulderRotationYaw;
+			return this.shoulderRotationYaw.get();
 		}
 		
 		public void setShoulderRotationYaw(double yaw)
 		{
-			this.shoulderRotationYaw = yaw;
-			this.write();
+			Config.set(this.shoulderRotationYaw, yaw);
 		}
 		
 		public double getShoulderZoomMod()
 		{
-			return this.shoulderZoomMod;
+			return this.shoulderZoomMod.get();
 		}
 		
 		public void setShoulderZoomMod(double zoomMod)
 		{
-			this.shoulderZoomMod = zoomMod;
-			this.write();
+			Config.set(this.shoulderZoomMod, zoomMod);
 		}
 		
 		public boolean isRotationUnlimited()
 		{
-			return this.unlimitedRotation;
+			return this.unlimitedRotation.get();
 		}
 		
 		public void setRotationUnlimited(boolean enabled)
 		{
-			this.unlimitedRotation = enabled;
-			this.write();
+			Config.set(this.unlimitedRotation, enabled);
 		}
 		
 		public double getRotationMin()
 		{
-			return this.rotationMin;
+			return this.rotationMin.get();
 		}
 		
 		public void setRotationMin(double min)
 		{
-			this.rotationMin = min;
-			this.write();
+			Config.set(this.rotationMin, min);
 		}
 		
 		public double getRotationMax()
 		{
-			return this.rotationMax;
+			return this.rotationMax.get();
 		}
 		
 		public void setRotationMax(double max)
 		{
-			this.rotationMax = max;
-			this.write();
+			Config.set(this.rotationMax, max);
 		}
 		
 		public boolean isZoomUnlimited()
 		{
-			return this.unlimitedZoom;
+			return this.unlimitedZoom.get();
 		}
 		
 		public void setZoomUnlimited(boolean enabled)
 		{
-			this.unlimitedZoom = enabled;
-			this.write();
+			Config.set(this.unlimitedZoom, enabled);
 		}
 		
 		public double getZoomMin()
 		{
-			return this.zoomMin;
+			return this.zoomMin.get();
 		}
 		
 		public void setZoomMin(double min)
 		{
-			this.zoomMin = min;
-			this.write();
+			Config.set(this.zoomMin, min);
 		}
 		
 		public double getZoomMax()
 		{
-			return this.zoomMax;
+			return this.zoomMax.get();
 		}
 		
 		public void setZoomMax(double max)
 		{
-			this.rotationMax = max;
-			this.write();
+			Config.set(this.rotationMax, max);
 		}
 		
 		public boolean show3ppCrosshair()
 		{
-			return this.show3ppCrosshair;
+			return this.show3ppCrosshair.get();
 		}
 		
 		public void setShow3ppCrosshair(boolean enabled)
 		{
-			this.show3ppCrosshair = enabled;
-			this.write();
+			Config.set(this.show3ppCrosshair, enabled);
 		}
 		
 		public boolean show1ppCrosshair()
 		{
-			return this.show1ppCrosshair;
+			return this.show1ppCrosshair.get();
 		}
 		
 		public void setShow1ppCrosshair(boolean enabled)
 		{
-			this.show1ppCrosshair = enabled;
-			this.write();
+			Config.set(this.show1ppCrosshair, enabled);
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility()
 		{
-			return this.crosshairVisibility;
+			return this.crosshairVisibility.get();
 		}
 		
 		public void setCrosshairVisibility(CrosshairVisibility visibility)
 		{
-			this.crosshairVisibility = visibility;
-			this.write();
+			Config.set(this.crosshairVisibility, visibility);
 		}
 		
 		public boolean showCrosshairFarther()
 		{
-			return this.showCrosshairFarther;
+			return this.showCrosshairFarther.get();
 		}
 		
 		public void setShowCrosshairFarther(boolean enabled)
 		{
-			this.showCrosshairFarther = enabled;
-			this.write();
+			Config.set(this.showCrosshairFarther, enabled);
 		}
 		
 		public boolean keepCameraOutOfHead()
 		{
-			return this.keepCameraOutOfHead;
+			return this.keepCameraOutOfHead.get();
 		}
 		
 		public void setKeepCameraOutOfHead(boolean enabled)
 		{
-			this.keepCameraOutOfHead = enabled;
-			this.write();
+			Config.set(this.keepCameraOutOfHead, enabled);
 		}
 		
 		public boolean showAttackIndicator()
 		{
-			return this.attackIndicator;
+			return this.attackIndicator.get();
 		}
 		
 		public void setShowAttackIndicator(boolean enabled)
 		{
-			this.attackIndicator = enabled;
-			this.write();
+			Config.set(this.attackIndicator, enabled);
 		}
 		
 		public boolean replaceDefaultPerspective()
 		{
-			return this.replaceDefaultPerspective;
+			return this.replaceDefaultPerspective.get();
 		}
 		
 		public void setReplaceDefaultPerspective(boolean enabled)
 		{
-			this.replaceDefaultPerspective = enabled;
-			this.write();
+			Config.set(this.replaceDefaultPerspective, enabled);
 		}
 		
 		public Perspective getDefaultPerspective()
 		{
-			return this.defaultPerspective;
+			return this.defaultPerspective.get();
 		}
 		
 		public void setDefaultPerspective(Perspective perspective)
 		{
-			this.defaultPerspective = perspective;
-			this.write();
+			Config.set(this.defaultPerspective, perspective);
 		}
 		
 		public CrosshairType getCrosshairType()
 		{
-			return this.crosshairType;
+			return this.crosshairType.get();
 		}
 		
 		public void setCrosshairType(CrosshairType type)
 		{
-			this.crosshairType = type;
-			this.write();
+			Config.set(this.crosshairType, type);
 		}
 		
 		public boolean doRememberLastPerspective()
 		{
-			return this.rememberLastPerspective;
+			return this.rememberLastPerspective.get();
 		}
 		
 		public void setRememberLastPerspective(boolean enabled)
 		{
-			this.rememberLastPerspective = enabled;
-			this.write();
+			Config.set(this.rememberLastPerspective, enabled);
 		}
 		
 		public int getShoulderSurfing3ppId()
@@ -564,7 +483,6 @@ public class Config
 		{
 			Config.MOD_CONFIG = event.getConfig();
 			Config.CONFIG_DATA = (CommentedFileConfig) Config.MOD_CONFIG.getConfigData();
-			Config.CLIENT.read();
 		}
 	}
 	
@@ -574,7 +492,6 @@ public class Config
 		if(event.getConfig().getType().equals(Type.CLIENT) && Config.CONFIG_DATA != null)
 		{
 			Config.CONFIG_DATA.load();
-			Config.CLIENT.read();
 			
 			if(Minecraft.getInstance().gameSettings.thirdPersonView == 3 && Config.CLIENT.replaceDefaultPerspective())
 			{
