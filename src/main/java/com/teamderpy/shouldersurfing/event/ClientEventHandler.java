@@ -84,7 +84,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Minecraft.getInstance().currentScreen == null)
 		{
 			float scale = Minecraft.getInstance().mainWindow.calcGuiScale(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
 			
@@ -112,7 +112,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Minecraft.getInstance().currentScreen == null)
 		{
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
