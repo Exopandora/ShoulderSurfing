@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.asm;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
@@ -8,6 +9,7 @@ import com.teamderpy.shouldersurfing.math.VectorConverter;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -70,11 +72,11 @@ public final class InjectionDelegation
 	/**
 	 * Called by injected code to project a raytrace hit to the screen
 	 */
-	public static void calculateRayTraceProjection()
+	public static void calculateRayTraceProjection(MatrixStack matrixStackIn, Matrix4f projectionIn)
 	{
 		if(RayTracer.getRayTraceHit() != null)
 		{
-			RayTracer.setProjectedVector(VectorConverter.project2D(RayTracer.getRayTraceHit()));
+			RayTracer.setProjectedVector(VectorConverter.project2D(RayTracer.getRayTraceHit(), matrixStackIn, projectionIn));
 			RayTracer.setRayTraceHit(null);
 		}
 	}
@@ -119,7 +121,7 @@ public final class InjectionDelegation
 				offsetZ = offsetZ * 0.1F;
 				
 				Vec3d vec3d = info.getProjectedView().add(offsetX, offsetY, offsetZ);
-				Vec3d vec3d1 = new Vec3d(info.getProjectedView().x - info.getLookDirection().x * distance + offsetX + offsetZ + yawX, info.getProjectedView().y - info.getLookDirection().y * distance + offsetY, info.getProjectedView().z - info.getLookDirection().z * distance + offsetZ + yawZ);
+				Vec3d vec3d1 = new Vec3d(info.getProjectedView().x - info.getViewVector().getX() * distance + offsetX + offsetZ + yawX, info.getProjectedView().y - info.getViewVector().getY() * distance + offsetY, info.getProjectedView().z - info.getViewVector().getZ() * distance + offsetZ + yawZ);
 				
 				RayTraceResult raytraceresult = Minecraft.getInstance().world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
 				

@@ -30,12 +30,12 @@ public final class RayTracer
 		{
 			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : Minecraft.getInstance().playerController.getBlockReachDistance();
 			double blockDist = 0;
-			RayTraceResult result = renderView.func_213324_a(playerReach, partialTicks, false);
+			RayTraceResult result = renderView.pick(playerReach, partialTicks, false);
 			
 			if(result != null)
 			{
 				RayTracer.rayTraceHit = result.getHitVec();
-				blockDist = result.getHitVec().distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
+				blockDist = result.getHitVec().distanceTo(renderView.getPositionVec());
 			}
 			else
 			{
@@ -60,7 +60,7 @@ public final class RayTracer
 					
 					if(intercept.isPresent())
 					{
-						double entityDist = intercept.get().distanceTo(new Vec3d(renderView.posX, renderView.posY, renderView.posZ));
+						double entityDist = intercept.get().distanceTo(renderView.getPositionVec());
 						
 						if(entityDist < blockDist)
 						{

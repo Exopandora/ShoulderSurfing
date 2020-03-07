@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.event;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
@@ -86,9 +86,9 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Minecraft.getInstance().currentScreen == null)
 		{
-			float scale = Minecraft.getInstance().mainWindow.calcGuiScale(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
+			float scale = Minecraft.getInstance().getMainWindow().calcGuiScale(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
 			
-			Vec2f window = new Vec2f(Minecraft.getInstance().mainWindow.getScaledWidth(), Minecraft.getInstance().mainWindow.getScaledHeight());
+			Vec2f window = new Vec2f(Minecraft.getInstance().getMainWindow().getScaledWidth(), Minecraft.getInstance().getMainWindow().getScaledHeight());
 			Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
 			
 			if(RayTracer.getProjectedVector() != null)
@@ -99,7 +99,7 @@ public class ClientEventHandler
 			
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				GlStateManager.translatef(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
+				RenderSystem.translatef(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
 				ClientEventHandler.lastTickTranslation = ClientEventHandler.translation;
 			}
 			else
@@ -116,7 +116,7 @@ public class ClientEventHandler
 		{
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				GlStateManager.translatef(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
+				RenderSystem.translatef(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
 			}
 		}
 	}

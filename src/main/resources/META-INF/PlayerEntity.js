@@ -39,7 +39,7 @@ function initializeCoreMod() {
 				//			ALOAD 0
 				//			ALOAD 0
 				//			FLOAD 1
-				//			INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation$A.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
+				//			INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
 				//			INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
 				//			ARETURN
 				
