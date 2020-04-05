@@ -123,21 +123,29 @@ public class ClientEventHandler
 	
 	public static boolean isHoldingSpecialItem()
 	{
-		Item active = Minecraft.getInstance().player.getActiveItemStack().getItem();
+		ItemStack active = Minecraft.getInstance().player.getActiveItemStack();
 		
-		if(active.hasCustomProperties())
+		if(active != null)
 		{
-			if(active.getPropertyGetter(new ResourceLocation("pull")) != null || active.getPropertyGetter(new ResourceLocation("throwing")) != null)
+			Item item = active.getItem();
+			
+			if(item != null && item.hasCustomProperties())
 			{
-				return true;
+				if(item.getPropertyGetter(new ResourceLocation("pull")) != null || item.getPropertyGetter(new ResourceLocation("throwing")) != null)
+				{
+					return true;
+				}
 			}
-		}
-		
-		for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
-		{
-			if(held.getItem().hasCustomProperties() && held.getItem().getPropertyGetter(new ResourceLocation("charged")) != null)
+			
+			for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
 			{
-				return true;
+				if(held != null)
+				{
+					if(held.getItem() != null && held.getItem().hasCustomProperties() && held.getItem().getPropertyGetter(new ResourceLocation("charged")) != null)
+					{
+						return true;
+					}
+				}
 			}
 		}
 		
