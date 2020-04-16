@@ -125,20 +125,20 @@ function initializeCoreMod() {
 				var methods = classNode.methods;
 				var name = ASMAPI.mapMethod("func_174824_e");
 				
-				// public Vec3d getEyePosition(float paritalTicks)
-				// {
-				// 	return InjectionDelegation.getEyePosition(this, super.getEyePosition(paritalTicks));
-				// }
-				
-				// public getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
-				// 	L0
-				// 		LINENUMBER 187 L0
-				// 		ALOAD 0
-				// 		ALOAD 0
-				// 		FLOAD 1
-				// 		INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
-				// 		INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
-				// 		ARETURN
+				//	public Vec3d getEyePosition(float paritalTicks)
+				//	{
+				//		return InjectionDelegation.getEyePosition(this, super.getEyePosition(paritalTicks));
+				//	}
+					
+				//	public getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
+				//		L0
+				//			LINENUMBER 187 L0
+				//			ALOAD 0
+				//			ALOAD 0
+				//			FLOAD 1
+				//			INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
+				//			INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
+				//			ARETURN
 				
 				var method = new MethodNode(Opcodes.ACC_PUBLIC, name, "(F)Lnet/minecraft/util/math/Vec3d;", null, null);
 				
