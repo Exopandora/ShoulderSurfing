@@ -26,7 +26,7 @@ function initializeCoreMod() {
 	
 	function transformMethod(method, config) {
 		var instructions = method.instructions;
-		var offset = findInstruction(instructions, config.searchList, 0, 0, instructions.size(), true, true);
+		var offset = findInstruction(instructions, config.searchList, 0, 0, instructions.size());
 		
 		if(offset) {
 			for(var x = 0; x < config.transformList.length; x++) {
@@ -39,17 +39,13 @@ function initializeCoreMod() {
 		return method;
 	}
 	
-	function findInstruction(instructions, search, searchNdx, startAt, limit, ignoreLabel, ignoreLineNumber) {
+	function findInstruction(instructions, search, searchNdx, startAt, limit) {
 		var attempts = 0;
 		
 		for(var i = startAt; i < instructions.size() && attempts < limit; i++) {
 			var instruction = instructions.get(i);
 			
-			if(ignoreLabel && instruction.getType() == AbstractInsnNode.LABEL) {
-				continue;
-			}
-			
-			if(ignoreLineNumber && instruction.getType() == AbstractInsnNode.LINE) {
+			if(instruction.getType() == AbstractInsnNode.LABEL || instruction.getType() == AbstractInsnNode.LINE) {
 				continue;
 			}
 			
@@ -74,11 +70,11 @@ function initializeCoreMod() {
 						match = true;
 					}
 				} else if(instruction.getType() == AbstractInsnNode.INT_INSN) {
-					if(instruction.operand == searchNode.operand && instruction.getOpcode() == searchNode.getOpcode()) {
+					if(instruction.getOpcode() == searchNode.getOpcode() && instruction.operand == searchNode.operand) {
 						match = true;
 					}
 				} else if(instruction.getType() == AbstractInsnNode.IINC_INSN) {
-					if(instruction.var == searchNode.var && instruction.incr == searchNode.incr && instruction.getOpcode() == searchNode.getOpcode()) {
+					if(instruction.getOpcode() == searchNode.getOpcode() && instruction.var == searchNode.var && instruction.incr == searchNode.incr) {
 						match = true;
 					}
 				} else if(instruction.getType() == AbstractInsnNode.LDC_INSN) {
@@ -90,30 +86,28 @@ function initializeCoreMod() {
 						match = true;
 					}
 				} else if(instruction.getType() == AbstractInsnNode.JUMP_INSN) {
-					if(instruction.getOpcode() == searchNode.getOpcode() && instruction.getLabel().equals(searchNode.getLabel())) {
+					if(instruction.getOpcode() == searchNode.getOpcode() && instruction.label == searchNode.label) {
 						match = true;
 					}
 				}
 				
-				//INVOKE_DYNAMIC_INSN
-				//TABLESWITCH_INSN
-				//LOOKUPSWITCH_INSN
-				//MULTIANEWARRAY_INSN
-				
-				if(match) {
-					if(searchNdx < search.length - 1) {
-						var next = findInstruction(instructions, search, searchNdx + 1, i + 1, 1, ignoreLabel, ignoreLineNumber);
-						
-						if(next) {
-							return next;
-						}
-					} else {
-						return instruction;
-					}
-				}
+				// INVOKE_DYNAMIC_INSN
+				// TABLESWITCH_INSN
+				// LOOKUPSWITCH_INSN
+				// MULTIANEWARRAY_INSN
 			}
 			
-			if(!match) {
+			if(match) {
+				if(searchNdx < search.length - 1) {
+					var next = findInstruction(instructions, search, searchNdx + 1, i + 1, 1);
+					
+					if(next) {
+						return next;
+					}
+				} else {
+					return instruction;
+				}
+			} else {
 				attempts++;
 			}
 		}
@@ -129,22 +123,22 @@ function initializeCoreMod() {
 			},
 			'transformer': function(classNode) {
 				var methods = classNode.methods;
-				var name = ASMAPI.mapField("func_174824_e");
+				var name = ASMAPI.mapMethod("func_174824_e");
 				
-				//	public Vec3d getEyePosition(float paritalTicks)
-				//	{
-				//		return InjectionDelegation.getEyePosition(this, super.getEyePosition(paritalTicks));
-				//	}
+				// public Vec3d getEyePosition(float paritalTicks)
+				// {
+				// 	return InjectionDelegation.getEyePosition(this, super.getEyePosition(paritalTicks));
+				// }
 				
-				//	public getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
-				//  	L0
-				//			LINENUMBER 187 L0
-				//			ALOAD 0
-				//			ALOAD 0
-				//			FLOAD 1
-				//			INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
-				//			INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
-				//			ARETURN
+				// public getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
+				// 	L0
+				// 		LINENUMBER 187 L0
+				// 		ALOAD 0
+				// 		ALOAD 0
+				// 		FLOAD 1
+				// 		INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
+				// 		INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
+				// 		ARETURN
 				
 				var method = new MethodNode(Opcodes.ACC_PUBLIC, name, "(F)Lnet/minecraft/util/math/Vec3d;", null, null);
 				
@@ -165,7 +159,7 @@ function initializeCoreMod() {
 			'target': {
 				'type': 'METHOD',
 				'class': 'net.minecraft.client.renderer.ActiveRenderInfo',
-				'methodName': 'func_216779_a', //calcCameraDistance
+				'methodName': 'func_216779_a', // calcCameraDistance
 				'methodDesc': '(D)D'
 			},
 			'transformer': function(method) {
@@ -188,7 +182,7 @@ function initializeCoreMod() {
 			'target': {
 				'type': 'METHOD',
 				'class': 'net.minecraft.client.renderer.ActiveRenderInfo',
-				'methodName': 'func_216772_a', //update
+				'methodName': 'func_216772_a', // update
 				'methodDesc': '(Lnet/minecraft/world/IBlockReader;Lnet/minecraft/entity/Entity;ZZF)V'
 			},
 			'transformer': function(method) {
@@ -225,7 +219,7 @@ function initializeCoreMod() {
 			'target': {
 				'type': 'METHOD',
 				'class': 'net.minecraft.client.renderer.GameRenderer',
-				'methodName': 'func_228378_a_', //renderWorld
+				'methodName': 'func_228378_a_', // renderWorld
 				'methodDesc': '(FJLcom/mojang/blaze3d/matrix/MatrixStack;)V'
 				
 			},
@@ -251,7 +245,7 @@ function initializeCoreMod() {
 			'target': {
 				'type': 'METHOD',
 				'class': 'net.minecraft.client.gui.IngameGui',
-				'methodName': 'func_194798_c', //renderAttackIndicator
+				'methodName': 'func_194798_c', // renderAttackIndicator
 				'methodDesc': '()V'
 			},
 			'transformer': function(method) {
@@ -259,7 +253,7 @@ function initializeCoreMod() {
 				return transformMethod(method, {
 					'searchList': [
 						new VarInsnNode(Opcodes.ALOAD, 1),
-						new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/GameSettings", ASMAPI.mapField("field_74320_O"), "I") //thirdPersionView
+						new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/GameSettings", ASMAPI.mapField("field_74320_O"), "I") // thirdPersionView
 					],
 					'transformList': [
 						new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "doRenderCrosshair", "()I", false)
@@ -275,14 +269,14 @@ function initializeCoreMod() {
 			'target': {
 				'type': 'METHOD',
 				'class': 'net.minecraft.client.Minecraft',
-				'methodName': 'func_184117_aA', //processKeyBinds
+				'methodName': 'func_184117_aA', // processKeyBinds
 				'methodDesc': '()V'
 			},
 			'transformer': function(method) {
 				// if(this.gameSettings.thirdPersonView > InjectionDelegation.getMax3ppId())
 				return transformMethod(method, {
 					'searchList': [
-						new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/GameSettings", ASMAPI.mapField("field_74320_O"), "I"), //thirdPersionView
+						new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/GameSettings", ASMAPI.mapField("field_74320_O"), "I"), // thirdPersionView
 						new InsnNode(Opcodes.ICONST_2)
 					],
 					'transformList': [
