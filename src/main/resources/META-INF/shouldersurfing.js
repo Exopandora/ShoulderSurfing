@@ -155,92 +155,6 @@ function initializeCoreMod() {
 				return classNode;
 			}
 		},
-		'ActiveRenderInfo#calcCameraDistance': {
-			'target': {
-				'type': 'METHOD',
-				'class': 'net.minecraft.client.renderer.ActiveRenderInfo',
-				'methodName': 'func_216779_a', // calcCameraDistance
-				'methodDesc': '(D)D'
-			},
-			'transformer': function(method) {
-				// return InjectionDelegation.calcCameraDistance(startingDistance, this);
-				return transformMethod(method, {
-					'searchList': [
-						new InsnNode(Opcodes.DRETURN)
-					],
-					'transformList': [
-						new VarInsnNode(Opcodes.ALOAD, 0),
-						new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calcCameraDistance", "(DLnet/minecraft/client/renderer/ActiveRenderInfo;)D", false)
-					],
-					'transformer': function(instructions, offset, instruction) {
-						instructions.insertBefore(offset, instruction);
-					}
-				});
-			}
-		},
-		'ActiveRenderInfo#update': {
-			'target': {
-				'type': 'METHOD',
-				'class': 'net.minecraft.client.renderer.ActiveRenderInfo',
-				'methodName': 'func_216772_a', // update
-				'methodDesc': '(Lnet/minecraft/world/IBlockReader;Lnet/minecraft/entity/Entity;ZZF)V'
-			},
-			'transformer': function(method) {
-				// this.movePosition(-this.calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()), 0.0D, 0.0D);
-				transformMethod(method, {
-					'searchList': [
-						new MethodInsnNode(Opcodes.INVOKESPECIAL, "net/minecraft/client/renderer/ActiveRenderInfo", ASMAPI.mapMethod("func_216779_a"), "(D)D", false)
-					],
-					'transformList': [
-						new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getShoulderZoomMod", "()F", false),
-						new InsnNode(Opcodes.F2D),
-						new InsnNode(Opcodes.DMUL)
-					],
-					'transformer': function(instructions, offset, instruction) {
-						instructions.insertBefore(offset, instruction);
-					}
-				});
-				
-				// InjectionDelegation.movePosition(this, -this.calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()), 0.0D, 0.0D);
-				return transformMethod(method, {
-					'searchList': [
-						new MethodInsnNode(Opcodes.INVOKESPECIAL, "net/minecraft/client/renderer/ActiveRenderInfo", ASMAPI.mapMethod("func_216782_a"), "(DDD)V", false)
-					],
-					'transformList': [
-						new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "movePosition", "(Lnet/minecraft/client/renderer/ActiveRenderInfo;DDD)V", false)
-					],
-					'transformer': function(instructions, offset, instruction) {
-						instructions.set(offset, instruction);
-					}
-				});
-			}
-		},
-		'GameRenderer#renderWorld': {
-			'target': {
-				'type': 'METHOD',
-				'class': 'net.minecraft.client.renderer.GameRenderer',
-				'methodName': 'func_228378_a_', // renderWorld
-				'methodDesc': '(FJLcom/mojang/blaze3d/matrix/MatrixStack;)V'
-				
-			},
-			'transformer': function(method) {
-				// InjectionDelegation.calculateRayTraceProjection();
-				return transformMethod(method, {
-					'searchList': [
-						new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "com/mojang/blaze3d/matrix/MatrixStack", ASMAPI.mapMethod("func_227863_a_"), "(Lnet/minecraft/client/renderer/Quaternion;)V", false),
-						new VarInsnNode(Opcodes.ALOAD, 0)
-					],
-					'transformList': [
-						new VarInsnNode(Opcodes.ALOAD, 4),
-					    new VarInsnNode(Opcodes.ALOAD, 9),
-					    new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "calculateRayTraceProjection", "(Lcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/Matrix4f;)V", false)
-					],
-					'transformer': function(instructions, offset, instruction) {
-						instructions.insertBefore(offset, instruction);
-					}
-				});
-			}
-		},
 		'IngameGui#renderAttackIndicator': {
 			'target': {
 				'type': 'METHOD',
@@ -261,29 +175,6 @@ function initializeCoreMod() {
 					'transformer': function(instructions, offset, instruction) {
 						instructions.set(offset, instruction);
 						instructions.remove(instruction.getPrevious());
-					}
-				});
-			}
-		},
-		'Minecraft#processKeyBinds': {
-			'target': {
-				'type': 'METHOD',
-				'class': 'net.minecraft.client.Minecraft',
-				'methodName': 'func_184117_aA', // processKeyBinds
-				'methodDesc': '()V'
-			},
-			'transformer': function(method) {
-				// if(this.gameSettings.thirdPersonView > InjectionDelegation.getMax3ppId())
-				return transformMethod(method, {
-					'searchList': [
-						new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/GameSettings", ASMAPI.mapField("field_74320_O"), "I"), // thirdPersionView
-						new InsnNode(Opcodes.ICONST_2)
-					],
-					'transformList': [
-						new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getMax3ppId", "()I", false)
-					],
-					'transformer': function(instructions, offset, instruction) {
-						instructions.set(offset, instruction);
 					}
 				});
 			}

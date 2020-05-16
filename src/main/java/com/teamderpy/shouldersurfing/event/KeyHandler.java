@@ -71,10 +71,16 @@ public class KeyHandler
 				}
 			}
 			
-			if(KeyHandler.isPressed(Minecraft.getInstance().gameSettings.keyBindTogglePerspective) && Config.CLIENT.doRememberLastPerspective())
+			if(KeyHandler.isPressed(Minecraft.getInstance().gameSettings.keyBindTogglePerspective))
 			{
-				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView + 1));
-				KeyBinding.onTick(Minecraft.getInstance().gameSettings.keyBindTogglePerspective.getKey());
+				Perspective next = Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView + 1);
+				
+				if(Config.CLIENT.doRememberLastPerspective())
+				{
+					Config.CLIENT.setDefaultPerspective(next);
+				}
+				
+				Minecraft.getInstance().gameSettings.thirdPersonView = next.getPerspectiveId();
 			}
 		}
 	}

@@ -1,20 +1,30 @@
 package com.teamderpy.shouldersurfing.event;
 
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.asm.InjectionDelegation;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.Vec2f;
+import com.teamderpy.shouldersurfing.math.VectorConverter;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,7 +37,6 @@ public class ClientEventHandler
 	private static boolean switchPerspective;
 	
 	public static boolean isAiming;
-	public static boolean skipRenderPlayer;
 	
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
@@ -58,8 +67,6 @@ public class ClientEventHandler
 				}
 			}
 			
-			ClientEventHandler.skipRenderPlayer = false;
-			
 			RayTracer.traceFromEyes(1.0F);
 			
 			if(RayTracer.getRayTraceHit() != null && Minecraft.getInstance().player != null)
@@ -72,7 +79,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.getPlayer().equals(Minecraft.getInstance().player) && ClientEventHandler.skipRenderPlayer && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null)
+		if(event.getPlayer().equals(Minecraft.getInstance().player) && InjectionDelegation.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null)
 		{
 			if(event.isCancelable())
 			{
@@ -119,6 +126,77 @@ public class ClientEventHandler
 				RenderSystem.translatef(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void cameraSetup(CameraSetup event)
+	{
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+		{
+			final ActiveRenderInfo info = event.getInfo();
+			double x = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosX, info.getRenderViewEntity().getPosX());
+			double y = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosY, info.getRenderViewEntity().getPosY()) + MathHelper.lerp(event.getRenderPartialTicks(), info.previousHeight, info.height);
+			double z = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosZ, info.getRenderViewEntity().getPosZ());
+			
+			info.setPosition(x, y, z);
+			
+			InjectionDelegation.cameraDistance = ClientEventHandler.calcCameraDistance(info, event.getInfo().calcCameraDistance(4.0D));
+			
+			float radiantYaw = (float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw());
+			double yawX = MathHelper.cos(radiantYaw) * InjectionDelegation.cameraDistance;
+			double yawZ = MathHelper.sin(radiantYaw) * InjectionDelegation.cameraDistance;
+			
+			event.getInfo().movePosition(-yawX, 0, yawZ);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void renderWorldLast(RenderWorldLastEvent event)
+	{
+		if(RayTracer.getRayTraceHit() != null)
+		{
+			RayTracer.setProjectedVector(VectorConverter.project2D(RayTracer.getRayTraceHit(), event.getMatrixStack(), event.getProjectionMatrix()));
+			RayTracer.setRayTraceHit(null);
+		}
+	}
+	
+	private static double calcCameraDistance(ActiveRenderInfo info, double distance)
+	{
+		double result = distance;
+		
+		float radiantYaw = (float) Math.toRadians(info.getYaw());
+		double yawXZlength = MathHelper.sin((float) Math.toRadians(Config.CLIENT.getShoulderRotationYaw())) * distance;
+		double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
+		double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
+		Vec3d view = info.getProjectedView();
+		
+		for(int i = 0; i < 8; i++)
+		{
+			float offsetX = (float)((i & 1) * 2 - 1);
+			float offsetY = (float)((i >> 1 & 1) * 2 - 1);
+			float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
+			
+			offsetX = offsetX * 0.1F;
+			offsetY = offsetY * 0.1F;
+			offsetZ = offsetZ * 0.1F;
+			
+			Vec3d head = view.add(offsetX, offsetY, offsetZ);
+			Vec3d camera = new Vec3d(view.x - info.getViewVector().getX() * distance + offsetX + offsetZ + yawX, view.y - info.getViewVector().getY() * distance + offsetY, view.z - info.getViewVector().getZ() * distance + offsetZ + yawZ);
+			
+			RayTraceResult raytraceresult = Minecraft.getInstance().world.rayTraceBlocks(new RayTraceContext(head, camera, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
+			
+			if(raytraceresult != null)
+			{
+				double newDistance = raytraceresult.getHitVec().distanceTo(info.getProjectedView());
+				
+				if(newDistance < result)
+				{
+					result = newDistance;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	public static boolean isHoldingSpecialItem()

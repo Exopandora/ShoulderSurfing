@@ -1,19 +1,11 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
-import com.teamderpy.shouldersurfing.math.RayTracer;
-import com.teamderpy.shouldersurfing.math.VectorConverter;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public final class InjectionDelegation
 {
-	private static double cameraDistance = 0F;
+	public static double cameraDistance = 0F;
 	
 	/**
 	 * Called by injected code to modify the camera rotation yaw
@@ -70,18 +62,6 @@ public final class InjectionDelegation
 	}
 	
 	/**
-	 * Called by injected code to project a raytrace hit to the screen
-	 */
-	public static void calculateRayTraceProjection(MatrixStack matrixStackIn, Matrix4f projectionIn)
-	{
-		if(RayTracer.getRayTraceHit() != null)
-		{
-			RayTracer.setProjectedVector(VectorConverter.project2D(RayTracer.getRayTraceHit(), matrixStackIn, projectionIn));
-			RayTracer.setRayTraceHit(null);
-		}
-	}
-	
-	/**
 	 * Called by injected code to get the maximum value for third person
 	 */
 	public static int getMax3ppId()
@@ -94,67 +74,19 @@ public final class InjectionDelegation
 		return 3;
 	}
 	
-	/**
-	 * Called by injected code to get the maximum possible distance for the camera
-	 */
-	public static double calcCameraDistance(double distance, ActiveRenderInfo info)
-	{
-		double result = distance;
-		
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
-		{
-			final float radiant = (float) (Math.PI / 180F);
-			final float radiantYaw = info.getYaw() * radiant;
-			
-			double yawXZlength = MathHelper.sin(InjectionDelegation.getShoulderRotationYaw() * radiant) * distance;
-			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
-			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
-			
-			for(int i = 0; i < 8; i++)
-			{
-				float offsetX = (float)((i & 1) * 2 - 1);
-				float offsetY = (float)((i >> 1 & 1) * 2 - 1);
-				float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
-				
-				offsetX = offsetX * 0.1F;
-				offsetY = offsetY * 0.1F;
-				offsetZ = offsetZ * 0.1F;
-				
-				Vec3d vec3d = info.getProjectedView().add(offsetX, offsetY, offsetZ);
-				Vec3d vec3d1 = new Vec3d(info.getProjectedView().x - info.getViewVector().getX() * distance + offsetX + offsetZ + yawX, info.getProjectedView().y - info.getViewVector().getY() * distance + offsetY, info.getProjectedView().z - info.getViewVector().getZ() * distance + offsetZ + yawZ);
-				
-				RayTraceResult raytraceresult = Minecraft.getInstance().world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
-				
-				if(raytraceresult != null)
-				{
-					double newDistance = raytraceresult.getHitVec().distanceTo(info.getProjectedView());
-					
-					if(newDistance < result)
-					{
-						result = newDistance;
-					}
-				}
-			}
-		}
-		
-		ClientEventHandler.skipRenderPlayer = distance < 0.80;
-		return InjectionDelegation.cameraDistance = result;
-	}
-	
 	public static Vec3d getEyePosition(Entity entity, Vec3d positionEyes)
 	{
-		if(!Config.CLIENT.getCrosshairType().isDynamic())
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			final float radiant = (float) (Math.PI / 180F);
-			final float radiantPitch = entity.rotationPitch * radiant;
-			final float radiantYaw = entity.rotationYaw * radiant;
+			final float radiantPitch = (float) Math.toRadians(entity.rotationPitch);
+			final float radiantYaw = (float) Math.toRadians(entity.rotationYaw);
 			
-			double pitchYLength = MathHelper.sin(InjectionDelegation.getShoulderRotationPitch() * radiant) * InjectionDelegation.cameraDistance;
+			double pitchYLength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationPitch())) * InjectionDelegation.cameraDistance;
 			double pitchX = MathHelper.sin(radiantPitch) * MathHelper.sin(-radiantYaw) * pitchYLength;
 			double pitchY = MathHelper.cos(radiantPitch) * pitchYLength;
 			double pitchZ = MathHelper.sin(radiantPitch) * MathHelper.cos(-radiantYaw) * pitchYLength;
 			
-			double yawXZlength = MathHelper.sin(InjectionDelegation.getShoulderRotationYaw() * radiant) * InjectionDelegation.cameraDistance;
+			double yawXZlength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw())) * InjectionDelegation.cameraDistance;
 			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
 			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
 			
@@ -182,16 +114,5 @@ public final class InjectionDelegation
 		}
 		
 		return skipRender;
-	}
-	
-	public static void movePosition(ActiveRenderInfo info, double x, double y, double z)
-	{
-		final float radiant = (float) (Math.PI / 180F);
-		final float radiantYaw = InjectionDelegation.getShoulderRotationYaw() * radiant;
-		
-		double yawX = MathHelper.cos(radiantYaw) * InjectionDelegation.cameraDistance;
-		double yawZ = MathHelper.sin(radiantYaw) * InjectionDelegation.cameraDistance;
-		
-		info.movePosition(-yawX, 0, yawZ);
 	}
 }

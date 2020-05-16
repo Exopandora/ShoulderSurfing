@@ -47,6 +47,8 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGameOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::postRenderGameOverlayEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::cameraSetup);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderWorldLast);
 		
 		ShoulderSurfing.SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
 		Minecraft.getInstance().gameSettings.thirdPersonView = Config.CLIENT.getDefaultPerspective().getPerspectiveId();
