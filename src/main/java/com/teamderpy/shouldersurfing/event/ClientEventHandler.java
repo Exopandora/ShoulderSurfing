@@ -140,7 +140,7 @@ public class ClientEventHandler
 			
 			info.setPosition(x, y, z);
 			
-			InjectionDelegation.cameraDistance = ClientEventHandler.calcCameraDistance(info, event.getInfo().calcCameraDistance(4.0D));
+			InjectionDelegation.cameraDistance = ClientEventHandler.calcCameraDistance(info, event.getInfo().calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()));
 			
 			float radiantYaw = (float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw());
 			double yawX = MathHelper.cos(radiantYaw) * InjectionDelegation.cameraDistance;
