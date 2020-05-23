@@ -6,6 +6,8 @@ import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -72,6 +74,32 @@ public final class InjectionDelegation
 		}
 		
 		return 3;
+	}
+	
+	public static RayTraceResult pick(Entity entity, RayTraceResult result, double distance, float partialTicks, boolean stopOnFluid)
+	{
+		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId() && !Config.CLIENT.getCrosshairType().isDynamic())
+		{
+			final float radiantPitch = (float) Math.toRadians(entity.rotationPitch);
+			final float radiantYaw = (float) Math.toRadians(entity.rotationYaw);
+			
+			double pitchYLength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationPitch())) * InjectionDelegation.cameraDistance;
+			double pitchX = MathHelper.sin(radiantPitch) * MathHelper.sin(-radiantYaw) * pitchYLength;
+			double pitchY = MathHelper.cos(radiantPitch) * pitchYLength;
+			double pitchZ = MathHelper.sin(radiantPitch) * MathHelper.cos(-radiantYaw) * pitchYLength;
+			
+			double yawXZlength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw())) * InjectionDelegation.cameraDistance;
+			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
+			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
+			
+			Vec3d start = entity.getEyePosition(partialTicks).add(yawX, 0, yawZ).add(pitchX, pitchY, pitchZ);
+			Vec3d look = entity.getLook(partialTicks);
+			Vec3d end = start.add(look.x * distance, look.y * distance, look.z * distance);
+			
+			return entity.world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.OUTLINE, stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, entity));
+		}
+		
+		return result;
 	}
 	
 	public static Vec3d getEyePosition(Entity entity, Vec3d positionEyes)

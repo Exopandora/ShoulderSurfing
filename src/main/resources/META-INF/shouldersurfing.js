@@ -116,38 +116,48 @@ function initializeCoreMod() {
 	}
 	
 	return {
-		'PlayerEntity#getEyePosition': {
+		'PlayerEntity#pick': {
 			'target': {
 				'type': 'CLASS',
 				'name': 'net.minecraft.entity.player.PlayerEntity'
 			},
 			'transformer': function(classNode) {
 				var methods = classNode.methods;
-				var name = ASMAPI.mapMethod("func_174824_e");
 				
-				//	public Vec3d getEyePosition(float paritalTicks)
+				//	public RayTraceResult pick(double distance, float partialTicks, boolean stopOnFluid)
 				//	{
-				//		return InjectionDelegation.getEyePosition(this, super.getEyePosition(paritalTicks));
+				//		return InjectionDelegation.pick(this, super.pick(distance, partialTicks, stopOnFluid), distance, partialTicks, stopOnFluid);
 				//	}
-					
-				//	public getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
+				
+				//	public pick(DFZ)Lnet/minecraft/util/math/RayTraceResult;
 				//		L0
-				//			LINENUMBER 187 L0
+				//			LINENUMBER 90 L0
 				//			ALOAD 0
 				//			ALOAD 0
-				//			FLOAD 1
-				//			INVOKESPECIAL com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(F)Lnet/minecraft/util/math/Vec3d;
-				//			INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.getEyePosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
+				//			DLOAD 1
+				//			FLOAD 3
+				//			ILOAD 4
+				//			INVOKESPECIAL Lnet/minecraft/entity/Entity.pick(DFZ)Lnet/minecraft/util/math/RayTraceResult;
+				//			DLOAD 1
+				//			FLOAD 3
+				//			ILOAD 4
+				//			INVOKESTATIC com/teamderpy/shouldersurfing/asm/InjectionDelegation.pick(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/RayTraceResult;DFZ)Lnet/minecraft/util/math/RayTraceResult;
 				//			ARETURN
 				
-				var method = new MethodNode(Opcodes.ACC_PUBLIC, name, "(F)Lnet/minecraft/util/math/Vec3d;", null, null);
+				var name = ASMAPI.mapMethod("func_213324_a");
+				var method = new MethodNode(Opcodes.ACC_PUBLIC, name, "(DFZ)Lnet/minecraft/util/math/RayTraceResult;", null, null);
 				
 				method.instructions.add(new LabelNode(new Label()));
 				method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
 				method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-				method.instructions.add(new VarInsnNode(Opcodes.FLOAD, 1));
-				method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "net/minecraft/entity/Entity", name, "(F)Lnet/minecraft/util/math/Vec3d;", false));
-				method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getEyePosition", "(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", false));
+				method.instructions.add(new VarInsnNode(Opcodes.DLOAD, 1));
+				method.instructions.add(new VarInsnNode(Opcodes.FLOAD, 3));
+				method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 4));
+				method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "net/minecraft/entity/Entity", name, "(DFZ)Lnet/minecraft/util/math/RayTraceResult;", false));
+				method.instructions.add(new VarInsnNode(Opcodes.DLOAD, 1));
+				method.instructions.add(new VarInsnNode(Opcodes.FLOAD, 3));
+				method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 4));
+				method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "pick", "(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/RayTraceResult;DFZ)Lnet/minecraft/util/math/RayTraceResult;", false));
 				method.instructions.add(new InsnNode(Opcodes.ARETURN));
 				
 				methods.add(method);
