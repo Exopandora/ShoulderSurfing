@@ -102,28 +102,6 @@ public final class InjectionDelegation
 		return result;
 	}
 	
-	public static Vec3d getEyePosition(Entity entity, Vec3d positionEyes)
-	{
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId() && !Config.CLIENT.getCrosshairType().isDynamic())
-		{
-			final float radiantPitch = (float) Math.toRadians(entity.rotationPitch);
-			final float radiantYaw = (float) Math.toRadians(entity.rotationYaw);
-			
-			double pitchYLength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationPitch())) * InjectionDelegation.cameraDistance;
-			double pitchX = MathHelper.sin(radiantPitch) * MathHelper.sin(-radiantYaw) * pitchYLength;
-			double pitchY = MathHelper.cos(radiantPitch) * pitchYLength;
-			double pitchZ = MathHelper.sin(radiantPitch) * MathHelper.cos(-radiantYaw) * pitchYLength;
-			
-			double yawXZlength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw())) * InjectionDelegation.cameraDistance;
-			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
-			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
-			
-			return positionEyes.add(yawX, 0, yawZ).add(pitchX, pitchY, pitchZ);
-		}
-		
-		return positionEyes;
-	}
-	
 	public static int doRenderCrosshair()
 	{
 		int skipRender = 0;
