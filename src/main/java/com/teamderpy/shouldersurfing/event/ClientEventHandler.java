@@ -79,7 +79,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.getPlayer().equals(Minecraft.getInstance().player) && InjectionDelegation.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null)
+		if(event.getPlayer().equals(Minecraft.getInstance().player) && InjectionDelegation.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 		{
 			if(event.isCancelable())
 			{
