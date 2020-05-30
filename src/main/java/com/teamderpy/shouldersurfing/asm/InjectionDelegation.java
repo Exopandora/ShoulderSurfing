@@ -38,19 +38,6 @@ public final class InjectionDelegation
 	}
 	
 	/**
-	 * Called by injected code to modify the camera rotation pitch
-	 */
-	public static float getShoulderRotationPitch()
-	{
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
-		{
-			return 0F;
-		}
-		
-		return 0F;
-	}
-	
-	/**
 	 * Called by injected code to modify the camera zoom
 	 */
 	public static float getShoulderZoomMod()
@@ -80,19 +67,13 @@ public final class InjectionDelegation
 	{
 		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			final float radiantPitch = (float) Math.toRadians(entity.rotationPitch);
-			final float radiantYaw = (float) Math.toRadians(entity.rotationYaw);
-			
-			double pitchYLength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationPitch())) * InjectionDelegation.cameraDistance;
-			double pitchX = MathHelper.sin(radiantPitch) * MathHelper.sin(-radiantYaw) * pitchYLength;
-			double pitchY = MathHelper.cos(radiantPitch) * pitchYLength;
-			double pitchZ = MathHelper.sin(radiantPitch) * MathHelper.cos(-radiantYaw) * pitchYLength;
+			final float yaw = (float) Math.toRadians(entity.rotationYaw);
 			
 			double yawXZlength = MathHelper.sin((float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw())) * InjectionDelegation.cameraDistance;
-			double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
-			double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
+			double yawX = MathHelper.cos(yaw) * yawXZlength;
+			double yawZ = MathHelper.sin(yaw) * yawXZlength;
 			
-			Vec3d start = entity.getEyePosition(partialTicks).add(yawX, 0, yawZ).add(pitchX, pitchY, pitchZ);
+			Vec3d start = entity.getEyePosition(partialTicks).add(yawX, 0, yawZ);
 			Vec3d look = entity.getLook(partialTicks);
 			Vec3d end = start.add(look.x * distance, look.y * distance, look.z * distance);
 			
