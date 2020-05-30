@@ -32,7 +32,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
-	private static Vec2f lastTickTranslation = Vec2f.ZERO;
+	private static Vec2f lastTranslation = Vec2f.ZERO;
 	private static Vec2f translation = Vec2f.ZERO;
 	private static boolean switchPerspective;
 	
@@ -101,17 +101,17 @@ public class ClientEventHandler
 			if(RayTracer.getProjectedVector() != null)
 			{
 				Vec2f projectedOffset = RayTracer.getProjectedVector().subtract(center).divide(scale);
-				ClientEventHandler.translation = ClientEventHandler.lastTickTranslation.add(projectedOffset.subtract(ClientEventHandler.lastTickTranslation).scale(event.getPartialTicks()));
+				ClientEventHandler.translation = ClientEventHandler.lastTranslation.add(projectedOffset.subtract(ClientEventHandler.lastTranslation).scale(event.getPartialTicks()));
 			}
 			
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
 				RenderSystem.translatef(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
-				ClientEventHandler.lastTickTranslation = ClientEventHandler.translation;
+				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
 			}
 			else
 			{
-				ClientEventHandler.lastTickTranslation = Vec2f.ZERO;
+				ClientEventHandler.lastTranslation = Vec2f.ZERO;
 			}
 		}
 	}
@@ -140,13 +140,13 @@ public class ClientEventHandler
 			
 			info.setPosition(x, y, z);
 			
-			InjectionDelegation.cameraDistance = ClientEventHandler.calcCameraDistance(info, event.getInfo().calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()));
+			InjectionDelegation.cameraDistance = ClientEventHandler.calcCameraDistance(info, info.calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()));
 			
-			float radiantYaw = (float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw());
-			double yawX = MathHelper.cos(radiantYaw) * InjectionDelegation.cameraDistance;
-			double yawZ = MathHelper.sin(radiantYaw) * InjectionDelegation.cameraDistance;
+			float yaw = (float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw());
+			double dx = MathHelper.cos(yaw) * InjectionDelegation.cameraDistance;
+			double dz = MathHelper.sin(yaw) * InjectionDelegation.cameraDistance;
 			
-			event.getInfo().movePosition(-yawX, 0, yawZ);
+			info.movePosition(-dx, 0, dz);
 		}
 	}
 	
@@ -162,41 +162,33 @@ public class ClientEventHandler
 	
 	private static double calcCameraDistance(ActiveRenderInfo info, double distance)
 	{
-		double result = distance;
-		
-		float radiantYaw = (float) Math.toRadians(info.getYaw());
+		float yaw = (float) Math.toRadians(info.getYaw());
 		double yawXZlength = MathHelper.sin((float) Math.toRadians(Config.CLIENT.getShoulderRotationYaw())) * distance;
-		double yawX = MathHelper.cos(radiantYaw) * yawXZlength;
-		double yawZ = MathHelper.sin(radiantYaw) * yawXZlength;
+		
+		Vec3d offsetYaw = new Vec3d(MathHelper.cos(yaw) * yawXZlength, 0, MathHelper.sin(yaw) * yawXZlength);
 		Vec3d view = info.getProjectedView();
 		
 		for(int i = 0; i < 8; i++)
 		{
-			float offsetX = (float)((i & 1) * 2 - 1);
-			float offsetY = (float)((i >> 1 & 1) * 2 - 1);
-			float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
+			Vec3d offset = offsetYaw.add(((i & 1) * 2 - 1) * 0.1D, ((i >> 1 & 1) * 2 - 1) * 0.1D, ((i >> 2 & 1) * 2 - 1) * 0.1D);
+			Vec3d head = view.add(offsetYaw);
+			Vec3d camera = view.subtract(info.getViewVector().getX() * distance, info.getViewVector().getY() * distance, info.getViewVector().getZ() * distance).add(offset);
 			
-			offsetX = offsetX * 0.1F;
-			offsetY = offsetY * 0.1F;
-			offsetZ = offsetZ * 0.1F;
+			RayTraceContext context = new RayTraceContext(head, camera, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity);
+			RayTraceResult result = Minecraft.getInstance().world.rayTraceBlocks(context);
 			
-			Vec3d head = view.add(offsetX, offsetY, offsetZ);
-			Vec3d camera = new Vec3d(view.x - info.getViewVector().getX() * distance + offsetX + offsetZ + yawX, view.y - info.getViewVector().getY() * distance + offsetY, view.z - info.getViewVector().getZ() * distance + offsetZ + yawZ);
-			
-			RayTraceResult raytraceresult = Minecraft.getInstance().world.rayTraceBlocks(new RayTraceContext(head, camera, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity));
-			
-			if(raytraceresult != null)
+			if(result != null)
 			{
-				double newDistance = raytraceresult.getHitVec().distanceTo(info.getProjectedView());
+				double newDistance = result.getHitVec().distanceTo(info.getProjectedView());
 				
-				if(newDistance < result)
+				if(newDistance < distance)
 				{
-					result = newDistance;
+					distance = newDistance;
 				}
 			}
 		}
 		
-		return result;
+		return distance;
 	}
 	
 	public static boolean isHoldingSpecialItem()
