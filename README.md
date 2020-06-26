@@ -42,7 +42,9 @@ Download ShoulderSurfing or build from source
 
 # Troubleshooting #
 
-**Optifine:** Set "Render Quality" to "1.0x" for Shader Pack "(internal)" and switch back to Shader Pack "OFF"  
+**Optifine:**
+≥ 1.15: The crosshair will not render in 3pp because of compatibility issues
+≤ 1.14: Set "Render Quality" to "1.0x" for Shader Pack "(internal)" and switch back to Shader Pack "OFF"
 **BetterCombat:** Set "Enable 1PP Crosshair" to "false" and "Override Mod Crosshairs" to "true"
 
 # FAQ #
