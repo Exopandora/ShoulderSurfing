@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -73,9 +73,9 @@ public final class InjectionDelegation
 			double yawX = MathHelper.cos(yaw) * yawXZlength;
 			double yawZ = MathHelper.sin(yaw) * yawXZlength;
 			
-			Vec3d start = entity.getEyePosition(partialTicks).add(yawX, 0, yawZ);
-			Vec3d look = entity.getLook(partialTicks);
-			Vec3d end = start.add(look.x * distance, look.y * distance, look.z * distance);
+			Vector3d start = entity.getEyePosition(partialTicks).add(yawX, 0, yawZ);
+			Vector3d look = entity.getLook(partialTicks);
+			Vector3d end = start.add(look.x * distance, look.y * distance, look.z * distance);
 			
 			return entity.world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.OUTLINE, stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, entity));
 		}

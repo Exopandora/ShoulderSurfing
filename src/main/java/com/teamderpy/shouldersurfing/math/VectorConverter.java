@@ -8,15 +8,15 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class VectorConverter
 {
-	public static Vec2f project2D(Vec3d position, MatrixStack matrixStackIn, Matrix4f projectionIn)
+	public static Vec2f project2D(Vector3d position, MatrixStack matrixStackIn, Matrix4f projectionIn)
 	{
 		IntBuffer viewport = GLAllocation.createDirectByteBuffer(64).asIntBuffer();
 		FloatBuffer modelview = GLAllocation.createDirectFloatBuffer(16);
@@ -48,7 +48,7 @@ public class VectorConverter
 		}
 	}
 	
-	private static Vec2f uProject(Vec3d position, FloatBuffer modelMatrix, FloatBuffer projMatrix, IntBuffer viewport)
+	private static Vec2f uProject(Vector3d position, FloatBuffer modelMatrix, FloatBuffer projMatrix, IntBuffer viewport)
 	{
 		float[] in = new float[4];
 		float[] out = new float[4];

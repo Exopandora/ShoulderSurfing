@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.event;
 
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.asm.InjectionDelegation;
 import com.teamderpy.shouldersurfing.config.Config;
@@ -13,12 +12,13 @@ import com.teamderpy.shouldersurfing.math.VectorConverter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
@@ -106,7 +106,7 @@ public class ClientEventHandler
 			
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				RenderSystem.translatef(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
+				event.getMatrixStack().getLast().getMatrix().setTranslation(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
 				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
 			}
 			else
@@ -123,7 +123,7 @@ public class ClientEventHandler
 		{
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				RenderSystem.translatef(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
+				event.getMatrixStack().getLast().getMatrix().setTranslation(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
 			}
 		}
 	}
@@ -165,14 +165,14 @@ public class ClientEventHandler
 		float yaw = (float) Math.toRadians(info.getYaw());
 		double yawXZlength = MathHelper.sin((float) Math.toRadians(Config.CLIENT.getShoulderRotationYaw())) * distance;
 		
-		Vec3d offsetYaw = new Vec3d(MathHelper.cos(yaw) * yawXZlength, 0, MathHelper.sin(yaw) * yawXZlength);
-		Vec3d view = info.getProjectedView();
+		Vector3d offsetYaw = new Vector3d(MathHelper.cos(yaw) * yawXZlength, 0, MathHelper.sin(yaw) * yawXZlength);
+		Vector3d view = info.getProjectedView();
 		
 		for(int i = 0; i < 8; i++)
 		{
-			Vec3d offset = offsetYaw.add(((i & 1) * 2 - 1) * 0.1D, ((i >> 1 & 1) * 2 - 1) * 0.1D, ((i >> 2 & 1) * 2 - 1) * 0.1D);
-			Vec3d head = view.add(offsetYaw);
-			Vec3d camera = view.subtract(info.getViewVector().getX() * distance, info.getViewVector().getY() * distance, info.getViewVector().getZ() * distance).add(offset);
+			Vector3d offset = offsetYaw.add(((i & 1) * 2 - 1) * 0.1D, ((i >> 1 & 1) * 2 - 1) * 0.1D, ((i >> 2 & 1) * 2 - 1) * 0.1D);
+			Vector3d head = view.add(offsetYaw);
+			Vector3d camera = view.subtract(info.getViewVector().getX() * distance, info.getViewVector().getY() * distance, info.getViewVector().getZ() * distance).add(offset);
 			
 			RayTraceContext context = new RayTraceContext(head, camera, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, Minecraft.getInstance().renderViewEntity);
 			RayTraceResult result = Minecraft.getInstance().world.rayTraceBlocks(context);
@@ -197,17 +197,14 @@ public class ClientEventHandler
 		{
 			Item item = Minecraft.getInstance().player.getActiveItemStack().getItem();
 			
-			if(item.hasCustomProperties())
+			if(ItemModelsProperties.func_239417_a_(item, new ResourceLocation("pull")) != null || ItemModelsProperties.func_239417_a_(item, new ResourceLocation("throwing")) != null)
 			{
-				if(item.getPropertyGetter(new ResourceLocation("pull")) != null || item.getPropertyGetter(new ResourceLocation("throwing")) != null)
-				{
-					return true;
-				}
+				return true;
 			}
 			
 			for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
 			{
-				if(held.getItem().hasCustomProperties() && held.getItem().getPropertyGetter(new ResourceLocation("charged")) != null)
+				if(ItemModelsProperties.func_239417_a_(held.getItem(), new ResourceLocation("charged")) != null)
 				{
 					return true;
 				}

@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public final class RayTracer
 {
 	private static Vec2f projectedVector = null;
-	private static Vec3d rayTraceHit = null;
+	private static Vector3d rayTraceHit = null;
 	
 	public static void traceFromEyes(final float partialTicks)
 	{
@@ -42,9 +42,9 @@ public final class RayTracer
 				RayTracer.rayTraceHit = null;
 			}
 			
-			Vec3d renderViewPos = renderView.getEyePosition(partialTicks);
-			Vec3d sightVector = renderView.getLook(partialTicks);
-			Vec3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
+			Vector3d renderViewPos = renderView.getEyePosition(partialTicks);
+			Vector3d sightVector = renderView.getLook(partialTicks);
+			Vector3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
 			
 			List<Entity> entityList = Minecraft.getInstance().world.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
 					.expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach)
@@ -56,7 +56,7 @@ public final class RayTracer
 				{
 					float collisionSize = entity.getCollisionBorderSize();
 					AxisAlignedBB aabb = entity.getBoundingBox().expand(collisionSize, collisionSize, collisionSize);
-					Optional<Vec3d> intercept = aabb.rayTrace(renderViewPos, sightRay);
+					Optional<Vector3d> intercept = aabb.rayTrace(renderViewPos, sightRay);
 					
 					if(intercept.isPresent())
 					{
@@ -82,12 +82,12 @@ public final class RayTracer
 		RayTracer.projectedVector = projectedVector;
 	}
 	
-	public static Vec3d getRayTraceHit()
+	public static Vector3d getRayTraceHit()
 	{
 		return RayTracer.rayTraceHit;
 	}
 	
-	public static void setRayTraceHit(Vec3d rayTraceHit)
+	public static void setRayTraceHit(Vector3d rayTraceHit)
 	{
 		RayTracer.rayTraceHit = rayTraceHit;
 	}

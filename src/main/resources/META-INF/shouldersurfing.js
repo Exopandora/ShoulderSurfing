@@ -169,14 +169,14 @@ function initializeCoreMod() {
 			'target': {
 				'type': 'METHOD',
 				'class': 'net.minecraft.client.gui.IngameGui',
-				'methodName': 'func_194798_c', // renderAttackIndicator
-				'methodDesc': '()V'
+				'methodName': 'func_238456_d_', // renderAttackIndicator
+				'methodDesc': '(Lcom/mojang/blaze3d/matrix/MatrixStack;)V'
 			},
 			'transformer': function(method) {
 				// if(InjectionDelegation.doRenderCrosshair() == 0)
 				return transformMethod(method, {
 					'searchList': [
-						new VarInsnNode(Opcodes.ALOAD, 1),
+						new VarInsnNode(Opcodes.ALOAD, 2),
 						new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/GameSettings", ASMAPI.mapField("field_74320_O"), "I") // thirdPersionView
 					],
 					'transformList': [
