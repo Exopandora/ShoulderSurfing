@@ -17,6 +17,6 @@ Code injection may fail if using mods that mess with the base files.
 [[dependencies.shouldersurfing]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15,)"
+    versionRange="[1.16,)"
     ordering="NONE"
     side="BOTH"
