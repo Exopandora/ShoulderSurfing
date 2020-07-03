@@ -1,5 +1,8 @@
 package com.teamderpy.shouldersurfing.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
@@ -43,9 +46,6 @@ public class Config
 		private final BooleanValue unlimitedZoom;
 		private final DoubleValue zoomMin;
 		private final DoubleValue zoomMax;
-		private final BooleanValue show3ppCrosshair;
-		private final BooleanValue show1ppCrosshair;
-		private final ConfigValue<CrosshairVisibility> crosshairVisibility;
 		private final BooleanValue showCrosshairFarther;
 		private final BooleanValue keepCameraOutOfHead;
 		private final BooleanValue attackIndicator;
@@ -53,24 +53,18 @@ public class Config
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final BooleanValue rememberLastPerspective;
+		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
+			builder.push("perspective");
+			builder.push("rotation");
+			
 			this.shoulderRotationYaw = builder
 					.comment("Third person camera rotation")
 					.translation("Rotation Offset")
 					.defineInRange("rotation_offset", 0, -Double.MAX_VALUE, Double.MAX_VALUE);
-			
-			this.shoulderZoomMod = builder
-					.comment("Third person camera zoom")
-					.translation("Zoom Offset")
-					.defineInRange("zoom_offset", 0.7, -Double.MAX_VALUE, Double.MAX_VALUE);
-			
-			this.unlimitedRotation = builder
-					.comment("Whether or not rotation adjustment has limits")
-					.translation("Unlimited Rotation")
-					.define("unlimited_rotation", false);
-			
+
 			this.rotationMin = builder
 					.comment("If rotation is limited this is the minimum amount")
 					.translation("Rotation Minimum")
@@ -81,10 +75,18 @@ public class Config
 					.translation("Rotation Maximum")
 					.defineInRange("rotation_max", 60.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.unlimitedZoom = builder
-					.comment("Whether or not zoom adjustment has limits")
-					.translation("Unlimited Zoom")
-					.define("unlimited_zoom", false);
+			this.unlimitedRotation = builder
+					.comment("Whether or not rotation adjustment has limits")
+					.translation("Unlimited Rotation")
+					.define("unlimited_rotation", false);
+			
+			builder.pop();
+			builder.push("zoom");
+			
+			this.shoulderZoomMod = builder
+					.comment("Third person camera zoom")
+					.translation("Zoom Offset")
+					.defineInRange("zoom_offset", 0.7, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.zoomMin = builder
 					.comment("If zoom is limited this is the minimum amount")
@@ -95,56 +97,65 @@ public class Config
 					.comment("If zoom is limited this is the maximum amount")
 					.translation("Zoom Maximum")
 					.defineInRange("zoom_max", 2.0, -Double.MAX_VALUE, Double.MAX_VALUE);
-						
-			this.show3ppCrosshair = builder
-					.comment("Enable or disable the crosshair in third person")
-					.translation("Third Person Crosshair")
-					.define("3pp_crosshair", true);
 			
-			this.show1ppCrosshair = builder
-					.comment("Enable or disable the crosshair in first person")
-					.translation("First Person Crosshair")
-					.define("1pp_crosshair", true);
+			this.unlimitedZoom = builder
+					.comment("Whether or not zoom adjustment has limits")
+					.translation("Unlimited Zoom")
+					.define("unlimited_zoom", false);
 			
-			this.crosshairVisibility = builder
-					.comment("Crosshair visibility in 3PP")
-					.translation("Crosshair Visibility")
-					.defineEnum("crosshair_visibility", CrosshairVisibility.ALWAYS, CrosshairVisibility.values());
-			
-			this.showCrosshairFarther = builder
-					.comment("Whether or not to show the crosshairs farther than normal")
-					.translation("Show Crosshair Farther")
-					.define("show_crosshair_farther", true);
+			builder.pop();
 			
 			this.keepCameraOutOfHead = builder
 					.comment("Whether or not to hide the player model if the camera gets too close to it")
 					.translation("Keep Camera Out Of Head")
 					.define("keep_camera_out_of_head", true);
 			
-			this.attackIndicator = builder
-					.comment("Enable or disable the attack indicator in third person")
-					.translation("Third Person Attack Indicator")
-					.define("third_person_attack_indicator", true);
+			this.defaultPerspective = builder
+					.comment("The default perspective when you load the game")
+					.translation("Default Perspective")
+					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
+			
+			this.rememberLastPerspective = builder
+					.comment("Whether or not to remember the last perspective used")
+					.translation("Remember Last Perspective")
+					.define("remember_last_perspective", true);
 			
 			this.replaceDefaultPerspective = builder
 					.comment("Whether or not to replace the default third person perspective")
 					.translation("Replace Default Perspective")
 					.define("replace_default_perspective", false);
 			
-			this.defaultPerspective = builder
-					.comment("The default perspective when you load the game")
-					.translation("Default Perspective")
-					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
+			builder.pop();
+			builder.push("crosshair");
 			
 			this.crosshairType = builder
 					.comment("Crosshair type to use in 3PP")
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 			
-			this.rememberLastPerspective = builder
-					.comment("Whether or not to remember the last perspective used")
-					.translation("Remember Last Perspective")
-					.define("remember_last_perspective", true);
+			this.showCrosshairFarther = builder
+					.comment("Whether or not to show the crosshairs farther than normal")
+					.translation("Show Crosshair Farther")
+					.define("show_crosshair_farther", true);
+			
+			this.attackIndicator = builder
+					.comment("Enable or disable the attack indicator in third person")
+					.translation("Third Person Attack Indicator")
+					.define("third_person_attack_indicator", true);
+			
+			builder.push("visibility");
+			
+			for(Perspective perspective : Perspective.values())
+			{
+				ConfigValue<CrosshairVisibility> crosshairVisibility = builder
+						.comment("Crosshair visibility for " + perspective.name() + " perspective")
+						.translation("Crosshair Visibility")
+						.defineEnum(perspective.name().toLowerCase(), perspective.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
+				this.crosshairVisibility.put(perspective, crosshairVisibility);
+			}
+			
+			builder.pop();
+			builder.pop();
 		}
 		
 		@OnlyIn(Dist.CLIENT)
@@ -183,10 +194,22 @@ public class Config
 		@OnlyIn(Dist.CLIENT)
 		public static enum Perspective
 		{
-			FIRST_PERSON,
-			THIRD_PERSON,
-			FRONT_THIRD_PERSON,
-			SHOULDER_SURFING;
+			FIRST_PERSON(CrosshairVisibility.ALWAYS),
+			THIRD_PERSON(CrosshairVisibility.NEVER),
+			FRONT_THIRD_PERSON(CrosshairVisibility.NEVER),
+			SHOULDER_SURFING(CrosshairVisibility.ALWAYS);
+			
+			private final CrosshairVisibility visibility;
+			
+			private Perspective(CrosshairVisibility visibility)
+			{
+				this.visibility = visibility;
+			}
+			
+			public CrosshairVisibility getDefaultCrosshairVisibility()
+			{
+				return this.visibility;
+			}
 			
 			public int getPerspectiveId()
 			{
@@ -217,13 +240,18 @@ public class Config
 		public static enum CrosshairVisibility
 		{
 			ALWAYS,
+			NEVER,
 			WHEN_AIMING,
 			WHEN_IN_RANGE,
 			WHEN_AIMING_OR_IN_RANGE;
 			
 			public boolean doRender()
 			{
-				if(this == CrosshairVisibility.WHEN_AIMING)
+				if(this == CrosshairVisibility.NEVER)
+				{
+					return false;
+				}
+				else if(this == CrosshairVisibility.WHEN_AIMING)
 				{
 					return ClientEventHandler.isAiming;
 				}
@@ -320,34 +348,14 @@ public class Config
 			Config.set(this.rotationMax, max);
 		}
 		
-		public boolean show3ppCrosshair()
+		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
 		{
-			return this.show3ppCrosshair.get();
+			return this.crosshairVisibility.get(perspective).get();
 		}
 		
-		public void setShow3ppCrosshair(boolean enabled)
+		public void setCrosshairVisibility(Perspective perspective, CrosshairVisibility visibility)
 		{
-			Config.set(this.show3ppCrosshair, enabled);
-		}
-		
-		public boolean show1ppCrosshair()
-		{
-			return this.show1ppCrosshair.get();
-		}
-		
-		public void setShow1ppCrosshair(boolean enabled)
-		{
-			Config.set(this.show1ppCrosshair, enabled);
-		}
-		
-		public CrosshairVisibility getCrosshairVisibility()
-		{
-			return this.crosshairVisibility.get();
-		}
-		
-		public void setCrosshairVisibility(CrosshairVisibility visibility)
-		{
-			Config.set(this.crosshairVisibility, visibility);
+			Config.set(this.crosshairVisibility.get(perspective), visibility);
 		}
 		
 		public boolean showCrosshairFarther()

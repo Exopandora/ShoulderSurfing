@@ -86,16 +86,9 @@ public final class InjectionDelegation
 	public static int doRenderCrosshair()
 	{
 		int skipRender = 0;
+		Perspective perspective = Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView);
 		
-		if(!Config.CLIENT.getCrosshairVisibility().doRender())
-		{
-			skipRender = 1;
-		}
-		else if(Minecraft.getInstance().gameSettings.thirdPersonView != Perspective.FIRST_PERSON.getPerspectiveId() && !Config.CLIENT.show3ppCrosshair())
-		{
-			skipRender = 1;
-		}
-		else if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.FIRST_PERSON.getPerspectiveId() && !Config.CLIENT.show1ppCrosshair())
+		if(!Config.CLIENT.getCrosshairVisibility(perspective).doRender())
 		{
 			skipRender = 1;
 		}
