@@ -11,7 +11,6 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
-import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
@@ -31,7 +30,7 @@ public class KeyHandler
 	{
 		if(Minecraft.getInstance() != null && Minecraft.getInstance().currentScreen == null)
 		{
-			if(KeyHandler.isPressed(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING))
+			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isPressed())
 			{
 				if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 				{
@@ -45,33 +44,33 @@ public class KeyHandler
 			
 			if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				if(KeyHandler.isKeyDown(KeyHandler.KEYBIND_ROTATE_CAMERA_LEFT))
+				if(KEYBIND_ROTATE_CAMERA_LEFT.isKeyDown())
 				{
 					Config.CLIENT.adjustCameraLeft();
 				}
 				
-				if(KeyHandler.isKeyDown(KeyHandler.KEYBIND_ROTATE_CAMERA_RIGHT))
+				if(KEYBIND_ROTATE_CAMERA_RIGHT.isKeyDown())
 				{
 					Config.CLIENT.adjustCameraRight();
 				}
 				
-				if(KeyHandler.isKeyDown(KeyHandler.KEYBIND_ZOOM_CAMERA_IN))
+				if(KEYBIND_ZOOM_CAMERA_IN.isKeyDown())
 				{
 					Config.CLIENT.adjustCameraIn();
 				}
 				
-				if(KeyHandler.isKeyDown(KeyHandler.KEYBIND_ZOOM_CAMERA_OUT))
+				if(KEYBIND_ZOOM_CAMERA_OUT.isKeyDown())
 				{
 					Config.CLIENT.adjustCameraOut();
 				}
 				
-				if(KeyHandler.isPressed(KeyHandler.KEYBIND_SWAP_SHOULDER))
+				if(KEYBIND_SWAP_SHOULDER.isPressed())
 				{
 					Config.CLIENT.swapShoulder();
 				}
 			}
 			
-			if(KeyHandler.isPressed(Minecraft.getInstance().gameSettings.keyBindTogglePerspective))
+			if(Minecraft.getInstance().gameSettings.keyBindTogglePerspective.isPressed())
 			{
 				Perspective next = Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView + 1);
 				
@@ -83,15 +82,5 @@ public class KeyHandler
 				Minecraft.getInstance().gameSettings.thirdPersonView = next.getPerspectiveId();
 			}
 		}
-	}
-	
-	private static boolean isPressed(KeyBinding keyBinding)
-	{
-		return keyBinding.isPressed() && (KeyModifier.NONE.equals(keyBinding.getKeyModifier()) || KeyModifier.getActiveModifier().equals(keyBinding.getKeyModifier()));
-	}
-	
-	private static boolean isKeyDown(KeyBinding keyBinding)
-	{
-		return keyBinding.isKeyDown() && (KeyModifier.NONE.equals(keyBinding.getKeyModifier()) || KeyModifier.getActiveModifier().equals(keyBinding.getKeyModifier()));
 	}
 }
