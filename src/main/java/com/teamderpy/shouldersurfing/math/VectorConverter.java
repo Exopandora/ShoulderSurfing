@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.math;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -22,9 +23,9 @@ public class VectorConverter
 		FloatBuffer modelview = GLAllocation.createDirectFloatBuffer(16);
 		FloatBuffer projection = GLAllocation.createDirectFloatBuffer(16);
 		
-		modelview.clear();
-		projection.clear();
-		viewport.clear();
+		((Buffer) modelview).clear();
+		((Buffer) projection).clear();
+		((Buffer) viewport).clear();
 		
 		matrixStackIn.getLast().getMatrix().write(modelview);
 		projectionIn.write(projection);
@@ -72,8 +73,8 @@ public class VectorConverter
 		in[1] = in[1] * in[3] + 0.5F;
 		in[2] = in[2] * in[3] + 0.5F;
 		
-		float x = in[0] * viewport.get(viewport.position() + 2) + viewport.get(viewport.position());
-		float y = in[1] * viewport.get(viewport.position() + 3) + viewport.get(viewport.position() + 1);
+		float x = in[0] * viewport.get(((Buffer) viewport).position() + 2) + viewport.get(((Buffer) viewport).position());
+		float y = in[1] * viewport.get(((Buffer) viewport).position() + 3) + viewport.get(((Buffer) viewport).position() + 1);
 		
 		return new Vec2f(x, y);
 	}
