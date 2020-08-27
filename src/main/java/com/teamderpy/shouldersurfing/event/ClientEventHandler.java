@@ -19,6 +19,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
@@ -106,7 +107,7 @@ public class ClientEventHandler
 			
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				event.getMatrixStack().getLast().getMatrix().setTranslation(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0.0F);
+				event.getMatrixStack().getLast().getMatrix().translate(new Vector3f(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0F));
 				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
 			}
 			else
@@ -123,7 +124,7 @@ public class ClientEventHandler
 		{
 			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
 			{
-				event.getMatrixStack().getLast().getMatrix().setTranslation(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0.0F);
+				event.getMatrixStack().getLast().getMatrix().translate(new Vector3f(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0F));
 			}
 		}
 	}
