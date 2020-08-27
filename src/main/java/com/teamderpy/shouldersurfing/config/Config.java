@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
@@ -508,6 +509,11 @@ public class Config
 			else if(Minecraft.getInstance().gameSettings.thirdPersonView == 1 && !Config.CLIENT.replaceDefaultPerspective())
 			{
 				Minecraft.getInstance().gameSettings.thirdPersonView = 3;
+			}
+			
+			if(Config.CLIENT.doRememberLastPerspective())
+			{
+				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView));
 			}
 		}
 	}
