@@ -6,11 +6,9 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -49,7 +47,6 @@ public class Config
 		private final DoubleValue zoomMax;
 		private final BooleanValue showCrosshairFarther;
 		private final BooleanValue keepCameraOutOfHead;
-		private final BooleanValue attackIndicator;
 		private final BooleanValue replaceDefaultPerspective;
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final ConfigValue<CrosshairType> crosshairType;
@@ -65,7 +62,7 @@ public class Config
 					.comment("Third person camera rotation")
 					.translation("Rotation Offset")
 					.defineInRange("rotation_offset", 0, -Double.MAX_VALUE, Double.MAX_VALUE);
-
+			
 			this.rotationMin = builder
 					.comment("If rotation is limited this is the minimum amount")
 					.translation("Rotation Minimum")
@@ -130,7 +127,7 @@ public class Config
 			builder.push("crosshair");
 			
 			this.crosshairType = builder
-					.comment("Crosshair type to use in 3PP")
+					.comment("Crosshair type to use for shoulder surfing")
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 			
@@ -139,137 +136,22 @@ public class Config
 					.translation("Show Crosshair Farther")
 					.define("show_crosshair_farther", true);
 			
-			this.attackIndicator = builder
-					.comment("Enable or disable the attack indicator in third person")
-					.translation("Third Person Attack Indicator")
-					.define("third_person_attack_indicator", true);
-			
 			builder.push("visibility");
 			
-			for(Perspective perspective : Perspective.values())
+			for(Perspective entry : Perspective.values())
 			{
 				ConfigValue<CrosshairVisibility> crosshairVisibility = builder
-						.comment("Crosshair visibility for " + perspective.name() + " perspective")
+						.comment("Crosshair visibility for " + entry.toString().toLowerCase())
 						.translation("Crosshair Visibility")
-						.defineEnum(perspective.name().toLowerCase(), perspective.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
-				this.crosshairVisibility.put(perspective, crosshairVisibility);
+						.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
+				this.crosshairVisibility.put(entry, crosshairVisibility);
 			}
 			
 			builder.pop();
 			builder.pop();
 		}
 		
-		@OnlyIn(Dist.CLIENT)
-		public static enum CrosshairType
-		{
-			ADAPTIVE,
-			DYNAMIC,
-			STATIC,
-			STATIC_WITH_1PP;
-			
-			public boolean isDynamic()
-			{
-				if(this == CrosshairType.ADAPTIVE)
-				{
-					return ClientEventHandler.isHoldingSpecialItem();
-				}
-				else if(this == CrosshairType.DYNAMIC)
-				{
-					return true;
-				}
-				
-				return false;
-			}
-			
-			public boolean doSwitchPerspective()
-			{
-				if(this == CrosshairType.STATIC_WITH_1PP)
-				{
-					return ClientEventHandler.isHoldingSpecialItem();
-				}
-				
-				return false;
-			}
-		}
-		
-		@OnlyIn(Dist.CLIENT)
-		public static enum Perspective
-		{
-			FIRST_PERSON(CrosshairVisibility.ALWAYS),
-			THIRD_PERSON(CrosshairVisibility.NEVER),
-			FRONT_THIRD_PERSON(CrosshairVisibility.NEVER),
-			SHOULDER_SURFING(CrosshairVisibility.ALWAYS);
-			
-			private final CrosshairVisibility visibility;
-			
-			private Perspective(CrosshairVisibility visibility)
-			{
-				this.visibility = visibility;
-			}
-			
-			public CrosshairVisibility getDefaultCrosshairVisibility()
-			{
-				return this.visibility;
-			}
-			
-			public int getPerspectiveId()
-			{
-				if(this == Perspective.SHOULDER_SURFING)
-				{
-					return Config.CLIENT.getShoulderSurfing3ppId();
-				}
-				
-				return this.ordinal();
-			}
-			
-			public static Perspective of(int id)
-			{
-				if(id == Perspective.SHOULDER_SURFING.getPerspectiveId())
-				{
-					return Perspective.SHOULDER_SURFING;
-				}
-				else if(id >= 0 && id <= 2)
-				{
-					return Perspective.values()[id];
-				}
-				
-				return Perspective.FIRST_PERSON;
-			}
-		}
-		
-		@OnlyIn(Dist.CLIENT)
-		public static enum CrosshairVisibility
-		{
-			ALWAYS,
-			NEVER,
-			WHEN_AIMING,
-			WHEN_IN_RANGE,
-			WHEN_AIMING_OR_IN_RANGE;
-			
-			public boolean doRender()
-			{
-				if(this == CrosshairVisibility.NEVER)
-				{
-					return false;
-				}
-				else if(this == CrosshairVisibility.WHEN_AIMING)
-				{
-					return ClientEventHandler.isAiming;
-				}
-				else if(this == CrosshairVisibility.WHEN_IN_RANGE)
-				{
-					return Minecraft.getInstance().objectMouseOver != null && !Minecraft.getInstance().objectMouseOver.getType().equals(RayTraceResult.Type.MISS);
-				}
-				else if(this == CrosshairVisibility.WHEN_AIMING_OR_IN_RANGE)
-				{
-					return CrosshairVisibility.WHEN_IN_RANGE.doRender() || CrosshairVisibility.WHEN_AIMING.doRender();
-				}
-				
-				return true;
-			}
-		}
-		
-		public double getShoulderRotationYaw()
+		private double getShoulderRotationYaw0()
 		{
 			return this.shoulderRotationYaw.get();
 		}
@@ -279,7 +161,7 @@ public class Config
 			Config.set(this.shoulderRotationYaw, yaw);
 		}
 		
-		public double getShoulderZoomMod()
+		private double getShoulderZoomMod0()
 		{
 			return this.shoulderZoomMod.get();
 		}
@@ -379,16 +261,6 @@ public class Config
 			Config.set(this.keepCameraOutOfHead, enabled);
 		}
 		
-		public boolean showAttackIndicator()
-		{
-			return this.attackIndicator.get();
-		}
-		
-		public void setShowAttackIndicator(boolean enabled)
-		{
-			Config.set(this.attackIndicator, enabled);
-		}
-		
 		public boolean replaceDefaultPerspective()
 		{
 			return this.replaceDefaultPerspective.get();
@@ -429,51 +301,61 @@ public class Config
 			Config.set(this.rememberLastPerspective, enabled);
 		}
 		
-		public int getShoulderSurfing3ppId()
-		{
-			if(this.replaceDefaultPerspective())
-			{
-				return 1;
-			}
-			
-			return 3;
-		}
-		
 		public void adjustCameraLeft()
 		{
-			if(this.isRotationUnlimited() || this.getShoulderRotationYaw() < this.getRotationMax())
+			if(this.isRotationUnlimited() || this.getShoulderRotationYaw0() < this.getRotationMax())
 			{
-				this.setShoulderRotationYaw(this.getShoulderRotationYaw() + 0.5F);
+				this.setShoulderRotationYaw(this.getShoulderRotationYaw0() + 0.5F);
 			}
 		}
 		
 		public void adjustCameraRight()
 		{
-			if(this.isRotationUnlimited() || this.getShoulderRotationYaw() > this.getRotationMin())
+			if(this.isRotationUnlimited() || this.getShoulderRotationYaw0() > this.getRotationMin())
 			{
-				this.setShoulderRotationYaw(this.getShoulderRotationYaw() - 0.5F);
+				this.setShoulderRotationYaw(this.getShoulderRotationYaw0() - 0.5F);
 			}
 		}
 		
 		public void adjustCameraIn()
 		{
-			if(this.isZoomUnlimited() || this.getShoulderZoomMod() < this.getZoomMax())
+			if(this.isZoomUnlimited() || this.getShoulderZoomMod0() < this.getZoomMax())
 			{
-				this.setShoulderZoomMod(this.getShoulderZoomMod() + 0.01F);
+				this.setShoulderZoomMod(this.getShoulderZoomMod0() + 0.01F);
 			}
 		}
 		
 		public void adjustCameraOut()
 		{
-			if(this.isZoomUnlimited() || this.getShoulderZoomMod() > this.getZoomMin())
+			if(this.isZoomUnlimited() || this.getShoulderZoomMod0() > this.getZoomMin())
 			{
-				this.setShoulderZoomMod(this.getShoulderZoomMod() - 0.01F);
+				this.setShoulderZoomMod(this.getShoulderZoomMod0() - 0.01F);
 			}
 		}
 		
 		public void swapShoulder()
 		{
-			this.setShoulderRotationYaw(-this.getShoulderRotationYaw());
+			this.setShoulderRotationYaw(-this.getShoulderRotationYaw0());
+		}
+		
+		public float getShoulderRotationYaw()
+		{
+			if(ClientEventHandler.doShoulderSurfing())
+			{
+				return (float) this.getShoulderRotationYaw0();
+			}
+			
+			return 0F;
+		}
+		
+		public float getShoulderZoomMod()
+		{
+			if(ClientEventHandler.doShoulderSurfing())
+			{
+				return (float) this.getShoulderZoomMod0();
+			}
+			
+			return 1.0F;
 		}
 	}
 	
@@ -502,18 +384,9 @@ public class Config
 		{
 			Config.CONFIG_DATA.load();
 			
-			if(Minecraft.getInstance().gameSettings.thirdPersonView == 3 && Config.CLIENT.replaceDefaultPerspective())
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = 1;
-			}
-			else if(Minecraft.getInstance().gameSettings.thirdPersonView == 1 && !Config.CLIENT.replaceDefaultPerspective())
-			{
-				Minecraft.getInstance().gameSettings.thirdPersonView = 3;
-			}
-			
 			if(Config.CLIENT.doRememberLastPerspective())
 			{
-				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView));
+				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.func_243230_g(), ClientEventHandler.doShoulderSurfing()));
 			}
 		}
 	}

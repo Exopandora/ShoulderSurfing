@@ -2,15 +2,15 @@ package com.teamderpy.shouldersurfing.event;
 
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
-import com.teamderpy.shouldersurfing.asm.InjectionDelegation;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
+import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.math.VectorConverter;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
@@ -33,11 +33,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
+	private static boolean switchPerspective;
 	private static Vec2f lastTranslation = Vec2f.ZERO;
 	private static Vec2f translation = Vec2f.ZERO;
-	private static boolean switchPerspective;
 	
 	public static boolean isAiming;
+	public static boolean shoulderSurfing;
+	public static double cameraDistance;
 	
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
@@ -48,9 +50,9 @@ public class ClientEventHandler
 			{
 				if(!ClientEventHandler.isAiming && ClientEventHandler.isHoldingSpecialItem())
 				{
-					if(Config.CLIENT.getCrosshairType().doSwitchPerspective() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+					if(Config.CLIENT.getCrosshairType().doSwitchPerspective() && ClientEventHandler.doShoulderSurfing())
 					{
-						Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+						ClientEventHandler.setPerspective(Perspective.FIRST_PERSON);
 						ClientEventHandler.switchPerspective = true;
 					}
 					
@@ -58,9 +60,9 @@ public class ClientEventHandler
 				}
 				else if(ClientEventHandler.isAiming && !ClientEventHandler.isHoldingSpecialItem())
 				{
-					if(!Config.CLIENT.getCrosshairType().doSwitchPerspective() && Minecraft.getInstance().gameSettings.thirdPersonView == 0 && ClientEventHandler.switchPerspective)
+					if(!Config.CLIENT.getCrosshairType().doSwitchPerspective() && ClientEventHandler.doShoulderSurfing() && ClientEventHandler.switchPerspective)
 					{
-						Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.SHOULDER_SURFING.getPerspectiveId();
+						ClientEventHandler.setPerspective(Perspective.SHOULDER_SURFING);
 						ClientEventHandler.switchPerspective = false;
 					}
 					
@@ -80,7 +82,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.getPlayer().equals(Minecraft.getInstance().player) && InjectionDelegation.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+		if(event.getPlayer().equals(Minecraft.getInstance().player) && ClientEventHandler.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && Minecraft.getInstance().currentScreen == null && ClientEventHandler.doShoulderSurfing())
 		{
 			if(event.isCancelable())
 			{
@@ -92,7 +94,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Minecraft.getInstance().currentScreen == null)
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
 			float scale = Minecraft.getInstance().getMainWindow().calcGuiScale(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
 			
@@ -105,7 +107,7 @@ public class ClientEventHandler
 				ClientEventHandler.translation = ClientEventHandler.lastTranslation.add(projectedOffset.subtract(ClientEventHandler.lastTranslation).scale(event.getPartialTicks()));
 			}
 			
-			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && ClientEventHandler.doShoulderSurfing())
 			{
 				event.getMatrixStack().getLast().getMatrix().translate(new Vector3f(ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0F));
 				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
@@ -120,9 +122,9 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Minecraft.getInstance().currentScreen == null)
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(Config.CLIENT.getCrosshairType().isDynamic() && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && ClientEventHandler.doShoulderSurfing())
 			{
 				event.getMatrixStack().getLast().getMatrix().translate(new Vector3f(-ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0F));
 			}
@@ -132,7 +134,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void cameraSetup(CameraSetup event)
 	{
-		if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+		if(ClientEventHandler.doShoulderSurfing())
 		{
 			final ActiveRenderInfo info = event.getInfo();
 			double x = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosX, info.getRenderViewEntity().getPosX());
@@ -141,11 +143,11 @@ public class ClientEventHandler
 			
 			info.setPosition(x, y, z);
 			
-			InjectionDelegation.cameraDistance = ClientEventHandler.calcCameraDistance(info, info.calcCameraDistance(4.0D * InjectionDelegation.getShoulderZoomMod()));
+			ClientEventHandler.cameraDistance = ClientEventHandler.calcCameraDistance(info, info.calcCameraDistance(4.0D * Config.CLIENT.getShoulderZoomMod()));
 			
-			float yaw = (float) Math.toRadians(InjectionDelegation.getShoulderRotationYaw());
-			double dx = MathHelper.cos(yaw) * InjectionDelegation.cameraDistance;
-			double dz = MathHelper.sin(yaw) * InjectionDelegation.cameraDistance;
+			float yaw = (float) Math.toRadians(Config.CLIENT.getShoulderRotationYaw());
+			double dx = MathHelper.cos(yaw) * ClientEventHandler.cameraDistance;
+			double dz = MathHelper.sin(yaw) * ClientEventHandler.cameraDistance;
 			
 			info.movePosition(-dx, 0, dz);
 		}
@@ -213,5 +215,16 @@ public class ClientEventHandler
 		}
 		
 		return false;
+	}
+	
+	public static void setPerspective(Perspective perspective)
+	{
+		Minecraft.getInstance().gameSettings.func_243229_a(perspective.getPointOfView());
+		ClientEventHandler.shoulderSurfing = (perspective == Perspective.SHOULDER_SURFING);
+	}
+	
+	public static boolean doShoulderSurfing()
+	{
+		return Minecraft.getInstance().gameSettings.func_243230_g() == PointOfView.THIRD_PERSON_BACK && ClientEventHandler.shoulderSurfing;
 	}
 }

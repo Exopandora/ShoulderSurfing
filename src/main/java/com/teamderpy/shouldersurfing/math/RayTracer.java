@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
+import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,7 @@ public final class RayTracer
 		RayTracer.projectedVector = null;
 		Entity renderView = Minecraft.getInstance().getRenderViewEntity();
 		
-		if(renderView != null && Minecraft.getInstance().world != null && Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+		if(renderView != null && Minecraft.getInstance().world != null && ClientEventHandler.doShoulderSurfing())
 		{
 			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : Minecraft.getInstance().playerController.getBlockReachDistance();
 			double blockDist = 0;

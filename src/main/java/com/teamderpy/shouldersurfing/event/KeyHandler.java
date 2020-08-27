@@ -3,10 +3,11 @@ package com.teamderpy.shouldersurfing.event;
 import org.lwjgl.glfw.GLFW;
 
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.Config.ClientConfig.Perspective;
+import com.teamderpy.shouldersurfing.config.Perspective;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,17 +33,17 @@ public class KeyHandler
 		{
 			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isPressed())
 			{
-				if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+				if(ClientEventHandler.doShoulderSurfing())
 				{
-					Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.FIRST_PERSON.getPerspectiveId();
+					ClientEventHandler.setPerspective(Perspective.FIRST_PERSON);
 				}
-				else if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.FIRST_PERSON.getPerspectiveId())
+				else if(Minecraft.getInstance().gameSettings.func_243230_g() == PointOfView.FIRST_PERSON)
 				{
-					Minecraft.getInstance().gameSettings.thirdPersonView = Perspective.SHOULDER_SURFING.getPerspectiveId();
+					ClientEventHandler.setPerspective(Perspective.SHOULDER_SURFING);
 				}
 			}
 			
-			if(Minecraft.getInstance().gameSettings.thirdPersonView == Perspective.SHOULDER_SURFING.getPerspectiveId())
+			if(ClientEventHandler.doShoulderSurfing())
 			{
 				if(KEYBIND_ROTATE_CAMERA_LEFT.isKeyDown())
 				{
@@ -72,14 +73,19 @@ public class KeyHandler
 			
 			if(Minecraft.getInstance().gameSettings.keyBindTogglePerspective.isPressed())
 			{
-				Perspective next = Perspective.of(Minecraft.getInstance().gameSettings.thirdPersonView + 1);
+				Perspective perspective = Perspective.of(Minecraft.getInstance().gameSettings.func_243230_g(), ClientEventHandler.doShoulderSurfing());
+				Perspective next = perspective.next();
+				ClientEventHandler.setPerspective(next);
+				
+				if(perspective.getPointOfView().func_243192_a() != Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a())
+				{
+					Minecraft.getInstance().gameRenderer.loadEntityShader(Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a() ? Minecraft.getInstance().getRenderViewEntity() : null);
+				}
 				
 				if(Config.CLIENT.doRememberLastPerspective())
 				{
 					Config.CLIENT.setDefaultPerspective(next);
 				}
-				
-				Minecraft.getInstance().gameSettings.thirdPersonView = next.getPerspectiveId();
 			}
 		}
 	}

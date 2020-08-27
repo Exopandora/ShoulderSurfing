@@ -50,7 +50,7 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderWorldLast);
 		
 		ShoulderSurfing.SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
-		event.getMinecraftSupplier().get().gameSettings.thirdPersonView = Config.CLIENT.getDefaultPerspective().getPerspectiveId();
+		ClientEventHandler.setPerspective(Config.CLIENT.getDefaultPerspective());
 	}
 	
 	public static float getShadersResMul()
