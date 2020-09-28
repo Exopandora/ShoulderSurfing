@@ -3,6 +3,7 @@ package com.teamderpy.shouldersurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
+import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -20,8 +21,9 @@ public class ShoulderSurfing
 {
 	public static final String MODID = "shouldersurfing";
 	public static final float RAYTRACE_DISTANCE = 400.0F;
+	public static boolean shoulderSurfing;
 	
-	private static boolean SHADER_ACTIVE;
+	private static boolean shaders;
 	
 	public ShoulderSurfing()
 	{
@@ -34,10 +36,12 @@ public class ShoulderSurfing
 	@SubscribeEvent
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ROTATE_CAMERA_LEFT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ROTATE_CAMERA_RIGHT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ZOOM_CAMERA_OUT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_ZOOM_CAMERA_IN);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_LEFT);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_RIGHT);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_IN);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_OUT);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_UP);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
 		
@@ -49,13 +53,13 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::cameraSetup);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderWorldLast);
 		
-		ShoulderSurfing.SHADER_ACTIVE = isClassLoaded("net.optifine.shaders.Shaders");
-		ClientEventHandler.setPerspective(Config.CLIENT.getDefaultPerspective());
+		ShoulderSurfing.shaders = isClassLoaded("net.optifine.shaders.Shaders");
+		ShoulderSurfingHelper.setPerspective(Config.CLIENT.getDefaultPerspective());
 	}
 	
 	public static float getShadersResMul()
 	{
-		if(ShoulderSurfing.SHADER_ACTIVE)
+		if(ShoulderSurfing.shaders)
 		{
 			return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
 		}

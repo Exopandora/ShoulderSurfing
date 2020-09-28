@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.settings.PointOfView;
@@ -20,7 +20,7 @@ public abstract class MixinGameSettings
 	{
 		if(pointOfView != this.field_243228_bb)
 		{
-			ClientEventHandler.shoulderSurfing = false;
+			ShoulderSurfing.shoulderSurfing = false;
 		}
 		
 		this.field_243228_bb = pointOfView;

@@ -2,11 +2,13 @@ package com.teamderpy.shouldersurfing.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
+import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,70 +39,108 @@ public class Config
 	@OnlyIn(Dist.CLIENT)
 	public static class ClientConfig
 	{
-		private final DoubleValue shoulderRotationYaw;
-		private final DoubleValue shoulderZoomMod;
-		private final BooleanValue unlimitedRotation;
-		private final DoubleValue rotationMin;
-		private final DoubleValue rotationMax;
-		private final BooleanValue unlimitedZoom;
-		private final DoubleValue zoomMin;
-		private final DoubleValue zoomMax;
-		private final BooleanValue showCrosshairFarther;
+		private final DoubleValue offsetX;
+		private final DoubleValue offsetY;
+		private final DoubleValue offsetZ;
+		
+		private final DoubleValue minOffsetX;
+		private final DoubleValue minOffsetY;
+		private final DoubleValue minOffsetZ;
+		
+		private final DoubleValue maxOffsetX;
+		private final DoubleValue maxOffsetY;
+		private final DoubleValue maxOffsetZ;
+		
+		private final BooleanValue unlimitedOffsetX;
+		private final BooleanValue unlimitedOffsetY;
+		private final BooleanValue unlimitedOffsetZ;
+		
+		
 		private final BooleanValue keepCameraOutOfHead;
 		private final BooleanValue replaceDefaultPerspective;
-		private final ConfigValue<Perspective> defaultPerspective;
-		private final ConfigValue<CrosshairType> crosshairType;
 		private final BooleanValue rememberLastPerspective;
+		private final BooleanValue limitPlayerReach;
+		private final DoubleValue cameraStepSize;
+		private final ConfigValue<Perspective> defaultPerspective;
+		
+		private final ConfigValue<CrosshairType> crosshairType;
+		private final BooleanValue showCrosshairFarther;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
 			builder.push("perspective");
-			builder.push("rotation");
+			builder.push("offset");
 			
-			this.shoulderRotationYaw = builder
-					.comment("Third person camera rotation")
-					.translation("Rotation Offset")
-					.defineInRange("rotation_offset", 0, -Double.MAX_VALUE, Double.MAX_VALUE);
+			this.offsetX = builder
+					.comment("Third person camera x-offset")
+					.translation("x-offset")
+					.defineInRange("offset_x", -0.75D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.rotationMin = builder
-					.comment("If rotation is limited this is the minimum amount")
-					.translation("Rotation Minimum")
-					.defineInRange("rotation_min", -60.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+			this.offsetY = builder
+					.comment("Third person camera y-offset")
+					.translation("y-offset")
+					.defineInRange("offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.rotationMax = builder
-					.comment("If rotation is limited this is the maximum amount")
-					.translation("Rotation Maximum")
-					.defineInRange("rotation_max", 60.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+			this.offsetZ = builder
+					.comment("Third person camera z-offset")
+					.translation("z-offset")
+					.defineInRange("offset_z", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.unlimitedRotation = builder
-					.comment("Whether or not rotation adjustment has limits")
-					.translation("Unlimited Rotation")
-					.define("unlimited_rotation", false);
+			builder.push("min");
+			
+			this.minOffsetX = builder
+					.comment("If x-offset is limited this is the minimum amount")
+					.translation("Minimum x-offset")
+					.defineInRange("min_offset_x", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.minOffsetY = builder
+					.comment("If y-offset is limited this is the minimum amount")
+					.translation("Minimum y-offset")
+					.defineInRange("min_offset_y", -1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.minOffsetZ = builder
+					.comment("If z-offset is limited this is the minimum amount")
+					.translation("Minimum z-offset")
+					.defineInRange("min_offset_z", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
-			builder.push("zoom");
+			builder.push("max");
 			
-			this.shoulderZoomMod = builder
-					.comment("Third person camera zoom")
-					.translation("Zoom Offset")
-					.defineInRange("zoom_offset", 0.7, -Double.MAX_VALUE, Double.MAX_VALUE);
+			this.maxOffsetX = builder
+					.comment("If x-offset is limited this is the maximum amount")
+					.translation("Maximum x-offset")
+					.defineInRange("max_offset_x", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.zoomMin = builder
-					.comment("If zoom is limited this is the minimum amount")
-					.translation("Zoom Minimum")
-					.defineInRange("zoom_min", 0.3, -Double.MAX_VALUE, Double.MAX_VALUE);
+			this.maxOffsetY = builder
+					.comment("If y-offset is limited this is the maximum amount")
+					.translation("Maximum y-offset")
+					.defineInRange("max_offset_y", 1.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.zoomMax = builder
-					.comment("If zoom is limited this is the maximum amount")
-					.translation("Zoom Maximum")
-					.defineInRange("zoom_max", 2.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+			this.maxOffsetZ = builder
+					.comment("If z-offset is limited this is the maximum amount")
+					.translation("Maximum z-offset")
+					.defineInRange("max_offset_z", 5.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
-			this.unlimitedZoom = builder
-					.comment("Whether or not zoom adjustment has limits")
-					.translation("Unlimited Zoom")
-					.define("unlimited_zoom", false);
+			builder.pop();
+			builder.push("limits");
 			
+			this.unlimitedOffsetX = builder
+					.comment("Whether or not x-offset adjustment has limits")
+					.translation("Unlimited x-offset")
+					.define("unlimited_offset_x", false);
+			
+			this.unlimitedOffsetY = builder
+					.comment("Whether or not y-offset adjustment has limits")
+					.translation("Unlimited y-offset")
+					.define("unlimited_offset_y", false);
+			
+			this.unlimitedOffsetZ = builder
+					.comment("Whether or not z-offset adjustment has limits")
+					.translation("Unlimited z-Offset")
+					.define("unlimited_offset_z", false);
+			
+			builder.pop();
 			builder.pop();
 			
 			this.keepCameraOutOfHead = builder
@@ -122,6 +162,16 @@ public class Config
 					.comment("Whether or not to replace the default third person perspective")
 					.translation("Replace Default Perspective")
 					.define("replace_default_perspective", false);
+			
+			this.limitPlayerReach = builder
+					.comment("Whether or not to limit the player reach depending on the crosshair location (perspective offset)")
+					.translation("Limit player reach")
+					.define("limit_player_reach", true);
+			
+			this.cameraStepSize = builder
+					.comment("Size of the camera adjustment per step")
+					.translation("Camera step size")
+					.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -151,84 +201,124 @@ public class Config
 			builder.pop();
 		}
 		
-		private double getShoulderRotationYaw0()
+		public double getOffsetX()
 		{
-			return this.shoulderRotationYaw.get();
+			return this.offsetX.get();
 		}
 		
-		public void setShoulderRotationYaw(double yaw)
+		public void setOffsetX(double offsetX)
 		{
-			Config.set(this.shoulderRotationYaw, yaw);
+			Config.set(this.offsetX, offsetX);
 		}
 		
-		private double getShoulderZoomMod0()
+		public double getOffsetY()
 		{
-			return this.shoulderZoomMod.get();
+			return this.offsetY.get();
 		}
 		
-		public void setShoulderZoomMod(double zoomMod)
+		public void setOffsetY(double offsetY)
 		{
-			Config.set(this.shoulderZoomMod, zoomMod);
+			Config.set(this.offsetY, offsetY);
 		}
 		
-		public boolean isRotationUnlimited()
+		public double getOffsetZ()
 		{
-			return this.unlimitedRotation.get();
+			return this.offsetZ.get();
 		}
 		
-		public void setRotationUnlimited(boolean enabled)
+		public void setOffsetZ(double offsetZ)
 		{
-			Config.set(this.unlimitedRotation, enabled);
+			Config.set(this.offsetZ, offsetZ);
 		}
 		
-		public double getRotationMin()
+		public double getMinOffsetX()
 		{
-			return this.rotationMin.get();
+			return this.minOffsetX.get();
 		}
 		
-		public void setRotationMin(double min)
+		public void setMinOffsetX(double minOffsetX)
 		{
-			Config.set(this.rotationMin, min);
+			Config.set(this.minOffsetX, minOffsetX);
 		}
 		
-		public double getRotationMax()
+		public double getMinOffsetY()
 		{
-			return this.rotationMax.get();
+			return this.minOffsetY.get();
 		}
 		
-		public void setRotationMax(double max)
+		public void setMinOffsetY(double minOffsetY)
 		{
-			Config.set(this.rotationMax, max);
+			Config.set(this.minOffsetY, minOffsetY);
 		}
 		
-		public boolean isZoomUnlimited()
+		public double getMinOffsetZ()
 		{
-			return this.unlimitedZoom.get();
+			return this.minOffsetZ.get();
 		}
 		
-		public void setZoomUnlimited(boolean enabled)
+		public void setMinOffsetZ(double minOffsetZ)
 		{
-			Config.set(this.unlimitedZoom, enabled);
+			Config.set(this.minOffsetZ, minOffsetZ);
 		}
 		
-		public double getZoomMin()
+		public double getMaxOffsetX()
 		{
-			return this.zoomMin.get();
+			return this.maxOffsetX.get();
 		}
 		
-		public void setZoomMin(double min)
+		public void setMaxOffsetX(double maxOffsetX)
 		{
-			Config.set(this.zoomMin, min);
+			Config.set(this.maxOffsetX, maxOffsetX);
 		}
 		
-		public double getZoomMax()
+		public double getMaxOffsetY()
 		{
-			return this.zoomMax.get();
+			return this.maxOffsetY.get();
 		}
 		
-		public void setZoomMax(double max)
+		public void setMaxOffsetY(double maxOffsetY)
 		{
-			Config.set(this.rotationMax, max);
+			Config.set(this.maxOffsetY, maxOffsetY);
+		}
+		
+		public double getMaxOffsetZ()
+		{
+			return this.maxOffsetZ.get();
+		}
+		
+		public void setMaxOffsetZ(double maxOffsetZ)
+		{
+			Config.set(this.maxOffsetZ, maxOffsetZ);
+		}
+		
+		public boolean isUnlimitedOffsetX()
+		{
+			return this.unlimitedOffsetX.get();
+		}
+		
+		public void setUnlimitedOffsetX(boolean unlimitedOffsetX)
+		{
+			Config.set(this.unlimitedOffsetX, unlimitedOffsetX);
+		}
+		
+		public boolean isUnlimitedOffsetY()
+		{
+			return this.unlimitedOffsetY.get();
+		}
+		
+		public void setUnlimitedOffsetY(boolean unlimitedOffsetY)
+		{
+			Config.set(this.unlimitedOffsetY, unlimitedOffsetY);
+		}
+		
+		public boolean isUnlimitedOffsetZ()
+		{
+			return this.unlimitedOffsetZ.get();
+		}
+		
+		public void setUnlimitedOffsetZ(boolean unlimitedOffsetZ)
+		{
+			Config.set(this.unlimitedOffsetZ, unlimitedOffsetZ);
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
@@ -301,61 +391,71 @@ public class Config
 			Config.set(this.rememberLastPerspective, enabled);
 		}
 		
+		public double getCameraStepSize()
+		{
+			return this.cameraStepSize.get();
+		}
+		
+		public void setCameraStepSize(double cameraStepSize)
+		{
+			Config.set(this.cameraStepSize, cameraStepSize);
+		}
+		
+		public boolean limitPlayerReach()
+		{
+			return this.limitPlayerReach.get();
+		}
+		
+		public void setLimitPlayerReach(boolean limitPlayerReach)
+		{
+			Config.set(this.limitPlayerReach, limitPlayerReach);
+		}
+		
 		public void adjustCameraLeft()
 		{
-			if(this.isRotationUnlimited() || this.getShoulderRotationYaw0() < this.getRotationMax())
-			{
-				this.setShoulderRotationYaw(this.getShoulderRotationYaw0() + 0.5F);
-			}
+			this.addOffset(this::setOffsetX, this.getOffsetX(), this::getMaxOffsetX, this.isUnlimitedOffsetX());
 		}
 		
 		public void adjustCameraRight()
 		{
-			if(this.isRotationUnlimited() || this.getShoulderRotationYaw0() > this.getRotationMin())
-			{
-				this.setShoulderRotationYaw(this.getShoulderRotationYaw0() - 0.5F);
-			}
+			this.subOffset(this::setOffsetX, this.getOffsetX(), this::getMinOffsetX, this.isUnlimitedOffsetX());
+		}
+		
+		public void adjustCameraUp()
+		{
+			this.addOffset(this::setOffsetY, this.getOffsetY(), this::getMaxOffsetY, this.isUnlimitedOffsetY());
+		}
+		
+		public void adjustCameraDown()
+		{
+			this.subOffset(this::setOffsetY, this.getOffsetY(), this::getMinOffsetY, this.isUnlimitedOffsetY());
 		}
 		
 		public void adjustCameraIn()
 		{
-			if(this.isZoomUnlimited() || this.getShoulderZoomMod0() < this.getZoomMax())
-			{
-				this.setShoulderZoomMod(this.getShoulderZoomMod0() + 0.01F);
-			}
+			this.subOffset(this::setOffsetZ, this.getOffsetZ(), this::getMinOffsetZ, this.isUnlimitedOffsetZ());
 		}
 		
 		public void adjustCameraOut()
 		{
-			if(this.isZoomUnlimited() || this.getShoulderZoomMod0() > this.getZoomMin())
-			{
-				this.setShoulderZoomMod(this.getShoulderZoomMod0() - 0.01F);
-			}
+			this.addOffset(this::setOffsetZ, this.getOffsetZ(), this::getMaxOffsetZ, this.isUnlimitedOffsetZ());
+		}
+		
+		private void addOffset(Consumer<Double> setter, double current, Supplier<Double> max, boolean unlimited)
+		{
+			double next = current + this.getCameraStepSize();
+			setter.accept(unlimited ? next : Math.min(next, max.get()));
+		}
+		
+		private void subOffset(Consumer<Double> setter, double current, Supplier<Double> min, boolean unlimited)
+		{
+			double next = current - this.getCameraStepSize();
+			setter.accept(unlimited ? next : Math.max(next, min.get()));
 		}
 		
 		public void swapShoulder()
 		{
-			this.setShoulderRotationYaw(-this.getShoulderRotationYaw0());
-		}
-		
-		public float getShoulderRotationYaw()
-		{
-			if(ClientEventHandler.doShoulderSurfing())
-			{
-				return (float) this.getShoulderRotationYaw0();
-			}
-			
-			return 0F;
-		}
-		
-		public float getShoulderZoomMod()
-		{
-			if(ClientEventHandler.doShoulderSurfing())
-			{
-				return (float) this.getShoulderZoomMod0();
-			}
-			
-			return 1.0F;
+			this.setOffsetX(-this.getOffsetX());
 		}
 	}
 	
@@ -386,7 +486,7 @@ public class Config
 			
 			if(Config.CLIENT.doRememberLastPerspective())
 			{
-				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.func_243230_g(), ClientEventHandler.doShoulderSurfing()));
+				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.func_243230_g(), ShoulderSurfingHelper.doShoulderSurfing()));
 			}
 		}
 	}

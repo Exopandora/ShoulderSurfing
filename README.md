@@ -5,7 +5,7 @@ Revamped over-the-shoulder F5 third-person camera view
 # Features #
 
 * Over-the-shoulder camera
-* Hotkeys to move the camera a bit (Default: Arrow keys, O to swap shoulders)
+* Hotkeys to move the camera a bit (Default: `arrow keys`, `page up` and `page down`, `O` to swap shoulders)
 * Corrective cross-hair positioning if dynamic crosshair is enabled
 * Hide player if the camera gets too close to it
 * Client-side only
@@ -33,7 +33,7 @@ Download ShoulderSurfing or build from source
 1. Select Forge as your profile
 2. Launch Minecraft
 3. Join a world or server
-4. Use the `Arrow Keys` to adjust the perspective (`O` to swap shoulder)
+4. Use `arrow keys`, `page up` and `page down` to adjust the perspective (`O` to swap shoulder)
 
 ## Configuration ##
 
@@ -51,6 +51,9 @@ Download ShoulderSurfing or build from source
 
 **Q:** Is this client-side only ?  
 **A:** Yes
+
+**Q:** Can you port feature x to version y ?  
+**A:** No
 
 **Q:** Can you port this to fabric, liteloader, rift, etc ?  
 **A:** No

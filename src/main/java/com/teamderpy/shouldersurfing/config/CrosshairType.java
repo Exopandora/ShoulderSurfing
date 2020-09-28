@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.config;
 
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
+import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,7 +17,7 @@ public enum CrosshairType
 	{
 		if(this == CrosshairType.ADAPTIVE)
 		{
-			return ClientEventHandler.isHoldingSpecialItem();
+			return ShoulderSurfingHelper.isHoldingSpecialItem();
 		}
 		else if(this == CrosshairType.DYNAMIC)
 		{
@@ -31,7 +31,7 @@ public enum CrosshairType
 	{
 		if(this == CrosshairType.STATIC_WITH_1PP)
 		{
-			return ClientEventHandler.isHoldingSpecialItem();
+			return ShoulderSurfingHelper.isHoldingSpecialItem();
 		}
 		
 		return false;
