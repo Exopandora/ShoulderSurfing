@@ -11,8 +11,10 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
@@ -118,7 +120,9 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void cameraSetup(CameraSetup event)
 	{
-		if(ShoulderSurfingHelper.doShoulderSurfing())
+		final World world = Minecraft.getInstance().world;
+		
+		if(ShoulderSurfingHelper.doShoulderSurfing() && world != null)
 		{
 			final ActiveRenderInfo info = event.getInfo();
 			
@@ -129,7 +133,7 @@ public class ClientEventHandler
 			info.setPosition(x, y, z);
 			
 			Vector3d offset = new Vector3d(-Config.CLIENT.getOffsetZ(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetX());
-			ClientEventHandler.cameraDistance = ShoulderSurfingHelper.calcCameraDistance(info, info.calcCameraDistance(offset.length()));
+			ClientEventHandler.cameraDistance = ShoulderSurfingHelper.calcCameraDistance(info, world, info.calcCameraDistance(offset.length()));
 			Vector3d scaled = offset.normalize().scale(ClientEventHandler.cameraDistance);
 			
 			info.movePosition(scaled.x, scaled.y, scaled.z);
@@ -139,12 +143,20 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void renderWorldLast(RenderWorldLastEvent event)
 	{
-		Vector3d rayTrace = ShoulderSurfingHelper.traceFromEyes(event.getPartialTicks());
+		final ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
 		
-		if(rayTrace != null && Minecraft.getInstance().player != null)
+		if(info != null)
 		{
-			Vector3d vec = rayTrace.subtract(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView());
-			ClientEventHandler.projected = ShoulderSurfingHelper.project2D(vec, event.getMatrixStack().getLast().getMatrix(), event.getProjectionMatrix());
+			Vector3d rayTrace = ShoulderSurfingHelper.traceFromEyes(info.getRenderViewEntity(), Minecraft.getInstance().playerController, event.getPartialTicks());
+			
+			if(rayTrace != null)
+			{
+				Vector3d position = rayTrace.subtract(info.getProjectedView());
+				Matrix4f modelView = event.getMatrixStack().getLast().getMatrix();
+				Matrix4f projection = event.getProjectionMatrix();
+				
+				ClientEventHandler.projected = ShoulderSurfingHelper.project2D(position, modelView, projection);
+			}
 		}
 	}
 }

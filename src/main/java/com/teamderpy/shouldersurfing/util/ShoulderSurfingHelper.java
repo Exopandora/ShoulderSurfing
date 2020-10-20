@@ -12,9 +12,11 @@ import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
@@ -27,6 +29,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -60,7 +63,7 @@ public class ShoulderSurfingHelper
 		return result;
 	}
 	
-	public static double calcCameraDistance(ActiveRenderInfo info, double distance)
+	public static double calcCameraDistance(ActiveRenderInfo info, World world, double distance)
 	{
 		Vector3d view = info.getProjectedView();
 		Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, distance);
@@ -72,7 +75,7 @@ public class ShoulderSurfingHelper
 			Vector3d camera = head.add(cameraOffset);
 			
 			RayTraceContext context = new RayTraceContext(head, camera, BlockMode.COLLIDER, FluidMode.NONE, info.getRenderViewEntity());
-			RayTraceResult result = Minecraft.getInstance().world.rayTraceBlocks(context);
+			RayTraceResult result = world.rayTraceBlocks(context);
 			
 			if(result != null)
 			{
@@ -88,14 +91,14 @@ public class ShoulderSurfingHelper
 		return distance;
 	}
 	
-	public static Vector3d traceFromEyes(final float partialTicks)
+	@Nullable
+	public static Vector3d traceFromEyes(Entity renderView, PlayerController controller, final float partialTicks)
 	{
 		Vector3d result = null;
-		Entity renderView = Minecraft.getInstance().getRenderViewEntity();
 		
-		if(renderView != null && Minecraft.getInstance().world != null && ShoulderSurfingHelper.doShoulderSurfing())
+		if(ShoulderSurfingHelper.doShoulderSurfing())
 		{
-			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : Minecraft.getInstance().playerController.getBlockReachDistance();
+			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : controller.getBlockReachDistance();
 			double blockDist = 0;
 			RayTraceResult rayTrace = renderView.pick(playerReach, partialTicks, false);
 			
@@ -113,7 +116,7 @@ public class ShoulderSurfingHelper
 			Vector3d sightVector = renderView.getLook(partialTicks);
 			Vector3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
 			
-			List<Entity> entityList = Minecraft.getInstance().world.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
+			List<Entity> entityList = renderView.world.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
 					.expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach)
 					.expand(1.0D, 1.0D, 1.0D));
 			
@@ -150,14 +153,12 @@ public class ShoulderSurfingHelper
 		return new Vector3d(dX, dY, dZ).normalize().scale(distance);
 	}
 	
-	@Nullable
 	public static Vector3d calcRayTraceHeadOffset(@Nonnull ActiveRenderInfo info, Vector3d cameraOffset)
 	{
 		Vector3d view = new Vector3d(info.getViewVector());
 		return ShoulderSurfingHelper.lineIntersection(Vector3d.ZERO, view, cameraOffset, view);
 	}
 	
-	@Nullable
 	public static Vector3d lineIntersection(Vector3d planePoint, Vector3d planeNormal, Vector3d linePoint, Vector3d lineNormal)
 	{
 		double distance = (planeNormal.dotProduct(planePoint) - planeNormal.dotProduct(linePoint)) / planeNormal.dotProduct(lineNormal);
@@ -166,16 +167,18 @@ public class ShoulderSurfingHelper
 	
 	public static boolean isHoldingSpecialItem()
 	{
-		if(Minecraft.getInstance().player != null)
+		PlayerEntity player = Minecraft.getInstance().player;
+		
+		if(player != null)
 		{
-			Item item = Minecraft.getInstance().player.getActiveItemStack().getItem();
+			Item item = player.getActiveItemStack().getItem();
 			
 			if(ItemModelsProperties.func_239417_a_(item, new ResourceLocation("pull")) != null || ItemModelsProperties.func_239417_a_(item, new ResourceLocation("throwing")) != null)
 			{
 				return true;
 			}
 			
-			for(ItemStack held : Minecraft.getInstance().player.getHeldEquipment())
+			for(ItemStack held : player.getHeldEquipment())
 			{
 				if(ItemModelsProperties.func_239417_a_(held.getItem(), new ResourceLocation("charged")) != null)
 				{
