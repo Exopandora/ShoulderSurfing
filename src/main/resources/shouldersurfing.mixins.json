@@ -4,9 +4,10 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "shouldersurfing.refmap.json",
 	"mixins": [
+		"MixinGameRenderer",
+		"MixinGameSettings",
 		"MixinIngameGui",
-		"MixinPlayerEntity",
-		"MixinGameSettings"
+		"MixinPlayerEntity"
 	],
 	"injectors": {
 		"defaultRequire": 1

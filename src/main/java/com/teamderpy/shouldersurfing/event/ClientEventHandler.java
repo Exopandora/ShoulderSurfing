@@ -1,6 +1,8 @@
 package com.teamderpy.shouldersurfing.event;
 
 
+import java.util.Optional;
+
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
@@ -9,8 +11,10 @@ import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -39,7 +43,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
 	{
-		if(event.phase.equals(Phase.START) && Minecraft.getInstance().player != null)
+		if(event.phase.equals(Phase.START))
 		{
 			if(!ClientEventHandler.isAiming && ShoulderSurfingHelper.isHoldingSpecialItem())
 			{
@@ -144,14 +148,16 @@ public class ClientEventHandler
 	public static void renderWorldLast(RenderWorldLastEvent event)
 	{
 		final ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
+		final PlayerController controller = Minecraft.getInstance().playerController;
 		
-		if(info != null)
+		if(ShoulderSurfingHelper.doShoulderSurfing())
 		{
-			Vector3d rayTrace = ShoulderSurfingHelper.traceFromEyes(info.getRenderViewEntity(), Minecraft.getInstance().playerController, event.getPartialTicks());
+			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : 0;
+			Optional<RayTraceResult> result = ShoulderSurfingHelper.traceFromEyes(info.getRenderViewEntity(), controller, playerReach, event.getPartialTicks());
 			
-			if(rayTrace != null)
+			if(result.isPresent())
 			{
-				Vector3d position = rayTrace.subtract(info.getProjectedView());
+				Vector3d position = result.get().getHitVec().subtract(info.getProjectedView());
 				Matrix4f modelView = event.getMatrixStack().getLast().getMatrix();
 				Matrix4f projection = event.getProjectionMatrix();
 				

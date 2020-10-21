@@ -1,14 +1,15 @@
 package com.teamderpy.shouldersurfing.util;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mojang.datafixers.util.Pair;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
+import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
 import net.minecraft.client.Minecraft;
@@ -17,11 +18,14 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
@@ -91,57 +95,72 @@ public class ShoulderSurfingHelper
 		return distance;
 	}
 	
-	@Nullable
-	public static Vector3d traceFromEyes(Entity renderView, PlayerController controller, final float partialTicks)
+	public static Optional<RayTraceResult> traceFromEyes(Entity renderView, PlayerController playerController, double playerReachOverride, final float partialTicks)
 	{
-		Vector3d result = null;
+		double blockReach = Math.max(playerController.getBlockReachDistance(), playerReachOverride);
 		
-		if(ShoulderSurfingHelper.doShoulderSurfing())
+		RayTraceResult blockTrace = renderView.pick(blockReach, partialTicks, false);
+		Vector3d eyes = renderView.getEyePosition(partialTicks);
+		
+		boolean extendedReach = false;
+		double entityReach = blockReach;
+		
+		if(playerController.extendedReach())
 		{
-			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : controller.getBlockReachDistance();
-			double blockDist = 0;
-			RayTraceResult rayTrace = renderView.pick(playerReach, partialTicks, false);
+			entityReach = Math.max(6.0D, playerReachOverride);
+			blockReach = entityReach;
+		}
+		else if(blockReach > 3.0D)
+		{
+			extendedReach = true;
+		}
+		
+		entityReach = entityReach * entityReach;
+		
+		if(blockTrace != null)
+		{
+			entityReach = blockTrace.getHitVec().squareDistanceTo(eyes);
+		}
+		
+		Vector3d look = renderView.getLook(1.0F);
+		Vector3d end = eyes.add(look.scale(blockReach));
+		
+		AxisAlignedBB aabb = renderView.getBoundingBox().expand(look.scale(blockReach)).grow(1.0D, 1.0D, 1.0D);
+		EntityRayTraceResult entityTrace = ProjectileHelper.rayTraceEntities(renderView, eyes, end, aabb, entity -> !entity.isSpectator() && entity.canBeCollidedWith(), entityReach);
+		
+		if(entityTrace != null)
+		{
+			double distanceSq = eyes.squareDistanceTo(entityTrace.getHitVec());
 			
-			if(rayTrace != null)
+			if(extendedReach && distanceSq > 9.0D)
 			{
-				result = rayTrace.getHitVec();
-				blockDist = rayTrace.getHitVec().distanceTo(renderView.getPositionVec());
+				return Optional.empty();
 			}
-			else
+			else if(distanceSq < entityReach || blockTrace == null)
 			{
-				result = null;
-			}
-			
-			Vector3d renderViewPos = renderView.getEyePosition(partialTicks);
-			Vector3d sightVector = renderView.getLook(partialTicks);
-			Vector3d sightRay = renderViewPos.add(sightVector.x * playerReach - 5, sightVector.y * playerReach, sightVector.z * playerReach);
-			
-			List<Entity> entityList = renderView.world.getEntitiesWithinAABBExcludingEntity(renderView, renderView.getBoundingBox()
-					.expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach)
-					.expand(1.0D, 1.0D, 1.0D));
-			
-			for(Entity entity : entityList)
-			{
-				if(entity.canBeCollidedWith())
-				{
-					float collisionSize = entity.getCollisionBorderSize();
-					AxisAlignedBB aabb = entity.getBoundingBox().expand(collisionSize, collisionSize, collisionSize);
-					Optional<Vector3d> intercept = aabb.rayTrace(renderViewPos, sightRay);
-					
-					if(intercept.isPresent())
-					{
-						double entityDist = intercept.get().distanceTo(renderView.getPositionVec());
-						
-						if(entityDist < blockDist)
-						{
-							result = intercept.get();
-						}
-					}
-				}
+				return Optional.of(entityTrace);
 			}
 		}
 		
-		return result;
+		return Optional.of(blockTrace);
+	}
+	
+	public static Pair<Vector3d, Vector3d> calcShoulderSurfingLook(ActiveRenderInfo info, Entity entity, float partialTicks, double distanceSq)
+	{
+		Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, ClientEventHandler.cameraDistance);
+		Vector3d offset = ShoulderSurfingHelper.calcRayTraceHeadOffset(info, cameraOffset);
+		Vector3d start = entity.getEyePosition(partialTicks).add(cameraOffset);
+		Vector3d look = entity.getLook(partialTicks);
+		
+		if(Config.CLIENT.limitPlayerReach() && offset.lengthSquared() < distanceSq)
+		{
+			distanceSq -= offset.lengthSquared();
+		}
+		
+		double distance = MathHelper.sqrt(distanceSq) + cameraOffset.distanceTo(offset);
+		Vector3d end = start.add(look.scale(distance));
+		
+		return Pair.of(start, end);
 	}
 	
 	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo info, double distance)
@@ -167,7 +186,7 @@ public class ShoulderSurfingHelper
 	
 	public static boolean isHoldingSpecialItem()
 	{
-		PlayerEntity player = Minecraft.getInstance().player;
+		final PlayerEntity player = Minecraft.getInstance().player;
 		
 		if(player != null)
 		{

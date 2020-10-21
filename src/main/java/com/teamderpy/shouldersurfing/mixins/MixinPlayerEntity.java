@@ -2,16 +2,18 @@ package com.teamderpy.shouldersurfing.mixins;
 
 import org.spongepowered.asm.mixin.Mixin;
 
+import com.mojang.datafixers.util.Pair;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -19,9 +21,9 @@ import net.minecraft.world.World;
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends Entity
 {
-	public MixinPlayerEntity(EntityType<?> entityTypeIn, World worldIn)
+	protected MixinPlayerEntity(EntityType<? extends LivingEntity> type, World worldIn)
 	{
-		super(entityTypeIn, worldIn);
+		super(type, worldIn);
 	}
 	
 	@Override
@@ -31,19 +33,11 @@ public abstract class MixinPlayerEntity extends Entity
 		
 		if(ShoulderSurfingHelper.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && info != null)
 		{
-			Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, ClientEventHandler.cameraDistance);
-			Vector3d offset = ShoulderSurfingHelper.calcRayTraceHeadOffset(info, cameraOffset);
-			Vector3d start = this.getEyePosition(partialTicks).add(cameraOffset);
-			Vector3d look = this.getLook(partialTicks);
+			Pair<Vector3d, Vector3d> look = ShoulderSurfingHelper.calcShoulderSurfingLook(info, this, partialTicks, distance * distance);
+			FluidMode fluidMode = stopOnFluid ? FluidMode.ANY : FluidMode.NONE;
+			RayTraceContext context = new RayTraceContext(look.getFirst(), look.getSecond(), RayTraceContext.BlockMode.OUTLINE, fluidMode, this);
 			
-			if(Config.CLIENT.limitPlayerReach() && offset.length() < distance)
-			{
-				distance = Math.sqrt((distance * distance) - offset.lengthSquared());
-			}
-			
-			Vector3d end = start.add(look.scale(distance + cameraOffset.distanceTo(offset)));
-			
-			return this.world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.OUTLINE, stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, this));
+			return this.world.rayTraceBlocks(context);
 		}
 		
 		return super.pick(distance, partialTicks, stopOnFluid);
