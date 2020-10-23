@@ -12,7 +12,7 @@ Revamped over-the-shoulder F5 third-person camera view
 
 # Download #
 
-[Curseforge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/)
+Compiled binaries can be found on [Curseforge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/)
 
 # Installation #
 
