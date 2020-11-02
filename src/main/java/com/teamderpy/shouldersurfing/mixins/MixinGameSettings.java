@@ -13,16 +13,16 @@ import net.minecraft.client.settings.PointOfView;
 public abstract class MixinGameSettings
 {
 	@Shadow
-	private PointOfView field_243228_bb;
+	private PointOfView pointOfView;
 	
 	@Overwrite
-	public void func_243229_a(PointOfView pointOfView)
+	public void setPointOfView(PointOfView pointOfView)
 	{
-		if(pointOfView != this.field_243228_bb)
+		if(pointOfView != this.pointOfView)
 		{
 			ShoulderSurfing.shoulderSurfing = false;
 		}
 		
-		this.field_243228_bb = pointOfView;
+		this.pointOfView = pointOfView;
 	}
 }

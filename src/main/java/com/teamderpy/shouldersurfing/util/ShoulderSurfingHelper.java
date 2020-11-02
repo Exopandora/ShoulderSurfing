@@ -211,12 +211,12 @@ public class ShoulderSurfingHelper
 	
 	public static void setPerspective(Perspective perspective)
 	{
-		Minecraft.getInstance().gameSettings.func_243229_a(perspective.getPointOfView());
+		Minecraft.getInstance().gameSettings.setPointOfView(perspective.getPointOfView());
 		ShoulderSurfing.shoulderSurfing = (perspective == Perspective.SHOULDER_SURFING);
 	}
 	
 	public static boolean doShoulderSurfing()
 	{
-		return Minecraft.getInstance().gameSettings.func_243230_g() == PointOfView.THIRD_PERSON_BACK && ShoulderSurfing.shoulderSurfing;
+		return Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.THIRD_PERSON_BACK && ShoulderSurfing.shoulderSurfing;
 	}
 }

@@ -41,7 +41,7 @@ public class KeyHandler
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				}
-				else if(Minecraft.getInstance().gameSettings.func_243230_g() == PointOfView.FIRST_PERSON)
+				else if(Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.FIRST_PERSON)
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 				}
@@ -87,13 +87,13 @@ public class KeyHandler
 			
 			if(Minecraft.getInstance().gameSettings.keyBindTogglePerspective.isPressed())
 			{
-				Perspective perspective = Perspective.of(Minecraft.getInstance().gameSettings.func_243230_g(), ShoulderSurfingHelper.doShoulderSurfing());
+				Perspective perspective = Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing());
 				Perspective next = perspective.next();
 				ShoulderSurfingHelper.setPerspective(next);
 				
-				if(perspective.getPointOfView().func_243192_a() != Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a())
+				if(perspective.getPointOfView().func_243192_a() != Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a())
 				{
-					Minecraft.getInstance().gameRenderer.loadEntityShader(Minecraft.getInstance().gameSettings.func_243230_g().func_243192_a() ? Minecraft.getInstance().getRenderViewEntity() : null);
+					Minecraft.getInstance().gameRenderer.loadEntityShader(Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a() ? Minecraft.getInstance().getRenderViewEntity() : null);
 				}
 				
 				if(Config.CLIENT.doRememberLastPerspective())
