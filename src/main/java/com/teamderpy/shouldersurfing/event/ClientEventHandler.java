@@ -45,25 +45,21 @@ public class ClientEventHandler
 	{
 		if(event.phase.equals(Phase.START))
 		{
-			if(!ClientEventHandler.isAiming && ShoulderSurfingHelper.isHoldingSpecialItem())
+			if(Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing()) != Perspective.FIRST_PERSON)
 			{
-				if(Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfingHelper.doShoulderSurfing())
-				{
-					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
-					ClientEventHandler.switchPerspective = true;
-				}
-				
-				ClientEventHandler.isAiming = true;
+				ClientEventHandler.switchPerspective = false;
 			}
-			else if(ClientEventHandler.isAiming && !ShoulderSurfingHelper.isHoldingSpecialItem())
+			
+			ClientEventHandler.isAiming = ShoulderSurfingHelper.isHoldingSpecialItem();
+			
+			if(ClientEventHandler.isAiming && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfingHelper.doShoulderSurfing())
 			{
-				if(!Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfingHelper.doShoulderSurfing() && ClientEventHandler.switchPerspective)
-				{
-					ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
-					ClientEventHandler.switchPerspective = false;
-				}
-				
-				ClientEventHandler.isAiming = false;
+				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
+				ClientEventHandler.switchPerspective = true;
+			}
+			else if(!ClientEventHandler.isAiming && Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing()) == Perspective.FIRST_PERSON && ClientEventHandler.switchPerspective)
+			{
+				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 			}
 		}
 	}
