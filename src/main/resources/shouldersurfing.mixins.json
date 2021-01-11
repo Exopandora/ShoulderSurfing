@@ -7,7 +7,8 @@
 		"MixinGameRenderer",
 		"MixinGameSettings",
 		"MixinIngameGui",
-		"MixinPlayerEntity"
+		"MixinPlayerEntity",
+		"MixinShadersRender"
 	],
 	"injectors": {
 		"defaultRequire": 1
