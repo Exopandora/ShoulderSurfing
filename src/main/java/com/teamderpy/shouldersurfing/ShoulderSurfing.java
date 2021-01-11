@@ -67,17 +67,15 @@ public class ShoulderSurfing
 		return 1.0F;
 	}
 	
-	private static boolean isClassLoaded(String klass)
+	private static boolean isClassLoaded(String className)
 	{
 		try
 		{
-			Class.forName(klass);
+			return Class.forName(className) != null;
 		}
 		catch(ClassNotFoundException e)
 		{
 			return false;
 		}
-		
-		return true;
 	}
 }
