@@ -18,6 +18,16 @@ apply plugin: 'org.spongepowered.mixin'
 
 tasks.eclipse.dependsOn('createMcpToSrg')
 
+sourceSets {
+	api
+	main
+	test
+}
+
+configurations {
+	apiCompile.extendsFrom(compile)
+}
+
 mixin {
     add sourceSets.main, 'shouldersurfing.refmap.json'
 }
@@ -56,6 +66,7 @@ minecraft {
             mods {
                 shouldersurfing {
                     source sourceSets.main
+                    source sourceSets.api
                 }
             }
         }
@@ -74,6 +85,7 @@ minecraft {
             mods {
                 shouldersurfing {
                     source sourceSets.main
+                    source sourceSets.api
                 }
             }
         }
@@ -92,6 +104,7 @@ minecraft {
             mods {
                 shouldersurfing {
                     source sourceSets.main
+                    source sourceSets.api
                 }
             }
         }
@@ -121,8 +134,8 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    compile files('libs/OptiFine-Dummy.jar')
+	
+	compile sourceSets.api.output
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
