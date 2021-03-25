@@ -28,7 +28,7 @@ public enum CrosshairVisibility
 		}
 		else if(this == CrosshairVisibility.WHEN_IN_RANGE)
 		{
-			return Minecraft.getInstance().objectMouseOver != null && !Minecraft.getInstance().objectMouseOver.getType().equals(RayTraceResult.Type.MISS);
+			return Minecraft.getInstance().hitResult != null && !Minecraft.getInstance().hitResult.getType().equals(RayTraceResult.Type.MISS);
 		}
 		else if(this == CrosshairVisibility.WHEN_AIMING_OR_IN_RANGE)
 		{

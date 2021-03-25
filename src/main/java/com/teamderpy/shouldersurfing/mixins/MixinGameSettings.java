@@ -13,16 +13,16 @@ import net.minecraft.client.settings.PointOfView;
 public abstract class MixinGameSettings
 {
 	@Shadow
-	private PointOfView pointOfView;
+	private PointOfView cameraType;
 	
 	@Overwrite
-	public void setPointOfView(PointOfView pointOfView)
+	public void setCameraType(PointOfView cameraType)
 	{
-		if(pointOfView != this.pointOfView)
+		if(cameraType != this.cameraType)
 		{
 			ShoulderSurfing.shoulderSurfing = false;
 		}
 		
-		this.pointOfView = pointOfView;
+		this.cameraType = cameraType;
 	}
 }

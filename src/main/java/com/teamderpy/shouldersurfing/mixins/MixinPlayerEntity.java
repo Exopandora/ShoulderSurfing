@@ -29,7 +29,7 @@ public abstract class MixinPlayerEntity extends Entity
 	@Override
 	public RayTraceResult pick(double distance, float partialTicks, boolean stopOnFluid)
 	{
-		final ActiveRenderInfo info = Minecraft.getInstance().getRenderManager().info;
+		final ActiveRenderInfo info = Minecraft.getInstance().getEntityRenderDispatcher().camera;
 		
 		if(ShoulderSurfingHelper.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && info != null)
 		{
@@ -37,7 +37,7 @@ public abstract class MixinPlayerEntity extends Entity
 			FluidMode fluidMode = stopOnFluid ? FluidMode.ANY : FluidMode.NONE;
 			RayTraceContext context = new RayTraceContext(look.getFirst(), look.getSecond(), RayTraceContext.BlockMode.OUTLINE, fluidMode, this);
 			
-			return this.world.rayTraceBlocks(context);
+			return this.level.clip(context);
 		}
 		
 		return super.pick(distance, partialTicks, stopOnFluid);

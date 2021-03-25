@@ -486,7 +486,7 @@ public class Config
 			
 			if(Config.CLIENT.doRememberLastPerspective())
 			{
-				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing()));
+				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()));
 			}
 		}
 	}

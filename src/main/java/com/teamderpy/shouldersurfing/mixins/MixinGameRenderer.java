@@ -24,25 +24,25 @@ import net.minecraft.util.math.vector.Vector3d;
 public class MixinGameRenderer
 {
 	@Shadow
-	private ActiveRenderInfo activeRender;
+	private ActiveRenderInfo mainCamera;
 	
 	@Redirect
 	(
-		method = "getMouseOver",
+		method = "pick",
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/entity/projectile/ProjectileHelper.rayTraceEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/vector/Vector3d;Lnet/minecraft/util/math/vector/Vector3d;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/function/Predicate;D)Lnet/minecraft/util/math/EntityRayTraceResult;"
+			target = "net/minecraft/entity/projectile/ProjectileHelper.getEntityHitResult(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/vector/Vector3d;Lnet/minecraft/util/math/vector/Vector3d;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/function/Predicate;D)Lnet/minecraft/util/math/EntityRayTraceResult;"
 		)
 	)
-	private EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double distanceSq)
+	private EntityRayTraceResult getEntityHitResult(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double distanceSq)
 	{
 		if(ShoulderSurfingHelper.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			Pair<Vector3d, Vector3d> look = ShoulderSurfingHelper.calcShoulderSurfingLook(this.activeRender, shooter, Minecraft.getInstance().getRenderPartialTicks(), distanceSq);
-			return ProjectileHelper.rayTraceEntities(shooter, look.getSecond(), look.getFirst(), boundingBox, filter, distanceSq);
+			Pair<Vector3d, Vector3d> look = ShoulderSurfingHelper.calcShoulderSurfingLook(this.mainCamera, shooter, Minecraft.getInstance().getFrameTime(), distanceSq);
+			return ProjectileHelper.getEntityHitResult(shooter, look.getSecond(), look.getFirst(), boundingBox, filter, distanceSq);
 		}
 		
-		return ProjectileHelper.rayTraceEntities(shooter, startVec, endVec, boundingBox, filter, distanceSq);
+		return ProjectileHelper.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
 	}
 }

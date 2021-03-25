@@ -16,15 +16,15 @@ public class MixinIngameGui
 {
 	@Redirect
 	(
-		method = "func_238456_d_",
+		method = "renderCrosshair",
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/client/settings/PointOfView.func_243192_a()Z"
+			target = "net/minecraft/client/settings/PointOfView.isFirstPerson()Z"
 		)
 	)
-	private boolean doRenderCrosshair(PointOfView view)
+	private boolean doRenderCrosshair(PointOfView cameraType)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.of(view, ShoulderSurfingHelper.doShoulderSurfing())).doRender();
+		return Config.CLIENT.getCrosshairVisibility(Perspective.of(cameraType, ShoulderSurfingHelper.doShoulderSurfing())).doRender();
 	}
 }

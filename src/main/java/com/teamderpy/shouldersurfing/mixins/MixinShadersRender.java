@@ -15,7 +15,7 @@ public class MixinShadersRender
 	@Overwrite
 	public static void updateActiveRenderInfo(ActiveRenderInfo activeRenderInfo, Minecraft mc, float partialTicks)
 	{
-		activeRenderInfo.update(mc.world, mc.getRenderViewEntity() == null ? mc.player : mc.getRenderViewEntity(), !mc.gameSettings.getPointOfView().func_243192_a(), mc.gameSettings.getPointOfView().func_243193_b(), partialTicks);
+		activeRenderInfo.setup(mc.level, mc.getCameraEntity() == null ? mc.player : mc.getCameraEntity(), !mc.options.getCameraType().isFirstPerson(), mc.options.getCameraType().isMirrored(), partialTicks);
 		EntityViewRenderEvent.CameraSetup cameraSetup = ForgeHooksClient.onCameraSetup(mc.gameRenderer, activeRenderInfo, partialTicks);
 		activeRenderInfo.setAnglesInternal(cameraSetup.getYaw(), cameraSetup.getPitch());
 	}

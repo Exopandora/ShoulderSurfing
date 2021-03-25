@@ -45,7 +45,7 @@ public class ClientEventHandler
 	{
 		if(event.phase.equals(Phase.START))
 		{
-			if(Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing()) != Perspective.FIRST_PERSON)
+			if(Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()) != Perspective.FIRST_PERSON)
 			{
 				ClientEventHandler.switchPerspective = false;
 			}
@@ -57,7 +57,7 @@ public class ClientEventHandler
 				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				ClientEventHandler.switchPerspective = true;
 			}
-			else if(!ClientEventHandler.isAiming && Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing()) == Perspective.FIRST_PERSON && ClientEventHandler.switchPerspective)
+			else if(!ClientEventHandler.isAiming && Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()) == Perspective.FIRST_PERSON && ClientEventHandler.switchPerspective)
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 			}
@@ -67,7 +67,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.isCancelable() && event.getPlayer().equals(Minecraft.getInstance().player) && Minecraft.getInstance().currentScreen == null)
+		if(event.isCancelable() && event.getPlayer().equals(Minecraft.getInstance().player) && Minecraft.getInstance().screen == null)
 		{
 			if(ClientEventHandler.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderSurfingHelper.doShoulderSurfing())
 			{
@@ -81,10 +81,10 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			final MainWindow mainWindow = Minecraft.getInstance().getMainWindow();
-			float scale = mainWindow.calcGuiScale(Minecraft.getInstance().gameSettings.guiScale, Minecraft.getInstance().getForceUnicodeFont()) * ShoulderSurfing.getShadersResMul();
+			final MainWindow mainWindow = Minecraft.getInstance().getWindow();
+			float scale = mainWindow.calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode()) * ShoulderSurfing.getShadersResMul();
 			
-			Vec2f window = new Vec2f(mainWindow.getScaledWidth(), mainWindow.getScaledHeight());
+			Vec2f window = new Vec2f(mainWindow.getGuiScaledWidth(), mainWindow.getGuiScaledHeight());
 			Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
 			
 			if(ClientEventHandler.projected != null)
@@ -95,7 +95,7 @@ public class ClientEventHandler
 			
 			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfingHelper.doShoulderSurfing())
 			{
-				event.getMatrixStack().getLast().getMatrix().translate(new Vector3f(ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0F));
+				event.getMatrixStack().last().pose().translate(new Vector3f(ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0F));
 				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
 			}
 			else
@@ -112,7 +112,7 @@ public class ClientEventHandler
 		{
 			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfingHelper.doShoulderSurfing())
 			{
-				event.getMatrixStack().getLast().getMatrix().translate(new Vector3f(-ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0F));
+				event.getMatrixStack().last().pose().translate(new Vector3f(-ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0F));
 			}
 		}
 	}
@@ -120,41 +120,41 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void cameraSetup(CameraSetup event)
 	{
-		final World world = Minecraft.getInstance().world;
+		final World world = Minecraft.getInstance().level;
 		
 		if(ShoulderSurfingHelper.doShoulderSurfing() && world != null)
 		{
 			final ActiveRenderInfo info = event.getInfo();
 			
-			double x = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosX, info.getRenderViewEntity().getPosX());
-			double y = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosY, info.getRenderViewEntity().getPosY()) + MathHelper.lerp(event.getRenderPartialTicks(), info.previousHeight, info.height);
-			double z = MathHelper.lerp(event.getRenderPartialTicks(), info.getRenderViewEntity().prevPosZ, info.getRenderViewEntity().getPosZ());
+			double x = MathHelper.lerp(event.getRenderPartialTicks(), info.getEntity().xo, info.getEntity().getX());
+			double y = MathHelper.lerp(event.getRenderPartialTicks(), info.getEntity().yo, info.getEntity().getY()) + MathHelper.lerp(event.getRenderPartialTicks(), info.eyeHeightOld, info.eyeHeight);
+			double z = MathHelper.lerp(event.getRenderPartialTicks(), info.getEntity().zo, info.getEntity().getZ());
 			
 			info.setPosition(x, y, z);
 			
 			Vector3d offset = new Vector3d(-Config.CLIENT.getOffsetZ(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetX());
-			ClientEventHandler.cameraDistance = ShoulderSurfingHelper.calcCameraDistance(info, world, info.calcCameraDistance(offset.length()));
+			ClientEventHandler.cameraDistance = ShoulderSurfingHelper.calcCameraDistance(info, world, info.getMaxZoom(offset.length()));
 			Vector3d scaled = offset.normalize().scale(ClientEventHandler.cameraDistance);
 			
-			info.movePosition(scaled.x, scaled.y, scaled.z);
+			info.move(scaled.x, scaled.y, scaled.z);
 		}
 	}
 	
 	@SubscribeEvent
 	public static void renderWorldLast(RenderWorldLastEvent event)
 	{
-		final ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
-		final PlayerController controller = Minecraft.getInstance().playerController;
+		final ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
+		final PlayerController controller = Minecraft.getInstance().gameMode;
 		
 		if(ShoulderSurfingHelper.doShoulderSurfing())
 		{
 			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : 0;
-			Optional<RayTraceResult> result = ShoulderSurfingHelper.traceFromEyes(info.getRenderViewEntity(), controller, playerReach, event.getPartialTicks());
+			Optional<RayTraceResult> result = ShoulderSurfingHelper.traceFromEyes(info.getEntity(), controller, playerReach, event.getPartialTicks());
 			
 			if(result.isPresent())
 			{
-				Vector3d position = result.get().getHitVec().subtract(info.getProjectedView());
-				Matrix4f modelView = event.getMatrixStack().getLast().getMatrix();
+				Vector3d position = result.get().getLocation().subtract(info.getPosition());
+				Matrix4f modelView = event.getMatrixStack().last().pose();
 				Matrix4f projection = event.getProjectionMatrix();
 				
 				ClientEventHandler.projected = ShoulderSurfingHelper.project2D(position, modelView, projection);

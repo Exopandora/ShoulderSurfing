@@ -43,21 +43,21 @@ public class ShoulderSurfingHelper
 	@Nullable
 	public static Vec2f project2D(Vector3d position, Matrix4f modelView, Matrix4f projection)
 	{
-		Vector4f vec = new Vector4f((float) position.getX(), (float) position.getY(), (float) position.getZ(), 1.0F);
+		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
 		vec.transform(modelView);
 		vec.transform(projection);
 		
-		if(vec.getW() == 0.0F)
+		if(vec.w() == 0.0F)
 		{
 			return null;
 		}
 		
-		vec.setW((1.0F / vec.getW()) * 0.5F);
-		vec.setX(vec.getX() * vec.getW() + 0.5F);
-		vec.setY(vec.getY() * vec.getW() + 0.5F);
-		vec.setZ(vec.getZ() * vec.getW() + 0.5F);
+		vec.setW((1.0F / vec.w()) * 0.5F);
+		vec.setX(vec.x() * vec.w() + 0.5F);
+		vec.setY(vec.y() * vec.w() + 0.5F);
+		vec.setZ(vec.z() * vec.w() + 0.5F);
 		
-		Vec2f result = new Vec2f(vec.getX() * Minecraft.getInstance().getMainWindow().getWidth(), vec.getY() * Minecraft.getInstance().getMainWindow().getHeight());
+		Vec2f result = new Vec2f(vec.x() * Minecraft.getInstance().getWindow().getScreenWidth(), vec.y() * Minecraft.getInstance().getWindow().getScreenHeight());
 		
 		if(result == null || Float.isInfinite(result.getX()) || Float.isInfinite(result.getY()))
 		{
@@ -69,7 +69,7 @@ public class ShoulderSurfingHelper
 	
 	public static double calcCameraDistance(ActiveRenderInfo info, World world, double distance)
 	{
-		Vector3d view = info.getProjectedView();
+		Vector3d view = info.getPosition();
 		Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, distance);
 		
 		for(int i = 0; i < 8; i++)
@@ -78,12 +78,12 @@ public class ShoulderSurfingHelper
 			Vector3d head = view.add(offset);
 			Vector3d camera = head.add(cameraOffset);
 			
-			RayTraceContext context = new RayTraceContext(head, camera, BlockMode.COLLIDER, FluidMode.NONE, info.getRenderViewEntity());
-			RayTraceResult result = world.rayTraceBlocks(context);
+			RayTraceContext context = new RayTraceContext(head, camera, BlockMode.COLLIDER, FluidMode.NONE, info.getEntity());
+			RayTraceResult result = world.clip(context);
 			
 			if(result != null)
 			{
-				double newDistance = result.getHitVec().distanceTo(view);
+				double newDistance = result.getLocation().distanceTo(view);
 				
 				if(newDistance < distance)
 				{
@@ -97,7 +97,7 @@ public class ShoulderSurfingHelper
 	
 	public static Optional<RayTraceResult> traceFromEyes(Entity renderView, PlayerController playerController, double playerReachOverride, final float partialTicks)
 	{
-		double blockReach = Math.max(playerController.getBlockReachDistance(), playerReachOverride);
+		double blockReach = Math.max(playerController.getPickRange(), playerReachOverride);
 		
 		RayTraceResult blockTrace = renderView.pick(blockReach, partialTicks, false);
 		Vector3d eyes = renderView.getEyePosition(partialTicks);
@@ -105,7 +105,7 @@ public class ShoulderSurfingHelper
 		boolean extendedReach = false;
 		double entityReach = blockReach;
 		
-		if(playerController.extendedReach())
+		if(playerController.hasFarPickRange())
 		{
 			entityReach = Math.max(6.0D, playerReachOverride);
 			blockReach = entityReach;
@@ -119,18 +119,18 @@ public class ShoulderSurfingHelper
 		
 		if(blockTrace != null)
 		{
-			entityReach = blockTrace.getHitVec().squareDistanceTo(eyes);
+			entityReach = blockTrace.getLocation().distanceToSqr(eyes);
 		}
 		
-		Vector3d look = renderView.getLook(1.0F);
+		Vector3d look = renderView.getViewVector(1.0F);
 		Vector3d end = eyes.add(look.scale(blockReach));
 		
-		AxisAlignedBB aabb = renderView.getBoundingBox().expand(look.scale(blockReach)).grow(1.0D, 1.0D, 1.0D);
-		EntityRayTraceResult entityTrace = ProjectileHelper.rayTraceEntities(renderView, eyes, end, aabb, entity -> !entity.isSpectator() && entity.canBeCollidedWith(), entityReach);
+		AxisAlignedBB aabb = renderView.getBoundingBox().expandTowards(look.scale(blockReach)).inflate(1.0D, 1.0D, 1.0D);
+		EntityRayTraceResult entityTrace = ProjectileHelper.getEntityHitResult(renderView, eyes, end, aabb, entity -> !entity.isSpectator() && entity.isPickable(), entityReach);
 		
 		if(entityTrace != null)
 		{
-			double distanceSq = eyes.squareDistanceTo(entityTrace.getHitVec());
+			double distanceSq = eyes.distanceToSqr(entityTrace.getLocation());
 			
 			if(extendedReach && distanceSq > 9.0D)
 			{
@@ -150,11 +150,11 @@ public class ShoulderSurfingHelper
 		Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, ClientEventHandler.cameraDistance);
 		Vector3d offset = ShoulderSurfingHelper.calcRayTraceHeadOffset(info, cameraOffset);
 		Vector3d start = entity.getEyePosition(partialTicks).add(cameraOffset);
-		Vector3d look = entity.getLook(partialTicks);
+		Vector3d look = entity.getViewVector(partialTicks);
 		
-		if(Config.CLIENT.limitPlayerReach() && offset.lengthSquared() < distanceSq)
+		if(Config.CLIENT.limitPlayerReach() && offset.lengthSqr() < distanceSq)
 		{
-			distanceSq -= offset.lengthSquared();
+			distanceSq -= offset.lengthSqr();
 		}
 		
 		double distance = MathHelper.sqrt(distanceSq) + cameraOffset.distanceTo(offset);
@@ -165,22 +165,22 @@ public class ShoulderSurfingHelper
 	
 	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo info, double distance)
 	{
-		double dX = info.getUpVector().getX() * Config.CLIENT.getOffsetY() + info.left.getX() * Config.CLIENT.getOffsetX() + info.getViewVector().getX() * -Config.CLIENT.getOffsetZ();
-		double dY = info.getUpVector().getY() * Config.CLIENT.getOffsetY() + info.left.getY() * Config.CLIENT.getOffsetX() + info.getViewVector().getY() * -Config.CLIENT.getOffsetZ();
-		double dZ = info.getUpVector().getZ() * Config.CLIENT.getOffsetY() + info.left.getZ() * Config.CLIENT.getOffsetX() + info.getViewVector().getZ() * -Config.CLIENT.getOffsetZ();
+		double dX = info.getUpVector().x() * Config.CLIENT.getOffsetY() + info.left.x() * Config.CLIENT.getOffsetX() + info.getLookVector().x() * -Config.CLIENT.getOffsetZ();
+		double dY = info.getUpVector().y() * Config.CLIENT.getOffsetY() + info.left.y() * Config.CLIENT.getOffsetX() + info.getLookVector().y() * -Config.CLIENT.getOffsetZ();
+		double dZ = info.getUpVector().z() * Config.CLIENT.getOffsetY() + info.left.z() * Config.CLIENT.getOffsetX() + info.getLookVector().z() * -Config.CLIENT.getOffsetZ();
 		
 		return new Vector3d(dX, dY, dZ).normalize().scale(distance);
 	}
 	
 	public static Vector3d calcRayTraceHeadOffset(@Nonnull ActiveRenderInfo info, Vector3d cameraOffset)
 	{
-		Vector3d view = new Vector3d(info.getViewVector());
+		Vector3d view = new Vector3d(info.getLookVector());
 		return ShoulderSurfingHelper.lineIntersection(Vector3d.ZERO, view, cameraOffset, view);
 	}
 	
 	public static Vector3d lineIntersection(Vector3d planePoint, Vector3d planeNormal, Vector3d linePoint, Vector3d lineNormal)
 	{
-		double distance = (planeNormal.dotProduct(planePoint) - planeNormal.dotProduct(linePoint)) / planeNormal.dotProduct(lineNormal);
+		double distance = (planeNormal.dot(planePoint) - planeNormal.dot(linePoint)) / planeNormal.dot(lineNormal);
 		return linePoint.add(lineNormal.scale(distance));
 	}
 	
@@ -190,16 +190,16 @@ public class ShoulderSurfingHelper
 		
 		if(player != null)
 		{
-			Item item = player.getActiveItemStack().getItem();
+			Item item = player.getUseItem().getItem();
 			
-			if(ItemModelsProperties.func_239417_a_(item, new ResourceLocation("pull")) != null || ItemModelsProperties.func_239417_a_(item, new ResourceLocation("throwing")) != null)
+			if(ItemModelsProperties.getProperty(item, new ResourceLocation("pull")) != null || ItemModelsProperties.getProperty(item, new ResourceLocation("throwing")) != null)
 			{
 				return true;
 			}
 			
-			for(ItemStack held : player.getHeldEquipment())
+			for(ItemStack held : player.getHandSlots())
 			{
-				if(ItemModelsProperties.func_239417_a_(held.getItem(), new ResourceLocation("charged")) != null)
+				if(ItemModelsProperties.getProperty(held.getItem(), new ResourceLocation("charged")) != null)
 				{
 					return true;
 				}
@@ -211,12 +211,12 @@ public class ShoulderSurfingHelper
 	
 	public static void setPerspective(Perspective perspective)
 	{
-		Minecraft.getInstance().gameSettings.setPointOfView(perspective.getPointOfView());
+		Minecraft.getInstance().options.setCameraType(perspective.getPointOfView());
 		ShoulderSurfing.shoulderSurfing = (perspective == Perspective.SHOULDER_SURFING);
 	}
 	
 	public static boolean doShoulderSurfing()
 	{
-		return Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.THIRD_PERSON_BACK && ShoulderSurfing.shoulderSurfing;
+		return Minecraft.getInstance().options.getCameraType() == PointOfView.THIRD_PERSON_BACK && ShoulderSurfing.shoulderSurfing;
 	}
 }

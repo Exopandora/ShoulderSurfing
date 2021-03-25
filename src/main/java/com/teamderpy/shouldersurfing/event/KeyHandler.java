@@ -28,20 +28,20 @@ public class KeyHandler
 	public static final KeyBinding KEYBIND_CAMERA_DOWN = new KeyBinding("Camera down", GLFW.GLFW_KEY_PAGE_DOWN, KeyHandler.KEY_CATEGORY);
 	
 	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", GLFW.GLFW_KEY_O, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", InputMappings.INPUT_INVALID.getKeyCode(), KeyHandler.KEY_CATEGORY);
+	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", InputMappings.UNKNOWN.getValue(), KeyHandler.KEY_CATEGORY);
 	
 	@SubscribeEvent
 	public static void keyInputEvent(KeyInputEvent event)
 	{
-		if(Minecraft.getInstance() != null && Minecraft.getInstance().currentScreen == null)
+		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
 		{
-			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isKeyDown())
+			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isDown())
 			{
 				if(ShoulderSurfingHelper.doShoulderSurfing())
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				}
-				else if(Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.FIRST_PERSON)
+				else if(Minecraft.getInstance().options.getCameraType() == PointOfView.FIRST_PERSON)
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 				}
@@ -49,51 +49,51 @@ public class KeyHandler
 			
 			if(ShoulderSurfingHelper.doShoulderSurfing())
 			{
-				if(KEYBIND_CAMERA_LEFT.isKeyDown())
+				if(KEYBIND_CAMERA_LEFT.isDown())
 				{
 					Config.CLIENT.adjustCameraLeft();
 				}
 				
-				if(KEYBIND_CAMERA_RIGHT.isKeyDown())
+				if(KEYBIND_CAMERA_RIGHT.isDown())
 				{
 					Config.CLIENT.adjustCameraRight();
 				}
 				
-				if(KEYBIND_CAMERA_OUT.isKeyDown())
+				if(KEYBIND_CAMERA_OUT.isDown())
 				{
 					Config.CLIENT.adjustCameraOut();
 				}
 				
-				if(KEYBIND_CAMERA_IN.isKeyDown())
+				if(KEYBIND_CAMERA_IN.isDown())
 				{
 					Config.CLIENT.adjustCameraIn();
 				}
 				
-				if(KEYBIND_CAMERA_UP.isKeyDown())
+				if(KEYBIND_CAMERA_UP.isDown())
 				{
 					Config.CLIENT.adjustCameraUp();
 				}
 				
-				if(KEYBIND_CAMERA_DOWN.isKeyDown())
+				if(KEYBIND_CAMERA_DOWN.isDown())
 				{
 					Config.CLIENT.adjustCameraDown();
 				}
 				
-				if(KEYBIND_SWAP_SHOULDER.isKeyDown())
+				if(KEYBIND_SWAP_SHOULDER.isDown())
 				{
 					Config.CLIENT.swapShoulder();
 				}
 			}
 			
-			if(Minecraft.getInstance().gameSettings.keyBindTogglePerspective.isPressed())
+			if(Minecraft.getInstance().options.keyTogglePerspective.consumeClick())
 			{
-				Perspective perspective = Perspective.of(Minecraft.getInstance().gameSettings.getPointOfView(), ShoulderSurfingHelper.doShoulderSurfing());
+				Perspective perspective = Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing());
 				Perspective next = perspective.next();
 				ShoulderSurfingHelper.setPerspective(next);
 				
-				if(perspective.getPointOfView().func_243192_a() != Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a())
+				if(perspective.getPointOfView().isFirstPerson() != Minecraft.getInstance().options.getCameraType().isFirstPerson())
 				{
-					Minecraft.getInstance().gameRenderer.loadEntityShader(Minecraft.getInstance().gameSettings.getPointOfView().func_243192_a() ? Minecraft.getInstance().getRenderViewEntity() : null);
+					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(Minecraft.getInstance().options.getCameraType().isFirstPerson() ? Minecraft.getInstance().getCameraEntity() : null);
 				}
 				
 				if(Config.CLIENT.doRememberLastPerspective())
