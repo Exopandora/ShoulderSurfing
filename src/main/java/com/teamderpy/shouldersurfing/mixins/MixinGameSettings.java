@@ -15,6 +15,10 @@ public abstract class MixinGameSettings
 	@Shadow
 	private PointOfView cameraType;
 	
+	/**
+	 * @author Exopandora
+	 * @reason Disable shoulder surfing perspective when other mods change the perspective
+	 */
 	@Overwrite
 	public void setCameraType(PointOfView cameraType)
 	{

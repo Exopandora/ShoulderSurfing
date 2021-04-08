@@ -23,8 +23,8 @@ public class MixinIngameGui
 			target = "net/minecraft/client/settings/PointOfView.isFirstPerson()Z"
 		)
 	)
-	private boolean doRenderCrosshair(PointOfView cameraType)
+	private boolean doRenderCrosshair(PointOfView pointOfView)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.of(cameraType, ShoulderSurfingHelper.doShoulderSurfing())).doRender();
+		return Config.CLIENT.getCrosshairVisibility(Perspective.of(pointOfView, ShoulderSurfingHelper.doShoulderSurfing())).doRender();
 	}
 }

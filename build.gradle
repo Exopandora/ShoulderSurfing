@@ -18,6 +18,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 
+tasks.eclipse.dependsOn('createMcpToSrg')
+
 sourceSets {
 	api
 	main {
@@ -33,7 +35,7 @@ configurations {
 }
 
 mixin {
-	add sourceSets.main, 'shouldersurfing.refmap.json'
+	add sourceSets.main, 'main.refmap.json'
 }
 
 version = '1.16.5-2.0.3'
@@ -144,6 +146,8 @@ dependencies {
 	// For more info...
 	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
 	// http://www.gradle.org/docs/current/userguide/dependency_management.html
+	
+    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -160,4 +164,6 @@ jar {
 			"MixinConfigs": "shouldersurfing.mixins.json"
 		])
 	}
+	
+	rename 'main.refmap.json', 'shouldersurfing.refmap.json'
 }
