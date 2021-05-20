@@ -55,7 +55,6 @@ public class Config
 		private final BooleanValue unlimitedOffsetY;
 		private final BooleanValue unlimitedOffsetZ;
 		
-		
 		private final BooleanValue keepCameraOutOfHead;
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue rememberLastPerspective;
@@ -464,6 +463,7 @@ public class Config
 		if(value != null && !value.equals(configValue.get()))
 		{
 			Config.CONFIG_DATA.set(configValue.getPath(), value);
+			configValue.clearCache();
 		}
 	}
 	

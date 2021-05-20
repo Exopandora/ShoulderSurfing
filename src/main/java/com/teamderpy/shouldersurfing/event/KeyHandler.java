@@ -35,7 +35,7 @@ public class KeyHandler
 	{
 		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
 		{
-			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isDown())
+			if(KEYBIND_TOGGLE_SHOULDER_SURFING.consumeClick())
 			{
 				if(ShoulderSurfingHelper.doShoulderSurfing())
 				{
@@ -49,37 +49,37 @@ public class KeyHandler
 			
 			if(ShoulderSurfingHelper.doShoulderSurfing())
 			{
-				if(KEYBIND_CAMERA_LEFT.isDown())
+				if(KEYBIND_CAMERA_LEFT.consumeClick())
 				{
 					Config.CLIENT.adjustCameraLeft();
 				}
 				
-				if(KEYBIND_CAMERA_RIGHT.isDown())
+				if(KEYBIND_CAMERA_RIGHT.consumeClick())
 				{
 					Config.CLIENT.adjustCameraRight();
 				}
 				
-				if(KEYBIND_CAMERA_OUT.isDown())
+				if(KEYBIND_CAMERA_OUT.consumeClick())
 				{
 					Config.CLIENT.adjustCameraOut();
 				}
 				
-				if(KEYBIND_CAMERA_IN.isDown())
+				if(KEYBIND_CAMERA_IN.consumeClick())
 				{
 					Config.CLIENT.adjustCameraIn();
 				}
 				
-				if(KEYBIND_CAMERA_UP.isDown())
+				if(KEYBIND_CAMERA_UP.consumeClick())
 				{
 					Config.CLIENT.adjustCameraUp();
 				}
 				
-				if(KEYBIND_CAMERA_DOWN.isDown())
+				if(KEYBIND_CAMERA_DOWN.consumeClick())
 				{
 					Config.CLIENT.adjustCameraDown();
 				}
 				
-				if(KEYBIND_SWAP_SHOULDER.isDown())
+				if(KEYBIND_SWAP_SHOULDER.consumeClick())
 				{
 					Config.CLIENT.swapShoulder();
 				}
