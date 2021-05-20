@@ -192,7 +192,7 @@ public class Config
 			{
 				ConfigValue<CrosshairVisibility> crosshairVisibility = builder
 						.comment("Crosshair visibility for " + entry.toString().toLowerCase())
-						.translation("Crosshair Visibility")
+						.translation(entry.toString() + " Crosshair Visibility")
 						.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
 				this.crosshairVisibility.put(entry, crosshairVisibility);
 			}
