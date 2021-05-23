@@ -474,7 +474,6 @@ public class Config
 		{
 			configValue.clearCache();
 			Config.CONFIG_DATA.set(configValue.getPath(), value);
-//			configValue.save();
 		}
 	}
 	
