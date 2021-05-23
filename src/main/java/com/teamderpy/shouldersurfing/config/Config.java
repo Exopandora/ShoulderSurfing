@@ -2,8 +2,6 @@ package com.teamderpy.shouldersurfing.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -412,44 +410,56 @@ public class Config
 		
 		public void adjustCameraLeft()
 		{
-			this.addOffset(this::setOffsetX, this.getOffsetX(), this::getMaxOffsetX, this.isUnlimitedOffsetX());
+			this.setOffsetX(this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
 		}
 		
 		public void adjustCameraRight()
 		{
-			this.subOffset(this::setOffsetX, this.getOffsetX(), this::getMinOffsetX, this.isUnlimitedOffsetX());
+			this.setOffsetX(this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isUnlimitedOffsetX()));
 		}
 		
 		public void adjustCameraUp()
 		{
-			this.addOffset(this::setOffsetY, this.getOffsetY(), this::getMaxOffsetY, this.isUnlimitedOffsetY());
+			this.setOffsetY(this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isUnlimitedOffsetY()));
 		}
 		
 		public void adjustCameraDown()
 		{
-			this.subOffset(this::setOffsetY, this.getOffsetY(), this::getMinOffsetY, this.isUnlimitedOffsetY());
+			this.setOffsetY(this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isUnlimitedOffsetY()));
 		}
 		
 		public void adjustCameraIn()
 		{
-			this.subOffset(this::setOffsetZ, this.getOffsetZ(), this::getMinOffsetZ, this.isUnlimitedOffsetZ());
+			this.setOffsetZ(this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
 		public void adjustCameraOut()
 		{
-			this.addOffset(this::setOffsetZ, this.getOffsetZ(), this::getMaxOffsetZ, this.isUnlimitedOffsetZ());
+			this.setOffsetZ(this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
-		private void addOffset(Consumer<Double> setter, double current, Supplier<Double> max, boolean unlimited)
+		private double addStep(double value, double max, boolean unlimited)
 		{
-			double next = current + this.getCameraStepSize();
-			setter.accept(unlimited ? next : Math.min(next, max.get()));
+			double next = value + this.getCameraStepSize();
+			
+			if(unlimited)
+			{
+				return next;
+			}
+			
+			return Math.min(next, max);
 		}
 		
-		private void subOffset(Consumer<Double> setter, double current, Supplier<Double> min, boolean unlimited)
+		private double subStep(double value, double min, boolean unlimited)
 		{
-			double next = current - this.getCameraStepSize();
-			setter.accept(unlimited ? next : Math.max(next, min.get()));
+			double next = value - this.getCameraStepSize();
+			
+			if(unlimited)
+			{
+				return next;
+			}
+			
+			return Math.max(next, min);
 		}
 		
 		public void swapShoulder()
@@ -462,8 +472,9 @@ public class Config
 	{
 		if(value != null && !value.equals(configValue.get()))
 		{
-			Config.CONFIG_DATA.set(configValue.getPath(), value);
 			configValue.clearCache();
+			Config.CONFIG_DATA.set(configValue.getPath(), value);
+//			configValue.save();
 		}
 	}
 	
@@ -482,8 +493,6 @@ public class Config
 	{
 		if(event.getConfig().getType().equals(Type.CLIENT) && Config.CONFIG_DATA != null)
 		{
-			Config.CONFIG_DATA.load();
-			
 			if(Config.CLIENT.doRememberLastPerspective())
 			{
 				Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()));
