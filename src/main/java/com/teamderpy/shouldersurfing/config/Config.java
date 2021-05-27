@@ -473,6 +473,15 @@ public class Config
 	}
 	
 	@SubscribeEvent
+	public static void configReload(ModConfig.Loading event)
+	{
+		if(Type.CLIENT.equals(event.getConfig().getType()))
+		{
+			ShoulderSurfingHelper.setPerspective(Config.CLIENT.getDefaultPerspective());
+		}
+	}
+	
+	@SubscribeEvent
 	public static void configReload(ModConfig.Reloading event)
 	{
 		if(Type.CLIENT.equals(event.getConfig().getType()) && Config.CLIENT.doRememberLastPerspective())

@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -60,7 +59,6 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderWorldLast);
 		
 		ShoulderSurfing.shaders = isClassLoaded("net.optifine.shaders.Shaders");
-		ShoulderSurfingHelper.setPerspective(Config.CLIENT.getDefaultPerspective());
 	}
 	
 	public static float getShadersResMul()
