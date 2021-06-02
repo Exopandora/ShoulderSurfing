@@ -38,7 +38,7 @@ mixin {
 	add sourceSets.main, 'main.refmap.json'
 }
 
-version = '1.16.5-2.0.5'
+version = '1.16.5-2.0.6'
 group = 'com.teamderpy.shouldersurfing' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ShoulderSurfing'
 
