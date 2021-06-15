@@ -144,7 +144,32 @@ public abstract class ShoulderTransformer implements IClassTransformer
 	 * Locates the offset of a set of instructions in the Java byte code.
 	 * 
 	 * This performs a linear search.
-	 *
+	 * <br />
+	 * <br />
+	 * <b>Implemented bytecode instructions: </b>
+	 * <ul>
+	 *   <li>INSN</li>
+	 *   <li>INT_INSN</li>
+	 *   <li>VAR_INSN</li>
+	 *   <li>FIELD_INSN</li>
+	 *   <li>METHOD_INSN</li>
+	 *   <li>LABEL</li>
+	 *   <li>FRAME</li>
+	 *   <li>LINE</li>
+	 *   <li>IINC_INSN</li>
+	 *   </ul>
+	 * <br />
+	 * <b>Unimplemented bytecode instructions: </b>
+	 * <ul>
+	 *   <li>TYPE_INSN</li>
+	 *   <li>INVOKE_DYNAMIC_INSN</li>
+	 *   <li>JUMP_INSN</li>
+	 *   <li>LDC_INSN</li>
+	 *   <li>TABLESWITCH_INSN</li>
+	 *   <li>LOOKUPSWITCH_INSN</li>
+	 *   <li>MULTIANEWARRAY_INSN</li>
+	 * </ul>
+	 * 
 	 * @param instructions
 	 *            {@link InsnList} containing Java byte instructions to go
 	 *            through
