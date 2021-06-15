@@ -10,7 +10,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -72,36 +71,38 @@ public class Mappings
 	{
 		InputStream is = Mappings.class.getClassLoader().getResourceAsStream(file);
 		JsonObject json = new JsonParser().parse(new InputStreamReader(is)).getAsJsonObject();
-		Map<String, ClassMapping> mapping = new HashMap<String, ClassMapping>();
-		String version = null;
+		Map<String, ClassMapping> mappings = new HashMap<String, ClassMapping>();
 		
 		try
 		{
-			version = ForgeVersion.class.getDeclaredField("mcVersion").get(ForgeVersion.class).toString();
-		}
-		catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e)
-		{
-			e.printStackTrace();
-		}
-		
-		for(Entry<String, JsonElement> entry : json.getAsJsonObject("classes").entrySet())
-		{
-			JsonObject object = entry.getValue().getAsJsonObject();
-			ClassMapping klass = new ClassMapping(object.get("name").getAsString(), object.get("obf").getAsJsonObject().get(version).getAsString());
-			mapping.put(entry.getKey(), klass);
-		}
-		
-		for(Set<Entry<String, JsonElement>> sets : Lists.newArrayList(json.getAsJsonObject("methods").entrySet(), json.getAsJsonObject("fields").entrySet()))
-		{
-			for(Entry<String, JsonElement> entry : sets)
+			String version = ForgeVersion.class.getDeclaredField("mcVersion").get(ForgeVersion.class).toString();
+			
+			for(Entry<String, JsonElement> entry : json.getAsJsonObject("classes").entrySet())
 			{
 				JsonObject object = entry.getValue().getAsJsonObject();
-				DescMapping klass = new DescMapping(object.get("name").getAsString(), object.get("desc").getAsString(), object.get("obf").getAsJsonObject().get(version).getAsString());
-				mapping.put(entry.getKey(), klass);
+				ClassMapping klass = new ClassMapping(object.get("name").getAsString(), object.get("obf").getAsJsonObject().get(version).getAsString());
+				mappings.put(entry.getKey(), klass);
 			}
+			
+			Mappings.loadDescMappings(json.getAsJsonObject("methods").entrySet(), mappings, version);
+			Mappings.loadDescMappings(json.getAsJsonObject("fields").entrySet(), mappings, version);
+		}
+		catch(NullPointerException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e)
+		{
+			throw new RuntimeException("Unable to load mappings");
 		}
 		
-		return new Mappings(mapping);
+		return new Mappings(mappings);
+	}
+	
+	private static void loadDescMappings(Set<Entry<String, JsonElement>> set, Map<String, ClassMapping> mappings, String version)
+	{
+		for(Entry<String, JsonElement> entry : set)
+		{
+			JsonObject object = entry.getValue().getAsJsonObject();
+			DescMapping klass = new DescMapping(object.get("name").getAsString(), object.get("desc").getAsString(), object.get("obf").getAsJsonObject().get(version).getAsString());
+			mappings.put(entry.getKey(), klass);
+		}
 	}
 	
 	private static class ClassMapping
