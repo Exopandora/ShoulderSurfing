@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer.method;
+package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.DLOAD;
 import static org.objectweb.asm.Opcodes.DSTORE;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TransformerCameraDistanceCheck extends ATransformerOrientCamera
 {
 	@Override
-	public InsnList getSearchList(Mappings mappings)
+	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		
@@ -31,7 +31,7 @@ public class TransformerCameraDistanceCheck extends ATransformerOrientCamera
 	}
 	
 	@Override
-	public void transform(MethodNode method, Mappings mappings, int offset)
+	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		// net/minecraft/client/renderer/EntityRenderer.orientCamera:658
 		// InjectionDelegation.verifyReverseBlockDist(d7);
@@ -43,5 +43,17 @@ public class TransformerCameraDistanceCheck extends ATransformerOrientCamera
 		hackCode.add(new LabelNode(new Label()));
 		
 		method.instructions.insertBefore(method.instructions.get(offset), hackCode);
+	}
+	
+	@Override
+	protected boolean hasMethodTransformer()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean hasClassTransformer()
+	{
+		return false;
 	}
 }

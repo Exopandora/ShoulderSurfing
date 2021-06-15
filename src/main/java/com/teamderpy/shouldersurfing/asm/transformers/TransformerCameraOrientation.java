@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer.method;
+package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.DLOAD;
@@ -29,22 +29,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TransformerCameraOrientation extends ATransformerOrientCamera
 {
 	@Override
-	public InsnList getSearchList(Mappings mappings)
+	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		
 		searchList.add(new VarInsnNode(ALOAD, 2));
-		searchList.add(new FieldInsnNode(GETFIELD, mappings.getClassPath("Entity"), mappings.getFieldOrMethod("Entity#rotationYaw"), mappings.getDescriptor("Entity#rotationYaw")));
+		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("Entity", obf), mappings.map("Entity#rotationYaw", obf), mappings.getDesc("Entity#rotationYaw", obf)));
 		searchList.add(new VarInsnNode(FSTORE, 12));
 		searchList.add(new VarInsnNode(ALOAD, 2));
-		searchList.add(new FieldInsnNode(GETFIELD, mappings.getClassPath("Entity"), mappings.getFieldOrMethod("Entity#rotationPitch"), mappings.getDescriptor("Entity#rotationPitch")));
+		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("Entity", obf), mappings.map("Entity#rotationPitch", obf), mappings.getDesc("Entity#rotationPitch", obf)));
 		searchList.add(new VarInsnNode(FSTORE, 13));
 		
 		return searchList;
 	}
 	
 	@Override
-	public void transform(MethodNode method, Mappings mappings, int offset)
+	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		InsnList hackCode = new InsnList();
 		
@@ -76,5 +76,17 @@ public class TransformerCameraOrientation extends ATransformerOrientCamera
 		hackCode.add(new LabelNode(new Label()));
 		
 		method.instructions.insertBefore(method.instructions.get(offset + 1), hackCode);
+	}
+	
+	@Override
+	protected boolean hasMethodTransformer()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean hasClassTransformer()
+	{
+		return false;
 	}
 }

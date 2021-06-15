@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer.method;
+package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.GETSTATIC;
@@ -20,18 +20,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TransformerRenderAttackIndicator extends ATransformerAttackIndicator
 {
 	@Override
-	public InsnList getSearchList(Mappings mappings)
+	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		
-		searchList.add(new FieldInsnNode(GETFIELD, mappings.getClassPath("GameSettings"), mappings.getFieldOrMethod("GameSettings#attackIndicator"), mappings.getDescriptor("GameSettings#attackIndicator")));
+		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("GameSettings", obf), mappings.map("GameSettings#attackIndicator", obf), mappings.getDesc("GameSettings#attackIndicator", obf)));
 		searchList.add(new InsnNode(ICONST_1));
-		
 		return searchList;
 	}
 	
 	@Override
-	public void transform(MethodNode method, Mappings mappings, int offset)
+	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		InsnList hackCode = new InsnList();
 		hackCode.add(new FieldInsnNode(GETSTATIC, "com/teamderpy/shouldersurfing/ShoulderSettings", "ENABLE_ATTACK_INDICATOR", "Z"));
@@ -40,5 +38,17 @@ public class TransformerRenderAttackIndicator extends ATransformerAttackIndicato
 		hackCode.add(new JumpInsnNode(IFEQ, jump.label));
 		
 		method.instructions.insert(jump, hackCode);
+	}
+	
+	@Override
+	protected boolean hasMethodTransformer()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean hasClassTransformer()
+	{
+		return false;
 	}
 }

@@ -6,18 +6,24 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * @author Joshua Powers <jsh.powers@yahoo.com>
- * @version 1.0
- * @since 2012-12-30
- */
 @SideOnly(Side.CLIENT)
 public class ShoulderPlugin implements IFMLLoadingPlugin
 {
 	@Override
 	public String[] getASMTransformerClass()
 	{
-		return new String[]{"com.teamderpy.shouldersurfing.asm.ShoulderTransformations"};
+		return new String[]
+		{
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerCameraDistanceCheck",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerCameraOrientation",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerDistanceCheck",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerPositionEyes",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRayTrace",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRayTraceProjection",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRenderAttackIndicator",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRenderCrosshair",
+			"com.teamderpy.shouldersurfing.asm.transformers.TransformerThirdPersonMode"
+		};
 	}
 	
 	@Override

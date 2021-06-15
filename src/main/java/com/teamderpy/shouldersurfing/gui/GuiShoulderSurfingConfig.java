@@ -14,6 +14,6 @@ public class GuiShoulderSurfingConfig extends GuiConfig
 {
 	public GuiShoulderSurfingConfig(GuiScreen parent)
 	{
-		super(parent, new ConfigElement(ShoulderSurfing.CONFIG.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), ShoulderSurfing.MODID, false, false, "Shoulder Surfing");
+		super(parent, new ConfigElement(ShoulderSurfing.getInstance().getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), ShoulderSurfing.MODID, false, false, "Shoulder Surfing");
 	}
 }

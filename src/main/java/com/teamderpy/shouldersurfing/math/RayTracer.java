@@ -67,7 +67,7 @@ public final class RayTracer
 //					System.out.println(sightVector);
 //					System.out.println(renderViewPos + " " + sightVector + " " + sightRay);
 					
-					List entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach).expand(1.0D, 1.0D, 1.0D));
+					List<Entity> entityList = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderViewEntity().getEntityBoundingBox().expand(sightVector.x * playerReach, sightVector.y * playerReach, sightVector.z * playerReach).expand(1.0D, 1.0D, 1.0D));
 					
 					for(int i = 0; i < entityList.size(); ++i)
 					{

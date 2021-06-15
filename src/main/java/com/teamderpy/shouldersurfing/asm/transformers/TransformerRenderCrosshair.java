@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer.method;
+package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
@@ -17,18 +17,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TransformerRenderCrosshair extends ATransformerAttackIndicator
 {
 	@Override
-	public InsnList getSearchList(Mappings mappings)
+	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		searchList.add(new FieldInsnNode(GETFIELD, mappings.getClassPath("GameSettings"), mappings.getFieldOrMethod("GameSettings#thirdPersonView"), mappings.getDescriptor("GameSettings#thirdPersonView")));
-		
+		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("GameSettings", obf), mappings.map("GameSettings#thirdPersonView", obf), mappings.getDesc("GameSettings#thirdPersonView", obf)));
 		return searchList;
 	}
 	
 	@Override
-	public void transform(MethodNode method, Mappings mappings, int offset)
+	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "doRenderCrosshair", "()I", false);
 		method.instructions.set(method.instructions.get(offset), instruction);
+	}
+	
+	@Override
+	protected boolean hasMethodTransformer()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean hasClassTransformer()
+	{
+		return false;
 	}
 }

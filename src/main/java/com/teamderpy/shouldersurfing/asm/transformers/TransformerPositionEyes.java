@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer.clazz;
+package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
@@ -8,32 +8,32 @@ import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.transformer.IClassTransformer;
+import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TransformerPositionEyes implements IClassTransformer
+public class TransformerPositionEyes extends ShoulderTransformer
 {
 	@Override
-	public String getClassName()
+	public String getClassId()
 	{
 		return "EntityPlayer";
 	}
 	
 	@Override
-	public String getMethodName()
+	public String getMethodId()
 	{
 		return "EntityPlayer#getPositionEyes";
 	}
 	
 	@Override
-	public void transform(ClassWriter writer, Mappings mappings)
+	public void transform(Mappings mappings, boolean obf, ClassWriter writer)
 	{
-		String vec3d = mappings.getClassPath("Vec3d");
-		String entity = mappings.getClassPath("Entity");
-		String eyes = mappings.getFieldOrMethod("EntityPlayer#getPositionEyes");
+		String vec3d = mappings.map("Vec3d", obf);
+		String entity = mappings.map("Entity", obf);
+		String eyes = mappings.map("EntityPlayer#getPositionEyes", obf);
 		
 		Method method = Method.getMethod(vec3d + " " + eyes + " (float)", true);
 		GeneratorAdapter adapter = new GeneratorAdapter(ACC_PUBLIC, method, null, null, writer);
@@ -48,5 +48,17 @@ public class TransformerPositionEyes implements IClassTransformer
 		
 		adapter.returnValue();
 		adapter.endMethod();
+	}
+	
+	@Override
+	protected boolean hasMethodTransformer()
+	{
+		return false;
+	}
+	
+	@Override
+	protected boolean hasClassTransformer()
+	{
+		return true;
 	}
 }

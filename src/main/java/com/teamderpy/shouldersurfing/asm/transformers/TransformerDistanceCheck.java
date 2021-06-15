@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.asm.transformer.method;
+package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.DLOAD;
 import static org.objectweb.asm.Opcodes.DSTORE;
@@ -20,17 +20,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TransformerDistanceCheck extends ATransformerOrientCamera
 {
 	@Override
-	public InsnList getSearchList(Mappings mappings)
+	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		
 		searchList.add(new IincInsnNode(20, 1));
-		
 		return searchList;
 	}
 	
 	@Override
-	public void transform(MethodNode method, Mappings mappings, int offset)
+	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		InsnList hackCode = new InsnList();
 		
@@ -46,5 +44,17 @@ public class TransformerDistanceCheck extends ATransformerOrientCamera
 		hackCode.add(new VarInsnNode(DSTORE, 10));
 		
 		method.instructions.insert(method.instructions.get(offset + 4), hackCode);
+	}
+	
+	@Override
+	protected boolean hasMethodTransformer()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean hasClassTransformer()
+	{
+		return false;
 	}
 }

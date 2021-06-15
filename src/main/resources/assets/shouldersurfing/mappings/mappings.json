@@ -1,1125 +1,345 @@
 {
-	"versions":
-	[
-		{
-			"version": "1.12.2",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "buq"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "vg"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bxz"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "byb"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "amu"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bsb"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bhe"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bhc"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bib"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bid"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "aed"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "biq"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bit"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aE"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "f"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "aw"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "N"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.12.1",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "buq"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "vg"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bxz"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "byb"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "amu"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bsb"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bhe"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bhc"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bib"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bid"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "aed"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "biq"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bit"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aE"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "f"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "aw"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "N"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.12",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "buo"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "ve"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bxx"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bxz"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "ams"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "brz"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bhc"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bha"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bhz"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bib"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "aeb"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "bio"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bir"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aE"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "f"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "aw"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "N"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.11.2",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "bqe"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "sn"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "btm"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bto"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "ajs"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bnq"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bdw"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bdu"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bes"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "beu"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "aay"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "bfh"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bfk"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aA"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "g"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "as"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "N"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.11",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "bqc"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "sm"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "btk"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "btm"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "ajq"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bno"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bdu"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bds"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "beq"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bes"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "aax"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "bff"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bfi"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aA"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "g"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "as"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "N"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.10.2",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "bnz"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "rw"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "brg"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bri"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "aid"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bln"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bcb"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bbz"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bcx"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bcz"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "zs"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "bdm"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bdp"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aA"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "g"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "as"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "N"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.9.4",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "bnd"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "rr"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bqk"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bqm"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "aht"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bks"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bbh"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bbg"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bcd"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bcf"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "zj"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "bcs"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bcv"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aA"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "g"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "aq"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "M"
-					}
-				]
-			}
-		},
-		{
-			"version": "1.9",
-			"mappings":
-			{
-				"classes":
-				[
-					{
-						"name": "EntityRenderer",
-						"path": "net/minecraft/client/renderer",
-						"obf": "bng"
-					},
-					{
-						"name": "Entity",
-						"path": "net/minecraft/entity",
-						"obf": "rr"
-					},
-					{
-						"name": "ClippingHelperImpl",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bqn"
-					},
-					{
-						"name": "ClippingHelper",
-						"path": "net/minecraft/client/renderer/culling",
-						"obf": "bqp"
-					},
-					{
-						"name": "World",
-						"path": "net/minecraft/world",
-						"obf": "aht"
-					},
-					{
-						"name": "WorldClient",
-						"path": "net/minecraft/client/multiplayer",
-						"obf": "bku"
-					},
-					{
-						"name": "Vec3d",
-						"path": "net/minecraft/util/math",
-						"obf": "bbj"
-					},
-					{
-						"name": "RayTraceResult",
-						"path": "net/minecraft/util/math",
-						"obf": "bbi"
-					},
-					{
-						"name": "Minecraft",
-						"path": "net/minecraft/client",
-						"obf": "bcf"
-					},
-					{
-						"name": "GameSettings",
-						"path": "net/minecraft/client/settings",
-						"obf": "bch"
-					},
-					{
-						"name": "EntityPlayer",
-						"path": "net/minecraft/entity/player",
-						"obf": "zj"
-					},
-					{
-						"name": "GuiIngame",
-						"path": "net/minecraft/client/gui",
-						"obf": "bcu"
-					},
-					{
-						"name": "ScaledResolution",
-						"path": "net/minecraft/client/gui",
-						"obf": "bcx"
-					}
-				],
-				"methods":
-				[
-					{
-						"name": "EntityRenderer#orientCamera",
-						"desc": "(F)V",
-						"obf": "f"
-					},
-					{
-						"name": "EntityRenderer#renderWorldPass",
-						"desc": "(IFJ)V",
-						"obf": "a"
-					},
-					{
-						"name": "ClippingHelperImpl#getInstance",
-						"desc": "()L$ClippingHelper;",
-						"obf": "a"
-					},
-					{
-						"name": "InjectionDelegation#getRayTraceResult",
-						"desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "getRayTraceResult"
-					},
-					{
-						"name": "WorldClient#rayTraceBlocks",
-						"desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-						"obf": "a"
-					},
-					{
-						"name": "Minecraft#processKeyBinds",
-						"desc": "()V",
-						"obf": "aA"
-					},
-					{
-						"name": "EntityPlayer#getPositionEyes",
-						"desc": "(F)L$Vec3d;",
-						"obf": "g"
-					},
-					{
-						"name": "GuiIngame#renderAttackIndicator",
-						"desc": "(FL$ScaledResolution;)V",
-						"obf": "a"
-					}
-				],
-				"fields":
-				[
-					{
-						"name": "Entity#rotationYaw",
-						"desc": "F",
-						"obf": "v"
-					},
-					{
-						"name": "Entity#rotationPitch",
-						"desc": "F",
-						"obf": "w"
-					},
-					{
-						"name": "GameSettings#thirdPersonView",
-						"desc": "I",
-						"obf": "ap"
-					},
-					{
-						"name": "GameSettings#attackIndicator",
-						"desc": "I",
-						"obf": "M"
-					}
-				]
-			}
-		}
-	]
+    "classes": {
+        "EntityRenderer": {
+            "name": "net/minecraft/client/renderer/EntityRenderer",
+            "obf": {
+                "1.12.2": "buq",
+                "1.12.1": "buq",
+                "1.12": "buo",
+                "1.11.2": "bqe",
+                "1.11": "bqc",
+                "1.10.2": "bnz",
+                "1.9.4": "bnd",
+                "1.9": "bng"
+            }
+        },
+        "Entity": {
+            "name": "net/minecraft/entity/Entity",
+            "obf": {
+                "1.12.2": "vg",
+                "1.12.1": "vg",
+                "1.12": "ve",
+                "1.11.2": "sn",
+                "1.11": "sm",
+                "1.10.2": "rw",
+                "1.9.4": "rr",
+                "1.9": "rr"
+            }
+        },
+        "ClippingHelperImpl": {
+            "name": "net/minecraft/client/renderer/culling/ClippingHelperImpl",
+            "obf": {
+                "1.12.2": "bxz",
+                "1.12.1": "bxz",
+                "1.12": "bxx",
+                "1.11.2": "btm",
+                "1.11": "btk",
+                "1.10.2": "brg",
+                "1.9.4": "bqk",
+                "1.9": "bqn"
+            }
+        },
+        "ClippingHelper": {
+            "name": "net/minecraft/client/renderer/culling/ClippingHelper",
+            "obf": {
+                "1.12.2": "byb",
+                "1.12.1": "byb",
+                "1.12": "bxz",
+                "1.11.2": "bto",
+                "1.11": "btm",
+                "1.10.2": "bri",
+                "1.9.4": "bqm",
+                "1.9": "bqp"
+            }
+        },
+        "World": {
+            "name": "net/minecraft/world/World",
+            "obf": {
+                "1.12.2": "amu",
+                "1.12.1": "amu",
+                "1.12": "ams",
+                "1.11.2": "ajs",
+                "1.11": "ajq",
+                "1.10.2": "aid",
+                "1.9.4": "aht",
+                "1.9": "aht"
+            }
+        },
+        "WorldClient": {
+            "name": "net/minecraft/client/multiplayer/WorldClient",
+            "obf": {
+                "1.12.2": "bsb",
+                "1.12.1": "bsb",
+                "1.12": "brz",
+                "1.11.2": "bnq",
+                "1.11": "bno",
+                "1.10.2": "bln",
+                "1.9.4": "bks",
+                "1.9": "bku"
+            }
+        },
+        "Vec3d": {
+            "name": "net/minecraft/util/math/Vec3d",
+            "obf": {
+                "1.12.2": "bhe",
+                "1.12.1": "bhe",
+                "1.12": "bhc",
+                "1.11.2": "bdw",
+                "1.11": "bdu",
+                "1.10.2": "bcb",
+                "1.9.4": "bbh",
+                "1.9": "bbj"
+            }
+        },
+        "RayTraceResult": {
+            "name": "net/minecraft/util/math/RayTraceResult",
+            "obf": {
+                "1.12.2": "bhc",
+                "1.12.1": "bhc",
+                "1.12": "bha",
+                "1.11.2": "bdu",
+                "1.11": "bds",
+                "1.10.2": "bbz",
+                "1.9.4": "bbg",
+                "1.9": "bbi"
+            }
+        },
+        "Minecraft": {
+            "name": "net/minecraft/client/Minecraft",
+            "obf": {
+                "1.12.2": "bib",
+                "1.12.1": "bib",
+                "1.12": "bhz",
+                "1.11.2": "bes",
+                "1.11": "beq",
+                "1.10.2": "bcx",
+                "1.9.4": "bcd",
+                "1.9": "bcf"
+            }
+        },
+        "GameSettings": {
+            "name": "net/minecraft/client/settings/GameSettings",
+            "obf": {
+                "1.12.2": "bid",
+                "1.12.1": "bid",
+                "1.12": "bib",
+                "1.11.2": "beu",
+                "1.11": "bes",
+                "1.10.2": "bcz",
+                "1.9.4": "bcf",
+                "1.9": "bch"
+            }
+        },
+        "EntityPlayer": {
+            "name": "net/minecraft/entity/player/EntityPlayer",
+            "obf": {
+                "1.12.2": "aed",
+                "1.12.1": "aed",
+                "1.12": "aeb",
+                "1.11.2": "aay",
+                "1.11": "aax",
+                "1.10.2": "zs",
+                "1.9.4": "zj",
+                "1.9": "zj"
+            }
+        },
+        "GuiIngame": {
+            "name": "net/minecraft/client/gui/GuiIngame",
+            "obf": {
+                "1.12.2": "biq",
+                "1.12.1": "biq",
+                "1.12": "bio",
+                "1.11.2": "bfh",
+                "1.11": "bff",
+                "1.10.2": "bdm",
+                "1.9.4": "bcs",
+                "1.9": "bcu"
+            }
+        },
+        "ScaledResolution": {
+            "name": "net/minecraft/client/gui/ScaledResolution",
+            "obf": {
+                "1.12.2": "bit",
+                "1.12.1": "bit",
+                "1.12": "bir",
+                "1.11.2": "bfk",
+                "1.11": "bfi",
+                "1.10.2": "bdp",
+                "1.9.4": "bcv",
+                "1.9": "bcx"
+            }
+        }
+    },
+    "methods": {
+        "EntityRenderer#orientCamera": {
+            "name": "orientCamera",
+            "desc": "(F)V",
+            "obf": {
+                "1.12.2": "f",
+                "1.12.1": "f",
+                "1.12": "f",
+                "1.11.2": "f",
+                "1.11": "f",
+                "1.10.2": "f",
+                "1.9.4": "f",
+                "1.9": "f"
+            }
+        },
+        "EntityRenderer#renderWorldPass": {
+            "name": "renderWorldPass",
+            "desc": "(IFJ)V",
+            "obf": {
+                "1.12.2": "a",
+                "1.12.1": "a",
+                "1.12": "a",
+                "1.11.2": "a",
+                "1.11": "a",
+                "1.10.2": "a",
+                "1.9.4": "a",
+                "1.9": "a"
+            }
+        },
+        "ClippingHelperImpl#getInstance": {
+            "name": "getInstance",
+            "desc": "()L$ClippingHelper;",
+            "obf": {
+                "1.12.2": "a",
+                "1.12.1": "a",
+                "1.12": "a",
+                "1.11.2": "a",
+                "1.11": "a",
+                "1.10.2": "a",
+                "1.9.4": "a",
+                "1.9": "a"
+            }
+        },
+        "InjectionDelegation#getRayTraceResult": {
+            "name": "getRayTraceResult",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": {
+                "1.12.2": "getRayTraceResult",
+                "1.12.1": "getRayTraceResult",
+                "1.12": "getRayTraceResult",
+                "1.11.2": "getRayTraceResult",
+                "1.11": "getRayTraceResult",
+                "1.10.2": "getRayTraceResult",
+                "1.9.4": "getRayTraceResult",
+                "1.9": "getRayTraceResult"
+            }
+        },
+        "WorldClient#rayTraceBlocks": {
+            "name": "rayTraceBlocks",
+            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": {
+                "1.12.2": "a",
+                "1.12.1": "a",
+                "1.12": "a",
+                "1.11.2": "a",
+                "1.11": "a",
+                "1.10.2": "a",
+                "1.9.4": "a",
+                "1.9": "a"
+            }
+        },
+        "Minecraft#processKeyBinds": {
+            "name": "processKeyBinds",
+            "desc": "()V",
+            "obf": {
+                "1.12.2": "aE",
+                "1.12.1": "aE",
+                "1.12": "aE",
+                "1.11.2": "aA",
+                "1.11": "aA",
+                "1.10.2": "aA",
+                "1.9.4": "aA",
+                "1.9": "aA"
+            }
+        },
+        "EntityPlayer#getPositionEyes": {
+            "name": "getPositionEyes",
+            "desc": "(F)L$Vec3d;",
+            "obf": {
+                "1.12.2": "f",
+                "1.12.1": "f",
+                "1.12": "f",
+                "1.11.2": "g",
+                "1.11": "g",
+                "1.10.2": "g",
+                "1.9.4": "g",
+                "1.9": "g"
+            }
+        },
+        "GuiIngame#renderAttackIndicator": {
+            "name": "renderAttackIndicator",
+            "desc": "(FL$ScaledResolution;)V",
+            "obf": {
+                "1.12.2": "a",
+                "1.12.1": "a",
+                "1.12": "a",
+                "1.11.2": "a",
+                "1.11": "a",
+                "1.10.2": "a",
+                "1.9.4": "a",
+                "1.9": "a"
+            }
+        }
+    },
+    "fields": {
+        "Entity#rotationYaw": {
+            "name": "rotationYaw",
+            "desc": "F",
+            "obf": {
+                "1.12.2": "v",
+                "1.12.1": "v",
+                "1.12": "v",
+                "1.11.2": "v",
+                "1.11": "v",
+                "1.10.2": "v",
+                "1.9.4": "v",
+                "1.9": "v"
+            }
+        },
+        "Entity#rotationPitch": {
+            "name": "rotationPitch",
+            "desc": "F",
+            "obf": {
+                "1.12.2": "w",
+                "1.12.1": "w",
+                "1.12": "w",
+                "1.11.2": "w",
+                "1.11": "w",
+                "1.10.2": "w",
+                "1.9.4": "w",
+                "1.9": "w"
+            }
+        },
+        "GameSettings#thirdPersonView": {
+            "name": "thirdPersonView",
+            "desc": "I",
+            "obf": {
+                "1.12.2": "aw",
+                "1.12.1": "aw",
+                "1.12": "aw",
+                "1.11.2": "as",
+                "1.11": "as",
+                "1.10.2": "as",
+                "1.9.4": "aq",
+                "1.9": "ap"
+            }
+        },
+        "GameSettings#attackIndicator": {
+            "name": "attackIndicator",
+            "desc": "I",
+            "obf": {
+                "1.12.2": "N",
+                "1.12.1": "N",
+                "1.12": "N",
+                "1.11.2": "N",
+                "1.11": "N",
+                "1.10.2": "N",
+                "1.9.4": "M",
+                "1.9": "M"
+            }
+        }
+    }
 }

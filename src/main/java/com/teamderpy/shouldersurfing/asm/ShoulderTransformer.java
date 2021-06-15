@@ -1,64 +1,122 @@
 package com.teamderpy.shouldersurfing.asm;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.IincInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * <b>Implemented bytecode instructions: </b>
- * INSN,
- * INT_INSN,
- * VAR_INSN,
- * FIELD_INSN,
- * METHOD_INSN,
- * LABEL,
- * FRAME,
- * LINE,
- * IINC_INSN
- * <br />
- * <b>Unimplemented bytecode instructions: </b>
- * TYPE_INSN,
- * INVOKE_DYNAMIC_INSN,
- * JUMP_INSN,
- * LDC_INSN,
- * TABLESWITCH_INSN,
- * LOOKUPSWITCH_INSN,
- * MULTIANEWARRAY_INSN
- * 
- * @author Joshua Powers <jsh.powers@yahoo.com>
- * @version 1.0
- * @since 2012-12-30
- */
 @SideOnly(Side.CLIENT)
-public class ShoulderASMHelper
+public abstract class ShoulderTransformer implements IClassTransformer
 {
-	/**
-	 * Locates the offset of a set of instructions in the Java byte code.
-	 * Ignores label nodes and line number nodes by default.
-	 * 
-	 * This performs a linear search.
-	 * @deprecated
-	 * @param instructions
-	 *            {@link InsnList} containing Java byte instructions to go
-	 *            through
-	 * @param search
-	 *            {@link InsnList} containing Java byte instructions to match
-	 * @return Returns an integer with the byte offset after the matched code,
-	 *         or -1 if no match is found.
-	 */
-	@Deprecated
-	public static int locateOffset(InsnList instructions, InsnList search)
+	private static final Mappings MAPPINGS = Mappings.load("assets/shouldersurfing/mappings/mappings.json");
+	private static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
+	
+	@Override
+	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
-		return locateOffset(instructions, search, true, true);
+		if(transformedName.equals(this.getTransformedClassName()))
+		{
+			ClassNode classNode = new ClassNode();
+			ClassReader classReader = new ClassReader(bytes);
+			classReader.accept(classNode, 0);
+			
+			boolean obf = !name.equals(transformedName);
+			
+			if(this.hasMethodTransformer())
+			{
+				this.transformMethod(MAPPINGS, obf, classNode);
+			}
+			
+			ClassWriter writer = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+			classNode.accept(writer);
+			
+			if(this.hasClassTransformer())
+			{
+				this.transform(MAPPINGS, obf, writer);
+			}
+			
+			return writer.toByteArray();
+		}
+		
+		return bytes;
 	}
+
+	private void transformMethod(Mappings mappings, boolean obf, ClassNode classNode)
+	{
+		for(Object m : classNode.methods)
+		{
+			MethodNode method = (MethodNode) m;
+			
+			if(method.name.equals(mappings.map(this.getMethodId(), obf)) && method.desc.equals(mappings.getDesc(this.getMethodId(), obf)))
+			{
+				int offset = ShoulderTransformer.locateOffset(method.instructions, this.searchList(mappings, obf), this.ignoreLabels(), this.ignoreLineNumber());
+				
+				if(offset == -1)
+				{
+					LOGGER.error(this.getClass().getSimpleName() + ": Failed to locate offset in " + method.name + method.desc + " for " + this.getMethodId());
+				}
+				else
+				{
+					this.transform(mappings, obf, method, offset);
+				}
+			}
+		}
+	}
+	
+	private String getTransformedClassName()
+	{
+		return MAPPINGS.map(this.getClassId(), false).replace("/", ".");
+	}
+	
+	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
+	{
+		return;
+	}
+	
+	protected void transform(Mappings mappings, boolean obf, ClassWriter writer)
+	{
+		return;
+	}
+	
+	protected boolean ignoreLabels()
+	{
+		return true;
+	}
+	
+	protected boolean ignoreLineNumber()
+	{
+		return true;
+	}
+	
+	protected String getMethodId()
+	{
+		return null;
+	}
+	
+	protected InsnList searchList(Mappings mappings, boolean obf)
+	{
+		return null;
+	}
+	
+	protected abstract String getClassId();
+	
+	protected abstract boolean hasMethodTransformer();
+	
+	protected abstract boolean hasClassTransformer();
 	
 	/**
 	 * Locates the offset of a set of instructions in the Java byte code.
@@ -77,7 +135,7 @@ public class ShoulderASMHelper
 	 * @return Returns an integer with the byte offset after the matched code,
 	 *         or -1 if no match is found.
 	 */
-	public static int locateOffset(InsnList instructions, InsnList search, boolean ignoreLabel, boolean ignoreLineNumber)
+	private static int locateOffset(InsnList instructions, InsnList search, boolean ignoreLabel, boolean ignoreLineNumber)
 	{
 		return locateOffset(instructions, search, 0, 0, instructions.size(), ignoreLabel, ignoreLineNumber);
 	}

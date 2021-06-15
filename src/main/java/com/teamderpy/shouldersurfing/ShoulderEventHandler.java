@@ -1,5 +1,7 @@
 package com.teamderpy.shouldersurfing;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import com.teamderpy.shouldersurfing.math.RayTracer;
 import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
 
@@ -7,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -70,9 +71,10 @@ public class ShoulderEventHandler
 					return;
 				}
 				
-				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION_YAW, "Third person camera rotation").set(ShoulderCamera.SHOULDER_ROTATION_YAW);
-				ShoulderSurfing.CONFIG.get(Configuration.CATEGORY_GENERAL, "Zoom Offset", ShoulderCamera.SHOULDER_ZOOM_MOD, "Third person camera zoom").set(ShoulderCamera.SHOULDER_ZOOM_MOD);
-				ShoulderSurfing.CONFIG.save();
+				Configuration config = ShoulderSurfing.getInstance().getConfig();
+				config.get(Configuration.CATEGORY_GENERAL, "Rotation Offset", ShoulderCamera.SHOULDER_ROTATION_YAW, "Third person camera rotation").set(ShoulderCamera.SHOULDER_ROTATION_YAW);
+				config.get(Configuration.CATEGORY_GENERAL, "Zoom Offset", ShoulderCamera.SHOULDER_ZOOM_MOD, "Third person camera zoom").set(ShoulderCamera.SHOULDER_ZOOM_MOD);
+				config.save();
 			}
 		}
 	}
@@ -84,9 +86,7 @@ public class ShoulderEventHandler
 		{
 			boolean prev = ShoulderSettings.REPLACE_DEFAULT_3PP;
 			
-			ShoulderSurfing.INSTACE.syncConfig();
-			
-			boolean ppChanged = ShoulderSettings.REPLACE_DEFAULT_3PP != prev;
+			ShoulderSurfing.getInstance().syncConfig();
 			
 			if(ShoulderSettings.REPLACE_DEFAULT_3PP != prev)
 			{
@@ -107,8 +107,8 @@ public class ShoulderEventHandler
 	 */
 	private static float lastX = 0.0F;
 	private static float lastY = 0.0F;
-	private static Vec2f delta;
-	private static Vec2f translation;
+	private static Vector2f delta;
+	private static Vector2f translation;
 	
 	@SubscribeEvent
 	public void preRenderPlayer(RenderPlayerEvent.Pre event)
@@ -130,7 +130,7 @@ public class ShoulderEventHandler
 			ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 			int width = resolution.getScaledWidth();
 			int height = resolution.getScaledHeight();
-			float scale = resolution.getScaleFactor() * ShoulderSurfing.INSTACE.getShadersResmul();
+			float scale = resolution.getScaleFactor() * ShoulderSurfing.getInstance().getShadersResmul();
 			
 			delta = this.computeDelta(width, height, scale, event.getPartialTicks());
 			translation = this.computeTranslation(width, height, scale, delta);
@@ -139,7 +139,7 @@ public class ShoulderEventHandler
 			
 			if(translate)
 			{
-				GlStateManager.translate(this.translation.x, this.translation.y, 0.0F);
+				GlStateManager.translate(ShoulderEventHandler.translation.x, ShoulderEventHandler.translation.y, 0.0F);
 			}
 			else
 			{
@@ -186,10 +186,10 @@ public class ShoulderEventHandler
 		lastX += delta.x;
 		lastY += delta.y;
 		
-		GlStateManager.translate(-this.translation.x, -this.translation.y, 0.0F);
+		GlStateManager.translate(-ShoulderEventHandler.translation.x, -ShoulderEventHandler.translation.y, 0.0F);
 	}
 	
-	private Vec2f computeDelta(int width, int height, float scale, float partial)
+	private Vector2f computeDelta(int width, int height, float scale, float partial)
 	{
 		float deltaX = (width * scale / 2 - lastX) * partial;
 		float deltaY = (height * scale / 2 - lastY) * partial;
@@ -200,10 +200,10 @@ public class ShoulderEventHandler
 			deltaY = (ShoulderRenderBin.projectedVector.y - lastY) * partial;
 		}
 		
-		return new Vec2f(deltaX, deltaY);
+		return new Vector2f(deltaX, deltaY);
 	}
 	
-	private Vec2f computeTranslation(int width, int height, float scale, Vec2f diff)
+	private Vector2f computeTranslation(int width, int height, float scale, Vector2f diff)
 	{
 		float crosshairWidth = (lastX + diff.x) / scale;
 		float crosshairHeight = (lastY + diff.y) / scale;
@@ -211,6 +211,6 @@ public class ShoulderEventHandler
 		float translationX = -width / 2 + crosshairWidth;
 		float translationY = -height / 2 + crosshairHeight;
 		
-		return new Vec2f(translationX, translationY);
+		return new Vector2f(translationX, translationY);
 	}
 }
