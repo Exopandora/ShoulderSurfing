@@ -19,7 +19,6 @@ public class TransformerRayTrace extends ATransformerOrientCamera
 	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-//		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.getClassPath("WorldClient"), mappings.getFieldOrMethod("WorldClient#rayTraceBlocks"), mappings.getDescriptor("WorldClient#rayTraceBlocks"), false));
 		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("WorldClient", obf), mappings.map("WorldClient#rayTraceBlocks", obf), mappings.getDesc("WorldClient#rayTraceBlocks", obf), false));
 		return searchList;
 	}
