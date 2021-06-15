@@ -69,8 +69,10 @@ public class ShoulderTransformations implements net.minecraft.launchwrapper.ICla
 			
 			if(!transformers.getKey().isEmpty())
 			{
-				for(MethodNode method : classNode.methods)
+				for(Object m : classNode.methods)
 				{
+					MethodNode method = (MethodNode) m;
+					
 					for(IMethodTransformer transformer : transformers.getKey())
 					{
 						this.updateMappings(name, transformer);
