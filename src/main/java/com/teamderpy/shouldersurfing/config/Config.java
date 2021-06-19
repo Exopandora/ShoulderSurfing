@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -486,7 +485,7 @@ public class Config
 	{
 		if(Type.CLIENT.equals(event.getConfig().getType()) && Config.CLIENT.doRememberLastPerspective())
 		{
-			Config.CLIENT.setDefaultPerspective(Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()));
+			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
 	}
 }

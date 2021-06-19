@@ -87,7 +87,7 @@ public class KeyHandler
 			
 			if(Minecraft.getInstance().options.keyTogglePerspective.consumeClick())
 			{
-				Perspective perspective = Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing());
+				Perspective perspective = Perspective.current();
 				Perspective next = perspective.next();
 				ShoulderSurfingHelper.setPerspective(next);
 				

@@ -40,6 +40,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ShoulderSurfingHelper
 {
+	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
+	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
+	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
+	
 	@Nullable
 	public static Vec2f project2D(Vector3d position, Matrix4f modelView, Matrix4f projection)
 	{
@@ -57,14 +61,15 @@ public class ShoulderSurfingHelper
 		vec.setY(vec.y() * vec.w() + 0.5F);
 		vec.setZ(vec.z() * vec.w() + 0.5F);
 		
-		Vec2f result = new Vec2f(vec.x() * Minecraft.getInstance().getWindow().getScreenWidth(), vec.y() * Minecraft.getInstance().getWindow().getScreenHeight());
+		float x = vec.x() * Minecraft.getInstance().getWindow().getScreenWidth();
+		float y = vec.y() * Minecraft.getInstance().getWindow().getScreenHeight();
 		
-		if(result == null || Float.isInfinite(result.getX()) || Float.isInfinite(result.getY()))
+		if(Float.isInfinite(x) || Float.isInfinite(y))
 		{
 			return null;
 		}
 		
-		return result;
+		return new Vec2f(x, y);
 	}
 	
 	public static double calcCameraDistance(ActiveRenderInfo info, World world, double distance)
@@ -192,14 +197,14 @@ public class ShoulderSurfingHelper
 		{
 			Item item = player.getUseItem().getItem();
 			
-			if(ItemModelsProperties.getProperty(item, new ResourceLocation("pull")) != null || ItemModelsProperties.getProperty(item, new ResourceLocation("throwing")) != null)
+			if(ItemModelsProperties.getProperty(item, PULL_PROPERTY) != null || ItemModelsProperties.getProperty(item, THROWING_PROPERTY) != null)
 			{
 				return true;
 			}
 			
 			for(ItemStack held : player.getHandSlots())
 			{
-				if(ItemModelsProperties.getProperty(held.getItem(), new ResourceLocation("charged")) != null)
+				if(ItemModelsProperties.getProperty(held.getItem(), CHARGED_PROPERTY) != null)
 				{
 					return true;
 				}

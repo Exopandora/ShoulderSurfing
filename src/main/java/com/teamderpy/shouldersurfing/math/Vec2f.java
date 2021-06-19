@@ -51,4 +51,10 @@ public class Vec2f
 	{
 		return new Vec2f(this.x / div, this.y / div);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return this.x + " " + this.y;
+	}
 }

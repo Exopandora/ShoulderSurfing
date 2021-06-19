@@ -45,7 +45,7 @@ public class ClientEventHandler
 	{
 		if(event.phase.equals(Phase.START))
 		{
-			if(Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()) != Perspective.FIRST_PERSON)
+			if(Perspective.current() != Perspective.FIRST_PERSON)
 			{
 				ClientEventHandler.switchPerspective = false;
 			}
@@ -57,7 +57,7 @@ public class ClientEventHandler
 				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				ClientEventHandler.switchPerspective = true;
 			}
-			else if(!ClientEventHandler.isAiming && Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing()) == Perspective.FIRST_PERSON && ClientEventHandler.switchPerspective)
+			else if(!ClientEventHandler.isAiming && Perspective.current() == Perspective.FIRST_PERSON && ClientEventHandler.switchPerspective)
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 			}
@@ -95,6 +95,7 @@ public class ClientEventHandler
 			
 			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfingHelper.doShoulderSurfing())
 			{
+				event.getMatrixStack().pushPose();
 				event.getMatrixStack().last().pose().translate(new Vector3f(ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0F));
 				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
 			}
@@ -112,7 +113,7 @@ public class ClientEventHandler
 		{
 			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfingHelper.doShoulderSurfing())
 			{
-				event.getMatrixStack().last().pose().translate(new Vector3f(-ClientEventHandler.translation.getX(), ClientEventHandler.translation.getY(), 0F));
+				event.getMatrixStack().popPose();
 			}
 		}
 	}
