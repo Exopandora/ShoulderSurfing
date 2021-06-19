@@ -24,7 +24,7 @@ public abstract class MixinGameSettings
 	{
 		if(cameraType != this.cameraType)
 		{
-			ShoulderSurfing.shoulderSurfing = false;
+			ShoulderSurfing.STATE.setEnabled(false);
 		}
 		
 		this.cameraType = cameraType;

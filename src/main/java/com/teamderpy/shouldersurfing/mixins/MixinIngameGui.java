@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 
@@ -24,6 +25,6 @@ public class MixinIngameGui
 	)
 	private boolean doRenderCrosshair(PointOfView pointOfView)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender();
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderSurfing.STATE.isAiming());
 	}
 }

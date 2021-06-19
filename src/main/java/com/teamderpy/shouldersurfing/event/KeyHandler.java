@@ -2,6 +2,7 @@ package com.teamderpy.shouldersurfing.event;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
@@ -37,7 +38,7 @@ public class KeyHandler
 		{
 			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isDown())
 			{
-				if(ShoulderSurfingHelper.doShoulderSurfing())
+				if(ShoulderSurfing.STATE.doShoulderSurfing())
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				}
@@ -47,7 +48,7 @@ public class KeyHandler
 				}
 			}
 			
-			if(ShoulderSurfingHelper.doShoulderSurfing())
+			if(ShoulderSurfing.STATE.doShoulderSurfing())
 			{
 				if(KEYBIND_CAMERA_LEFT.isDown())
 				{
@@ -90,10 +91,11 @@ public class KeyHandler
 				Perspective perspective = Perspective.current();
 				Perspective next = perspective.next();
 				ShoulderSurfingHelper.setPerspective(next);
+				boolean firstPerson = next.getPointOfView().isFirstPerson();
 				
-				if(perspective.getPointOfView().isFirstPerson() != Minecraft.getInstance().options.getCameraType().isFirstPerson())
+				if(perspective.getPointOfView().isFirstPerson() != firstPerson)
 				{
-					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(Minecraft.getInstance().options.getCameraType().isFirstPerson() ? Minecraft.getInstance().getCameraEntity() : null);
+					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(firstPerson ? Minecraft.getInstance().getCameraEntity() : null);
 				}
 				
 				if(Config.CLIENT.doRememberLastPerspective())

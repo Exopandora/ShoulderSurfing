@@ -9,13 +9,11 @@ import com.mojang.datafixers.util.Pair;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -72,10 +70,10 @@ public class ShoulderSurfingHelper
 		return new Vec2f(x, y);
 	}
 	
-	public static double calcCameraDistance(ActiveRenderInfo info, World world, double distance)
+	public static double cameraDistance(ActiveRenderInfo info, World world, double distance)
 	{
 		Vector3d view = info.getPosition();
-		Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, distance);
+		Vector3d cameraOffset = ShoulderSurfingHelper.cameraOffset(info, distance);
 		
 		for(int i = 0; i < 8; i++)
 		{
@@ -150,10 +148,10 @@ public class ShoulderSurfingHelper
 		return Optional.of(blockTrace);
 	}
 	
-	public static Pair<Vector3d, Vector3d> calcShoulderSurfingLook(ActiveRenderInfo info, Entity entity, float partialTicks, double distanceSq)
+	public static Pair<Vector3d, Vector3d> shoulderSurfingLook(ActiveRenderInfo info, Entity entity, float partialTicks, double distanceSq)
 	{
-		Vector3d cameraOffset = ShoulderSurfingHelper.calcCameraOffset(info, ClientEventHandler.cameraDistance);
-		Vector3d offset = ShoulderSurfingHelper.calcRayTraceHeadOffset(info, cameraOffset);
+		Vector3d cameraOffset = ShoulderSurfingHelper.cameraOffset(info, ShoulderSurfing.STATE.getCameraDistance());
+		Vector3d offset = ShoulderSurfingHelper.rayTraceHeadOffset(info, cameraOffset);
 		Vector3d start = entity.getEyePosition(partialTicks).add(cameraOffset);
 		Vector3d look = entity.getViewVector(partialTicks);
 		
@@ -168,7 +166,7 @@ public class ShoulderSurfingHelper
 		return Pair.of(start, end);
 	}
 	
-	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo info, double distance)
+	public static Vector3d cameraOffset(@Nonnull ActiveRenderInfo info, double distance)
 	{
 		double dX = info.getUpVector().x() * Config.CLIENT.getOffsetY() + info.left.x() * Config.CLIENT.getOffsetX() + info.getLookVector().x() * -Config.CLIENT.getOffsetZ();
 		double dY = info.getUpVector().y() * Config.CLIENT.getOffsetY() + info.left.y() * Config.CLIENT.getOffsetX() + info.getLookVector().y() * -Config.CLIENT.getOffsetZ();
@@ -177,7 +175,7 @@ public class ShoulderSurfingHelper
 		return new Vector3d(dX, dY, dZ).normalize().scale(distance);
 	}
 	
-	public static Vector3d calcRayTraceHeadOffset(@Nonnull ActiveRenderInfo info, Vector3d cameraOffset)
+	public static Vector3d rayTraceHeadOffset(@Nonnull ActiveRenderInfo info, Vector3d cameraOffset)
 	{
 		Vector3d view = new Vector3d(info.getLookVector());
 		return ShoulderSurfingHelper.lineIntersection(Vector3d.ZERO, view, cameraOffset, view);
@@ -217,11 +215,6 @@ public class ShoulderSurfingHelper
 	public static void setPerspective(Perspective perspective)
 	{
 		Minecraft.getInstance().options.setCameraType(perspective.getPointOfView());
-		ShoulderSurfing.shoulderSurfing = (perspective == Perspective.SHOULDER_SURFING);
-	}
-	
-	public static boolean doShoulderSurfing()
-	{
-		return Minecraft.getInstance().options.getCameraType() == PointOfView.THIRD_PERSON_BACK && ShoulderSurfing.shoulderSurfing;
+		ShoulderSurfing.STATE.setEnabled(Perspective.SHOULDER_SURFING.equals(perspective));
 	}
 }

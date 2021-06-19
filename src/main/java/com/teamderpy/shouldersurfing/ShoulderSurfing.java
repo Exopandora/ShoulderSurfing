@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -24,7 +25,7 @@ public class ShoulderSurfing
 {
 	public static final String MODID = "shouldersurfing";
 	public static final float RAYTRACE_DISTANCE = 400.0F;
-	public static boolean shoulderSurfing;
+	public static final ShoulderState STATE = new ShoulderState();
 	
 	private static boolean shaders;
 	

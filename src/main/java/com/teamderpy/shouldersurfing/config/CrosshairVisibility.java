@@ -1,7 +1,5 @@
 package com.teamderpy.shouldersurfing.config;
 
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,7 +14,7 @@ public enum CrosshairVisibility
 	WHEN_IN_RANGE,
 	WHEN_AIMING_OR_IN_RANGE;
 	
-	public boolean doRender()
+	public boolean doRender(boolean isAiming)
 	{
 		if(this == CrosshairVisibility.NEVER)
 		{
@@ -24,15 +22,15 @@ public enum CrosshairVisibility
 		}
 		else if(this == CrosshairVisibility.WHEN_AIMING)
 		{
-			return ClientEventHandler.isAiming;
+			return isAiming;
 		}
 		else if(this == CrosshairVisibility.WHEN_IN_RANGE)
 		{
-			return Minecraft.getInstance().hitResult != null && !Minecraft.getInstance().hitResult.getType().equals(RayTraceResult.Type.MISS);
+			return Minecraft.getInstance().hitResult != null && !RayTraceResult.Type.MISS.equals(Minecraft.getInstance().hitResult.getType());
 		}
 		else if(this == CrosshairVisibility.WHEN_AIMING_OR_IN_RANGE)
 		{
-			return CrosshairVisibility.WHEN_IN_RANGE.doRender() || CrosshairVisibility.WHEN_AIMING.doRender();
+			return CrosshairVisibility.WHEN_IN_RANGE.doRender(isAiming) || CrosshairVisibility.WHEN_AIMING.doRender(isAiming);
 		}
 		
 		return true;

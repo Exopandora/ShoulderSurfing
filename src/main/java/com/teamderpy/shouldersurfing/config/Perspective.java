@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.config;
 
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.PointOfView;
@@ -74,6 +74,6 @@ public enum Perspective
 	
 	public static Perspective current()
 	{
-		return Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfingHelper.doShoulderSurfing());
+		return Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfing.STATE.doShoulderSurfing());
 	}
 }

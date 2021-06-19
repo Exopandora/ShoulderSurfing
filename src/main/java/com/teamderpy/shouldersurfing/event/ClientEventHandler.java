@@ -32,32 +32,24 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
-	private static boolean switchPerspective;
-	private static Vec2f lastTranslation = Vec2f.ZERO;
-	private static Vec2f translation = Vec2f.ZERO;
-	private static Vec2f projected = null;
-	
-	public static boolean isAiming;
-	public static double cameraDistance;
-	
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
 	{
 		if(event.phase.equals(Phase.START))
 		{
-			if(Perspective.current() != Perspective.FIRST_PERSON)
+			if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
 			{
-				ClientEventHandler.switchPerspective = false;
+				ShoulderSurfing.STATE.setSwitchPerspective(false);
 			}
 			
-			ClientEventHandler.isAiming = ShoulderSurfingHelper.isHoldingSpecialItem();
+			ShoulderSurfing.STATE.setAiming(ShoulderSurfingHelper.isHoldingSpecialItem());
 			
-			if(ClientEventHandler.isAiming && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfingHelper.doShoulderSurfing())
+			if(ShoulderSurfing.STATE.isAiming() && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfing.STATE.doShoulderSurfing())
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
-				ClientEventHandler.switchPerspective = true;
+				ShoulderSurfing.STATE.setSwitchPerspective(true);
 			}
-			else if(!ClientEventHandler.isAiming && Perspective.current() == Perspective.FIRST_PERSON && ClientEventHandler.switchPerspective)
+			else if(!ShoulderSurfing.STATE.isAiming() && Perspective.FIRST_PERSON.equals(Perspective.current()) && ShoulderSurfing.STATE.doSwitchPerspective())
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 			}
@@ -69,7 +61,7 @@ public class ClientEventHandler
 	{
 		if(event.isCancelable() && event.getPlayer().equals(Minecraft.getInstance().player) && Minecraft.getInstance().screen == null)
 		{
-			if(ClientEventHandler.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderSurfingHelper.doShoulderSurfing())
+			if(ShoulderSurfing.STATE.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderSurfing.STATE.doShoulderSurfing())
 			{
 				event.setCanceled(true);
 			}
@@ -81,27 +73,29 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			final MainWindow mainWindow = Minecraft.getInstance().getWindow();
-			float scale = mainWindow.calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode()) * ShoulderSurfing.getShadersResMul();
-			
-			Vec2f window = new Vec2f(mainWindow.getGuiScaledWidth(), mainWindow.getGuiScaledHeight());
-			Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
-			
-			if(ClientEventHandler.projected != null)
+			if(ShoulderSurfing.STATE.getProjected() != null)
 			{
-				Vec2f projectedOffset = ClientEventHandler.projected.subtract(center).divide(scale);
-				ClientEventHandler.translation = ClientEventHandler.lastTranslation.add(projectedOffset.subtract(ClientEventHandler.lastTranslation).scale(event.getPartialTicks()));
+				final MainWindow mainWindow = Minecraft.getInstance().getWindow();
+				float scale = mainWindow.calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode()) * ShoulderSurfing.getShadersResMul();
+				
+				Vec2f window = new Vec2f(mainWindow.getGuiScaledWidth(), mainWindow.getGuiScaledHeight());
+				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
+				Vec2f projectedOffset = ShoulderSurfing.STATE.getProjected().subtract(center).divide(scale);
+				Vec2f lastTranslation = ShoulderSurfing.STATE.getLastTranslation();
+				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(event.getPartialTicks());
+				
+				ShoulderSurfing.STATE.setTranslation(ShoulderSurfing.STATE.getLastTranslation().add(interpolated));
 			}
 			
-			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfingHelper.doShoulderSurfing())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfing.STATE.doShoulderSurfing())
 			{
 				event.getMatrixStack().pushPose();
-				event.getMatrixStack().last().pose().translate(new Vector3f(ClientEventHandler.translation.getX(), -ClientEventHandler.translation.getY(), 0F));
-				ClientEventHandler.lastTranslation = ClientEventHandler.translation;
+				event.getMatrixStack().last().pose().translate(new Vector3f(ShoulderSurfing.STATE.getTranslation().getX(), -ShoulderSurfing.STATE.getTranslation().getY(), 0F));
+				ShoulderSurfing.STATE.setLastTranslation(ShoulderSurfing.STATE.getTranslation());
 			}
 			else
 			{
-				ClientEventHandler.lastTranslation = Vec2f.ZERO;
+				ShoulderSurfing.STATE.setLastTranslation(Vec2f.ZERO);
 			}
 		}
 	}
@@ -109,12 +103,9 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfing.STATE.doShoulderSurfing())
 		{
-			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfingHelper.doShoulderSurfing())
-			{
-				event.getMatrixStack().popPose();
-			}
+			event.getMatrixStack().popPose();
 		}
 	}
 	
@@ -123,7 +114,7 @@ public class ClientEventHandler
 	{
 		final World world = Minecraft.getInstance().level;
 		
-		if(ShoulderSurfingHelper.doShoulderSurfing() && world != null)
+		if(ShoulderSurfing.STATE.doShoulderSurfing() && world != null)
 		{
 			final ActiveRenderInfo info = event.getInfo();
 			
@@ -134,8 +125,10 @@ public class ClientEventHandler
 			info.setPosition(x, y, z);
 			
 			Vector3d offset = new Vector3d(-Config.CLIENT.getOffsetZ(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetX());
-			ClientEventHandler.cameraDistance = ShoulderSurfingHelper.calcCameraDistance(info, world, info.getMaxZoom(offset.length()));
-			Vector3d scaled = offset.normalize().scale(ClientEventHandler.cameraDistance);
+			double distance = ShoulderSurfingHelper.cameraDistance(info, world, info.getMaxZoom(offset.length()));
+			Vector3d scaled = offset.normalize().scale(distance);
+			
+			ShoulderSurfing.STATE.setCameraDistance(distance);
 			
 			info.move(scaled.x, scaled.y, scaled.z);
 		}
@@ -147,7 +140,7 @@ public class ClientEventHandler
 		final ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
 		final PlayerController controller = Minecraft.getInstance().gameMode;
 		
-		if(ShoulderSurfingHelper.doShoulderSurfing())
+		if(ShoulderSurfing.STATE.doShoulderSurfing())
 		{
 			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : 0;
 			Optional<RayTraceResult> result = ShoulderSurfingHelper.traceFromEyes(info.getEntity(), controller, playerReach, event.getPartialTicks());
@@ -158,7 +151,7 @@ public class ClientEventHandler
 				Matrix4f modelView = event.getMatrixStack().last().pose();
 				Matrix4f projection = event.getProjectionMatrix();
 				
-				ClientEventHandler.projected = ShoulderSurfingHelper.project2D(position, modelView, projection);
+				ShoulderSurfing.STATE.setProjected(ShoulderSurfingHelper.project2D(position, modelView, projection));
 			}
 		}
 	}
