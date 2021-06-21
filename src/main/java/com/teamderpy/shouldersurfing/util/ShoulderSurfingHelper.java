@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.util;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -193,16 +194,25 @@ public class ShoulderSurfingHelper
 		
 		if(player != null)
 		{
-			Item item = player.getUseItem().getItem();
+			List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
+			Item current = player.getUseItem().getItem();
 			
-			if(ItemModelsProperties.getProperty(item, PULL_PROPERTY) != null || ItemModelsProperties.getProperty(item, THROWING_PROPERTY) != null)
+			if(ItemModelsProperties.getProperty(current, PULL_PROPERTY) != null || ItemModelsProperties.getProperty(current, THROWING_PROPERTY) != null)
+			{
+				return true;
+			}
+			else if(overrides.contains(current.getRegistryName().toString()))
 			{
 				return true;
 			}
 			
-			for(ItemStack held : player.getHandSlots())
+			for(ItemStack item : player.getHandSlots())
 			{
-				if(ItemModelsProperties.getProperty(held.getItem(), CHARGED_PROPERTY) != null)
+				if(ItemModelsProperties.getProperty(item.getItem(), CHARGED_PROPERTY) != null)
+				{
+					return true;
+				}
+				else if(overrides.contains(item.getItem().getRegistryName().toString()))
 				{
 					return true;
 				}

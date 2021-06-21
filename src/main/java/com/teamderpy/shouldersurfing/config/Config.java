@@ -1,12 +1,16 @@
 package com.teamderpy.shouldersurfing.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
+import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -57,6 +61,7 @@ public class Config
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final BooleanValue showCrosshairFarther;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairItems;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
@@ -177,6 +182,22 @@ public class Config
 					.comment("Whether or not to show the crosshairs farther than normal")
 					.translation("Show Crosshair Farther")
 					.define("show_crosshair_farther", true);
+			
+			this.adaptiveCrosshairItems = builder
+					.comment("Additional items that trigger the dynamic crosshair when in apative mode")
+					.translation("Adaptive Crosshair Items")
+					.defineList("adaptive_crosshair_items", () ->
+					{
+						List<String> items = new ArrayList<String>();
+						items.add(Items.SNOWBALL.getRegistryName().toString());
+						items.add(Items.EGG.getRegistryName().toString());
+						items.add(Items.EXPERIENCE_BOTTLE.getRegistryName().toString());
+						items.add(Items.ENDER_PEARL.getRegistryName().toString());
+						items.add(Items.SPLASH_POTION.getRegistryName().toString());
+						items.add(Items.FISHING_ROD.getRegistryName().toString());
+						items.add(Items.LINGERING_POTION.getRegistryName().toString());
+						return items;
+					}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			
 			builder.push("visibility");
 			
@@ -401,6 +422,11 @@ public class Config
 		public void setLimitPlayerReach(boolean limitPlayerReach)
 		{
 			Config.set(this.limitPlayerReach, limitPlayerReach);
+		}
+		
+		public List<? extends String> getAdaptiveCrosshairItems()
+		{
+			return this.adaptiveCrosshairItems.get();
 		}
 		
 		public void adjustCameraLeft()
