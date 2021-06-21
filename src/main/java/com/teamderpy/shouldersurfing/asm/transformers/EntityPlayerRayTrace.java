@@ -14,8 +14,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TransformerPositionEyes extends ShoulderTransformer
+public class EntityPlayerRayTrace extends ShoulderTransformer
 {
+	@Override
+	public void transform(Mappings mappings, boolean obf, ClassWriter writer)
+	{
+		// @Override
+		// public RayTraceResult rayTrace(double blockReachDistance, float partialTicks)
+		// {
+		//     return InjectionDelegation.rayTrace(this, blockReachDistance, partialTicks);
+		// }
+		
+		String rayTraceResult = mappings.map("RayTraceResult", obf);
+		String entity = mappings.map("Entity", obf);
+		String rayTrace = mappings.map("Entity#rayTrace", obf);
+		Method method = Method.getMethod(rayTraceResult + " " + rayTrace + " (double, float)", true);
+		GeneratorAdapter adapter = new GeneratorAdapter(ACC_PUBLIC, method, null, null, writer);
+		
+		adapter.loadThis();
+		adapter.loadArg(0);
+		adapter.loadArg(1);
+		adapter.invokeStatic(Type.getType("com/teamderpy/shouldersurfing/asm/InjectionDelegation"), Method.getMethod(rayTraceResult + " rayTrace (" + entity + ", double, float)", true));
+		
+		adapter.returnValue();
+		adapter.endMethod();
+	}
+	
 	@Override
 	public String getClassId()
 	{
@@ -25,29 +49,7 @@ public class TransformerPositionEyes extends ShoulderTransformer
 	@Override
 	public String getMethodId()
 	{
-		return "EntityPlayer#getPositionEyes";
-	}
-	
-	@Override
-	public void transform(Mappings mappings, boolean obf, ClassWriter writer)
-	{
-		String vec3d = mappings.map("Vec3d", obf);
-		String entity = mappings.map("Entity", obf);
-		String eyes = mappings.map("EntityPlayer#getPositionEyes", obf);
-		
-		Method method = Method.getMethod(vec3d + " " + eyes + " (float)", true);
-		GeneratorAdapter adapter = new GeneratorAdapter(ACC_PUBLIC, method, null, null, writer);
-		
-		//return InjectionDelegation.getPositionEyes(this, super.getPositionEyes(partialTicks));
-		
-		adapter.loadThis();
-		adapter.loadThis();
-		adapter.loadArg(0);
-		adapter.invokeConstructor(Type.getType(entity), method);
-		adapter.invokeStatic(Type.getType("com/teamderpy/shouldersurfing/asm/InjectionDelegation"), Method.getMethod(vec3d + " getPositionEyes (" + entity + ", " + vec3d + ")", true));
-		
-		adapter.returnValue();
-		adapter.endMethod();
+		return "EntityPlayer#rayTrace";
 	}
 	
 	@Override

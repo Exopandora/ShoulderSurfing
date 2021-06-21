@@ -1,200 +1,195 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import com.teamderpy.shouldersurfing.ShoulderCamera;
-import com.teamderpy.shouldersurfing.ShoulderSettings;
-import com.teamderpy.shouldersurfing.math.VectorConverter;
-import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
+import java.util.List;
+import java.util.Map.Entry;
+
+import com.google.common.base.Predicates;
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.Perspective;
+import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItemFrame;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * @author Joshua Powers <jsh.powers@yahoo.com>
- * @version 1.0
- * @since 2013-01-14
- * 
- *        Injected code is delegated here
- */
 @SideOnly(Side.CLIENT)
 public final class InjectionDelegation
 {
-	/**
-	 * Called by injected code to modify the camera rotation yaw
-	 */
-	public static float getShoulderRotationYaw()
-	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-		{
-			return ShoulderCamera.SHOULDER_ROTATION_YAW;
-		}
-		
-		return 0F;
-	}
+	// XXX Forge Hooks
+	// public static RayTraceResult rayTraceEyes(EntityLivingBase entity, double length)
+	// public static Vec3d rayTraceEyeHitVec(EntityLivingBase entity, double length)
 	
-	/**
-	 * Called by injected code to modify the camera rotation pitch
-	 */
-	public static float getShoulderRotationPitch()
+	public static void cameraSetup(float x, float y, float z)
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-		{
-			return ShoulderCamera.SHOULDER_ROTATION_PITCH;
-		}
+		final World world = Minecraft.getMinecraft().world;
 		
-		return 0F;
-	}
-	
-	/**
-	 * Called by injected code to modify the camera zoom
-	 */
-	public static float getShoulderZoomMod()
-	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
+		if(ShoulderSurfing.STATE.doShoulderSurfing() && world != null)
 		{
-			return ShoulderCamera.SHOULDER_ZOOM_MOD;
-		}
-		
-		return 1.0F;
-	}
-	
-	/**
-	 * Called by injected code to project a raytrace hit to the screen
-	 */
-	public static void calculateRayTraceProjection()
-	{
-		if(ShoulderRenderBin.rayTraceHit != null)
-		{
-			ShoulderRenderBin.projectedVector = VectorConverter.project2D((float) (ShoulderRenderBin.rayTraceHit.x), (float) (ShoulderRenderBin.rayTraceHit.y), (float) (ShoulderRenderBin.rayTraceHit.z));
+			Vec3d offset = new Vec3d(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
+			double distance = ShoulderSurfingHelper.cameraDistance(world, offset.lengthVector());
+			Vec3d scaled = offset.normalize().scale(distance);
 			
-			ShoulderRenderBin.rayTraceHit = null;
-		}
-	}
-	
-	/**
-	 * Called by injected code to determine whether the camera is too close to
-	 * the player
-	 */
-	public static void verifyReverseBlockDist(double distance)
-	{
-		if(distance < 0.80 && ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA)
-		{
-			ShoulderRenderBin.skipPlayerRender = true;
-		}
-	}
-	
-	/**
-	 * Called by injected code to perform the ray trace
-	 */
-	public static RayTraceResult getRayTraceResult(World world, Vec3d vec1, Vec3d vec2)
-	{
-		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
-		{
-			return world.rayTraceBlocks(vec1, vec2, false, true, false);
-		}
-		
-		return world.rayTraceBlocks(vec1, vec2);
-	}
-	
-	/**
-	 * Called by injected code to get the maximum value for third person
-	 */
-	public static int getMax3ppId()
-	{
-		if(ShoulderSettings.REPLACE_DEFAULT_3PP)
-		{
-			return 2;
-		}
-		
-		return 3;
-	}
-	
-	private static double CAMERA_DISTANCE = 0F;
-	
-	/**
-	 * Called by injected code to get the maximum possible distance for the camera
-	 */
-	public static double checkDistance(double distance, float yaw, double posX, double posY, double posZ, double cameraXoffset, double cameraYoffset, double cameraZoffset)
-	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-		{
-			double result = distance;
-			float radiant = (float) (Math.PI / 180F);
-			float offset = InjectionDelegation.getShoulderRotationYaw();
-			float newYaw = yaw - offset;
+			ShoulderSurfing.STATE.setCameraDistance(distance);
 			
-			double length = MathHelper.cos((-90.0F - offset) * radiant) * distance;
-			double addX = MathHelper.cos(newYaw * radiant) * length;
-			double addZ = MathHelper.sin(newYaw * radiant) * length;
-			
-			for(int i = 0; i < 8; i++)
-			{
-				float offsetX = (float)((i & 1) * 2 - 1);
-				float offsetY = (float)((i >> 1 & 1) * 2 - 1);
-				float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
-				
-				offsetX = offsetX * 0.1F;
-				offsetY = offsetY * 0.1F;
-				offsetZ = offsetZ * 0.1F;
-				
-				RayTraceResult raytraceresult = getRayTraceResult(Minecraft.getMinecraft().world, new Vec3d(posX + offsetX, posY + offsetY, posZ + offsetZ), new Vec3d(posX - (cameraXoffset + addX) + offsetX + offsetZ, posY - cameraYoffset + offsetY, posZ - (cameraZoffset + addZ) + offsetZ));					
-				
-				if(raytraceresult != null)
-				{
-					double newDistance = raytraceresult.hitVec.distanceTo(new Vec3d(posX, posY, posZ));
-					
-					if(newDistance < result)
-					{
-						result = newDistance;
-					}
-				}
-			}
-			
-			return CAMERA_DISTANCE = result;
+			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
 		}
-		
-		return CAMERA_DISTANCE = distance;
-	}
-	
-	public static Vec3d getPositionEyes(Entity entity, Vec3d positionEyes)
-	{
-		if(!ShoulderSettings.IS_DYNAMIC_CROSSHAIR_ENABLED)
+		else
 		{
-			float radiant = (float) (Math.PI / 180F);
-			
-			double length = MathHelper.cos((90F - InjectionDelegation.getShoulderRotationYaw()) * radiant) * CAMERA_DISTANCE;
-			double addX = MathHelper.cos(entity.rotationYaw * radiant) * length;
-			double addZ = MathHelper.sin(entity.rotationYaw * radiant) * length;
-			
-			return positionEyes.add(new Vec3d(addX, 0, addZ));
+			GlStateManager.translate(x, y, z);
 		}
-		
-		return positionEyes;
 	}
 	
 	public static int doRenderCrosshair()
 	{
-		int result = 0;
-		
-		if(!ShoulderSettings.TRACE_TO_HORIZON_LAST_RESORT && Minecraft.getMinecraft().objectMouseOver != null && Minecraft.getMinecraft().objectMouseOver.typeOfHit != Type.MISS)
-		{
-			result = 1;
-		}
-		else if(Minecraft.getMinecraft().gameSettings.thirdPersonView > 0 && !ShoulderSettings.ENABLE_3PP_CROSSHAIR)
-		{
-			result = 1;
-		}
-		else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && !ShoulderSettings.ENABLE_1PP_CROSSHAIR)
-		{
-			result = 1;
-		}
-		
-		return result;
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderSurfing.STATE.isAiming()) ? 0 : 1;
 	}
+	
+	public static RayTraceResult getRayTraceResult(World world, Vec3d vec1, Vec3d vec2)
+	{
+		return world.rayTraceBlocks(vec1, vec2, false, true, false);
+	}
+	
+	public static RayTraceResult rayTrace(Entity entity, double blockReachDistance, float partialTicks)
+	{
+		if(ShoulderSurfing.STATE.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		{
+			Entry<Vec3d, Vec3d> look = ShoulderSurfingHelper.shoulderSurfingLook(entity, partialTicks, blockReachDistance * blockReachDistance);
+			return entity.world.rayTraceBlocks(look.getKey(), look.getValue(), false, false, true);
+		}
+		
+		Vec3d eyes = entity.getPositionEyes(partialTicks);
+		Vec3d look = entity.getLook(partialTicks);
+		Vec3d end = eyes.addVector(look.x * blockReachDistance, look.y * blockReachDistance, look.z * blockReachDistance);
+		
+		return entity.world.rayTraceBlocks(eyes, end, false, false, true);
+	}
+	
+	public static void getMouseOver()
+	{
+		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
+		
+		if(renderView != null && Minecraft.getMinecraft().world != null)
+		{
+			Minecraft.getMinecraft().mcProfiler.startSection("pick");
+			double blockReach = Minecraft.getMinecraft().playerController.getBlockReachDistance();
+			
+			Minecraft.getMinecraft().pointedEntity = null;
+			Minecraft.getMinecraft().objectMouseOver = renderView.rayTrace(blockReach, Minecraft.getMinecraft().getRenderPartialTicks());
+			
+			Vec3d eyes = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
+			boolean extendedReach = false;
+			double entityReach = blockReach;
+			
+			if(Minecraft.getMinecraft().playerController.extendedReach())
+			{
+				entityReach = 6.0D;
+				blockReach = entityReach;
+			}
+			else if(blockReach > 3.0D)
+			{
+				extendedReach = true;
+			}
+			
+			if(Minecraft.getMinecraft().objectMouseOver != null)
+			{
+				entityReach = Minecraft.getMinecraft().objectMouseOver.hitVec.distanceTo(eyes);
+			}
+			
+			Entry<Vec3d, Vec3d> look = ShoulderSurfingHelper.shoulderSurfingLook(renderView, Minecraft.getMinecraft().getRenderPartialTicks(), entityReach);
+			Vec3d viewlook = renderView.getLook(1.0F);
+			
+			Vec3d entityHitVec = null;
+			List<Entity> list = Minecraft.getMinecraft().world.getEntitiesInAABBexcluding(renderView, renderView.getEntityBoundingBox().expand(viewlook.x * blockReach, viewlook.y * blockReach, viewlook.z * blockReach).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, e -> e != null && e.canBeCollidedWith()));
+			Entity pointedEntity = null;
+			double minEntityReach = entityReach;
+			
+			for(Entity entity : list)
+			{
+				AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
+				RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(look.getKey(), look.getValue());
+				
+				if(axisalignedbb.contains(eyes))
+				{
+					if(minEntityReach >= 0.0D)
+					{
+						pointedEntity = entity;
+						entityHitVec = raytraceresult == null ? eyes : raytraceresult.hitVec;
+						minEntityReach = 0.0D;
+					}
+				}
+				else if(raytraceresult != null)
+				{
+					double distanceSq = eyes.distanceTo(raytraceresult.hitVec);
+					
+					if(distanceSq < minEntityReach || minEntityReach == 0.0D)
+					{
+						if(entity.getLowestRidingEntity() == renderView.getLowestRidingEntity() && !entity.canRiderInteract())
+						{
+							if(minEntityReach == 0.0D)
+							{
+								pointedEntity = entity;
+								entityHitVec = raytraceresult.hitVec;
+							}
+						}
+						else
+						{
+							pointedEntity = entity;
+							entityHitVec = raytraceresult.hitVec;
+							minEntityReach = distanceSq;
+						}
+					}
+				}
+			}
+			
+			if(pointedEntity != null && extendedReach && eyes.distanceTo(entityHitVec) > 3.0D)
+			{
+				pointedEntity = null;
+				Minecraft.getMinecraft().objectMouseOver = new RayTraceResult(RayTraceResult.Type.MISS, entityHitVec, null, new BlockPos(entityHitVec));
+			}
+			
+			if(pointedEntity != null && (minEntityReach < entityReach || Minecraft.getMinecraft().objectMouseOver == null))
+			{
+				Minecraft.getMinecraft().objectMouseOver = new RayTraceResult(pointedEntity, entityHitVec);
+				
+				if(pointedEntity instanceof EntityLivingBase || pointedEntity instanceof EntityItemFrame)
+				{
+					Minecraft.getMinecraft().pointedEntity = pointedEntity;
+				}
+			}
+			
+			Minecraft.getMinecraft().mcProfiler.endSection();
+		}
+	}
+	
+//	//MixinGameRenderer
+//	public static EntityRayTraceResult getEntityHitResult(Entity shooter, Vec3d startVec, Vec3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double distanceSq)
+//	{
+//		if(ShoulderSurfingHelper.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+//		{
+//			Pair<Vec3d, Vec3d> look = ShoulderSurfingHelper.calcShoulderSurfingLook(this.mainCamera, shooter, Minecraft.getInstance().getFrameTime(), distanceSq);
+//			return ProjectileHelper.getEntityHitResult(shooter, look.getSecond(), look.getFirst(), boundingBox, filter, distanceSq);
+//		}
+//		
+//		return ProjectileHelper.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
+//	}
+//	
+//	
+//	//MixinShadersRender
+//	public static static void updateActiveRenderInfo(ActiveRenderInfo activeRenderInfo, Minecraft mc, float partialTicks)
+//	{
+//		activeRenderInfo.setup(mc.level, mc.getCameraEntity() == null ? mc.player : mc.getCameraEntity(), !mc.options.getCameraType().isFirstPerson(), mc.options.getCameraType().isMirrored(), partialTicks);
+//		EntityViewRenderEvent.CameraSetup cameraSetup = ForgeHooksClient.onCameraSetup(mc.gameRenderer, activeRenderInfo, partialTicks);
+//		activeRenderInfo.setAnglesInternal(cameraSetup.getYaw(), cameraSetup.getPitch());
+//	}
 }

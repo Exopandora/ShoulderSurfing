@@ -1,6 +1,7 @@
 package com.teamderpy.shouldersurfing.gui;
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -14,6 +15,6 @@ public class GuiShoulderSurfingConfig extends GuiConfig
 {
 	public GuiShoulderSurfingConfig(GuiScreen parent)
 	{
-		super(parent, new ConfigElement(ShoulderSurfing.getInstance().getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), ShoulderSurfing.MODID, false, false, "Shoulder Surfing");
+		super(parent, new ConfigElement(Config.CLIENT.getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), ShoulderSurfing.MODID, false, false, "Shoulder Surfing");
 	}
 }

@@ -14,15 +14,11 @@ public class ShoulderPlugin implements IFMLLoadingPlugin
 	{
 		return new String[]
 		{
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerCameraDistanceCheck",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerCameraOrientation",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerDistanceCheck",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerPositionEyes",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRayTrace",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRayTraceProjection",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRenderAttackIndicator",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerRenderCrosshair",
-			"com.teamderpy.shouldersurfing.asm.transformers.TransformerThirdPersonMode"
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityPlayerRayTrace",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererOrientCamera",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererRayTrace",
+			"com.teamderpy.shouldersurfing.asm.transformers.GuiIngameRenderAttackIndicator"
 		};
 	}
 	

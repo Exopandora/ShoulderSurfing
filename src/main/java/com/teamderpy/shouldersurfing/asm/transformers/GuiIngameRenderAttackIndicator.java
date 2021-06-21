@@ -9,12 +9,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
+import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TransformerRenderCrosshair extends ATransformerAttackIndicator
+public class GuiIngameRenderAttackIndicator extends ShoulderTransformer
 {
 	@Override
 	protected InsnList searchList(Mappings mappings, boolean obf)
@@ -27,8 +28,24 @@ public class TransformerRenderCrosshair extends ATransformerAttackIndicator
 	@Override
 	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
+		// if(gamesettings.thirdPersonView == 0)
+		// ->
+		// if(gamesettings.thirdPersonView == InjectionDelegation.doRenderCrosshair())
+		
 		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "doRenderCrosshair", "()I", false);
 		method.instructions.set(method.instructions.get(offset), instruction);
+	}
+	
+	@Override
+	public String getClassId()
+	{
+		return "GuiIngame";
+	}
+	
+	@Override
+	public String getMethodId()
+	{
+		return "GuiIngame#renderAttackIndicator";
 	}
 	
 	@Override

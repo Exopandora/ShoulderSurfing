@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class ShoulderTransformer implements IClassTransformer
 {
-	private static final Mappings MAPPINGS = Mappings.load("assets/shouldersurfing/mappings/mappings.json");
+	private static final Mappings MAPPINGS = Mappings.load("mappings.json");
 	private static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	
 	@Override
@@ -38,6 +38,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 			
 			if(this.hasMethodTransformer())
 			{
+				LOGGER.info("Attempting to transform method for class " + name + " -> " + transformedName);
 				this.transformMethod(MAPPINGS, obf, classNode);
 			}
 			
@@ -46,6 +47,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 			
 			if(this.hasClassTransformer())
 			{
+				LOGGER.info("Attempting to transform class " + name + " -> " + transformedName);
 				this.transform(MAPPINGS, obf, writer);
 			}
 			
@@ -57,20 +59,27 @@ public abstract class ShoulderTransformer implements IClassTransformer
 
 	private void transformMethod(Mappings mappings, boolean obf, ClassNode classNode)
 	{
+		String methodId = this.getMethodId();
+		String methodName = mappings.map(methodId, obf);
+		String methodDesc = mappings.getDesc(methodId, obf);
+		
 		for(Object m : classNode.methods)
 		{
 			MethodNode method = (MethodNode) m;
 			
-			if(method.name.equals(mappings.map(this.getMethodId(), obf)) && method.desc.equals(mappings.getDesc(this.getMethodId(), obf)))
+			if(method.name.equals(methodName) && method.desc.equals(methodDesc))
 			{
+				String methodDeobf = mappings.map(methodId, false) + mappings.getDesc(methodId, false);
+				String methodObf = method.name + method.desc;
 				int offset = ShoulderTransformer.locateOffset(method.instructions, this.searchList(mappings, obf), this.ignoreLabels(), this.ignoreLineNumber());
 				
 				if(offset == -1)
 				{
-					LOGGER.error(this.getClass().getSimpleName() + ": Failed to locate offset in " + method.name + method.desc + " for " + this.getMethodId());
+					LOGGER.info(this.getClass().getSimpleName() + ": Failed to locate offset for method " + methodDeobf + " -> " + methodObf);
 				}
 				else
 				{
+					LOGGER.info(this.getClass().getSimpleName() + ": Found offset " + offset + " for method " + methodDeobf + " -> " + methodObf);
 					this.transform(mappings, obf, method, offset);
 				}
 			}
