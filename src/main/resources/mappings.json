@@ -142,6 +142,19 @@
                 "1.9.4": "aht",
                 "1.9": "aht"
             }
+        },
+        "AxisAlignedBB": {
+            "name": "net/minecraft/util/math/AxisAlignedBB",
+            "obf": {
+                "1.12.2": "bhb",
+                "1.12.1": "bhb",
+                "1.12": "bgz",
+                "1.11.2": "bdt",
+                "1.11": "bdr",
+                "1.10.2": "bby",
+                "1.9.4": "bbf",
+                "1.9": "bbh"
+            }
         }
     },
     "methods": {
@@ -255,6 +268,34 @@
                 "1.10.2": "getRayTraceResult",
                 "1.9.4": "getRayTraceResult",
                 "1.9": "getRayTraceResult"
+            }
+        },
+        "Vec3d#addVector": {
+            "name": "addVector",
+            "desc": "(DDD)L$Vec3d;",
+            "obf": {
+                "1.12.2": "b",
+                "1.12.1": "b",
+                "1.12": "b",
+                "1.11.2": "b",
+                "1.11": "b",
+                "1.10.2": "b",
+                "1.9.4": "b",
+                "1.9": "b"
+            }
+        },
+        "AxisAlignedBB#calculateIntercept": {
+            "name": "calculateIntercept",
+            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": {
+                "1.12.2": "b",
+                "1.12.1": "b",
+                "1.12": "b",
+                "1.11.2": "b",
+                "1.11": "b",
+                "1.10.2": "b",
+                "1.9.4": "a",
+                "1.9": "a"
             }
         }
     },

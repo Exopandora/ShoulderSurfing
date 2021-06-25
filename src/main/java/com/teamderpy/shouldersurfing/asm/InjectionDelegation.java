@@ -1,9 +1,7 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import java.util.List;
 import java.util.Map.Entry;
 
-import com.google.common.base.Predicates;
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
@@ -12,11 +10,6 @@ import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItemFrame;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -75,121 +68,8 @@ public final class InjectionDelegation
 		return entity.world.rayTraceBlocks(eyes, end, false, false, true);
 	}
 	
-	public static void getMouseOver()
+	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(double entityReach)
 	{
-		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
-		
-		if(renderView != null && Minecraft.getMinecraft().world != null)
-		{
-			Minecraft.getMinecraft().mcProfiler.startSection("pick");
-			double blockReach = Minecraft.getMinecraft().playerController.getBlockReachDistance();
-			
-			Minecraft.getMinecraft().pointedEntity = null;
-			Minecraft.getMinecraft().objectMouseOver = renderView.rayTrace(blockReach, Minecraft.getMinecraft().getRenderPartialTicks());
-			
-			Vec3d eyes = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
-			boolean extendedReach = false;
-			double entityReach = blockReach;
-			
-			if(Minecraft.getMinecraft().playerController.extendedReach())
-			{
-				entityReach = 6.0D;
-				blockReach = entityReach;
-			}
-			else if(blockReach > 3.0D)
-			{
-				extendedReach = true;
-			}
-			
-			if(Minecraft.getMinecraft().objectMouseOver != null)
-			{
-				entityReach = Minecraft.getMinecraft().objectMouseOver.hitVec.distanceTo(eyes);
-			}
-			
-			Entry<Vec3d, Vec3d> look = ShoulderSurfingHelper.shoulderSurfingLook(renderView, Minecraft.getMinecraft().getRenderPartialTicks(), entityReach);
-			Vec3d viewlook = renderView.getLook(1.0F);
-			
-			Vec3d entityHitVec = null;
-			List<Entity> list = Minecraft.getMinecraft().world.getEntitiesInAABBexcluding(renderView, renderView.getEntityBoundingBox().expand(viewlook.x * blockReach, viewlook.y * blockReach, viewlook.z * blockReach).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, e -> e != null && e.canBeCollidedWith()));
-			Entity pointedEntity = null;
-			double minEntityReach = entityReach;
-			
-			for(Entity entity : list)
-			{
-				AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
-				RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(look.getKey(), look.getValue());
-				
-				if(axisalignedbb.contains(eyes))
-				{
-					if(minEntityReach >= 0.0D)
-					{
-						pointedEntity = entity;
-						entityHitVec = raytraceresult == null ? eyes : raytraceresult.hitVec;
-						minEntityReach = 0.0D;
-					}
-				}
-				else if(raytraceresult != null)
-				{
-					double distanceSq = eyes.distanceTo(raytraceresult.hitVec);
-					
-					if(distanceSq < minEntityReach || minEntityReach == 0.0D)
-					{
-						if(entity.getLowestRidingEntity() == renderView.getLowestRidingEntity() && !entity.canRiderInteract())
-						{
-							if(minEntityReach == 0.0D)
-							{
-								pointedEntity = entity;
-								entityHitVec = raytraceresult.hitVec;
-							}
-						}
-						else
-						{
-							pointedEntity = entity;
-							entityHitVec = raytraceresult.hitVec;
-							minEntityReach = distanceSq;
-						}
-					}
-				}
-			}
-			
-			if(pointedEntity != null && extendedReach && eyes.distanceTo(entityHitVec) > 3.0D)
-			{
-				pointedEntity = null;
-				Minecraft.getMinecraft().objectMouseOver = new RayTraceResult(RayTraceResult.Type.MISS, entityHitVec, null, new BlockPos(entityHitVec));
-			}
-			
-			if(pointedEntity != null && (minEntityReach < entityReach || Minecraft.getMinecraft().objectMouseOver == null))
-			{
-				Minecraft.getMinecraft().objectMouseOver = new RayTraceResult(pointedEntity, entityHitVec);
-				
-				if(pointedEntity instanceof EntityLivingBase || pointedEntity instanceof EntityItemFrame)
-				{
-					Minecraft.getMinecraft().pointedEntity = pointedEntity;
-				}
-			}
-			
-			Minecraft.getMinecraft().mcProfiler.endSection();
-		}
+		return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderPartialTicks(), entityReach);
 	}
-	
-//	//MixinGameRenderer
-//	public static EntityRayTraceResult getEntityHitResult(Entity shooter, Vec3d startVec, Vec3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double distanceSq)
-//	{
-//		if(ShoulderSurfingHelper.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
-//		{
-//			Pair<Vec3d, Vec3d> look = ShoulderSurfingHelper.calcShoulderSurfingLook(this.mainCamera, shooter, Minecraft.getInstance().getFrameTime(), distanceSq);
-//			return ProjectileHelper.getEntityHitResult(shooter, look.getSecond(), look.getFirst(), boundingBox, filter, distanceSq);
-//		}
-//		
-//		return ProjectileHelper.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
-//	}
-//	
-//	
-//	//MixinShadersRender
-//	public static static void updateActiveRenderInfo(ActiveRenderInfo activeRenderInfo, Minecraft mc, float partialTicks)
-//	{
-//		activeRenderInfo.setup(mc.level, mc.getCameraEntity() == null ? mc.player : mc.getCameraEntity(), !mc.options.getCameraType().isFirstPerson(), mc.options.getCameraType().isMirrored(), partialTicks);
-//		EntityViewRenderEvent.CameraSetup cameraSetup = ForgeHooksClient.onCameraSetup(mc.gameRenderer, activeRenderInfo, partialTicks);
-//		activeRenderInfo.setAnglesInternal(cameraSetup.getYaw(), cameraSetup.getPitch());
-//	}
 }
