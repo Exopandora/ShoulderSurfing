@@ -61,7 +61,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 	{
 		String methodId = this.getMethodId();
 		String methodName = mappings.map(methodId, obf);
-		String methodDesc = mappings.getDesc(methodId, obf);
+		String methodDesc = mappings.desc(methodId, obf);
 		
 		for(Object m : classNode.methods)
 		{
@@ -69,7 +69,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 			
 			if(method.name.equals(methodName) && method.desc.equals(methodDesc))
 			{
-				String methodDeobf = mappings.map(methodId, false) + mappings.getDesc(methodId, false);
+				String methodDeobf = mappings.map(methodId, false) + mappings.desc(methodId, false);
 				String methodObf = method.name + method.desc;
 				int offset = ShoulderTransformer.locateOffset(method.instructions, this.searchList(mappings, obf), this.ignoreLabels(), this.ignoreLineNumber());
 				

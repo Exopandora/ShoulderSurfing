@@ -20,7 +20,7 @@ public class EntityRendererRayTrace extends ShoulderTransformer
 	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("WorldClient", obf), mappings.map("WorldClient#rayTraceBlocks", obf), mappings.getDesc("WorldClient#rayTraceBlocks", obf), false));
+		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("WorldClient", obf), mappings.map("WorldClient#rayTraceBlocks", obf), mappings.desc("WorldClient#rayTraceBlocks", obf), false));
 		return searchList;
 	}
 	
@@ -31,7 +31,7 @@ public class EntityRendererRayTrace extends ShoulderTransformer
 		// -> 
 		// InjectionDelegation.getRayTraceResult(this.mc.world, Vec3d, Vec3d);
 		
-		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getRayTraceResult", mappings.getDesc("InjectionDelegation#getRayTraceResult", obf), false);
+		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getRayTraceResult", mappings.desc("InjectionDelegation#getRayTraceResult", obf), false);
 		method.instructions.set(method.instructions.get(offset), instruction);
 	}
 	

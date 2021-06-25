@@ -25,13 +25,13 @@ public class EntityRendererOrientCamera extends ShoulderTransformer
 	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		searchList.add(new MethodInsnNode(INVOKESTATIC, mappings.map("GlStateManager", obf), mappings.map("GlStateManager#rotate", obf), mappings.getDesc("GlStateManager#rotate", obf), false));
+		searchList.add(new MethodInsnNode(INVOKESTATIC, mappings.map("GlStateManager", obf), mappings.map("GlStateManager#rotate", obf), mappings.desc("GlStateManager#rotate", obf), false));
 		searchList.add(new InsnNode(FCONST_0));
 		searchList.add(new InsnNode(FCONST_0));
 		searchList.add(new VarInsnNode(DLOAD, 10));
 		searchList.add(new InsnNode(DNEG));
 		searchList.add(new InsnNode(D2F));
-		searchList.add(new MethodInsnNode(INVOKESTATIC, mappings.map("GlStateManager", obf), mappings.map("GlStateManager#translate", obf), mappings.getDesc("GlStateManager#translate", obf), false));
+		searchList.add(new MethodInsnNode(INVOKESTATIC, mappings.map("GlStateManager", obf), mappings.map("GlStateManager#translate", obf), mappings.desc("GlStateManager#translate", obf), false));
 		return searchList;
 	}
 	

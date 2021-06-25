@@ -42,7 +42,7 @@ public class Mappings
 	}
 	
 	@Nullable
-	public String getDesc(String name, boolean obf)
+	public String desc(String name, boolean obf)
 	{
 		ClassMapping mapping = this.mappings.get(name);
 		

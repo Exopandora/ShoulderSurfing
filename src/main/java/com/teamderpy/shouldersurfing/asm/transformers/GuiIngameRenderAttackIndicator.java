@@ -21,7 +21,7 @@ public class GuiIngameRenderAttackIndicator extends ShoulderTransformer
 	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("GameSettings", obf), mappings.map("GameSettings#thirdPersonView", obf), mappings.getDesc("GameSettings#thirdPersonView", obf)));
+		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("GameSettings", obf), mappings.map("GameSettings#thirdPersonView", obf), mappings.desc("GameSettings#thirdPersonView", obf)));
 		return searchList;
 	}
 	
