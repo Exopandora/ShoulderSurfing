@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.asm;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
@@ -68,8 +69,18 @@ public final class InjectionDelegation
 		return entity.world.rayTraceBlocks(eyes, end, false, false, true);
 	}
 	
-	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(double entityReach)
+	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(double blockReach)
 	{
-		return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderPartialTicks(), entityReach);
+		if(ShoulderSurfing.STATE.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		{
+			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderPartialTicks(), blockReach);
+		}
+		
+		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
+		Vec3d look = renderView.getLook(1.0F);
+        Vec3d start = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
+        Vec3d end = start.addVector(look.x * blockReach, look.y * blockReach, look.z * blockReach);
+        
+        return new SimpleEntry<Vec3d, Vec3d>(start, end);
 	}
 }
