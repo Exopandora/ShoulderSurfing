@@ -63,7 +63,7 @@ public class ShoulderSurfingHelper
 		float x = vec.x() * Minecraft.getInstance().getWindow().getScreenWidth();
 		float y = vec.y() * Minecraft.getInstance().getWindow().getScreenHeight();
 		
-		if(Float.isInfinite(x) || Float.isInfinite(y))
+		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y))
 		{
 			return null;
 		}
