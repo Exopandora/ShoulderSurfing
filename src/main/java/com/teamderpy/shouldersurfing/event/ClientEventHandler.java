@@ -1,8 +1,6 @@
 package com.teamderpy.shouldersurfing.event;
 
 
-import java.util.Optional;
-
 import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
@@ -142,17 +140,13 @@ public class ClientEventHandler
 		
 		if(ShoulderSurfing.STATE.doShoulderSurfing())
 		{
-			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : 0;
-			Optional<RayTraceResult> result = ShoulderSurfingHelper.traceFromEyes(info.getEntity(), controller, playerReach, event.getPartialTicks());
+			double playerReach = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
+			RayTraceResult result = ShoulderSurfingHelper.traceFromEyes(info.getEntity(), controller, playerReach, event.getPartialTicks());
+			Vector3d position = result.getLocation().subtract(info.getPosition());
+			Matrix4f modelView = event.getMatrixStack().last().pose();
+			Matrix4f projection = event.getProjectionMatrix();
 			
-			if(result.isPresent())
-			{
-				Vector3d position = result.get().getLocation().subtract(info.getPosition());
-				Matrix4f modelView = event.getMatrixStack().last().pose();
-				Matrix4f projection = event.getProjectionMatrix();
-				
-				ShoulderSurfing.STATE.setProjected(ShoulderSurfingHelper.project2D(position, modelView, projection));
-			}
+			ShoulderSurfing.STATE.setProjected(ShoulderSurfingHelper.project2D(position, modelView, projection));
 		}
 	}
 }

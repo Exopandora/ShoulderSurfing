@@ -24,7 +24,6 @@ import net.minecraftforge.fml.network.FMLNetworkConstants;
 public class ShoulderSurfing
 {
 	public static final String MODID = "shouldersurfing";
-	public static final float RAYTRACE_DISTANCE = 400.0F;
 	public static final ShoulderState STATE = new ShoulderState();
 	
 	private static boolean shaders;

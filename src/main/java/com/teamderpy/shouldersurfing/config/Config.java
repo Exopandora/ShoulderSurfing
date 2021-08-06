@@ -60,7 +60,8 @@ public class Config
 		private final ConfigValue<Perspective> defaultPerspective;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
-		private final BooleanValue showCrosshairFarther;
+		private final DoubleValue customRaytraceDistance;
+		private final BooleanValue useCustomRaytraceDistance;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairItems;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
@@ -178,10 +179,15 @@ public class Config
 					.translation("Crosshair type")
 					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 			
-			this.showCrosshairFarther = builder
-					.comment("Whether or not to show the crosshairs farther than normal")
-					.translation("Show Crosshair Farther")
-					.define("show_crosshair_farther", true);
+			this.customRaytraceDistance = builder
+					.comment("The raytrace distance used for the dynamic crosshair")
+					.translation("Custom Raytrace Distance")
+					.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
+			
+			this.useCustomRaytraceDistance = builder
+					.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair")
+					.translation("Use Custom Raytrace Distance")
+					.define("use_custom_raytrace_distance", true);
 			
 			this.adaptiveCrosshairItems = builder
 					.comment("Additional items that trigger the dynamic crosshair when in apative mode")
@@ -344,14 +350,14 @@ public class Config
 			Config.set(this.crosshairVisibility.get(perspective), visibility);
 		}
 		
-		public boolean showCrosshairFarther()
+		public boolean useCustomRaytraceDistance()
 		{
-			return this.showCrosshairFarther.get();
+			return this.useCustomRaytraceDistance.get();
 		}
 		
-		public void setShowCrosshairFarther(boolean enabled)
+		public void setUseCustomRaytraceDistance(boolean useCustomRaytraceDistance)
 		{
-			Config.set(this.showCrosshairFarther, enabled);
+			Config.set(this.useCustomRaytraceDistance, useCustomRaytraceDistance);
 		}
 		
 		public boolean keepCameraOutOfHead()
@@ -412,6 +418,16 @@ public class Config
 		public void setCameraStepSize(double cameraStepSize)
 		{
 			Config.set(this.cameraStepSize, cameraStepSize);
+		}
+		
+		public double getCustomRaytraceDistance()
+		{
+			return this.customRaytraceDistance.get();
+		}
+		
+		public void setCustomRaytraceDistance(double raytraceDistance)
+		{
+			Config.set(this.customRaytraceDistance, raytraceDistance);
 		}
 		
 		public boolean limitPlayerReach()

@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.util;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -99,24 +98,19 @@ public class ShoulderSurfingHelper
 		return distance;
 	}
 	
-	public static Optional<RayTraceResult> traceFromEyes(Entity renderView, PlayerController playerController, double playerReachOverride, final float partialTicks)
+	public static RayTraceResult traceFromEyes(Entity renderView, PlayerController playerController, double playerReachOverride, final float partialTicks)
 	{
 		double blockReach = Math.max(playerController.getPickRange(), playerReachOverride);
 		
 		RayTraceResult blockTrace = renderView.pick(blockReach, partialTicks, false);
 		Vector3d eyes = renderView.getEyePosition(partialTicks);
 		
-		boolean extendedReach = false;
 		double entityReach = blockReach;
 		
 		if(playerController.hasFarPickRange())
 		{
 			entityReach = Math.max(6.0D, playerReachOverride);
 			blockReach = entityReach;
-		}
-		else if(blockReach > 3.0D)
-		{
-			extendedReach = true;
 		}
 		
 		entityReach = entityReach * entityReach;
@@ -136,17 +130,13 @@ public class ShoulderSurfingHelper
 		{
 			double distanceSq = eyes.distanceToSqr(entityTrace.getLocation());
 			
-			if(extendedReach && distanceSq > 9.0D)
+			if(distanceSq < entityReach || blockTrace == null)
 			{
-				return Optional.empty();
-			}
-			else if(distanceSq < entityReach || blockTrace == null)
-			{
-				return Optional.of(entityTrace);
+				return entityTrace;
 			}
 		}
 		
-		return Optional.of(blockTrace);
+		return blockTrace;
 	}
 	
 	public static Pair<Vector3d, Vector3d> shoulderSurfingLook(ActiveRenderInfo info, Entity entity, float partialTicks, double distanceSq)
