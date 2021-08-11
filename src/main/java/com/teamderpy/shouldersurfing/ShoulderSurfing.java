@@ -5,12 +5,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
-import com.teamderpy.shouldersurfing.util.ShoulderState;
 
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -24,17 +25,13 @@ import net.minecraftforge.fml.network.FMLNetworkConstants;
 public class ShoulderSurfing
 {
 	public static final String MODID = "shouldersurfing";
-	public static final ShoulderState STATE = new ShoulderState();
-	
-	private static boolean shaders;
 	
 	public ShoulderSurfing()
 	{
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(this::clientSetup);
-		ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
-		modLoadingContext.registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.setupClientConfig());
+		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (remote, isServer) -> true));
 		modEventBus.register(Config.class);
 	}
 	
@@ -57,29 +54,10 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::postRenderGameOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::cameraSetup);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderWorldLast);
-		
-		ShoulderSurfing.shaders = isClassLoaded("net.optifine.shaders.Shaders");
 	}
 	
-	public static float getShadersResMul()
+	private void setupClientConfig()
 	{
-		if(ShoulderSurfing.shaders)
-		{
-			return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
-		}
-		
-		return 1.0F;
-	}
-	
-	private static boolean isClassLoaded(String className)
-	{
-		try
-		{
-			return Class.forName(className) != null;
-		}
-		catch(ClassNotFoundException e)
-		{
-			return false;
-		}
+		ModLoadingContext.get().registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
 	}
 }

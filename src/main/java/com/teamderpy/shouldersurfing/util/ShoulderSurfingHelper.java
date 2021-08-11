@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
@@ -141,7 +140,7 @@ public class ShoulderSurfingHelper
 	
 	public static Pair<Vector3d, Vector3d> shoulderSurfingLook(ActiveRenderInfo info, Entity entity, float partialTicks, double distanceSq)
 	{
-		Vector3d cameraOffset = ShoulderSurfingHelper.cameraOffset(info, ShoulderSurfing.STATE.getCameraDistance());
+		Vector3d cameraOffset = ShoulderSurfingHelper.cameraOffset(info, ShoulderState.getCameraDistance());
 		Vector3d offset = ShoulderSurfingHelper.rayTraceHeadOffset(info, cameraOffset);
 		Vector3d start = entity.getEyePosition(partialTicks).add(cameraOffset);
 		Vector3d look = entity.getViewVector(partialTicks);
@@ -215,6 +214,16 @@ public class ShoulderSurfingHelper
 	public static void setPerspective(Perspective perspective)
 	{
 		Minecraft.getInstance().options.setCameraType(perspective.getPointOfView());
-		ShoulderSurfing.STATE.setEnabled(Perspective.SHOULDER_SURFING.equals(perspective));
+		ShoulderState.setEnabled(Perspective.SHOULDER_SURFING.equals(perspective));
+	}
+	
+	public static float getShadersResMul()
+	{
+		if(ShoulderState.doShaders())
+		{
+			return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
+		}
+		
+		return 1.0F;
 	}
 }

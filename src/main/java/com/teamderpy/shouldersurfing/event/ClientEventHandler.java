@@ -1,10 +1,10 @@
 package com.teamderpy.shouldersurfing.event;
 
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.MainWindow;
@@ -37,17 +37,17 @@ public class ClientEventHandler
 		{
 			if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
 			{
-				ShoulderSurfing.STATE.setSwitchPerspective(false);
+				ShoulderState.setSwitchPerspective(false);
 			}
 			
-			ShoulderSurfing.STATE.setAiming(ShoulderSurfingHelper.isHoldingSpecialItem());
+			ShoulderState.setAiming(ShoulderSurfingHelper.isHoldingSpecialItem());
 			
-			if(ShoulderSurfing.STATE.isAiming() && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfing.STATE.doShoulderSurfing())
+			if(ShoulderState.isAiming() && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderState.doShoulderSurfing())
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
-				ShoulderSurfing.STATE.setSwitchPerspective(true);
+				ShoulderState.setSwitchPerspective(true);
 			}
-			else if(!ShoulderSurfing.STATE.isAiming() && Perspective.FIRST_PERSON.equals(Perspective.current()) && ShoulderSurfing.STATE.doSwitchPerspective())
+			else if(!ShoulderState.isAiming() && Perspective.FIRST_PERSON.equals(Perspective.current()) && ShoulderState.doSwitchPerspective())
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 			}
@@ -59,7 +59,7 @@ public class ClientEventHandler
 	{
 		if(event.isCancelable() && event.getPlayer().equals(Minecraft.getInstance().player) && Minecraft.getInstance().screen == null)
 		{
-			if(ShoulderSurfing.STATE.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderSurfing.STATE.doShoulderSurfing())
+			if(ShoulderState.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderState.doShoulderSurfing())
 			{
 				event.setCanceled(true);
 			}
@@ -71,29 +71,29 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(ShoulderSurfing.STATE.getProjected() != null)
+			if(ShoulderState.getProjected() != null)
 			{
 				final MainWindow mainWindow = Minecraft.getInstance().getWindow();
-				float scale = mainWindow.calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode()) * ShoulderSurfing.getShadersResMul();
+				float scale = mainWindow.calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode()) * ShoulderSurfingHelper.getShadersResMul();
 				
 				Vec2f window = new Vec2f(mainWindow.getGuiScaledWidth(), mainWindow.getGuiScaledHeight());
 				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
-				Vec2f projectedOffset = ShoulderSurfing.STATE.getProjected().subtract(center).divide(scale);
-				Vec2f lastTranslation = ShoulderSurfing.STATE.getLastTranslation();
+				Vec2f projectedOffset = ShoulderState.getProjected().subtract(center).divide(scale);
+				Vec2f lastTranslation = ShoulderState.getLastTranslation();
 				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(event.getPartialTicks());
 				
-				ShoulderSurfing.STATE.setTranslation(ShoulderSurfing.STATE.getLastTranslation().add(interpolated));
+				ShoulderState.setTranslation(ShoulderState.getLastTranslation().add(interpolated));
 			}
 			
-			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfing.STATE.doShoulderSurfing())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
 			{
 				event.getMatrixStack().pushPose();
-				event.getMatrixStack().last().pose().translate(new Vector3f(ShoulderSurfing.STATE.getTranslation().getX(), -ShoulderSurfing.STATE.getTranslation().getY(), 0F));
-				ShoulderSurfing.STATE.setLastTranslation(ShoulderSurfing.STATE.getTranslation());
+				event.getMatrixStack().last().pose().translate(new Vector3f(ShoulderState.getTranslation().getX(), -ShoulderState.getTranslation().getY(), 0F));
+				ShoulderState.setLastTranslation(ShoulderState.getTranslation());
 			}
 			else
 			{
-				ShoulderSurfing.STATE.setLastTranslation(Vec2f.ZERO);
+				ShoulderState.setLastTranslation(Vec2f.ZERO);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfing.STATE.doShoulderSurfing())
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
 		{
 			event.getMatrixStack().popPose();
 		}
@@ -112,7 +112,7 @@ public class ClientEventHandler
 	{
 		final World world = Minecraft.getInstance().level;
 		
-		if(ShoulderSurfing.STATE.doShoulderSurfing() && world != null)
+		if(ShoulderState.doShoulderSurfing() && world != null)
 		{
 			final ActiveRenderInfo info = event.getInfo();
 			
@@ -126,7 +126,7 @@ public class ClientEventHandler
 			double distance = ShoulderSurfingHelper.cameraDistance(info, world, info.getMaxZoom(offset.length()));
 			Vector3d scaled = offset.normalize().scale(distance);
 			
-			ShoulderSurfing.STATE.setCameraDistance(distance);
+			ShoulderState.setCameraDistance(distance);
 			
 			info.move(scaled.x, scaled.y, scaled.z);
 		}
@@ -138,7 +138,7 @@ public class ClientEventHandler
 		final ActiveRenderInfo info = Minecraft.getInstance().gameRenderer.getMainCamera();
 		final PlayerController controller = Minecraft.getInstance().gameMode;
 		
-		if(ShoulderSurfing.STATE.doShoulderSurfing())
+		if(ShoulderState.doShoulderSurfing())
 		{
 			double playerReach = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
 			RayTraceResult result = ShoulderSurfingHelper.traceFromEyes(info.getEntity(), controller, playerReach, event.getPartialTicks());
@@ -146,7 +146,7 @@ public class ClientEventHandler
 			Matrix4f modelView = event.getMatrixStack().last().pose();
 			Matrix4f projection = event.getProjectionMatrix();
 			
-			ShoulderSurfing.STATE.setProjected(ShoulderSurfingHelper.project2D(position, modelView, projection));
+			ShoulderState.setProjected(ShoulderSurfingHelper.project2D(position, modelView, projection));
 		}
 	}
 }

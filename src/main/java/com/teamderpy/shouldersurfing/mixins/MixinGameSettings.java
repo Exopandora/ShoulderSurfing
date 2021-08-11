@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.settings.PointOfView;
@@ -24,7 +24,7 @@ public abstract class MixinGameSettings
 	{
 		if(cameraType != this.cameraType)
 		{
-			ShoulderSurfing.STATE.setEnabled(false);
+			ShoulderState.setEnabled(false);
 		}
 		
 		this.cameraType = cameraType;

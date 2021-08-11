@@ -4,9 +4,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 
 import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.settings.PointOfView;
@@ -25,6 +25,6 @@ public class MixinIngameGui
 	)
 	private boolean doRenderCrosshair(PointOfView pointOfView)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderSurfing.STATE.isAiming());
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderState.isAiming());
 	}
 }

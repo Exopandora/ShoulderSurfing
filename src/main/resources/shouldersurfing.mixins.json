@@ -3,7 +3,7 @@
 	"package": "com.teamderpy.shouldersurfing.mixins",
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "shouldersurfing.refmap.json",
-	"mixins": [
+	"client": [
 		"MixinGameRenderer",
 		"MixinGameSettings",
 		"MixinIngameGui",

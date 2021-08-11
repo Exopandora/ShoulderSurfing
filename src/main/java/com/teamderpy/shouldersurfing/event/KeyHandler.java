@@ -2,9 +2,9 @@ package com.teamderpy.shouldersurfing.event;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
@@ -38,7 +38,7 @@ public class KeyHandler
 		{
 			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isDown())
 			{
-				if(ShoulderSurfing.STATE.doShoulderSurfing())
+				if(ShoulderState.doShoulderSurfing())
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				}
@@ -48,7 +48,7 @@ public class KeyHandler
 				}
 			}
 			
-			if(ShoulderSurfing.STATE.doShoulderSurfing())
+			if(ShoulderState.doShoulderSurfing())
 			{
 				if(KEYBIND_CAMERA_LEFT.isDown())
 				{

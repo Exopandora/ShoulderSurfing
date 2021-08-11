@@ -3,8 +3,8 @@ package com.teamderpy.shouldersurfing.mixins;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.mojang.datafixers.util.Pair;
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
@@ -32,7 +32,7 @@ public abstract class MixinPlayerEntity extends Entity
 	{
 		final ActiveRenderInfo info = Minecraft.getInstance().getEntityRenderDispatcher().camera;
 		
-		if(ShoulderSurfing.STATE.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && info != null)
+		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && info != null)
 		{
 			Pair<Vector3d, Vector3d> look = ShoulderSurfingHelper.shoulderSurfingLook(info, this, partialTicks, distance * distance);
 			FluidMode fluidMode = stopOnFluid ? FluidMode.ANY : FluidMode.NONE;
