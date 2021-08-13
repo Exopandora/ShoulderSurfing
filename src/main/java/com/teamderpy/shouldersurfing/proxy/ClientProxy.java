@@ -1,11 +1,11 @@
 package com.teamderpy.shouldersurfing.proxy;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -48,11 +48,11 @@ public class ClientProxy extends CommonProxy
 	{
 		if(isClassLoaded("shadersmod.client.Shaders"))
 		{
-			ShoulderSurfing.shaders = EnumShaderCompatibility.OLD;
+			ShoulderState.setShaderType(EnumShaderCompatibility.OLD);
 		}
 		else if(isClassLoaded("net.optifine.shaders.Shaders"))
 		{
-			ShoulderSurfing.shaders = EnumShaderCompatibility.NEW;
+			ShoulderState.setShaderType(EnumShaderCompatibility.NEW);
 		}
 	}
 	

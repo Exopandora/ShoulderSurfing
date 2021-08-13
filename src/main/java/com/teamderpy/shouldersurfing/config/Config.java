@@ -45,7 +45,8 @@ public class Config
 		private ConfigValue<Perspective> defaultPerspective;
 		
 		private ConfigValue<CrosshairType> crosshairType;
-		private BooleanValue showCrosshairFarther;
+		private DoubleValue customRaytraceDistance;
+		private BooleanValue useCustomRaytraceDistance;
 		private ConfigValue<List<String>> adaptiveCrosshairItems;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
@@ -188,14 +189,14 @@ public class Config
 			Config.set(this.crosshairVisibility.get(perspective), visibility);
 		}
 		
-		public boolean showCrosshairFarther()
+		public boolean useCustomRaytraceDistance()
 		{
-			return this.showCrosshairFarther.get();
+			return this.useCustomRaytraceDistance.get();
 		}
 		
-		public void setShowCrosshairFarther(boolean enabled)
+		public void setUseCustomRaytraceDistance(boolean useCustomRaytraceDistance)
 		{
-			Config.set(this.showCrosshairFarther, enabled);
+			Config.set(this.useCustomRaytraceDistance, useCustomRaytraceDistance);
 		}
 		
 		public boolean keepCameraOutOfHead()
@@ -256,6 +257,16 @@ public class Config
 		public void setCameraStepSize(double cameraStepSize)
 		{
 			Config.set(this.cameraStepSize, cameraStepSize);
+		}
+		
+		public double getCustomRaytraceDistance()
+		{
+			return this.customRaytraceDistance.get();
+		}
+		
+		public void setCustomRaytraceDistance(double raytraceDistance)
+		{
+			Config.set(this.customRaytraceDistance, raytraceDistance);
 		}
 		
 		public boolean limitPlayerReach()
@@ -374,7 +385,8 @@ public class Config
 			this.limitPlayerReach = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Limit player reach", true, "Whether or not to limit the player reach depending on the crosshair location (perspective offset)"));
 			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step", -Double.MAX_VALUE, Double.MAX_VALUE));
 			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
-			this.showCrosshairFarther = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Show Crosshair Farther", true, "Whether or not to show the crosshairs farther than normal"));
+			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom Raytrace Distance", 400, "The raytrace distance used for the dynamic crosshair", 0, Double.MAX_VALUE));
+			this.useCustomRaytraceDistance = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Use Custom Raytrace Distance", true, "Whether or not to use the custom raytrace distance used for the dynamic crosshair"));
 			
 			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive Crosshair Items", new String[]
 			{

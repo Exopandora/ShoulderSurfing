@@ -1,12 +1,10 @@
 package com.teamderpy.shouldersurfing.event;
 
 
-import java.util.Optional;
-
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
@@ -36,17 +34,17 @@ public class ClientEventHandler
 		{
 			if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
 			{
-				ShoulderSurfing.STATE.setSwitchPerspective(false);
+				ShoulderState.setSwitchPerspective(false);
 			}
 			
-			ShoulderSurfing.STATE.setAiming(ShoulderSurfingHelper.isHoldingSpecialItem());
+			ShoulderState.setAiming(ShoulderSurfingHelper.isHoldingSpecialItem());
 			
-			if(ShoulderSurfing.STATE.isAiming() && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderSurfing.STATE.doShoulderSurfing())
+			if(ShoulderState.isAiming() && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderState.doShoulderSurfing())
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
-				ShoulderSurfing.STATE.setSwitchPerspective(true);
+				ShoulderState.setSwitchPerspective(true);
 			}
-			else if(!ShoulderSurfing.STATE.isAiming() && Perspective.FIRST_PERSON.equals(Perspective.current()) && ShoulderSurfing.STATE.doSwitchPerspective())
+			else if(!ShoulderState.isAiming() && Perspective.FIRST_PERSON.equals(Perspective.current()) && ShoulderState.doSwitchPerspective())
 			{
 				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 			}
@@ -58,49 +56,49 @@ public class ClientEventHandler
 	{
 		if(event.isCancelable() && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().currentScreen == null)
 		{
-			if(ShoulderSurfing.STATE.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderSurfing.STATE.doShoulderSurfing())
+			if(ShoulderState.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderState.doShoulderSurfing())
 			{
 				event.setCanceled(true);
 			}
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(receiveCanceled = true)
 	public void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(ShoulderSurfing.STATE.getProjected() != null)
+			if(ShoulderState.getProjected() != null)
 			{
 				final ScaledResolution mainWindow = event.getResolution();
-				float scale = mainWindow.getScaleFactor() * ShoulderSurfing.getShadersResmul();
+				float scale = mainWindow.getScaleFactor() * ShoulderSurfingHelper.getShadersResmul();
 				
 				Vec2f window = new Vec2f(mainWindow.getScaledWidth(), mainWindow.getScaledHeight());
 				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
-				Vec2f projectedOffset = ShoulderSurfing.STATE.getProjected().subtract(center).divide(scale);
-				Vec2f lastTranslation = ShoulderSurfing.STATE.getLastTranslation();
+				Vec2f projectedOffset = ShoulderState.getProjected().subtract(center).divide(scale);
+				Vec2f lastTranslation = ShoulderState.getLastTranslation();
 				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(event.getPartialTicks());
 				
-				ShoulderSurfing.STATE.setTranslation(ShoulderSurfing.STATE.getLastTranslation().add(interpolated));
+				ShoulderState.setTranslation(ShoulderState.getLastTranslation().add(interpolated));
 			}
 			
-			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfing.STATE.doShoulderSurfing())
+			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
 			{
 				GlStateManager.pushMatrix();
-				GlStateManager.translate(ShoulderSurfing.STATE.getTranslation().getX(), -ShoulderSurfing.STATE.getTranslation().getY(), 0F);
-				ShoulderSurfing.STATE.setLastTranslation(ShoulderSurfing.STATE.getTranslation());
+				GlStateManager.translate(ShoulderState.getTranslation().getX(), -ShoulderState.getTranslation().getY(), 0F);
+				ShoulderState.setLastTranslation(ShoulderState.getTranslation());
 			}
 			else
 			{
-				ShoulderSurfing.STATE.setLastTranslation(Vec2f.ZERO);
+				ShoulderState.setLastTranslation(Vec2f.ZERO);
 			}
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(receiveCanceled = true)
 	public void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderSurfing.STATE.doShoulderSurfing())
+		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
 		{
 			GlStateManager.popMatrix();
 		}
@@ -112,16 +110,13 @@ public class ClientEventHandler
 		final Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
 		final PlayerControllerMP controller = Minecraft.getMinecraft().playerController;
 		
-		if(ShoulderSurfing.STATE.doShoulderSurfing())
+		if(ShoulderState.doShoulderSurfing())
 		{
-			double playerReach = Config.CLIENT.showCrosshairFarther() ? ShoulderSurfing.RAYTRACE_DISTANCE : 0;
-			Optional<RayTraceResult> result = ShoulderSurfingHelper.traceFromEyes(renderView, controller, playerReach, event.getPartialTicks());
+			double playerReach = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
+			RayTraceResult result = ShoulderSurfingHelper.traceFromEyes(renderView, controller, playerReach, event.getPartialTicks());
+			Vec3d position = result.hitVec.subtract(renderView.getPositionEyes(event.getPartialTicks()).subtract(0, renderView.getEyeHeight(), 0));
 			
-			if(result.isPresent())
-			{
-				Vec3d position = result.get().hitVec.subtract(renderView.getPositionEyes(event.getPartialTicks()).subtract(0, renderView.getEyeHeight(), 0));
-				ShoulderSurfing.STATE.setProjected(ShoulderSurfingHelper.project2D(position));
-			}
+			ShoulderState.setProjected(ShoulderSurfingHelper.project2D(position));
 		}
 	}
 	

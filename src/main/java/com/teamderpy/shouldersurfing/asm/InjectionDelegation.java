@@ -3,9 +3,9 @@ package com.teamderpy.shouldersurfing.asm;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
@@ -28,13 +28,13 @@ public final class InjectionDelegation
 	{
 		final World world = Minecraft.getMinecraft().world;
 		
-		if(ShoulderSurfing.STATE.doShoulderSurfing() && world != null)
+		if(ShoulderState.doShoulderSurfing() && world != null)
 		{
 			Vec3d offset = new Vec3d(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
 			double distance = ShoulderSurfingHelper.cameraDistance(world, offset.lengthVector());
 			Vec3d scaled = offset.normalize().scale(distance);
 			
-			ShoulderSurfing.STATE.setCameraDistance(distance);
+			ShoulderState.setCameraDistance(distance);
 			
 			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
 		}
@@ -46,7 +46,7 @@ public final class InjectionDelegation
 	
 	public static int doRenderCrosshair()
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderSurfing.STATE.isAiming()) ? 0 : 1;
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderState.isAiming()) ? 0 : 1;
 	}
 	
 	public static RayTraceResult getRayTraceResult(World world, Vec3d vec1, Vec3d vec2)
@@ -56,7 +56,7 @@ public final class InjectionDelegation
 	
 	public static RayTraceResult rayTrace(Entity entity, double blockReachDistance, float partialTicks)
 	{
-		if(ShoulderSurfing.STATE.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
 			Entry<Vec3d, Vec3d> look = ShoulderSurfingHelper.shoulderSurfingLook(entity, partialTicks, blockReachDistance * blockReachDistance);
 			return entity.world.rayTraceBlocks(look.getKey(), look.getValue(), false, false, true);
@@ -71,7 +71,7 @@ public final class InjectionDelegation
 	
 	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(double blockReach)
 	{
-		if(ShoulderSurfing.STATE.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
 			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderPartialTicks(), blockReach);
 		}

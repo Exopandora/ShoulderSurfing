@@ -1,94 +1,110 @@
 package com.teamderpy.shouldersurfing.util;
 
+import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ShoulderState
 {
-	private boolean enabled;
-	private boolean switchPerspective;
-	private boolean isAiming;
+	private static boolean enabled;
+	private static boolean switchPerspective;
+	private static boolean isAiming;
 	
-	private Vec2f lastTranslation = Vec2f.ZERO;
-	private Vec2f translation = Vec2f.ZERO;
-	private Vec2f projected = null;
+	private static Vec2f lastTranslation = Vec2f.ZERO;
+	private static Vec2f translation = Vec2f.ZERO;
+	private static Vec2f projected = null;
 	
-	private double cameraDistance;
+	private static double cameraDistance;
 	
-	public boolean doSwitchPerspective()
+	private static EnumShaderCompatibility shaders = EnumShaderCompatibility.NONE;
+	
+	public static boolean doSwitchPerspective()
 	{
-		return this.switchPerspective;
+		return ShoulderState.switchPerspective;
 	}
 	
-	public void setSwitchPerspective(boolean switchPerspective)
+	public static void setSwitchPerspective(boolean switchPerspective)
 	{
-		this.switchPerspective = switchPerspective;
+		ShoulderState.switchPerspective = switchPerspective;
 	}
 	
-	public Vec2f getLastTranslation()
+	public static Vec2f getLastTranslation()
 	{
-		return this.lastTranslation;
+		return ShoulderState.lastTranslation;
 	}
 	
-	public void setLastTranslation(Vec2f lastTranslation)
+	public static void setLastTranslation(Vec2f lastTranslation)
 	{
-		this.lastTranslation = lastTranslation;
+		ShoulderState.lastTranslation = lastTranslation;
 	}
 	
-	public Vec2f getTranslation()
+	public static Vec2f getTranslation()
 	{
-		return this.translation;
+		return ShoulderState.translation;
 	}
 	
-	public void setTranslation(Vec2f translation)
+	public static void setTranslation(Vec2f translation)
 	{
-		this.translation = translation;
+		ShoulderState.translation = translation;
 	}
 	
-	public Vec2f getProjected()
+	public static Vec2f getProjected()
 	{
-		return this.projected;
+		return ShoulderState.projected;
 	}
 	
-	public void setProjected(Vec2f projected)
+	public static void setProjected(Vec2f projected)
 	{
-		this.projected = projected;
+		ShoulderState.projected = projected;
 	}
 	
-	public boolean isAiming()
+	public static boolean isAiming()
 	{
-		return this.isAiming;
+		return ShoulderState.isAiming;
 	}
 	
-	public void setAiming(boolean isAiming)
+	public static void setAiming(boolean isAiming)
 	{
-		this.isAiming = isAiming;
+		ShoulderState.isAiming = isAiming;
 	}
 	
-	public double getCameraDistance()
+	public static double getCameraDistance()
 	{
-		return this.cameraDistance;
+		return ShoulderState.cameraDistance;
 	}
 	
-	public void setCameraDistance(double cameraDistance)
+	public static void setCameraDistance(double cameraDistance)
 	{
-		this.cameraDistance = cameraDistance;
+		ShoulderState.cameraDistance = cameraDistance;
 	}
 	
-	public boolean isEnabled()
+	public static boolean isEnabled()
 	{
-		return this.enabled;
+		return ShoulderState.enabled;
 	}
 	
-	public void setEnabled(boolean enabled)
+	public static void setEnabled(boolean enabled)
 	{
-		this.enabled = enabled;
+		ShoulderState.enabled = enabled;
 	}
 	
-	public boolean doShoulderSurfing()
+	public static boolean doShoulderSurfing()
 	{
-		return this.enabled && Minecraft.getMinecraft().gameSettings.thirdPersonView == Perspective.THIRD_PERSON_BACK.getPointOfView();
+		return ShoulderState.enabled && Minecraft.getMinecraft().gameSettings.thirdPersonView == Perspective.THIRD_PERSON_BACK.getPointOfView();
+	}
+	
+	public static EnumShaderCompatibility getShaderType()
+	{
+		return ShoulderState.shaders;
+	}
+	
+	public static void setShaderType(EnumShaderCompatibility type)
+	{
+		ShoulderState.shaders = type;
 	}
 }

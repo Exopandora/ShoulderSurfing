@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.config;
 
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
@@ -73,6 +73,6 @@ public enum Perspective
 	
 	public static Perspective current()
 	{
-		return Perspective.of(Minecraft.getMinecraft().gameSettings.thirdPersonView, ShoulderSurfing.STATE.doShoulderSurfing());
+		return Perspective.of(Minecraft.getMinecraft().gameSettings.thirdPersonView, ShoulderState.doShoulderSurfing());
 	}
 }

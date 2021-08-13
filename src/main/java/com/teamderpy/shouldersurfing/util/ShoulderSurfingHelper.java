@@ -5,7 +5,6 @@ import java.nio.IntBuffer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -13,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import com.google.common.base.Predicates;
-import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
@@ -28,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -95,22 +92,17 @@ public class ShoulderSurfingHelper
 		return distance;
 	}
 	
-	public static Optional<RayTraceResult> traceFromEyes(Entity renderView, PlayerControllerMP playerController, double playerReachOverride, final float partialTicks)
+	public static RayTraceResult traceFromEyes(Entity renderView, PlayerControllerMP playerController, double playerReachOverride, final float partialTicks)
 	{
 		double blockReach = Math.max(playerController.getBlockReachDistance(), playerReachOverride);
 		RayTraceResult rayTrace = renderView.rayTrace(blockReach, partialTicks);
 		Vec3d eyes = renderView.getPositionEyes(partialTicks);
-		boolean extendedReach = false;
 		double entityReach = blockReach;
 		
 		if(playerController.extendedReach())
 		{
 			entityReach = Math.max(6.0D, playerReachOverride);
 			blockReach = entityReach;
-		}
-		else if(blockReach > 3.0D)
-		{
-			extendedReach = true;
 		}
 		
 		if(rayTrace != null)
@@ -164,27 +156,17 @@ public class ShoulderSurfingHelper
 			}
 		}
 		
-		if(pointedEntity != null && extendedReach && eyes.distanceTo(entityHitVec) > 3.0D)
-		{
-			return Optional.of(new RayTraceResult(RayTraceResult.Type.MISS, entityHitVec, null, new BlockPos(entityHitVec)));
-		}
-		
 		if(pointedEntity != null && (minEntityReach < entityReach || rayTrace == null))
 		{
-			return Optional.of(new RayTraceResult(pointedEntity, entityHitVec));
+			return new RayTraceResult(pointedEntity, entityHitVec);
 		}
 		
-		if(rayTrace == null)
-		{
-			return Optional.empty();
-		}
-		
-		return Optional.of(rayTrace);
+		return rayTrace;
 	}
 	
 	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(Entity entity, float partialTicks, double distanceSq)
 	{
-		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(ShoulderSurfing.STATE.getCameraDistance());
+		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(ShoulderState.getCameraDistance());
 		Vec3d offset = ShoulderSurfingHelper.rayTraceHeadOffset(cameraOffset);
 		Vec3d start = entity.getPositionEyes(partialTicks).add(cameraOffset);
 		Vec3d look = entity.getLook(partialTicks);
@@ -268,6 +250,19 @@ public class ShoulderSurfingHelper
 	public static void setPerspective(Perspective perspective)
 	{
 		Minecraft.getMinecraft().gameSettings.thirdPersonView = perspective.getPointOfView();
-		ShoulderSurfing.STATE.setEnabled(Perspective.SHOULDER_SURFING.equals(perspective));
+		ShoulderState.setEnabled(Perspective.SHOULDER_SURFING.equals(perspective));
+	}
+	
+	public static float getShadersResmul()
+	{
+		switch(ShoulderState.getShaderType())
+		{
+			case OLD:
+				return shadersmod.client.Shaders.shaderPackLoaded ? shadersmod.client.Shaders.configRenderResMul : 1.0F;
+			case NEW:
+				return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
+			default:
+				return 1.0F;
+		}
 	}
 }

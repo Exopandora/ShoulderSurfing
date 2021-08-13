@@ -3,9 +3,7 @@ package com.teamderpy.shouldersurfing;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.proxy.CommonProxy;
-import com.teamderpy.shouldersurfing.util.ShoulderState;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -33,13 +31,9 @@ public class ShoulderSurfing
 	public static final String DEVELOPERS = "Joshua Powers, Exopandora (for 1.8+)";
 	public static final String CERTIFICATE = "d6261bb645f41db84c74f98e512c2bb43f188af2";
 	public static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
-	public static final float RAYTRACE_DISTANCE = 400.0F;
-	public static final ShoulderState STATE = new ShoulderState();
 	
 	@Instance(MODID)
-	private static ShoulderSurfing INSTANCE;
-	
-	public static EnumShaderCompatibility shaders = EnumShaderCompatibility.NONE;
+	private static ShoulderSurfing instance;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -59,21 +53,8 @@ public class ShoulderSurfing
 		ShoulderSurfing.proxy.loadComplete(event);
 	}
 	
-	public static float getShadersResmul()
-	{
-		switch(ShoulderSurfing.shaders)
-		{
-			case OLD:
-				return shadersmod.client.Shaders.shaderPackLoaded ? shadersmod.client.Shaders.configRenderResMul : 1.0F;
-			case NEW:
-				return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
-			default:
-				return 1.0F;
-		}
-	}
-	
 	public static ShoulderSurfing getInstance()
 	{
-		return INSTANCE;
+		return instance;
 	}
 }
