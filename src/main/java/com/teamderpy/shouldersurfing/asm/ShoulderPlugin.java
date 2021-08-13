@@ -19,7 +19,8 @@ public class ShoulderPlugin implements IFMLLoadingPlugin
 			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver2",
 			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererOrientCamera",
 			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererRayTrace",
-			"com.teamderpy.shouldersurfing.asm.transformers.GuiIngameRenderAttackIndicator"
+			"com.teamderpy.shouldersurfing.asm.transformers.GuiIngameRenderAttackIndicator",
+			"com.teamderpy.shouldersurfing.asm.transformers.GuiCrosshairsBCRenderAttackIndicator" // Better Combat compatibility: crosshair visibility
 		};
 	}
 	

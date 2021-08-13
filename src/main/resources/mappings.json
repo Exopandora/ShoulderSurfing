@@ -155,134 +155,66 @@
                 "1.9.4": "bbf",
                 "1.9": "bbh"
             }
-        }
+        },
+		"GuiCrosshairsBC": {
+			"name": "bettercombat/mod/client/gui/GuiCrosshairsBC",
+            "obf": {
+                "1.12.2": "bettercombat/mod/client/gui/GuiCrosshairsBC",
+                "1.12.1": "bettercombat/mod/client/gui/GuiCrosshairsBC",
+                "1.12": "bettercombat/mod/client/gui/GuiCrosshairsBC",
+                "1.11.2": "bettercombat/mod/main/GuiCrosshairsBC",
+                "1.11": "bettercombat/mod/main/GuiCrosshairsBC",
+                "1.10.2": "bettercombat/mod/main/GuiCrosshairsBC",
+                "1.9.4": "bettercombat/mod/main/GuiCrosshairsBC",
+                "1.9": "bettercombat/mod/main/GuiCrosshairsBC"
+            }
+		}
     },
     "methods": {
         "Entity#rayTrace": {
             "name": "rayTrace",
             "desc": "(DF)L$RayTraceResult;",
-            "obf": {
-                "1.12.2": "a",
-                "1.12.1": "a",
-                "1.12": "a",
-                "1.11.2": "a",
-                "1.11": "a",
-                "1.10.2": "a",
-                "1.9.4": "a",
-                "1.9": "a"
-            }
+            "obf": "a"
         },
         "EntityRenderer#getMouseOver": {
             "name": "getMouseOver",
             "desc": "(F)V",
-            "obf": {
-                "1.12.2": "a",
-                "1.12.1": "a",
-                "1.12": "a",
-                "1.11.2": "a",
-                "1.11": "a",
-                "1.10.2": "a",
-                "1.9.4": "a",
-                "1.9": "a"
-            }
+            "obf": "a"
         },
         "EntityRenderer#orientCamera": {
             "name": "orientCamera",
             "desc": "(F)V",
-            "obf": {
-                "1.12.2": "f",
-                "1.12.1": "f",
-                "1.12": "f",
-                "1.11.2": "f",
-                "1.11": "f",
-                "1.10.2": "f",
-                "1.9.4": "f",
-                "1.9": "f"
-            }
+            "obf": "f"
         },
         "GlStateManager#rotate": {
             "name": "rotate",
             "desc": "(FFFF)V",
-            "obf": {
-                "1.12.2": "b",
-                "1.12.1": "b",
-                "1.12": "b",
-                "1.11.2": "b",
-                "1.11": "b",
-                "1.10.2": "b",
-                "1.9.4": "b",
-                "1.9": "b"
-            }
+            "obf": "b"
         },
         "GlStateManager#translate": {
             "name": "translate",
             "desc": "(FFF)V",
-            "obf": {
-                "1.12.2": "c",
-                "1.12.1": "c",
-                "1.12": "c",
-                "1.11.2": "c",
-                "1.11": "c",
-                "1.10.2": "c",
-                "1.9.4": "c",
-                "1.9": "c"
-            }
+            "obf": "c"
         },
         "GuiIngame#renderAttackIndicator": {
             "name": "renderAttackIndicator",
             "desc": "(FL$ScaledResolution;)V",
-            "obf": {
-                "1.12.2": "a",
-                "1.12.1": "a",
-                "1.12": "a",
-                "1.11.2": "a",
-                "1.11": "a",
-                "1.10.2": "a",
-                "1.9.4": "a",
-                "1.9": "a"
-            }
+            "obf": "a"
         },
         "WorldClient#rayTraceBlocks": {
             "name": "rayTraceBlocks",
             "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-            "obf": {
-                "1.12.2": "a",
-                "1.12.1": "a",
-                "1.12": "a",
-                "1.11.2": "a",
-                "1.11": "a",
-                "1.10.2": "a",
-                "1.9.4": "a",
-                "1.9": "a"
-            }
+            "obf": "a"
         },
         "InjectionDelegation#getRayTraceResult": {
             "name": "getRayTraceResult",
             "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-            "obf": {
-                "1.12.2": "getRayTraceResult",
-                "1.12.1": "getRayTraceResult",
-                "1.12": "getRayTraceResult",
-                "1.11.2": "getRayTraceResult",
-                "1.11": "getRayTraceResult",
-                "1.10.2": "getRayTraceResult",
-                "1.9.4": "getRayTraceResult",
-                "1.9": "getRayTraceResult"
-            }
+            "obf": "getRayTraceResult"
         },
         "Vec3d#addVector": {
             "name": "addVector",
             "desc": "(DDD)L$Vec3d;",
-            "obf": {
-                "1.12.2": "b",
-                "1.12.1": "b",
-                "1.12": "b",
-                "1.11.2": "b",
-                "1.11": "b",
-                "1.10.2": "b",
-                "1.9.4": "b",
-                "1.9": "b"
-            }
+            "obf": "b"
         },
         "AxisAlignedBB#calculateIntercept": {
             "name": "calculateIntercept",
@@ -297,6 +229,11 @@
                 "1.9.4": "a",
                 "1.9": "a"
             }
+        },
+        "GuiCrosshairsBC#renderAttackIndicator": {
+            "name": "renderAttackIndicator",
+            "desc": "(FLnet/minecraft/client/gui/ScaledResolution;)V",
+            "obf": "renderAttackIndicator"
         }
     },
     "fields": {
@@ -313,6 +250,11 @@
                 "1.9.4": "aq",
                 "1.9": "ap"
             }
+        },
+        "GameSettings#thirdPersonViewSRG": {
+            "name": "thirdPersonView",
+            "desc": "I",
+            "obf": "field_74320_O"
         }
     }
 }
