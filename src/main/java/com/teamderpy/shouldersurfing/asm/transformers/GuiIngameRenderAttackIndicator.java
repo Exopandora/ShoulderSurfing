@@ -30,10 +30,12 @@ public class GuiIngameRenderAttackIndicator extends ShoulderTransformer
 	{
 		// if(gamesettings.thirdPersonView == 0)
 		// ->
-		// if(gamesettings.thirdPersonView == InjectionDelegation.doRenderCrosshair())
+		// if(InjectionDelegation.doRenderCrosshair() == 0)
 		
 		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "doRenderCrosshair", "()I", false);
+		
 		method.instructions.set(method.instructions.get(offset), instruction);
+		method.instructions.remove(method.instructions.get(offset - 1));
 	}
 	
 	@Override
