@@ -80,7 +80,7 @@ public class Mappings
 			for(Entry<String, JsonElement> entry : json.getAsJsonObject("classes").entrySet())
 			{
 				JsonObject object = entry.getValue().getAsJsonObject();
-				ClassMapping klass = new ClassMapping(object.get("name").getAsString(), object.get("obf").getAsJsonObject().get(version).getAsString());
+				ClassMapping klass = new ClassMapping(object.get("name").getAsString(), Mappings.readObf(object, version));
 				mappings.put(entry.getKey(), klass);
 			}
 			
@@ -100,9 +100,21 @@ public class Mappings
 		for(Entry<String, JsonElement> entry : set)
 		{
 			JsonObject object = entry.getValue().getAsJsonObject();
-			DescMapping klass = new DescMapping(object.get("name").getAsString(), object.get("desc").getAsString(), object.get("obf").getAsJsonObject().get(version).getAsString());
+			DescMapping klass = new DescMapping(object.get("name").getAsString(), object.get("desc").getAsString(), Mappings.readObf(object, version));
 			mappings.put(entry.getKey(), klass);
 		}
+	}
+	
+	private static String readObf(JsonObject object, String version)
+	{
+		JsonElement obf = object.get("obf");
+		
+		if(obf.isJsonPrimitive())
+		{
+			return obf.getAsString();
+		}
+		
+		return obf.getAsJsonObject().get(version).getAsString();
 	}
 	
 	private static class ClassMapping
