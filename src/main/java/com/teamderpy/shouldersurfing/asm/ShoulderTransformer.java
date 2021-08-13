@@ -16,6 +16,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,7 +35,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 			ClassReader classReader = new ClassReader(bytes);
 			classReader.accept(classNode, 0);
 			
-			boolean obf = !name.equals(transformedName);
+			boolean obf = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 			
 			if(this.hasMethodTransformer())
 			{
@@ -88,7 +89,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 	
 	private String getTransformedClassName()
 	{
-		return MAPPINGS.map(this.getClassId(), false).replace("/", ".");
+		return MAPPINGS.map(this.getClassId(), false).replace('/', '.');
 	}
 	
 	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
