@@ -25,22 +25,21 @@ public abstract class ShoulderTransformer implements IClassTransformer
 {
 	private static final Mappings MAPPINGS = Mappings.load("mappings.json");
 	private static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
+	private static final boolean OBFUSCATED = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
-		if(transformedName.equals(this.getTransformedClassName()))
+		if(name.equals(this.getTransformedClassName(OBFUSCATED)))
 		{
 			ClassNode classNode = new ClassNode();
 			ClassReader classReader = new ClassReader(bytes);
 			classReader.accept(classNode, 0);
 			
-			boolean obf = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-			
 			if(this.hasMethodTransformer())
 			{
 				LOGGER.info("Attempting to transform method for class " + name + " -> " + transformedName);
-				this.transformMethod(MAPPINGS, obf, classNode);
+				this.transformMethod(MAPPINGS, OBFUSCATED, classNode);
 			}
 			
 			ClassWriter writer = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
@@ -49,7 +48,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 			if(this.hasClassTransformer())
 			{
 				LOGGER.info("Attempting to transform class " + name + " -> " + transformedName);
-				this.transform(MAPPINGS, obf, writer);
+				this.transform(MAPPINGS, OBFUSCATED, writer);
 			}
 			
 			return writer.toByteArray();
@@ -87,9 +86,9 @@ public abstract class ShoulderTransformer implements IClassTransformer
 		}
 	}
 	
-	private String getTransformedClassName()
+	private String getTransformedClassName(boolean obf)
 	{
-		return MAPPINGS.map(this.getClassId(), false).replace('/', '.');
+		return MAPPINGS.map(this.getClassId(), obf).replace('/', '.');
 	}
 	
 	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)

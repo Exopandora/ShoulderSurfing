@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -63,7 +64,7 @@ public class ClientEventHandler
 		}
 	}
 	
-	@SubscribeEvent(receiveCanceled = true)
+	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
@@ -93,12 +94,8 @@ public class ClientEventHandler
 				ShoulderState.setLastTranslation(Vec2f.ZERO);
 			}
 		}
-	}
-	
-	@SubscribeEvent(receiveCanceled = true)
-	public void postRenderGameOverlayEvent(RenderGameOverlayEvent.Post event)
-	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
+		//Using BOSSHEALTH to pop matrix because when CROSSHAIRS is cancelled it will not fire RenderGameOverlayEvent#Post and cause a stack overflow
+		else if(event.getType().equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
 		{
 			GlStateManager.popMatrix();
 		}
