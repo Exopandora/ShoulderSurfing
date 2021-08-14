@@ -10,10 +10,6 @@ import org.objectweb.asm.commons.Method;
 import com.teamderpy.shouldersurfing.asm.Mappings;
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-@SideOnly(Side.CLIENT)
 public class EntityPlayerRayTrace extends ShoulderTransformer
 {
 	@Override

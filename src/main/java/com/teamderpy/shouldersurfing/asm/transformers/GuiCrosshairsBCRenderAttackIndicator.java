@@ -11,10 +11,6 @@ import org.objectweb.asm.tree.MethodNode;
 import com.teamderpy.shouldersurfing.asm.Mappings;
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-@SideOnly(Side.CLIENT)
 public class GuiCrosshairsBCRenderAttackIndicator extends ShoulderTransformer
 {
 	@Override

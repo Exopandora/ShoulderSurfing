@@ -17,10 +17,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public abstract class ShoulderTransformer implements IClassTransformer
 {
 	private static final Mappings MAPPINGS = Mappings.load("mappings.json");

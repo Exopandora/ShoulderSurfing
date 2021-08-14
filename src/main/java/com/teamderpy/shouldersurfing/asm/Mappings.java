@@ -15,10 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public class Mappings
 {
 	private final Map<String, ClassMapping> mappings;

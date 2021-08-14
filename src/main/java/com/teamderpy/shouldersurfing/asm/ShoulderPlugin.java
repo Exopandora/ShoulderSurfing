@@ -3,10 +3,7 @@ package com.teamderpy.shouldersurfing.asm;
 import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public class ShoulderPlugin implements IFMLLoadingPlugin
 {
 	@Override
