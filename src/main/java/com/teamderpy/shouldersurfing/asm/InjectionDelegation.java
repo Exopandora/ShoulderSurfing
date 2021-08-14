@@ -35,7 +35,6 @@ public final class InjectionDelegation
 			Vec3d scaled = offset.normalize().scale(distance);
 			
 			ShoulderState.setCameraDistance(distance);
-			
 			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
 		}
 		else
