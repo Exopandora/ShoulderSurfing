@@ -9,8 +9,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -18,8 +18,9 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent.Loading;
+import net.minecraftforge.fml.event.config.ModConfigEvent.Reloading;
 
 public class Config
 {
@@ -514,7 +515,7 @@ public class Config
 	}
 	
 	@SubscribeEvent
-	public static void configReload(ModConfig.Loading event)
+	public static void configReload(Loading event)
 	{
 		if(Type.CLIENT.equals(event.getConfig().getType()))
 		{
@@ -523,7 +524,7 @@ public class Config
 	}
 	
 	@SubscribeEvent
-	public static void configReload(ModConfig.Reloading event)
+	public static void configReload(Reloading event)
 	{
 		if(Type.CLIENT.equals(event.getConfig().getType()) && Config.CLIENT.doRememberLastPerspective())
 		{

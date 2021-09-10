@@ -1,7 +1,5 @@
 package com.teamderpy.shouldersurfing;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
 import com.teamderpy.shouldersurfing.event.KeyHandler;
@@ -12,14 +10,14 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.fmllegacy.network.FMLNetworkConstants;
 
 @Mod(ShoulderSurfing.MODID)
 public class ShoulderSurfing
@@ -31,7 +29,7 @@ public class ShoulderSurfing
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(this::clientSetup);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.setupClientConfig());
-		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (remote, isServer) -> true));
+		ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> FMLNetworkConstants.IGNORESERVERONLY, (remote, isServer) -> true));
 		modEventBus.register(Config.class);
 	}
 	
@@ -51,7 +49,6 @@ public class ShoulderSurfing
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGameOverlayEvent);
-		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::postRenderGameOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::cameraSetup);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderWorldLast);
 	}

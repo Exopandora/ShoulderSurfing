@@ -2,31 +2,31 @@ package com.teamderpy.shouldersurfing.config;
 
 import com.teamderpy.shouldersurfing.util.ShoulderState;
 
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public enum Perspective
 {
-	FIRST_PERSON(PointOfView.FIRST_PERSON, CrosshairVisibility.ALWAYS),
-	THIRD_PERSON_BACK(PointOfView.THIRD_PERSON_BACK, CrosshairVisibility.NEVER),
-	THIRD_PERSON_FRONT(PointOfView.THIRD_PERSON_FRONT, CrosshairVisibility.NEVER),
-	SHOULDER_SURFING(PointOfView.THIRD_PERSON_BACK, CrosshairVisibility.ALWAYS);
+	FIRST_PERSON(CameraType.FIRST_PERSON, CrosshairVisibility.ALWAYS),
+	THIRD_PERSON_BACK(CameraType.THIRD_PERSON_BACK, CrosshairVisibility.NEVER),
+	THIRD_PERSON_FRONT(CameraType.THIRD_PERSON_FRONT, CrosshairVisibility.NEVER),
+	SHOULDER_SURFING(CameraType.THIRD_PERSON_BACK, CrosshairVisibility.ALWAYS);
 	
-	private final PointOfView pointOfView;
+	private final CameraType cameraType;
 	private final CrosshairVisibility defaultCrosshairVisibility;
 	
-	private Perspective(PointOfView pointOfView, CrosshairVisibility defaultCrosshairVisibility)
+	private Perspective(CameraType cameraType, CrosshairVisibility defaultCrosshairVisibility)
 	{
-		this.pointOfView = pointOfView;
+		this.cameraType = cameraType;
 		this.defaultCrosshairVisibility = defaultCrosshairVisibility;
 	}
 	
-	public PointOfView getPointOfView()
+	public CameraType getCameraType()
 	{
-		return this.pointOfView;
+		return this.cameraType;
 	}
 	
 	public CrosshairVisibility getDefaultCrosshairVisibility()
@@ -57,9 +57,9 @@ public enum Perspective
 		return next;
 	}
 	
-	public static Perspective of(PointOfView pointOfView, boolean shoulderSurfing)
+	public static Perspective of(CameraType cameraType, boolean shoulderSurfing)
 	{
-		switch(pointOfView)
+		switch(cameraType)
 		{
 			case FIRST_PERSON:
 				return Perspective.FIRST_PERSON;

@@ -2,8 +2,8 @@ package com.teamderpy.shouldersurfing.util;
 
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -93,7 +93,7 @@ public class ShoulderState
 	
 	public static boolean doShoulderSurfing()
 	{
-		return ShoulderState.enabled && PointOfView.THIRD_PERSON_BACK.equals(Minecraft.getInstance().options.getCameraType());
+		return ShoulderState.enabled && CameraType.THIRD_PERSON_BACK.equals(Minecraft.getInstance().options.getCameraType());
 	}
 	
 	public static boolean doShaders()

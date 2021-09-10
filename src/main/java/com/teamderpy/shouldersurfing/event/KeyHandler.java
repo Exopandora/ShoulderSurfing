@@ -2,15 +2,15 @@ package com.teamderpy.shouldersurfing.event;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
+import net.minecraft.client.CameraType;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -21,15 +21,15 @@ public class KeyHandler
 {
 	private static final String KEY_CATEGORY = "Shoulder Surfing";
 	
-	public static final KeyBinding KEYBIND_CAMERA_LEFT = new KeyBinding("Camera left", GLFW.GLFW_KEY_LEFT, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_CAMERA_RIGHT = new KeyBinding("Camera right", GLFW.GLFW_KEY_RIGHT, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_CAMERA_IN = new KeyBinding("Camera closer", GLFW.GLFW_KEY_UP, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_CAMERA_OUT = new KeyBinding("Camera farther", GLFW.GLFW_KEY_DOWN, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_CAMERA_UP = new KeyBinding("Camera up", GLFW.GLFW_KEY_PAGE_UP, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_CAMERA_DOWN = new KeyBinding("Camera down", GLFW.GLFW_KEY_PAGE_DOWN, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_CAMERA_LEFT = new KeyMapping("Camera left", GLFW.GLFW_KEY_LEFT, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_CAMERA_RIGHT = new KeyMapping("Camera right", GLFW.GLFW_KEY_RIGHT, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_CAMERA_IN = new KeyMapping("Camera closer", GLFW.GLFW_KEY_UP, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_CAMERA_OUT = new KeyMapping("Camera farther", GLFW.GLFW_KEY_DOWN, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_CAMERA_UP = new KeyMapping("Camera up", GLFW.GLFW_KEY_PAGE_UP, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_CAMERA_DOWN = new KeyMapping("Camera down", GLFW.GLFW_KEY_PAGE_DOWN, KeyHandler.KEY_CATEGORY);
 	
-	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", GLFW.GLFW_KEY_O, KeyHandler.KEY_CATEGORY);
-	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", InputMappings.UNKNOWN.getValue(), KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_SWAP_SHOULDER = new KeyMapping("Swap shoulder", GLFW.GLFW_KEY_O, KeyHandler.KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyMapping("Toggle perspective", InputConstants.UNKNOWN.getValue(), KeyHandler.KEY_CATEGORY);
 	
 	@SubscribeEvent
 	public static void keyInputEvent(KeyInputEvent event)
@@ -42,7 +42,7 @@ public class KeyHandler
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
 				}
-				else if(Minecraft.getInstance().options.getCameraType() == PointOfView.FIRST_PERSON)
+				else if(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON)
 				{
 					ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
 				}
@@ -91,9 +91,9 @@ public class KeyHandler
 				Perspective perspective = Perspective.current();
 				Perspective next = perspective.next();
 				ShoulderSurfingHelper.setPerspective(next);
-				boolean firstPerson = next.getPointOfView().isFirstPerson();
+				boolean firstPerson = next.getCameraType().isFirstPerson();
 				
-				if(perspective.getPointOfView().isFirstPerson() != firstPerson)
+				if(perspective.getCameraType().isFirstPerson() != firstPerson)
 				{
 					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(firstPerson ? Minecraft.getInstance().getCameraEntity() : null);
 				}
