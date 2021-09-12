@@ -18,8 +18,6 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 
-//tasks.eclipse.dependsOn('createMcpToSrg')
-
 eclipseJdtApt.enabled = false
 eclipseFactoryPath.enabled = false
 
