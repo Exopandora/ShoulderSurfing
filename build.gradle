@@ -3,22 +3,25 @@ buildscript {
 		maven {
 			url = 'https://files.minecraftforge.net/maven'
 		}
-		//maven {
-		//	url = 'https://repo.spongepowered.org/maven'
-		//}
+		maven {
+			url = 'https://repo.spongepowered.org/maven'
+		}
 		mavenCentral()
 	}
 	dependencies {
 		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-		//classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
 	}
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
-// apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.spongepowered.mixin'
 
 //tasks.eclipse.dependsOn('createMcpToSrg')
+
+eclipseJdtApt.enabled = false
+eclipseFactoryPath.enabled = false
 
 sourceSets {
 	api
@@ -35,11 +38,11 @@ configurations {
 	apiRuntimeOnly.extendsFrom(runtimeOnly)
 }
 
-//mixin {
-//	add sourceSets.main, 'main.refmap.json'
-//}
+mixin {
+	add sourceSets.main, 'main.refmap.json'
+}
 
-version = '1.17.1-2.2.1-beta'
+version = '1.17.1-2.2.1'
 group = 'com.teamderpy.shouldersurfing' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ShoulderSurfing'
 
@@ -73,7 +76,7 @@ minecraft {
 			// Recommended logging level for the console
 			// property 'forge.logging.console.level', 'debug'
 			
-			// arg "-mixin.config=shouldersurfing.mixins.json"
+			arg "-mixin.config=shouldersurfing.mixins.json"
 			
 			mods {
 				shouldersurfing {
@@ -92,7 +95,7 @@ minecraft {
 			// Recommended logging level for the console
 			// property 'forge.logging.console.level', 'debug'
 			
-			// arg "-mixin.config=shouldersurfing.mixins.json"
+			arg "-mixin.config=shouldersurfing.mixins.json"
 			
 			mods {
 				shouldersurfing {
@@ -139,7 +142,7 @@ dependencies {
 	// Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
 	// that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
 	// The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.58'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.59'
 	
 	// You may put jars on which you depend on in ./libs or you may define them like so..
 	// compile "some.group:artifact:version:classifier"
@@ -159,7 +162,7 @@ dependencies {
 	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
 	// http://www.gradle.org/docs/current/userguide/dependency_management.html
 	
-	// annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
+	annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -173,9 +176,9 @@ jar {
 			"Implementation-Version": "${version}",
 			"Implementation-Vendor" :"Exopandora",
 			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-			// "MixinConfigs": "shouldersurfing.mixins.json"
+			"MixinConfigs": "shouldersurfing.mixins.json"
 		])
 	}
 	
-	// rename 'main.refmap.json', 'shouldersurfing.refmap.json'
+	rename 'main.refmap.json', 'shouldersurfing.refmap.json'
 }
