@@ -37,7 +37,7 @@ configurations {
 }
 
 mixin {
-	add sourceSets.main, 'main.refmap.json'
+	add sourceSets.main, 'shouldersurfing.refmap.json'
 }
 
 version = '1.17.1-2.2.1'
@@ -177,6 +177,4 @@ jar {
 			"MixinConfigs": "shouldersurfing.mixins.json"
 		])
 	}
-	
-	rename 'main.refmap.json', 'shouldersurfing.refmap.json'
 }
