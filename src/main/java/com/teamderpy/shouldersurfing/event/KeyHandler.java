@@ -11,12 +11,9 @@ import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-@OnlyIn(Dist.CLIENT)
 public class KeyHandler
 {
 	private static final String KEY_CATEGORY = "Shoulder Surfing";

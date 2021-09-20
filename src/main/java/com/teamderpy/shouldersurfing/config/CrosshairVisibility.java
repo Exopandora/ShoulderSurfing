@@ -2,10 +2,7 @@ package com.teamderpy.shouldersurfing.config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public enum CrosshairVisibility
 {
 	ALWAYS,

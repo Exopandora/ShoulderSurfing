@@ -2,10 +2,6 @@ package com.teamderpy.shouldersurfing.config;
 
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-@OnlyIn(Dist.CLIENT)
 public enum CrosshairType
 {
 	ADAPTIVE,

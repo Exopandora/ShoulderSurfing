@@ -4,10 +4,7 @@ import com.teamderpy.shouldersurfing.math.Vec2f;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class ShoulderState
 {
 	private static boolean enabled;

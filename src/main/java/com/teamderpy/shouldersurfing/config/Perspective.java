@@ -4,10 +4,7 @@ import com.teamderpy.shouldersurfing.util.ShoulderState;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public enum Perspective
 {
 	FIRST_PERSON(CameraType.FIRST_PERSON, CrosshairVisibility.ALWAYS),

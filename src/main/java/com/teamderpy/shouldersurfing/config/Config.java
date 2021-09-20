@@ -11,8 +11,6 @@ import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -34,7 +32,6 @@ public class Config
 		CLIENT = pair.getLeft();
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	public static class ClientConfig
 	{
 		private final DoubleValue offsetX;

@@ -1,9 +1,5 @@
 package com.teamderpy.shouldersurfing.math;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-@OnlyIn(Dist.CLIENT)
 public class Vec2f
 {
 	public static final Vec2f ZERO = new Vec2f(0, 0);
