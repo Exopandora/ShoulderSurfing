@@ -4,15 +4,14 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,21 +20,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class InjectionDelegation
 {
 	// XXX Forge Hooks
-	// public static RayTraceResult rayTraceEyes(EntityLivingBase entity, double length)
-	// public static Vec3d rayTraceEyeHitVec(EntityLivingBase entity, double length)
+	// public static MovingObjectPosition rayTraceEyes(EntityLivingBase entity, double length)
+	// public static Vec3 rayTraceEyeHitVec(EntityLivingBase entity, double length)
 	
 	public static void cameraSetup(float x, float y, float z)
 	{
-		final World world = Minecraft.getMinecraft().world;
+		final World world = Minecraft.getMinecraft().theWorld;
 		
 		if(ShoulderState.doShoulderSurfing() && world != null)
 		{
-			Vec3d offset = new Vec3d(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
+			Vec3 offset = new Vec3(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
 			double distance = ShoulderSurfingHelper.cameraDistance(world, offset.lengthVector());
-			Vec3d scaled = offset.normalize().scale(distance);
+			Vec3 scaled = offset.normalize();
+			scaled = new Vec3(scaled.xCoord * distance, scaled.yCoord * distance, scaled.zCoord * distance);
 			
 			ShoulderState.setCameraDistance(distance);
-			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
+			GlStateManager.translate(scaled.xCoord, scaled.yCoord, scaled.zCoord);
 		}
 		else
 		{
@@ -43,43 +43,38 @@ public final class InjectionDelegation
 		}
 	}
 	
-	public static int doRenderCrosshair()
-	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderState.isAiming()) ? 0 : 1;
-	}
-	
-	public static RayTraceResult getRayTraceResult(World world, Vec3d vec1, Vec3d vec2)
+	public static MovingObjectPosition getMovingObjectPosition(World world, Vec3 vec1, Vec3 vec2)
 	{
 		return world.rayTraceBlocks(vec1, vec2, false, true, false);
 	}
 	
-	public static RayTraceResult rayTrace(Entity entity, double blockReachDistance, float partialTicks)
+	public static MovingObjectPosition rayTrace(Entity entity, double blockReachDistance, float partialTicks)
 	{
 		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			Entry<Vec3d, Vec3d> look = ShoulderSurfingHelper.shoulderSurfingLook(entity, partialTicks, blockReachDistance * blockReachDistance);
-			return entity.world.rayTraceBlocks(look.getKey(), look.getValue(), false, false, true);
+			Entry<Vec3, Vec3> look = ShoulderSurfingHelper.shoulderSurfingLook(entity, partialTicks, blockReachDistance * blockReachDistance);
+			return entity.worldObj.rayTraceBlocks(look.getKey(), look.getValue(), false, false, true);
 		}
 		
-		Vec3d eyes = entity.getPositionEyes(partialTicks);
-		Vec3d look = entity.getLook(partialTicks);
-		Vec3d end = eyes.addVector(look.x * blockReachDistance, look.y * blockReachDistance, look.z * blockReachDistance);
+		Vec3 eyes = entity.getPositionEyes(partialTicks);
+		Vec3 look = entity.getLook(partialTicks);
+		Vec3 end = eyes.addVector(look.xCoord * blockReachDistance, look.yCoord * blockReachDistance, look.zCoord * blockReachDistance);
 		
-		return entity.world.rayTraceBlocks(eyes, end, false, false, true);
+		return entity.worldObj.rayTraceBlocks(eyes, end, false, false, true);
 	}
 	
-	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(double blockReach)
+	public static Entry<Vec3, Vec3> shoulderSurfingLook(double blockReach)
 	{
 		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().getRenderPartialTicks(), blockReach);
+			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().timer.renderPartialTicks, blockReach);
 		}
 		
 		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
-		Vec3d look = renderView.getLook(1.0F);
-        Vec3d start = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
-        Vec3d end = start.addVector(look.x * blockReach, look.y * blockReach, look.z * blockReach);
+		Vec3 look = renderView.getLook(1.0F);
+        Vec3 start = renderView.getPositionEyes(Minecraft.getMinecraft().timer.renderPartialTicks);
+        Vec3 end = start.addVector(look.xCoord * blockReach, look.yCoord * blockReach, look.zCoord * blockReach);
         
-        return new SimpleEntry<Vec3d, Vec3d>(start, end);
+        return new SimpleEntry<Vec3, Vec3>(start, end);
 	}
 }

@@ -1,7 +1,7 @@
 package com.teamderpy.shouldersurfing.config;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,7 +26,7 @@ public enum CrosshairVisibility
 		}
 		else if(this == CrosshairVisibility.WHEN_IN_RANGE)
 		{
-			return Minecraft.getMinecraft().objectMouseOver != null && !RayTraceResult.Type.MISS.equals(Minecraft.getMinecraft().objectMouseOver.typeOfHit);
+			return Minecraft.getMinecraft().objectMouseOver != null && !MovingObjectPosition.MovingObjectType.MISS.equals(Minecraft.getMinecraft().objectMouseOver.typeOfHit);
 		}
 		else if(this == CrosshairVisibility.WHEN_AIMING_OR_IN_RANGE)
 		{

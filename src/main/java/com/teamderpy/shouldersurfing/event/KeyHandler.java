@@ -111,7 +111,7 @@ public class KeyHandler
 	@SubscribeEvent
 	public void onGuiClosed(GuiOpenEvent event)
 	{
-		if(event.getGui() == null)
+		if(event.gui == null)
 		{
 			Keyboard.enableRepeatEvents(true);
 		}

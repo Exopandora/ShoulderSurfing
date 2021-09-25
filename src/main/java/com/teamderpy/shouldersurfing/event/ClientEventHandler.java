@@ -12,8 +12,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -55,7 +55,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.isCancelable() && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().currentScreen == null)
+		if(event.isCancelable() && event.entityPlayer.equals(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().currentScreen == null)
 		{
 			if(ShoulderState.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderState.doShoulderSurfing())
 			{
@@ -67,18 +67,24 @@ public class ClientEventHandler
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
-		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
+		if(event.type.equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
+			if(!Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderState.isAiming()))
+			{
+				event.setCanceled(true);
+				return;
+			}
+			
 			if(ShoulderState.getProjected() != null)
 			{
-				final ScaledResolution mainWindow = event.getResolution();
+				final ScaledResolution mainWindow = event.resolution;
 				float scale = mainWindow.getScaleFactor() * ShoulderSurfingHelper.getShadersResmul();
 				
 				Vec2f window = new Vec2f(mainWindow.getScaledWidth(), mainWindow.getScaledHeight());
 				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
 				Vec2f projectedOffset = ShoulderState.getProjected().subtract(center).divide(scale);
 				Vec2f lastTranslation = ShoulderState.getLastTranslation();
-				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(event.getPartialTicks());
+				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(Minecraft.getMinecraft().timer.renderPartialTicks);
 				
 				ShoulderState.setTranslation(ShoulderState.getLastTranslation().add(interpolated));
 			}
@@ -95,8 +101,13 @@ public class ClientEventHandler
 			}
 		}
 		//Using BOSSHEALTH to pop matrix because when CROSSHAIRS is cancelled it will not fire RenderGameOverlayEvent#Post and cause a stack overflow
-		else if(event.getType().equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
+		else if(event.type.equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
 		{
+			if(!Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(ShoulderState.isAiming()))
+			{
+				return;
+			}
+			
 			GlStateManager.popMatrix();
 		}
 	}
@@ -110,8 +121,8 @@ public class ClientEventHandler
 		if(ShoulderState.doShoulderSurfing())
 		{
 			double playerReach = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
-			RayTraceResult result = ShoulderSurfingHelper.traceFromEyes(renderView, controller, playerReach, event.getPartialTicks());
-			Vec3d position = result.hitVec.subtract(renderView.getPositionEyes(event.getPartialTicks()).subtract(0, renderView.getEyeHeight(), 0));
+			MovingObjectPosition result = ShoulderSurfingHelper.traceFromEyes(renderView, controller, playerReach, Minecraft.getMinecraft().timer.renderPartialTicks);
+			Vec3 position = result.hitVec.subtract(renderView.getPositionEyes(Minecraft.getMinecraft().timer.renderPartialTicks).subtract(0, renderView.getEyeHeight(), 0));
 			
 			ShoulderState.setProjected(ShoulderSurfingHelper.project2D(position));
 		}

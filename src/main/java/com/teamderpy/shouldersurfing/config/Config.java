@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -390,13 +391,11 @@ public class Config
 			
 			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive Crosshair Items", new String[]
 			{
-				Items.SNOWBALL.getRegistryName().toString(),
-				Items.EGG.getRegistryName().toString(),
-				Items.EXPERIENCE_BOTTLE.getRegistryName().toString(),
-				Items.ENDER_PEARL.getRegistryName().toString(),
-				Items.SPLASH_POTION.getRegistryName().toString(),
-				Items.FISHING_ROD.getRegistryName().toString(),
-				Items.LINGERING_POTION.getRegistryName().toString()
+				Item.itemRegistry.getNameForObject(Items.snowball).toString(),
+				Item.itemRegistry.getNameForObject(Items.egg).toString(),
+				Item.itemRegistry.getNameForObject(Items.experience_bottle).toString(),
+				Item.itemRegistry.getNameForObject(Items.ender_pearl).toString(),
+				Item.itemRegistry.getNameForObject(Items.fishing_rod).toString()
 			}));
 			
 			String[] visibilities = ClientConfig.toStringArray(CrosshairVisibility.values());

@@ -30,14 +30,8 @@ public class GuiShoulderSurfingConfigFactory implements IModGuiFactory
 	}
 	
 	@Override
-	public boolean hasConfigGui()
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
 	{
-		return true;
-	}
-	
-	@Override
-	public GuiScreen createConfigGui(GuiScreen parentScreen)
-	{
-		return new GuiShoulderSurfingConfig(parentScreen);
+		return null;
 	}
 }

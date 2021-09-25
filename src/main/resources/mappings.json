@@ -3,172 +3,80 @@
         "Entity": {
             "name": "net/minecraft/entity/Entity",
             "obf": {
-                "1.12.2": "vg",
-                "1.12.1": "vg",
-                "1.12": "ve",
-                "1.11.2": "sn",
-                "1.11": "sm",
-                "1.10.2": "rw",
-                "1.9.4": "rr",
-                "1.9": "rr"
+                "1.8.9": "pk",
+                "1.8.8": "pk"
             }
         },
         "EntityPlayer": {
             "name": "net/minecraft/entity/player/EntityPlayer",
             "obf": {
-                "1.12.2": "aed",
-                "1.12.1": "aed",
-                "1.12": "aeb",
-                "1.11.2": "aay",
-                "1.11": "aax",
-                "1.10.2": "zs",
-                "1.9.4": "zj",
-                "1.9": "zj"
+                "1.8.9": "wn",
+                "1.8.8": "wn"
             }
         },
         "EntityRenderer": {
             "name": "net/minecraft/client/renderer/EntityRenderer",
             "obf": {
-                "1.12.2": "buq",
-                "1.12.1": "buq",
-                "1.12": "buo",
-                "1.11.2": "bqe",
-                "1.11": "bqc",
-                "1.10.2": "bnz",
-                "1.9.4": "bnd",
-                "1.9": "bng"
+                "1.8.9": "bfk",
+                "1.8.8": "bfk"
             }
         },
         "GameSettings": {
             "name": "net/minecraft/client/settings/GameSettings",
             "obf": {
-                "1.12.2": "bid",
-                "1.12.1": "bid",
-                "1.12": "bib",
-                "1.11.2": "beu",
-                "1.11": "bes",
-                "1.10.2": "bcz",
-                "1.9.4": "bcf",
-                "1.9": "bch"
+                "1.8.9": "avk",
+                "1.8.8": "avk"
             }
         },
         "GlStateManager": {
             "name": "net/minecraft/client/renderer/GlStateManager",
             "obf": {
-                "1.12.2": "bus",
-                "1.12.1": "bus",
-                "1.12": "buq",
-                "1.11.2": "bqg",
-                "1.11": "bqe",
-                "1.10.2": "bob",
-                "1.9.4": "bnf",
-                "1.9": "bni"
-            }
-        },
-        "GuiIngame": {
-            "name": "net/minecraft/client/gui/GuiIngame",
-            "obf": {
-                "1.12.2": "biq",
-                "1.12.1": "biq",
-                "1.12": "bio",
-                "1.11.2": "bfh",
-                "1.11": "bff",
-                "1.10.2": "bdm",
-                "1.9.4": "bcs",
-                "1.9": "bcu"
+                "1.8.9": "bfl",
+                "1.8.8": "bfl"
             }
         },
         "RayTraceResult": {
-            "name": "net/minecraft/util/math/RayTraceResult",
+            "name": "net/minecraft/util/MovingObjectPosition",
             "obf": {
-                "1.12.2": "bhc",
-                "1.12.1": "bhc",
-                "1.12": "bha",
-                "1.11.2": "bdu",
-                "1.11": "bds",
-                "1.10.2": "bbz",
-                "1.9.4": "bbg",
-                "1.9": "bbi"
+                "1.8.9": "auh",
+                "1.8.8": "auh"
             }
         },
         "WorldClient": {
             "name": "net/minecraft/client/multiplayer/WorldClient",
             "obf": {
-                "1.12.2": "bsb",
-                "1.12.1": "bsb",
-                "1.12": "brz",
-                "1.11.2": "bnq",
-                "1.11": "bno",
-                "1.10.2": "bln",
-                "1.9.4": "bks",
-                "1.9": "bku"
+                "1.8.9": "bdb",
+                "1.8.8": "bdb"
             }
         },
         "ScaledResolution": {
             "name": "net/minecraft/client/gui/ScaledResolution",
             "obf": {
-                "1.12.2": "bit",
-                "1.12.1": "bit",
-                "1.12": "bir",
-                "1.11.2": "bfk",
-                "1.11": "bfi",
-                "1.10.2": "bdp",
-                "1.9.4": "bcv",
-                "1.9": "bcx"
+                "1.8.9": "avr",
+                "1.8.8": "avr"
             }
         },
         "Vec3d": {
-            "name": "net/minecraft/util/math/Vec3d",
+            "name": "net/minecraft/util/Vec3",
             "obf": {
-                "1.12.2": "bhe",
-                "1.12.1": "bhe",
-                "1.12": "bhc",
-                "1.11.2": "bdw",
-                "1.11": "bdu",
-                "1.10.2": "bcb",
-                "1.9.4": "bbh",
-                "1.9": "bbj"
+                "1.8.9": "aui",
+                "1.8.8": "aui"
             }
         },
         "World": {
             "name": "net/minecraft/world/World",
             "obf": {
-                "1.12.2": "amu",
-                "1.12.1": "amu",
-                "1.12": "ams",
-                "1.11.2": "ajs",
-                "1.11": "ajq",
-                "1.10.2": "aid",
-                "1.9.4": "aht",
-                "1.9": "aht"
+                "1.8.9": "adm",
+                "1.8.8": "adm"
             }
         },
         "AxisAlignedBB": {
-            "name": "net/minecraft/util/math/AxisAlignedBB",
+            "name": "net/minecraft/util/AxisAlignedBB",
             "obf": {
-                "1.12.2": "bhb",
-                "1.12.1": "bhb",
-                "1.12": "bgz",
-                "1.11.2": "bdt",
-                "1.11": "bdr",
-                "1.10.2": "bby",
-                "1.9.4": "bbf",
-                "1.9": "bbh"
+                "1.8.9": "aug",
+                "1.8.8": "aug"
             }
-        },
-		"GuiCrosshairsBC": {
-			"name": "bettercombat/mod/client/gui/GuiCrosshairsBC",
-            "obf": {
-                "1.12.2": "bettercombat/mod/client/gui/GuiCrosshairsBC",
-                "1.12.1": "bettercombat/mod/client/gui/GuiCrosshairsBC",
-                "1.12": "bettercombat/mod/client/gui/GuiCrosshairsBC",
-                "1.11.2": "bettercombat/mod/main/GuiCrosshairsBC",
-                "1.11": "bettercombat/mod/main/GuiCrosshairsBC",
-                "1.10.2": "bettercombat/mod/main/GuiCrosshairsBC",
-                "1.9.4": "bettercombat/mod/main/GuiCrosshairsBC",
-                "1.9": "bettercombat/mod/main/GuiCrosshairsBC"
-            }
-		}
+        }
     },
     "methods": {
         "Entity#rayTrace": {
@@ -194,12 +102,7 @@
         "GlStateManager#translate": {
             "name": "translate",
             "desc": "(FFF)V",
-            "obf": "c"
-        },
-        "GuiIngame#renderAttackIndicator": {
-            "name": "renderAttackIndicator",
-            "desc": "(FL$ScaledResolution;)V",
-            "obf": "a"
+            "obf": "b"
         },
         "WorldClient#rayTraceBlocks": {
             "name": "rayTraceBlocks",
@@ -219,42 +122,10 @@
         "AxisAlignedBB#calculateIntercept": {
             "name": "calculateIntercept",
             "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-            "obf": {
-                "1.12.2": "b",
-                "1.12.1": "b",
-                "1.12": "b",
-                "1.11.2": "b",
-                "1.11": "b",
-                "1.10.2": "b",
-                "1.9.4": "a",
-                "1.9": "a"
-            }
-        },
-        "GuiCrosshairsBC#renderAttackIndicator": {
-            "name": "renderAttackIndicator",
-            "desc": "(FLnet/minecraft/client/gui/ScaledResolution;)V",
-            "obf": "renderAttackIndicator"
+            "obf": "a"
         }
     },
     "fields": {
-        "GameSettings#thirdPersonView": {
-            "name": "thirdPersonView",
-            "desc": "I",
-            "obf": {
-                "1.12.2": "aw",
-                "1.12.1": "aw",
-                "1.12": "aw",
-                "1.11.2": "as",
-                "1.11": "as",
-                "1.10.2": "as",
-                "1.9.4": "aq",
-                "1.9": "ap"
-            }
-        },
-        "GameSettings#thirdPersonViewSRG": {
-            "name": "thirdPersonView",
-            "desc": "I",
-            "obf": "field_74320_O"
-        }
-    }
+		
+	}
 }

@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import com.google.common.base.Predicates;
+import com.google.common.base.Predicate;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
@@ -21,14 +21,14 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,12 +36,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderSurfingHelper
 {
-	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
-	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
-	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
+	private static final Vec3 ZERO = new Vec3(0, 0, 0);
+	private static final Predicate<Entity> NOT_SPECTATING_COLLIDERS = entity ->
+	{
+		return (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) && entity != null && entity.canBeCollidedWith();
+	};
 	
 	@Nullable
-	public static Vec2f project2D(Vec3d position)
+	public static Vec2f project2D(Vec3 position)
 	{
 		FloatBuffer screen = GLAllocation.createDirectFloatBuffer(3);
 		IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
@@ -57,7 +59,7 @@ public class ShoulderSurfingHelper
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
 		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
 		
-		if(GLU.gluProject((float) position.x, (float) position.y, (float) position.z, modelview, projection, viewport, screen))
+		if(GLU.gluProject((float) position.xCoord, (float) position.yCoord, (float) position.zCoord, modelview, projection, viewport, screen))
 		{
 			return new Vec2f(screen.get(0), screen.get(1));
 		}
@@ -67,16 +69,17 @@ public class ShoulderSurfingHelper
 	
 	public static double cameraDistance(World world, double distance)
 	{
-		Vec3d view = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
-		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(distance);
+		Vec3 view = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(Minecraft.getMinecraft().timer.renderPartialTicks);
+		Vec3 cameraOffset = ShoulderSurfingHelper.cameraOffset(distance);
 		
 		for(int i = 0; i < 8; i++)
 		{
-			Vec3d offset = new Vec3d(i & 1, i >> 1 & 1, i >> 2 & 1).scale(2).subtract(1, 1, 1).scale(0.1);
-			Vec3d head = view.add(offset);
-			Vec3d camera = head.add(cameraOffset);
+			Vec3 offset = new Vec3((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2).subtract(1, 1, 1);
+			offset = new Vec3(offset.xCoord * 0.1D, offset.yCoord * 0.1D, offset.zCoord * 0.1D);
+			Vec3 head = view.add(offset);
+			Vec3 camera = head.add(cameraOffset);
 			
-			RayTraceResult result = world.rayTraceBlocks(head, camera, false, true, false);
+			MovingObjectPosition result = world.rayTraceBlocks(head, camera, false, true, false);
 			
 			if(result != null)
 			{
@@ -92,11 +95,11 @@ public class ShoulderSurfingHelper
 		return distance;
 	}
 	
-	public static RayTraceResult traceFromEyes(Entity renderView, PlayerControllerMP playerController, double playerReachOverride, final float partialTicks)
+	public static MovingObjectPosition traceFromEyes(Entity renderView, PlayerControllerMP playerController, double playerReachOverride, final float partialTicks)
 	{
 		double blockReach = Math.max(playerController.getBlockReachDistance(), playerReachOverride);
-		RayTraceResult rayTrace = renderView.rayTrace(blockReach, partialTicks);
-		Vec3d eyes = renderView.getPositionEyes(partialTicks);
+		MovingObjectPosition rayTrace = renderView.rayTrace(blockReach, partialTicks);
+		Vec3 eyes = renderView.getPositionEyes(partialTicks);
 		double entityReach = blockReach;
 		
 		if(playerController.extendedReach())
@@ -110,46 +113,46 @@ public class ShoulderSurfingHelper
 			entityReach = rayTrace.hitVec.distanceTo(eyes);
 		}
 		
-		Vec3d look = renderView.getLook(1.0F);
-		Vec3d end = eyes.addVector(look.x * blockReach, look.y * blockReach, look.z * blockReach);
+		Vec3 look = renderView.getLook(1.0F);
+		Vec3 end = eyes.addVector(look.xCoord * blockReach, look.yCoord * blockReach, look.zCoord * blockReach);
 		
-		Vec3d entityHitVec = null;
-		List<Entity> list = Minecraft.getMinecraft().world.getEntitiesInAABBexcluding(renderView, renderView.getEntityBoundingBox().expand(look.x * blockReach, look.y * blockReach, look.z * blockReach).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, e -> e != null && e.canBeCollidedWith()));
+		Vec3 entityHitVec = null;
+		List<Entity> list = Minecraft.getMinecraft().theWorld.getEntitiesInAABBexcluding(renderView, renderView.getEntityBoundingBox().expand(look.xCoord * blockReach, look.yCoord * blockReach, look.zCoord * blockReach).expand(1.0D, 1.0D, 1.0D), NOT_SPECTATING_COLLIDERS);
 		Entity pointedEntity = null;
 		double minEntityReach = entityReach;
 		
 		for(Entity entity : list)
 		{
-			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
-			RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(eyes, end);
+			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(entity.getCollisionBorderSize(), entity.getCollisionBorderSize(), entity.getCollisionBorderSize());
+			MovingObjectPosition MovingObjectPosition = axisalignedbb.calculateIntercept(eyes, end);
 			
-			if(axisalignedbb.contains(eyes))
+			if(axisalignedbb.isVecInside(eyes))
 			{
 				if(minEntityReach >= 0.0D)
 				{
 					pointedEntity = entity;
-					entityHitVec = raytraceresult == null ? eyes : raytraceresult.hitVec;
+					entityHitVec = MovingObjectPosition == null ? eyes : MovingObjectPosition.hitVec;
 					minEntityReach = 0.0D;
 				}
 			}
-			else if(raytraceresult != null)
+			else if(MovingObjectPosition != null)
 			{
-				double distanceSq = eyes.distanceTo(raytraceresult.hitVec);
+				double distanceSq = eyes.distanceTo(MovingObjectPosition.hitVec);
 				
 				if(distanceSq < minEntityReach || minEntityReach == 0.0D)
 				{
-					if(entity.getLowestRidingEntity() == renderView.getLowestRidingEntity() && !entity.canRiderInteract())
+					if(entity == renderView.ridingEntity && !entity.canRiderInteract())
 					{
 						if(minEntityReach == 0.0D)
 						{
 							pointedEntity = entity;
-							entityHitVec = raytraceresult.hitVec;
+							entityHitVec = MovingObjectPosition.hitVec;
 						}
 					}
 					else
 					{
 						pointedEntity = entity;
-						entityHitVec = raytraceresult.hitVec;
+						entityHitVec = MovingObjectPosition.hitVec;
 						minEntityReach = distanceSq;
 					}
 				}
@@ -158,18 +161,18 @@ public class ShoulderSurfingHelper
 		
 		if(pointedEntity != null && (minEntityReach < entityReach || rayTrace == null))
 		{
-			return new RayTraceResult(pointedEntity, entityHitVec);
+			return new MovingObjectPosition(pointedEntity, entityHitVec);
 		}
 		
 		return rayTrace;
 	}
 	
-	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(Entity entity, float partialTicks, double distanceSq)
+	public static Entry<Vec3, Vec3> shoulderSurfingLook(Entity entity, float partialTicks, double distanceSq)
 	{
-		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(ShoulderState.getCameraDistance());
-		Vec3d offset = ShoulderSurfingHelper.rayTraceHeadOffset(cameraOffset);
-		Vec3d start = entity.getPositionEyes(partialTicks).add(cameraOffset);
-		Vec3d look = entity.getLook(partialTicks);
+		Vec3 cameraOffset = ShoulderSurfingHelper.cameraOffset(ShoulderState.getCameraDistance());
+		Vec3 offset = ShoulderSurfingHelper.rayTraceHeadOffset(cameraOffset);
+		Vec3 start = entity.getPositionEyes(partialTicks).add(cameraOffset);
+		Vec3 look = entity.getLook(partialTicks);
 		double length = offset.lengthVector();
 		length = length * length;
 		
@@ -178,68 +181,70 @@ public class ShoulderSurfingHelper
 			distanceSq -= length;
 		}
 		
-		double distance = MathHelper.sqrt(distanceSq) + cameraOffset.distanceTo(offset);
-		Vec3d end = start.add(look.scale(distance));
+		double distance = Math.sqrt(distanceSq) + cameraOffset.distanceTo(offset);
+		look = new Vec3(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
+		Vec3 end = start.add(look);
 		
-		return new SimpleEntry<Vec3d, Vec3d>(start, end);
+		return new SimpleEntry<Vec3, Vec3>(start, end);
 	}
 	
-	public static Vec3d cameraOffset(double distance)
+	public static Vec3 cameraOffset(double distance)
 	{
-		return new Vec3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ())
+		Vec3 result = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ())
 			.rotatePitch((float) Math.toRadians(-Minecraft.getMinecraft().getRenderViewEntity().rotationPitch))
 			.rotateYaw((float) Math.toRadians(-Minecraft.getMinecraft().getRenderViewEntity().rotationYaw))
-			.normalize()
-			.scale(distance);
+			.normalize();
+		return new Vec3(result.xCoord * distance, result.yCoord * distance, result.zCoord * distance);
 	}
 	
-	public static Vec3d rayTraceHeadOffset(Vec3d cameraOffset)
+	public static Vec3 rayTraceHeadOffset(Vec3 cameraOffset)
 	{
-		Vec3d view = Minecraft.getMinecraft().getRenderViewEntity().getLookVec();
-		return ShoulderSurfingHelper.lineIntersection(Vec3d.ZERO, view, cameraOffset, view);
+		Vec3 view = Minecraft.getMinecraft().getRenderViewEntity().getLookVec();
+		return ShoulderSurfingHelper.lineIntersection(ZERO, view, cameraOffset, view);
 	}
 	
-	public static Vec3d lineIntersection(Vec3d planePoint, Vec3d planeNormal, Vec3d linePoint, Vec3d lineNormal)
+	public static Vec3 lineIntersection(Vec3 planePoint, Vec3 planeNormal, Vec3 linePoint, Vec3 lineNormal)
 	{
 		double distance = (planeNormal.dotProduct(planePoint) - planeNormal.dotProduct(linePoint)) / planeNormal.dotProduct(lineNormal);
-		return linePoint.add(lineNormal.scale(distance));
+		return linePoint.addVector(lineNormal.xCoord * distance, lineNormal.yCoord * distance, lineNormal.zCoord * distance);
 	}
 	
 	public static boolean isHoldingSpecialItem()
 	{
-		final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		
 		if(player != null)
 		{
 			List<String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
-			ItemStack stack = player.getActiveItemStack();
+			ItemStack stack = player.getHeldItem();
 			
 			if(stack != null)
 			{
 				Item current = stack.getItem();
 				
-				if(current.getPropertyGetter(PULL_PROPERTY) != null || current.getPropertyGetter(THROWING_PROPERTY) != null)
+				if(current instanceof ItemPotion && ItemPotion.isSplash(stack.getMetadata()))
+				{
+					return true;
+				}
+				else if(overrides.contains(Item.itemRegistry.getNameForObject(current).toString()))
+				{
+					return true;
+				}
+			}
+			
+			ItemStack item = player.getItemInUse();
+			
+			if(item != null)
+			{
+				Item current = stack.getItem();
+				
+				if(current instanceof ItemBow)
 				{
 					return true;
 				}
 				else if(overrides.contains(current.getRegistryName().toString()))
 				{
 					return true;
-				}
-			}
-			
-			for(ItemStack item : player.getHeldEquipment())
-			{
-				if(item != null)
-				{
-					if(item.getItem().getPropertyGetter(CHARGED_PROPERTY) != null)
-					{
-						return true;
-					}
-					else if(overrides.contains(item.getItem().getRegistryName().toString()))
-					{
-						return true;
-					}
 				}
 			}
 		}
