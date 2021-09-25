@@ -27,19 +27,19 @@ public class EntityRendererGetMouseOver2 extends ShoulderTransformer
 	@Override
 	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
-		// RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
+		// RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(Vec3, Vec32);
 		// ->
-		// RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d2.getKey(), vec3d2.getValue());
+		// RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(Vec32.getKey(), Vec32.getValue());
 		
-		AbstractInsnNode vec3d2 = method.instructions.get(offset - 1);
+		AbstractInsnNode Vec32 = method.instructions.get(offset - 1);
 		
-		if(vec3d2 instanceof VarInsnNode)
+		if(Vec32 instanceof VarInsnNode)
 		{
-			method.instructions.set(vec3d2.getPrevious(), new VarInsnNode(vec3d2.getOpcode(), ((VarInsnNode) vec3d2).var));
-			method.instructions.insertBefore(vec3d2, new MethodInsnNode(INVOKEINTERFACE, "java/util/Map$Entry", "getKey", "()Ljava/lang/Object;", true));
-			method.instructions.insertBefore(vec3d2, new TypeInsnNode(CHECKCAST, mappings.map("Vec3d", obf)));
-			method.instructions.insert(vec3d2, new TypeInsnNode(CHECKCAST, mappings.map("Vec3d", obf)));
-			method.instructions.insert(vec3d2, new MethodInsnNode(INVOKEINTERFACE, "java/util/Map$Entry", "getValue", "()Ljava/lang/Object;", true));
+			method.instructions.set(Vec32.getPrevious(), new VarInsnNode(Vec32.getOpcode(), ((VarInsnNode) Vec32).var));
+			method.instructions.insertBefore(Vec32, new MethodInsnNode(INVOKEINTERFACE, "java/util/Map$Entry", "getKey", "()Ljava/lang/Object;", true));
+			method.instructions.insertBefore(Vec32, new TypeInsnNode(CHECKCAST, mappings.map("Vec3", obf)));
+			method.instructions.insert(Vec32, new TypeInsnNode(CHECKCAST, mappings.map("Vec3", obf)));
+			method.instructions.insert(Vec32, new MethodInsnNode(INVOKEINTERFACE, "java/util/Map$Entry", "getValue", "()Ljava/lang/Object;", true));
 		}
 	}
 	

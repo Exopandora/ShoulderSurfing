@@ -56,7 +56,7 @@
                 "1.8.8": "avr"
             }
         },
-        "Vec3d": {
+        "Vec3": {
             "name": "net/minecraft/util/Vec3",
             "obf": {
                 "1.8.9": "aui",
@@ -106,22 +106,22 @@
         },
         "WorldClient#rayTraceBlocks": {
             "name": "rayTraceBlocks",
-            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "desc": "(L$Vec3;L$Vec3;)L$RayTraceResult;",
             "obf": "a"
         },
         "InjectionDelegation#getRayTraceResult": {
             "name": "getRayTraceResult",
-            "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "desc": "(L$World;L$Vec3;L$Vec3;)L$RayTraceResult;",
             "obf": "getRayTraceResult"
         },
-        "Vec3d#addVector": {
+        "Vec3#addVector": {
             "name": "addVector",
-            "desc": "(DDD)L$Vec3d;",
+            "desc": "(DDD)L$Vec3;",
             "obf": "b"
         },
         "AxisAlignedBB#calculateIntercept": {
             "name": "calculateIntercept",
-            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "desc": "(L$Vec3;L$Vec3;)L$RayTraceResult;",
             "obf": "a"
         }
     },

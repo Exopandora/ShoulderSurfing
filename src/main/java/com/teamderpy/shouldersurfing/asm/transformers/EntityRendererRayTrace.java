@@ -23,9 +23,9 @@ public class EntityRendererRayTrace extends ShoulderTransformer
 	@Override
 	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
-		// this.mc.world.rayTraceBlocks(Vec3d, Vec3d);
+		// this.mc.world.rayTraceBlocks(Vec3, Vec3);
 		// -> 
-		// InjectionDelegation.getRayTraceResult(this.mc.world, Vec3d, Vec3d);
+		// InjectionDelegation.getRayTraceResult(this.mc.world, Vec3, Vec3);
 		
 		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "getRayTraceResult", mappings.desc("InjectionDelegation#getRayTraceResult", obf), false);
 		method.instructions.set(method.instructions.get(offset), instruction);

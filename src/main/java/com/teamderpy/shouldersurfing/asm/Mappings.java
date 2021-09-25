@@ -2,7 +2,6 @@ package com.teamderpy.shouldersurfing.asm;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -45,7 +44,7 @@ public class Mappings
 		
 		if(mapping != null && mapping instanceof DescMapping)
 		{
-			return ((DescMapping) mapping).desc(this.mappings.values(), obf);
+			return ((DescMapping) mapping).desc(this.mappings, obf);
 		}
 		
 		return null;
@@ -151,14 +150,13 @@ public class Mappings
 			this.desc = desc;
 		}
 		
-		public String desc(Collection<ClassMapping> mappings, boolean obf)
+		public String desc(Map<String, ClassMapping> mappings, boolean obf)
 		{
 			String desc = this.desc;
 			
-			for(ClassMapping mapping : mappings)
+			for(Entry<String, ClassMapping> mapping : mappings.entrySet())
 			{
-				String[] split = mapping.getName().split("/");
-				desc = desc.replace("L$" + split[split.length - 1] + ";", "L" + mapping.get(obf) + ";");
+				desc = desc.replace("L$" + mapping.getKey() + ";", "L" + mapping.getValue().get(obf) + ";");
 			}
 			
 			return desc;

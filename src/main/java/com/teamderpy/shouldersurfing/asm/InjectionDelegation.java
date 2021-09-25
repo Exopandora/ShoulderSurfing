@@ -43,7 +43,7 @@ public final class InjectionDelegation
 		}
 	}
 	
-	public static MovingObjectPosition getMovingObjectPosition(World world, Vec3 vec1, Vec3 vec2)
+	public static MovingObjectPosition getRayTraceResult(World world, Vec3 vec1, Vec3 vec2)
 	{
 		return world.rayTraceBlocks(vec1, vec2, false, true, false);
 	}
