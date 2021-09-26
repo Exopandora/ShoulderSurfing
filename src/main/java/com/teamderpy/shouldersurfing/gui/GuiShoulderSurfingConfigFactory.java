@@ -17,6 +17,7 @@ public class GuiShoulderSurfingConfigFactory implements IModGuiFactory
 	/**
 	 * Compatibility
 	 */
+	@Deprecated
 	public Class<? extends GuiScreen> mainConfigGuiClass()
 	{
 		return GuiShoulderSurfingConfig.class;

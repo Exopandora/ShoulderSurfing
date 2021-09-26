@@ -3,21 +3,20 @@ package com.teamderpy.shouldersurfing.asm;
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * @author Joshua Powers <jsh.powers@yahoo.com>
- * @version 1.0
- * @since 2012-12-30
- */
-@SideOnly(Side.CLIENT)
 public class ShoulderPlugin implements IFMLLoadingPlugin
 {
 	@Override
 	public String[] getASMTransformerClass()
 	{
-		return new String[]{"com.teamderpy.shouldersurfing.asm.ShoulderTransformations"};
+		return new String[]
+		{
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityPlayerRayTrace",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver2",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererOrientCamera",
+			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererRayTrace"
+		};
 	}
 	
 	@Override
@@ -33,7 +32,10 @@ public class ShoulderPlugin implements IFMLLoadingPlugin
 	}
 	
 	@Override
-	public void injectData(Map<String, Object> data){}
+	public void injectData(Map<String, Object> data)
+	{
+		
+	}
 	
 	@Override
 	public String getAccessTransformerClass()

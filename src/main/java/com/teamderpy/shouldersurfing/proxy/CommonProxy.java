@@ -1,10 +1,23 @@
 package com.teamderpy.shouldersurfing.proxy;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@SideOnly(Side.CLIENT)
 public class CommonProxy
 {
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		
+	}
 	
+	public void init(FMLInitializationEvent event)
+	{
+		
+	}
+	
+	public void loadComplete(FMLLoadCompleteEvent event)
+	{
+		
+	}
 }

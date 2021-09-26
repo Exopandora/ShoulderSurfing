@@ -1,0 +1,98 @@
+{
+    "classes": {
+        "EntityLivingBase": {
+            "name": "net/minecraft/entity/EntityLivingBase",
+            "obf": {
+                "1.7.10": "sv"
+            }
+        },
+        "EntityPlayer": {
+            "name": "net/minecraft/entity/player/EntityPlayer",
+            "obf": {
+                "1.7.10": "yz"
+            }
+        },
+        "EntityRenderer": {
+            "name": "net/minecraft/client/renderer/EntityRenderer",
+            "obf": {
+                "1.7.10": "blt"
+            }
+        },
+        "RayTraceResult": {
+            "name": "net/minecraft/util/MovingObjectPosition",
+            "obf": {
+                "1.7.10": "azu"
+            }
+        },
+        "WorldClient": {
+            "name": "net/minecraft/client/multiplayer/WorldClient",
+            "obf": {
+                "1.7.10": "bjf"
+            }
+        },
+        "ScaledResolution": {
+            "name": "net/minecraft/client/gui/ScaledResolution",
+            "obf": {
+                "1.7.10": "bca"
+            }
+        },
+        "Vec3d": {
+            "name": "net/minecraft/util/Vec3",
+            "obf": {
+                "1.7.10": "azw"
+            }
+        },
+        "World": {
+            "name": "net/minecraft/world/World",
+            "obf": {
+                "1.7.10": "ahb"
+            }
+        },
+        "AxisAlignedBB": {
+            "name": "net/minecraft/util/AxisAlignedBB",
+            "obf": {
+                "1.7.10": "azt"
+            }
+        }
+    },
+    "methods": {
+        "EntityLivingBase#rayTrace": {
+            "name": "rayTrace",
+            "desc": "(DF)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "EntityRenderer#getMouseOver": {
+            "name": "getMouseOver",
+            "desc": "(F)V",
+            "obf": "a"
+        },
+        "EntityRenderer#orientCamera": {
+            "name": "orientCamera",
+            "desc": "(F)V",
+            "obf": "h"
+        },
+        "WorldClient#rayTraceBlocks": {
+            "name": "rayTraceBlocks",
+            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "InjectionDelegation#getRayTraceResult": {
+            "name": "getRayTraceResult",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": "getRayTraceResult"
+        },
+        "Vec3d#addVector": {
+            "name": "addVector",
+            "desc": "(DDD)L$Vec3d;",
+            "obf": "c"
+        },
+        "AxisAlignedBB#calculateIntercept": {
+            "name": "calculateIntercept",
+            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": "a"
+        }
+    },
+    "fields": {
+		
+	}
+}

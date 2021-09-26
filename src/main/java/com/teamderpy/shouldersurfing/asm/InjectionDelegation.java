@@ -1,147 +1,81 @@
 package com.teamderpy.shouldersurfing.asm;
 
-import com.teamderpy.shouldersurfing.ShoulderCamera;
-import com.teamderpy.shouldersurfing.ShoulderSettings;
-import com.teamderpy.shouldersurfing.math.VectorConverter;
-import com.teamderpy.shouldersurfing.renderer.ShoulderRenderBin;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
+
+import org.lwjgl.opengl.GL11;
+
+import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.util.ShoulderState;
+import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-/**
- * @author Joshua Powers <jsh.powers@yahoo.com>
- * @version 1.0
- * @since 2013-01-14
- * 
- *        Injected code is delegated here
- */
 @SideOnly(Side.CLIENT)
 public final class InjectionDelegation
 {
-	/**
-	 * Called by injected code to modify the camera rotation
-	 */
-	public static float getShoulderRotation()
-	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-		{
-			return ShoulderCamera.SHOULDER_ROTATION;
-		}
-		
-		return 0F;
-	}
+	// XXX Forge Hooks
+	// public static MovingObjectPosition rayTraceEyes(EntityLivingBase entity, double length)
+	// public static Vec3 rayTraceEyeHitVec(EntityLivingBase entity, double length)
 	
-	/**
-	 * Called by injected code to modify the camera zoom
-	 */
-	public static float getShoulderZoomMod()
+	public static void cameraSetup(float x, float y, float z)
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
-		{
-			return ShoulderCamera.SHOULDER_ZOOM_MOD;
-		}
+		final World world = Minecraft.getMinecraft().theWorld;
 		
-		return 1.0F;
-	}
-	
-	/**
-	 * Called by injected code to project a raytrace hit to the screen
-	 */
-	public static void calculateRayTraceProjection()
-	{
-		if(ShoulderRenderBin.rayTraceHit != null)
+		if(ShoulderState.doShoulderSurfing() && world != null)
 		{
-			ShoulderRenderBin.projectedVector = VectorConverter.project2D((float) (ShoulderRenderBin.rayTraceHit.xCoord), (float) (ShoulderRenderBin.rayTraceHit.yCoord), (float) (ShoulderRenderBin.rayTraceHit.zCoord));
+			Vec3 offset = Vec3.createVectorHelper(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
+			double distance = ShoulderSurfingHelper.cameraDistance(world, offset.lengthVector());
+			Vec3 scaled = offset.normalize();
+			scaled = Vec3.createVectorHelper(scaled.xCoord * distance, scaled.yCoord * distance, scaled.zCoord * distance);
 			
-			ShoulderRenderBin.rayTraceHit = null;
+			ShoulderState.setCameraDistance(distance);
+			GL11.glTranslated(scaled.xCoord, scaled.yCoord, scaled.zCoord);
 		}
-	}
-	
-	/**
-	 * Called by injected code to determine whether the camera is too close to
-	 * the player
-	 */
-	public static void verifyReverseBlockDist(double distance)
-	{
-		if(distance < 0.80 && ShoulderSettings.HIDE_PLAYER_IF_TOO_CLOSE_TO_CAMERA)
+		else
 		{
-			ShoulderRenderBin.skipPlayerRender = true;
+			GL11.glTranslated(x, y, z);
 		}
 	}
 	
-	/**
-	 * Called by injected code to perform the ray trace
-	 */
 	public static MovingObjectPosition getRayTraceResult(World world, Vec3 vec1, Vec3 vec2)
 	{
-		if(ShoulderSettings.IGNORE_BLOCKS_WITHOUT_COLLISION)
-		{
-			return world.func_147447_a(vec1, vec2, false, true, false);
-		}
-		
-		return world.rayTraceBlocks(vec1, vec2);
+		return world.func_147447_a(vec1, vec2, false, true, false);
 	}
 	
-	/**
-	 * Called by injected code to get the maximum value for third person
-	 */
-	public static int getMax3ppId()
+	public static MovingObjectPosition rayTrace(EntityLivingBase entity, double blockReachDistance, float partialTicks)
 	{
-		if(ShoulderSettings.REPLACE_DEFAULT_3PP)
+		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			return 2;
+			Entry<Vec3, Vec3> look = ShoulderSurfingHelper.shoulderSurfingLook(entity, partialTicks, blockReachDistance * blockReachDistance);
+			return entity.worldObj.func_147447_a(look.getKey(), look.getValue(), false, false, true);
 		}
 		
-		return 3;
+		Vec3 eyes = entity.getPosition(partialTicks);
+		Vec3 look = entity.getLook(partialTicks);
+		Vec3 end = eyes.addVector(look.xCoord * blockReachDistance, look.yCoord * blockReachDistance, look.zCoord * blockReachDistance);
+		
+		return entity.worldObj.func_147447_a(eyes, end, false, false, true);
 	}
 	
-	/**
-	 * Called by injected code to get the maximum possible distance for the camera
-	 */
-	public static double checkDistance(double distance, float yaw, double posX, double posY, double posZ, double cameraXoffset, double cameraYoffset, double cameraZoffset)
+	public static Entry<Vec3, Vec3> shoulderSurfingLook(double blockReach)
 	{
-		if(Minecraft.getMinecraft().gameSettings.thirdPersonView == ShoulderSettings.getShoulderSurfing3ppId())
+		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			double result = distance;
-			float radiant = (float) (Math.PI / 180F);
-			float offset = InjectionDelegation.getShoulderRotation();
-			float oldYaw = yaw - offset;
-			
-			double length = MathHelper.cos((-90.0F - offset) * radiant) * distance;
-			double addX = MathHelper.cos(oldYaw * radiant) * length;
-			double addZ = MathHelper.sin(oldYaw * radiant) * length;
-			
-			for(int i = 0; i < 8; i++)
-			{
-				float offsetX = (float)((i & 1) * 2 - 1);
-				float offsetY = (float)((i >> 1 & 1) * 2 - 1);
-				float offsetZ = (float)((i >> 2 & 1) * 2 - 1);
-				
-				offsetX = offsetX * 0.1F;
-				offsetY = offsetY * 0.1F;
-				offsetZ = offsetZ * 0.1F;
-				
-				MovingObjectPosition raytraceresult = getRayTraceResult(Minecraft.getMinecraft().theWorld, Vec3.createVectorHelper(posX + offsetX, posY + offsetY, posZ + offsetZ), Vec3.createVectorHelper(posX - (cameraXoffset + addX) + offsetX + offsetZ, posY - cameraYoffset + offsetY, posZ - (cameraZoffset + addZ) + offsetZ));					
-				
-				if(raytraceresult != null)
-				{
-					double newDistance = raytraceresult.hitVec.distanceTo(Vec3.createVectorHelper(posX, posY, posZ));
-					
-					if(newDistance < result)
-					{
-						result = newDistance;
-					}
-				}
-			}
-			
-			return result;
+			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().renderViewEntity, Minecraft.getMinecraft().timer.renderPartialTicks, blockReach);
 		}
 		
-		return distance;
+		EntityLivingBase renderView = Minecraft.getMinecraft().renderViewEntity;
+		Vec3 look = renderView.getLook(1.0F);
+        Vec3 start = renderView.getPosition(Minecraft.getMinecraft().timer.renderPartialTicks);
+        Vec3 end = start.addVector(look.xCoord * blockReach, look.yCoord * blockReach, look.zCoord * blockReach);
+        
+        return new SimpleEntry<Vec3, Vec3>(start, end);
 	}
 }
