@@ -21,13 +21,6 @@
                 "1.8.8": "bfk"
             }
         },
-        "GameSettings": {
-            "name": "net/minecraft/client/settings/GameSettings",
-            "obf": {
-                "1.8.9": "avk",
-                "1.8.8": "avk"
-            }
-        },
         "GlStateManager": {
             "name": "net/minecraft/client/renderer/GlStateManager",
             "obf": {
