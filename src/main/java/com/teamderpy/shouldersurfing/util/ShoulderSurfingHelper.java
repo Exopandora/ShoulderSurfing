@@ -222,7 +222,7 @@ public class ShoulderSurfingHelper
 				{
 					return true;
 				}
-				else if(overrides.contains(Item.itemRegistry.getNameForObject(current).toString()))
+				else if(overrides.contains(current.delegate.name()))
 				{
 					return true;
 				}
@@ -238,7 +238,7 @@ public class ShoulderSurfingHelper
 				{
 					return true;
 				}
-				else if(overrides.contains(Item.itemRegistry.getNameForObject(current).toString()))
+				else if(overrides.contains(current.delegate.name()))
 				{
 					return true;
 				}

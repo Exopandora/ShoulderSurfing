@@ -11,7 +11,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
@@ -391,11 +390,11 @@ public class Config
 			
 			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive Crosshair Items", new String[]
 			{
-				Item.itemRegistry.getNameForObject(Items.snowball).toString(),
-				Item.itemRegistry.getNameForObject(Items.egg).toString(),
-				Item.itemRegistry.getNameForObject(Items.experience_bottle).toString(),
-				Item.itemRegistry.getNameForObject(Items.ender_pearl).toString(),
-				Item.itemRegistry.getNameForObject(Items.fishing_rod).toString()
+				Items.snowball.delegate.name(),
+				Items.egg.delegate.name(),
+				Items.experience_bottle.delegate.name(),
+				Items.ender_pearl.delegate.name(),
+				Items.fishing_rod.delegate.name()
 			}));
 			
 			String[] visibilities = ClientConfig.toStringArray(CrosshairVisibility.values());
@@ -437,13 +436,12 @@ public class Config
 	private static interface ConfigValue<T>
 	{
 		void set(T value);
-		
 		T get();
 	}
 	
 	private static class EnumValue<T extends Enum<T>> implements ConfigValue<T>
 	{
-		private Property property;
+		private final Property property;
 		private T value;
 		
 		public EnumValue(Property property, Class<T> klass)
@@ -452,12 +450,14 @@ public class Config
 			this.value = this.valueOf(klass, property.getString());
 		}
 		
+		@Override
 		public void set(T value)
 		{
 			this.value = value;
 			this.property.set(this.value.toString());
 		}
 		
+		@Override
 		public T get()
 		{
 			return this.value;
@@ -478,7 +478,7 @@ public class Config
 	
 	private static class BooleanValue implements ConfigValue<Boolean>
 	{
-		private Property property;
+		private final Property property;
 		private boolean value;
 		
 		public BooleanValue(Property property)
@@ -487,12 +487,14 @@ public class Config
 			this.value = property.getBoolean();
 		}
 		
+		@Override
 		public void set(Boolean value)
 		{
 			this.value = value;
 			this.property.set(this.value);
 		}
 		
+		@Override
 		public Boolean get()
 		{
 			return this.value;
@@ -510,12 +512,14 @@ public class Config
 			this.value = property.getDouble();
 		}
 		
+		@Override
 		public void set(Double value)
 		{
 			this.value = value;
 			this.property.set(this.value);
 		}
 		
+		@Override
 		public Double get()
 		{
 			return this.value;
