@@ -171,7 +171,7 @@ public class ShoulderSurfingHelper
 		Vec3d start = entity.getPositionEyes(partialTicks).add(cameraOffset);
 		Vec3d look = entity.getLook(partialTicks);
 		double length = offset.lengthVector();
-		length = length * length;
+		length *= length;
 		
 		if(Config.CLIENT.limitPlayerReach() && length < distanceSq)
 		{
