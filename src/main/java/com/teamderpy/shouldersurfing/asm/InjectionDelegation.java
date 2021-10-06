@@ -67,7 +67,7 @@ public final class InjectionDelegation
 	{
 		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().timer.renderPartialTicks, blockReach);
+			return ShoulderSurfingHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), Minecraft.getMinecraft().timer.renderPartialTicks, blockReach * blockReach);
 		}
 		
 		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
