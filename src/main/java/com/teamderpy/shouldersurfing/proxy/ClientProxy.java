@@ -9,6 +9,7 @@ import com.teamderpy.shouldersurfing.util.ShoulderState;
 import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,8 +27,10 @@ public class ClientProxy extends CommonProxy
 		Config.CLIENT = new ClientConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		ShoulderSurfingHelper.setPerspective(Config.CLIENT.getDefaultPerspective());
 		
+		KeyHandler keyHandler = new KeyHandler();
+		FMLCommonHandler.instance().bus().register(keyHandler);
+		MinecraftForge.EVENT_BUS.register(keyHandler);
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-		MinecraftForge.EVENT_BUS.register(new KeyHandler());
 	}
 	
 	@Override
