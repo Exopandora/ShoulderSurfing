@@ -23,8 +23,8 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Crashlogs**
-Add the crash log from the game (You can force a crash py pressing `F3` + `C` for 10 seconds while ingame)
+**Logs**
+Add the logs from the game here. To force a crash press `F3` + `C` for 10 seconds while ingame.
 
 **Other mods**
 If applicable, add a list of mods that cause the bug. (You can i.e. find this out with a binary search)
