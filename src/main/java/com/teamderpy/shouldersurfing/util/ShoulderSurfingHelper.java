@@ -97,7 +97,6 @@ public class ShoulderSurfingHelper
 		
 		HitResult blockTrace = renderView.pick(blockReach, partialTicks, false);
 		Vec3 eyes = renderView.getEyePosition(partialTicks);
-		
 		double entityReach = blockReach;
 		
 		if(gameMode.hasFarPickRange())
@@ -115,7 +114,6 @@ public class ShoulderSurfingHelper
 		
 		Vec3 look = renderView.getViewVector(1.0F);
 		Vec3 end = eyes.add(look.scale(blockReach));
-		
 		AABB aabb = renderView.getBoundingBox().expandTowards(look.scale(blockReach)).inflate(1.0D, 1.0D, 1.0D);
 		EntityHitResult entityTrace = ProjectileUtil.getEntityHitResult(renderView, eyes, end, aabb, entity -> !entity.isSpectator() && entity.isPickable(), entityReach);
 		
@@ -209,15 +207,5 @@ public class ShoulderSurfingHelper
 	{
 		Minecraft.getInstance().options.setCameraType(perspective.getCameraType());
 		ShoulderState.setEnabled(Perspective.SHOULDER_SURFING.equals(perspective));
-	}
-	
-	public static float getShadersResMul()
-	{
-		if(ShoulderState.doShaders())
-		{
-			return net.optifine.shaders.Shaders.shaderPackLoaded ? net.optifine.shaders.Shaders.configRenderResMul : 1.0F;
-		}
-		
-		return 1.0F;
 	}
 }

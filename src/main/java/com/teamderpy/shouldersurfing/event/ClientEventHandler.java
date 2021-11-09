@@ -70,7 +70,7 @@ public class ClientEventHandler
 		{
 			if(ShoulderState.getProjected() != null)
 			{
-				float scale = event.getWindow().calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode()) * ShoulderSurfingHelper.getShadersResMul();
+				float scale = event.getWindow().calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode());
 				
 				Vec2f window = new Vec2f(event.getWindow().getGuiScaledWidth(), event.getWindow().getGuiScaledHeight());
 				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels

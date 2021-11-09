@@ -10,7 +10,6 @@ public class ShoulderState
 	private static boolean enabled;
 	private static boolean switchPerspective;
 	private static boolean isAiming;
-	private static boolean shaders = isClassLoaded("net.optifine.shaders.Shaders");
 	
 	private static Vec2f lastTranslation = Vec2f.ZERO;
 	private static Vec2f translation = Vec2f.ZERO;
@@ -91,22 +90,5 @@ public class ShoulderState
 	public static boolean doShoulderSurfing()
 	{
 		return ShoulderState.enabled && CameraType.THIRD_PERSON_BACK.equals(Minecraft.getInstance().options.getCameraType());
-	}
-	
-	public static boolean doShaders()
-	{
-		return ShoulderState.shaders;
-	}
-	
-	private static boolean isClassLoaded(String className)
-	{
-		try
-		{
-			return Class.forName(className) != null;
-		}
-		catch(ClassNotFoundException e)
-		{
-			return false;
-		}
 	}
 }
