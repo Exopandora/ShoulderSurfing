@@ -1,6 +1,5 @@
 package com.teamderpy.shouldersurfing.event;
 
-
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.teamderpy.shouldersurfing.config.Config;
@@ -18,8 +17,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -100,17 +99,17 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void cameraSetup(CameraSetup event)
+	public static void cameraSetupEvent(CameraSetup event)
 	{
 		final Level level = Minecraft.getInstance().level;
 		
 		if(ShoulderState.doShoulderSurfing() && level != null)
 		{
-			final Camera camera = event.getInfo();
+			final Camera camera = event.getCamera();
 			
-			double x = Mth.lerp(event.getRenderPartialTicks(), camera.getEntity().xo, camera.getEntity().getX());
-			double y = Mth.lerp(event.getRenderPartialTicks(), camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(event.getRenderPartialTicks(), camera.eyeHeightOld, camera.eyeHeight);
-			double z = Mth.lerp(event.getRenderPartialTicks(), camera.getEntity().zo, camera.getEntity().getZ());
+			double x = Mth.lerp(event.getPartialTicks(), camera.getEntity().xo, camera.getEntity().getX());
+			double y = Mth.lerp(event.getPartialTicks(), camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(event.getPartialTicks(), camera.eyeHeightOld, camera.eyeHeight);
+			double z = Mth.lerp(event.getPartialTicks(), camera.getEntity().zo, camera.getEntity().getZ());
 			
 			camera.setPosition(x, y, z);
 			
@@ -125,7 +124,7 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void renderWorldLast(RenderWorldLastEvent event)
+	public static void renderLevelLastEvent(RenderLevelLastEvent event)
 	{
 		final Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
 		final MultiPlayerGameMode controller = Minecraft.getInstance().gameMode;
@@ -133,9 +132,9 @@ public class ClientEventHandler
 		if(ShoulderState.doShoulderSurfing())
 		{
 			double playerReach = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
-			HitResult result = ShoulderSurfingHelper.traceFromEyes(camera.getEntity(), controller, playerReach, event.getPartialTicks());
+			HitResult result = ShoulderSurfingHelper.traceFromEyes(camera.getEntity(), controller, playerReach, event.getPartialTick());
 			Vec3 position = result.getLocation().subtract(camera.getPosition());
-			Matrix4f modelView = event.getMatrixStack().last().pose();
+			Matrix4f modelView = event.getPoseStack().last().pose();
 			Matrix4f projection = event.getProjectionMatrix();
 			
 			ShoulderState.setProjected(ShoulderSurfingHelper.project2D(position, modelView, projection));
