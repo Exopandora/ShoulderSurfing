@@ -24,14 +24,14 @@ public final class InjectionDelegation
 	// public static RayTraceResult rayTraceEyes(EntityLivingBase entity, double length)
 	// public static Vec3d rayTraceEyeHitVec(EntityLivingBase entity, double length)
 	
-	public static void cameraSetup(float x, float y, float z)
+	public static void cameraSetup(float x, float y, float z, float yaw, float pitch)
 	{
 		final World world = Minecraft.getMinecraft().world;
 		
 		if(ShoulderState.doShoulderSurfing() && world != null)
 		{
 			Vec3d offset = new Vec3d(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
-			double distance = ShoulderSurfingHelper.cameraDistance(world, offset.lengthVector());
+			double distance = ShoulderSurfingHelper.cameraDistance(world, offset.lengthVector(), yaw, pitch);
 			Vec3d scaled = offset.normalize().scale(distance);
 			
 			ShoulderState.setCameraDistance(distance);

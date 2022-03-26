@@ -65,17 +65,16 @@ public class ShoulderSurfingHelper
 		return null;
 	}
 	
-	public static double cameraDistance(World world, double distance)
+	public static double cameraDistance(World world, double distance, float yaw, float pitch)
 	{
 		Vec3d view = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
-		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(distance);
+		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(distance, yaw, pitch);
 		
 		for(int i = 0; i < 8; i++)
 		{
 			Vec3d offset = new Vec3d(i & 1, i >> 1 & 1, i >> 2 & 1).scale(2).subtract(1, 1, 1).scale(0.1);
 			Vec3d head = view.add(offset);
 			Vec3d camera = head.add(cameraOffset);
-			
 			RayTraceResult result = world.rayTraceBlocks(head, camera, false, true, false);
 			
 			if(result != null)
@@ -166,7 +165,7 @@ public class ShoulderSurfingHelper
 	
 	public static Entry<Vec3d, Vec3d> shoulderSurfingLook(Entity entity, float partialTicks, double distanceSq)
 	{
-		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(ShoulderState.getCameraDistance());
+		Vec3d cameraOffset = ShoulderSurfingHelper.cameraOffset(ShoulderState.getCameraDistance(), entity.rotationYaw, entity.rotationPitch);
 		Vec3d offset = ShoulderSurfingHelper.rayTraceHeadOffset(cameraOffset);
 		Vec3d start = entity.getPositionEyes(partialTicks).add(cameraOffset);
 		Vec3d look = entity.getLook(partialTicks);
@@ -184,11 +183,11 @@ public class ShoulderSurfingHelper
 		return new SimpleEntry<Vec3d, Vec3d>(start, end);
 	}
 	
-	public static Vec3d cameraOffset(double distance)
+	public static Vec3d cameraOffset(double distance, float yaw, float pitch)
 	{
 		return new Vec3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ())
-			.rotatePitch((float) Math.toRadians(-Minecraft.getMinecraft().getRenderViewEntity().rotationPitch))
-			.rotateYaw((float) Math.toRadians(-Minecraft.getMinecraft().getRenderViewEntity().rotationYaw))
+			.rotatePitch((float) Math.toRadians(-pitch))
+			.rotateYaw((float) Math.toRadians(-yaw))
 			.normalize()
 			.scale(distance);
 	}
