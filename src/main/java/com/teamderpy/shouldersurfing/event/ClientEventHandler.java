@@ -69,11 +69,11 @@ public class ClientEventHandler
 		{
 			if(ShoulderState.getProjected() != null)
 			{
-				float scale = event.getWindow().calculateScale(Minecraft.getInstance().options.guiScale, Minecraft.getInstance().isEnforceUnicode());
-				
-				Vec2f window = new Vec2f(event.getWindow().getGuiScaledWidth(), event.getWindow().getGuiScaledHeight());
-				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
-				Vec2f projectedOffset = ShoulderState.getProjected().subtract(center).divide(scale);
+				Vec2f scaledWindow = new Vec2f(event.getWindow().getGuiScaledWidth(), event.getWindow().getGuiScaledHeight());
+				Vec2f window = new Vec2f(event.getWindow().getScreenWidth(), event.getWindow().getScreenHeight());
+				Vec2f scale = scaledWindow.divide(window);
+				Vec2f center = window.divide(2); // In actual monitor pixels
+				Vec2f projectedOffset = ShoulderState.getProjected().subtract(center).scale(scale);
 				Vec2f lastTranslation = ShoulderState.getLastTranslation();
 				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(event.getPartialTicks());
 				

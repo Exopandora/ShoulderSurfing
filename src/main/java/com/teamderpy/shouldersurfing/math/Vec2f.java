@@ -43,9 +43,19 @@ public class Vec2f
 		return new Vec2f(this.x * scale, this.y * scale);
 	}
 	
+	public Vec2f scale(Vec2f vec)
+	{
+		return new Vec2f(this.x * vec.x, this.y * vec.y);
+	}
+	
 	public Vec2f divide(float div)
 	{
 		return new Vec2f(this.x / div, this.y / div);
+	}
+	
+	public Vec2f divide(Vec2f vec)
+	{
+		return new Vec2f(this.x / vec.x, this.y / vec.y);
 	}
 	
 	@Override
