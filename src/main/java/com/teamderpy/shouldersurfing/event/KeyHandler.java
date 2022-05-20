@@ -33,7 +33,7 @@ public class KeyHandler
 	{
 		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
 		{
-			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isDown())
+			if(KEYBIND_TOGGLE_SHOULDER_SURFING.consumeClick())
 			{
 				if(ShoulderState.doShoulderSurfing())
 				{
