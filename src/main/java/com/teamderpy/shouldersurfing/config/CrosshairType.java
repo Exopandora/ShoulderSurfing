@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.config;
 
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
+import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 
 public enum CrosshairType
 {
@@ -13,7 +13,7 @@ public enum CrosshairType
 	{
 		if(this == CrosshairType.ADAPTIVE)
 		{
-			return ShoulderSurfingHelper.isHoldingSpecialItem();
+			return ShoulderHelper.isHoldingSpecialItem();
 		}
 		else if(this == CrosshairType.DYNAMIC)
 		{
@@ -27,7 +27,7 @@ public enum CrosshairType
 	{
 		if(this == CrosshairType.STATIC_WITH_1PP)
 		{
-			return ShoulderSurfingHelper.isHoldingSpecialItem();
+			return ShoulderHelper.isHoldingSpecialItem();
 		}
 		
 		return false;

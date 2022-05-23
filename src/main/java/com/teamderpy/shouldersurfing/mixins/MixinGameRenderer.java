@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.mojang.datafixers.util.Pair;
+import com.teamderpy.shouldersurfing.client.ShoulderHelper;
+import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
+import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.util.ShoulderState;
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -38,10 +38,10 @@ public class MixinGameRenderer
 	)
 	private EntityHitResult getEntityHitResult(Entity shooter, Vec3 startVec, Vec3 endVec, AABB boundingBox, Predicate<Entity> filter, double distanceSq)
 	{
-		if(ShoulderState.doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			Pair<Vec3, Vec3> look = ShoulderSurfingHelper.shoulderSurfingLook(this.mainCamera, shooter, Minecraft.getInstance().getFrameTime(), distanceSq);
-			return ProjectileUtil.getEntityHitResult(shooter, look.getSecond(), look.getFirst(), boundingBox, filter, distanceSq);
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(this.mainCamera, shooter, Minecraft.getInstance().getFrameTime(), distanceSq);
+			return ProjectileUtil.getEntityHitResult(shooter, look.traceEndPos(), look.cameraPos(), boundingBox, filter, distanceSq);
 		}
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);

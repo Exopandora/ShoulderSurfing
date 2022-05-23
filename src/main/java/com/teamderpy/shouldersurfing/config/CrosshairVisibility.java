@@ -1,6 +1,7 @@
 package com.teamderpy.shouldersurfing.config;
 
-import net.minecraft.client.Minecraft;
+import javax.annotation.Nullable;
+
 import net.minecraft.world.phys.HitResult;
 
 public enum CrosshairVisibility
@@ -11,7 +12,7 @@ public enum CrosshairVisibility
 	WHEN_IN_RANGE,
 	WHEN_AIMING_OR_IN_RANGE;
 	
-	public boolean doRender(boolean isAiming)
+	public boolean doRender(@Nullable HitResult hitResult, boolean isAiming)
 	{
 		if(this == CrosshairVisibility.NEVER)
 		{
@@ -23,11 +24,11 @@ public enum CrosshairVisibility
 		}
 		else if(this == CrosshairVisibility.WHEN_IN_RANGE)
 		{
-			return Minecraft.getInstance().hitResult != null && !HitResult.Type.MISS.equals(Minecraft.getInstance().hitResult.getType());
+			return hitResult != null && !HitResult.Type.MISS.equals(hitResult.getType());
 		}
 		else if(this == CrosshairVisibility.WHEN_AIMING_OR_IN_RANGE)
 		{
-			return CrosshairVisibility.WHEN_IN_RANGE.doRender(isAiming) || CrosshairVisibility.WHEN_AIMING.doRender(isAiming);
+			return CrosshairVisibility.WHEN_IN_RANGE.doRender(hitResult, isAiming) || CrosshairVisibility.WHEN_AIMING.doRender(hitResult, isAiming);
 		}
 		
 		return true;

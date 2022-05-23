@@ -1,8 +1,8 @@
 package com.teamderpy.shouldersurfing;
 
+import com.teamderpy.shouldersurfing.client.ClientEventHandler;
+import com.teamderpy.shouldersurfing.client.KeyHandler;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.event.ClientEventHandler;
-import com.teamderpy.shouldersurfing.event.KeyHandler;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
@@ -44,12 +44,13 @@ public class ShoulderSurfing
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
 		
-		MinecraftForge.EVENT_BUS.addListener(KeyHandler::keyInputEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
-		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGameOverlayEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::cameraSetupEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelLastEvent);
+		ClientEventHandler clientEventHandler = new ClientEventHandler();
+		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::keyInputEvent);
+		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::preRenderPlayerEvent);
+		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::clientTickEvent);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, clientEventHandler::preRenderGameOverlayEvent);
+		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::cameraSetupEvent);
+		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::renderLevelLastEvent);
 	}
 	
 	private void setupClientConfig()
