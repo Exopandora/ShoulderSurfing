@@ -46,12 +46,12 @@ public class ClientEventHandler
 	{
 		if(ForgeIngameGui.CROSSHAIR_ELEMENT.equals(event.getOverlay()))
 		{
-			this.shoulderRenderer.offsetCrosshair(event.getMatrixStack(), event.getWindow(), event.getPartialTicks());
+			this.shoulderRenderer.offsetCrosshair(event.getPoseStack(), event.getWindow(), event.getPartialTick());
 		}
 		//Using BOSS_HEALTH_ELEMENT to pop matrix because when CROSSHAIR_ELEMENT is cancelled it will not fire RenderGameOverlayEvent#PreLayer and cause a stack overflow
 		else if(ForgeIngameGui.BOSS_HEALTH_ELEMENT.equals(event.getOverlay()))
 		{
-			this.shoulderRenderer.clearCrosshairOffset(event.getMatrixStack());
+			this.shoulderRenderer.clearCrosshairOffset(event.getPoseStack());
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class ClientEventHandler
 	@SuppressWarnings("resource")
 	public void cameraSetupEvent(CameraSetup event)
 	{
-		this.shoulderRenderer.offsetCamera(event.getCamera(), Minecraft.getInstance().level, event.getPartialTicks());
+		this.shoulderRenderer.offsetCamera(event.getCamera(), Minecraft.getInstance().level, event.getPartialTick());
 	}
 	
 	@SubscribeEvent

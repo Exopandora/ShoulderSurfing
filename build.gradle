@@ -9,7 +9,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
 		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
 	}
 }
@@ -41,7 +41,7 @@ mixin {
 	config 'shouldersurfing.mixins.json'
 }
 
-version = '1.18.2-2.2.3'
+version = '1.19-2.2.3'
 group = 'com.teamderpy.shouldersurfing' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ShoulderSurfing'
 
@@ -60,7 +60,7 @@ minecraft {
 	//
 	// Use non-default mappings at your own risk. they may not always work.
 	// Simply re-run your setup task after changing the mappings to update your workspace.
-	mappings channel: 'official', version: '1.18.2'
+	mappings channel: 'official', version: '1.19'
 	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 	
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -109,6 +109,8 @@ minecraft {
 			// Recommended logging level for the console
 			// property 'forge.logging.console.level', 'debug'
 			
+			args '--mod', 'shouldersurfing', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+			
 			mods {
 				shouldersurfing {
 					source sourceSets.main
@@ -135,7 +137,7 @@ dependencies {
 	// Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
 	// that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
 	// The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.2'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.1'
 	
 	// You may put jars on which you depend on in ./libs or you may define them like so..
 	// compile "some.group:artifact:version:classifier"

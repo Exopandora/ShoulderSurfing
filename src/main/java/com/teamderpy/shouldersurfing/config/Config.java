@@ -13,6 +13,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Config
 {
@@ -187,13 +188,13 @@ public class Config
 					.defineList("adaptive_crosshair_items", () ->
 					{
 						List<String> items = new ArrayList<String>();
-						items.add(Items.SNOWBALL.getRegistryName().toString());
-						items.add(Items.EGG.getRegistryName().toString());
-						items.add(Items.EXPERIENCE_BOTTLE.getRegistryName().toString());
-						items.add(Items.ENDER_PEARL.getRegistryName().toString());
-						items.add(Items.SPLASH_POTION.getRegistryName().toString());
-						items.add(Items.FISHING_ROD.getRegistryName().toString());
-						items.add(Items.LINGERING_POTION.getRegistryName().toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.SNOWBALL).toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.EGG).toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.EXPERIENCE_BOTTLE).toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.ENDER_PEARL).toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.SPLASH_POTION).toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.FISHING_ROD).toString());
+						items.add(ForgeRegistries.ITEMS.getKey(Items.LINGERING_POTION).toString());
 						return items;
 					}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			

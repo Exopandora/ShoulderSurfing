@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShoulderHelper
 {
@@ -73,7 +74,7 @@ public class ShoulderHelper
 			{
 				return true;
 			}
-			else if(overrides.contains(current.getRegistryName().toString()))
+			else if(overrides.contains(ForgeRegistries.ITEMS.getKey(current).toString()))
 			{
 				return true;
 			}
@@ -84,7 +85,7 @@ public class ShoulderHelper
 				{
 					return true;
 				}
-				else if(overrides.contains(item.getItem().getRegistryName().toString()))
+				else if(overrides.contains(ForgeRegistries.ITEMS.getKey(current).toString()))
 				{
 					return true;
 				}
