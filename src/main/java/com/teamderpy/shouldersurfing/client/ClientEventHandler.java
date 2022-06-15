@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.client;
 
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.Perspective;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
@@ -13,15 +12,17 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.config.ModConfig.Type;
-import net.minecraftforge.fml.event.config.ModConfigEvent.Loading;
-import net.minecraftforge.fml.event.config.ModConfigEvent.Reloading;
 
 public class ClientEventHandler
 {
 	private final ShoulderInstance shoulderInstance = new ShoulderInstance();
 	private final ShoulderRenderer shoulderRenderer = new ShoulderRenderer(this.shoulderInstance);
 	private final KeyHandler keyHandler = new KeyHandler(this.shoulderInstance);
+	
+	public ClientEventHandler()
+	{
+		this.shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
+	}
 	
 	@SubscribeEvent
 	public void clientTickEvent(ClientTickEvent event)
@@ -74,24 +75,6 @@ public class ClientEventHandler
 		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
 		{
 			this.keyHandler.onKeyInput();
-		}
-	}
-	
-	@SubscribeEvent
-	public void configReload(Loading event)
-	{
-		if(Type.CLIENT.equals(event.getConfig().getType()))
-		{
-			this.shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
-		}
-	}
-	
-	@SubscribeEvent
-	public void configReload(Reloading event)
-	{
-		if(Type.CLIENT.equals(event.getConfig().getType()) && Config.CLIENT.doRememberLastPerspective())
-		{
-			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
 	}
 }

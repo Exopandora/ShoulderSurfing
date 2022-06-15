@@ -7,12 +7,17 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.teamderpy.shouldersurfing.client.ShoulderInstance;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent.Reloading;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Config
@@ -503,6 +508,15 @@ public class Config
 		if(value != null && !value.equals(configValue.get()))
 		{
 			configValue.set(value);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void configReload(Reloading event)
+	{
+		if(ShoulderInstance.getInstance() != null && Type.CLIENT.equals(event.getConfig().getType()) && Config.CLIENT.doRememberLastPerspective())
+		{
+			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
 	}
 }
