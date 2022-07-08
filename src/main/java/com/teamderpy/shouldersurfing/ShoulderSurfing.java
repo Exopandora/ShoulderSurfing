@@ -28,14 +28,14 @@ public class ShoulderSurfing
 	public ShoulderSurfing()
 	{
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModLoadingContext context = ModLoadingContext.get();
+		ModLoadingContext modLoadingContext = ModLoadingContext.get();
 		modEventBus.addListener(this::clientSetup);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
-			context.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
+			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 		});
-		context.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
+		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 		modEventBus.register(Config.class);
 	}
 	
