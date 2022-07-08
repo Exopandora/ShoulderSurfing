@@ -2,10 +2,12 @@ package com.teamderpy.shouldersurfing;
 
 import com.teamderpy.shouldersurfing.client.ClientEventHandler;
 import com.teamderpy.shouldersurfing.client.KeyHandler;
+import com.teamderpy.shouldersurfing.client.ShoulderInstance;
+import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,35 +28,43 @@ public class ShoulderSurfing
 	public ShoulderSurfing()
 	{
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModLoadingContext context = ModLoadingContext.get();
 		modEventBus.addListener(this::clientSetup);
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.setupClientConfig());
-		ModLoadingContext.get().registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+		{
+			context.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
+			modEventBus.addListener(this::registerKeyMappingsEvent);
+		});
+		context.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 		modEventBus.register(Config.class);
 	}
 	
 	@SubscribeEvent
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_LEFT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_RIGHT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_IN);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_OUT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_UP);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
-		
-		ClientEventHandler clientEventHandler = new ClientEventHandler();
-		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::keyInputEvent);
+		ShoulderInstance shoulderInstance = new ShoulderInstance();
+		shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
+		ShoulderRenderer shoulderRenderer = new ShoulderRenderer(shoulderInstance);
+		KeyHandler keyHandler = new KeyHandler(shoulderInstance);
+		ClientEventHandler clientEventHandler = new ClientEventHandler(shoulderInstance, shoulderRenderer);
+		MinecraftForge.EVENT_BUS.addListener(keyHandler::keyInputEvent);
 		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::preRenderPlayerEvent);
 		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::clientTickEvent);
-		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, clientEventHandler::preRenderGameOverlayEvent);
-		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::cameraSetupEvent);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, clientEventHandler::preRenderGuiOverlayEvent);
+		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::computeCameraAnglesEvent);
 		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::renderLevelLastEvent);
 	}
 	
-	private void setupClientConfig()
+	@SubscribeEvent
+	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
 	{
-		ModLoadingContext.get().registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
+		event.register(KeyHandler.KEYBIND_CAMERA_LEFT);
+		event.register(KeyHandler.KEYBIND_CAMERA_RIGHT);
+		event.register(KeyHandler.KEYBIND_CAMERA_IN);
+		event.register(KeyHandler.KEYBIND_CAMERA_OUT);
+		event.register(KeyHandler.KEYBIND_CAMERA_UP);
+		event.register(KeyHandler.KEYBIND_CAMERA_DOWN);
+		event.register(KeyHandler.KEYBIND_SWAP_SHOULDER);
+		event.register(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
 	}
 }

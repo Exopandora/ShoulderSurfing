@@ -1,27 +1,24 @@
 package com.teamderpy.shouldersurfing.client;
 
-import com.teamderpy.shouldersurfing.config.Config;
-
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
-import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.ViewportEvent.ComputeCameraAngles;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandler
 {
-	private final ShoulderInstance shoulderInstance = new ShoulderInstance();
-	private final ShoulderRenderer shoulderRenderer = new ShoulderRenderer(this.shoulderInstance);
-	private final KeyHandler keyHandler = new KeyHandler(this.shoulderInstance);
+	private final ShoulderInstance shoulderInstance;
+	private final ShoulderRenderer shoulderRenderer;
 	
-	public ClientEventHandler()
+	public ClientEventHandler(ShoulderInstance shoulderInstance, ShoulderRenderer shoulderRenderer)
 	{
-		this.shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
+		this.shoulderInstance = shoulderInstance;
+		this.shoulderRenderer = shoulderRenderer;
 	}
 	
 	@SubscribeEvent
@@ -43,14 +40,14 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public void preRenderGameOverlayEvent(RenderGameOverlayEvent.PreLayer event)
+	public void preRenderGuiOverlayEvent(RenderGuiOverlayEvent.Pre event)
 	{
-		if(ForgeIngameGui.CROSSHAIR_ELEMENT.equals(event.getOverlay()))
+		if(VanillaGuiOverlay.CROSSHAIR.id().equals(event.getOverlay().id()))
 		{
 			this.shoulderRenderer.offsetCrosshair(event.getPoseStack(), event.getWindow(), event.getPartialTick());
 		}
-		//Using BOSS_HEALTH_ELEMENT to pop matrix because when CROSSHAIR_ELEMENT is cancelled it will not fire RenderGameOverlayEvent#PreLayer and cause a stack overflow
-		else if(ForgeIngameGui.BOSS_HEALTH_ELEMENT.equals(event.getOverlay()))
+		//Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGameOverlayEvent#PreLayer and cause a stack overflow
+		else if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id().equals(event.getOverlay().id()))
 		{
 			this.shoulderRenderer.clearCrosshairOffset(event.getPoseStack());
 		}
@@ -58,7 +55,7 @@ public class ClientEventHandler
 	
 	@SubscribeEvent
 	@SuppressWarnings("resource")
-	public void cameraSetupEvent(CameraSetup event)
+	public void computeCameraAnglesEvent(ComputeCameraAngles event)
 	{
 		this.shoulderRenderer.offsetCamera(event.getCamera(), Minecraft.getInstance().level, event.getPartialTick());
 	}
@@ -67,14 +64,5 @@ public class ClientEventHandler
 	public void renderLevelLastEvent(RenderLevelLastEvent event)
 	{
 		this.shoulderRenderer.calcRaytrace(event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
-	}
-	
-	@SubscribeEvent
-	public void keyInputEvent(KeyInputEvent event)
-	{
-		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
-		{
-			this.keyHandler.onKeyInput();
-		}
 	}
 }
