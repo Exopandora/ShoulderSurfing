@@ -2,7 +2,7 @@ package com.teamderpy.shouldersurfing.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent.ComputeCameraAngles;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -33,7 +33,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.isCancelable() && event.getPlayer().equals(Minecraft.getInstance().player) && Minecraft.getInstance().screen == null && this.shoulderRenderer.skipRenderPlayer())
+		if(event.isCancelable() && event.getEntity().equals(Minecraft.getInstance().player) && Minecraft.getInstance().screen == null && this.shoulderRenderer.skipRenderPlayer())
 		{
 			event.setCanceled(true);
 		}
@@ -61,8 +61,11 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public void renderLevelLastEvent(RenderLevelLastEvent event)
+	public void renderLevelStageEvent(RenderLevelStageEvent event)
 	{
-		this.shoulderRenderer.calcRaytrace(event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
+		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
+		{
+			this.shoulderRenderer.calcRaytrace(event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
+		}
 	}
 }
