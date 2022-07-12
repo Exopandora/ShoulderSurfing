@@ -41,7 +41,7 @@ mixin {
 	config 'shouldersurfing.mixins.json'
 }
 
-version = '1.19-2.2.5'
+version = '1.19-2.2.6'
 group = 'com.teamderpy.shouldersurfing' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ShoulderSurfing'
 
