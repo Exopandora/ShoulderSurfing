@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "shouldersurfing",
+  "version": "${version}",
+
+  "name": "Shoulder Surfing Refabricated",
+  "description": "Changes the vanilla third person camera to an over-the-shoulder camera, as made popular by Capcom's \"Resident Evil 4\".\nIncludes keybindings for adjusting the camera, along with various settings in the config file.\nCode injection may fail if using mods that mess with the base files.",
+  "authors": [
+    "Sabar",
+    "Exopandora (1.7.10+)"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "MIT",
+  "icon": "logo.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.teamderpy.shouldersurfing.ShoulderSurfing"
+    ]
+  },
+  "mixins": [
+    "shouldersurfing.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  }
+}

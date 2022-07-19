@@ -9,8 +9,6 @@ import com.teamderpy.shouldersurfing.config.Perspective;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class KeyHandler
 {
@@ -32,21 +30,20 @@ public class KeyHandler
 		this.shoulderInstance = shoulderInstance;
 	}
 	
-	@SubscribeEvent
 	@SuppressWarnings("resource")
-	public void keyInputEvent(InputEvent.Key event)
+	public void keyInputEvent(Minecraft minecraft)
 	{
-		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
+		if(minecraft.screen == null)
 		{
 			if(KEYBIND_TOGGLE_SHOULDER_SURFING.consumeClick())
 			{
 				if(this.shoulderInstance.doShoulderSurfing())
 				{
-					this.shoulderInstance.changePerspective(Perspective.FIRST_PERSON);
+					this.shoulderInstance.changePerspective(minecraft.options, Perspective.FIRST_PERSON);
 				}
-				else if(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON)
+				else if(minecraft.options.getCameraType() == CameraType.FIRST_PERSON)
 				{
-					this.shoulderInstance.changePerspective(Perspective.SHOULDER_SURFING);
+					this.shoulderInstance.changePerspective(minecraft.options, Perspective.SHOULDER_SURFING);
 				}
 			}
 			
@@ -88,16 +85,16 @@ public class KeyHandler
 				}
 			}
 			
-			if(Minecraft.getInstance().options.keyTogglePerspective.consumeClick())
+			if(minecraft.options.keyTogglePerspective.consumeClick())
 			{
 				Perspective perspective = Perspective.current();
 				Perspective next = perspective.next();
 				boolean firstPerson = next.getCameraType().isFirstPerson();
-				this.shoulderInstance.changePerspective(next);
+				this.shoulderInstance.changePerspective(minecraft.options, next);
 				
 				if(perspective.getCameraType().isFirstPerson() != firstPerson)
 				{
-					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(firstPerson ? Minecraft.getInstance().getCameraEntity() : null);
+					minecraft.gameRenderer.checkEntityPostEffect(firstPerson ? minecraft.getCameraEntity() : null);
 				}
 				
 				if(Config.CLIENT.doRememberLastPerspective())

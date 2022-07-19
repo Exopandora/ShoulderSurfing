@@ -2,9 +2,12 @@ package com.teamderpy.shouldersurfing.mixins;
 
 import java.util.function.Predicate;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
@@ -20,13 +23,19 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
 public class MixinGameRenderer
 {
 	@Shadow
 	private Camera mainCamera;
-	
+
+	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V", shift = At.Shift.AFTER))
+	private void onSetupCamera(float f, long l, PoseStack poseStack, CallbackInfo ci) {
+		ShoulderSurfing.INSTANCE.getShoulderRenderer().offsetCamera(mainCamera, Minecraft.getInstance().level, f);
+	}
+
 	@Redirect
 	(
 		method = "pick",
@@ -46,4 +55,6 @@ public class MixinGameRenderer
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
 	}
+
+
 }

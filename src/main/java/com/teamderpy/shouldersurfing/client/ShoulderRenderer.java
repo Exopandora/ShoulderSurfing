@@ -10,6 +10,7 @@ import com.mojang.math.Vector4f;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 
+import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -75,14 +76,15 @@ public class ShoulderRenderer
 	{
 		if(this.shoulderInstance.doShoulderSurfing() && level != null)
 		{
+			CameraAccessor accessor = ((CameraAccessor) camera);
 			double x = Mth.lerp(partialTicks, camera.getEntity().xo, camera.getEntity().getX());
-			double y = Mth.lerp(partialTicks, camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(partialTicks, camera.eyeHeightOld, camera.eyeHeight);
+			double y = Mth.lerp(partialTicks, camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(partialTicks, accessor.getEyeHeightOld(), accessor.getEyeHeight());
 			double z = Mth.lerp(partialTicks, camera.getEntity().zo, camera.getEntity().getZ());
-			camera.setPosition(x, y, z);
+			accessor.invokeSetPosition(x, y, z);
 			Vec3 offset = new Vec3(-Config.CLIENT.getOffsetZ(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetX());
-			this.cameraDistance = this.calcCameraDistance(camera, level, camera.getMaxZoom(offset.length()));
+			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()));
 			Vec3 scaled = offset.normalize().scale(this.cameraDistance);
-			camera.move(scaled.x, scaled.y, scaled.z);
+			accessor.invokeMove(scaled.x, scaled.y, scaled.z);
 		}
 	}
 	
@@ -144,10 +146,7 @@ public class ShoulderRenderer
 			return null;
 		}
 		
-		vec.setW((1.0F / vec.w()) * 0.5F);
-		vec.setX(vec.x() * vec.w() + 0.5F);
-		vec.setY(vec.y() * vec.w() + 0.5F);
-		vec.setZ(vec.z() * vec.w() + 0.5F);
+		vec.set(vec.x() * vec.w() + 0.5F, vec.y() * vec.w() + 0.5F, vec.z() * vec.w() + 0.5F, (1.0F / vec.w()) * 0.5F);
 		
 		float x = vec.x() * Minecraft.getInstance().getWindow().getScreenWidth();
 		float y = vec.y() * Minecraft.getInstance().getWindow().getScreenHeight();

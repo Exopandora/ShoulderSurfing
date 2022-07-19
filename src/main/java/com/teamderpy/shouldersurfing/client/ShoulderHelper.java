@@ -6,16 +6,17 @@ import javax.annotation.Nonnull;
 
 import com.teamderpy.shouldersurfing.config.Config;
 
+import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShoulderHelper
 {
@@ -42,9 +43,9 @@ public class ShoulderHelper
 	
 	public static Vec3 cameraOffset(@Nonnull Camera camera, double distance)
 	{
-		double dX = camera.getUpVector().x() * Config.CLIENT.getOffsetY() + camera.left.x() * Config.CLIENT.getOffsetX() + camera.getLookVector().x() * -Config.CLIENT.getOffsetZ();
-		double dY = camera.getUpVector().y() * Config.CLIENT.getOffsetY() + camera.left.y() * Config.CLIENT.getOffsetX() + camera.getLookVector().y() * -Config.CLIENT.getOffsetZ();
-		double dZ = camera.getUpVector().z() * Config.CLIENT.getOffsetY() + camera.left.z() * Config.CLIENT.getOffsetX() + camera.getLookVector().z() * -Config.CLIENT.getOffsetZ();
+		double dX = camera.getUpVector().x() * Config.CLIENT.getOffsetY() + ((CameraAccessor) camera).getLeft().x() * Config.CLIENT.getOffsetX() + camera.getLookVector().x() * -Config.CLIENT.getOffsetZ();
+		double dY = camera.getUpVector().y() * Config.CLIENT.getOffsetY() + ((CameraAccessor) camera).getLeft().y() * Config.CLIENT.getOffsetX() + camera.getLookVector().y() * -Config.CLIENT.getOffsetZ();
+		double dZ = camera.getUpVector().z() * Config.CLIENT.getOffsetY() + ((CameraAccessor) camera).getLeft().z() * Config.CLIENT.getOffsetX() + camera.getLookVector().z() * -Config.CLIENT.getOffsetZ();
 		return new Vec3(dX, dY, dZ).normalize().scale(distance);
 	}
 	
@@ -74,7 +75,7 @@ public class ShoulderHelper
 			{
 				return true;
 			}
-			else if(overrides.contains(ForgeRegistries.ITEMS.getKey(current).toString()))
+			else if(overrides.contains(Registry.ITEM.getKey(current).toString()))
 			{
 				return true;
 			}
@@ -85,7 +86,7 @@ public class ShoulderHelper
 				{
 					return true;
 				}
-				else if(overrides.contains(ForgeRegistries.ITEMS.getKey(current).toString()))
+				else if(overrides.contains(Registry.ITEM.getKey(current).toString()))
 				{
 					return true;
 				}

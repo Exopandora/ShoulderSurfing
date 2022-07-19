@@ -6,65 +6,72 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 import com.teamderpy.shouldersurfing.config.Config;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig.Type;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import com.teamderpy.shouldersurfing.config.Perspective;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.api.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.config.ModConfig;
 
-@Mod(ShoulderSurfing.MODID)
-public class ShoulderSurfing
+public class ShoulderSurfing implements ClientModInitializer
 {
 	public static final String MODID = "shouldersurfing";
-	
-	public ShoulderSurfing()
+	private ShoulderRenderer shoulderRenderer;
+	public static ShoulderSurfing INSTANCE;
+	private ShoulderInstance shoulderInstance;
+	private KeyHandler keyHandler;
+
+	@Override
+	public void onInitializeClient()
 	{
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		modEventBus.addListener(this::clientSetup);
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-		{
-			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
-			modEventBus.addListener(this::registerKeyMappingsEvent);
+		INSTANCE = this;
+
+		ModConfigEvent.RELOADING.register(event -> {
+			if(ShoulderInstance.getInstance() != null && ModConfig.Type.CLIENT.equals(event.getType()) && Config.CLIENT.doRememberLastPerspective())
+				{
+					Config.CLIENT.setDefaultPerspective(Perspective.current());
+				}
 		});
-		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
-		modEventBus.register(Config.class);
+		this.shoulderInstance = new ShoulderInstance();
+
+
+		ClientTickEvents.START_CLIENT_TICK.register(this.shoulderInstance::tick);
+
+		this.keyHandler = new KeyHandler(shoulderInstance);
+
+		ModLoadingContext.registerConfig(MODID, ModConfig.Type.CLIENT, Config.setup(), ShoulderSurfing.MODID + ".toml");
+		registerKeyMappingsEvent();
+
+
+		//modEventBus.register(Config.class);
+	}
+
+	public void setupPerspective(Options options) {
+		shoulderInstance.changePerspective(options, Config.CLIENT.getDefaultPerspective());
+		this.shoulderRenderer = new ShoulderRenderer(shoulderInstance);
+	}
+
+	public void handleKeyInputs(Minecraft minecraft) {
+		keyHandler.keyInputEvent(minecraft);
 	}
 	
-	@SubscribeEvent
-	public void clientSetup(FMLClientSetupEvent event)
+	public void registerKeyMappingsEvent()
 	{
-		ShoulderInstance shoulderInstance = new ShoulderInstance();
-		shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
-		ShoulderRenderer shoulderRenderer = new ShoulderRenderer(shoulderInstance);
-		KeyHandler keyHandler = new KeyHandler(shoulderInstance);
-		ClientEventHandler clientEventHandler = new ClientEventHandler(shoulderInstance, shoulderRenderer);
-		MinecraftForge.EVENT_BUS.addListener(keyHandler::keyInputEvent);
-		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::preRenderPlayerEvent);
-		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::clientTickEvent);
-		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, clientEventHandler::preRenderGuiOverlayEvent);
-		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::computeCameraAnglesEvent);
-		MinecraftForge.EVENT_BUS.addListener(clientEventHandler::renderLevelStageEvent);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_LEFT);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_RIGHT);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_IN);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_OUT);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_UP);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
 	}
-	
-	@SubscribeEvent
-	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
-	{
-		event.register(KeyHandler.KEYBIND_CAMERA_LEFT);
-		event.register(KeyHandler.KEYBIND_CAMERA_RIGHT);
-		event.register(KeyHandler.KEYBIND_CAMERA_IN);
-		event.register(KeyHandler.KEYBIND_CAMERA_OUT);
-		event.register(KeyHandler.KEYBIND_CAMERA_UP);
-		event.register(KeyHandler.KEYBIND_CAMERA_DOWN);
-		event.register(KeyHandler.KEYBIND_SWAP_SHOULDER);
-		event.register(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
+
+	public ShoulderRenderer getShoulderRenderer() {
+		return shoulderRenderer;
 	}
 }

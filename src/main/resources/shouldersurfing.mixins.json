@@ -8,7 +8,10 @@
 		"MixinOptions",
 		"MixinGui",
 		"MixinPlayer",
-		"MixinShadersRender"
+		"MixinLevelRenderer",
+		"MixinMinecraft",
+		"MixinPlayerRenderer",
+		"CameraAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
