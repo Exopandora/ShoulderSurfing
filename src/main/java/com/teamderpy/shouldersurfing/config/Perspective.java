@@ -4,6 +4,7 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 
 public enum Perspective
 {
@@ -73,5 +74,10 @@ public enum Perspective
 	public static Perspective current()
 	{
 		return Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderInstance.getInstance().doShoulderSurfing());
+	}
+
+	public static Perspective current(Options options)
+	{
+		return Perspective.of(options.getCameraType(), ShoulderInstance.getInstance().doShoulderSurfing());
 	}
 }

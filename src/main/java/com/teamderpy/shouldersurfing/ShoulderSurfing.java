@@ -30,12 +30,7 @@ public class ShoulderSurfing implements ClientModInitializer
 	{
 		INSTANCE = this;
 
-		ModConfigEvent.RELOADING.register(event -> {
-			if(ShoulderInstance.getInstance() != null && ModConfig.Type.CLIENT.equals(event.getType()) && Config.CLIENT.doRememberLastPerspective())
-				{
-					Config.CLIENT.setDefaultPerspective(Perspective.current());
-				}
-		});
+
 		this.shoulderInstance = new ShoulderInstance();
 
 
@@ -51,6 +46,12 @@ public class ShoulderSurfing implements ClientModInitializer
 	}
 
 	public void setupPerspective(Options options) {
+		ModConfigEvent.RELOADING.register(event -> {
+			if(ShoulderInstance.getInstance() != null && ModConfig.Type.CLIENT.equals(event.getType()) && Config.CLIENT.doRememberLastPerspective())
+			{
+				Config.CLIENT.setDefaultPerspective(Perspective.current(options));
+			}
+		});
 		shoulderInstance.changePerspective(options, Config.CLIENT.getDefaultPerspective());
 		this.shoulderRenderer = new ShoulderRenderer(shoulderInstance);
 	}
