@@ -10,27 +10,46 @@ Revamped over-the-shoulder F5 third-person camera view
 * Hide player if the camera gets too close to it
 * Client-side only
 
-# Download #
-
-Compiled binaries can be found on [Curseforge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/)
-
 # Installation #
 
-Download ShoulderSurfing or build from source
+Download ShoulderSurfing from [curseforge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/) or build from source
 
-## Prerequisites ##
+## Forge ##
+
+### Prerequisites ###
 
 1. Make sure [Minecraft Forge](http://files.minecraftforge.net/) is installed
 
-## Manual ##
+### Manual ###
 
 1. Navigate to `..\.minecraft\mods`
-2. Copy the `ShoulderSurfing-[VERSION].jar`
+2. Copy the `ShoulderSurfing-[VERSION]-Forge.jar`
 3. Follow the steps below
 
-## Launcher Settings ##
+### Launcher Settings ###
 
 1. Select Forge as your profile
+2. Launch Minecraft
+3. Join a world or server
+4. Use `arrow keys`, `page up` and `page down` to adjust the perspective (`O` to swap shoulder)
+
+## Fabric ##
+
+### Prerequisites ###
+
+1. Make sure [Fabric](https://fabricmc.net/) is installed
+2. Make sure [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) is installed
+3. Make sure [Forge Config API Port](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric) is installed
+
+### Manual ###
+
+1. Navigate to `..\.minecraft\mods`
+2. Copy the `ShoulderSurfing-[VERSION]-Fabric.jar`
+3. Follow the steps below
+
+### Launcher Settings ###
+
+1. Select Fabric as your profile
 2. Launch Minecraft
 3. Join a world or server
 4. Use `arrow keys`, `page up` and `page down` to adjust the perspective (`O` to swap shoulder)
@@ -56,7 +75,7 @@ Download ShoulderSurfing or build from source
 **Q:** Can you port feature x to version y ?  
 **A:** No
 
-**Q:** Can you port this to fabric, liteloader, rift, etc ?  
+**Q:** Can you port this to liteloader, rift, etc ?  
 **A:** No
 
 **Q:** Can you make the player aim at where the crosshair is pointing at ?  
