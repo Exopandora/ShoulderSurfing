@@ -122,10 +122,7 @@ processResources {
 	inputs.property "mod_name", "${mod_name}"
 	
 	filesMatching('META-INF/mods.toml') {
-		expand(
-			'version': "${version}",
-			'minecraft_version': "${minecraft_version}"
-		)
+		expand('version': "${version}")
 	}
 	
 	filesMatching('pack.mcmeta') {
