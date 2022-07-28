@@ -118,7 +118,6 @@ processResources {
 	from project(":common").sourceSets.main.resources
 	
 	inputs.property "version", "${version}"
-	inputs.property "minecraft_version", "${minecraft_version}"
 	inputs.property "mod_name", "${mod_name}"
 	
 	filesMatching('META-INF/mods.toml') {
