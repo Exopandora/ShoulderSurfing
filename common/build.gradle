@@ -24,7 +24,7 @@ dependencies {
 	
 	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:4.0.0"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:4.0.2"
 }
 
 loom {
