@@ -26,16 +26,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class ShoulderRenderer
 {
-	private static ShoulderRenderer instance = new ShoulderRenderer();
+	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
 	private double cameraDistance;
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
-	
-	private ShoulderRenderer()
-	{
-		instance = this;
-	}
 	
 	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
 	{
@@ -204,6 +199,6 @@ public class ShoulderRenderer
 	
 	public static ShoulderRenderer getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 }

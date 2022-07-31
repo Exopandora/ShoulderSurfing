@@ -7,15 +7,10 @@ import net.minecraft.client.Minecraft;
 
 public class ShoulderInstance
 {
-	private static ShoulderInstance instance = new ShoulderInstance();
+	private static final ShoulderInstance INSTANCE = new ShoulderInstance();
 	private boolean doShoulderSurfing;
 	private boolean doSwitchPerspective;
 	private boolean isAiming;
-	
-	private ShoulderInstance()
-	{
-		instance = this;
-	}
 	
 	public void tick()
 	{
@@ -61,6 +56,6 @@ public class ShoulderInstance
 	
 	public static ShoulderInstance getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 }
