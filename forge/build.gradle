@@ -1,0 +1,130 @@
+buildscript {
+	repositories {
+		maven {
+			url = 'https://files.minecraftforge.net/maven'
+		}
+		maven {
+			url = 'https://repo.spongepowered.org/repository/maven-public/'
+		}
+		mavenCentral()
+	}
+	dependencies {
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+	}
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'org.spongepowered.mixin'
+
+archivesBaseName = "${mod_name}-Forge-${minecraft_version}"
+
+eclipseJdtApt.enabled = false
+eclipseFactoryPath.enabled = false
+
+eclipse {
+	project {
+		name = mod_name + 'Forge'
+	}
+}
+
+sourceSets {
+	api {
+		compileClasspath += sourceSets.main.compileClasspath
+	}
+	main {
+		java {
+			compileClasspath += sourceSets.api.output
+			runtimeClasspath += sourceSets.api.output
+		}
+	}
+}
+
+mixin {
+	add sourceSets.main, "${mod_id}.refmap.json"
+	config "${mod_id}.mixins.json"
+}
+
+minecraft {
+	mappings channel: 'official', version: minecraft_version
+	
+	runs {
+		client {
+			workingDirectory project.file('../run')
+			ideaModule "${rootProject.name}.${project.name}.main"
+			taskName "${mod_name}Forge Client"
+			
+			mods {
+				modClientRun {
+					source sourceSets.api
+					source sourceSets.main
+					source project(":common").sourceSets.main
+				}
+			}
+		}
+		
+		server {
+			workingDirectory project.file('../run')
+			ideaModule "${rootProject.name}.${project.name}.main"
+			taskName "${mod_name}Forge Server"
+			
+			mods {
+				modServerRun {
+					source sourceSets.api
+					source sourceSets.main
+					source project(":common").sourceSets.main
+				}
+			}
+		}
+		
+		data {
+			workingDirectory project.file('../run')
+			ideaModule "${rootProject.name}.${project.name}.main"
+			args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+			taskName "${mod_name}Forge Data"
+			
+			mods {
+				modDataRun {
+					source sourceSets.api
+					source sourceSets.main
+					source project(":common").sourceSets.main
+				}
+			}
+		}
+	}
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+dependencies {
+	implementation (project(":common")) {
+		transitive = false
+	}
+	
+	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+compileJava {
+	source project(":common").sourceSets.main.allSource
+}
+
+processResources {
+	outputs.upToDateWhen {
+		false
+	}
+	
+	from project(":common").sourceSets.main.resources
+	
+	inputs.property "version", "${version}"
+	inputs.property "mod_name", "${mod_name}"
+	
+	filesMatching('META-INF/mods.toml') {
+		expand('version': "${version}")
+	}
+	
+	filesMatching('pack.mcmeta') {
+		expand('mod_name': "${mod_name}")
+	}
+}
