@@ -1,0 +1,51 @@
+plugins {
+	id 'org.quiltmc.loom' version '0.12.+'
+	id 'eclipse'
+}
+
+repositories {
+	maven {
+		name = 'Fuzs Mod Resources'
+		url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
+	}
+}
+
+archivesBaseName = "${mod_name}-Common-${minecraft_version}"
+
+eclipse {
+	project {
+		name = mod_name + 'Common'
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
+	
+	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:2.0.3"
+}
+
+loom {
+	remapArchives = false
+	
+	mixin {
+		useLegacyMixinAp = false
+	}
+	
+	runs {
+		client {
+			client()
+			setConfigName("Common Client")
+			ideConfigGenerated(false)
+			runDir("../run")
+		}
+		server {
+			server()
+			setConfigName("Common Server")
+			ideConfigGenerated(false)
+			runDir("../run")
+		}
+	}
+}

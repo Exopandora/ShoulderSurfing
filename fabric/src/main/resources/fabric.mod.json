@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "shouldersurfing",
+	"version": "${version}",
+	"name": "Shoulder Surfing Reloaded",
+	"description": "Changes the vanilla third person camera to an over-the-shoulder camera, as made popular by Capcom's \"Resident Evil 4\".\nIncludes keybindings for adjusting the camera, along with various settings in the config file.\nCode injection may fail if using mods that mess with the base files.",
+	"authors": [
+		"Sabar",
+		"Exopandora"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded",
+		"sources": "https://github.com/Exopandora/shouldersurfing"
+	},
+	"license": "MIT",
+	"icon": "logo.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.teamderpy.shouldersurfing.ShoulderSurfingFabric"
+		]
+	},
+	"mixins": [
+		"shouldersurfing.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.13.3",
+		"fabric": ">=0.34.9",
+		"minecraft": "~1.17",
+		"forgeconfigapiport": ">=2.0.3",
+		"java": ">=16"
+	}
+}
