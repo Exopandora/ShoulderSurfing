@@ -32,6 +32,7 @@ public class ShoulderSurfingForge
 		{
 			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
 			modEventBus.addListener(this::registerKeyMappingsEvent);
+			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 		});
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
@@ -40,14 +41,19 @@ public class ShoulderSurfingForge
 	@SubscribeEvent
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		ShoulderInstance shoulderInstance = ShoulderInstance.getInstance();
-		shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::keyInputEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
+	}
+	
+	@SubscribeEvent
+	public void modConfigLoadingEvent(ModConfigEvent.Loading event)
+	{
+		ShoulderInstance shoulderInstance = ShoulderInstance.getInstance();
+		shoulderInstance.changePerspective(Config.CLIENT.getDefaultPerspective());
 	}
 	
 	@SubscribeEvent
