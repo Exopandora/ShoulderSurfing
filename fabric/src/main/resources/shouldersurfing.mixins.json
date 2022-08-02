@@ -1,0 +1,23 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.teamderpy.shouldersurfing.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [],
+	"client": [
+		"ActiveRenderInfoAccessor",
+		"MixinGameRenderer",
+		"MixinGameSettings",
+		"MixinIngameGui",
+		"MixinPlayerEntity",
+		"MixinGameRenderer2",
+		"MixinIngameGui2",
+		"MixinKeyboardListener",
+		"MixinMinecraft",
+		"MixinPlayerRenderer",
+		"MixinWorldRenderer"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

@@ -1,0 +1,68 @@
+plugins {
+	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'io.github.juuxel.loom-quiltflower' version '1.7.1'
+	id 'eclipse'
+}
+
+archivesBaseName = "${mod_name}-Fabric-${minecraft_version}"
+
+dependencies {
+	implementation (project(":common")) {
+		transitive = false
+	}
+	
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings fileTree(dir: "../mapping", include: "**.jar")
+	
+	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:1.0.0"
+}
+
+loom {
+	mixin.defaultRefmapName = "${mod_id}.refmap.json"
+	
+	runs {
+		client {
+			client()
+			setConfigName("${mod_name} Fabric Client")
+			ideConfigGenerated(true)
+			runDir("../run")
+		}
+		server {
+			server()
+			setConfigName("${mod_name} Fabric Server")
+			ideConfigGenerated(true)
+			runDir("../run")
+		}
+	}
+}
+
+eclipse {
+	project {
+		name = mod_name + 'Fabric'
+	}
+}
+
+processResources {
+	outputs.upToDateWhen {
+		false
+	}
+	
+	from project(":common").sourceSets.main.resources
+	
+	inputs.property "version", "${version}"
+	inputs.property "mod_name", "${mod_name}"
+	
+	filesMatching('fabric.mod.json') {
+		expand('version': "${version}")
+	}
+	
+	filesMatching('pack.mcmeta') {
+		expand('mod_name': "${mod_name}")
+	}
+}
+
+compileJava {
+	source project(":common").sourceSets.main.allSource
+}

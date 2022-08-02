@@ -1,0 +1,18 @@
+{
+	"required": true,
+	"package": "com.teamderpy.shouldersurfing.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "shouldersurfing.refmap.json",
+	"client": [
+		"ActiveRenderInfoAccessor",
+		"MixinGameRenderer",
+		"MixinGameSettings",
+		"MixinIngameGui",
+		"MixinPlayerEntity",
+		"MixinShadersRender"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"minVersion": "0.8"
+}
