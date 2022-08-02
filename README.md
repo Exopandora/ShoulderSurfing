@@ -23,7 +23,7 @@ Download ShoulderSurfing from [curseforge](https://www.curseforge.com/minecraft/
 ### Manual ###
 
 1. Navigate to `..\.minecraft\mods`
-2. Copy the `ShoulderSurfing-[VERSION]-Forge.jar`
+2. Copy the `ShoulderSurfing-Forge-[VERSION].jar`
 3. Follow the steps below
 
 ### Launcher Settings ###
@@ -44,7 +44,7 @@ Download ShoulderSurfing from [curseforge](https://www.curseforge.com/minecraft/
 ### Manual ###
 
 1. Navigate to `..\.minecraft\mods`
-2. Copy the `ShoulderSurfing-[VERSION]-Fabric.jar`
+2. Copy the `ShoulderSurfing-Fabric-[VERSION].jar`
 3. Follow the steps below
 
 ### Launcher Settings ###
