@@ -3,6 +3,7 @@ package com.teamderpy.shouldersurfing.mixins;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
@@ -19,7 +20,7 @@ public class MixinShadersRender
 		at = @At("TAIL"),
 		remap = false
 	)
-	public static void updateActiveRenderInfo(Camera camera, Minecraft minecraft, float partialTick)
+	private static void updateActiveRenderInfo(Camera camera, Minecraft minecraft, float partialTick, CallbackInfo ci)
 	{
 		ShoulderRenderer.getInstance().offsetCamera(camera, minecraft.level, partialTick);
 	}
