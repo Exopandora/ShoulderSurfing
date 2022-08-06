@@ -16,7 +16,7 @@ dependencies {
 	
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:4.0.2"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:4.1.4"
 }
 
 loom {
