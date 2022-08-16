@@ -43,7 +43,7 @@ public class ClientEventHandler
 		{
 			ShoulderRenderer.getInstance().offsetCrosshair(event.getMatrixStack(), event.getWindow(), event.getPartialTicks());
 		}
-		//Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Pre and cause a stack overflow
+		//Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(ForgeIngameGui.BOSS_HEALTH_ELEMENT.equals(event.getOverlay()))
 		{
 			ShoulderRenderer.getInstance().clearCrosshairOffset(event.getMatrixStack());
@@ -58,10 +58,10 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "resource"})
 	public static void renderLevelStageEvent(RenderLevelLastEvent event)
 	{
-		ShoulderRenderer.getInstance().updateDynamcRaytrace(Minecraft.getInstance().gameRenderer.getMainCamera(), event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
+		ShoulderRenderer.getInstance().updateDynamicRaytrace(Minecraft.getInstance().gameRenderer.getMainCamera(), event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
 	}
 	
 	@SubscribeEvent

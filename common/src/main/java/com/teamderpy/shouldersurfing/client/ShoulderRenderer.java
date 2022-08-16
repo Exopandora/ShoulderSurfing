@@ -109,7 +109,7 @@ public class ShoulderRenderer
 	}
 	
 	@SuppressWarnings("resource")
-	public void updateDynamcRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
+	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
