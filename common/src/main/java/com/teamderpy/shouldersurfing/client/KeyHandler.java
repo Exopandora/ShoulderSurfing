@@ -23,6 +23,7 @@ public class KeyHandler
 	public static final KeyMapping KEYBIND_SWAP_SHOULDER = new KeyMapping("Swap shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
 	public static final KeyMapping KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyMapping("Toggle perspective", InputConstants.UNKNOWN.getValue(), KEY_CATEGORY);
 	
+	@SuppressWarnings("resource")
 	public static void onKeyInput()
 	{
 		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
