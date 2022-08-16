@@ -22,6 +22,7 @@ public class MixinPlayerRenderer
 		at = @At("HEAD"),
 		cancellable = true
 	)
+	@SuppressWarnings("resource")
 	private void render(AbstractClientPlayerEntity player, float yRot, float partialTick, MatrixStack poseStack, IRenderTypeBuffer multiBufferSource, int i, CallbackInfo ci)
 	{
 		if(player == Minecraft.getInstance().player && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().skipRenderPlayer())

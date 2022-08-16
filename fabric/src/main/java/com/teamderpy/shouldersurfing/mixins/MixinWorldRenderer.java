@@ -24,6 +24,6 @@ public class MixinWorldRenderer
 	)
 	private void renderLevel(MatrixStack poseStack, float partialTick, long nanos, boolean shouldRenderBlockOutline, ActiveRenderInfo camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().updateDynamcRaytrace(camera, poseStack.last().pose(), matrix4f, partialTick);
+		ShoulderRenderer.getInstance().updateDynamicRaytrace(camera, poseStack.last().pose(), matrix4f, partialTick);
 	}
 }
