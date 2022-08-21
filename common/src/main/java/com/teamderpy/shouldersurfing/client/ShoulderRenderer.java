@@ -114,8 +114,7 @@ public class ShoulderRenderer
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			MultiPlayerGameMode controller = Minecraft.getInstance().gameMode;
-			double playerReachOverride = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
-			HitResult hitResult = this.rayTraceFromEyes(camera, controller, playerReachOverride, partialTick);
+			HitResult hitResult = this.rayTraceFromEyes(camera, controller, this.getPlayerReach(), partialTick);
 			Vec3 position = hitResult.getLocation().subtract(camera.getPosition());
 			this.projected = this.project2D(position, modelViewMatrix, projectionMatrix);
 		}
@@ -190,6 +189,11 @@ public class ShoulderRenderer
 	public boolean skipRenderPlayer()
 	{
 		return this.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderInstance.getInstance().doShoulderSurfing();
+	}
+	
+	public double getPlayerReach()
+	{
+		return Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
 	}
 	
 	public double getCameraDistance()

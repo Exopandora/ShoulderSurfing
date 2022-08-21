@@ -29,5 +29,12 @@
 		"minecraft": "~1.19",
 		"forgeconfigapiport": ">=4.0.0",
 		"java": ">=17"
+	},
+	"custom": {
+		"waila:plugins": {
+			"id": "shouldersurfing:waila_plugin",
+			"initializer": "com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingWailaPluginFabric",
+			"environment": "client"
+		}
 	}
 }

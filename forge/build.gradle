@@ -103,7 +103,9 @@ dependencies {
 	}
 	
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	implementation fg.deobf("mcp.mobius.waila:wthit:forge-${wthit_version}")
+	implementation fg.deobf("lol.bai:badpackets:forge-${badpackets_version}")
 }
 
 compileJava {
