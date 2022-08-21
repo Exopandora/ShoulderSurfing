@@ -16,7 +16,9 @@ dependencies {
 	
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:3.2.3"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	modImplementation "mcp.mobius.waila:wthit:fabric-${wthit_version}"
+	modImplementation "lol.bai:badpackets:fabric-${badpackets_version}"
 }
 
 loom {

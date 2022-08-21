@@ -53,7 +53,7 @@ minecraft {
 		client {
 			workingDirectory project.file('../run')
 			ideaModule "${rootProject.name}.${project.name}.main"
-			taskName "${mod_name}Forge Client"
+			taskName "${mod_name}ForgeClient"
 			
 			mods {
 				modClientRun {
@@ -67,7 +67,7 @@ minecraft {
 		server {
 			workingDirectory project.file('../run')
 			ideaModule "${rootProject.name}.${project.name}.main"
-			taskName "${mod_name}Forge Server"
+			taskName "${mod_name}ForgeServer"
 			
 			mods {
 				modServerRun {
@@ -82,7 +82,7 @@ minecraft {
 			workingDirectory project.file('../run')
 			ideaModule "${rootProject.name}.${project.name}.main"
 			args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-			taskName "${mod_name}Forge Data"
+			taskName "${mod_name}ForgeData"
 			
 			mods {
 				modDataRun {
@@ -103,7 +103,9 @@ dependencies {
 	}
 	
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	implementation fg.deobf("mcp.mobius.waila:wthit:forge-${wthit_version}")
+	implementation fg.deobf("lol.bai:badpackets:forge-${badpackets_version}")
 }
 
 compileJava {

@@ -3,13 +3,6 @@ plugins {
 	id 'eclipse'
 }
 
-repositories {
-	maven {
-		name = 'Fuzs Mod Resources'
-		url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
-	}
-}
-
 archivesBaseName = "${mod_name}-Common-${minecraft_version}"
 
 eclipse {
@@ -18,13 +11,26 @@ eclipse {
 	}
 }
 
+sourceSets {
+	api {
+		compileClasspath += sourceSets.main.compileClasspath
+	}
+	main {
+		java {
+			compileClasspath += sourceSets.api.output
+			runtimeClasspath += sourceSets.api.output
+		}
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
 	
-	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+	compileOnly "org.spongepowered:mixin:${mixin_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:3.2.3"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	modImplementation "mcp.mobius.waila:wthit-api:mojmap-${wthit_version}"
 }
 
 loom {

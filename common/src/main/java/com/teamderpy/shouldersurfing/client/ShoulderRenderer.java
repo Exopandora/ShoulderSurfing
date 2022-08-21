@@ -192,6 +192,11 @@ public class ShoulderRenderer
 		return this.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderInstance.getInstance().doShoulderSurfing();
 	}
 	
+	public double getPlayerReach()
+	{
+		return Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
+	}
+	
 	public double getCameraDistance()
 	{
 		return this.cameraDistance;
