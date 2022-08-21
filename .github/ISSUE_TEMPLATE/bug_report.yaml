@@ -1,0 +1,67 @@
+name: Bug Report
+description: Create a bug report to help improve Shoulder Surfing
+title: "[BUG] [MC-VERSION] Short description of the bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please make sure you have read the [FAQ](https://github.com/Exopandora/ShoulderSurfing#faq) section before submitting a new issue.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the bug
+      placeholder: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: input
+    id: logs
+    attributes:
+      label: Game Logs
+      description: |
+        Post the crash report and the latest log as a [gist](https://gist.github.com/) and copy the link here.
+        The crash report file is located in `.minecraft/crash-reports`.
+        The log is located at `.minecraft/logs/latest.log`.
+        If the game does not crash, open a world and hold `F3` + `C` for 10 seconds to force it.
+    validations:
+      required: true
+  - type: input
+    id: other-mods
+    attributes:
+      label: Other Mods
+      description: If you know the issue is caused by another mod fill in its name and version.
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: Add any other information about the problem.
+    validations:
+      required: false
