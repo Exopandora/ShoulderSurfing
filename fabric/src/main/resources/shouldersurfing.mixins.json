@@ -8,6 +8,7 @@
 		"CameraAccessor",
 		"MixinGameRenderer",
 		"MixinGui",
+		"MixinItem",
 		"MixinOptions",
 		"MixinPlayer",
 		"MixinGameRenderer2",
