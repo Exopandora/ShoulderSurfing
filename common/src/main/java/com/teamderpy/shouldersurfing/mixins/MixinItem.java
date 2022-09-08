@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
+import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -32,7 +33,12 @@ public class MixinItem
 	@SuppressWarnings("resource")
 	private static RayTraceContext initRayTraceContext(Vector3d start, Vector3d end, BlockMode block, FluidMode fluid, @Nullable Entity entity)
 	{
-		ShoulderLook look = ShoulderHelper.shoulderSurfingLook(Minecraft.getInstance().gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
-		return new RayTraceContext(look.cameraPos(), look.traceEndPos(), block, fluid, entity);
+		if(ShoulderInstance.getInstance().doShoulderSurfing())
+		{
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(Minecraft.getInstance().gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
+			return new RayTraceContext(look.cameraPos(), look.traceEndPos(), block, fluid, entity);
+		}
+		
+		return new RayTraceContext(start, end, block, fluid, entity);
 	}
 }
