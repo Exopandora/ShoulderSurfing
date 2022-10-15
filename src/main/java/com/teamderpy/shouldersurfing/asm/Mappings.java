@@ -13,7 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 
 public class Mappings
 {
@@ -71,7 +71,7 @@ public class Mappings
 		
 		try
 		{
-			String version = Loader.class.getDeclaredField("MC_VERSION").get(Loader.class).toString();
+			String version = (String) FMLInjectionData.data()[4];
 			
 			for(Entry<String, JsonElement> entry : json.getAsJsonObject("classes").entrySet())
 			{
@@ -83,7 +83,7 @@ public class Mappings
 			Mappings.loadDescMappings(json.getAsJsonObject("methods").entrySet(), mappings, version);
 			Mappings.loadDescMappings(json.getAsJsonObject("fields").entrySet(), mappings, version);
 		}
-		catch(NullPointerException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e)
+		catch(Exception e)
 		{
 			throw new RuntimeException("Unable to load mappings");
 		}

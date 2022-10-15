@@ -18,13 +18,13 @@ import net.minecraft.launchwrapper.Launch;
 
 public abstract class ShoulderTransformer implements IClassTransformer
 {
+	private static final boolean OBFUSCATED =  !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	private static final Mappings MAPPINGS = Mappings.load("mappings.json");
-	private static final boolean OBFUSCATED = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
-		if(name.equals(this.getTransformedClassName(OBFUSCATED)))
+		if(name.equals(this.getTransformedClassName(MAPPINGS, OBFUSCATED)))
 		{
 			System.out.println("Transforming " + name + " " + transformedName);
 			
@@ -82,9 +82,9 @@ public abstract class ShoulderTransformer implements IClassTransformer
 		}
 	}
 	
-	private String getTransformedClassName(boolean obf)
+	private String getTransformedClassName(Mappings mappings, boolean obf)
 	{
-		return MAPPINGS.map(this.getClassId(), obf).replace('/', '.');
+		return mappings.map(this.getClassId(), obf).replace('/', '.');
 	}
 	
 	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
