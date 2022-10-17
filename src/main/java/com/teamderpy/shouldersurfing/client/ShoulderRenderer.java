@@ -52,7 +52,7 @@ public class ShoulderRenderer
 		if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			GL11.glPushMatrix();
-			GL11.glTranslatef(this.translation.getX(), this.translation.getY(), 0.0F);
+			GL11.glTranslatef(this.translation.getX(), -this.translation.getY(), 0.0F);
 			this.lastTranslation = this.translation;
 		}
 		else
