@@ -18,7 +18,7 @@ public class EntityPlayerRayTrace extends ShoulderTransformer
 		// @Override
 		// public MovingObjectPosition rayTrace(double blockReachDistance, float partialTicks)
 		// {
-		//     return InjectionDelegation.rayTrace(this, blockReachDistance, partialTicks);
+		//     return InjectionDelegation.EntityPlayer_rayTrace(this, blockReachDistance, partialTicks);
 		// }
 		
 		String rayTraceResult = mappings.map("RayTraceResult", obf);
@@ -26,12 +26,10 @@ public class EntityPlayerRayTrace extends ShoulderTransformer
 		String rayTrace = mappings.map("EntityLivingBase#rayTrace", obf);
 		Method method = Method.getMethod(rayTraceResult + " " + rayTrace + " (double, float)", true);
 		GeneratorAdapter adapter = new GeneratorAdapter(ACC_PUBLIC, method, null, null, writer);
-		
 		adapter.loadThis();
 		adapter.loadArg(0);
 		adapter.loadArg(1);
 		adapter.invokeStatic(Type.getType("com/teamderpy/shouldersurfing/asm/InjectionDelegation"), Method.getMethod(rayTraceResult + " EntityPlayer_rayTrace (" + entity + ", double, float)", true));
-		
 		adapter.returnValue();
 		adapter.endMethod();
 	}
