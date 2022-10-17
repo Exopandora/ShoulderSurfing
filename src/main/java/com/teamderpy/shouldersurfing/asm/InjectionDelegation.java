@@ -37,15 +37,15 @@ public final class InjectionDelegation
         return new SimpleEntry<Vec3, Vec3>(start, end);
 	}
 	
-	public static MovingObjectPosition Item_getMovingObjectPositionFromPlayer(World level, Vec3 start, Vec3 end, boolean liquid, boolean b1, boolean b2)
+	public static MovingObjectPosition Item_getMovingObjectPositionFromPlayer(World level, Vec3 start, Vec3 end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing())
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(Minecraft.getMinecraft().renderViewEntity, 1.0F, start.squareDistanceTo(end));
-			return level.func_147447_a(look.cameraPos(), look.traceEndPos(), liquid, b1, b2);
+			return level.func_147447_a(look.cameraPos(), look.traceEndPos(), stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
 		}
 		
-		return level.func_147447_a(start, end, liquid, b1, b2);
+		return level.func_147447_a(start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
 	}
 	
 	public static MovingObjectPosition EntityRenderer_rayTrace(World world, Vec3 vec1, Vec3 vec2)
@@ -66,9 +66,9 @@ public final class InjectionDelegation
 			return entity.worldObj.func_147447_a(look.cameraPos(), look.traceEndPos(), false, false, true);
 		}
 		
-		Vec3 eyes = entity.getPosition(partialTicks);
 		Vec3 look = entity.getLook(partialTicks);
-		Vec3 end = eyes.addVector(look.xCoord * blockReachDistance, look.yCoord * blockReachDistance, look.zCoord * blockReachDistance);
-		return entity.worldObj.func_147447_a(eyes, end, false, false, true);
+		Vec3 start = entity.getPosition(partialTicks);
+		Vec3 end = start.addVector(look.xCoord * blockReachDistance, look.yCoord * blockReachDistance, look.zCoord * blockReachDistance);
+		return entity.worldObj.func_147447_a(start, end, false, false, true);
 	}
 }
