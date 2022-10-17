@@ -157,20 +157,20 @@ public class ShoulderRenderer
 		for(Entity entity : list)
 		{
 			AxisAlignedBB axisalignedbb = entity.boundingBox.expand(entity.getCollisionBorderSize(), entity.getCollisionBorderSize(), entity.getCollisionBorderSize());
-			MovingObjectPosition MovingObjectPosition = axisalignedbb.calculateIntercept(viewVector, traceEnd);
+			MovingObjectPosition raytraceresult = axisalignedbb.calculateIntercept(eyePosition, traceEnd);
 			
-			if(axisalignedbb.isVecInside(viewVector))
+			if(axisalignedbb.isVecInside(eyePosition))
 			{
 				if(minEntityReachSqr >= 0.0D)
 				{
 					pointedEntity = entity;
-					entityHitVec = MovingObjectPosition == null ? viewVector : MovingObjectPosition.hitVec;
+					entityHitVec = raytraceresult == null ? eyePosition : raytraceresult.hitVec;
 					minEntityReachSqr = 0.0D;
 				}
 			}
-			else if(MovingObjectPosition != null)
+			else if(raytraceresult != null)
 			{
-				double distanceSq = viewVector.squareDistanceTo(MovingObjectPosition.hitVec);
+				double distanceSq = eyePosition.squareDistanceTo(raytraceresult.hitVec);
 				
 				if(distanceSq < minEntityReachSqr || minEntityReachSqr == 0.0D)
 				{
@@ -179,13 +179,13 @@ public class ShoulderRenderer
 						if(minEntityReachSqr == 0.0D)
 						{
 							pointedEntity = entity;
-							entityHitVec = MovingObjectPosition.hitVec;
+							entityHitVec = raytraceresult.hitVec;
 						}
 					}
 					else
 					{
 						pointedEntity = entity;
-						entityHitVec = MovingObjectPosition.hitVec;
+						entityHitVec = raytraceresult.hitVec;
 						minEntityReachSqr = distanceSq;
 					}
 				}
