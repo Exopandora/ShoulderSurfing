@@ -26,7 +26,7 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 	{
 		// Vec3d vec3d2 = vec3d.addVector(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
 		// ->
-		// Entry<Vec3d, Vec3d> vec3d2 = InjectionDelegation.update(d0);
+		// Entry<Vec3d, Vec3d> vec3d2 = InjectionDelegation.EntityRenderer_getMouseOver(d0);
 		
 		AbstractInsnNode node = method.instructions.get(offset);
 		AbstractInsnNode start = method.instructions.get(offset - 14);
