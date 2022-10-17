@@ -28,7 +28,7 @@ configurations {
 	apiRuntimeOnly.extendsFrom(runtimeOnly)
 }
 
-version = '1.12.2-2.2.2'
+version = '1.12.2-2.2.14'
 group = 'com.teamderpy.shouldersurfing' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ShoulderSurfing'
 

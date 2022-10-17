@@ -1,25 +1,22 @@
 package com.teamderpy.shouldersurfing.event;
 
+import org.lwjgl.input.Keyboard;
 
+import com.teamderpy.shouldersurfing.client.KeyHandler;
+import com.teamderpy.shouldersurfing.client.ShoulderInstance;
+import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
-import com.teamderpy.shouldersurfing.math.Vec2f;
-import com.teamderpy.shouldersurfing.util.ShoulderState;
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,93 +30,66 @@ public class ClientEventHandler
 	{
 		if(event.phase.equals(Phase.START))
 		{
-			if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
-			{
-				ShoulderState.setSwitchPerspective(false);
-			}
-			
-			ShoulderState.setAiming(ShoulderSurfingHelper.isHoldingSpecialItem());
-			
-			if(ShoulderState.isAiming() && Config.CLIENT.getCrosshairType().doSwitchPerspective() && ShoulderState.doShoulderSurfing())
-			{
-				ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
-				ShoulderState.setSwitchPerspective(true);
-			}
-			else if(!ShoulderState.isAiming() && Perspective.FIRST_PERSON.equals(Perspective.current()) && ShoulderState.doSwitchPerspective())
-			{
-				ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
-			}
+			ShoulderInstance.getInstance().tick();
 		}
 	}
 	
 	@SubscribeEvent
 	public void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.isCancelable() && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().currentScreen == null)
+		if(event.isCancelable() && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().currentScreen != null && ShoulderRenderer.getInstance().skipRenderPlayer())
 		{
-			if(ShoulderState.getCameraDistance() < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderState.doShoulderSurfing())
-			{
-				event.setCanceled(true);
-			}
+			event.setCanceled(true);
 		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public void preRenderGameOverlayEvent(RenderGameOverlayEvent.Pre event)
 	{
+		boolean doRender = Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getMinecraft().objectMouseOver, ShoulderInstance.getInstance().isAiming());
+		
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			if(ShoulderState.getProjected() != null)
+			if(doRender)
 			{
-				final ScaledResolution mainWindow = event.getResolution();
-				float scale = mainWindow.getScaleFactor() * ShoulderSurfingHelper.getShadersResmul();
-				
-				Vec2f window = new Vec2f(mainWindow.getScaledWidth(), mainWindow.getScaledHeight());
-				Vec2f center = window.scale(scale).divide(2); // In actual monitor pixels
-				Vec2f projectedOffset = ShoulderState.getProjected().subtract(center).divide(scale);
-				Vec2f lastTranslation = ShoulderState.getLastTranslation();
-				Vec2f interpolated = projectedOffset.subtract(lastTranslation).scale(event.getPartialTicks());
-				
-				ShoulderState.setTranslation(ShoulderState.getLastTranslation().add(interpolated));
-			}
-			
-			if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
-			{
-				GlStateManager.pushMatrix();
-				GlStateManager.translate(ShoulderState.getTranslation().getX(), -ShoulderState.getTranslation().getY(), 0F);
-				ShoulderState.setLastTranslation(ShoulderState.getTranslation());
+				ShoulderRenderer.getInstance().offsetCrosshair(event.getResolution(), event.getPartialTicks());
 			}
 			else
 			{
-				ShoulderState.setLastTranslation(Vec2f.ZERO);
+				event.setCanceled(true);
 			}
 		}
 		//Using BOSSHEALTH to pop matrix because when CROSSHAIRS is cancelled it will not fire RenderGameOverlayEvent#Post and cause a stack overflow
-		else if(event.getType().equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH) && Config.CLIENT.getCrosshairType().isDynamic() && ShoulderState.doShoulderSurfing())
+		else if(doRender && event.getType().equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH))
 		{
-			GlStateManager.popMatrix();
+			ShoulderRenderer.getInstance().clearCrosshairOffset();
 		}
 	}
 	
 	@SubscribeEvent
 	public void renderWorldLast(RenderWorldLastEvent event)
 	{
-		final Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
-		final PlayerControllerMP controller = Minecraft.getMinecraft().playerController;
-		
-		if(ShoulderState.doShoulderSurfing())
-		{
-			double playerReach = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
-			RayTraceResult result = ShoulderSurfingHelper.traceFromEyes(renderView, controller, playerReach, event.getPartialTicks());
-			Vec3d position = result.hitVec.subtract(renderView.getPositionEyes(event.getPartialTicks()).subtract(0, renderView.getEyeHeight(), 0));
-			
-			ShoulderState.setProjected(ShoulderSurfingHelper.project2D(position));
-		}
+		ShoulderRenderer.getInstance().updateDynamicRaytrace(event.getPartialTicks());
+	}
+	
+	@SubscribeEvent
+	public void keyInputEvent(KeyInputEvent event)
+	{
+		KeyHandler.onKeyInput();
 	}
 	
 	@SubscribeEvent
 	public void onConfigChanged(OnConfigChangedEvent event)
 	{
 		Config.CLIENT.sync();
+	}
+	
+	@SubscribeEvent
+	public void onGuiClosed(GuiOpenEvent event)
+	{
+		if(event.getGui() == null)
+		{
+			Keyboard.enableRepeatEvents(true);
+		}
 	}
 }

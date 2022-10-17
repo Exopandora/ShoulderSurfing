@@ -168,6 +168,19 @@
                 "1.9.4": "bettercombat/mod/main/GuiCrosshairsBC",
                 "1.9": "bettercombat/mod/main/GuiCrosshairsBC"
             }
+		},
+		"Item": {
+			"name": "net/minecraft/item/Item",
+            "obf": {
+                "1.12.2": "ain",
+                "1.12.1": "ain",
+                "1.12": "ail",
+                "1.11.2": "afh",
+                "1.11": "afg",
+                "1.10.2": "adx",
+                "1.9.4": "ado",
+                "1.9": "ado"
+            }
 		}
     },
     "methods": {
@@ -206,10 +219,15 @@
             "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
             "obf": "a"
         },
-        "InjectionDelegation#getRayTraceResult": {
-            "name": "getRayTraceResult",
+        "InjectionDelegation#EntityRenderer_rayTrace": {
+            "name": "EntityRenderer_rayTrace",
             "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
             "obf": "getRayTraceResult"
+        },
+        "InjectionDelegation#Item_rayTrace": {
+            "name": "EntityRenderer_rayTrace",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
+            "obf": "Item_rayTrace"
         },
         "Vec3d#addVector": {
             "name": "addVector",
@@ -234,6 +252,16 @@
             "name": "renderAttackIndicator",
             "desc": "(FLnet/minecraft/client/gui/ScaledResolution;)V",
             "obf": "renderAttackIndicator"
+        },
+        "Item#rayTrace": {
+            "name": "rayTrace",
+            "desc": "(L$World;L$EntityPlayer;Z)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "World#rayTraceBlocks": {
+            "name": "rayTraceBlocks",
+            "desc": "(L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
+            "obf": "a"
         }
     },
     "fields": {

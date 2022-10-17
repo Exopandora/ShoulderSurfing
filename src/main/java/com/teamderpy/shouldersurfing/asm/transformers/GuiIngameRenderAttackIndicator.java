@@ -28,8 +28,7 @@ public class GuiIngameRenderAttackIndicator extends ShoulderTransformer
 		// ->
 		// if(InjectionDelegation.doRenderCrosshair() == 0)
 		
-		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "doRenderCrosshair", "()I", false);
-		
+		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "GuiIngame_renderAttackIndicator", "()I", false);
 		method.instructions.set(method.instructions.get(offset), instruction);
 		method.instructions.remove(method.instructions.get(offset - 1));
 	}

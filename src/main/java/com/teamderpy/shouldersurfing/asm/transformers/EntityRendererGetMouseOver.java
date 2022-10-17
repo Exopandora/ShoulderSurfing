@@ -26,7 +26,7 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 	{
 		// Vec3d vec3d2 = vec3d.addVector(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
 		// ->
-		// Entry<Vec3d, Vec3d> vec3d2 = InjectionDelegation.shoulderSurfingLook(d0);
+		// Entry<Vec3d, Vec3d> vec3d2 = InjectionDelegation.EntityRenderer_getMouseOver(d0);
 		
 		AbstractInsnNode node = method.instructions.get(offset);
 		AbstractInsnNode start = method.instructions.get(offset - 14);
@@ -38,7 +38,7 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 		}
 		
 		method.instructions.remove(node.getPrevious());
-		method.instructions.set(node, new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "shoulderSurfingLook", "(D)Ljava/util/Map$Entry;", false));
+		method.instructions.set(node, new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "EntityRenderer_getMouseOver", "(D)Ljava/util/Map$Entry;", false));
 	}
 	
 	@Override
