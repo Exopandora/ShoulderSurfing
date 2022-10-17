@@ -30,6 +30,7 @@ minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "run"
 	accessTransformers.add(file('src/main/resources/META-INF/shouldersurfing_at.cfg'))
+	mappings = "stable_12"
 }
 
 sourceSets {
