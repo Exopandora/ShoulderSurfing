@@ -22,15 +22,17 @@ public final class InjectionDelegation
 {
 	public static Entry<Vec3, Vec3> EntityRenderer_getMouseOver(double blockReach)
 	{
+		EntityLivingBase cameraEntity = Minecraft.getMinecraft().renderViewEntity;
+		float partialTicks = Minecraft.getMinecraft().timer.renderPartialTicks;
+		
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(Minecraft.getMinecraft().renderViewEntity, Minecraft.getMinecraft().timer.renderPartialTicks, blockReach * blockReach);
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(cameraEntity, partialTicks, blockReach * blockReach);
 			return new SimpleEntry<Vec3, Vec3>(look.cameraPos(), look.traceEndPos());
 		}
 		
-		EntityLivingBase cameraEntity = Minecraft.getMinecraft().renderViewEntity;
 		Vec3 look = cameraEntity.getLook(1.0F);
-        Vec3 start = cameraEntity.getPosition(Minecraft.getMinecraft().timer.renderPartialTicks);
+        Vec3 start = cameraEntity.getPosition(partialTicks);
         Vec3 end = start.addVector(look.xCoord * blockReach, look.yCoord * blockReach, look.zCoord * blockReach);
         return new SimpleEntry<Vec3, Vec3>(start, end);
 	}
