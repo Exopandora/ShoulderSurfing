@@ -3,8 +3,11 @@ package com.teamderpy.shouldersurfing.client;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 
+@SideOnly(Side.CLIENT)
 public class ShoulderInstance
 {
 	private static final ShoulderInstance INSTANCE = new ShoulderInstance();
