@@ -30,7 +30,7 @@ public class EntityPlayerRayTrace extends ShoulderTransformer
 		adapter.loadThis();
 		adapter.loadArg(0);
 		adapter.loadArg(1);
-		adapter.invokeStatic(Type.getType("com/teamderpy/shouldersurfing/asm/InjectionDelegation"), Method.getMethod(rayTraceResult + " rayTrace (" + entity + ", double, float)", true));
+		adapter.invokeStatic(Type.getType("com/teamderpy/shouldersurfing/asm/InjectionDelegation"), Method.getMethod(rayTraceResult + " EntityPlayer_rayTrace (" + entity + ", double, float)", true));
 		
 		adapter.returnValue();
 		adapter.endMethod();

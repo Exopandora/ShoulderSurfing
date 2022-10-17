@@ -53,6 +53,18 @@
             "obf": {
                 "1.7.10": "azt"
             }
+        },
+        "GameSettings": {
+            "name": "net/minecraft/client/settings/GameSettings",
+            "obf": {
+                "1.7.10": "bbj"
+            }
+        },
+        "Item": {
+            "name": "net/minecraft/item/Item",
+            "obf": {
+                "1.7.10": "adb"
+            }
         }
     },
     "methods": {
@@ -76,10 +88,15 @@
             "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
             "obf": "a"
         },
-        "InjectionDelegation#getRayTraceResult": {
-            "name": "getRayTraceResult",
+        "InjectionDelegation#EntityRenderer_rayTrace": {
+            "name": "EntityRenderer_rayTrace",
             "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
-            "obf": "getRayTraceResult"
+            "obf": "EntityRenderer_rayTrace"
+        },
+        "InjectionDelegation#Item_getMovingObjectPositionFromPlayer": {
+            "name": "Item_getMovingObjectPositionFromPlayer",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
+            "obf": "Item_getMovingObjectPositionFromPlayer"
         },
         "Vec3d#addVector": {
             "name": "addVector",
@@ -89,6 +106,16 @@
         "AxisAlignedBB#calculateIntercept": {
             "name": "calculateIntercept",
             "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "Item#getMovingObjectPositionFromPlayer": {
+            "name": "getMovingObjectPositionFromPlayer",
+            "desc": "(L$World;L$EntityPlayer;Z)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "World#func_147447_a": {
+            "name": "func_147447_a",
+            "desc": "(L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
             "obf": "a"
         }
     },

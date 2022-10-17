@@ -20,7 +20,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-2.2.3"
+version = "1.7.10-2.2.13"
 group= "com.teamderpy.shouldersurfing" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ShoulderSurfing"
 
@@ -28,7 +28,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
-    runDir = "eclipse"
+    runDir = "run"
 	accessTransformers.add(file('src/main/resources/META-INF/shouldersurfing_at.cfg'))
 }
 

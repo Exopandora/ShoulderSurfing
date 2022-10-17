@@ -37,7 +37,7 @@ public class EntityRendererOrientCamera extends ShoulderTransformer
 		// GL11.glTranslatef(0.0F, 0.0F, (float) -d3);
 		// ->
 		// InjectionDelegation.cameraSetup(0.0F, 0.0F, (float) -d3);
-		method.instructions.set(method.instructions.get(offset), new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "cameraSetup", "(FFF)V", false));
+		method.instructions.set(method.instructions.get(offset), new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "EntityRenderer_orientCamera", "(FFF)V", false));
 	}
 	
 	@Override

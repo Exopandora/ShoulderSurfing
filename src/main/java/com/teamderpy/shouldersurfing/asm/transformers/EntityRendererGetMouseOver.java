@@ -38,7 +38,7 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 		}
 		
 		method.instructions.remove(node.getPrevious());
-		method.instructions.set(node, new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "shoulderSurfingLook", "(D)Ljava/util/Map$Entry;", false));
+		method.instructions.set(node, new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "EntityRenderer_getMouseOver", "(D)Ljava/util/Map$Entry;", false));
 	}
 	
 	@Override

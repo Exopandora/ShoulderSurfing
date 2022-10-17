@@ -1,19 +1,14 @@
-package com.teamderpy.shouldersurfing.event;
+package com.teamderpy.shouldersurfing.client;
 
 import org.lwjgl.input.Keyboard;
 
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
-import com.teamderpy.shouldersurfing.util.ShoulderState;
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.client.event.GuiOpenEvent;
 
 @SideOnly(Side.CLIENT)
 public class KeyHandler
@@ -26,28 +21,28 @@ public class KeyHandler
 	public static final KeyBinding KEYBIND_CAMERA_OUT = new KeyBinding("Camera farther", Keyboard.KEY_DOWN, KeyHandler.KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_CAMERA_UP = new KeyBinding("Camera up", Keyboard.KEY_PRIOR, KeyHandler.KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_CAMERA_DOWN = new KeyBinding("Camera down", Keyboard.KEY_NEXT, KeyHandler.KEY_CATEGORY);
-	
 	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", Keyboard.KEY_O, KeyHandler.KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", Keyboard.KEY_NONE, KeyHandler.KEY_CATEGORY);
 	
-	@SubscribeEvent
-	public void keyInputEvent(KeyInputEvent event)
+	public static void onKeyInput()
 	{
 		if(Minecraft.getMinecraft() != null && Minecraft.getMinecraft().currentScreen == null)
 		{
+			ShoulderInstance shoulderInstance = ShoulderInstance.getInstance();
+			
 			if(KEYBIND_TOGGLE_SHOULDER_SURFING.isPressed())
 			{
-				if(ShoulderState.doShoulderSurfing())
+				if(shoulderInstance.doShoulderSurfing())
 				{
-					ShoulderSurfingHelper.setPerspective(Perspective.FIRST_PERSON);
+					shoulderInstance.changePerspective(Perspective.FIRST_PERSON);
 				}
 				else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == Perspective.FIRST_PERSON.getPointOfView())
 				{
-					ShoulderSurfingHelper.setPerspective(Perspective.SHOULDER_SURFING);
+					shoulderInstance.changePerspective(Perspective.SHOULDER_SURFING);
 				}
 			}
 			
-			if(ShoulderState.doShoulderSurfing())
+			if(ShoulderInstance.getInstance().doShoulderSurfing())
 			{
 				if(KEYBIND_CAMERA_LEFT.isPressed())
 				{
@@ -85,26 +80,20 @@ public class KeyHandler
 				}
 			}
 			
-			if(Minecraft.getMinecraft().gameSettings.keyBindTogglePerspective.isPressed())
+			if(Minecraft.getMinecraft().gameSettings.keyBindTogglePerspective.getIsKeyPressed())
 			{
+				Minecraft.getMinecraft().gameSettings.thirdPersonView = (Minecraft.getMinecraft().gameSettings.thirdPersonView + 2) % 3;
 				Perspective perspective = Perspective.current();
 				Perspective next = perspective.next();
-				ShoulderSurfingHelper.setPerspective(next);
+				shoulderInstance.changePerspective(next);
 				
 				if(Config.CLIENT.doRememberLastPerspective())
 				{
 					Config.CLIENT.setDefaultPerspective(next);
 				}
+				
+				while(Minecraft.getMinecraft().gameSettings.keyBindTogglePerspective.isPressed()) {}
 			}
-		}
-	}
-	
-	@SubscribeEvent
-	public void onGuiClosed(GuiOpenEvent event)
-	{
-		if(event.gui == null)
-		{
-			Keyboard.enableRepeatEvents(true);
 		}
 	}
 }

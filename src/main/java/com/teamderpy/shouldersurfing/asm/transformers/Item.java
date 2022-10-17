@@ -10,37 +10,37 @@ import org.objectweb.asm.tree.MethodNode;
 import com.teamderpy.shouldersurfing.asm.Mappings;
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class EntityRendererRayTrace extends ShoulderTransformer
+public class Item extends ShoulderTransformer
 {
 	@Override
 	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("WorldClient", obf), mappings.map("WorldClient#rayTraceBlocks", obf), mappings.desc("WorldClient#rayTraceBlocks", obf), false));
+		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("World", obf), mappings.map("World#func_147447_a", obf), mappings.desc("World#func_147447_a", obf), false));
 		return searchList;
 	}
 	
 	@Override
 	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
-		// this.mc.world.rayTraceBlocks(Vec3d, Vec3d);
-		// -> 
-		// InjectionDelegation.EntityRenderer_rayTrace(this.mc.world, Vec3d, Vec3d);
+		// p_77621_1_.func_147447_a(vec3, vec31, p_77621_3_, !p_77621_3_, false)
+		// ->
+		// InjectionDelegation.Item_getMovingObjectPositionFromPlayer(world, start, end, liquids, bool, bool);
 		
-		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "EntityRenderer_rayTrace", mappings.desc("InjectionDelegation#EntityRenderer_rayTrace", obf), false);
+		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "Item_getMovingObjectPositionFromPlayer", mappings.desc("InjectionDelegation#Item_getMovingObjectPositionFromPlayer", obf), false);
 		method.instructions.set(method.instructions.get(offset), instruction);
 	}
 	
 	@Override
-	public String getClassId()
+	protected String getClassId()
 	{
-		return "EntityRenderer";
+		return "Item";
 	}
 	
 	@Override
-	public String getMethodId()
+	protected String getMethodId()
 	{
-		return "EntityRenderer#orientCamera";
+		return "Item#getMovingObjectPositionFromPlayer";
 	}
 	
 	@Override
