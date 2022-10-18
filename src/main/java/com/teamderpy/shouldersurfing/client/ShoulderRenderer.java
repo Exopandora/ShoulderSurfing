@@ -126,7 +126,6 @@ public class ShoulderRenderer
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private MovingObjectPosition rayTraceFromEyes(EntityLivingBase cameraEntity, PlayerControllerMP gameMode, double playerReachOverride, final float partialTick)
 	{
 		double playerReach = Math.max(gameMode.getBlockReachDistance(), playerReachOverride);
