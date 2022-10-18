@@ -17,16 +17,16 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 	protected InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
-		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("Vec3", obf), mappings.map("Vec3#addVector", obf), mappings.desc("Vec3#addVector", obf), false));
+		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("Vec3d", obf), mappings.map("Vec3d#addVector", obf), mappings.desc("Vec3d#addVector", obf), false));
 		return searchList;
 	}
 	
 	@Override
 	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
-		// Vec3 Vec32 = Vec3.addVector(Vec31.x * d0, Vec31.y * d0, Vec31.z * d0);
+		// Vec3 vec32 = vec3d.addVector(vec31.x * d0, vec31.y * d0, vec31.z * d0);
 		// ->
-		// Entry<Vec3, Vec3> Vec32 = InjectionDelegation.update(d0);
+		// Entry<Vec3, Vec3> vec32 = InjectionDelegation.EntityRenderer_getMouseOver(d0);
 		
 		AbstractInsnNode node = method.instructions.get(offset);
 		AbstractInsnNode start = method.instructions.get(offset - 14);
@@ -38,7 +38,7 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 		}
 		
 		method.instructions.remove(node.getPrevious());
-		method.instructions.set(node, new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "shoulderSurfingLook", "(D)Ljava/util/Map$Entry;", false));
+		method.instructions.set(node, new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "EntityRenderer_getMouseOver", "(D)Ljava/util/Map$Entry;", false));
 	}
 	
 	@Override

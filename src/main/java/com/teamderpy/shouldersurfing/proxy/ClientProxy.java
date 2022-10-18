@@ -1,16 +1,17 @@
 package com.teamderpy.shouldersurfing.proxy;
 
+import com.teamderpy.shouldersurfing.client.KeyHandler;
+import com.teamderpy.shouldersurfing.client.ShoulderInstance;
+import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
-import com.teamderpy.shouldersurfing.event.KeyHandler;
-import com.teamderpy.shouldersurfing.util.ShoulderState;
-import com.teamderpy.shouldersurfing.util.ShoulderSurfingHelper;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -24,10 +25,10 @@ public class ClientProxy extends CommonProxy
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Config.CLIENT = new ClientConfig(new Configuration(event.getSuggestedConfigurationFile()));
-		ShoulderSurfingHelper.setPerspective(Config.CLIENT.getDefaultPerspective());
-		
-		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-		MinecraftForge.EVENT_BUS.register(new KeyHandler());
+		ShoulderInstance.getInstance().changePerspective(Config.CLIENT.getDefaultPerspective());
+		ClientEventHandler clientEventHandler = new ClientEventHandler();
+		FMLCommonHandler.instance().bus().register(clientEventHandler);
+		MinecraftForge.EVENT_BUS.register(clientEventHandler);
 	}
 	
 	@Override
@@ -48,11 +49,11 @@ public class ClientProxy extends CommonProxy
 	{
 		if(isClassLoaded("shadersmod.client.Shaders"))
 		{
-			ShoulderState.setShaderType(EnumShaderCompatibility.OLD);
+			ShoulderRenderer.getInstance().setShaderType(EnumShaderCompatibility.OLD);
 		}
 		else if(isClassLoaded("net.optifine.shaders.Shaders"))
 		{
-			ShoulderState.setShaderType(EnumShaderCompatibility.NEW);
+			ShoulderRenderer.getInstance().setShaderType(EnumShaderCompatibility.NEW);
 		}
 	}
 	

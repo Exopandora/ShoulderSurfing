@@ -49,7 +49,7 @@
                 "1.8.8": "avr"
             }
         },
-        "Vec3": {
+        "Vec3d": {
             "name": "net/minecraft/util/Vec3",
             "obf": {
                 "1.8.9": "aui",
@@ -68,6 +68,20 @@
             "obf": {
                 "1.8.9": "aug",
                 "1.8.8": "aug"
+            }
+        },
+        "GameSettings": {
+            "name": "net/minecraft/client/settings/GameSettings",
+            "obf": {
+                "1.8.9": "avh",
+                "1.8.8": "avh"
+            }
+        },
+        "Item": {
+            "name": "net/minecraft/item/Item",
+            "obf": {
+                "1.8.9": "zw",
+                "1.8.8": "zw"
             }
         }
     },
@@ -99,26 +113,41 @@
         },
         "WorldClient#rayTraceBlocks": {
             "name": "rayTraceBlocks",
-            "desc": "(L$Vec3;L$Vec3;)L$RayTraceResult;",
+            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
             "obf": "a"
         },
-        "InjectionDelegation#getRayTraceResult": {
-            "name": "getRayTraceResult",
-            "desc": "(L$World;L$Vec3;L$Vec3;)L$RayTraceResult;",
-            "obf": "getRayTraceResult"
+        "InjectionDelegation#EntityRenderer_rayTrace": {
+            "name": "EntityRenderer_rayTrace",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": "EntityRenderer_rayTrace"
         },
-        "Vec3#addVector": {
+        "InjectionDelegation#Item_getMovingObjectPositionFromPlayer": {
+            "name": "Item_getMovingObjectPositionFromPlayer",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
+            "obf": "Item_getMovingObjectPositionFromPlayer"
+        },
+        "Vec3d#addVector": {
             "name": "addVector",
-            "desc": "(DDD)L$Vec3;",
+            "desc": "(DDD)L$Vec3d;",
             "obf": "b"
         },
         "AxisAlignedBB#calculateIntercept": {
             "name": "calculateIntercept",
-            "desc": "(L$Vec3;L$Vec3;)L$RayTraceResult;",
+            "desc": "(L$Vec3d;L$Vec3d;)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "Item#getMovingObjectPositionFromPlayer": {
+            "name": "getMovingObjectPositionFromPlayer",
+            "desc": "(L$World;L$EntityPlayer;Z)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "World#rayTraceBlocks": {
+            "name": "rayTraceBlocks",
+            "desc": "(L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
             "obf": "a"
         }
     },
     "fields": {
-		
-	}
+        
+    }
 }
