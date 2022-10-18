@@ -149,7 +149,7 @@ public class ShoulderRenderer
 		viewVector = Vec3.createVectorHelper(viewVector.xCoord * playerReach, viewVector.yCoord * playerReach, viewVector.zCoord * playerReach);
 		Vec3 traceEnd = eyePosition.addVector(viewVector.xCoord, viewVector.yCoord, viewVector.zCoord);
 		AxisAlignedBB aabb = cameraEntity.boundingBox.addCoord(viewVector.xCoord, viewVector.yCoord, viewVector.zCoord).expand(1.0D, 1.0D, 1.0D);
-		List<Entity> list = Minecraft.getMinecraft().theWorld.getEntitiesWithinAABBExcludingEntity(cameraEntity, aabb);
+		List<Entity> list = Minecraft.getMinecraft().theWorld.getEntitiesWithinAABBExcludingEntity(cameraEntity, aabb, Entity::canBeCollidedWith);
 		Vec3 entityHitVec = null;
 		Entity pointedEntity = null;
 		double minEntityReachSqr = playerReachSqr;
