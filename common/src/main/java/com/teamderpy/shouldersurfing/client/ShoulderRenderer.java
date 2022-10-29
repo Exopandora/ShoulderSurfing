@@ -3,26 +3,41 @@ package com.teamderpy.shouldersurfing.client;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
+import com.teamderpy.shouldersurfing.mixins.GuiAccessor;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ShoulderRenderer
 {
@@ -31,9 +46,28 @@ public class ShoulderRenderer
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
+	private Vec2f projected2;
 	
 	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
 	{
+		if(this.projected2 != null && Minecraft.getInstance().player.getUseItemRemainingTicks() > 0)
+		{
+			Vec2f scaledDimensions = new Vec2f(window.getGuiScaledWidth(), window.getGuiScaledHeight());
+			Vec2f dimensions = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
+			Vec2f scale = scaledDimensions.divide(dimensions);
+			Vec2f center = dimensions.divide(2); // In actual monitor pixels
+			Vec2f projectedOffset = this.projected2.subtract(center).scale(scale);
+			this.projected = new Vec2f(this.projected2.getX(), center.getY());
+			GuiAccessor accessor = (GuiAccessor) Minecraft.getInstance().gui;
+			poseStack.pushPose();
+			poseStack.last().pose().translate(new Vector3f(projectedOffset.getX(), -projectedOffset.getY(), 0F));
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
+			accessor.invokeRenderCrosshair(poseStack);
+			poseStack.popPose();
+		}
+		
 		if(this.projected != null)
 		{
 			Vec2f scaledDimensions = new Vec2f(window.getGuiScaledWidth(), window.getGuiScaledHeight());
@@ -116,6 +150,67 @@ public class ShoulderRenderer
 			MultiPlayerGameMode controller = Minecraft.getInstance().gameMode;
 			HitResult hitResult = this.rayTraceFromEyes(camera, controller, this.getPlayerReach(), partialTick);
 			Vec3 position = hitResult.getLocation().subtract(camera.getPosition());
+			
+			
+			CameraAccessor accessor = ((CameraAccessor) camera);
+			Player player = Minecraft.getInstance().player;
+			ItemStack stack = player.getMainHandItem();
+			
+			if(stack.getItem().equals(Items.BOW) && player.getUseItemRemainingTicks() > 0)
+			{
+				float x = player.getXRot();
+				float y = player.getYRot();
+				float z = 0F;
+				float velocity = BowItem.getPowerForTime(stack.getItem().getUseDuration(stack) - player.getUseItemRemainingTicks()) * 3F;
+				float f = -Mth.sin(y * ((float)Math.PI / 180F)) * Mth.cos(x * ((float)Math.PI / 180F));
+				float f1 = -Mth.sin((x + z) * ((float)Math.PI / 180F));
+				float f2 = Mth.cos(y * ((float)Math.PI / 180F)) * Mth.cos(x * ((float)Math.PI / 180F));
+				Level level = Minecraft.getInstance().level;
+				Vec3 playerMotion = player.getDeltaMovement();
+				
+				double px = Mth.lerp(partialTick, player.xo, player.getX());
+				double py = Mth.lerp(partialTick, player.yo, player.getY()) + Mth.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
+				double pz = Mth.lerp(partialTick, player.zo, player.getZ());
+				
+				Vec3 start = new Vec3(px, py, pz);
+				Vec3 motion = new Vec3(f, f1, f2).normalize().scale(velocity).add(playerMotion.x, player.isOnGround() ? 0.0D : playerMotion.y, playerMotion.z);
+				
+				for(int i = 0; i < 300; i++)
+				{
+					Vec3 end = start.add(motion);
+					HitResult hitresult = level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null));
+					
+					if(hitresult.getType() != HitResult.Type.MISS)
+					{
+						end = hitresult.getLocation();
+						this.projected2 = this.project2D(end.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
+						break;
+					}
+					
+					motion = motion.scale(0.99F).subtract(0, 0.05, 0);
+					start = end;
+					
+					BlockPos blockpos = new BlockPos(start);
+					BlockState blockstate = level.getBlockState(blockpos);
+					
+					if(!blockstate.isAir())
+					{
+						VoxelShape voxelshape = blockstate.getCollisionShape(level, blockpos);
+						
+						if(!voxelshape.isEmpty())
+						{
+							for(AABB aabb : voxelshape.toAabbs())
+							{
+								if(aabb.move(blockpos).contains(start))
+								{
+									return;
+								}
+							}
+						}
+					}
+				}
+			}
+			
 			this.projected = this.project2D(position, modelViewMatrix, projectionMatrix);
 		}
 	}

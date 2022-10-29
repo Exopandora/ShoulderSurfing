@@ -41,12 +41,13 @@ public class ShoulderSurfingForge
 	@SubscribeEvent
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::keyInputEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::inputEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::preRenderPlayerEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent2);
 	}
 	
 	@SubscribeEvent
