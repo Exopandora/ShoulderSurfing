@@ -6,7 +6,7 @@ import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
-import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -64,8 +64,8 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void keyInputEvent(KeyInputEvent event)
+	public static void keyInputEvent(InputEvent event)
 	{
-		KeyHandler.onKeyInput();
+		KeyHandler.onInput();
 	}
 }
