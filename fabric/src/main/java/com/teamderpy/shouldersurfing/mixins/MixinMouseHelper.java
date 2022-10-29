@@ -19,7 +19,7 @@ public class MixinMouseHelper
 		at = @At
 		(
 			value = "FIELD",
-			target = "Lnet/minecraft/client/Minecraft;overlay",
+			target = "Lnet/minecraft/client/Minecraft;overlay:Lnet/minecraft/client/gui/LoadingGui;",
 			shift = Shift.BEFORE,
 			ordinal = 0
 		)
