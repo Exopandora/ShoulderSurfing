@@ -24,7 +24,7 @@ public class KeyHandler
 	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", Keyboard.KEY_O, KeyHandler.KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", Keyboard.KEY_NONE, KeyHandler.KEY_CATEGORY);
 	
-	public static void onKeyInput()
+	public static void onInput()
 	{
 		if(Minecraft.getMinecraft() != null && Minecraft.getMinecraft().currentScreen == null)
 		{
