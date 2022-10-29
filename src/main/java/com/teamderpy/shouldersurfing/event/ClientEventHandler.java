@@ -11,7 +11,7 @@ import com.teamderpy.shouldersurfing.config.Perspective;
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
@@ -73,9 +73,9 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public void keyInputEvent(KeyInputEvent event)
+	public void keyInputEvent(InputEvent event)
 	{
-		KeyHandler.onKeyInput();
+		KeyHandler.onInput();
 	}
 	
 	@SubscribeEvent
