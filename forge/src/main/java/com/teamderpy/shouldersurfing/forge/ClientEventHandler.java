@@ -66,8 +66,8 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void keyInputEvent(InputEvent.Key event)
+	public static void keyInputEvent(InputEvent event)
 	{
-		KeyHandler.onKeyInput();
+		KeyHandler.onInput();
 	}
 }
