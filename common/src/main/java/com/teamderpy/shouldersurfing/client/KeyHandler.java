@@ -24,7 +24,7 @@ public class KeyHandler
 	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", InputMappings.UNKNOWN.getValue(), KEY_CATEGORY);
 	
 	@SuppressWarnings("resource")
-	public static void onKeyInput()
+	public static void onInput()
 	{
 		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
 		{
