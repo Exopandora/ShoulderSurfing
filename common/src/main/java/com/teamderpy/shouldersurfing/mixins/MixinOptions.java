@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
+import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Options;
@@ -20,7 +21,7 @@ public abstract class MixinOptions
 	{
 		if(cameraType != this.cameraType)
 		{
-			ShoulderInstance.getInstance().setShoulderSurfing(false);
+			ShoulderInstance.getInstance().setShoulderSurfing(Config.CLIENT.replaceDefaultPerspective() && cameraType.equals(CameraType.THIRD_PERSON_BACK));
 		}
 		
 		this.cameraType = cameraType;
