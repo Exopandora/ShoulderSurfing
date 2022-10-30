@@ -14,9 +14,15 @@ public class ShoulderInstance
 	private boolean doShoulderSurfing;
 	private boolean doSwitchPerspective;
 	private boolean isAiming;
+	private int thirdPersonView = Config.CLIENT.getDefaultPerspective().getPointOfView();
 	
 	public void tick()
 	{
+		if(this.thirdPersonView != Minecraft.getMinecraft().gameSettings.thirdPersonView)
+		{
+			this.doShoulderSurfing = Config.CLIENT.replaceDefaultPerspective() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 1;
+		}
+		
 		if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
 		{
 			this.doSwitchPerspective = false;
@@ -38,6 +44,7 @@ public class ShoulderInstance
 	public void changePerspective(Perspective perspective)
 	{
 		Minecraft.getMinecraft().gameSettings.thirdPersonView = perspective.getPointOfView();
+		this.thirdPersonView = perspective.getPointOfView();
 		this.doShoulderSurfing = Perspective.SHOULDER_SURFING.equals(perspective);
 	}
 	
