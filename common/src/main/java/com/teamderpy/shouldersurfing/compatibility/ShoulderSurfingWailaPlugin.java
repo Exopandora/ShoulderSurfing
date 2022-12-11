@@ -10,6 +10,7 @@ import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.WailaConstants;
+import mcp.mobius.waila.plugin.core.pick.ObjectPicker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -20,25 +21,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public abstract class ShoulderSurfingWailaPlugin implements IWailaPlugin
+public class ShoulderSurfingWailaPlugin implements IWailaPlugin
 {
 	@Override
 	public void register(IRegistrar registrar)
 	{
-		registrar.replacePicker(new ShoulderSurfingObjectPicker(this.defaultObjectPickerInstance()));
+		registrar.replacePicker(new ShoulderSurfingObjectPicker());
 	}
-	
-	protected abstract IObjectPicker defaultObjectPickerInstance();
 	
 	private static class ShoulderSurfingObjectPicker implements IObjectPicker
 	{
-		private IObjectPicker defaultObjectPicker;
-		
-		public ShoulderSurfingObjectPicker(IObjectPicker defaultObjectPicker)
-		{
-			this.defaultObjectPicker = defaultObjectPicker;
-		}
-		
 		@Override
 		public HitResult pick(Minecraft mc, double maxDistance, float partialTick, IPluginConfig config)
 		{
@@ -79,7 +71,7 @@ public abstract class ShoulderSurfingWailaPlugin implements IWailaPlugin
 				return blockHit;
 			}
 			
-			return this.defaultObjectPicker.pick(mc, maxDistance, partialTick, config);
+			return ObjectPicker.INSTANCE.pick(mc, maxDistance, partialTick, config);
 		}
 	}
 }

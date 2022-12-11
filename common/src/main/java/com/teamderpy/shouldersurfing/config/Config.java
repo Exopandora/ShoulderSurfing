@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -192,13 +192,13 @@ public class Config
 					.defineList("adaptive_crosshair_items", () ->
 					{
 						List<String> items = new ArrayList<String>();
-						items.add(Registry.ITEM.getKey(Items.SNOWBALL).toString());
-						items.add(Registry.ITEM.getKey(Items.EGG).toString());
-						items.add(Registry.ITEM.getKey(Items.EXPERIENCE_BOTTLE).toString());
-						items.add(Registry.ITEM.getKey(Items.ENDER_PEARL).toString());
-						items.add(Registry.ITEM.getKey(Items.SPLASH_POTION).toString());
-						items.add(Registry.ITEM.getKey(Items.FISHING_ROD).toString());
-						items.add(Registry.ITEM.getKey(Items.LINGERING_POTION).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.SNOWBALL).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.EGG).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.EXPERIENCE_BOTTLE).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.ENDER_PEARL).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.SPLASH_POTION).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.FISHING_ROD).toString());
+						items.add(BuiltInRegistries.ITEM.getKey(Items.LINGERING_POTION).toString());
 						return items;
 					}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			

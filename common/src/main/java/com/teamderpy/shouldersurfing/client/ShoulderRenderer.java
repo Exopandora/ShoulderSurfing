@@ -2,11 +2,11 @@ package com.teamderpy.shouldersurfing.client;
 
 import javax.annotation.Nullable;
 
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
@@ -48,7 +48,7 @@ public class ShoulderRenderer
 		if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			poseStack.pushPose();
-			poseStack.last().pose().translate(new Vector3f(this.translation.getX(), -this.translation.getY(), 0F));
+			poseStack.last().pose().translate(this.translation.getX(), -this.translation.getY(), 0F);
 			this.lastTranslation = this.translation;
 		}
 		else
@@ -161,8 +161,8 @@ public class ShoulderRenderer
 	private Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
 	{
 		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
-		vec.transform(modelView);
-		vec.transform(projection);
+		vec.mul(modelView);
+		vec.mul(projection);
 		
 		if(vec.w() == 0.0F)
 		{

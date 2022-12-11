@@ -5,12 +5,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
-import net.minecraftforge.api.fml.event.config.ModConfigEvent;
+import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft
@@ -23,7 +24,7 @@ public class MixinMinecraft
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
 		ShoulderInstance.getInstance().changePerspective(Config.CLIENT.getDefaultPerspective());
-		ModConfigEvent.RELOADING.register(Config::onConfigReload);
+		ModConfigEvents.reloading(ShoulderSurfing.MODID).register(Config::onConfigReload);
 	}
 	
 	@Inject

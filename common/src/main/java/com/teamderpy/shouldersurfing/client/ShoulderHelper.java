@@ -9,7 +9,7 @@ import com.teamderpy.shouldersurfing.config.Config;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -74,7 +74,7 @@ public class ShoulderHelper
 			{
 				return true;
 			}
-			else if(overrides.contains(Registry.ITEM.getKey(current).toString()))
+			else if(overrides.contains(BuiltInRegistries.ITEM.getKey(current).toString()))
 			{
 				return true;
 			}
@@ -87,7 +87,7 @@ public class ShoulderHelper
 				{
 					return true;
 				}
-				else if(overrides.contains(Registry.ITEM.getKey(item).toString()))
+				else if(overrides.contains(BuiltInRegistries.ITEM.getKey(item).toString()))
 				{
 					return true;
 				}

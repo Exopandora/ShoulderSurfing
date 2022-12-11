@@ -1,12 +1,12 @@
 package com.teamderpy.shouldersurfing.mixins;
 
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.Camera;

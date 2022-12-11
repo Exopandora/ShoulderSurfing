@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.mixins;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -16,9 +15,6 @@ import net.minecraft.client.gui.Gui;
 @Mixin(Gui.class)
 public class MixinGui
 {
-	@Shadow
-	protected Minecraft minecraft;
-	
 	@Redirect
 	(
 		method = "renderCrosshair",
@@ -30,6 +26,6 @@ public class MixinGui
 	)
 	private boolean doRenderCrosshair(CameraType cameraType)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(this.minecraft.hitResult, ShoulderInstance.getInstance().isAiming());
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, ShoulderInstance.getInstance().isAiming());
 	}
 }
