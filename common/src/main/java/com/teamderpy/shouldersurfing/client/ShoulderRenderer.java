@@ -88,7 +88,10 @@ public class ShoulderRenderer
 		
 		for(int i = 0; i < 8; i++)
 		{
-			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1).scale(2).subtract(1, 1, 1).scale(0.1);
+			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1)
+					.scale(2)
+					.subtract(1, 1, 1)
+					.scale(0.075);
 			Vec3 from = cameraPos.add(offset);
 			Vec3 to = from.add(cameraOffset);
 			ClipContext context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, camera.getEntity());
@@ -100,7 +103,7 @@ public class ShoulderRenderer
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance;
+					distance = newDistance - 0.2;
 				}
 			}
 		}
