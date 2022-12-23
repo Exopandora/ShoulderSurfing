@@ -90,12 +90,15 @@ public class ShoulderRenderer
 	
 	private double calcCameraDistance(World world, double distance, float yaw, float pitch)
 	{
-		Vec3d cameraPos = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
+		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
+		Vec3d cameraPos = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
 		Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(distance, yaw, pitch);
 		
 		for(int i = 0; i < 8; i++)
 		{
-			Vec3d offset = new Vec3d((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2).subtract(1, 1, 1).scale(0.1D);
+			Vec3d offset = new Vec3d((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2)
+					.subtract(1, 1, 1)
+					.scale(0.075);
 			Vec3d from = cameraPos.add(offset);
 			Vec3d to = from.add(cameraOffset);
 			RayTraceResult hitResult = world.rayTraceBlocks(from, to, false, true, false);
@@ -106,7 +109,7 @@ public class ShoulderRenderer
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance;
+					distance = newDistance - 0.2;
 				}
 			}
 		}
