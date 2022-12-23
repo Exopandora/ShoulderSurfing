@@ -37,7 +37,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
 	{
-		if(event.isCancelable() && event.entityPlayer.equals(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().currentScreen != null && ShoulderRenderer.getInstance().skipRenderPlayer())
+		if(event.isCancelable() && event.entityPlayer.equals(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipRenderPlayer())
 		{
 			event.setCanceled(true);
 		}
