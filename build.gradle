@@ -6,18 +6,13 @@ buildscript {
             name = "forge"
             url = "https://maven.minecraftforge.net/"
         }
-		maven {
-			url = "https://jitpack.io/"
-		}
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
-        classpath("com.github.gatooooooo:ForgeGradle:f2c5bb338e") {
-            changing = true
-        }
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
     }
 }
 
