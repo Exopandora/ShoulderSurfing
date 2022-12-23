@@ -100,8 +100,9 @@ public class ShoulderRenderer
 		
 		for(int i = 0; i < 8; i++)
 		{
-			Vec3 offset = new Vec3((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2).subtract(new Vec3(1, 1, 1));
-			offset = new Vec3(offset.xCoord * 0.1D, offset.yCoord * 0.1D, offset.zCoord * 0.1D);
+			Vec3 offset = new Vec3((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2)
+					.subtract(new Vec3(1, 1, 1));
+			offset = new Vec3(offset.xCoord * 0.075D, offset.yCoord * 0.075D, offset.zCoord * 0.075D);
 			Vec3 from = cameraPos.addVector(offset.xCoord, offset.yCoord, offset.zCoord);
 			Vec3 to = from.addVector(cameraOffset.xCoord, cameraOffset.yCoord, cameraOffset.zCoord);
 			MovingObjectPosition hitResult = world.rayTraceBlocks(from, to, false, true, false);
@@ -112,7 +113,7 @@ public class ShoulderRenderer
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance;
+					distance = newDistance - 0.2;
 				}
 			}
 		}
