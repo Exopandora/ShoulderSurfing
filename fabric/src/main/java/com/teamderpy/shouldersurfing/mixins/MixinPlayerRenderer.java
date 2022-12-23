@@ -13,7 +13,7 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 
-@Mixin(PlayerRenderer.class)
+@Mixin(value = PlayerRenderer.class, priority = 0)
 public class MixinPlayerRenderer
 {
 	@Inject
