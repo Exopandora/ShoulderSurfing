@@ -88,7 +88,10 @@ public class ShoulderRenderer
 		
 		for(int i = 0; i < 8; i++)
 		{
-			Vector3d offset = new Vector3d(i & 1, i >> 1 & 1, i >> 2 & 1).scale(2).subtract(1, 1, 1).scale(0.1);
+			Vector3d offset = new Vector3d(i & 1, i >> 1 & 1, i >> 2 & 1)
+					.scale(2)
+					.subtract(1, 1, 1)
+					.scale(0.075);
 			Vector3d from = cameraPos.add(offset);
 			Vector3d to = from.add(cameraOffset);
 			RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, camera.getEntity());
@@ -100,7 +103,7 @@ public class ShoulderRenderer
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance;
+					distance = newDistance - 0.2;
 				}
 			}
 		}
