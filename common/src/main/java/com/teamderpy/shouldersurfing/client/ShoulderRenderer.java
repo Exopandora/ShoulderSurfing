@@ -163,6 +163,15 @@ public class ShoulderRenderer
 	@Nullable
 	private Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
 	{
+		Window window = Minecraft.getInstance().getWindow();
+		int screenWidth = window.getScreenWidth();
+		int screenHeight = window.getScreenHeight();
+		
+		if(screenWidth == 0 || screenHeight == 0)
+		{
+			return null;
+		}
+		
 		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
 		vec.transform(modelView);
 		vec.transform(projection);
@@ -173,13 +182,10 @@ public class ShoulderRenderer
 		}
 		
 		float w = (1.0F / vec.w()) * 0.5F;
-		float x = vec.x() * w + 0.5F;
-		float y = vec.y() * w + 0.5F;
+		float x = (vec.x() * w + 0.5F) * screenWidth;
+		float y = (vec.y() * w + 0.5F) * screenHeight;
 		float z = vec.z() * w + 0.5F;
 		vec.set(x, y, z, w);
-		
-		x *= Minecraft.getInstance().getWindow().getScreenWidth();
-		y *= Minecraft.getInstance().getWindow().getScreenHeight();
 		
 		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y))
 		{
