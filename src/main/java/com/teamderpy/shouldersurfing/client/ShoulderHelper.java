@@ -105,7 +105,7 @@ public class ShoulderHelper
 			{
 				Item current = stack.getItem();
 				
-				if(current instanceof ItemPotion && ItemPotion.isSplash(stack.getItemDamage()))
+				if(current instanceof ItemPotion && ItemPotion.isSplash(current.getDamage(stack)))
 				{
 					return true;
 				}
