@@ -119,11 +119,16 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			EntityLivingBase cameraEntity = Minecraft.getMinecraft().renderViewEntity;
-			PlayerControllerMP controller = Minecraft.getMinecraft().playerController;
-			MovingObjectPosition hitResult = this.rayTraceFromEyes(cameraEntity, controller, this.getPlayerReach(), partialTick);
-			Vec3 position = cameraEntity.getPosition(partialTick).subtract(hitResult.hitVec);
-			this.projected = this.project2D(position);
+			Minecraft minecraft = Minecraft.getMinecraft();
+			EntityLivingBase cameraEntity = minecraft.renderViewEntity;
+			PlayerControllerMP controller = minecraft.playerController;
+			MovingObjectPosition hitResult = ShoulderHelper.traceBlocksAndEntities(cameraEntity, controller, this.getPlayerReach(), false, partialTick, true, false);
+			
+			if(hitResult != null)
+			{
+				Vec3 position = cameraEntity.getPosition(partialTick).subtract(hitResult.hitVec);
+				this.projected = this.project2D(position);
+			}
 		}
 	}
 	
