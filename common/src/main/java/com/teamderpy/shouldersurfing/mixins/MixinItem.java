@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
-import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
+import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -31,13 +31,16 @@ public class MixinItem
 			target = "Lnet/minecraft/world/level/ClipContext;"
 		)
 	)
-	@SuppressWarnings("resource")
 	private static ClipContext initClipContext(Vec3 start, Vec3 end, Block block, Fluid fluid, @Nullable Entity entity)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(Minecraft.getInstance().gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
-			return new ClipContext(look.cameraPos(), look.traceEndPos(), block, fluid, entity);
+			Minecraft minecraft = Minecraft.getInstance();
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
+			Vec3 eyePosition = entity.getEyePosition(1.0F);
+			Vec3 from = eyePosition.add(look.headOffset());
+			Vec3 to = look.traceEndPos();
+			return new ClipContext(from, to, block, fluid, entity);
 		}
 		
 		return new ClipContext(start, end, block, fluid, entity);
