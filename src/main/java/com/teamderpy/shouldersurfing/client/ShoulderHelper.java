@@ -220,14 +220,14 @@ public class ShoulderHelper
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(entity, partialTick, distance * distance);
 			Vec3d from = eyePosition.add(look.headOffset());
 			Vec3d to = look.traceEndPos();
-			return entity.world.rayTraceBlocks(from, to, stopOnFluid, true, true);
+			return entity.world.rayTraceBlocks(from, to, stopOnFluid, false, true);
 		}
 		else
 		{
 			Vec3d from = eyePosition;
 			Vec3d view = entity.getLook(partialTick);
 			Vec3d to = from.add(view.scale(distance));
-			return entity.world.rayTraceBlocks(from, to, stopOnFluid, true, true);
+			return entity.world.rayTraceBlocks(from, to, stopOnFluid, false, true);
 		}
 	}
 	
