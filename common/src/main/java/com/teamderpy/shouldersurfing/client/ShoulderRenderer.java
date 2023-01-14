@@ -11,10 +11,6 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -89,9 +85,9 @@ public class ShoulderRenderer
 		for(int i = 0; i < 8; i++)
 		{
 			Vector3d offset = new Vector3d(i & 1, i >> 1 & 1, i >> 2 & 1)
-					.scale(2)
-					.subtract(1, 1, 1)
-					.scale(0.075);
+				.scale(2)
+				.subtract(1, 1, 1)
+				.scale(0.075);
 			Vector3d from = cameraPos.add(offset);
 			Vector3d to = from.add(cameraOffset);
 			RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, camera.getEntity());
@@ -111,54 +107,16 @@ public class ShoulderRenderer
 		return distance;
 	}
 	
-	@SuppressWarnings("resource")
 	public void updateDynamicRaytrace(ActiveRenderInfo camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			PlayerController controller = Minecraft.getInstance().gameMode;
-			double playerReachOverride = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
-			RayTraceResult hitResult = this.rayTraceFromEyes(camera, controller, playerReachOverride, partialTick);
+			Minecraft minecraft = Minecraft.getInstance();
+			PlayerController gameMode = minecraft.gameMode;
+			RayTraceResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, this.getPlayerReach(), RayTraceContext.FluidMode.NONE, partialTick, true, false);
 			Vector3d position = hitResult.getLocation().subtract(camera.getPosition());
 			this.projected = this.project2D(position, modelViewMatrix, projectionMatrix);
 		}
-	}
-	
-	private RayTraceResult rayTraceFromEyes(ActiveRenderInfo camera, PlayerController gameMode, double playerReachOverride, final float partialTick)
-	{
-		double playerReach = Math.max(gameMode.getPickRange(), playerReachOverride);
-		Entity cameraEntity = camera.getEntity();
-		RayTraceResult blockTrace = cameraEntity.pick(playerReach, partialTick, false);
-		Vector3d eyePosition = cameraEntity.getEyePosition(partialTick);
-		
-		if(gameMode.hasFarPickRange())
-		{
-			playerReach = Math.max(playerReach, gameMode.getPlayerMode().isCreative() ? 6.0D : 3.0D);
-		}
-		
-		double playerReachSqr = playerReach * playerReach;
-		
-		if(blockTrace != null)
-		{
-			playerReachSqr = blockTrace.getLocation().distanceToSqr(eyePosition);
-		}
-		
-		Vector3d viewVector = cameraEntity.getViewVector(1.0F);
-		Vector3d traceEnd = eyePosition.add(viewVector.scale(playerReach));
-		AxisAlignedBB aabb = cameraEntity.getBoundingBox().expandTowards(viewVector.scale(playerReach)).inflate(1.0D, 1.0D, 1.0D);
-		EntityRayTraceResult entityTrace = ProjectileHelper.getEntityHitResult(cameraEntity, eyePosition, traceEnd, aabb, entity -> !entity.isSpectator() && entity.isPickable(), playerReachSqr);
-		
-		if(entityTrace != null)
-		{
-			double distanceSq = eyePosition.distanceToSqr(entityTrace.getLocation());
-			
-			if(distanceSq < playerReachSqr || blockTrace == null)
-			{
-				return entityTrace;
-			}
-		}
-		
-		return blockTrace;
 	}
 	
 	@Nullable
@@ -200,6 +158,11 @@ public class ShoulderRenderer
 	public boolean skipRenderPlayer()
 	{
 		return this.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderInstance.getInstance().doShoulderSurfing();
+	}
+	
+	public double getPlayerReach()
+	{
+		return Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
 	}
 	
 	public double getCameraDistance()

@@ -3,7 +3,6 @@ package com.teamderpy.shouldersurfing.mixins;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
-import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
@@ -26,17 +25,14 @@ public abstract class MixinPlayerEntity extends Entity
 	}
 	
 	@Override
-	@SuppressWarnings("resource")
 	public RayTraceResult pick(double distance, float partialTicks, boolean stopOnFluid)
 	{
-		final ActiveRenderInfo camera = Minecraft.getInstance().getEntityRenderDispatcher().camera;
+		Minecraft minecraft = Minecraft.getInstance();
+		ActiveRenderInfo camera = minecraft.getEntityRenderDispatcher().camera;
 		
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && camera != null)
 		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, this, partialTicks, distance * distance);
-			RayTraceContext.FluidMode fluidMode = stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE;
-			RayTraceContext context = new RayTraceContext(look.cameraPos(), look.traceEndPos(), RayTraceContext.BlockMode.OUTLINE, fluidMode, this);
-			return this.level.clip(context);
+			return ShoulderHelper.traceBlocks(camera, this, stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, distance, partialTicks, true);
 		}
 		
 		return super.pick(distance, partialTicks, stopOnFluid);
