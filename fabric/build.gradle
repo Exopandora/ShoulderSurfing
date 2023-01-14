@@ -19,6 +19,7 @@ dependencies {
 	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
 	modImplementation "mcp.mobius.waila:wthit:fabric-${wthit_version}"
 	modImplementation "lol.bai:badpackets:fabric-${badpackets_version}"
+	modImplementation "curse.maven:jade-324717:${jade_version_fabric}"
 }
 
 loom {

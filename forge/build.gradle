@@ -106,6 +106,7 @@ dependencies {
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	implementation fg.deobf("mcp.mobius.waila:wthit:forge-${wthit_version}")
 	implementation fg.deobf("lol.bai:badpackets:forge-${badpackets_version}")
+	implementation fg.deobf("curse.maven:jade-324717:${jade_version_forge}")
 }
 
 compileJava {

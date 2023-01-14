@@ -19,6 +19,12 @@ subprojects {
 			name = 'WTHIT'
 			url = 'https://maven.bai.lol'
 		}
+		maven {
+			url "https://www.cursemaven.com"
+			content {
+				includeGroup "curse.maven"
+			}
+		}
 	}
 	
 	tasks.withType(Jar).configureEach {

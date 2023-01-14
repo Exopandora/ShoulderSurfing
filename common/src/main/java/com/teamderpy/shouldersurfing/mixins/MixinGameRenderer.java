@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
-import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
@@ -40,8 +39,7 @@ public class MixinGameRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(this.mainCamera, shooter, Minecraft.getInstance().getFrameTime(), distanceSq);
-			return ProjectileUtil.getEntityHitResult(shooter, look.traceEndPos(), look.cameraPos(), boundingBox.move(look.headOffset()), filter, distanceSq);
+			return ShoulderHelper.traceEntities(this.mainCamera, shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), true);
 		}
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
