@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.compatibility;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
-import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
@@ -10,14 +9,10 @@ import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.WailaConstants;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 public abstract class ShoulderSurfingWailaPlugin implements IWailaPlugin
@@ -44,39 +39,11 @@ public abstract class ShoulderSurfingWailaPlugin implements IWailaPlugin
 		{
 			if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 			{
-				Entity camera = mc.getCameraEntity();
-				
-				if(camera == null)
-				{
-					return IObjectPicker.MISS;
-				}
-				
-				ShoulderLook look = ShoulderHelper.shoulderSurfingLook(mc.gameRenderer.getMainCamera(), camera, partialTick, maxDistance * maxDistance);
+				Camera camera = mc.gameRenderer.getMainCamera();
+				MultiPlayerGameMode gameMode = mc.gameMode;
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
-				BlockHitResult blockHit = camera.level.clip(new ClipContext(look.cameraPos(), look.traceEndPos(), ClipContext.Block.OUTLINE, fluidContext, camera));
-				
-				if(config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY))
-				{
-					EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(camera, look.cameraPos(), look.traceEndPos(), new AABB(look.cameraPos(), look.traceEndPos()), EntitySelector.ENTITY_STILL_ALIVE, 0f);
-					
-					if(entityHit != null)
-					{
-						if(HitResult.Type.MISS.equals(blockHit.getType()))
-						{
-							return entityHit;
-						}
-						
-						double blockDistance = blockHit.getLocation().distanceToSqr(look.cameraPos());
-						double entityDistance = entityHit.getLocation().distanceToSqr(look.cameraPos());
-						
-						if(entityDistance < blockDistance)
-						{
-							return entityHit;
-						}
-					}
-				}
-				
-				return blockHit;
+				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);
+				return ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, true);
 			}
 			
 			return this.defaultObjectPicker.pick(mc, maxDistance, partialTick, config);
