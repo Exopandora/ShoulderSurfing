@@ -2,14 +2,12 @@ package com.teamderpy.shouldersurfing.client;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import com.google.common.base.Predicates;
 import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
@@ -20,8 +18,6 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -97,8 +93,8 @@ public class ShoulderRenderer
 		for(int i = 0; i < 8; i++)
 		{
 			Vec3d offset = new Vec3d((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2)
-					.subtract(1, 1, 1)
-					.scale(0.075);
+				.subtract(1, 1, 1)
+				.scale(0.075);
 			Vec3d from = cameraPos.add(offset);
 			Vec3d to = from.add(cameraOffset);
 			RayTraceResult hitResult = world.rayTraceBlocks(from, to, false, true, false);
@@ -121,84 +117,17 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			Entity cameraEntity = Minecraft.getMinecraft().getRenderViewEntity();
-			PlayerControllerMP controller = Minecraft.getMinecraft().playerController;
-			RayTraceResult hitResult = this.rayTraceFromEyes(cameraEntity, controller, this.getPlayerReach(), partialTick);
-			Vec3d position = hitResult.hitVec.subtract(cameraEntity.getPositionEyes(partialTick).subtract(0, cameraEntity.getEyeHeight(), 0));
-			this.projected = this.project2D(position);
-		}
-	}
-	
-	private RayTraceResult rayTraceFromEyes(Entity cameraEntity, PlayerControllerMP gameMode, double playerReachOverride, final float partialTick)
-	{
-		double playerReach = Math.max(gameMode.getBlockReachDistance(), playerReachOverride);
-		RayTraceResult blockTrace = cameraEntity.rayTrace(playerReach, partialTick);
-		Vec3d eyePosition = cameraEntity.getPositionEyes(partialTick);
-		
-		if(gameMode.extendedReach())
-		{
-			playerReach = Math.max(playerReach, gameMode.isInCreativeMode() ? 6.0D : 3.0D);
-		}
-		
-		double playerReachSqr = playerReach * playerReach;
-		
-		if(blockTrace != null)
-		{
-			playerReachSqr = blockTrace.hitVec.squareDistanceTo(eyePosition);
-		}
-		
-		Vec3d viewVector = cameraEntity.getLook(1.0F);
-		Vec3d traceEnd = eyePosition.add(viewVector.scale(playerReach));
-		AxisAlignedBB aabb = cameraEntity.getEntityBoundingBox().expand(viewVector.x * playerReach, viewVector.y * playerReach, viewVector.z * playerReach).grow(1.0D, 1.0D, 1.0D);
-		List<Entity> list = Minecraft.getMinecraft().world.getEntitiesInAABBexcluding(cameraEntity, aabb, Predicates.and(EntitySelectors.NOT_SPECTATING, e -> e != null && e.canBeCollidedWith()));
-		Vec3d entityHitVec = null;
-		Entity pointedEntity = null;
-		double minEntityReachSqr = playerReachSqr;
-		
-		for(Entity entity : list)
-		{
-			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
-			RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(eyePosition, traceEnd);
+			Minecraft minecraft = Minecraft.getMinecraft();
+			Entity cameraEntity = minecraft.getRenderViewEntity();
+			PlayerControllerMP controller = minecraft.playerController;
+			RayTraceResult hitResult = ShoulderHelper.traceBlocksAndEntities(cameraEntity, controller, this.getPlayerReach(), false, partialTick, true, false);
 			
-			if(axisalignedbb.contains(eyePosition))
+			if(hitResult != null)
 			{
-				if(minEntityReachSqr >= 0.0D)
-				{
-					pointedEntity = entity;
-					entityHitVec = raytraceresult == null ? eyePosition : raytraceresult.hitVec;
-					minEntityReachSqr = 0.0D;
-				}
-			}
-			else if(raytraceresult != null)
-			{
-				double distanceSq = eyePosition.squareDistanceTo(raytraceresult.hitVec);
-				
-				if(distanceSq < minEntityReachSqr || minEntityReachSqr == 0.0D)
-				{
-					if(entity == cameraEntity.getRidingEntity() && !entity.canRiderInteract())
-					{
-						if(minEntityReachSqr == 0.0D)
-						{
-							pointedEntity = entity;
-							entityHitVec = raytraceresult.hitVec;
-						}
-					}
-					else
-					{
-						pointedEntity = entity;
-						entityHitVec = raytraceresult.hitVec;
-						minEntityReachSqr = distanceSq;
-					}
-				}
+				Vec3d position = hitResult.hitVec.subtract(cameraEntity.getPositionEyes(partialTick).subtract(0, cameraEntity.getEyeHeight(), 0));
+				this.projected = this.project2D(position);
 			}
 		}
-		
-		if(pointedEntity != null && (minEntityReachSqr < playerReachSqr || blockTrace == null))
-		{
-			return new RayTraceResult(pointedEntity, entityHitVec);
-		}
-		
-		return blockTrace;
 	}
 	
 	@Nullable

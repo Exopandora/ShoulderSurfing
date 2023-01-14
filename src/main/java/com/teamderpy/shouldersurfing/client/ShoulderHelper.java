@@ -2,14 +2,20 @@ package com.teamderpy.shouldersurfing.client;
 
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.teamderpy.shouldersurfing.config.Config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderHelper
 {
+	private static final Predicate<Entity> ENTITY_IS_PICKABLE = Predicates.and(EntitySelectors.NOT_SPECTATING, entity -> entity != null && entity.canBeCollidedWith());
 	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
 	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
 	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
@@ -88,6 +95,140 @@ public class ShoulderHelper
 	{
 		double distance = (planeNormal.dotProduct(planePoint) - planeNormal.dotProduct(linePoint)) / planeNormal.dotProduct(lineNormal);
 		return linePoint.add(lineNormal.scale(distance));
+	}
+	
+	public static RayTraceResult traceBlocksAndEntities(Entity entity, PlayerControllerMP gameMode, double playerReachOverride, boolean stopOnFluid, float partialTick, boolean traceEntities, boolean shoulderSurfing)
+	{
+		double playerReach = Math.max(gameMode.getBlockReachDistance(), playerReachOverride);
+		RayTraceResult blockHit = traceBlocks(entity, stopOnFluid, playerReach, partialTick, shoulderSurfing);
+		
+		if(!traceEntities)
+		{
+			return blockHit;
+		}
+		
+		Vec3d eyePosition = entity.getPositionEyes(partialTick);
+		
+		if(gameMode.extendedReach())
+		{
+			playerReach = Math.max(playerReach, gameMode.getCurrentGameType().isCreative() ? 6.0D : 3.0D);
+		}
+		
+		if(blockHit != null)
+		{
+			playerReach = blockHit.hitVec.distanceTo(eyePosition);
+		}
+		
+		RayTraceResult entityHit = traceEntities(entity, playerReach, partialTick, shoulderSurfing);
+		
+		if(entityHit != null)
+		{
+			double distance = eyePosition.distanceTo(entityHit.hitVec);
+			
+			if(distance < playerReach || blockHit == null)
+			{
+				return entityHit;
+			}
+		}
+		
+		return blockHit;
+	}
+	
+	public static RayTraceResult traceEntities(Entity cameraEntity, double playerReach, float partialTick, boolean shoulderSurfing)
+	{
+		double playerReachSq = playerReach * playerReach;
+		Vec3d viewVector = cameraEntity.getLook(1.0F)
+			.scale(playerReach);
+		Vec3d eyePosition = cameraEntity.getPositionEyes(partialTick);
+		double searchDistance = Math.min(64, playerReach);
+		AxisAlignedBB aabb = cameraEntity.getEntityBoundingBox()
+			.expand(viewVector.x * searchDistance, viewVector.y * searchDistance, viewVector.z * searchDistance)
+			.grow(1.0D, 1.0D, 1.0D);
+		Vec3d from;
+		Vec3d to;
+		
+		if(shoulderSurfing)
+		{
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(cameraEntity, partialTick, playerReachSq);
+			from = eyePosition.add(look.headOffset());
+			to = look.traceEndPos();
+			aabb = aabb.offset(look.cameraPos().subtract(eyePosition));
+		}
+		else
+		{
+			from = eyePosition;
+			to = from.add(viewVector);
+		}
+		
+		List<Entity> entities = Minecraft.getMinecraft().world.getEntitiesInAABBexcluding(cameraEntity, aabb, ENTITY_IS_PICKABLE);
+		Vec3d entityHitVec = null;
+		Entity entityResult = null;
+		double minEntityReachSq = playerReachSq;
+		
+		for(Entity entity : entities)
+		{
+			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
+			RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(from, to);
+			
+			if(axisalignedbb.contains(eyePosition))
+			{
+				if(minEntityReachSq >= 0.0D)
+				{
+					entityResult = entity;
+					entityHitVec = raytraceresult == null ? eyePosition : raytraceresult.hitVec;
+					minEntityReachSq = 0.0D;
+				}
+			}
+			else if(raytraceresult != null)
+			{
+				double distanceSq = eyePosition.squareDistanceTo(raytraceresult.hitVec);
+				
+				if(distanceSq < minEntityReachSq || minEntityReachSq == 0.0D)
+				{
+					if(entity == cameraEntity.getRidingEntity() && !entity.canRiderInteract())
+					{
+						if(minEntityReachSq == 0.0D)
+						{
+							entityResult = entity;
+							entityHitVec = raytraceresult.hitVec;
+						}
+					}
+					else
+					{
+						entityResult = entity;
+						entityHitVec = raytraceresult.hitVec;
+						minEntityReachSq = distanceSq;
+					}
+				}
+			}
+		}
+		
+		if(entityResult == null)
+		{
+			return null;
+		}
+		
+		return new RayTraceResult(entityResult, entityHitVec);
+	}
+	
+	public static RayTraceResult traceBlocks(Entity entity, boolean stopOnFluid, double distance, float partialTick, boolean shoulderSurfing)
+	{
+		Vec3d eyePosition = entity.getPositionEyes(partialTick);
+		
+		if(shoulderSurfing)
+		{
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(entity, partialTick, distance * distance);
+			Vec3d from = eyePosition.add(look.headOffset());
+			Vec3d to = look.traceEndPos();
+			return entity.world.rayTraceBlocks(from, to, stopOnFluid, true, true);
+		}
+		else
+		{
+			Vec3d from = eyePosition;
+			Vec3d view = entity.getLook(partialTick);
+			Vec3d to = from.add(view.scale(distance));
+			return entity.world.rayTraceBlocks(from, to, stopOnFluid, true, true);
+		}
 	}
 	
 	public static boolean isHoldingSpecialItem()
