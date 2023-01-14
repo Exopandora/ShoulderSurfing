@@ -18,6 +18,9 @@
 	"entrypoints": {
 		"client": [
 			"com.teamderpy.shouldersurfing.ShoulderSurfingFabric"
+		],
+		"jade": [
+			"com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingJadePlugin"
 		]
 	},
 	"mixins": [
