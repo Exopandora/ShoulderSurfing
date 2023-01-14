@@ -1,5 +1,5 @@
 {
 	"shouldersurfing:plugin": {
-		"initializer": "com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingWailaPlugin"
+		"initializer": "com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingWthitPlugin"
 	}
 }
