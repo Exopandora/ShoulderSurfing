@@ -2,7 +2,6 @@ package com.teamderpy.shouldersurfing.client;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -21,7 +20,6 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -125,85 +123,17 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			Entity cameraEntity = Minecraft.getMinecraft().getRenderViewEntity();
-			PlayerControllerMP controller = Minecraft.getMinecraft().playerController;
-			MovingObjectPosition hitResult = this.rayTraceFromEyes(cameraEntity, controller, this.getPlayerReach(), partialTick);
-			Vec3 position = hitResult.hitVec.subtract(cameraEntity.getPositionEyes(Minecraft.getMinecraft().timer.renderPartialTicks).subtract(0, cameraEntity.getEyeHeight(), 0));
-			this.projected = this.project2D(position);
-		}
-	}
-	
-	private MovingObjectPosition rayTraceFromEyes(Entity cameraEntity, PlayerControllerMP gameMode, double playerReachOverride, final float partialTick)
-	{
-		double playerReach = Math.max(gameMode.getBlockReachDistance(), playerReachOverride);
-		MovingObjectPosition blockTrace = cameraEntity.rayTrace(playerReach, partialTick);
-		Vec3 eyePosition = cameraEntity.getPositionEyes(partialTick);
-		
-		if(gameMode.extendedReach())
-		{
-			playerReach = Math.max(playerReach, gameMode.isInCreativeMode() ? 6.0D : 3.0D);
-		}
-		
-		double playerReachSqr = playerReach * playerReach;
-		
-		if(blockTrace != null)
-		{
-			playerReachSqr = blockTrace.hitVec.squareDistanceTo(eyePosition);
-		}
-		
-		Vec3 viewVector = cameraEntity.getLook(1.0F);
-		viewVector = new Vec3(viewVector.xCoord * playerReach, viewVector.yCoord * playerReach, viewVector.zCoord * playerReach);
-		Vec3 traceEnd = eyePosition.addVector(viewVector.xCoord, viewVector.yCoord, viewVector.zCoord);
-		AxisAlignedBB aabb = cameraEntity.getEntityBoundingBox().addCoord(viewVector.xCoord, viewVector.yCoord, viewVector.zCoord).expand(1.0D, 1.0D, 1.0D);
-		List<Entity> list = Minecraft.getMinecraft().theWorld.getEntitiesInAABBexcluding(cameraEntity, aabb, NOT_SPECTATING_COLLIDERS);
-		Vec3 entityHitVec = null;
-		Entity pointedEntity = null;
-		double minEntityReachSqr = playerReachSqr;
-		
-		for(Entity entity : list)
-		{
-			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(entity.getCollisionBorderSize(), entity.getCollisionBorderSize(), entity.getCollisionBorderSize());
-			MovingObjectPosition raytraceresult = axisalignedbb.calculateIntercept(eyePosition, traceEnd);
+			Minecraft minecraft = Minecraft.getMinecraft();
+			Entity cameraEntity = minecraft.getRenderViewEntity();
+			PlayerControllerMP controller = minecraft.playerController;
+			MovingObjectPosition hitResult = ShoulderHelper.traceBlocksAndEntities(cameraEntity, controller, this.getPlayerReach(), false, partialTick, true, false);
 			
-			if(axisalignedbb.isVecInside(eyePosition))
+			if(hitResult != null)
 			{
-				if(minEntityReachSqr >= 0.0D)
-				{
-					pointedEntity = entity;
-					entityHitVec = raytraceresult == null ? eyePosition : raytraceresult.hitVec;
-					minEntityReachSqr = 0.0D;
-				}
-			}
-			else if(raytraceresult != null)
-			{
-				double distanceSq = eyePosition.squareDistanceTo(raytraceresult.hitVec);
-				
-				if(distanceSq < minEntityReachSqr || minEntityReachSqr == 0.0D)
-				{
-					if(entity == cameraEntity.ridingEntity && !entity.canRiderInteract())
-					{
-						if(minEntityReachSqr == 0.0D)
-						{
-							pointedEntity = entity;
-							entityHitVec = raytraceresult.hitVec;
-						}
-					}
-					else
-					{
-						pointedEntity = entity;
-						entityHitVec = raytraceresult.hitVec;
-						minEntityReachSqr = distanceSq;
-					}
-				}
+				Vec3 position = hitResult.hitVec.subtract(cameraEntity.getPositionEyes(partialTick).subtract(0, cameraEntity.getEyeHeight(), 0));
+				this.projected = this.project2D(position);
 			}
 		}
-		
-		if(pointedEntity != null && (minEntityReachSqr < playerReachSqr || blockTrace == null))
-		{
-			return new MovingObjectPosition(pointedEntity, entityHitVec);
-		}
-		
-		return blockTrace;
 	}
 	
 	@Nullable

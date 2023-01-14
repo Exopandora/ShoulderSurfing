@@ -28,7 +28,9 @@ public final class InjectionDelegation
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(cameraEntity, partialTicks, blockReach * blockReach);
-			return new SimpleEntry<Vec3, Vec3>(look.cameraPos(), look.traceEndPos());
+			Vec3 eyePosition = cameraEntity.getPositionEyes(partialTicks);
+			Vec3 from = eyePosition.add(look.headOffset());
+			return new SimpleEntry<Vec3, Vec3>(from, look.traceEndPos());
 		}
 		
 		Vec3 look = cameraEntity.getLook(1.0F);
@@ -41,8 +43,11 @@ public final class InjectionDelegation
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(Minecraft.getMinecraft().getRenderViewEntity(), 1.0F, start.squareDistanceTo(end));
-			return level.rayTraceBlocks(look.cameraPos(), look.traceEndPos(), stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
+			Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(entity, 1.0F, start.squareDistanceTo(end));
+			Vec3 eyePosition = entity.getPositionEyes(Minecraft.getMinecraft().timer.renderPartialTicks);
+			Vec3 from = eyePosition.add(look.headOffset());
+			return level.rayTraceBlocks(from, look.traceEndPos(), stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
 		}
 		
 		return level.rayTraceBlocks(start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
@@ -62,8 +67,7 @@ public final class InjectionDelegation
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(entity, partialTicks, blockReachDistance * blockReachDistance);
-			return entity.worldObj.rayTraceBlocks(look.cameraPos(), look.traceEndPos(), false, false, true);
+			return ShoulderHelper.traceBlocks(entity, false, blockReachDistance, partialTicks, true);
 		}
 		
 		Vec3 look = entity.getLook(partialTicks);
