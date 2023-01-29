@@ -13,7 +13,7 @@ public enum CrosshairType
 	{
 		if(this == CrosshairType.ADAPTIVE)
 		{
-			return ShoulderHelper.isHoldingSpecialItem();
+			return ShoulderHelper.isHoldingAdaptiveItem();
 		}
 		else if(this == CrosshairType.DYNAMIC)
 		{
@@ -27,7 +27,7 @@ public enum CrosshairType
 	{
 		if(this == CrosshairType.STATIC_WITH_1PP)
 		{
-			return ShoulderHelper.isHoldingSpecialItem();
+			return ShoulderHelper.isHoldingAdaptiveItem();
 		}
 		
 		return false;

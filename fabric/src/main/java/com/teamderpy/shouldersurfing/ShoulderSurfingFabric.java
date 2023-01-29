@@ -2,6 +2,7 @@ package com.teamderpy.shouldersurfing;
 
 import com.teamderpy.shouldersurfing.client.KeyHandler;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.plugin.PluginLoader;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -22,5 +23,6 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
 		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
+		PluginLoader.getInstance().loadPlugins();
 	}
 }
