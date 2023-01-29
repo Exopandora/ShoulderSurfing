@@ -21,6 +21,16 @@ sourceSets {
 			runtimeClasspath += sourceSets.api.output
 		}
 	}
+	testplugin {
+		java {
+			compileClasspath += sourceSets.main.compileClasspath
+		}
+	}
+}
+
+configurations {
+	apiImplementation.extendsFrom(implementation)
+	apiRuntimeOnly.extendsFrom(runtimeOnly)
 }
 
 dependencies {
