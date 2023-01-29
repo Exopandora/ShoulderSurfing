@@ -59,6 +59,7 @@ minecraft {
 				modClientRun {
 					source sourceSets.api
 					source sourceSets.main
+					source project(":common").sourceSets.api
 					source project(":common").sourceSets.main
 				}
 			}
@@ -73,6 +74,7 @@ minecraft {
 				modServerRun {
 					source sourceSets.api
 					source sourceSets.main
+					source project(":common").sourceSets.api
 					source project(":common").sourceSets.main
 				}
 			}
@@ -88,6 +90,7 @@ minecraft {
 				modDataRun {
 					source sourceSets.api
 					source sourceSets.main
+					source project(":common").sourceSets.api
 					source project(":common").sourceSets.main
 				}
 			}
@@ -107,6 +110,7 @@ dependencies {
 }
 
 compileJava {
+	source project(":common").sourceSets.api.allSource
 	source project(":common").sourceSets.main.allSource
 }
 
@@ -128,3 +132,11 @@ processResources {
 		expand('mod_name': "${mod_name}")
 	}
 }
+
+task apiJar(type: Jar) {  
+	from project(":common").sourceSets.api.output
+	from project(":common").sourceSets.api.allSource
+	classifier = "API"
+}
+
+tasks.build.finalizedBy("apiJar")

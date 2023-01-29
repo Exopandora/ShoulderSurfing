@@ -12,6 +12,11 @@ public class ShoulderInstance
 	private boolean doSwitchPerspective;
 	private boolean isAiming;
 	
+	private ShoulderInstance()
+	{
+		super();
+	}
+	
 	public void tick()
 	{
 		if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
@@ -19,7 +24,7 @@ public class ShoulderInstance
 			this.doSwitchPerspective = false;
 		}
 		
-		this.isAiming = ShoulderHelper.isHoldingSpecialItem();
+		this.isAiming = ShoulderHelper.isHoldingAdaptiveItem();
 		
 		if(this.isAiming && Config.CLIENT.getCrosshairType().doSwitchPerspective() && this.doShoulderSurfing)
 		{

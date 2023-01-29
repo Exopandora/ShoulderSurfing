@@ -23,6 +23,11 @@ public class KeyHandler
 	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", InputMappings.UNKNOWN.getValue(), KEY_CATEGORY);
 	
+	private KeyHandler()
+	{
+		super();
+	}
+	
 	@SuppressWarnings("resource")
 	public static void onInput()
 	{

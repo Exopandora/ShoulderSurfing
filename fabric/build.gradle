@@ -64,5 +64,14 @@ processResources {
 }
 
 compileJava {
+	source project(":common").sourceSets.api.allSource
 	source project(":common").sourceSets.main.allSource
 }
+
+task apiJar(type: Jar) {  
+	from project(":common").sourceSets.api.output
+	from project(":common").sourceSets.api.allSource
+	classifier = "API"
+}
+
+tasks.build.finalizedBy("apiJar")

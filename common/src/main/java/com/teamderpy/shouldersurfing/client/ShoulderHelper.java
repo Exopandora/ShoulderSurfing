@@ -5,14 +5,16 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
+import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.mixins.ActiveRenderInfoAccessor;
+import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
@@ -155,38 +157,51 @@ public class ShoulderHelper
 		}
 	}
 	
-	@SuppressWarnings("resource")
-	public static boolean isHoldingSpecialItem()
+	public static boolean isHoldingAdaptiveItem()
 	{
-		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+		Minecraft minecraft = Minecraft.getInstance();
 		
-		if(cameraEntity instanceof PlayerEntity)
+		if(minecraft.cameraEntity instanceof LivingEntity)
 		{
-			PlayerEntity player = (PlayerEntity) cameraEntity;
-			List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
-			Item current = player.getUseItem().getItem();
+			LivingEntity entity = (LivingEntity) minecraft.cameraEntity;
+			boolean result = isHoldingAdaptiveItemInternal(minecraft, entity);
 			
-			if(ItemModelsProperties.getProperty(current, PULL_PROPERTY) != null || ItemModelsProperties.getProperty(current, THROWING_PROPERTY) != null)
+			for(IAdaptiveItemCallback adaptiveItemCallback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
+			{
+				result |= adaptiveItemCallback.isHoldingAdaptiveItem(minecraft, entity);
+			}
+			
+			return result;
+		}
+		
+		return false;
+	}
+	
+	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, LivingEntity entity)
+	{
+		Item useItem = entity.getUseItem().getItem();
+		List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
+		
+		if(ItemModelsProperties.getProperty(useItem, PULL_PROPERTY) != null || ItemModelsProperties.getProperty(useItem, THROWING_PROPERTY) != null)
+		{
+			return true;
+		}
+		else if(overrides.contains(Registry.ITEM.getKey(useItem).toString()))
+		{
+			return true;
+		}
+		
+		for(ItemStack handStack : entity.getHandSlots())
+		{
+			Item handItem = handStack.getItem();
+			
+			if(ItemModelsProperties.getProperty(handItem, CHARGED_PROPERTY) != null)
 			{
 				return true;
 			}
-			else if(overrides.contains(Registry.ITEM.getKey(current).toString()))
+			else if(overrides.contains(Registry.ITEM.getKey(handItem).toString()))
 			{
 				return true;
-			}
-			
-			for(ItemStack stack : player.getHandSlots())
-			{
-				Item item = stack.getItem();
-				
-				if(ItemModelsProperties.getProperty(item, CHARGED_PROPERTY) != null)
-				{
-					return true;
-				}
-				else if(overrides.contains(Registry.ITEM.getKey(item).toString()))
-				{
-					return true;
-				}
 			}
 		}
 		

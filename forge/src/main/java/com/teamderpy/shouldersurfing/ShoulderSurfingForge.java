@@ -6,6 +6,7 @@ import com.teamderpy.shouldersurfing.client.KeyHandler;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.forge.ClientEventHandler;
+import com.teamderpy.shouldersurfing.plugin.PluginLoader;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 
@@ -31,6 +33,7 @@ public class ShoulderSurfingForge
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ModLoadingContext modLoadingContext = ModLoadingContext.get();
 		modEventBus.addListener(this::clientSetup);
+		modEventBus.addListener(this::loadComplete);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
 			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
@@ -57,6 +60,12 @@ public class ShoulderSurfingForge
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
+	}
+	
+	@SubscribeEvent
+	public void loadComplete(FMLLoadCompleteEvent event)
+	{
+		PluginLoader.getInstance().loadPlugins();
 	}
 	
 	@SubscribeEvent

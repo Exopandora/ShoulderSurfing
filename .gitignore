@@ -129,4 +129,9 @@ run/*
 !run/config
 run/config/*
 !run/config/fabric_loader_dependencies.json
+
+### Mappings ###
 /mapping/*.jar
+
+### Wiki ###
+wiki/
