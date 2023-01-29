@@ -129,3 +129,6 @@ run/*
 !run/config
 run/config/*
 !run/config/fabric_loader_dependencies.json
+
+### Wiki ###
+wiki/
