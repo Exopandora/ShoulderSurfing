@@ -15,10 +15,18 @@ apply plugin: 'eclipse'
 
 sourceSets {
 	api
+	optifine
 	main {
 		java {
 			compileClasspath += sourceSets.api.output
 			runtimeClasspath += sourceSets.api.output
+			compileClasspath += sourceSets.optifine.output
+			runtimeClasspath += sourceSets.optifine.output
+		}
+	}
+	testplugin {
+		java {
+			compileClasspath += sourceSets.main.compileClasspath
 		}
 	}
 }
@@ -64,8 +72,9 @@ minecraft {
 			
 			mods {
 				shouldersurfing {
-					source sourceSets.main
 					source sourceSets.api
+					source sourceSets.main
+					source sourceSets.optifine
 				}
 			}
 		}
@@ -81,8 +90,9 @@ minecraft {
 			
 			mods {
 				shouldersurfing {
-					source sourceSets.main
 					source sourceSets.api
+					source sourceSets.main
+					source sourceSets.optifine
 				}
 			}
 		}
@@ -98,8 +108,9 @@ minecraft {
 			
 			mods {
 				shouldersurfing {
-					source sourceSets.main
 					source sourceSets.api
+					source sourceSets.main
+					source sourceSets.optifine
 				}
 			}
 		}
@@ -175,4 +186,14 @@ jar {
 			"FMLCorePluginContainsFMLMod": "false"
 		])
 	}
+	
+	from sourceSets.api.output
 }
+
+task apiJar(type: Jar) {  
+	from sourceSets.api.output
+	from sourceSets.api.allSource
+	classifier = "API"
+}
+
+tasks.build.finalizedBy("apiJar")

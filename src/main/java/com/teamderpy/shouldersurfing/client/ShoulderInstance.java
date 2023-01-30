@@ -16,6 +16,11 @@ public class ShoulderInstance
 	private boolean isAiming;
 	private int thirdPersonView = Config.CLIENT.getDefaultPerspective().getPointOfView();
 	
+	private ShoulderInstance()
+	{
+		super();
+	}
+	
 	public void tick()
 	{
 		if(this.thirdPersonView != Minecraft.getMinecraft().gameSettings.thirdPersonView)
@@ -28,7 +33,7 @@ public class ShoulderInstance
 			this.doSwitchPerspective = false;
 		}
 		
-		this.isAiming = ShoulderHelper.isHoldingSpecialItem();
+		this.isAiming = ShoulderHelper.isHoldingAdaptiveItem();
 		
 		if(this.isAiming && Config.CLIENT.getCrosshairType().doSwitchPerspective() && this.doShoulderSurfing)
 		{

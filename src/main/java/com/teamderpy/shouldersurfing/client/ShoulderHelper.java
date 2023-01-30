@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntitySelectors;
@@ -111,7 +113,7 @@ public class ShoulderHelper
 		
 		if(gameMode.extendedReach())
 		{
-			playerReach = Math.max(playerReach, gameMode.getCurrentGameType().isCreative() ? 6.0D : 3.0D);
+			playerReach = Math.max(playerReach, gameMode.isInCreativeMode() ? 6.0D : 3.0D);
 		}
 		
 		if(blockHit != null)
@@ -231,41 +233,58 @@ public class ShoulderHelper
 		}
 	}
 	
-	public static boolean isHoldingSpecialItem()
+	public static boolean isHoldingAdaptiveItem()
 	{
-		final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		Minecraft minecraft = Minecraft.getMinecraft();
 		
-		if(player != null)
+		if(minecraft.getRenderViewEntity() instanceof EntityLivingBase)
 		{
-			List<String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
-			ItemStack stack = player.getActiveItemStack();
+			EntityLivingBase entity = (EntityLivingBase) minecraft.getRenderViewEntity();
+			boolean result = isHoldingAdaptiveItemInternal(minecraft, entity);
 			
-			if(stack != null)
+			for(IAdaptiveItemCallback adaptiveItemCallback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
 			{
-				Item current = stack.getItem();
-				
-				if(current.getPropertyGetter(PULL_PROPERTY) != null || current.getPropertyGetter(THROWING_PROPERTY) != null)
-				{
-					return true;
-				}
-				else if(overrides.contains(current.getRegistryName().toString()))
-				{
-					return true;
-				}
+				result |= adaptiveItemCallback.isHoldingAdaptiveItem(minecraft, entity);
 			}
 			
-			for(ItemStack item : player.getHeldEquipment())
+			return result;
+		}
+		
+		return false;
+	}
+	
+	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, EntityLivingBase entity)
+	{
+		List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
+		ItemStack useStack = entity.getActiveItemStack();
+		
+		if(useStack != null) // 1.9 compatibility
+		{
+			Item useItem = useStack.getItem();
+			
+			if(useItem.getPropertyGetter(PULL_PROPERTY) != null || useItem.getPropertyGetter(THROWING_PROPERTY) != null)
 			{
-				if(item != null)
+				return true;
+			}
+			else if(overrides.contains(useItem.getRegistryName().toString()))
+			{
+				return true;
+			}
+		}
+		
+		for(ItemStack handStack : entity.getHeldEquipment())
+		{
+			if(handStack != null) // 1.9 compatibility
+			{
+				Item handItem = handStack.getItem();
+				
+				if(handItem.getPropertyGetter(CHARGED_PROPERTY) != null)
 				{
-					if(item.getItem().getPropertyGetter(CHARGED_PROPERTY) != null)
-					{
-						return true;
-					}
-					else if(overrides.contains(item.getItem().getRegistryName().toString()))
-					{
-						return true;
-					}
+					return true;
+				}
+				else if(overrides.contains(handItem.getRegistryName().toString()))
+				{
+					return true;
 				}
 			}
 		}

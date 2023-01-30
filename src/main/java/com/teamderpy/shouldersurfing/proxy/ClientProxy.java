@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.proxy;
 
+import com.teamderpy.shouldersurfing.api.ShoulderSurfingPlugin;
 import com.teamderpy.shouldersurfing.client.KeyHandler;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
@@ -7,6 +8,7 @@ import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Config.ClientConfig;
 import com.teamderpy.shouldersurfing.event.ClientEventHandler;
+import com.teamderpy.shouldersurfing.plugin.PluginLoader;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -27,6 +29,7 @@ public class ClientProxy extends CommonProxy
 		ShoulderInstance.getInstance().changePerspective(Config.CLIENT.getDefaultPerspective());
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 		MinecraftForge.EVENT_BUS.register(new KeyHandler());
+		PluginLoader.getInstance().registerPlugins(event.getAsmData().getAll(ShoulderSurfingPlugin.class.getCanonicalName()));
 	}
 	
 	@Override
@@ -53,6 +56,8 @@ public class ClientProxy extends CommonProxy
 		{
 			ShoulderRenderer.getInstance().setShaderType(EnumShaderCompatibility.NEW);
 		}
+		
+		PluginLoader.getInstance().loadPlugins();
 	}
 	
 	private static boolean isClassLoaded(String className)
