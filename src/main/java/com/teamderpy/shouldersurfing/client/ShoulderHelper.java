@@ -2,15 +2,17 @@ package com.teamderpy.shouldersurfing.client;
 
 import java.util.List;
 
+import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemPotion;
@@ -231,40 +233,59 @@ public class ShoulderHelper
 		}
 	}
 	
-	public static boolean isHoldingSpecialItem()
+	public static boolean isHoldingAdaptiveItem()
 	{
-		final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+		Minecraft minecraft = Minecraft.getMinecraft();
 		
-		if(player != null)
+		if(minecraft.renderViewEntity != null && minecraft.renderViewEntity instanceof EntityLivingBase)
 		{
-			List<String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
-			ItemStack stack = player.getHeldItem();
+			EntityLivingBase entity = (EntityLivingBase) minecraft.renderViewEntity;
+			boolean result = isHoldingAdaptiveItemInternal(minecraft, entity);
 			
-			if(stack != null)
+			for(IAdaptiveItemCallback adaptiveItemCallback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
 			{
-				Item current = stack.getItem();
-				
-				if(current instanceof ItemPotion && ItemPotion.isSplash(current.getDamage(stack)))
-				{
-					return true;
-				}
-				else if(overrides.contains(current.delegate.name()))
-				{
-					return true;
-				}
+				result |= adaptiveItemCallback.isHoldingAdaptiveItem(minecraft, entity);
 			}
 			
-			ItemStack item = player.getItemInUse();
+			return result;
+		}
+		
+		return false;
+	}
+	
+	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, EntityLivingBase entity)
+	{
+		List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
+		ItemStack heldStack = entity.getHeldItem();
+		
+		if(heldStack != null)
+		{
+			Item heldItem = heldStack.getItem();
 			
-			if(item != null)
+			if(heldItem instanceof ItemPotion && ItemPotion.isSplash(heldItem.getDamage(heldStack)))
 			{
-				Item current = stack.getItem();
+				return true;
+			}
+			else if(overrides.contains(heldItem.delegate.name()))
+			{
+				return true;
+			}
+		}
+		
+		if(entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) entity;
+			ItemStack useitem = player.getItemInUse();
+			
+			if(useitem != null)
+			{
+				Item useItem = useitem.getItem();
 				
-				if(current instanceof ItemBow)
+				if(useItem instanceof ItemBow)
 				{
 					return true;
 				}
-				else if(overrides.contains(current.delegate.name()))
+				else if(overrides.contains(useItem.delegate.name()))
 				{
 					return true;
 				}

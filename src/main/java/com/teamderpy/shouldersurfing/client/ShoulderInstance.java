@@ -28,7 +28,7 @@ public class ShoulderInstance
 			this.doSwitchPerspective = false;
 		}
 		
-		this.isAiming = ShoulderHelper.isHoldingSpecialItem();
+		this.isAiming = ShoulderHelper.isHoldingAdaptiveItem();
 		
 		if(this.isAiming && Config.CLIENT.getCrosshairType().doSwitchPerspective() && this.doShoulderSurfing)
 		{

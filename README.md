@@ -5,7 +5,7 @@ Revamped over-the-shoulder F5 third-person camera view
 # Features #
 
 * Over-the-shoulder camera
-* Hotkeys to move the camera a bit (Default: `arrow keys`, `page up` and `page down`, `O` to swap shoulders)
+* Hotkeys to move the camera (Default: `arrow keys`, `page up` and `page down`, `O` to swap shoulders)
 * Corrective cross-hair positioning if dynamic crosshair is enabled
 * Hide player if the camera gets too close to it
 * Client-side only
@@ -40,6 +40,10 @@ Download ShoulderSurfing or build from source
 ≥ 1.13: Manual: `..\.minecraft\config\shouldersurfing.toml`  
 ≤ 1.12: Ingame: Mods -> ShoulderSurfing -> Config (Manual: `..\.minecraft\config\shouldersurfing.cfg`)
 
+# API Documentation #
+
+The API Documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
+
 # Troubleshooting #
 
 **Optifine:**  
@@ -50,24 +54,20 @@ Download ShoulderSurfing or build from source
 
 # FAQ #
 
-**Q:** Is this client-side only ?  
-**A:** Yes
+**Q:** Is this client-side only?  
+**A:** Yes.
 
-**Q:** Can you port feature x to version y ?  
-**A:** No
+**Q:** Can you port feature x to version y?  
+**A:** No.
 
-**Q:** Can you port this to fabric, liteloader, rift, etc ?  
-**A:** No
+**Q:** Can you port this to quilt, liteloader, rift, etc.?  
+**A:** No.
 
-**Q:** Can you make the player aim at where the crosshair is pointing at ?  
-**A:** No as it would break server compatibility
+**Q:** Can you make the player always aim at where the crosshair is pointing at?  
+**A:** No, as it would break server compatibility.
 
-**Q:** Can i add this to my modpack ?  
-**A:** Yes
-
-# Support #
-
-Only the latest game version will be supported and updated with new features
+**Q:** Can i add this to my modpack?  
+**A:** Yes.
 
 # License #
 
