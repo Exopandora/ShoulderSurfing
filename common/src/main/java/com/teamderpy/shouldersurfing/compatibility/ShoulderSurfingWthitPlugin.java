@@ -32,6 +32,12 @@ public class ShoulderSurfingWthitPlugin implements IWailaPlugin
 			if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 			{
 				Camera camera = mc.gameRenderer.getMainCamera();
+				
+				if(camera.getEntity() == null)
+				{
+					return ObjectPicker.MISS;
+				}
+				
 				MultiPlayerGameMode gameMode = mc.gameMode;
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
 				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);

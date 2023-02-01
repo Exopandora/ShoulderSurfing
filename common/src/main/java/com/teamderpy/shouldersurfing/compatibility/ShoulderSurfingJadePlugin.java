@@ -49,6 +49,12 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 			{
 				Minecraft minecraft = Minecraft.getInstance();
 				Camera camera = minecraft.gameRenderer.getMainCamera();
+				
+				if(camera.getEntity() == null)
+				{
+					return null;
+				}
+				
 				MultiPlayerGameMode gameMode = minecraft.gameMode;
 				ClipContext.Fluid fluidContext = registration.getConfig().getGeneral().getDisplayFluids().ctx;
 				double maxDistance = gameMode.getPickRange() + registration.getConfig().getGeneral().getReachDistance();
