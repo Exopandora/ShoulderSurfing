@@ -57,6 +57,11 @@ public class ClientProxy extends CommonProxy
 			ShoulderRenderer.getInstance().setShaderType(EnumShaderCompatibility.NEW);
 		}
 		
+		if(isClassLoaded("org.valkyrienskies.mod.common.ValkyrienSkiesMod"))
+		{
+			ShoulderRenderer.getInstance().setValkyrienSkiesInstalled(true);
+		}
+		
 		PluginLoader.getInstance().loadPlugins();
 	}
 	

@@ -10,6 +10,15 @@ buildscript {
 	}
 }
 
+repositories {
+	maven {
+		url = "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
@@ -168,6 +177,15 @@ dependencies {
 	implementation('org.ow2.asm:asm-util:5.2') {
 		force = true
 	}
+	
+	implementation("org.spongepowered:mixin:0.8.5") {
+		exclude module: "commons-io"
+		exclude module: "guava"
+		exclude module: "gson"
+		exclude module: "launchwrapper"
+	}
+	
+	compileOnly(fg.deobf("curse.maven:valkyrien-skies-258371:3286262"))
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

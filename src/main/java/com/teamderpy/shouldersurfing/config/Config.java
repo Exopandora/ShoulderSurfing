@@ -49,6 +49,7 @@ public class Config
 		private BooleanValue useCustomRaytraceDistance;
 		private ConfigValue<List<String>> adaptiveCrosshairItems;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
+		private BooleanValue compatibilityValkyrienSkiesCameraShipCollision;
 		
 		private final Configuration config;
 		
@@ -284,6 +285,16 @@ public class Config
 			return this.adaptiveCrosshairItems.get();
 		}
 		
+		public boolean doCompatibilityValkyrienSkiesCameraShipCollision()
+		{
+			return this.compatibilityValkyrienSkiesCameraShipCollision.get();
+		}
+		
+		public void setCompatibilityValkyrienSkiesCameraShipCollision(boolean enabled)
+		{
+			Config.set(this.compatibilityValkyrienSkiesCameraShipCollision, enabled);
+		}
+		
 		public void adjustCameraLeft()
 		{
 			this.setOffsetX(this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
@@ -405,6 +416,8 @@ public class Config
 			{
 				this.crosshairVisibility.put(perspective, new EnumValue<CrosshairVisibility>(this.config.get(Configuration.CATEGORY_GENERAL, perspective.toString() + " Crosshair Visibility", perspective.getDefaultCrosshairVisibility().toString(), "Crosshair visibility for " + perspective.toString(), visibilities), CrosshairVisibility.class));
 			}
+			
+			this.compatibilityValkyrienSkiesCameraShipCollision = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "[Compat] [Valkyrien Skies] Camera Ship Collision", false, "Whether or not the camera can collide with valkyrien skies ships"));
 			
 			if(this.config.hasChanged())
 			{

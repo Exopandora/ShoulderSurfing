@@ -7,6 +7,11 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.valkyrienskies.mod.common.piloting.IShipPilot;
+import org.valkyrienskies.mod.common.ships.entity_interaction.EntityShipMountData;
+import org.valkyrienskies.mod.common.ships.ship_transform.ShipTransform;
+import org.valkyrienskies.mod.common.ships.ship_world.IWorldVS;
+import org.valkyrienskies.mod.common.util.ValkyrienUtils;
 
 import com.teamderpy.shouldersurfing.compatibility.EnumShaderCompatibility;
 import com.teamderpy.shouldersurfing.config.Config;
@@ -23,8 +28,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import valkyrienwarfare.api.TransformType;
 
 @SideOnly(Side.CLIENT)
+@SuppressWarnings("deprecation")
 public class ShoulderRenderer
 {
 	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
@@ -33,6 +40,7 @@ public class ShoulderRenderer
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
 	private EnumShaderCompatibility shaders = EnumShaderCompatibility.NONE;
+	private boolean isValkyrienSkiesInstalled = false;
 	
 	public void offsetCrosshair(ScaledResolution window, float partialTicks)
 	{
@@ -90,6 +98,26 @@ public class ShoulderRenderer
 		Vec3d cameraPos = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
 		Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(distance, yaw, pitch);
 		
+		if(this.isValkyrienSkiesInstalled)
+		{
+			EntityShipMountData mountData = ValkyrienUtils.getMountedShipAndPos(Minecraft.getMinecraft().getRenderViewEntity());
+			
+			if(mountData.getMountedShip() != null)
+			{
+				if(!Config.CLIENT.doCompatibilityValkyrienSkiesCameraShipCollision())
+				{
+					IShipPilot pilot = (IShipPilot) Minecraft.getMinecraft().player;
+					((IWorldVS) world).excludeShipFromRayTracer(pilot.getPilotedShip());
+				}
+				
+				if(mountData.isMounted())
+				{
+					ShipTransform renderTransform = mountData.getMountedShip().getShipTransformationManager().getRenderTransform();
+					cameraOffset = renderTransform.rotate(cameraOffset, TransformType.SUBSPACE_TO_GLOBAL);
+				}
+			}
+		}
+		
 		for(int i = 0; i < 8; i++)
 		{
 			Vec3d offset = new Vec3d((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2)
@@ -107,6 +135,17 @@ public class ShoulderRenderer
 				{
 					distance = newDistance - 0.2;
 				}
+			}
+		}
+		
+		if(this.isValkyrienSkiesInstalled && !Config.CLIENT.doCompatibilityValkyrienSkiesCameraShipCollision())
+		{
+			EntityShipMountData mountData = ValkyrienUtils.getMountedShipAndPos(Minecraft.getMinecraft().getRenderViewEntity());
+			
+			if(mountData.getMountedShip() != null)
+			{
+				IShipPilot pilot = (IShipPilot) Minecraft.getMinecraft().player;
+				((IWorldVS) world).unexcludeShipFromRayTracer(pilot.getPilotedShip());
 			}
 		}
 		
@@ -178,6 +217,11 @@ public class ShoulderRenderer
 	public void setShaderType(EnumShaderCompatibility shaders)
 	{
 		this.shaders = shaders;
+	}
+	
+	public void setValkyrienSkiesInstalled(boolean isValkyrienSkiesInstalled)
+	{
+		this.isValkyrienSkiesInstalled = isValkyrienSkiesInstalled;
 	}
 	
 	private float getShadersResmul()

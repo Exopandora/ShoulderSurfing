@@ -81,4 +81,9 @@ public final class InjectionDelegation
 	{
 		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getMinecraft().objectMouseOver, ShoulderInstance.getInstance().isAiming()) ? 0 : 1;
 	}
+	
+	public static double ValkyrienSkiesMixinEntityRenderer_orientCamera_cameraDistance()
+	{
+		return ShoulderRenderer.getInstance().getCameraDistance();
+	}
 }

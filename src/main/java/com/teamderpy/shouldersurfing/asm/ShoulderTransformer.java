@@ -11,6 +11,7 @@ import org.objectweb.asm.tree.IincInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.IntInsnNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -163,6 +164,7 @@ public abstract class ShoulderTransformer implements IClassTransformer
 	 *   <li>FRAME</li>
 	 *   <li>LINE</li>
 	 *   <li>IINC_INSN</li>
+	 *   <li>LDC_INSN</li>
 	 *   </ul>
 	 * <br />
 	 * <b>Unimplemented bytecode instructions: </b>
@@ -170,7 +172,6 @@ public abstract class ShoulderTransformer implements IClassTransformer
 	 *   <li>TYPE_INSN</li>
 	 *   <li>INVOKE_DYNAMIC_INSN</li>
 	 *   <li>JUMP_INSN</li>
-	 *   <li>LDC_INSN</li>
 	 *   <li>TABLESWITCH_INSN</li>
 	 *   <li>LOOKUPSWITCH_INSN</li>
 	 *   <li>MULTIANEWARRAY_INSN</li>
@@ -261,6 +262,13 @@ public abstract class ShoulderTransformer implements IClassTransformer
 				else if(instruction.getType() == AbstractInsnNode.IINC_INSN)
 				{
 					if(((IincInsnNode) instruction).var == ((IincInsnNode) searchNode).var && ((IincInsnNode) instruction).incr == ((IincInsnNode) searchNode).incr && instruction.getOpcode() == searchNode.getOpcode())
+					{
+						match = true;
+					}
+				}
+				else if(instruction.getType() == AbstractInsnNode.LDC_INSN)
+				{
+					if(((LdcInsnNode) searchNode).cst.equals(((LdcInsnNode) instruction).cst) && instruction.getOpcode() == searchNode.getOpcode())
 					{
 						match = true;
 					}

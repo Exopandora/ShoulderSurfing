@@ -169,6 +169,10 @@
                 "1.9": "bettercombat/mod/main/GuiCrosshairsBC"
             }
 		},
+		"ValkyrienSkiesMixinEntityRenderer": {
+			"name": "org/valkyrienskies/mixin/client/renderer/MixinEntityRenderer",
+            "obf": "org/valkyrienskies/mixin/client/renderer/MixinEntityRenderer"
+		},
 		"Item": {
 			"name": "net/minecraft/item/Item",
             "obf": {
@@ -262,6 +266,21 @@
             "name": "rayTraceBlocks",
             "desc": "(L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
             "obf": "a"
+        },
+        "ValkyrienSkiesMixinEntityRenderer#orientCamera": {
+            "name": "orientCamera",
+            "desc": "(FLorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V",
+            "obf": "orientCamera"
+        },
+        "SRG#GlStateManager#rotate": {
+            "name": "func_179114_b",
+            "desc": "(FFFF)V",
+            "obf": "func_179114_b"
+        },
+        "SRG#GlStateManager#translate": {
+            "name": "func_179109_b",
+            "desc": "(FFF)V",
+            "obf": "func_179109_b"
         }
     },
     "fields": {
