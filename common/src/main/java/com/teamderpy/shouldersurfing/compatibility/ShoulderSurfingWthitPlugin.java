@@ -5,6 +5,8 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
 import mcp.mobius.waila.api.IObjectPicker;
+import mcp.mobius.waila.api.IPickerAccessor;
+import mcp.mobius.waila.api.IPickerResults;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;
@@ -27,24 +29,23 @@ public class ShoulderSurfingWthitPlugin implements IWailaPlugin
 	private static class ShoulderSurfingObjectPicker implements IObjectPicker
 	{
 		@Override
-		public HitResult pick(Minecraft mc, double maxDistance, float partialTick, IPluginConfig config)
+		public void pick(IPickerAccessor accessor, IPickerResults results, IPluginConfig config)
 		{
-			if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+			Minecraft minecraft = accessor.getClient();
+			Camera camera = minecraft.gameRenderer.getMainCamera();
+			
+			if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && camera.getEntity() != null)
 			{
-				Camera camera = mc.gameRenderer.getMainCamera();
-				
-				if(camera.getEntity() == null)
-				{
-					return ObjectPicker.MISS;
-				}
-				
-				MultiPlayerGameMode gameMode = mc.gameMode;
+				MultiPlayerGameMode gameMode = minecraft.gameMode;
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
 				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);
-				return ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, true);
+				HitResult result = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, accessor.getMaxDistance(), fluidContext, accessor.getFrameDelta(), traceEntities, true);
+				results.add(result, 0);
 			}
-			
-			return ObjectPicker.INSTANCE.pick(mc, maxDistance, partialTick, config);
+			else
+			{
+				ObjectPicker.INSTANCE.pick(accessor, results, config);
+			}
 		}
 	}
 }

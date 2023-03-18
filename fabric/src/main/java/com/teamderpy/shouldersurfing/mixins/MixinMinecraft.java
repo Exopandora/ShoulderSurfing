@@ -9,9 +9,9 @@ import com.teamderpy.shouldersurfing.ShoulderSurfing;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
-import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft

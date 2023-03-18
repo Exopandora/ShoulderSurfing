@@ -46,7 +46,7 @@ dependencies {
 	
 	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
 	modImplementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
 	modImplementation "curse.maven:jade-324717:${jade_version_api}"
 }
