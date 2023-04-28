@@ -18,7 +18,7 @@ public class MixinLivingRenderer
 {
 	@Inject
 	(
-		method = "render(Lnet/minecraft/world/LivingEntity;FFLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;I)V",
+		method = "render(Lnet/minecraft/entity/LivingEntity;FFLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;I)V",
 		at = @At("HEAD"),
 		cancellable = true
 	)
