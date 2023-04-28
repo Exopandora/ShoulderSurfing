@@ -11,7 +11,7 @@ import com.teamderpy.shouldersurfing.config.Perspective;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -35,9 +35,9 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
+	public void preRenderLivingEntityEvent(RenderLivingEvent.Pre<?> event)
 	{
-		if(event.isCancelable() && event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipRenderPlayer())
+		if(event.isCancelable() && event.getEntity().equals(Minecraft.getMinecraft().getRenderViewEntity()) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipEntityRendering())
 		{
 			event.setCanceled(true);
 		}
