@@ -155,7 +155,7 @@ public class ShoulderRenderer
 		return new Vec2f(x, y);
 	}
 	
-	public boolean skipRenderPlayer()
+	public boolean skipEntityRendering()
 	{
 		return this.cameraDistance < 0.80 && Config.CLIENT.keepCameraOutOfHead() && ShoulderInstance.getInstance().doShoulderSurfing();
 	}
