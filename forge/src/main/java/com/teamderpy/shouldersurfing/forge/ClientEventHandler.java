@@ -5,10 +5,11 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -26,9 +27,9 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
+	public static void preRenderLivingEntityEvent(RenderLivingEvent.Pre<LivingEntity, ?> event)
 	{
-		if(event.isCancelable() && event.getEntity().equals(Minecraft.getInstance().player) && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().skipRenderPlayer())
+		if(event.isCancelable() && event.getEntity().equals(Minecraft.getInstance().getCameraEntity()) && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().skipEntityRendering())
 		{
 			event.setCanceled(true);
 		}

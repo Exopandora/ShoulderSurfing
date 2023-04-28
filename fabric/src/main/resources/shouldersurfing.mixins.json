@@ -14,9 +14,9 @@
 		"MixinGameRenderer2",
 		"MixinIngameGui2",
 		"MixinKeyboardListener",
+		"MixinLivingRenderer",
 		"MixinMinecraft",
 		"MixinMouseHelper",
-		"MixinPlayerRenderer",
 		"MixinWorldRenderer"
 	],
 	"injectors": {
