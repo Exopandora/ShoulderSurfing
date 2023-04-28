@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 @SideOnly(Side.CLIENT)
@@ -35,9 +35,9 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public void preRenderPlayerEvent(RenderPlayerEvent.Pre event)
+	public void preRenderLivingEntityEvent(RenderLivingEvent.Pre event)
 	{
-		if(event.isCancelable() && event.entityPlayer.equals(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipRenderPlayer())
+		if(event.isCancelable() && event.entity.equals(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipEntityRendering())
 		{
 			event.setCanceled(true);
 		}
