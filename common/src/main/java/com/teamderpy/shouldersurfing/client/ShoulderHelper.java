@@ -3,7 +3,7 @@ package com.teamderpy.shouldersurfing.client;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
@@ -51,7 +51,7 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static Vec3 calcCameraOffset(@Nonnull Camera camera, double distance)
+	public static Vec3 calcCameraOffset(@NotNull Camera camera, double distance)
 	{
 		double dX = camera.getUpVector().x() * Config.CLIENT.getOffsetY() + camera.getLeftVector().x() * Config.CLIENT.getOffsetX() + camera.getLookVector().x() * -Config.CLIENT.getOffsetZ();
 		double dY = camera.getUpVector().y() * Config.CLIENT.getOffsetY() + camera.getLeftVector().y() * Config.CLIENT.getOffsetX() + camera.getLookVector().y() * -Config.CLIENT.getOffsetZ();
@@ -59,7 +59,7 @@ public class ShoulderHelper
 		return new Vec3(dX, dY, dZ).normalize().scale(distance);
 	}
 	
-	public static Vec3 calcRayTraceHeadOffset(@Nonnull Camera camera, Vec3 cameraOffset)
+	public static Vec3 calcRayTraceHeadOffset(@NotNull Camera camera, Vec3 cameraOffset)
 	{
 		Vec3 lookVector = new Vec3(camera.getLookVector());
 		return ShoulderHelper.calcPlaneWithLineIntersection(Vec3.ZERO, lookVector, cameraOffset, lookVector);
@@ -144,14 +144,14 @@ public class ShoulderHelper
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
 			Vec3 from = eyePosition.add(look.headOffset());
 			Vec3 to = look.traceEndPos();
-			return entity.level.clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, fluidContext, entity));
+			return entity.level().clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, fluidContext, entity));
 		}
 		else
 		{
 			Vec3 from = eyePosition;
 			Vec3 view = entity.getViewVector(partialTick);
 			Vec3 to = from.add(view.scale(distance));
-			return entity.level.clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, fluidContext, entity));
+			return entity.level().clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, fluidContext, entity));
 		}
 	}
 	

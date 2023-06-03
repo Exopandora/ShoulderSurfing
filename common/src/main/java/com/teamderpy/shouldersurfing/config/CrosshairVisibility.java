@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.config;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.phys.HitResult;
 

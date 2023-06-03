@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.client;
 
-import javax.annotation.Nullable;
-
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 

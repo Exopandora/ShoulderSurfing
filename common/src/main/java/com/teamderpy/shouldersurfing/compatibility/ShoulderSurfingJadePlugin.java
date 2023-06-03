@@ -23,6 +23,7 @@ import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.callback.JadeRayTraceCallback;
+import snownee.jade.api.config.IWailaConfig;
 
 @WailaPlugin
 public class ShoulderSurfingJadePlugin implements IWailaPlugin
@@ -56,8 +57,8 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 				}
 				
 				MultiPlayerGameMode gameMode = minecraft.gameMode;
-				ClipContext.Fluid fluidContext = registration.getConfig().getGeneral().getDisplayFluids().ctx;
-				double maxDistance = gameMode.getPickRange() + registration.getConfig().getGeneral().getReachDistance();
+				ClipContext.Fluid fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
+				double maxDistance = gameMode.getPickRange() + IWailaConfig.get().getGeneral().getReachDistance();
 				float partialTick = minecraft.getFrameTime();
 				HitResult target = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, true, true);
 				Player player = minecraft.player;

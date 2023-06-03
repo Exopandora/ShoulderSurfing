@@ -7,11 +7,11 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 
 @Mixin(Gui.class)
 public class MixinGui2
@@ -25,13 +25,13 @@ public class MixinGui2
 		at = @At
 		(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/Gui;renderCrosshair(Lcom/mojang/blaze3d/vertex/PoseStack;)V",
+			target = "Lnet/minecraft/client/gui/Gui;renderCrosshair(Lnet/minecraft/client/gui/GuiGraphics;)V",
 			shift = Shift.BEFORE
 		)
 	)
-	private void offsetCrosshair(PoseStack poseStack, float partialTick, CallbackInfo ci)
+	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().offsetCrosshair(poseStack, this.minecraft.getWindow(), this.minecraft.getFrameTime());
+		ShoulderRenderer.getInstance().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), partialTick);
 	}
 	
 	@Inject
@@ -40,12 +40,12 @@ public class MixinGui2
 		at = @At
 		(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/Gui;renderCrosshair(Lcom/mojang/blaze3d/vertex/PoseStack;)V",
+			target = "Lnet/minecraft/client/gui/Gui;renderCrosshair(Lnet/minecraft/client/gui/GuiGraphics;)V",
 			shift = Shift.AFTER
 		)
 	)
-	private void clearCrosshairOffset(PoseStack poseStack, float partialTick, CallbackInfo ci)
+	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().clearCrosshairOffset(poseStack);
+		ShoulderRenderer.getInstance().clearCrosshairOffset(guiGraphics.pose());
 	}
 }
