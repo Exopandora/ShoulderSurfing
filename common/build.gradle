@@ -1,20 +1,17 @@
 plugins {
-	id 'org.quiltmc.loom' version '0.12.+'
+	id 'java'
 	id 'eclipse'
+	id 'fabric-loom'
+	id 'io.github.juuxel.loom-quiltflower' version '1.+'
 }
 
-repositories {
-	maven {
-		name = 'Fuzs Mod Resources'
-		url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
-	}
+tasks.withType(Jar) {
+	archivesBaseName("${mod_name}-Common")
 }
-
-archivesBaseName = "${mod_name}-Common-${minecraft_version}"
 
 eclipse {
 	project {
-		name = mod_name + 'Common'
+		name = "${mod_name}Common"
 	}
 }
 
@@ -45,29 +42,28 @@ dependencies {
 	mappings loom.officialMojangMappings()
 	
 	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
-	modImplementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
-	modImplementation "curse.maven:jade-324717:${jade_version_api}"
+	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
+	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
+	implementation "curse.maven:jade-324717:${jade_version_api}"
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {
-	remapArchives = false
-	
 	mixin {
+		defaultRefmapName = "${mod_id}.refmap.json"
 		useLegacyMixinAp = false
 	}
 	
 	runs {
 		client {
 			client()
-			setConfigName("Common Client")
+			setConfigName("${mod_name} Common Client")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
 		server {
 			server()
-			setConfigName("Common Server")
+			setConfigName("${mod_name} Common Server")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}

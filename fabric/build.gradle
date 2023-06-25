@@ -1,13 +1,23 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
-	id 'io.github.juuxel.loom-quiltflower' version '1.7.1'
+	id 'java'
 	id 'eclipse'
+	id 'fabric-loom'
+	id 'com.modrinth.minotaur'
+	id 'me.hypherionmc.cursegradle'
 }
 
-archivesBaseName = "${mod_name}-Fabric-${minecraft_version}"
+tasks.withType(Jar) {
+	archivesBaseName("${mod_name}-Fabric")
+}
+
+eclipse {
+	project {
+		name = "${mod_name}Fabric"
+	}
+}
 
 dependencies {
-	implementation (project(":common")) {
+	implementation(project(":common")) {
 		transitive = false
 	}
 	
@@ -20,6 +30,7 @@ dependencies {
 	modImplementation "mcp.mobius.waila:wthit:fabric-${wthit_version}"
 	modImplementation "lol.bai:badpackets:fabric-${badpackets_version}"
 	modImplementation "curse.maven:jade-324717:${jade_version_fabric}"
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {
@@ -41,12 +52,6 @@ loom {
 	}
 }
 
-eclipse {
-	project {
-		name = mod_name + 'Fabric'
-	}
-}
-
 processResources {
 	outputs.upToDateWhen {
 		false
@@ -54,15 +59,15 @@ processResources {
 	
 	from project(":common").sourceSets.main.resources
 	
-	inputs.property "version", "${version}"
-	inputs.property "mod_name", "${mod_name}"
+	inputs.property "version", mod_version
+	inputs.property "mod_name", mod_name
 	
 	filesMatching('fabric.mod.json') {
-		expand('version': "${version}")
+		expand('version': mod_version)
 	}
 	
 	filesMatching('pack.mcmeta') {
-		expand('mod_name': "${mod_name}")
+		expand('mod_name': mod_name)
 	}
 	
 	duplicatesStrategy = 'exclude'
@@ -73,10 +78,55 @@ compileJava {
 	source project(":common").sourceSets.main.allSource
 }
 
-task apiJar(type: Jar) {  
+task apiJar(type: Jar) {
 	from project(":common").sourceSets.api.output
 	from project(":common").sourceSets.api.allSource
-	classifier = "API"
+	archiveClassifier = "API"
+}
+
+curseforge {
+	apiKey = project.hasProperty("curse_api_key") ? curse_api_key : ''
+	project {
+		id = curse_project_id
+		changelog = file('../changelog.txt').canRead() ? file('../changelog.txt').text : ''
+		changelogType = 'text'
+		releaseType = 'release'
+		addGameVersion 'Fabric'
+		fabric_compatible_minecraft_versions.split(",").each {
+			addGameVersion(it)
+		}
+		mainArtifact(remapJar) {
+			displayName = "${mod_name}-Fabric-${minecraft_version}-${mod_version}"
+		}
+		addArtifact apiJar
+		relations {
+			requiredDependency 'fabric-api'
+			requiredDependency 'forge-config-api-port-fabric'
+		}
+	}
+	options {
+		javaVersionAutoDetect = false
+		forgeGradleIntegration = false
+	}
+}
+
+modrinth {
+	token = project.hasProperty("modrinth_api_key") ? modrinth_api_key : ''
+	projectId = modrinth_project_id
+	versionName = "${mod_name}-Fabric-${minecraft_version}-${mod_version}"
+	versionNumber = "${minecraft_version}-${mod_version}"
+	changelog = file('../changelog.txt').canRead() ? file('../changelog.txt').text : ''
+	versionType = 'release'
+	uploadFile = remapJar
+	fabric_compatible_minecraft_versions.split(",").each {
+		gameVersions.add(it)
+	}
+	loaders = ['fabric']
+	additionalFiles = [apiJar]
+	dependencies {
+		required.project 'fabric-api'
+		required.project 'forge-config-api-port'
+	}
 }
 
 tasks.build.finalizedBy("apiJar")
