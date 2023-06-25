@@ -1,8 +1,14 @@
+plugins {
+	id 'java'
+	id 'com.modrinth.minotaur' version '2.+' apply false
+	id 'me.hypherionmc.cursegradle' version '2.+' apply false
+	id 'fabric-loom' version '1.2.+' apply false
+}
+
 subprojects {
-	apply plugin: 'java'
-	apply plugin: 'java-library'
 	
 	java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+	javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 	
 	repositories {
 		mavenCentral()
@@ -19,31 +25,33 @@ subprojects {
 			name = 'WTHIT'
 			url = 'https://maven.bai.lol'
 		}
+		maven {
+			url = "https://www.cursemaven.com"
+			content {
+				includeGroup "curse.maven"
+			}
+		}
 	}
 	
 	tasks.withType(Jar).configureEach {
+		version("${minecraft_version}-${mod_version}")
 		manifest {
 			attributes([
 				'Specification-Title': mod_name,
 				'Specification-Vendor': mod_author,
-				'Specification-Version': version,
+				'Specification-Version': mod_version,
 				'Implementation-Title': project.name,
-				'Implementation-Version': version,
+				'Implementation-Version': mod_version,
 				'Implementation-Vendor': mod_author,
 				'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
 				'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
 				'Build-On-Minecraft': minecraft_version
 			])
 		}
-		group 'jar'
 	}
 	
 	tasks.withType(JavaCompile).configureEach {
 		it.options.encoding = 'UTF-8'
 		it.options.release = 17
-	}
-	
-	tasks.withType(Javadoc).configureEach {
-		it.options.addStringOption('Xdoclint:none', '-quiet')
 	}
 }
