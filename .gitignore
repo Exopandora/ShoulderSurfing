@@ -135,3 +135,6 @@ run/config/*
 
 ### Wiki ###
 wiki/
+
+### Changelog ###
+changelog.txt
