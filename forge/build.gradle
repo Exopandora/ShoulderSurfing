@@ -1,31 +1,22 @@
-buildscript {
-	repositories {
-		maven {
-			url = 'https://files.minecraftforge.net/maven'
-		}
-		maven {
-			url = 'https://repo.spongepowered.org/repository/maven-public/'
-		}
-		mavenCentral()
-	}
-	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-	}
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'net.minecraftforge.gradle' version '6.0.+'
+	id 'org.spongepowered.mixin' version '0.7.+'
+	id 'com.modrinth.minotaur'
+	id 'me.hypherionmc.cursegradle'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'org.spongepowered.mixin'
-
-archivesBaseName = "${mod_name}-Forge-${minecraft_version}"
+tasks.withType(Jar) {
+	archivesBaseName("${mod_name}-Forge")
+}
 
 eclipseJdtApt.enabled = false
 eclipseFactoryPath.enabled = false
 
 eclipse {
 	project {
-		name = mod_name + 'Forge'
+		name = "${mod_name}Forge"
 	}
 }
 
@@ -56,7 +47,7 @@ minecraft {
 			taskName "${mod_name}ForgeClient"
 			
 			mods {
-				modClientRun {
+				"${mod_id}" {
 					source sourceSets.api
 					source sourceSets.main
 					source project(":common").sourceSets.api
@@ -71,7 +62,7 @@ minecraft {
 			taskName "${mod_name}ForgeServer"
 			
 			mods {
-				modServerRun {
+				"${mod_id}" {
 					source sourceSets.api
 					source sourceSets.main
 					source project(":common").sourceSets.api
@@ -87,7 +78,7 @@ minecraft {
 			taskName "${mod_name}ForgeData"
 			
 			mods {
-				modDataRun {
+				"${mod_id}" {
 					source sourceSets.api
 					source sourceSets.main
 					source project(":common").sourceSets.api
@@ -101,7 +92,7 @@ minecraft {
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-	implementation (project(":common")) {
+	implementation(project(":common")) {
 		transitive = false
 	}
 	
@@ -124,22 +115,59 @@ processResources {
 	
 	from project(":common").sourceSets.main.resources
 	
-	inputs.property "version", "${version}"
-	inputs.property "mod_name", "${mod_name}"
+	inputs.property "mod_version", mod_version
+	inputs.property "mod_name", mod_name
 	
 	filesMatching('META-INF/mods.toml') {
-		expand('version': "${version}")
+		expand('version': mod_version)
 	}
 	
 	filesMatching('pack.mcmeta') {
-		expand('mod_name': "${mod_name}")
+		expand('mod_name': mod_name)
 	}
 }
 
-task apiJar(type: Jar) {  
+task apiJar(type: Jar) {
 	from project(":common").sourceSets.api.output
 	from project(":common").sourceSets.api.allSource
-	classifier = "API"
+	archiveClassifier = "API"
+}
+
+curseforge {
+	apiKey = project.hasProperty("curse_api_key") ? curse_api_key : ''
+	project {
+		id = curse_project_id
+		changelog = file('../changelog.txt').canRead() ? file('../changelog.txt').text : ''
+		changelogType = 'text'
+		releaseType = 'release'
+		addGameVersion 'Forge'
+		forge_compatible_minecraft_versions.split(",").each {
+			addGameVersion(it)
+		}
+		mainArtifact(jar) {
+			displayName = "${mod_name}-Forge-${minecraft_version}-${mod_version}"
+		}
+		addArtifact apiJar
+	}
+	options {
+		javaVersionAutoDetect = false
+		forgeGradleIntegration = false
+	}
+}
+
+modrinth {
+	token = project.hasProperty("modrinth_api_key") ? modrinth_api_key : ''
+	projectId = modrinth_project_id
+	versionName = "${mod_name}-Forge-${minecraft_version}-${mod_version}"
+	versionNumber = "${minecraft_version}-${mod_version}"
+	changelog = file('../changelog.txt').canRead() ? file('../changelog.txt').text : ''
+	versionType = 'release'
+	uploadFile = jar
+	forge_compatible_minecraft_versions.split(",").each {
+		gameVersions.add(it)
+	}
+	loaders = ['forge']
+	additionalFiles = [apiJar]
 }
 
 tasks.build.finalizedBy("apiJar")
