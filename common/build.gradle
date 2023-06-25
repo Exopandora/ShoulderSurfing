@@ -1,20 +1,17 @@
 plugins {
-	id 'org.quiltmc.loom' version '0.12.+'
+	id 'java'
 	id 'eclipse'
+	id 'fabric-loom'
+	id 'io.github.juuxel.loom-quiltflower' version '1.+'
 }
 
-repositories {
-	maven {
-		name = 'Fuzs Mod Resources'
-		url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
-	}
+tasks.withType(Jar) {
+	archivesBaseName("${mod_name}-Common")
 }
-
-archivesBaseName = "${mod_name}-Common-${minecraft_version}"
 
 eclipse {
 	project {
-		name = mod_name + 'Common'
+		name = "${mod_name}Common"
 	}
 }
 
@@ -45,27 +42,28 @@ dependencies {
 	mappings fileTree(dir: "../mapping", include: "**.jar")
 	
 	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:1.0.0"
+	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	implementation 'com.electronwill.night-config:core:3.6.3'
+	implementation 'com.electronwill.night-config:toml:3.6.3'
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {
-	remapArchives = false
-	
 	mixin {
+		defaultRefmapName = "${mod_id}.refmap.json"
 		useLegacyMixinAp = false
 	}
 	
 	runs {
 		client {
 			client()
-			setConfigName("Common Client")
+			setConfigName("${mod_name} Common Client")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
 		server {
 			server()
-			setConfigName("Common Server")
+			setConfigName("${mod_name} Common Server")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
