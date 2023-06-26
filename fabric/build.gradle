@@ -16,6 +16,10 @@ eclipse {
 	}
 }
 
+sourceSets {
+	api
+}
+
 dependencies {
 	implementation(project(":common")) {
 		transitive = false
@@ -83,6 +87,17 @@ compileJava {
 task apiJar(type: Jar) {
 	from project(":common").sourceSets.api.output
 	from project(":common").sourceSets.api.allSource
+	
+	from (sourceSets.api.resources) {
+		include 'fabric.mod.json'
+	}
+	
+	inputs.property "version", mod_version
+	
+	filesMatching('fabric.mod.json') {
+		expand('version': mod_version)
+	}
+	
 	archiveClassifier = "API"
 }
 
