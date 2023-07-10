@@ -153,8 +153,7 @@ public class ShoulderHelper
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(cameraEntity, partialTick, playerReachSq);
 			from = eyePosition.addVector(look.headOffset().xCoord, look.headOffset().yCoord, look.headOffset().zCoord);
 			to = look.traceEndPos();
-			Vec3 aabbOffset = look.cameraPos().subtract(eyePosition);
-			aabb = aabb.offset(aabbOffset.xCoord, aabbOffset.yCoord, aabbOffset.zCoord);
+			aabb = aabb.offset(look.headOffset().xCoord, look.headOffset().yCoord, look.headOffset().zCoord);
 		}
 		else
 		{
