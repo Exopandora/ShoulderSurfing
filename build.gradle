@@ -20,7 +20,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-2.4"
+version = "1.7.10-2.4.1"
 group= "com.teamderpy.shouldersurfing" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ShoulderSurfing"
 
