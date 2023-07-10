@@ -126,7 +126,7 @@ public class ShoulderHelper
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, playerReachSq);
 			Vector3d from = eyePosition.add(look.headOffset());
 			Vector3d to = look.traceEndPos();
-			aabb = aabb.move(camera.getPosition().subtract(eyePosition));
+			aabb = aabb.move(look.headOffset());
 			return ProjectileHelper.getEntityHitResult(entity, from, to, aabb, ENTITY_IS_PICKABLE, from.distanceToSqr(to));
 		}
 		else
