@@ -57,6 +57,7 @@ public class Config
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue centerCameraWhenClimbing;
 		private final DoubleValue cameraTransitionSpeed;
+		private final DoubleValue centerCameraWhenLookingDownAngle;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -179,6 +180,11 @@ public class Config
 					.comment("The speed at which the camera transitions between positions")
 					.translation("Camera transition speed")
 					.defineInRange("camera_transition_speed", 0.5D, 0.05D, 1.0D);
+			
+			this.centerCameraWhenLookingDownAngle = builder
+					.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
+					.translation("Center camera when looking down angle")
+					.defineInRange("center_camera_when_looking_down_angle", 15D, 0D, 90D);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -447,6 +453,16 @@ public class Config
 		public void setCameraInterpolationSpeed(double cameraTransitionSpeed)
 		{
 			Config.set(this.cameraTransitionSpeed, cameraTransitionSpeed);
+		}
+		
+		public double getCenterCameraWhenLookingDownAngle()
+		{
+			return this.centerCameraWhenLookingDownAngle.get();
+		}
+		
+		public void setCenterCameraWhenLookingDown(double centerCameraWhenLookingDownAngle)
+		{
+			Config.set(this.centerCameraWhenLookingDownAngle, centerCameraWhenLookingDownAngle);
 		}
 		
 		public double getCustomRaytraceDistance()
