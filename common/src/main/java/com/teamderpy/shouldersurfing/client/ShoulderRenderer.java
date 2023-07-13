@@ -110,7 +110,8 @@ public class ShoulderRenderer
 			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
 				.subtract(1, 1, 1)
-				.scale(0.075);
+				.scale(0.075)
+				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
 			Vec3 from = cameraPos.add(offset);
 			Vec3 to = from.add(cameraOffset);
 			ClipContext context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, camera.getEntity());
