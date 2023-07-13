@@ -24,6 +24,7 @@ import net.minecraft.world.phys.Vec3;
 public class ShoulderRenderer
 {
 	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
+	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private double cameraDistance;
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
@@ -71,6 +72,11 @@ public class ShoulderRenderer
 			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity living && living.onClimbable())
 			{
 				instance.setTargetOffsetX(0);
+			}
+			else if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
+			{
+				instance.setTargetOffsetX(0);
+				instance.setTargetOffsetY(0);
 			}
 			else
 			{
