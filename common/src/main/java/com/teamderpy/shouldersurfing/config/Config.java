@@ -179,7 +179,7 @@ public class Config
 			this.cameraTransitionSpeed = builder
 					.comment("The speed at which the camera transitions between positions")
 					.translation("Camera transition speed")
-					.defineInRange("camera_transition_speed", 0.5D, 0.05D, 1.0D);
+					.defineInRange("camera_transition_speed", 0.25D, 0.05D, 1.0D);
 			
 			this.centerCameraWhenLookingDownAngle = builder
 					.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
