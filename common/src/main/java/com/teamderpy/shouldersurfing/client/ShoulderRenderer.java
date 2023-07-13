@@ -15,6 +15,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -65,12 +66,28 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
 		{
+			ShoulderInstance instance = ShoulderInstance.getInstance();
+			
+			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity living && living.onClimbable())
+			{
+				instance.setTargetOffsetX(0);
+			}
+			else
+			{
+				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
+				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
+				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+			}
+			
 			CameraAccessor accessor = ((CameraAccessor) camera);
 			double x = Mth.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
 			double y = Mth.lerp(partialTick, camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
 			double z = Mth.lerp(partialTick, camera.getEntity().zo, camera.getEntity().getZ());
 			accessor.invokeSetPosition(x, y, z);
-			Vec3 offset = new Vec3(-Config.CLIENT.getOffsetZ(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetX());
+			double offsetX = Mth.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+			double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+			double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+			Vec3 offset = new Vec3(-offsetZ, offsetY, offsetX);
 			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()));
 			Vec3 scaled = offset.normalize().scale(this.cameraDistance);
 			accessor.invokeMove(scaled.x, scaled.y, scaled.z);
