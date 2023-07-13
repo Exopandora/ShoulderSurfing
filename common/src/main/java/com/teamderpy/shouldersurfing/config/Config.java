@@ -55,6 +55,8 @@ public class Config
 		private final BooleanValue limitPlayerReach;
 		private final DoubleValue cameraStepSize;
 		private final ConfigValue<Perspective> defaultPerspective;
+		private final BooleanValue centerCameraWhenClimbing;
+		private final DoubleValue cameraTransitionSpeed;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -167,6 +169,16 @@ public class Config
 					.comment("Size of the camera adjustment per step")
 					.translation("Camera step size")
 					.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.centerCameraWhenClimbing = builder
+					.comment("Whether or not to temporarily center the camera when climbing")
+					.translation("Center camera when climbing")
+					.define("center_camera_when_climbing", true);
+			
+			this.cameraTransitionSpeed = builder
+					.comment("The speed at which the camera transitions between positions")
+					.translation("Camera transition speed")
+					.defineInRange("camera_transition_speed", 0.5D, 0.05D, 1.0D);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -415,6 +427,26 @@ public class Config
 		public void setCameraStepSize(double cameraStepSize)
 		{
 			Config.set(this.cameraStepSize, cameraStepSize);
+		}
+		
+		public boolean doCenterCameraWhenClimbing()
+		{
+			return this.centerCameraWhenClimbing.get();
+		}
+		
+		public void setCenterCameraWhenClimbing(boolean enabled)
+		{
+			Config.set(this.centerCameraWhenClimbing, enabled);
+		}
+		
+		public double getCameraTransitionSpeed()
+		{
+			return this.cameraTransitionSpeed.get();
+		}
+		
+		public void setCameraInterpolationSpeed(double cameraTransitionSpeed)
+		{
+			Config.set(this.cameraTransitionSpeed, cameraTransitionSpeed);
 		}
 		
 		public double getCustomRaytraceDistance()
