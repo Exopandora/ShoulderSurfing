@@ -114,7 +114,7 @@ public class ShoulderRenderer
 				.yRot(-camera.getYRot() * ShoulderHelper.DEG_TO_RAD);
 			Vector3d from = cameraPos.add(offset);
 			Vector3d to = from.add(cameraOffset);
-			RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, camera.getEntity());
+			RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, camera.getEntity());
 			RayTraceResult hitResult = level.clip(context);
 			
 			if(hitResult != null)
