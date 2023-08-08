@@ -114,7 +114,7 @@ public class ShoulderRenderer
 				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
 			Vec3 from = cameraPos.add(offset);
 			Vec3 to = from.add(cameraOffset);
-			ClipContext context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, camera.getEntity());
+			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
 			HitResult hitResult = level.clip(context);
 			
 			if(hitResult != null)
