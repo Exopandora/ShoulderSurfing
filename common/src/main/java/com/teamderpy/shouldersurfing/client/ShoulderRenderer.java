@@ -63,7 +63,7 @@ public class ShoulderRenderer
 		}
 	}
 	
-	public void offsetCamera(Camera camera, Level level, double partialTick)
+	public void offsetCamera(Camera camera, Level level, float partialTick)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
 		{
@@ -80,8 +80,49 @@ public class ShoulderRenderer
 			}
 			else
 			{
-				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
-				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
+				Vec3 localCameraOffset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
+				Vec3 worldCameraOffset = new Vec3(camera.getUpVector()).scale(Config.CLIENT.getOffsetY())
+					.add(new Vec3(camera.getLeftVector()).scale(Config.CLIENT.getOffsetX()))
+					.add(new Vec3(camera.getLookVector()).scale(-Config.CLIENT.getOffsetZ()))
+					.normalize()
+					.scale(localCameraOffset.length());
+				Vec3 worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
+				Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
+				double absOffsetX = Math.abs(Config.CLIENT.getOffsetX());
+				double absOffsetY = Math.abs(Config.CLIENT.getOffsetY());
+				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
+				double targetX = absOffsetX;
+				double targetY = absOffsetY;
+				
+				for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
+				{
+					double scale = dz / absOffsetZ;
+					Vec3 from = eyePosition.add(worldCameraOffset.scale(scale));
+					Vec3 to = eyePosition.add(worldXYOffset).add(new Vec3(camera.getLookVector()).scale(-dz));
+					ClipContext context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, camera.getEntity());
+					HitResult hitResult = level.clip(context);
+					
+					if(hitResult.getType() != HitResult.Type.MISS)
+					{
+						double distance = hitResult.getLocation().subtract(from).length();
+						double newTargetX = Math.max(distance + absOffsetX * scale - 0.2D, 0);
+						
+						if(newTargetX < targetX)
+						{
+							targetX = newTargetX;
+						}
+						
+						double newTargetY = Math.max(distance + absOffsetY * scale - 0.2D, 0);
+						
+						if(newTargetY < targetY)
+						{
+							targetY = newTargetY;
+						}
+					}
+				}
+				
+				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
+				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
 				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
 			}
 			
@@ -94,16 +135,16 @@ public class ShoulderRenderer
 			double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
 			Vec3 offset = new Vec3(-offsetZ, offsetY, offsetX);
-			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()));
+			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
 			Vec3 scaled = offset.normalize().scale(this.cameraDistance);
 			accessor.invokeMove(scaled.x, scaled.y, scaled.z);
 		}
 	}
 	
-	private double calcCameraDistance(Camera camera, Level level, double distance)
+	private double calcCameraDistance(Camera camera, Level level, double distance, float partialTick)
 	{
 		Vec3 cameraPos = camera.getPosition();
-		Vec3 cameraOffset = ShoulderHelper.calcCameraOffset(camera, distance);
+		Vec3 cameraOffset = ShoulderHelper.calcCameraOffset(camera, distance, partialTick);
 		
 		for(int i = 0; i < 8; i++)
 		{
@@ -117,13 +158,13 @@ public class ShoulderRenderer
 			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
 			HitResult hitResult = level.clip(context);
 			
-			if(hitResult != null)
+			if(hitResult.getType() != HitResult.Type.MISS)
 			{
 				double newDistance = hitResult.getLocation().distanceTo(cameraPos);
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance - 0.2;
+					distance = newDistance;
 				}
 			}
 		}
