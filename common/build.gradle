@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'eclipse'
 	id 'fabric-loom'
-	id 'io.github.juuxel.loom-quiltflower' version '1.+'
 }
 
 tasks.withType(Jar) {
