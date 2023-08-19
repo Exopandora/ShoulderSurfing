@@ -15,6 +15,7 @@ import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -34,12 +35,12 @@ public class ShoulderHelper
 	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
 	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
 	
-	public static ShoulderLook shoulderSurfingLook(Camera camera, Entity entity, float partialTicks, double distanceSq)
+	public static ShoulderLook shoulderSurfingLook(Camera camera, Entity entity, float partialTick, double distanceSq)
 	{
-		Vec3 cameraOffset = ShoulderHelper.calcCameraOffset(camera, ShoulderRenderer.getInstance().getCameraDistance());
+		Vec3 cameraOffset = ShoulderHelper.calcCameraOffset(camera, ShoulderRenderer.getInstance().getCameraDistance(), partialTick);
 		Vec3 headOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, cameraOffset);
-		Vec3 cameraPos = entity.getEyePosition(partialTicks).add(cameraOffset);
-		Vec3 viewVector = entity.getViewVector(partialTicks);
+		Vec3 cameraPos = entity.getEyePosition(partialTick).add(cameraOffset);
+		Vec3 viewVector = entity.getViewVector(partialTick);
 		
 		if(Config.CLIENT.limitPlayerReach() && headOffset.lengthSqr() < distanceSq)
 		{
@@ -51,12 +52,17 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static Vec3 calcCameraOffset(@NotNull Camera camera, double distance)
+	public static Vec3 calcCameraOffset(@NotNull Camera camera, double distance, float partialTick)
 	{
-		double dX = camera.getUpVector().x() * ShoulderInstance.getInstance().getOffsetY() + camera.getLeftVector().x() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().x() * -ShoulderInstance.getInstance().getOffsetZ();
-		double dY = camera.getUpVector().y() * ShoulderInstance.getInstance().getOffsetY() + camera.getLeftVector().y() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().y() * -ShoulderInstance.getInstance().getOffsetZ();
-		double dZ = camera.getUpVector().z() * ShoulderInstance.getInstance().getOffsetY() + camera.getLeftVector().z() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().z() * -ShoulderInstance.getInstance().getOffsetZ();
-		return new Vec3(dX, dY, dZ).normalize().scale(distance);
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		double offsetX = Mth.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+		double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+		double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+		return new Vec3(camera.getUpVector()).scale(offsetY)
+			.add(new Vec3(camera.getLeftVector()).scale(offsetX))
+			.add(new Vec3(camera.getLookVector()).scale(-offsetZ))
+			.normalize()
+			.scale(distance);
 	}
 	
 	public static Vec3 calcRayTraceHeadOffset(@NotNull Camera camera, Vec3 cameraOffset)
