@@ -99,7 +99,7 @@ public class ShoulderRenderer
 					double scale = dz / absOffsetZ;
 					Vec3 from = eyePosition.add(worldCameraOffset.scale(scale));
 					Vec3 to = eyePosition.add(worldXYOffset).add(new Vec3(camera.getLookVector()).scale(-dz));
-					ClipContext context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, camera.getEntity());
+					ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
 					HitResult hitResult = level.clip(context);
 					
 					if(hitResult.getType() != HitResult.Type.MISS)
@@ -155,7 +155,7 @@ public class ShoulderRenderer
 				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
 			Vec3 from = cameraPos.add(offset);
 			Vec3 to = from.add(cameraOffset);
-			ClipContext context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, camera.getEntity());
+			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
 			HitResult hitResult = level.clip(context);
 			
 			if(hitResult.getType() != HitResult.Type.MISS)
