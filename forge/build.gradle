@@ -11,9 +11,6 @@ tasks.withType(Jar) {
 	archivesBaseName("${mod_name}-Forge")
 }
 
-eclipseJdtApt.enabled = false
-eclipseFactoryPath.enabled = false
-
 eclipse {
 	project {
 		name = "${mod_name}Forge"
@@ -41,10 +38,9 @@ minecraft {
 	mappings channel: 'official', version: minecraft_version
 	
 	runs {
-		client {
+		configureEach {
 			workingDirectory project.file('../run')
 			ideaModule "${rootProject.name}.${project.name}.main"
-			taskName "${mod_name}ForgeClient"
 			
 			mods {
 				"${mod_id}" {
@@ -52,39 +48,23 @@ minecraft {
 					source sourceSets.main
 					source project(":common").sourceSets.api
 					source project(":common").sourceSets.main
+					source project(":common").sourceSets.testplugin
 				}
 			}
+		}
+		
+		client {
+			taskName "${mod_name}ForgeClient"
 		}
 		
 		server {
-			workingDirectory project.file('../run')
-			ideaModule "${rootProject.name}.${project.name}.main"
 			taskName "${mod_name}ForgeServer"
-			
-			mods {
-				"${mod_id}" {
-					source sourceSets.api
-					source sourceSets.main
-					source project(":common").sourceSets.api
-					source project(":common").sourceSets.main
-				}
-			}
+			args '--nogui'
 		}
 		
 		data {
-			workingDirectory project.file('../run')
-			ideaModule "${rootProject.name}.${project.name}.main"
-			args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 			taskName "${mod_name}ForgeData"
-			
-			mods {
-				"${mod_id}" {
-					source sourceSets.api
-					source sourceSets.main
-					source project(":common").sourceSets.api
-					source project(":common").sourceSets.main
-				}
-			}
+			args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 		}
 	}
 }
@@ -103,12 +83,12 @@ dependencies {
 	implementation fg.deobf("curse.maven:jade-324717:${jade_version_forge}")
 }
 
-compileJava {
+tasks.named('compileJava', JavaCompile).configure {
 	source project(":common").sourceSets.api.allSource
 	source project(":common").sourceSets.main.allSource
 }
 
-processResources {
+tasks.named('processResources', ProcessResources).configure {
 	outputs.upToDateWhen {
 		false
 	}
@@ -127,7 +107,7 @@ processResources {
 	}
 }
 
-task apiJar(type: Jar) {
+tasks.register('apiJar', Jar).configure {
 	from project(":common").sourceSets.api.output
 	from project(":common").sourceSets.api.allSource
 	archiveClassifier = "API"

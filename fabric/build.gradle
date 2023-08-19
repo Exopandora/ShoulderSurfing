@@ -16,10 +16,6 @@ eclipse {
 	}
 }
 
-sourceSets {
-	api
-}
-
 dependencies {
 	implementation(project(":common")) {
 		transitive = false
@@ -55,7 +51,7 @@ loom {
 	}
 }
 
-processResources {
+tasks.named('processResources', ProcessResources).configure {
 	outputs.upToDateWhen {
 		false
 	}
@@ -76,16 +72,16 @@ processResources {
 	duplicatesStrategy = 'exclude'
 }
 
-compileJava {
+tasks.named('compileJava', JavaCompile).configure {
 	source project(":common").sourceSets.api.allSource
 	source project(":common").sourceSets.main.allSource
 }
 
-task apiJar(type: Jar) {
+tasks.register('apiJar', Jar).configure {
 	from project(":common").sourceSets.api.output
 	from project(":common").sourceSets.api.allSource
 	
-	from (sourceSets.api.resources) {
+	from (sourceSets.main.resources) {
 		include 'fabric.mod.json'
 	}
 	
