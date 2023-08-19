@@ -46,9 +46,9 @@ minecraft {
 				"${mod_id}" {
 					source sourceSets.api
 					source sourceSets.main
-					source project(":common").sourceSets.api
+					source project(":api").sourceSets.main
 					source project(":common").sourceSets.main
-					source project(":common").sourceSets.testplugin
+					source project(":plugin").sourceSets.main
 				}
 			}
 		}
@@ -76,6 +76,10 @@ dependencies {
 		transitive = false
 	}
 	
+	implementation(project(":plugin")) {
+		transitive = false
+	}
+	
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	implementation fg.deobf("mcp.mobius.waila:wthit:forge-${wthit_version}")
@@ -83,7 +87,7 @@ dependencies {
 }
 
 tasks.named('compileJava', JavaCompile).configure {
-	source project(":common").sourceSets.api.allSource
+	source project(":api").sourceSets.main.allSource
 	source project(":common").sourceSets.main.allSource
 }
 
@@ -107,8 +111,8 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.register('apiJar', Jar).configure {
-	from project(":common").sourceSets.api.output
-	from project(":common").sourceSets.api.allSource
+	from project(":api").sourceSets.main.output
+	from project(":api").sourceSets.main.allSource
 	archiveClassifier = "API"
 }
 

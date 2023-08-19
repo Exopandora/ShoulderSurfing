@@ -21,6 +21,10 @@ dependencies {
 		transitive = false
 	}
 	
+	implementation(project(":plugin")) {
+		transitive = false
+	}
+	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
 	
@@ -75,13 +79,13 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('compileJava', JavaCompile).configure {
-	source project(":common").sourceSets.api.allSource
+	source project(":api").sourceSets.main.allSource
 	source project(":common").sourceSets.main.allSource
 }
 
 tasks.register('apiJar', Jar).configure {
-	from project(":common").sourceSets.api.output
-	from project(":common").sourceSets.api.allSource
+	from project(":api").sourceSets.main.output
+	from project(":api").sourceSets.main.allSource
 	
 	from (sourceSets.main.resources) {
 		include 'fabric.mod.json'

@@ -14,35 +14,19 @@ eclipse {
 	}
 }
 
-sourceSets {
-	api {
-		compileClasspath += sourceSets.main.compileClasspath
-	}
-	main {
-		java {
-			compileClasspath += sourceSets.api.output
-			runtimeClasspath += sourceSets.api.output
-		}
-	}
-	testplugin {
-		java {
-			compileClasspath += sourceSets.main.compileClasspath
-		}
-	}
-}
-
-configurations {
-	apiImplementation.extendsFrom(implementation)
-	apiRuntimeOnly.extendsFrom(runtimeOnly)
-}
-
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
 	
-	compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
-	modImplementation "mcp.mobius.waila:wthit-api:mojmap-${wthit_version}"
+	implementation(project(":api")) {
+		transitive = false
+	}
+	
+	compileOnly "org.spongepowered:mixin:${mixin_version}"
+	
+	implementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
+	implementation "curse.maven:jade-324717:${jade_version_api}"
 	implementation 'com.electronwill.night-config:core:3.6.3'
 	implementation 'com.electronwill.night-config:toml:3.6.3'
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'

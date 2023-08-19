@@ -1,0 +1,44 @@
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'fabric-loom'
+}
+
+tasks.withType(Jar) {
+	archivesBaseName("${mod_name}-API")
+}
+
+eclipse {
+	project {
+		name = "${mod_name}Api"
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
+	
+	compileOnly "org.spongepowered:mixin:${mixin_version}"
+}
+
+loom {
+	mixin {
+		defaultRefmapName = "${mod_id}.refmap.json"
+		useLegacyMixinAp = false
+	}
+	
+	runs {
+		client {
+			client()
+			setConfigName("${mod_name} Api Client")
+			ideConfigGenerated(false)
+			runDir("../run")
+		}
+		server {
+			server()
+			setConfigName("${mod_name} Api Server")
+			ideConfigGenerated(false)
+			runDir("../run")
+		}
+	}
+}
