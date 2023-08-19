@@ -21,6 +21,10 @@ dependencies {
 		transitive = false
 	}
 	
+	implementation(project(":plugin")) {
+		transitive = false
+	}
+	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings fileTree(dir: "../mapping", include: "**.jar")
 	
@@ -29,7 +33,6 @@ dependencies {
 	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
 	implementation 'com.electronwill.night-config:core:3.6.3'
 	implementation 'com.electronwill.night-config:toml:3.6.3'
-	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {
@@ -73,13 +76,13 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('compileJava', JavaCompile).configure {
-	source project(":common").sourceSets.api.allSource
+	source project(":api").sourceSets.main.allSource
 	source project(":common").sourceSets.main.allSource
 }
 
 tasks.register('apiJar', Jar).configure {
-	from project(":common").sourceSets.api.output
-	from project(":common").sourceSets.api.allSource
+	from project(":api").sourceSets.main.output
+	from project(":api").sourceSets.main.allSource
 	
 	from (sourceSets.main.resources) {
 		include 'fabric.mod.json'

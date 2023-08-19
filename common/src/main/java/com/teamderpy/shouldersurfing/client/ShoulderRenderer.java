@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.client;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamderpy.shouldersurfing.config.Config;

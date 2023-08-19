@@ -3,7 +3,7 @@ package com.teamderpy.shouldersurfing.client;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
@@ -55,7 +55,7 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo camera, double distance, float partialTick)
+	public static Vector3d calcCameraOffset(@NotNull ActiveRenderInfo camera, double distance, float partialTick)
 	{
 		ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
 		ShoulderInstance instance = ShoulderInstance.getInstance();
@@ -69,7 +69,7 @@ public class ShoulderHelper
 			.scale(distance);
 	}
 	
-	public static Vector3d calcRayTraceHeadOffset(@Nonnull ActiveRenderInfo camera, Vector3d cameraOffset)
+	public static Vector3d calcRayTraceHeadOffset(@NotNull ActiveRenderInfo camera, Vector3d cameraOffset)
 	{
 		Vector3d lookVector = new Vector3d(camera.getLookVector());
 		return ShoulderHelper.calcPlaneWithLineIntersection(Vector3d.ZERO, lookVector, cameraOffset, lookVector);

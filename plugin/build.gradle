@@ -5,12 +5,12 @@ plugins {
 }
 
 tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Common")
+	archivesBaseName("${mod_name}-Plugin")
 }
 
 eclipse {
 	project {
-		name = "${mod_name}Common"
+		name = "${mod_name}Plugin"
 	}
 }
 
@@ -22,11 +22,11 @@ dependencies {
 		transitive = false
 	}
 	
-	compileOnly "org.spongepowered:mixin:${mixin_version}"
+	implementation(project(":common")) {
+		transitive = false
+	}
 	
-	implementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
-	implementation 'com.electronwill.night-config:core:3.6.3'
-	implementation 'com.electronwill.night-config:toml:3.6.3'
+	compileOnly "org.spongepowered:mixin:${mixin_version}"
 }
 
 loom {
@@ -38,13 +38,13 @@ loom {
 	runs {
 		client {
 			client()
-			setConfigName("${mod_name} Common Client")
+			setConfigName("${mod_name} Plugin Client")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
 		server {
 			server()
-			setConfigName("${mod_name} Common Server")
+			setConfigName("${mod_name} Plugin Server")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
