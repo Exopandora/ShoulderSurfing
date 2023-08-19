@@ -5,12 +5,12 @@ plugins {
 }
 
 tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Common")
+	archivesBaseName("${mod_name}-API")
 }
 
 eclipse {
 	project {
-		name = "${mod_name}Common"
+		name = "${mod_name}Api"
 	}
 }
 
@@ -18,15 +18,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
 	
-	implementation(project(":api")) {
-		transitive = false
-	}
-	
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
-	
-	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
-	implementation "curse.maven:jade-324717:${jade_version_api}"
 }
 
 loom {
@@ -38,13 +30,13 @@ loom {
 	runs {
 		client {
 			client()
-			setConfigName("${mod_name} Common Client")
+			setConfigName("${mod_name} Api Client")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
 		server {
 			server()
-			setConfigName("${mod_name} Common Server")
+			setConfigName("${mod_name} Api Server")
 			ideConfigGenerated(false)
 			runDir("../run")
 		}
