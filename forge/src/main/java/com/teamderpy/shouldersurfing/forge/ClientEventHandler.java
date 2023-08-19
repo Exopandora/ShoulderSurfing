@@ -55,7 +55,7 @@ public class ClientEventHandler
 	@SuppressWarnings("resource")
 	public static void computeCameraAnglesEvent(CameraSetup event)
 	{
-		ShoulderRenderer.getInstance().offsetCamera(event.getCamera(), Minecraft.getInstance().level, event.getPartialTicks());
+		ShoulderRenderer.getInstance().offsetCamera(event.getCamera(), Minecraft.getInstance().level, (float) event.getPartialTick());
 	}
 	
 	@SubscribeEvent
