@@ -1,0 +1,3 @@
+{
+	"entrypoint": "com.teamderpy.shouldersurfing.plugin.AdaptiveItemCallbackPlugin"
+}
