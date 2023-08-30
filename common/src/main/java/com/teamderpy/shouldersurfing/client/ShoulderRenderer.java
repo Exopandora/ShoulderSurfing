@@ -1,6 +1,6 @@
 package com.teamderpy.shouldersurfing.client;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -73,7 +73,7 @@ public class ShoulderRenderer
 			{
 				instance.setTargetOffsetX(0);
 			}
-			else if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
+			else if(ShoulderHelper.angle(camera.getLookVector(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
 			{
 				instance.setTargetOffsetX(0);
 				instance.setTargetOffsetY(0);

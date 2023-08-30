@@ -36,7 +36,6 @@ dependencies {
 	modImplementation "curse.maven:jade-324717:${jade_version_fabric}"
 	implementation 'com.electronwill.night-config:core:3.6.5'
 	implementation 'com.electronwill.night-config:toml:3.6.5'
-	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {
