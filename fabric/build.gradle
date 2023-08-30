@@ -35,7 +35,6 @@ dependencies {
 	modImplementation "lol.bai:badpackets:fabric-${badpackets_version}"
 	implementation 'com.electronwill.night-config:core:3.6.3'
 	implementation 'com.electronwill.night-config:toml:3.6.3'
-	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {
