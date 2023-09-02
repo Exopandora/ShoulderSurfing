@@ -82,6 +82,7 @@ dependencies {
 	
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	implementation 'org.jetbrains:annotations:24.0.1'
 }
 
 tasks.named('compileJava', JavaCompile).configure {
