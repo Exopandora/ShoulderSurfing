@@ -11,6 +11,7 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -65,12 +66,28 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
 		{
+			ShoulderInstance instance = ShoulderInstance.getInstance();
+			
+			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).onClimbable())
+			{
+				instance.setTargetOffsetX(0);
+			}
+			else
+			{
+				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
+				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
+				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+			}
+			
 			ActiveRenderInfoAccessor accessor = ((ActiveRenderInfoAccessor) camera);
 			double x = MathHelper.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
 			double y = MathHelper.lerp(partialTick, camera.getEntity().yo, camera.getEntity().getY()) + MathHelper.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
 			double z = MathHelper.lerp(partialTick, camera.getEntity().zo, camera.getEntity().getZ());
 			accessor.invokeSetPosition(x, y, z);
-			Vector3d offset = new Vector3d(-Config.CLIENT.getOffsetZ(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetX());
+			double offsetX = MathHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+			double offsetY = MathHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+			double offsetZ = MathHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+			Vector3d offset = new Vector3d(-offsetZ, offsetY, offsetX);
 			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()));
 			Vector3d scaled = offset.normalize().scale(this.cameraDistance);
 			accessor.invokeMove(scaled.x, scaled.y, scaled.z);

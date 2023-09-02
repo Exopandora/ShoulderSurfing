@@ -11,9 +11,6 @@ tasks.withType(Jar) {
 	archivesBaseName("${mod_name}-Forge")
 }
 
-eclipseJdtApt.enabled = false
-eclipseFactoryPath.enabled = false
-
 eclipse {
 	project {
 		name = "${mod_name}Forge"

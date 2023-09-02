@@ -55,9 +55,9 @@ public class ShoulderHelper
 	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo camera, double distance)
 	{
 		ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
-		double dX = camera.getUpVector().x() * Config.CLIENT.getOffsetY() + accessor.getLeft().x() * Config.CLIENT.getOffsetX() + camera.getLookVector().x() * -Config.CLIENT.getOffsetZ();
-		double dY = camera.getUpVector().y() * Config.CLIENT.getOffsetY() + accessor.getLeft().y() * Config.CLIENT.getOffsetX() + camera.getLookVector().y() * -Config.CLIENT.getOffsetZ();
-		double dZ = camera.getUpVector().z() * Config.CLIENT.getOffsetY() + accessor.getLeft().z() * Config.CLIENT.getOffsetX() + camera.getLookVector().z() * -Config.CLIENT.getOffsetZ();
+		double dX = camera.getUpVector().x() * ShoulderInstance.getInstance().getOffsetY() + accessor.getLeft().x() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().x() * -ShoulderInstance.getInstance().getOffsetZ();
+		double dY = camera.getUpVector().y() * ShoulderInstance.getInstance().getOffsetY() + accessor.getLeft().y() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().y() * -ShoulderInstance.getInstance().getOffsetZ();
+		double dZ = camera.getUpVector().z() * ShoulderInstance.getInstance().getOffsetY() + accessor.getLeft().z() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().z() * -ShoulderInstance.getInstance().getOffsetZ();
 		return new Vector3d(dX, dY, dZ).normalize().scale(distance);
 	}
 	
