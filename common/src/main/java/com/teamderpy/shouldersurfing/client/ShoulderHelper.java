@@ -23,13 +23,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.registry.Registry;
 
 public class ShoulderHelper
 {
+	public static final float DEG_TO_RAD = ((float)Math.PI / 180F);
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
 	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
 	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
@@ -206,6 +209,16 @@ public class ShoulderHelper
 		}
 		
 		return false;
+	}
+	
+	public static double angle(Vector3f a, Vector3f b)
+	{
+		return Math.acos(a.dot(b) / (length(a) * length(b)));
+	}
+	
+	public static double length(Vector3f vec)
+	{
+		return MathHelper.sqrt(vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
 	}
 	
 	public static class ShoulderLook
