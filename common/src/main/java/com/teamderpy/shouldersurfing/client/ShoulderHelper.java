@@ -38,12 +38,12 @@ public class ShoulderHelper
 	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
 	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
 	
-	public static ShoulderLook shoulderSurfingLook(ActiveRenderInfo camera, Entity entity, float partialTicks, double distanceSq)
+	public static ShoulderLook shoulderSurfingLook(ActiveRenderInfo camera, Entity entity, float partialTick, double distanceSq)
 	{
-		Vector3d cameraOffset = ShoulderHelper.calcCameraOffset(camera, ShoulderRenderer.getInstance().getCameraDistance());
+		Vector3d cameraOffset = ShoulderHelper.calcCameraOffset(camera, ShoulderRenderer.getInstance().getCameraDistance(), partialTick);
 		Vector3d headOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, cameraOffset);
-		Vector3d cameraPos = entity.getEyePosition(partialTicks).add(cameraOffset);
-		Vector3d viewVector = entity.getViewVector(partialTicks);
+		Vector3d cameraPos = entity.getEyePosition(partialTick).add(cameraOffset);
+		Vector3d viewVector = entity.getViewVector(partialTick);
 		
 		if(Config.CLIENT.limitPlayerReach() && headOffset.lengthSqr() < distanceSq)
 		{
@@ -55,13 +55,18 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo camera, double distance)
+	public static Vector3d calcCameraOffset(@Nonnull ActiveRenderInfo camera, double distance, float partialTick)
 	{
 		ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
-		double dX = camera.getUpVector().x() * ShoulderInstance.getInstance().getOffsetY() + accessor.getLeft().x() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().x() * -ShoulderInstance.getInstance().getOffsetZ();
-		double dY = camera.getUpVector().y() * ShoulderInstance.getInstance().getOffsetY() + accessor.getLeft().y() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().y() * -ShoulderInstance.getInstance().getOffsetZ();
-		double dZ = camera.getUpVector().z() * ShoulderInstance.getInstance().getOffsetY() + accessor.getLeft().z() * ShoulderInstance.getInstance().getOffsetX() + camera.getLookVector().z() * -ShoulderInstance.getInstance().getOffsetZ();
-		return new Vector3d(dX, dY, dZ).normalize().scale(distance);
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		double offsetX = MathHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+		double offsetY = MathHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+		double offsetZ = MathHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+		return new Vector3d(camera.getUpVector()).scale(offsetY)
+			.add(new Vector3d(accessor.getLeft()).scale(offsetX))
+			.add(new Vector3d(camera.getLookVector()).scale(-offsetZ))
+			.normalize()
+			.scale(distance);
 	}
 	
 	public static Vector3d calcRayTraceHeadOffset(@Nonnull ActiveRenderInfo camera, Vector3d cameraOffset)
