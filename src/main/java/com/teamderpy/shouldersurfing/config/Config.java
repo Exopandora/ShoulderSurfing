@@ -43,6 +43,8 @@ public class Config
 		private BooleanValue limitPlayerReach;
 		private DoubleValue cameraStepSize;
 		private ConfigValue<Perspective> defaultPerspective;
+		private BooleanValue centerCameraWhenClimbing;
+		private DoubleValue cameraTransitionSpeed;
 		
 		private ConfigValue<CrosshairType> crosshairType;
 		private DoubleValue customRaytraceDistance;
@@ -260,6 +262,26 @@ public class Config
 			Config.set(this.cameraStepSize, cameraStepSize);
 		}
 		
+		public boolean doCenterCameraWhenClimbing()
+		{
+			return this.centerCameraWhenClimbing.get();
+		}
+		
+		public void setCenterCameraWhenClimbing(boolean enabled)
+		{
+			Config.set(this.centerCameraWhenClimbing, enabled);
+		}
+		
+		public double getCameraTransitionSpeed()
+		{
+			return this.cameraTransitionSpeed.get();
+		}
+		
+		public void setCameraInterpolationSpeed(double cameraTransitionSpeed)
+		{
+			Config.set(this.cameraTransitionSpeed, cameraTransitionSpeed);
+		}
+		
 		public double getCustomRaytraceDistance()
 		{
 			return this.customRaytraceDistance.get();
@@ -395,10 +417,13 @@ public class Config
 			this.replaceDefaultPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Replace Default Perspective", false, "Whether or not to replace the default third person perspective"));
 			this.limitPlayerReach = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Limit player reach", true, "Whether or not to limit the player reach depending on the crosshair location (perspective offset)"));
 			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.centerCameraWhenClimbing = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when climbing", true, "Whether or not to temporarily center the camera when climbing"));
+			this.cameraTransitionSpeed = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed", 0.5D, "The speed at which the camera transitions between positions", 0.05D, 1.0D));
+			
 			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
 			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom Raytrace Distance", 400, "The raytrace distance used for the dynamic crosshair", 0, Double.MAX_VALUE));
 			this.useCustomRaytraceDistance = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Use Custom Raytrace Distance", true, "Whether or not to use the custom raytrace distance used for the dynamic crosshair"));
-			
+
 			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive Crosshair Items", new String[]
 			{
 				Items.SNOWBALL.getRegistryName().toString(),

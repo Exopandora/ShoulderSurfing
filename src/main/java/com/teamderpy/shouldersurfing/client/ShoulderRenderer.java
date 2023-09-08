@@ -23,6 +23,7 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -81,7 +82,25 @@ public class ShoulderRenderer
 		
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && world != null)
 		{
-			Vec3d offset = new Vec3d(Config.CLIENT.getOffsetX(), -Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
+			ShoulderInstance instance = ShoulderInstance.getInstance();
+			Entity cameraEntity = Minecraft.getMinecraft().getRenderViewEntity();
+			float partialTick = Minecraft.getMinecraft().getRenderPartialTicks();
+			
+			if(Config.CLIENT.doCenterCameraWhenClimbing() && cameraEntity instanceof EntityLivingBase && ((EntityLivingBase) cameraEntity).isOnLadder())
+			{
+				instance.setTargetOffsetX(0);
+			}
+			else
+			{
+				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
+				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
+				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+			}
+			
+			double offsetX = ShoulderHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+			double offsetY = ShoulderHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+			double offsetZ = ShoulderHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+			Vec3d offset = new Vec3d(offsetX, -offsetY, -offsetZ);
 			this.cameraDistance = this.calcCameraDistance(world, offset.lengthVector(), yaw, pitch);
 			Vec3d scaled = offset.normalize().scale(this.cameraDistance);
 			GlStateManager.translate(scaled.x, scaled.y, scaled.z);

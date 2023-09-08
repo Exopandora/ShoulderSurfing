@@ -14,6 +14,15 @@ public class ShoulderInstance
 	private boolean doShoulderSurfing;
 	private boolean doSwitchPerspective;
 	private boolean isAiming;
+	private double offsetX = Config.CLIENT.getOffsetX();
+	private double offsetY = Config.CLIENT.getOffsetY();
+	private double offsetZ = Config.CLIENT.getOffsetZ();
+	private double lastOffsetX = Config.CLIENT.getOffsetX();
+	private double lastOffsetY = Config.CLIENT.getOffsetY();
+	private double lastOffsetZ = Config.CLIENT.getOffsetZ();
+	private double targetOffsetX = Config.CLIENT.getOffsetX();
+	private double targetOffsetY = Config.CLIENT.getOffsetY();
+	private double targetOffsetZ = Config.CLIENT.getOffsetZ();
 	private int thirdPersonView = Config.CLIENT.getDefaultPerspective().getPointOfView();
 	
 	private ShoulderInstance()
@@ -44,6 +53,14 @@ public class ShoulderInstance
 		{
 			this.changePerspective(Perspective.SHOULDER_SURFING);
 		}
+		
+		this.lastOffsetX = this.offsetX;
+		this.lastOffsetY = this.offsetY;
+		this.lastOffsetZ = this.offsetZ;
+		
+		this.offsetX = this.lastOffsetX + (this.targetOffsetX - this.lastOffsetX) * Config.CLIENT.getCameraTransitionSpeed();		
+		this.offsetY = this.lastOffsetY + (this.targetOffsetY - this.lastOffsetY) * Config.CLIENT.getCameraTransitionSpeed();
+		this.offsetZ = this.lastOffsetZ + (this.targetOffsetZ - this.lastOffsetZ) * Config.CLIENT.getCameraTransitionSpeed();
 	}
 	
 	public void changePerspective(Perspective perspective)
@@ -66,6 +83,51 @@ public class ShoulderInstance
 	public boolean isAiming()
 	{
 		return this.isAiming;
+	}
+	
+	public double getOffsetX()
+	{
+		return this.offsetX;
+	}
+	
+	public double getOffsetXOld()
+	{
+		return this.lastOffsetX;
+	}
+	
+	public double getOffsetY()
+	{
+		return this.offsetY;
+	}
+	
+	public double getOffsetYOld()
+	{
+		return this.lastOffsetY;
+	}
+	
+	public double getOffsetZ()
+	{
+		return this.offsetZ;
+	}
+	
+	public double getOffsetZOld()
+	{
+		return this.lastOffsetZ;
+	}
+	
+	public void setTargetOffsetX(double targetOffsetX)
+	{
+		this.targetOffsetX = targetOffsetX;
+	}
+	
+	public void setTargetOffsetY(double targetOffsetY)
+	{
+		this.targetOffsetY = targetOffsetY;
+	}
+	
+	public void setTargetOffsetZ(double targetOffsetZ)
+	{
+		this.targetOffsetZ = targetOffsetZ;
 	}
 	
 	public static ShoulderInstance getInstance()

@@ -80,7 +80,7 @@ public class ShoulderHelper
 	
 	public static Vec3d calcCameraOffset(double distance, float yaw, float pitch)
 	{
-		return new Vec3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ())
+		return new Vec3d(ShoulderInstance.getInstance().getOffsetX(), ShoulderInstance.getInstance().getOffsetY(), -ShoulderInstance.getInstance().getOffsetZ())
 				.rotatePitch((float) Math.toRadians(-pitch))
 				.rotateYaw((float) Math.toRadians(-yaw))
 				.normalize()
@@ -290,5 +290,10 @@ public class ShoulderHelper
 		}
 		
 		return false;
+	}
+	
+	public static double lerp(double f, double a, double b)
+	{
+		return a + f * (b - a);
 	}
 }
