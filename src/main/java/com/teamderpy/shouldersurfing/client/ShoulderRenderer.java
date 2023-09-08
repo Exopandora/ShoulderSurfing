@@ -36,6 +36,7 @@ import valkyrienwarfare.api.TransformType;
 public class ShoulderRenderer
 {
 	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
+	private static final Vec3d VECTOR_NEGATIVE_Y = new Vec3d(0, -1, 0);
 	private double cameraDistance;
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
@@ -89,6 +90,11 @@ public class ShoulderRenderer
 			if(Config.CLIENT.doCenterCameraWhenClimbing() && cameraEntity instanceof EntityLivingBase && ((EntityLivingBase) cameraEntity).isOnLadder())
 			{
 				instance.setTargetOffsetX(0);
+			}
+			else if(ShoulderHelper.angle(cameraEntity.getLookVec(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
+			{
+				instance.setTargetOffsetX(0);
+				instance.setTargetOffsetY(0);
 			}
 			else
 			{

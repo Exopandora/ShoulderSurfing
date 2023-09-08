@@ -45,6 +45,7 @@ public class Config
 		private ConfigValue<Perspective> defaultPerspective;
 		private BooleanValue centerCameraWhenClimbing;
 		private DoubleValue cameraTransitionSpeed;
+		private DoubleValue centerCameraWhenLookingDownAngle;
 		
 		private ConfigValue<CrosshairType> crosshairType;
 		private DoubleValue customRaytraceDistance;
@@ -282,6 +283,16 @@ public class Config
 			Config.set(this.cameraTransitionSpeed, cameraTransitionSpeed);
 		}
 		
+		public double getCenterCameraWhenLookingDownAngle()
+		{
+			return this.centerCameraWhenLookingDownAngle.get();
+		}
+		
+		public void setCenterCameraWhenLookingDown(double centerCameraWhenLookingDownAngle)
+		{
+			Config.set(this.centerCameraWhenLookingDownAngle, centerCameraWhenLookingDownAngle);
+		}
+		
 		public double getCustomRaytraceDistance()
 		{
 			return this.customRaytraceDistance.get();
@@ -419,6 +430,7 @@ public class Config
 			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step", -Double.MAX_VALUE, Double.MAX_VALUE));
 			this.centerCameraWhenClimbing = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when climbing", true, "Whether or not to temporarily center the camera when climbing"));
 			this.cameraTransitionSpeed = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed", 0.5D, "The speed at which the camera transitions between positions", 0.05D, 1.0D));
+			this.centerCameraWhenLookingDownAngle = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when looking down angle", 15D, "The angle at which the camera will be centered when looking down. Set to 0 to disable.", 0D, 90D));
 			
 			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
 			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom Raytrace Distance", 400, "The raytrace distance used for the dynamic crosshair", 0, Double.MAX_VALUE));

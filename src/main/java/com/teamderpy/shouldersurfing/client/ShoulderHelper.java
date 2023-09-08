@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ShoulderHelper
 {
+	public static final float DEG_TO_RAD = ((float)Math.PI / 180F);
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = Predicates.and(EntitySelectors.NOT_SPECTATING, entity -> entity != null && entity.canBeCollidedWith());
 	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
 	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
@@ -295,5 +297,20 @@ public class ShoulderHelper
 	public static double lerp(double f, double a, double b)
 	{
 		return a + f * (b - a);
+	}
+	
+	public static double angle(Vec3d a, Vec3d b)
+	{
+		return Math.acos(dot(a, b) / (length(a) * length(b)));
+	}
+	
+	public static double length(Vec3d vec)
+	{
+		return MathHelper.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	}
+	
+	public static double dot(Vec3d a, Vec3d b)
+	{
+		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
 }
