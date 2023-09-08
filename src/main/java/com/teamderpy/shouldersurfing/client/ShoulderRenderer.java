@@ -260,7 +260,7 @@ public class ShoulderRenderer
 	
 	public boolean skipEntityRendering()
 	{
-		return Config.CLIENT.keepCameraOutOfHead() && this.cameraDistance < Minecraft.getMinecraft().getRenderViewEntity().width * 0.75F && ShoulderInstance.getInstance().doShoulderSurfing();
+		return this.cameraDistance < Minecraft.getMinecraft().getRenderViewEntity().width * Config.CLIENT.keepCameraOutOfHeadScale() && ShoulderInstance.getInstance().doShoulderSurfing();
 	}
 	
 	public double getPlayerReach()

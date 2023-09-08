@@ -37,7 +37,7 @@ public class Config
 		private BooleanValue unlimitedOffsetY;
 		private BooleanValue unlimitedOffsetZ;
 		
-		private BooleanValue keepCameraOutOfHead;
+		private DoubleValue keepCameraOutOfHeadScale;
 		private BooleanValue replaceDefaultPerspective;
 		private BooleanValue rememberLastPerspective;
 		private BooleanValue limitPlayerReach;
@@ -203,14 +203,14 @@ public class Config
 			Config.set(this.useCustomRaytraceDistance, useCustomRaytraceDistance);
 		}
 		
-		public boolean keepCameraOutOfHead()
+		public double keepCameraOutOfHeadScale()
 		{
-			return this.keepCameraOutOfHead.get();
+			return this.keepCameraOutOfHeadScale.get();
 		}
 		
-		public void setKeepCameraOutOfHead(boolean enabled)
+		public void setKeepCameraOutOfHead(double scale)
 		{
-			Config.set(this.keepCameraOutOfHead, enabled);
+			Config.set(this.keepCameraOutOfHeadScale, scale);
 		}
 		
 		public boolean replaceDefaultPerspective()
@@ -422,7 +422,7 @@ public class Config
 			this.unlimitedOffsetY = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited y-offset", false, "Whether or not y-offset adjustment has limits"));
 			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-Offset", false, "Whether or not z-offset adjustment has limits"));
 			
-			this.keepCameraOutOfHead = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head", true, "Whether or not to hide the player model if the camera gets too close to it"));
+			this.keepCameraOutOfHeadScale = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head Scale", 0.75D, "The distance scale on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.", 0D, Double.MAX_VALUE));
 			this.defaultPerspective = new EnumValue<Perspective>(this.config.get(Configuration.CATEGORY_GENERAL, "Default Perspective", Perspective.SHOULDER_SURFING.toString(), "The default perspective when you load the game", ClientConfig.toStringArray(Perspective.values())), Perspective.class);
 			this.rememberLastPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Remember Last Perspective", true, "Whether or not to remember the last perspective used"));
 			this.replaceDefaultPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Replace Default Perspective", false, "Whether or not to replace the default third person perspective"));
@@ -435,7 +435,7 @@ public class Config
 			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
 			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom Raytrace Distance", 400, "The raytrace distance used for the dynamic crosshair", 0, Double.MAX_VALUE));
 			this.useCustomRaytraceDistance = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Use Custom Raytrace Distance", true, "Whether or not to use the custom raytrace distance used for the dynamic crosshair"));
-
+			
 			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive Crosshair Items", new String[]
 			{
 				Items.SNOWBALL.getRegistryName().toString(),
