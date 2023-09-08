@@ -147,7 +147,8 @@ public class ShoulderRenderer
 		{
 			Vec3d offset = new Vec3d((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2)
 				.subtract(1, 1, 1)
-				.scale(0.075);
+				.scale(0.075)
+				.rotateYaw(-yaw * ShoulderHelper.DEG_TO_RAD);
 			Vec3d from = cameraPos.add(offset);
 			Vec3d to = from.add(cameraOffset);
 			RayTraceResult hitResult = world.rayTraceBlocks(from, to, false, true, false);
@@ -158,7 +159,7 @@ public class ShoulderRenderer
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance - 0.2;
+					distance = newDistance;
 				}
 			}
 		}
