@@ -32,12 +32,12 @@ public class ShoulderHelper
 	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
 	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
 	
-	public static ShoulderLook shoulderSurfingLook(Entity entity, float partialTicks, double distanceSq)
+	public static ShoulderLook shoulderSurfingLook(Entity entity, float partialTick, double distanceSq)
 	{
-		Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(ShoulderRenderer.getInstance().getCameraDistance(), entity.rotationYaw, entity.rotationPitch);
+		Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(ShoulderRenderer.getInstance().getCameraDistance(), entity.rotationYaw, entity.rotationPitch, partialTick);
 		Vec3d headOffset = ShoulderHelper.calcRayTraceHeadOffset(cameraOffset);
-		Vec3d cameraPos = entity.getPositionEyes(partialTicks).add(cameraOffset);
-		Vec3d viewVector = entity.getLook(partialTicks);
+		Vec3d cameraPos = entity.getPositionEyes(partialTick).add(cameraOffset);
+		Vec3d viewVector = entity.getLook(partialTick);
 		double length = headOffset.lengthVector(); //1.9 compatibility
 		length *= length;
 		
@@ -51,42 +51,17 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static class ShoulderLook
+	public static Vec3d calcCameraOffset(double distance, float yaw, float pitch, float partialTick)
 	{
-		private final Vec3d cameraPos;
-		private final Vec3d traceEndPos;
-		private final Vec3d headOffset;
-		
-		public ShoulderLook(Vec3d cameraPos, Vec3d traceEndPos, Vec3d headOffset)
-		{
-			this.cameraPos = cameraPos;
-			this.traceEndPos = traceEndPos;
-			this.headOffset = headOffset;
-		}
-		
-		public Vec3d cameraPos()
-		{
-			return this.cameraPos;
-		}
-		
-		public Vec3d traceEndPos()
-		{
-			return this.traceEndPos;
-		}
-		
-		public Vec3d headOffset()
-		{
-			return this.headOffset;
-		}
-	}
-	
-	public static Vec3d calcCameraOffset(double distance, float yaw, float pitch)
-	{
-		return new Vec3d(ShoulderInstance.getInstance().getOffsetX(), ShoulderInstance.getInstance().getOffsetY(), -ShoulderInstance.getInstance().getOffsetZ())
-				.rotatePitch((float) Math.toRadians(-pitch))
-				.rotateYaw((float) Math.toRadians(-yaw))
-				.normalize()
-				.scale(distance);
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		double offsetX = lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+		double offsetY = lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+		double offsetZ = lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+		return new Vec3d(offsetX, offsetY, -offsetZ)
+			.rotatePitch((float) Math.toRadians(-pitch))
+			.rotateYaw((float) Math.toRadians(-yaw))
+			.normalize()
+			.scale(distance);
 	}
 	
 	public static Vec3d calcRayTraceHeadOffset(Vec3d cameraOffset)
@@ -301,7 +276,7 @@ public class ShoulderHelper
 	
 	public static double angle(Vec3d a, Vec3d b)
 	{
-		return Math.acos(dot(a, b) / (length(a) * length(b)));
+		return Math.acos(a.dotProduct(b) / (length(a) * length(b)));
 	}
 	
 	public static double length(Vec3d vec)
@@ -309,8 +284,32 @@ public class ShoulderHelper
 		return MathHelper.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 	}
 	
-	public static double dot(Vec3d a, Vec3d b)
+	public static class ShoulderLook
 	{
-		return a.x * b.x + a.y * b.y + a.z * b.z;
+		private final Vec3d cameraPos;
+		private final Vec3d traceEndPos;
+		private final Vec3d headOffset;
+		
+		public ShoulderLook(Vec3d cameraPos, Vec3d traceEndPos, Vec3d headOffset)
+		{
+			this.cameraPos = cameraPos;
+			this.traceEndPos = traceEndPos;
+			this.headOffset = headOffset;
+		}
+		
+		public Vec3d cameraPos()
+		{
+			return this.cameraPos;
+		}
+		
+		public Vec3d traceEndPos()
+		{
+			return this.traceEndPos;
+		}
+		
+		public Vec3d headOffset()
+		{
+			return this.headOffset;
+		}
 	}
 }

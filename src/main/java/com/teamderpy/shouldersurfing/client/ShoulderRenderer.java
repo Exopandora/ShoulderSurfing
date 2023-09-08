@@ -98,8 +98,46 @@ public class ShoulderRenderer
 			}
 			else
 			{
-				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
-				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
+				Vec3d localCameraOffset = new Vec3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
+				Vec3d worldCameraOffset = localCameraOffset
+					.rotatePitch((float) Math.toRadians(-pitch))
+					.rotateYaw((float) Math.toRadians(-yaw));
+				Vec3d worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(worldCameraOffset);
+				Vec3d eyePosition = cameraEntity.getPositionEyes(partialTick);
+				double absOffsetX = Math.abs(Config.CLIENT.getOffsetX());
+				double absOffsetY = Math.abs(Config.CLIENT.getOffsetY());
+				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
+				double targetX = absOffsetX;
+				double targetY = absOffsetY;
+				
+				for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
+				{
+					double scale = dz / absOffsetZ;
+					Vec3d from = eyePosition.add(worldCameraOffset.scale(scale));
+					Vec3d to = eyePosition.add(worldXYOffset).add(cameraEntity.getLookVec().scale(-dz));
+					RayTraceResult hitResult = world.rayTraceBlocks(from, to, false, true, false);
+					
+					if(hitResult != null)
+					{
+						double distance = hitResult.hitVec.distanceTo(from);
+						double newTargetX = Math.max(distance + absOffsetX * scale - 0.2D, 0);
+						
+						if(newTargetX < targetX)
+						{
+							targetX = newTargetX;
+						}
+						
+						double newTargetY = Math.max(distance + absOffsetY * scale - 0.2D, 0);
+						
+						if(newTargetY < targetY)
+						{
+							targetY = newTargetY;
+						}
+					}
+				}
+				
+				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
+				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
 				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
 			}
 			
@@ -107,7 +145,7 @@ public class ShoulderRenderer
 			double offsetY = ShoulderHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = ShoulderHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
 			Vec3d offset = new Vec3d(offsetX, -offsetY, -offsetZ);
-			this.cameraDistance = this.calcCameraDistance(world, offset.lengthVector(), yaw, pitch);
+			this.cameraDistance = this.calcCameraDistance(world, offset.lengthVector(), yaw, pitch, partialTick);
 			Vec3d scaled = offset.normalize().scale(this.cameraDistance);
 			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
 		}
@@ -117,11 +155,11 @@ public class ShoulderRenderer
 		}
 	}
 	
-	private double calcCameraDistance(World world, double distance, float yaw, float pitch)
+	private double calcCameraDistance(World world, double distance, float yaw, float pitch, float partialTick)
 	{
 		Entity renderView = Minecraft.getMinecraft().getRenderViewEntity();
 		Vec3d cameraPos = renderView.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
-		Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(distance, yaw, pitch);
+		Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(distance, yaw, pitch, partialTick);
 		
 		if(this.isValkyrienSkiesInstalled)
 		{
@@ -147,7 +185,7 @@ public class ShoulderRenderer
 		{
 			Vec3d offset = new Vec3d((i & 1) * 2, (i >> 1 & 1) * 2, (i >> 2 & 1) * 2)
 				.subtract(1, 1, 1)
-				.scale(0.075)
+				.scale(0.1F)
 				.rotateYaw(-yaw * ShoulderHelper.DEG_TO_RAD);
 			Vec3d from = cameraPos.add(offset);
 			Vec3d to = from.add(cameraOffset);
