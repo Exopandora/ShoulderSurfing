@@ -429,7 +429,7 @@ public class Config
 			this.limitPlayerReach = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Limit player reach", true, "Whether or not to limit the player reach depending on the crosshair location (perspective offset)"));
 			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step", -Double.MAX_VALUE, Double.MAX_VALUE));
 			this.centerCameraWhenClimbing = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when climbing", true, "Whether or not to temporarily center the camera when climbing"));
-			this.cameraTransitionSpeed = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed", 0.5D, "The speed at which the camera transitions between positions", 0.05D, 1.0D));
+			this.cameraTransitionSpeed = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed", 0.25D, "The speed at which the camera transitions between positions", 0.05D, 1.0D));
 			this.centerCameraWhenLookingDownAngle = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when looking down angle", 15D, "The angle at which the camera will be centered when looking down. Set to 0 to disable.", 0D, 90D));
 			
 			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
