@@ -185,6 +185,58 @@
                 "1.9.4": "ado",
                 "1.9": "ado"
             }
+		},
+		"ItemBoat": {
+			"name": "net/minecraft/item/ItemBoat",
+            "obf": {
+                "1.12.2": "ahd",
+                "1.12.1": "ahd",
+                "1.12": "ahb",
+                "1.11.2": "adx",
+                "1.11": "adw",
+                "1.10.2": "acn",
+                "1.9.4": "ace",
+                "1.9": "ace"
+            }
+		},
+		"EnumHand": {
+			"name": "net/minecraft/util/EnumHand",
+            "obf": {
+                "1.12.2": "ub",
+                "1.12.1": "ub",
+                "1.12": "tz",
+                "1.11.2": "ri",
+                "1.11": "rh",
+                "1.10.2": "qr",
+                "1.9.4": "qm",
+                "1.9": "qm"
+            }
+		},
+		"ActionResult": {
+			"name": "net/minecraft/util/ActionResult",
+            "obf": {
+                "1.12.2": "ue",
+                "1.12.1": "ue",
+                "1.12": "uc",
+                "1.11.2": "rl",
+                "1.11": "rk",
+                "1.10.2": "qu",
+                "1.9.4": "qp",
+                "1.9": "qp"
+            }
+		},
+		"ItemStack": {
+			"name": "net/minecraft/item/ItemStack",
+            "obf": {
+                "1.12.2": "aip",
+                "1.12.1": "aip",
+                "1.12": "ain",
+                "1.11.2": "afj",
+                "1.11": "afi",
+                "1.10.2": "adz",
+                "1.9.4": "adq",
+                "1.9": "adq"
+            }
 		}
     },
     "methods": {
@@ -228,10 +280,15 @@
             "desc": "(L$World;L$Vec3d;L$Vec3d;)L$RayTraceResult;",
             "obf": "getRayTraceResult"
         },
-        "InjectionDelegation#Item_rayTrace": {
-            "name": "EntityRenderer_rayTrace",
+        "InjectionDelegation#Item_rayTraceBlocks": {
+            "name": "Item_rayTraceBlocks",
             "desc": "(L$World;L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
-            "obf": "Item_rayTrace"
+            "obf": "Item_rayTraceBlocks"
+        },
+        "InjectionDelegation#ItemBoat_rayTraceBlocks": {
+            "name": "ItemBoat_rayTraceBlocks",
+            "desc": "(L$World;L$Vec3d;L$Vec3d;Z)L$RayTraceResult;",
+            "obf": "ItemBoat_rayTraceBlocks"
         },
         "Vec3d#addVector": {
             "name": "addVector",
@@ -262,9 +319,24 @@
             "desc": "(L$World;L$EntityPlayer;Z)L$RayTraceResult;",
             "obf": "a"
         },
+        "Item#onItemRightClick_1_9": {
+            "name": "onItemRightClick",
+            "desc": "(L$ItemStack;L$World;L$EntityPlayer;L$EnumHand;)L$ActionResult;",
+            "obf": "a"
+        },
+        "Item#onItemRightClick_1_11": {
+            "name": "onItemRightClick",
+            "desc": "(L$World;L$EntityPlayer;L$EnumHand;)L$ActionResult;",
+            "obf": "a"
+        },
         "World#rayTraceBlocks": {
             "name": "rayTraceBlocks",
             "desc": "(L$Vec3d;L$Vec3d;ZZZ)L$RayTraceResult;",
+            "obf": "a"
+        },
+        "World#rayTraceBlocks2": {
+            "name": "rayTraceBlocks",
+            "desc": "(L$Vec3d;L$Vec3d;Z)L$RayTraceResult;",
             "obf": "a"
         },
         "ValkyrienSkiesMixinEntityRenderer#orientCamera": {

@@ -17,7 +17,9 @@ public class ShoulderPlugin implements IFMLLoadingPlugin
 			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererOrientCamera",
 			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererRayTrace",
 			"com.teamderpy.shouldersurfing.asm.transformers.GuiIngameRenderAttackIndicator",
-			"com.teamderpy.shouldersurfing.asm.transformers.ItemRayTrace",
+			"com.teamderpy.shouldersurfing.asm.transformers.ItemRayTraceBlocks",
+			"com.teamderpy.shouldersurfing.asm.transformers.ItemBoatRayTraceBlocks_1_9",
+			"com.teamderpy.shouldersurfing.asm.transformers.ItemBoatRayTraceBlocks_1_11",
 			"com.teamderpy.shouldersurfing.asm.transformers.GuiCrosshairsBCRenderAttackIndicator", // Better Combat compatibility: crosshair visibility
 			"com.teamderpy.shouldersurfing.asm.transformers.ValkyrienSkiesMixinEntityRendererOrientCamera", // Valkyrien Skies compatibility: camera distance
 			"com.teamderpy.shouldersurfing.asm.transformers.ValkyrienSkiesMixinEntityRendererOrientCamera2" // Valkyrien Skies compatibility: camera offset

@@ -40,7 +40,7 @@ public final class InjectionDelegation
         return new SimpleEntry<Vec3d, Vec3d>(start, end);
 	}
 	
-	public static RayTraceResult Item_rayTrace(World level, Vec3d start, Vec3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock)
+	public static RayTraceResult Item_rayTraceBlocks(World level, Vec3d start, Vec3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
@@ -52,6 +52,20 @@ public final class InjectionDelegation
 		}
 		
 		return level.rayTraceBlocks(start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
+	}
+	
+	public static RayTraceResult ItemBoat_rayTraceBlocks(World level, Vec3d start, Vec3d end, boolean stopOnLiquid)
+	{
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		{
+			Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+			float partialTick = Minecraft.getMinecraft().getRenderPartialTicks();
+			Vec3d cameraOffset = ShoulderHelper.calcCameraOffset(ShoulderRenderer.getInstance().getCameraDistance(), entity.rotationYaw, entity.rotationPitch, partialTick);
+			Vec3d headOffset = ShoulderHelper.calcRayTraceHeadOffset(cameraOffset);
+			return level.rayTraceBlocks(start.add(headOffset), end.add(headOffset), stopOnLiquid);
+		}
+		
+		return level.rayTraceBlocks(start, end, stopOnLiquid);
 	}
 	
 	public static RayTraceResult EntityRenderer_rayTrace(World world, Vec3d vec1, Vec3d vec2)

@@ -10,7 +10,7 @@ import org.objectweb.asm.tree.MethodNode;
 import com.teamderpy.shouldersurfing.asm.Mappings;
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class ItemRayTrace extends ShoulderTransformer
+public class ItemRayTraceBlocks extends ShoulderTransformer
 {
 	@Override
 	protected InsnList searchList(Mappings mappings, boolean obf)
@@ -23,11 +23,11 @@ public class ItemRayTrace extends ShoulderTransformer
 	@Override
 	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
-		// world.rayTrace(vec3d, vec3d1, useLiquids, !useLiquids, false)
+		// world.rayTraceBlocks(vec3d, vec3d1, useLiquids, !useLiquids, false)
 		// ->
-		// InjectionDelegation.Item_rayTrace(world, vec3d, vec3d1, useLiquids, !useLiquids, false);
+		// InjectionDelegation.Item_rayTraceBlocks(world, vec3d, vec3d1, useLiquids, !useLiquids, false);
 		
-		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "Item_rayTrace", mappings.desc("InjectionDelegation#Item_rayTrace", obf), false);
+		MethodInsnNode instruction = new MethodInsnNode(INVOKESTATIC, "com/teamderpy/shouldersurfing/asm/InjectionDelegation", "Item_rayTraceBlocks", mappings.desc("InjectionDelegation#Item_rayTraceBlocks", obf), false);
 		method.instructions.set(method.instructions.get(offset), instruction);
 	}
 	
