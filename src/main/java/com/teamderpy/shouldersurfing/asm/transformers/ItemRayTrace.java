@@ -10,7 +10,7 @@ import org.objectweb.asm.tree.MethodNode;
 import com.teamderpy.shouldersurfing.asm.Mappings;
 import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class Item extends ShoulderTransformer
+public class ItemRayTrace extends ShoulderTransformer
 {
 	@Override
 	protected InsnList searchList(Mappings mappings, boolean obf)
