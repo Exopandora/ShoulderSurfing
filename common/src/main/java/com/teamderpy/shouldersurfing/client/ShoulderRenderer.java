@@ -98,6 +98,7 @@ public class ShoulderRenderer
 				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
 				double targetX = absOffsetX;
 				double targetY = absOffsetY;
+				double clearance = Minecraft.getInstance().getCameraEntity().getBbWidth() / 3.0D;
 				
 				for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
 				{
@@ -109,23 +110,23 @@ public class ShoulderRenderer
 					
 					if(hitResult.getType() != Type.MISS)
 					{
-						double distance = hitResult.getLocation().subtract(from).length();
-						double newTargetX = Math.max(distance + absOffsetX * scale - 0.2D, 0);
-
+						double distance = hitResult.getLocation().distanceTo(from);
+						double newTargetX = Math.max(distance + absOffsetX * scale - clearance, 0);
+						
 						if(newTargetX < targetX)
 						{
 							targetX = newTargetX;
 						}
-
-						double newTargetY = Math.max(distance + absOffsetY * scale - 0.2D, 0);
-
+						
+						double newTargetY = Math.max(distance + absOffsetY * scale - clearance, 0);
+						
 						if(newTargetY < targetY)
 						{
 							targetY = newTargetY;
 						}
 					}
 				}
-
+				
 				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
 				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
 				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
@@ -169,7 +170,7 @@ public class ShoulderRenderer
 				
 				if(newDistance < distance)
 				{
-					distance = newDistance - 0.2;
+					distance = newDistance;
 				}
 			}
 		}
