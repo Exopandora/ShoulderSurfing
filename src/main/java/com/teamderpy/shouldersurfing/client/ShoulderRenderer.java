@@ -109,6 +109,7 @@ public class ShoulderRenderer
 				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
 				double targetX = absOffsetX;
 				double targetY = absOffsetY;
+				double clearance = Minecraft.getMinecraft().getRenderViewEntity().width / 3.0D;
 				
 				for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
 				{
@@ -120,14 +121,14 @@ public class ShoulderRenderer
 					if(hitResult != null)
 					{
 						double distance = hitResult.hitVec.distanceTo(from);
-						double newTargetX = Math.max(distance + absOffsetX * scale - 0.2D, 0);
+						double newTargetX = Math.max(distance + absOffsetX * scale - clearance, 0);
 						
 						if(newTargetX < targetX)
 						{
 							targetX = newTargetX;
 						}
 						
-						double newTargetY = Math.max(distance + absOffsetY * scale - 0.2D, 0);
+						double newTargetY = Math.max(distance + absOffsetY * scale - clearance, 0);
 						
 						if(newTargetY < targetY)
 						{
