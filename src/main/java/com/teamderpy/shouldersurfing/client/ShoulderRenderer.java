@@ -146,7 +146,7 @@ public class ShoulderRenderer
 			double offsetY = ShoulderHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = ShoulderHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
 			Vec3d offset = new Vec3d(offsetX, -offsetY, -offsetZ);
-			this.cameraDistance = this.calcCameraDistance(world, offset.lengthVector(), yaw, pitch, partialTick);
+			this.cameraDistance = this.calcCameraDistance(world, offset.length(), yaw, pitch, partialTick);
 			Vec3d scaled = offset.normalize().scale(this.cameraDistance);
 			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
 		}

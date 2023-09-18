@@ -38,7 +38,7 @@ public class ShoulderHelper
 		Vec3d headOffset = ShoulderHelper.calcRayTraceHeadOffset(cameraOffset);
 		Vec3d cameraPos = entity.getPositionEyes(partialTick).add(cameraOffset);
 		Vec3d viewVector = entity.getLook(partialTick);
-		double length = headOffset.lengthVector(); //1.9 compatibility
+		double length = headOffset.length(); // 1.9 compatibility
 		length *= length;
 		
 		if(Config.CLIENT.limitPlayerReach() && length < distanceSq)

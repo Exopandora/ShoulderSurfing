@@ -291,7 +291,7 @@
             "obf": "ItemBoat_rayTraceBlocks"
         },
         "Vec3d#addVector": {
-            "name": "addVector",
+            "name": "add",
             "desc": "(DDD)L$Vec3d;",
             "obf": "b"
         },
