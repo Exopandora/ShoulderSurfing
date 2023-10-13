@@ -56,7 +56,7 @@ public class Config
 		private final DoubleValue cameraStepSize;
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue centerCameraWhenClimbing;
-		private final DoubleValue cameraTransitionSpeed;
+		private final DoubleValue cameraTransitionSpeedMultiplier;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
@@ -176,10 +176,10 @@ public class Config
 					.translation("Center camera when climbing")
 					.define("center_camera_when_climbing", true);
 			
-			this.cameraTransitionSpeed = builder
-					.comment("The speed at which the camera transitions between positions")
-					.translation("Camera transition speed")
-					.defineInRange("camera_transition_speed", 0.25D, 0.05D, 1.0D);
+			this.cameraTransitionSpeedMultiplier = builder
+					.comment("The speed multiplier at which the camera transitions between positions")
+					.translation("Camera transition speed multiplier")
+					.defineInRange("camera_transition_speed_multiplier", 0.25D, 0.05D, 1.0D);
 			
 			this.centerCameraWhenLookingDownAngle = builder
 					.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
@@ -445,14 +445,14 @@ public class Config
 			Config.set(this.centerCameraWhenClimbing, enabled);
 		}
 		
-		public double getCameraTransitionSpeed()
+		public double getCameraTransitionSpeedMultiplier()
 		{
-			return this.cameraTransitionSpeed.get();
+			return this.cameraTransitionSpeedMultiplier.get();
 		}
 		
-		public void setCameraInterpolationSpeed(double cameraTransitionSpeed)
+		public void setCameraInterpolationSpeedMultiplier(double cameraTransitionSpeedMultiplier)
 		{
-			Config.set(this.cameraTransitionSpeed, cameraTransitionSpeed);
+			Config.set(this.cameraTransitionSpeedMultiplier, cameraTransitionSpeedMultiplier);
 		}
 		
 		public double getCenterCameraWhenLookingDownAngle()
