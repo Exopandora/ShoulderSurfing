@@ -49,7 +49,7 @@ public class Config
 		private final BooleanValue unlimitedOffsetY;
 		private final BooleanValue unlimitedOffsetZ;
 		
-		private final DoubleValue keepCameraOutOfHeadScale;
+		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue rememberLastPerspective;
 		private final BooleanValue limitPlayerReach;
@@ -141,10 +141,10 @@ public class Config
 			builder.pop();
 			builder.pop();
 			
-			this.keepCameraOutOfHeadScale = builder
-					.comment("The distance scale on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.")
-					.translation("Keep Camera Out Of Head Scale")
-					.defineInRange("keep_camera_out_of_head_scale", 0.75D, 0D, Double.MAX_VALUE);
+			this.keepCameraOutOfHeadMultiplier = builder
+					.comment("The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.")
+					.translation("Keep Camera Out Of Head Multiplier")
+					.defineInRange("keep_camera_out_of_head_multiplier", 0.75D, 0D, Double.MAX_VALUE);
 			
 			this.defaultPerspective = builder
 					.comment("The default perspective when you load the game")
@@ -375,14 +375,14 @@ public class Config
 			Config.set(this.useCustomRaytraceDistance, useCustomRaytraceDistance);
 		}
 		
-		public double keepCameraOutOfHeadScale()
+		public double keepCameraOutOfHeadMultiplier()
 		{
-			return this.keepCameraOutOfHeadScale.get();
+			return this.keepCameraOutOfHeadMultiplier.get();
 		}
 		
-		public void setKeepCameraOutOfHead(double scale)
+		public void setKeepCameraOutOfHeadMultiplier(double multiplier)
 		{
-			Config.set(this.keepCameraOutOfHeadScale, scale);
+			Config.set(this.keepCameraOutOfHeadMultiplier, multiplier);
 		}
 		
 		public boolean replaceDefaultPerspective()
