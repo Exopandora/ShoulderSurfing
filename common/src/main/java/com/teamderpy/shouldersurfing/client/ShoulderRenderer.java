@@ -236,7 +236,7 @@ public class ShoulderRenderer
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
 			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
-				|| Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+				|| Minecraft.getInstance().getCameraEntity().xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
 	}
 	
 	public double getPlayerReach()
