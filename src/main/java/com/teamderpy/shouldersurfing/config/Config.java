@@ -37,7 +37,7 @@ public class Config
 		private BooleanValue unlimitedOffsetY;
 		private BooleanValue unlimitedOffsetZ;
 		
-		private DoubleValue keepCameraOutOfHeadScale;
+		private DoubleValue keepCameraOutOfHeadMultiplier;
 		private BooleanValue replaceDefaultPerspective;
 		private BooleanValue rememberLastPerspective;
 		private BooleanValue limitPlayerReach;
@@ -203,14 +203,14 @@ public class Config
 			Config.set(this.useCustomRaytraceDistance, useCustomRaytraceDistance);
 		}
 		
-		public double keepCameraOutOfHeadScale()
+		public double keepCameraOutOfHeadMultiplier()
 		{
-			return this.keepCameraOutOfHeadScale.get();
+			return this.keepCameraOutOfHeadMultiplier.get();
 		}
 		
-		public void setKeepCameraOutOfHead(double scale)
+		public void setKeepCameraOutOfHeadMultiplier(double multiplier)
 		{
-			Config.set(this.keepCameraOutOfHeadScale, scale);
+			Config.set(this.keepCameraOutOfHeadMultiplier, multiplier);
 		}
 		
 		public boolean replaceDefaultPerspective()
@@ -422,7 +422,7 @@ public class Config
 			this.unlimitedOffsetY = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited y-offset", false, "Whether or not y-offset adjustment has limits"));
 			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-Offset", false, "Whether or not z-offset adjustment has limits"));
 			
-			this.keepCameraOutOfHeadScale = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head Scale", 0.75D, "The distance scale on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.", 0D, Double.MAX_VALUE));
+			this.keepCameraOutOfHeadMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head distance multiplier", 0.75D, "The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.", 0D, Double.MAX_VALUE));
 			this.defaultPerspective = new EnumValue<Perspective>(this.config.get(Configuration.CATEGORY_GENERAL, "Default Perspective", Perspective.SHOULDER_SURFING.toString(), "The default perspective when you load the game", ClientConfig.toStringArray(Perspective.values())), Perspective.class);
 			this.rememberLastPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Remember Last Perspective", true, "Whether or not to remember the last perspective used"));
 			this.replaceDefaultPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Replace Default Perspective", false, "Whether or not to replace the default third person perspective"));
