@@ -59,6 +59,7 @@ public class Config
 		private final DoubleValue cameraTransitionSpeedMultiplier;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		private final DoubleValue hidePlayerWhenLookingUpAngle;
+		private final BooleanValue dynamicallyAdjustOffsets;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -191,6 +192,11 @@ public class Config
 					.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
 					.translation("Center camera when looking down angle")
 					.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
+			
+			this.dynamicallyAdjustOffsets = builder
+					.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
+					.translation("Dynamically adjust offsets")
+					.define("dynamically_adjust_offsets", true);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -479,6 +485,16 @@ public class Config
 		public void setHidePlayerWhenLookingUpAngle(double hidePlayerWhenLookingUpAngle)
 		{
 			Config.set(this.hidePlayerWhenLookingUpAngle, hidePlayerWhenLookingUpAngle);
+		}
+		
+		public boolean doDynamicallyAdjustOffsets()
+		{
+			return this.dynamicallyAdjustOffsets.get();
+		}
+		
+		public void setDynamicallyAdjustOffsets(boolean dynamicallyAdjustOffsets)
+		{
+			Config.set(this.dynamicallyAdjustOffsets, dynamicallyAdjustOffsets);
 		}
 		
 		public double getCustomRaytraceDistance()
