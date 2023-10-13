@@ -23,7 +23,7 @@ subprojects {
 		}
 		maven {
 			name = 'WTHIT'
-			url = 'https://maven.bai.lol'
+			url = 'https://maven2.bai.lol'
 		}
 		maven {
 			url = "https://www.cursemaven.com"
