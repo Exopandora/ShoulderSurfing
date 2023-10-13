@@ -73,173 +73,173 @@ public class Config
 			builder.push("offset");
 			
 			this.offsetX = builder
-					.comment("Third person camera x-offset")
-					.translation("x-offset")
-					.defineInRange("offset_x", -0.75D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("Third person camera x-offset.")
+				.translation("x-offset")
+				.defineInRange("offset_x", -0.75D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.offsetY = builder
-					.comment("Third person camera y-offset")
-					.translation("y-offset")
-					.defineInRange("offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("Third person camera y-offset.")
+				.translation("y-offset")
+				.defineInRange("offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.offsetZ = builder
-					.comment("Third person camera z-offset")
-					.translation("z-offset")
-					.defineInRange("offset_z", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("Third person camera z-offset.")
+				.translation("z-offset")
+				.defineInRange("offset_z", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.push("min");
 			
 			this.minOffsetX = builder
-					.comment("If x-offset is limited this is the minimum amount")
-					.translation("Minimum x-offset")
-					.defineInRange("min_offset_x", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("If x-offset is limited this is the minimum amount.")
+				.translation("Minimum x-offset")
+				.defineInRange("min_offset_x", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.minOffsetY = builder
-					.comment("If y-offset is limited this is the minimum amount")
-					.translation("Minimum y-offset")
-					.defineInRange("min_offset_y", -1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("If y-offset is limited this is the minimum amount.")
+				.translation("Minimum y-offset")
+				.defineInRange("min_offset_y", -1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.minOffsetZ = builder
-					.comment("If z-offset is limited this is the minimum amount")
-					.translation("Minimum z-offset")
-					.defineInRange("min_offset_z", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("If z-offset is limited this is the minimum amount.")
+				.translation("Minimum z-offset")
+				.defineInRange("min_offset_z", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("max");
 			
 			this.maxOffsetX = builder
-					.comment("If x-offset is limited this is the maximum amount")
-					.translation("Maximum x-offset")
-					.defineInRange("max_offset_x", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("If x-offset is limited this is the maximum amount.")
+				.translation("Maximum x-offset")
+				.defineInRange("max_offset_x", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.maxOffsetY = builder
-					.comment("If y-offset is limited this is the maximum amount")
-					.translation("Maximum y-offset")
-					.defineInRange("max_offset_y", 1.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("If y-offset is limited this is the maximum amount.")
+				.translation("Maximum y-offset")
+				.defineInRange("max_offset_y", 1.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.maxOffsetZ = builder
-					.comment("If z-offset is limited this is the maximum amount")
-					.translation("Maximum z-offset")
-					.defineInRange("max_offset_z", 5.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("If z-offset is limited this is the maximum amount.")
+				.translation("Maximum z-offset")
+				.defineInRange("max_offset_z", 5.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("limits");
 			
 			this.unlimitedOffsetX = builder
-					.comment("Whether or not x-offset adjustment has limits")
-					.translation("Unlimited x-offset")
-					.define("unlimited_offset_x", false);
+				.comment("Whether or not x-offset adjustment has limits.")
+				.translation("Unlimited x-offset")
+				.define("unlimited_offset_x", false);
 			
 			this.unlimitedOffsetY = builder
-					.comment("Whether or not y-offset adjustment has limits")
-					.translation("Unlimited y-offset")
-					.define("unlimited_offset_y", false);
+				.comment("Whether or not y-offset adjustment has limits.")
+				.translation("Unlimited y-offset")
+				.define("unlimited_offset_y", false);
 			
 			this.unlimitedOffsetZ = builder
-					.comment("Whether or not z-offset adjustment has limits")
-					.translation("Unlimited z-Offset")
-					.define("unlimited_offset_z", false);
+				.comment("Whether or not z-offset adjustment has limits.")
+				.translation("Unlimited z-Offset")
+				.define("unlimited_offset_z", false);
 			
 			builder.pop();
 			builder.pop();
 			
 			this.keepCameraOutOfHeadMultiplier = builder
-					.comment("The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.")
-					.translation("Keep Camera Out Of Head Multiplier")
-					.defineInRange("keep_camera_out_of_head_multiplier", 0.75D, 0D, Double.MAX_VALUE);
+				.comment("The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.")
+				.translation("Keep camera out of head distance multiplier")
+				.defineInRange("keep_camera_out_of_head_distance_multiplier", 0.75D, 0D, Double.MAX_VALUE);
 			
 			this.defaultPerspective = builder
-					.comment("The default perspective when you load the game")
-					.translation("Default Perspective")
-					.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
+				.comment("The default perspective when you load the game.")
+				.translation("Default perspective")
+				.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
 			
 			this.rememberLastPerspective = builder
-					.comment("Whether or not to remember the last perspective used")
-					.translation("Remember Last Perspective")
-					.define("remember_last_perspective", true);
+				.comment("Whether or not to remember the last perspective used.")
+				.translation("Remember last perspective")
+				.define("remember_last_perspective", true);
 			
 			this.replaceDefaultPerspective = builder
-					.comment("Whether or not to replace the default third person perspective")
-					.translation("Replace Default Perspective")
-					.define("replace_default_perspective", false);
+				.comment("Whether or not to replace the default third person perspective.")
+				.translation("Replace default perspective")
+				.define("replace_default_perspective", false);
 			
 			this.limitPlayerReach = builder
-					.comment("Whether or not to limit the player reach depending on the crosshair location (perspective offset)")
-					.translation("Limit player reach")
-					.define("limit_player_reach", true);
+				.comment("Whether or not to limit the player reach depending on the crosshair location (perspective offset).")
+				.translation("Limit player reach")
+				.define("limit_player_reach", true);
 			
 			this.cameraStepSize = builder
-					.comment("Size of the camera adjustment per step")
-					.translation("Camera step size")
-					.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.comment("Size of the camera adjustment per step.")
+				.translation("Camera step size")
+				.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.centerCameraWhenClimbing = builder
-					.comment("Whether or not to temporarily center the camera when climbing")
-					.translation("Center camera when climbing")
-					.define("center_camera_when_climbing", true);
+				.comment("Whether or not to temporarily center the camera when climbing.")
+				.translation("Center camera when climbing")
+				.define("center_camera_when_climbing", true);
 			
 			this.cameraTransitionSpeedMultiplier = builder
-					.comment("The speed multiplier at which the camera transitions between positions")
-					.translation("Camera transition speed multiplier")
-					.defineInRange("camera_transition_speed_multiplier", 0.25D, 0.05D, 1.0D);
+				.comment("The speed multiplier at which the camera transitions between positions.")
+				.translation("Camera transition speed multiplier")
+				.defineInRange("camera_transition_speed_multiplier", 0.25D, 0.05D, 1.0D);
 			
 			this.centerCameraWhenLookingDownAngle = builder
-					.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
-					.translation("Center camera when looking down angle")
-					.defineInRange("center_camera_when_looking_down_angle", 15D, 0D, 90D);
+				.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
+				.translation("Center camera when looking down angle")
+				.defineInRange("center_camera_when_looking_down_angle", 15D, 0D, 90D);
 			
 			this.hidePlayerWhenLookingUpAngle = builder
-					.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
-					.translation("Center camera when looking down angle")
-					.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
+				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
+				.translation("Center camera when looking down angle")
+				.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
 			
 			this.dynamicallyAdjustOffsets = builder
-					.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
-					.translation("Dynamically adjust offsets")
-					.define("dynamically_adjust_offsets", true);
+				.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
+				.translation("Dynamically adjust offsets")
+				.define("dynamically_adjust_offsets", true);
 			
 			builder.pop();
 			builder.push("crosshair");
 			
 			this.crosshairType = builder
-					.comment("Crosshair type to use for shoulder surfing")
-					.translation("Crosshair type")
-					.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
+				.comment("Crosshair type to use for shoulder surfing.")
+				.translation("Crosshair type")
+				.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
 			
 			this.customRaytraceDistance = builder
-					.comment("The raytrace distance used for the dynamic crosshair")
-					.translation("Custom Raytrace Distance")
-					.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
+				.comment("The raytrace distance used for the dynamic crosshair.")
+				.translation("Custom raytrace distance")
+				.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
 			
 			this.useCustomRaytraceDistance = builder
-					.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair")
-					.translation("Use Custom Raytrace Distance")
-					.define("use_custom_raytrace_distance", true);
+				.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair.")
+				.translation("Use custom raytrace distance")
+				.define("use_custom_raytrace_distance", true);
 			
 			this.adaptiveCrosshairItems = builder
-					.comment("Additional items that trigger the dynamic crosshair when in apative mode")
-					.translation("Adaptive Crosshair Items")
-					.defineList("adaptive_crosshair_items", () ->
-					{
-						List<String> items = new ArrayList<String>();
-						items.add(BuiltInRegistries.ITEM.getKey(Items.SNOWBALL).toString());
-						items.add(BuiltInRegistries.ITEM.getKey(Items.EGG).toString());
-						items.add(BuiltInRegistries.ITEM.getKey(Items.EXPERIENCE_BOTTLE).toString());
-						items.add(BuiltInRegistries.ITEM.getKey(Items.ENDER_PEARL).toString());
-						items.add(BuiltInRegistries.ITEM.getKey(Items.SPLASH_POTION).toString());
-						items.add(BuiltInRegistries.ITEM.getKey(Items.FISHING_ROD).toString());
-						items.add(BuiltInRegistries.ITEM.getKey(Items.LINGERING_POTION).toString());
-						return items;
-					}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+				.comment("Additional items that trigger the dynamic crosshair when in apative mode.")
+				.translation("Adaptive crosshair items")
+				.defineList("adaptive_crosshair_items", () ->
+				{
+					List<String> items = new ArrayList<String>();
+					items.add(BuiltInRegistries.ITEM.getKey(Items.SNOWBALL).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.EGG).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.EXPERIENCE_BOTTLE).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.ENDER_PEARL).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.SPLASH_POTION).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.FISHING_ROD).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.LINGERING_POTION).toString());
+					return items;
+				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			
 			builder.push("visibility");
 			
 			for(Perspective entry : Perspective.values())
 			{
 				ConfigValue<CrosshairVisibility> crosshairVisibility = builder
-						.comment("Crosshair visibility for " + entry.toString().toLowerCase())
-						.translation(entry.toString() + " Crosshair Visibility")
-						.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
+					.comment("Crosshair visibility for " + entry.toString().toLowerCase() + ".")
+					.translation(entry.toString() + " crosshair visibility")
+					.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
 				this.crosshairVisibility.put(entry, crosshairVisibility);
 			}
 			
