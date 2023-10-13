@@ -58,6 +58,7 @@ public class Config
 		private final BooleanValue centerCameraWhenClimbing;
 		private final DoubleValue cameraTransitionSpeedMultiplier;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
+		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -185,6 +186,11 @@ public class Config
 					.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
 					.translation("Center camera when looking down angle")
 					.defineInRange("center_camera_when_looking_down_angle", 15D, 0D, 90D);
+			
+			this.hidePlayerWhenLookingUpAngle = builder
+					.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
+					.translation("Center camera when looking down angle")
+					.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -463,6 +469,16 @@ public class Config
 		public void setCenterCameraWhenLookingDown(double centerCameraWhenLookingDownAngle)
 		{
 			Config.set(this.centerCameraWhenLookingDownAngle, centerCameraWhenLookingDownAngle);
+		}
+		
+		public double getHidePlayerWhenLookingUpAngle()
+		{
+			return this.hidePlayerWhenLookingUpAngle.get();
+		}
+		
+		public void setHidePlayerWhenLookingUpAngle(double hidePlayerWhenLookingUpAngle)
+		{
+			Config.set(this.hidePlayerWhenLookingUpAngle, hidePlayerWhenLookingUpAngle);
 		}
 		
 		public double getCustomRaytraceDistance()
