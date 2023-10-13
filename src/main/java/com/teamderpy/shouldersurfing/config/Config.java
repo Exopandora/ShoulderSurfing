@@ -47,6 +47,7 @@ public class Config
 		private DoubleValue cameraTransitionSpeedMultiplier;
 		private DoubleValue centerCameraWhenLookingDownAngle;
 		private DoubleValue hidePlayerWhenLookingUpAngle;
+		private BooleanValue dynamicallyAdjustOffsets;
 		
 		private ConfigValue<CrosshairType> crosshairType;
 		private DoubleValue customRaytraceDistance;
@@ -304,6 +305,16 @@ public class Config
 			Config.set(this.hidePlayerWhenLookingUpAngle, hidePlayerWhenLookingUpAngle);
 		}
 		
+		public boolean doDynamicallyAdjustOffsets()
+		{
+			return this.dynamicallyAdjustOffsets.get();
+		}
+		
+		public void setDynamicallyAdjustOffsets(boolean dynamicallyAdjustOffsets)
+		{
+			Config.set(this.dynamicallyAdjustOffsets, dynamicallyAdjustOffsets);
+		}
+		
 		public double getCustomRaytraceDistance()
 		{
 			return this.customRaytraceDistance.get();
@@ -443,6 +454,7 @@ public class Config
 			this.cameraTransitionSpeedMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed multiplier", 0.25D, "The speed multiplier at which the camera transitions between positions", 0.05D, 1.0D));
 			this.centerCameraWhenLookingDownAngle = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when looking down angle", 15D, "The angle at which the camera will be centered when looking down. Set to 0 to disable.", 0D, 90D));
 			this.hidePlayerWhenLookingUpAngle = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when looking down angle", 15D, "The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.", 0D, 90D));
+			this.dynamicallyAdjustOffsets = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Dynamically adjust offsets", true, "Whether or not to dynamically adjust camera offsets depending on space constraints."));
 			
 			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
 			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom Raytrace Distance", 400, "The raytrace distance used for the dynamic crosshair", 0, Double.MAX_VALUE));

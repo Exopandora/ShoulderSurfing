@@ -96,7 +96,7 @@ public class ShoulderRenderer
 				instance.setTargetOffsetX(0);
 				instance.setTargetOffsetY(0);
 			}
-			else
+			else if(Config.CLIENT.doDynamicallyAdjustOffsets())
 			{
 				Vec3d localCameraOffset = new Vec3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
 				Vec3d worldCameraOffset = localCameraOffset
@@ -139,6 +139,12 @@ public class ShoulderRenderer
 				
 				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
 				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
+				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+			}
+			else
+			{
+				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
+				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
 				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
 			}
 			
