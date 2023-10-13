@@ -428,39 +428,39 @@ public class Config
 		
 		public void sync()
 		{
-			this.offsetX = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "x-offset", -0.75D, "Third person camera x-offset", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.offsetY = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "y-offset", 0.0D, "Third person camera y-offset", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.offsetZ = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "z-offset", 3.0D, "Third person camera z-offset", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.offsetX = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "x-offset", -0.75D, "Third person camera x-offset.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.offsetY = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "y-offset", 0.0D, "Third person camera y-offset.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.offsetZ = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "z-offset", 3.0D, "Third person camera z-offset.", -Double.MAX_VALUE, Double.MAX_VALUE));
 			
-			this.minOffsetX = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Minimum x-offset", -3.0D, "If x-offset is limited this is the minimum amount", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.minOffsetY = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Minimum y-offset", -1.0D, "If y-offset is limited this is the minimum amount", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.minOffsetZ = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Minimum z-offset", -3.0D, "If z-offset is limited this is the minimum amount", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.minOffsetX = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Minimum x-offset", -3.0D, "If x-offset is limited this is the minimum amount.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.minOffsetY = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Minimum y-offset", -1.0D, "If y-offset is limited this is the minimum amount.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.minOffsetZ = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Minimum z-offset", -3.0D, "If z-offset is limited this is the minimum amount.", -Double.MAX_VALUE, Double.MAX_VALUE));
 			
-			this.maxOffsetX = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Maximum x-offset", 3.0D, "If x-offset is limited this is the maximum amount", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.maxOffsetY = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Maximum y-offset", 1.5D, "If y-offset is limited this is the maximum amount", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.maxOffsetZ = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Maximum z-offset", 5.0D, "If z-offset is limited this is the maximum amount", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.maxOffsetX = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Maximum x-offset", 3.0D, "If x-offset is limited this is the maximum amount.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.maxOffsetY = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Maximum y-offset", 1.5D, "If y-offset is limited this is the maximum amount.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.maxOffsetZ = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Maximum z-offset", 5.0D, "If z-offset is limited this is the maximum amount.", -Double.MAX_VALUE, Double.MAX_VALUE));
 			
-			this.unlimitedOffsetX = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited x-offset", false, "Whether or not x-offset adjustment has limits"));
-			this.unlimitedOffsetY = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited y-offset", false, "Whether or not y-offset adjustment has limits"));
-			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-Offset", false, "Whether or not z-offset adjustment has limits"));
+			this.unlimitedOffsetX = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited x-offset", false, "Whether or not x-offset adjustment has limits."));
+			this.unlimitedOffsetY = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited y-offset", false, "Whether or not y-offset adjustment has limits."));
+			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-Offset", false, "Whether or not z-offset adjustment has limits."));
 			
-			this.keepCameraOutOfHeadMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep Camera Out Of Head distance multiplier", 0.75D, "The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.", 0D, Double.MAX_VALUE));
-			this.defaultPerspective = new EnumValue<Perspective>(this.config.get(Configuration.CATEGORY_GENERAL, "Default Perspective", Perspective.SHOULDER_SURFING.toString(), "The default perspective when you load the game", ClientConfig.toStringArray(Perspective.values())), Perspective.class);
-			this.rememberLastPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Remember Last Perspective", true, "Whether or not to remember the last perspective used"));
-			this.replaceDefaultPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Replace Default Perspective", false, "Whether or not to replace the default third person perspective"));
-			this.limitPlayerReach = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Limit player reach", true, "Whether or not to limit the player reach depending on the crosshair location (perspective offset)"));
-			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step", -Double.MAX_VALUE, Double.MAX_VALUE));
-			this.centerCameraWhenClimbing = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when climbing", true, "Whether or not to temporarily center the camera when climbing"));
-			this.cameraTransitionSpeedMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed multiplier", 0.25D, "The speed multiplier at which the camera transitions between positions", 0.05D, 1.0D));
+			this.keepCameraOutOfHeadMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep camera out of head distance multiplier", 0.75D, "The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.", 0D, Double.MAX_VALUE));
+			this.defaultPerspective = new EnumValue<Perspective>(this.config.get(Configuration.CATEGORY_GENERAL, "Default perspective", Perspective.SHOULDER_SURFING.toString(), "The default perspective when you load the game.", ClientConfig.toStringArray(Perspective.values())), Perspective.class);
+			this.rememberLastPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Remember last perspective", true, "Whether or not to remember the last perspective used."));
+			this.replaceDefaultPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Replace default perspective", false, "Whether or not to replace the default third person perspective."));
+			this.limitPlayerReach = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Limit player reach", true, "Whether or not to limit the player reach depending on the crosshair location (perspective offset)."));
+			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step.", -Double.MAX_VALUE, Double.MAX_VALUE));
+			this.centerCameraWhenClimbing = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when climbing", true, "Whether or not to temporarily center the camera when climbing."));
+			this.cameraTransitionSpeedMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera transition speed multiplier", 0.25D, "The speed multiplier at which the camera transitions between positions.", 0.05D, 1.0D));
 			this.centerCameraWhenLookingDownAngle = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when looking down angle", 15D, "The angle at which the camera will be centered when looking down. Set to 0 to disable.", 0D, 90D));
 			this.hidePlayerWhenLookingUpAngle = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when looking down angle", 15D, "The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.", 0D, 90D));
 			this.dynamicallyAdjustOffsets = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Dynamically adjust offsets", true, "Whether or not to dynamically adjust camera offsets depending on space constraints."));
 			
-			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
-			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom Raytrace Distance", 400, "The raytrace distance used for the dynamic crosshair", 0, Double.MAX_VALUE));
-			this.useCustomRaytraceDistance = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Use Custom Raytrace Distance", true, "Whether or not to use the custom raytrace distance used for the dynamic crosshair"));
+			this.crosshairType = new EnumValue<CrosshairType>(this.config.get(Configuration.CATEGORY_GENERAL, "Crosshair type", CrosshairType.ADAPTIVE.toString(), "Crosshair type to use for shoulder surfing.", ClientConfig.toStringArray(CrosshairType.values())), CrosshairType.class);
+			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom raytrace distance", 400, "The raytrace distance used for the dynamic crosshair.", 0, Double.MAX_VALUE));
+			this.useCustomRaytraceDistance = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Use custom raytrace distance", true, "Whether or not to use the custom raytrace distance used for the dynamic crosshair."));
 			
-			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive Crosshair Items", new String[]
+			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive crosshair items", new String[]
 			{
 				Items.SNOWBALL.getRegistryName().toString(),
 				Items.EGG.getRegistryName().toString(),
