@@ -84,24 +84,6 @@ public class KeyHandler
 					Config.CLIENT.swapShoulder();
 				}
 			}
-			
-			if(Minecraft.getInstance().options.keyTogglePerspective.consumeClick())
-			{
-				Perspective perspective = Perspective.current();
-				Perspective next = perspective.next();
-				boolean firstPerson = next.getCameraType().isFirstPerson();
-				shoulderInstance.changePerspective(next);
-				
-				if(perspective.getCameraType().isFirstPerson() != firstPerson)
-				{
-					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(firstPerson ? Minecraft.getInstance().getCameraEntity() : null);
-				}
-				
-				if(Config.CLIENT.doRememberLastPerspective())
-				{
-					Config.CLIENT.setDefaultPerspective(next);
-				}
-			}
 		}
 	}
 }

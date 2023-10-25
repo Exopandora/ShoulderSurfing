@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 
 @Mixin(Minecraft.class)
-public class MixinMinecraft
+public class MixinMinecraft2
 {
 	@Inject
 	(
