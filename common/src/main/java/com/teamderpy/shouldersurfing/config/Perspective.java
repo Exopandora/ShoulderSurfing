@@ -33,8 +33,6 @@ public enum Perspective
 	
 	public Perspective next()
 	{
-		Perspective next = Perspective.values()[(this.ordinal() + 1) % Perspective.values().length];
-		
 		if(Config.CLIENT.replaceDefaultPerspective())
 		{
 			if(this == Perspective.FIRST_PERSON)
@@ -51,7 +49,7 @@ public enum Perspective
 			}
 		}
 		
-		return next;
+		return Perspective.values()[(this.ordinal() + 1) % Perspective.values().length];
 	}
 	
 	public static Perspective of(CameraType cameraType, boolean shoulderSurfing)
