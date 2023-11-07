@@ -72,30 +72,49 @@ public class ShoulderRenderer
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
 		{
 			ShoulderInstance instance = ShoulderInstance.getInstance();
+			double targetXOffset = Config.CLIENT.getOffsetX();
+			double targetYOffset = Config.CLIENT.getOffsetY();
+			double targetZOffset = Config.CLIENT.getOffsetZ();
+			
+			if(camera.getEntity().isPassenger())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getPassengerOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getPassengerOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getPassengerOffsetZMultiplier() - 1);
+			}
+			
+			if(camera.getEntity().isSprinting())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getSprintOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getSprintOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
+			}
 			
 			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).onClimbable())
 			{
-				instance.setTargetOffsetX(0);
+				targetXOffset = 0;
 			}
-			else if(ShoulderHelper.angle(camera.getLookVector(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
+			
+			if(ShoulderHelper.angle(camera.getLookVector(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
 			{
-				instance.setTargetOffsetX(0);
-				instance.setTargetOffsetY(0);
+				targetXOffset = 0;
+				targetYOffset = 0;
 			}
-			else if(Config.CLIENT.doDynamicallyAdjustOffsets())
+			
+			if(Config.CLIENT.doDynamicallyAdjustOffsets())
 			{
 				ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
-				Vector3d localCameraOffset = new Vector3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
-				Vector3d worldCameraOffset = new Vector3d(camera.getUpVector()).scale(Config.CLIENT.getOffsetY())
-					.add(new Vector3d(accessor.getLeft()).scale(Config.CLIENT.getOffsetX()))
-					.add(new Vector3d(camera.getLookVector()).scale(-Config.CLIENT.getOffsetZ()))
+				Vector3d localCameraOffset = new Vector3d(targetXOffset, targetYOffset, targetZOffset);
+				Vector3d worldCameraOffset = new Vector3d(camera.getUpVector()).scale(targetYOffset)
+					.add(new Vector3d(accessor.getLeft()).scale(targetXOffset))
+					.add(new Vector3d(camera.getLookVector()).scale(-targetZOffset))
 					.normalize()
 					.scale(localCameraOffset.length());
 				Vector3d worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
 				Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
-				double absOffsetX = Math.abs(Config.CLIENT.getOffsetX());
-				double absOffsetY = Math.abs(Config.CLIENT.getOffsetY());
-				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
+				double absOffsetX = Math.abs(targetXOffset);
+				double absOffsetY = Math.abs(targetYOffset);
+				double absOffsetZ = Math.abs(targetZOffset);
 				double targetX = absOffsetX;
 				double targetY = absOffsetY;
 				double clearance = Minecraft.getInstance().getCameraEntity().getBbWidth() / 3.0D;
@@ -127,16 +146,13 @@ public class ShoulderRenderer
 					}
 				}
 				
-				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
-				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
-				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+				targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
+				targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
 			}
-			else
-			{
-				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
-				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
-				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
-			}
+			
+			instance.setTargetOffsetX(targetXOffset);
+			instance.setTargetOffsetY(targetYOffset);
+			instance.setTargetOffsetZ(targetZOffset);
 			
 			ActiveRenderInfoAccessor accessor = ((ActiveRenderInfoAccessor) camera);
 			double x = MathHelper.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
