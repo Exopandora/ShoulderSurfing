@@ -68,29 +68,48 @@ public class ShoulderRenderer
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
 		{
 			ShoulderInstance instance = ShoulderInstance.getInstance();
+			double targetXOffset = Config.CLIENT.getOffsetX();
+			double targetYOffset = Config.CLIENT.getOffsetY();
+			double targetZOffset = Config.CLIENT.getOffsetZ();
+			
+			if(camera.getEntity().isPassenger())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getPassengerOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getPassengerOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getPassengerOffsetZMultiplier() - 1);
+			}
+			
+			if(camera.getEntity().isSprinting())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getSprintOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getSprintOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
+			}
 			
 			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity living && living.onClimbable())
 			{
-				instance.setTargetOffsetX(0);
+				targetXOffset = 0;
 			}
-			else if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
+			
+			if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
 			{
-				instance.setTargetOffsetX(0);
-				instance.setTargetOffsetY(0);
+				targetXOffset = 0;
+				targetYOffset = 0;
 			}
-			else if(Config.CLIENT.doDynamicallyAdjustOffsets())
+			
+			if(Config.CLIENT.doDynamicallyAdjustOffsets())
 			{
-				Vec3 localCameraOffset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
-				Vec3 worldCameraOffset = new Vec3(camera.getUpVector()).scale(Config.CLIENT.getOffsetY())
-					.add(new Vec3(camera.getLeftVector()).scale(Config.CLIENT.getOffsetX()))
-					.add(new Vec3(camera.getLookVector()).scale(-Config.CLIENT.getOffsetZ()))
+				Vec3 localCameraOffset = new Vec3(targetXOffset, targetYOffset, targetZOffset);
+				Vec3 worldCameraOffset = new Vec3(camera.getUpVector()).scale(targetYOffset)
+					.add(new Vec3(camera.getLeftVector()).scale(targetXOffset))
+					.add(new Vec3(camera.getLookVector()).scale(-targetZOffset))
 					.normalize()
 					.scale(localCameraOffset.length());
 				Vec3 worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
 				Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
-				double absOffsetX = Math.abs(Config.CLIENT.getOffsetX());
-				double absOffsetY = Math.abs(Config.CLIENT.getOffsetY());
-				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
+				double absOffsetX = Math.abs(targetXOffset);
+				double absOffsetY = Math.abs(targetYOffset);
+				double absOffsetZ = Math.abs(targetZOffset);
 				double targetX = absOffsetX;
 				double targetY = absOffsetY;
 				double clearance = camera.getEntity().getBbWidth() / 3.0D;
@@ -122,16 +141,13 @@ public class ShoulderRenderer
 					}
 				}
 				
-				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
-				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
-				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+				targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
+				targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
 			}
-			else
-			{
-				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
-				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
-				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
-			}
+			
+			instance.setTargetOffsetX(targetXOffset);
+			instance.setTargetOffsetY(targetYOffset);
+			instance.setTargetOffsetZ(targetZOffset);
 			
 			CameraAccessor accessor = ((CameraAccessor) camera);
 			double x = Mth.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());

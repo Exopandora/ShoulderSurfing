@@ -49,6 +49,14 @@ public class Config
 		private final BooleanValue unlimitedOffsetY;
 		private final BooleanValue unlimitedOffsetZ;
 		
+		private final DoubleValue passengerOffsetXMultiplier;
+		private final DoubleValue passengerOffsetYMultiplier;
+		private final DoubleValue passengerOffsetZMultiplier;
+		
+		private final DoubleValue sprintOffsetXMultiplier;
+		private final DoubleValue sprintOffsetYMultiplier;
+		private final DoubleValue sprintOffsetZMultiplier;
+		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue rememberLastPerspective;
@@ -137,9 +145,47 @@ public class Config
 			
 			this.unlimitedOffsetZ = builder
 				.comment("Whether or not z-offset adjustment has limits.")
-				.translation("Unlimited z-Offset")
+				.translation("Unlimited z-offset")
 				.define("unlimited_offset_z", false);
 			
+			builder.pop();
+			builder.push("multiplier");
+			builder.push("passenger");
+			
+			this.passengerOffsetXMultiplier = builder
+				.comment("x-offset multiplier for when the player is a passenger.")
+				.translation("Passenger x-offset multiplier")
+				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.passengerOffsetYMultiplier = builder
+				.comment("y-offset multiplier for when the player is a passenger.")
+				.translation("Passenger y-offset multiplier")
+				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.passengerOffsetZMultiplier = builder
+				.comment("z-offset multiplier for when the player is a passenger.")
+				.translation("Passenger z-offset multiplier")
+				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+			
+			builder.pop();
+			builder.push("sprint");
+			
+			this.sprintOffsetXMultiplier = builder
+				.comment("x-offset multiplier for when the player is a sprint.")
+				.translation("Sprint x-offset multiplier")
+				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.sprintOffsetYMultiplier = builder
+				.comment("y-offset multiplier for when the player is a sprint.")
+				.translation("Sprint y-offset multiplier")
+				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.sprintOffsetZMultiplier = builder
+				.comment("z-offset multiplier for when the player is a sprint.")
+				.translation("Sprint z-offset multiplier")
+				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.pop();
 			builder.pop();
 			
@@ -365,6 +411,66 @@ public class Config
 		public void setUnlimitedOffsetZ(boolean unlimitedOffsetZ)
 		{
 			Config.set(this.unlimitedOffsetZ, unlimitedOffsetZ);
+		}
+		
+		public double getPassengerOffsetXMultiplier()
+		{
+			return this.passengerOffsetXMultiplier.get();
+		}
+		
+		public void setPassengerOffsetXMultiplier(double passengerOffsetXMultiplier)
+		{
+			Config.set(this.passengerOffsetXMultiplier, passengerOffsetXMultiplier);
+		}
+		
+		public double getPassengerOffsetYMultiplier()
+		{
+			return this.passengerOffsetYMultiplier.get();
+		}
+		
+		public void setPassengerOffsetYMultiplier(double passengerOffsetYMultiplier)
+		{
+			Config.set(this.passengerOffsetYMultiplier, passengerOffsetYMultiplier);
+		}
+		
+		public double getPassengerOffsetZMultiplier()
+		{
+			return this.passengerOffsetZMultiplier.get();
+		}
+		
+		public void setPassengerOffsetZMultiplier(double passengerOffsetZMultiplier)
+		{
+			Config.set(this.passengerOffsetZMultiplier, passengerOffsetZMultiplier);
+		}
+		
+		public double getSprintOffsetXMultiplier()
+		{
+			return this.sprintOffsetXMultiplier.get();
+		}
+		
+		public void setSprintOffsetXMultiplier(double sprintOffsetXMultiplier)
+		{
+			Config.set(this.sprintOffsetXMultiplier, sprintOffsetXMultiplier);
+		}
+		
+		public double getSprintOffsetYMultiplier()
+		{
+			return this.sprintOffsetYMultiplier.get();
+		}
+		
+		public void setSprintOffsetYMultiplier(double sprintOffsetYMultiplier)
+		{
+			Config.set(this.sprintOffsetYMultiplier, sprintOffsetYMultiplier);
+		}
+		
+		public double getSprintOffsetZMultiplier()
+		{
+			return this.sprintOffsetZMultiplier.get();
+		}
+		
+		public void setSprintOffsetZMultiplier(double sprintOffsetZMultiplier)
+		{
+			Config.set(this.sprintOffsetZMultiplier, sprintOffsetZMultiplier);
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
