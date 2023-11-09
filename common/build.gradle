@@ -4,8 +4,13 @@ plugins {
 	id 'fabric-loom'
 }
 
-tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Common")
+tasks.withType(Jar).configureEach {
+	archivesBaseName = "${mod_name}-Common"
+}
+
+java {
+	sourceCompatibility = java_version
+	targetCompatibility = java_version
 }
 
 eclipse {
@@ -24,7 +29,9 @@ dependencies {
 	
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
 	
-	implementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}") {
+		transitive = false
+	}
 	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
 	implementation "curse.maven:jade-324717:${jade_version_api}"
 	implementation 'com.electronwill.night-config:core:3.6.5'
@@ -33,10 +40,10 @@ dependencies {
 
 loom {
 	mixin {
-		defaultRefmapName = "${mod_id}.refmap.json"
-		useLegacyMixinAp = false
+		defaultRefmapName.set("${mod_id}.refmap.json")
+		useLegacyMixinAp.set(false)
 	}
-	
+
 	runs {
 		client {
 			client()
