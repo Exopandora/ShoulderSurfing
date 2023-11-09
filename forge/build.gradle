@@ -7,8 +7,13 @@ plugins {
 	id 'me.hypherionmc.cursegradle'
 }
 
-tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Forge")
+tasks.withType(Jar).configureEach {
+	archivesBaseName = "${mod_name}-Forge"
+}
+
+java {
+	sourceCompatibility = java_version
+	targetCompatibility = java_version
 }
 
 eclipse {

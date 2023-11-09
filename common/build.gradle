@@ -4,8 +4,13 @@ plugins {
 	id 'fabric-loom'
 }
 
-tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Common")
+tasks.withType(Jar).configureEach {
+	archivesBaseName = "${mod_name}-Common"
+}
+
+java {
+	sourceCompatibility = java_version
+	targetCompatibility = java_version
 }
 
 eclipse {
@@ -31,10 +36,10 @@ dependencies {
 
 loom {
 	mixin {
-		defaultRefmapName = "${mod_id}.refmap.json"
-		useLegacyMixinAp = false
+		defaultRefmapName.set("${mod_id}.refmap.json")
+		useLegacyMixinAp.set(false)
 	}
-	
+
 	runs {
 		client {
 			client()
