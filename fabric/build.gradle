@@ -6,8 +6,13 @@ plugins {
 	id 'me.hypherionmc.cursegradle'
 }
 
-tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Fabric")
+tasks.withType(Jar).configureEach {
+	archivesBaseName = "${mod_name}-Fabric"
+}
+
+java {
+	sourceCompatibility = java_version
+	targetCompatibility = java_version
 }
 
 eclipse {
@@ -30,7 +35,9 @@ dependencies {
 	
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+	modImplementation("net.minecraftforge:forgeconfigapiport-fabric:${forgeconfigapiport_version}") {
+		exclude(group: 'net.fabricmc.fabric-api')
+	}
 	modImplementation "mcp.mobius.waila:wthit:fabric-${wthit_version}"
 	modImplementation "lol.bai:badpackets:fabric-${badpackets_version}"
 	implementation 'com.electronwill.night-config:core:3.6.3'
@@ -38,7 +45,9 @@ dependencies {
 }
 
 loom {
-	mixin.defaultRefmapName = "${mod_id}.refmap.json"
+	mixin {
+		defaultRefmapName.set("${mod_id}.refmap.json")
+	}
 	
 	runs {
 		client {
