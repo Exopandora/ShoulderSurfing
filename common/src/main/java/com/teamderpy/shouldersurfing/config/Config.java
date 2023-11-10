@@ -171,17 +171,17 @@ public class Config
 			builder.push("sprint");
 			
 			this.sprintOffsetXMultiplier = builder
-				.comment("x-offset multiplier for when the player is a sprint.")
+				.comment("x-offset multiplier for when the player is sprinting.")
 				.translation("Sprint x-offset multiplier")
 				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
 			
 			this.sprintOffsetYMultiplier = builder
-				.comment("y-offset multiplier for when the player is a sprint.")
+				.comment("y-offset multiplier for when the player is sprinting.")
 				.translation("Sprint y-offset multiplier")
 				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
 			
 			this.sprintOffsetZMultiplier = builder
-				.comment("z-offset multiplier for when the player is a sprint.")
+				.comment("z-offset multiplier for when the player is sprinting.")
 				.translation("Sprint z-offset multiplier")
 				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
 			
