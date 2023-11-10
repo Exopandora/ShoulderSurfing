@@ -9,6 +9,7 @@
 		"MixinGameSettings",
 		"MixinIngameGui",
 		"MixinItem",
+		"MixinMinecraft",
 		"MixinPlayerEntity",
 		"MixinShadersRender"
 	],
