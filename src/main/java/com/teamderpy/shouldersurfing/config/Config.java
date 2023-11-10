@@ -37,6 +37,14 @@ public class Config
 		private BooleanValue unlimitedOffsetY;
 		private BooleanValue unlimitedOffsetZ;
 		
+		private DoubleValue passengerOffsetXMultiplier;
+		private DoubleValue passengerOffsetYMultiplier;
+		private DoubleValue passengerOffsetZMultiplier;
+		
+		private DoubleValue sprintOffsetXMultiplier;
+		private DoubleValue sprintOffsetYMultiplier;
+		private DoubleValue sprintOffsetZMultiplier;
+		
 		private DoubleValue keepCameraOutOfHeadMultiplier;
 		private BooleanValue replaceDefaultPerspective;
 		private BooleanValue rememberLastPerspective;
@@ -183,6 +191,66 @@ public class Config
 		public void setUnlimitedOffsetZ(boolean unlimitedOffsetZ)
 		{
 			Config.set(this.unlimitedOffsetZ, unlimitedOffsetZ);
+		}
+		
+		public double getPassengerOffsetXMultiplier()
+		{
+			return this.passengerOffsetXMultiplier.get();
+		}
+		
+		public void setPassengerOffsetXMultiplier(double passengerOffsetXMultiplier)
+		{
+			Config.set(this.passengerOffsetXMultiplier, passengerOffsetXMultiplier);
+		}
+		
+		public double getPassengerOffsetYMultiplier()
+		{
+			return this.passengerOffsetYMultiplier.get();
+		}
+		
+		public void setPassengerOffsetYMultiplier(double passengerOffsetYMultiplier)
+		{
+			Config.set(this.passengerOffsetYMultiplier, passengerOffsetYMultiplier);
+		}
+		
+		public double getPassengerOffsetZMultiplier()
+		{
+			return this.passengerOffsetZMultiplier.get();
+		}
+		
+		public void setPassengerOffsetZMultiplier(double passengerOffsetZMultiplier)
+		{
+			Config.set(this.passengerOffsetZMultiplier, passengerOffsetZMultiplier);
+		}
+		
+		public double getSprintOffsetXMultiplier()
+		{
+			return this.sprintOffsetXMultiplier.get();
+		}
+		
+		public void setSprintOffsetXMultiplier(double sprintOffsetXMultiplier)
+		{
+			Config.set(this.sprintOffsetXMultiplier, sprintOffsetXMultiplier);
+		}
+		
+		public double getSprintOffsetYMultiplier()
+		{
+			return this.sprintOffsetYMultiplier.get();
+		}
+		
+		public void setSprintOffsetYMultiplier(double sprintOffsetYMultiplier)
+		{
+			Config.set(this.sprintOffsetYMultiplier, sprintOffsetYMultiplier);
+		}
+		
+		public double getSprintOffsetZMultiplier()
+		{
+			return this.sprintOffsetZMultiplier.get();
+		}
+		
+		public void setSprintOffsetZMultiplier(double sprintOffsetZMultiplier)
+		{
+			Config.set(this.sprintOffsetZMultiplier, sprintOffsetZMultiplier);
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
@@ -443,6 +511,14 @@ public class Config
 			this.unlimitedOffsetX = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited x-offset", false, "Whether or not x-offset adjustment has limits."));
 			this.unlimitedOffsetY = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited y-offset", false, "Whether or not y-offset adjustment has limits."));
 			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-Offset", false, "Whether or not z-offset adjustment has limits."));
+			
+			this.passengerOffsetXMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Passenger x-offset multiplier", 1.0D, "x-offset multiplier for when the player is a passenger.", 0, Double.MAX_VALUE));
+			this.passengerOffsetYMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Passenger y-offset multiplier", 1.0D, "y-offset multiplier for when the player is a passenger.", 0, Double.MAX_VALUE));
+			this.passengerOffsetZMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Passenger z-offset multiplier", 1.0D, "z-offset multiplier for when the player is a passenger.", 0, Double.MAX_VALUE));
+			
+			this.sprintOffsetXMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Sprint x-offset multiplier", 1.0D, "x-offset multiplier for when the player is sprinting.", 0, Double.MAX_VALUE));
+			this.sprintOffsetYMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Sprint y-offset multiplier", 1.0D, "y-offset multiplier for when the player is sprinting.", 0, Double.MAX_VALUE));
+			this.sprintOffsetZMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Sprint z-offset multiplier", 1.0D, "z-offset multiplier for when the player is sprinting.", 0, Double.MAX_VALUE));
 			
 			this.keepCameraOutOfHeadMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Keep camera out of head distance multiplier", 0.75D, "The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.", 0D, Double.MAX_VALUE));
 			this.defaultPerspective = new EnumValue<Perspective>(this.config.get(Configuration.CATEGORY_GENERAL, "Default perspective", Perspective.SHOULDER_SURFING.toString(), "The default perspective when you load the game.", ClientConfig.toStringArray(Perspective.values())), Perspective.class);

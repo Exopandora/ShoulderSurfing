@@ -86,27 +86,46 @@ public class ShoulderRenderer
 			ShoulderInstance instance = ShoulderInstance.getInstance();
 			Entity cameraEntity = Minecraft.getMinecraft().getRenderViewEntity();
 			float partialTick = Minecraft.getMinecraft().getRenderPartialTicks();
+			double targetXOffset = Config.CLIENT.getOffsetX();
+			double targetYOffset = Config.CLIENT.getOffsetY();
+			double targetZOffset = Config.CLIENT.getOffsetZ();
+			
+			if(cameraEntity.isRiding())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getPassengerOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getPassengerOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getPassengerOffsetZMultiplier() - 1);
+			}
+			
+			if(cameraEntity.isSprinting())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getSprintOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getSprintOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
+			}
 			
 			if(Config.CLIENT.doCenterCameraWhenClimbing() && cameraEntity instanceof EntityLivingBase && ((EntityLivingBase) cameraEntity).isOnLadder())
 			{
-				instance.setTargetOffsetX(0);
+				targetXOffset = 0;
 			}
-			else if(ShoulderHelper.angle(cameraEntity.getLookVec(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
+			
+			if(ShoulderHelper.angle(cameraEntity.getLookVec(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
 			{
-				instance.setTargetOffsetX(0);
-				instance.setTargetOffsetY(0);
+				targetXOffset = 0;
+				targetYOffset = 0;
 			}
-			else if(Config.CLIENT.doDynamicallyAdjustOffsets())
+			
+			if(Config.CLIENT.doDynamicallyAdjustOffsets())
 			{
-				Vec3d localCameraOffset = new Vec3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), -Config.CLIENT.getOffsetZ());
+				Vec3d localCameraOffset = new Vec3d(targetXOffset, targetYOffset, -targetZOffset);
 				Vec3d worldCameraOffset = localCameraOffset
 					.rotatePitch((float) Math.toRadians(-pitch))
 					.rotateYaw((float) Math.toRadians(-yaw));
 				Vec3d worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(worldCameraOffset);
 				Vec3d eyePosition = cameraEntity.getPositionEyes(partialTick);
-				double absOffsetX = Math.abs(Config.CLIENT.getOffsetX());
-				double absOffsetY = Math.abs(Config.CLIENT.getOffsetY());
-				double absOffsetZ = Math.abs(Config.CLIENT.getOffsetZ());
+				double absOffsetX = Math.abs(targetXOffset);
+				double absOffsetY = Math.abs(targetYOffset);
+				double absOffsetZ = Math.abs(targetZOffset);
 				double targetX = absOffsetX;
 				double targetY = absOffsetY;
 				double clearance = Minecraft.getMinecraft().getRenderViewEntity().width / 3.0D;
@@ -137,16 +156,13 @@ public class ShoulderRenderer
 					}
 				}
 				
-				instance.setTargetOffsetX(Math.signum(Config.CLIENT.getOffsetX()) * targetX);
-				instance.setTargetOffsetY(Math.signum(Config.CLIENT.getOffsetY()) * targetY);
-				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
+				targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
+				targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
 			}
-			else
-			{
-				instance.setTargetOffsetX(Config.CLIENT.getOffsetX());
-				instance.setTargetOffsetY(Config.CLIENT.getOffsetY());
-				instance.setTargetOffsetZ(Config.CLIENT.getOffsetZ());
-			}
+			
+			instance.setTargetOffsetX(targetXOffset);
+			instance.setTargetOffsetY(targetYOffset);
+			instance.setTargetOffsetZ(targetZOffset);
 			
 			double offsetX = ShoulderHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
 			double offsetY = ShoulderHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
