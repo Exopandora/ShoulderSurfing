@@ -47,6 +47,7 @@ public class Config
 		
 		private DoubleValue keepCameraOutOfHeadMultiplier;
 		private BooleanValue replaceDefaultPerspective;
+		private BooleanValue skipThirdPersonFront;
 		private BooleanValue rememberLastPerspective;
 		private BooleanValue limitPlayerReach;
 		private DoubleValue cameraStepSize;
@@ -293,6 +294,16 @@ public class Config
 			Config.set(this.replaceDefaultPerspective, enabled);
 		}
 		
+		public boolean skipThirdPersonFront()
+		{
+			return this.skipThirdPersonFront.get();
+		}
+		
+		public void setSkipThirdPersonFront(boolean skipThirdPersonFront)
+		{
+			Config.set(this.skipThirdPersonFront, skipThirdPersonFront);
+		}
+		
 		public Perspective getDefaultPerspective()
 		{
 			return this.defaultPerspective.get();
@@ -524,6 +535,7 @@ public class Config
 			this.defaultPerspective = new EnumValue<Perspective>(this.config.get(Configuration.CATEGORY_GENERAL, "Default perspective", Perspective.SHOULDER_SURFING.toString(), "The default perspective when you load the game.", ClientConfig.toStringArray(Perspective.values())), Perspective.class);
 			this.rememberLastPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Remember last perspective", true, "Whether or not to remember the last perspective used."));
 			this.replaceDefaultPerspective = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Replace default perspective", false, "Whether or not to replace the default third person perspective."));
+			this.skipThirdPersonFront = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Skip third person front perspective", false, "Whether or not to skip the third person front perspective."));
 			this.limitPlayerReach = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Limit player reach", true, "Whether or not to limit the player reach depending on the crosshair location (perspective offset)."));
 			this.cameraStepSize = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Camera step size", 0.025D, "Size of the camera adjustment per step.", -Double.MAX_VALUE, Double.MAX_VALUE));
 			this.centerCameraWhenClimbing = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Center camera when climbing", true, "Whether or not to temporarily center the camera when climbing."));

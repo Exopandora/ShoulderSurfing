@@ -41,16 +41,21 @@ public enum Perspective
 		{
 			if(this == Perspective.FIRST_PERSON)
 			{
-				return Perspective.SHOULDER_SURFING;
+				next = Perspective.SHOULDER_SURFING;
 			}
 			else if(this == Perspective.SHOULDER_SURFING)
 			{
-				return Perspective.THIRD_PERSON_FRONT;
+				next = Perspective.THIRD_PERSON_FRONT;
 			}
 			else if(this == Perspective.THIRD_PERSON_FRONT)
 			{
-				return Perspective.FIRST_PERSON;
+				next = Perspective.FIRST_PERSON;
 			}
+		}
+		
+		if(Config.CLIENT.skipThirdPersonFront() && next == Perspective.THIRD_PERSON_FRONT)
+		{
+			return next.next();
 		}
 		
 		return next;
