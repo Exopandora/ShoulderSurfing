@@ -33,23 +33,30 @@ public enum Perspective
 	
 	public Perspective next()
 	{
+		Perspective next = Perspective.values()[(this.ordinal() + 1) % Perspective.values().length];
+		
 		if(Config.CLIENT.replaceDefaultPerspective())
 		{
 			if(this == Perspective.FIRST_PERSON)
 			{
-				return Perspective.SHOULDER_SURFING;
+				next = Perspective.SHOULDER_SURFING;
 			}
 			else if(this == Perspective.SHOULDER_SURFING)
 			{
-				return Perspective.THIRD_PERSON_FRONT;
+				next = Perspective.THIRD_PERSON_FRONT;
 			}
 			else if(this == Perspective.THIRD_PERSON_FRONT)
 			{
-				return Perspective.FIRST_PERSON;
+				next = Perspective.FIRST_PERSON;
 			}
 		}
 		
-		return Perspective.values()[(this.ordinal() + 1) % Perspective.values().length];
+		if(Config.CLIENT.skipThirdPersonFront() && next == Perspective.THIRD_PERSON_FRONT)
+		{
+			return next.next();
+		}
+		
+		return next;
 	}
 	
 	public static Perspective of(PointOfView cameraType, boolean shoulderSurfing)
