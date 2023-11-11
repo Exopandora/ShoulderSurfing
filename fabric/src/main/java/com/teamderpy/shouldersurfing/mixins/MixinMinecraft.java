@@ -13,7 +13,7 @@ import net.minecraft.client.main.GameConfig;
 import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 
 @Mixin(Minecraft.class)
-public class MixinMinecraft2
+public class MixinMinecraft
 {
 	@Inject
 	(
