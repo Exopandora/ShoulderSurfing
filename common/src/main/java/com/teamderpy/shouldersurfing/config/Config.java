@@ -59,6 +59,7 @@ public class Config
 		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final BooleanValue replaceDefaultPerspective;
+		private final BooleanValue skipThirdPersonFront;
 		private final BooleanValue rememberLastPerspective;
 		private final BooleanValue limitPlayerReach;
 		private final DoubleValue cameraStepSize;
@@ -208,6 +209,11 @@ public class Config
 				.comment("Whether or not to replace the default third person perspective.")
 				.translation("Replace default perspective")
 				.define("replace_default_perspective", false);
+			
+			this.skipThirdPersonFront = builder
+				.comment("Whether or not to skip the third person front perspective.")
+				.translation("Skip third person front perspective")
+				.define("skip_third_person_front_perspective", false);
 			
 			this.limitPlayerReach = builder
 				.comment("Whether or not to limit the player reach depending on the crosshair location (perspective offset).")
@@ -511,6 +517,16 @@ public class Config
 		public void setReplaceDefaultPerspective(boolean enabled)
 		{
 			Config.set(this.replaceDefaultPerspective, enabled);
+		}
+		
+		public boolean skipThirdPersonFront()
+		{
+			return this.skipThirdPersonFront.get();
+		}
+		
+		public void setSkipThirdPersonFront(boolean skipThirdPersonFront)
+		{
+			Config.set(this.skipThirdPersonFront, skipThirdPersonFront);
 		}
 		
 		public Perspective getDefaultPerspective()
