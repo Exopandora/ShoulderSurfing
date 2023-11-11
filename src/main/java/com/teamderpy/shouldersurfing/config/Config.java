@@ -521,7 +521,7 @@ public class Config
 			
 			this.unlimitedOffsetX = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited x-offset", false, "Whether or not x-offset adjustment has limits."));
 			this.unlimitedOffsetY = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited y-offset", false, "Whether or not y-offset adjustment has limits."));
-			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-Offset", false, "Whether or not z-offset adjustment has limits."));
+			this.unlimitedOffsetZ = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Unlimited z-offset", false, "Whether or not z-offset adjustment has limits."));
 			
 			this.passengerOffsetXMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Passenger x-offset multiplier", 1.0D, "x-offset multiplier for when the player is a passenger.", 0, Double.MAX_VALUE));
 			this.passengerOffsetYMultiplier = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Passenger y-offset multiplier", 1.0D, "y-offset multiplier for when the player is a passenger.", 0, Double.MAX_VALUE));
