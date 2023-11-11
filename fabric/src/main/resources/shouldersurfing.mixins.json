@@ -16,7 +16,6 @@
 		"MixinKeyboardListener",
 		"MixinLivingRenderer",
 		"MixinMinecraft",
-		"MixinMinecraft2",
 		"MixinMouseHelper",
 		"MixinWorldRenderer"
 	],
