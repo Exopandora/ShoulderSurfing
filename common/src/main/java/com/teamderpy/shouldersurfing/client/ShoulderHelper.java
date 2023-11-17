@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.mixins.ActiveRenderInfoAccessor;
 import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 
@@ -161,7 +162,8 @@ public class ShoulderHelper
 			Vector3d from = eyePosition;
 			Vector3d view = entity.getViewVector(partialTick);
 			Vector3d to = from.add(view.scale(distance));
-			return entity.level.clip(new RayTraceContext(from, to, RayTraceContext.BlockMode.OUTLINE, fluidContext, entity));
+			RayTraceContext.BlockMode blockContext = Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC ? RayTraceContext.BlockMode.OUTLINE : RayTraceContext.BlockMode.COLLIDER;
+			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
 		}
 	}
 	

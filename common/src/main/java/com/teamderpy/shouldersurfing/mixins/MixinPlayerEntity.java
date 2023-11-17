@@ -30,9 +30,10 @@ public abstract class MixinPlayerEntity extends Entity
 		Minecraft minecraft = Minecraft.getInstance();
 		ActiveRenderInfo camera = minecraft.getEntityRenderDispatcher().camera;
 		
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic() && camera != null)
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && camera != null)
 		{
-			return ShoulderHelper.traceBlocks(camera, this, stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, distance, partialTicks, true);
+			RayTraceContext.FluidMode fluidContext = stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE;
+			return ShoulderHelper.traceBlocks(camera, this, fluidContext, distance, partialTicks, !Config.CLIENT.getCrosshairType().isDynamic());
 		}
 		
 		return super.pick(distance, partialTicks, stopOnFluid);
