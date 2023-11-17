@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 
 import net.minecraft.client.Camera;
@@ -157,7 +158,8 @@ public class ShoulderHelper
 			Vec3 from = eyePosition;
 			Vec3 view = entity.getViewVector(partialTick);
 			Vec3 to = from.add(view.scale(distance));
-			return entity.level().clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, fluidContext, entity));
+			ClipContext.Block blockContext = Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER;
+			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
 	}
 	
