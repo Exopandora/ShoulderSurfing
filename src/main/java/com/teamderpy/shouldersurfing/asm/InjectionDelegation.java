@@ -80,9 +80,9 @@ public final class InjectionDelegation
 	
 	public static RayTraceResult EntityPlayer_rayTrace(Entity entity, double blockReachDistance, float partialTicks)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			return ShoulderHelper.traceBlocks(entity, false, blockReachDistance, partialTicks, true);
+			return ShoulderHelper.traceBlocks(entity, false, blockReachDistance, partialTicks, !Config.CLIENT.getCrosshairType().isDynamic());
 		}
 		
 		Vec3d look = entity.getLook(partialTicks);

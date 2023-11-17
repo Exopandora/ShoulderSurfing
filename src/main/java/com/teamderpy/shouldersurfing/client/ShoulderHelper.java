@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 
 import net.minecraft.client.Minecraft;
@@ -206,7 +207,7 @@ public class ShoulderHelper
 			Vec3d from = eyePosition;
 			Vec3d view = entity.getLook(partialTick);
 			Vec3d to = from.add(view.scale(distance));
-			return entity.world.rayTraceBlocks(from, to, stopOnFluid, false, true);
+			return entity.world.rayTraceBlocks(from, to, stopOnFluid, Config.CLIENT.getCrosshairType() == CrosshairType.ADAPTIVE, true);
 		}
 	}
 	
