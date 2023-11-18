@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for Shoulder Surfing
-title: "[FEATURE] [MC-VERSION] Short description of the feature"
+title: "[FEATURE] Short description of the feature"
 labels: ''
 assignees: ''
 
