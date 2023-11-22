@@ -25,7 +25,7 @@ dependencies {
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
 	
 	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version}"
+	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version_api}"
 	implementation "curse.maven:jade-324717:${jade_version_api}"
 }
 

@@ -31,7 +31,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
-	modImplementation "mcp.mobius.waila:wthit:fabric-${wthit_version}"
+	modImplementation "mcp.mobius.waila:wthit:fabric-${wthit_version_fabric}"
 	modImplementation "lol.bai:badpackets:fabric-${badpackets_version}"
 	modImplementation "curse.maven:jade-324717:${jade_version_fabric}"
 }
