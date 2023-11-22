@@ -1,4 +1,4 @@
-# ShoulderSurfing </br> [![badge](https://cf.way2muchnoise.eu/title/243190.svg)](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded) [![badge](https://cf.way2muchnoise.eu/full_243190_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded) #
+# ShoulderSurfing </br> [![CurseForge Downloads](https://img.shields.io/curseforge/dt/243190?style=flat-square&logo=curseforge&label=CurseForge&color=%23F16436)](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded) [![Modrinth Downloads](https://img.shields.io/modrinth/dt/kepjj2sy?style=flat-square&logo=modrinth&label=Modrinth&color=%2300AF5C)](https://modrinth.com/mod/shoulder-surfing-reloaded) #
 Revamped over-the-shoulder F5 third-person camera view
 
 # Features #
