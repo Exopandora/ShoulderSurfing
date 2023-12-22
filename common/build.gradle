@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'eclipse'
-	id 'fabric-loom'
+	id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT'
 }
 
 tasks.withType(Jar).configureEach {
@@ -20,38 +20,16 @@ eclipse {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings loom.officialMojangMappings()
-	
-	implementation(project(":api")) {
-		transitive = false
-	}
+	compileOnly project(":api")
 	
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
+	compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
+	compileOnly "mcp.mobius.waila:wthit:mojmap-${wthit_version_api}"
+	compileOnly "curse.maven:jade-324717:${jade_version_api}"
 	
-	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-common:${forgeconfigapiport_version}"
-	implementation "mcp.mobius.waila:wthit:mojmap-${wthit_version_api}"
-	implementation "curse.maven:jade-324717:${jade_version_api}"
+	implementation "com.google.code.findbugs:jsr305:3.0.2"
 }
 
-loom {
-	mixin {
-		defaultRefmapName.set("${mod_id}.refmap.json")
-		useLegacyMixinAp.set(false)
-	}
-
-	runs {
-		client {
-			client()
-			setConfigName("${mod_name} Common Client")
-			ideConfigGenerated(false)
-			runDir("../run")
-		}
-		server {
-			server()
-			setConfigName("${mod_name} Common Server")
-			ideConfigGenerated(false)
-			runDir("../run")
-		}
-	}
+minecraft {
+	version(minecraft_version)
 }

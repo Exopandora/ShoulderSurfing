@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'eclipse'
-	id 'net.minecraftforge.gradle' version '6.0.+'
+	id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
 	id 'org.spongepowered.mixin' version '0.7.+'
 	id 'com.modrinth.minotaur'
 	id 'me.hypherionmc.cursegradle'
@@ -74,16 +74,11 @@ minecraft {
 	}
 }
 
-sourceSets.main.resources.srcDir 'src/generated/resources'
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-	implementation(project(":common")) {
-		transitive = false
-	}
-	
-	implementation(project(":plugin")) {
-		transitive = false
-	}
+	compileOnly project(":common")
+	compileOnly project(":plugin")
 	
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
@@ -159,4 +154,12 @@ modrinth {
 	additionalFiles = [apiJar]
 }
 
-tasks.build.finalizedBy("apiJar")
+tasks.named('jar', Jar).configure {
+	finalizedBy 'reobfJar'
+}
+
+sourceSets.each {
+	def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+	it.output.resourcesDir = dir
+	it.java.destinationDirectory = dir
+}

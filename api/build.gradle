@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'eclipse'
-	id 'fabric-loom'
+	id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT'
 }
 
 tasks.withType(Jar).configureEach {
@@ -20,30 +20,11 @@ eclipse {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings loom.officialMojangMappings()
-	
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
+	
+	implementation "com.google.code.findbugs:jsr305:3.0.2"
 }
 
-loom {
-	mixin {
-		defaultRefmapName = "${mod_id}.refmap.json"
-		useLegacyMixinAp = false
-	}
-	
-	runs {
-		client {
-			client()
-			setConfigName("${mod_name} Api Client")
-			ideConfigGenerated(false)
-			runDir("../run")
-		}
-		server {
-			server()
-			setConfigName("${mod_name} Api Server")
-			ideConfigGenerated(false)
-			runDir("../run")
-		}
-	}
+minecraft {
+	version(minecraft_version)
 }

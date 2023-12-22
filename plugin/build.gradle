@@ -5,7 +5,7 @@ plugins {
 }
 
 tasks.withType(Jar).configureEach {
-	archivesBaseName("${mod_name}-Plugin")
+	archivesBaseName = "${mod_name}-Plugin"
 }
 
 java {
@@ -23,13 +23,8 @@ dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
 	
-	implementation(project(":api")) {
-		transitive = false
-	}
-	
-	implementation(project(":common")) {
-		transitive = false
-	}
+	compileOnly project(":api")
+	compileOnly project(":common")
 	
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
 }
