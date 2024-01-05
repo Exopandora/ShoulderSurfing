@@ -34,7 +34,7 @@ public class ClientEventHandler
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void preRenderLivingEntityEvent(RenderLivingEvent.Pre<?> event)
 	{
 		if(event.isCancelable() && event.getEntity().equals(Minecraft.getMinecraft().getRenderViewEntity()) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipEntityRendering())
