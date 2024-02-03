@@ -30,6 +30,9 @@ public class ShoulderRenderer
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
+	private double cameraOffsetX;
+	private double cameraOffsetY;
+	private double cameraOffsetZ;
 	private float playerAlpha = 1.0F;
 	
 	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
@@ -159,10 +162,13 @@ public class ShoulderRenderer
 			double offsetX = Mth.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
 			double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
-			Vec3 offset = new Vec3(-offsetZ, offsetY, offsetX);
+			Vec3 offset = new Vec3(offsetX, offsetY, offsetZ);
 			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
 			Vec3 scaled = offset.normalize().scale(this.cameraDistance);
-			accessor.invokeMove(scaled.x, scaled.y, scaled.z);
+			this.cameraOffsetX = scaled.x;
+			this.cameraOffsetY = scaled.y;
+			this.cameraOffsetZ = scaled.z;
+			accessor.invokeMove(-scaled.z, scaled.y, scaled.x);
 		}
 	}
 	
@@ -261,9 +267,7 @@ public class ShoulderRenderer
 		
 		if(this.shouldRenderTransparent(entity))
 		{
-			ShoulderInstance instance = ShoulderInstance.getInstance();
-			double interpolatedOffsetX = Mth.lerp(partialTick, Math.abs(instance.getOffsetXOld()), Math.abs(instance.getOffsetX()));
-			this.playerAlpha = (float) Mth.clamp(interpolatedOffsetX / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
+			this.playerAlpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
 		}
 		
 		return false;
@@ -276,7 +280,7 @@ public class ShoulderRenderer
 	
 	private boolean shouldRenderTransparent(LivingEntity entity)
 	{
-		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(ShoulderInstance.getInstance().getOffsetX()) < (entity.getBbWidth() / 2.0D);
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D);
 	}
 	
 	public double getPlayerReach()
@@ -287,6 +291,21 @@ public class ShoulderRenderer
 	public double getCameraDistance()
 	{
 		return this.cameraDistance;
+	}
+	
+	public double getCameraOffsetX()
+	{
+		return this.cameraOffsetX;
+	}
+	
+	public double getCameraOffsetY()
+	{
+		return this.cameraOffsetY;
+	}
+	
+	public double getCameraOffsetZ()
+	{
+		return this.cameraOffsetZ;
 	}
 	
 	public float getPlayerAlpha()
