@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -250,7 +251,8 @@ public class ShoulderRenderer
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
 			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
-				|| Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+				|| Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90
+				|| Minecraft.getInstance().getCameraEntity() instanceof Player player && player.isScoping());
 	}
 	
 	public boolean preRenderCameraEntity(LivingEntity entity, float partialTick)
