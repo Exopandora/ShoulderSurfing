@@ -9,7 +9,9 @@
 		"MixinGameSettings",
 		"MixinIngameGui",
 		"MixinItem",
+		"MixinModelRenderer",
 		"MixinPlayerEntity",
+		"MixinRenderType",
 		"MixinShadersRender"
 	],
 	"injectors": {

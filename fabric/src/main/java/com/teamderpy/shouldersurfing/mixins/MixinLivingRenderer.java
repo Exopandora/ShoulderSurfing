@@ -11,10 +11,11 @@ import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 
-@Mixin(value = LivingRenderer.class)
-public class MixinLivingRenderer
+@Mixin(LivingRenderer.class)
+public class MixinLivingRenderer<T extends LivingEntity, M extends EntityModel<T>>
 {
 	@Inject
 	(
@@ -22,11 +23,24 @@ public class MixinLivingRenderer
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void render(LivingEntity entity, float yRot, float partialTick, MatrixStack poseStack, IRenderTypeBuffer multiBufferSource, int i, CallbackInfo ci)
+	private void preRender(T entity, float yRot, float partialTick, MatrixStack poseStack, IRenderTypeBuffer multiBufferSource, int i, CallbackInfo ci)
 	{
-		if(entity == Minecraft.getInstance().getCameraEntity() && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().skipEntityRendering())
+		if(entity == Minecraft.getInstance().getCameraEntity() && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().preRenderCameraEntity(entity, partialTick))
 		{
 			ci.cancel();
+		}
+	}
+	
+	@Inject
+	(
+		method = "render(Lnet/minecraft/entity/LivingEntity;FFLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;I)V",
+		at = @At("TAIL")
+	)
+	private void postRender(T entity, float yRot, float partialTick, MatrixStack poseStack, IRenderTypeBuffer multiBufferSource, int i, CallbackInfo ci)
+	{
+		if(entity == Minecraft.getInstance().getCameraEntity())
+		{
+			ShoulderRenderer.getInstance().postRenderCameraEntity(entity, partialTick, multiBufferSource);
 		}
 	}
 }
