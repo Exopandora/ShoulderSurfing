@@ -17,7 +17,8 @@
 		"MixinKeyboardHandler",
 		"MixinLevelRenderer",
 		"MixinMinecraft",
-		"MixinMouseHandler"
+		"MixinMouseHandler",
+		"MixinRenderType"
 	],
 	"injectors": {
 		"defaultRequire": 1

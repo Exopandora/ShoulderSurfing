@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
@@ -242,11 +243,43 @@ public class ShoulderRenderer
 		return new Vec2f(x, y);
 	}
 	
-	public boolean skipEntityRendering()
+	private boolean skipEntityRendering()
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
 			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
 				|| Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+	}
+	
+	public boolean preRenderCameraEntity(LivingEntity entity, float partialTick)
+	{
+		if(this.skipEntityRendering())
+		{
+			return true;
+		}
+		
+		if(this.shouldRenderTransparent(entity))
+		{
+			ShoulderInstance instance = ShoulderInstance.getInstance();
+			double interpolatedOffsetX = Mth.lerp(partialTick, Math.abs(instance.getOffsetXOld()), Math.abs(instance.getOffsetX()));
+			float alpha = (float) Mth.clamp(interpolatedOffsetX / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
+			float[] color = RenderSystem.getShaderColor();
+			RenderSystem.setShaderColor(color[0], color[1], color[2], Math.min(color[3], alpha));
+		}
+		
+		return false;
+	}
+	
+	public void postRenderCameraEntity(LivingEntity entity, float partialTick)
+	{
+		if(this.shouldRenderTransparent(entity))
+		{
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		}
+	}
+	
+	private boolean shouldRenderTransparent(LivingEntity entity)
+	{
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(ShoulderInstance.getInstance().getOffsetX()) < (entity.getBbWidth() / 2.0D);
 	}
 	
 	public double getPlayerReach()
