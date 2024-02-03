@@ -9,6 +9,7 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
+		"MixinLightTexture",
 		"MixinLivingEntityRenderer",
 		"MixinOptions",
 		"MixinPlayer",
@@ -17,7 +18,8 @@
 		"MixinKeyboardHandler",
 		"MixinLevelRenderer",
 		"MixinMinecraft",
-		"MixinMouseHandler"
+		"MixinMouseHandler",
+		"MixinRenderType"
 	],
 	"injectors": {
 		"defaultRequire": 1

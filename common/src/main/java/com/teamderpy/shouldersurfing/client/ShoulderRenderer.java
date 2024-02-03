@@ -29,6 +29,7 @@ public class ShoulderRenderer
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
+	private float playerAlpha = 1.0F;
 	
 	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
 	{
@@ -242,11 +243,38 @@ public class ShoulderRenderer
 		return new Vec2f(x, y);
 	}
 	
-	public boolean skipEntityRendering()
+	private boolean skipEntityRendering()
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
 			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
 				|| Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+	}
+	
+	public boolean preRenderCameraEntity(LivingEntity entity, float partialTick)
+	{
+		if(this.skipEntityRendering())
+		{
+			return true;
+		}
+		
+		if(this.shouldRenderTransparent(entity))
+		{
+			ShoulderInstance instance = ShoulderInstance.getInstance();
+			double interpolatedOffsetX = Mth.lerp(partialTick, Math.abs(instance.getOffsetXOld()), Math.abs(instance.getOffsetX()));
+			this.playerAlpha = (float) Mth.clamp(interpolatedOffsetX / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
+		}
+		
+		return false;
+	}
+	
+	public void postRenderCameraEntity(LivingEntity entity, float partialTick)
+	{
+		this.playerAlpha = 1.0F;
+	}
+	
+	private boolean shouldRenderTransparent(LivingEntity entity)
+	{
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(ShoulderInstance.getInstance().getOffsetX()) < (entity.getBbWidth() / 2.0D);
 	}
 	
 	public double getPlayerReach()
@@ -257,6 +285,11 @@ public class ShoulderRenderer
 	public double getCameraDistance()
 	{
 		return this.cameraDistance;
+	}
+	
+	public float getPlayerAlpha()
+	{
+		return this.playerAlpha;
 	}
 	
 	public static ShoulderRenderer getInstance()
