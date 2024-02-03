@@ -2,6 +2,9 @@ package com.teamderpy.shouldersurfing.config;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
+
 public enum CrosshairType
 {
 	ADAPTIVE,
@@ -18,17 +21,17 @@ public enum CrosshairType
 		}
 		else if(this == CrosshairType.DYNAMIC || this == CrosshairType.DYNAMIC_WITH_1PP)
 		{
-			return true;
+			return !(Minecraft.getInstance().getCameraEntity() instanceof Player player && player.isScoping());
 		}
 		
 		return false;
 	}
 	
-	public boolean doSwitchPerspective()
+	public boolean doSwitchPerspective(boolean isAiming)
 	{
 		if(this == CrosshairType.STATIC_WITH_1PP || this == CrosshairType.DYNAMIC_WITH_1PP)
 		{
-			return ShoulderHelper.isHoldingAdaptiveItem();
+			return isAiming;
 		}
 		
 		return false;
