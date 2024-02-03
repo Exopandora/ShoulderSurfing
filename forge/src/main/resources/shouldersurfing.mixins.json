@@ -6,8 +6,11 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"client": [
 		"CameraAccessor",
+		"MixinAbstractClientPlayer",
+		"MixinForgeGui",
 		"MixinGameRenderer",
 		"MixinItem",
+		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinGui",
 		"MixinPlayer",
