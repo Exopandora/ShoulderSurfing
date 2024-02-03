@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
 
 @Mixin(value = LivingEntityRenderer.class)
-public class MixinLivingEntityRenderer
+public class MixinLivingEntityRenderer<T extends LivingEntity>
 {
 	@Inject
 	(
@@ -22,11 +22,24 @@ public class MixinLivingEntityRenderer
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void render(LivingEntity entity, float yRot, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci)
+	public void preRender(T entity, float entityYRot, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, CallbackInfo ci)
 	{
-		if(entity == Minecraft.getInstance().getCameraEntity() && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().skipEntityRendering())
+		if(entity == Minecraft.getInstance().getCameraEntity() && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().preRenderCameraEntity(entity, partialTick))
 		{
 			ci.cancel();
+		}
+	}
+	
+	@Inject
+	(
+		method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+		at = @At("TAIL")
+	)
+	public void postRender(T entity, float entityYRot, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, CallbackInfo ci)
+	{
+		if(entity == Minecraft.getInstance().getCameraEntity())
+		{
+			ShoulderRenderer.getInstance().postRenderCameraEntity(entity, partialTick, multiBufferSource);
 		}
 	}
 }
