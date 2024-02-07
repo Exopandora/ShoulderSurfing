@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.RenderType;
 @Mixin(RenderType.class)
 public abstract class MixinRenderType extends RenderStateShard
 {
-	public MixinRenderType(String $$0, Runnable $$1, Runnable $$2)
+	public MixinRenderType(String name, Runnable setupState, Runnable clearState)
 	{
-		super($$0, $$1, $$2);
+		super(name, setupState, clearState);
 	}
 	
 	@ModifyArg
@@ -24,7 +24,7 @@ public abstract class MixinRenderType extends RenderStateShard
 			target = "net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder.setTransparencyState(Lnet/minecraft/client/renderer/RenderStateShard$TransparencyStateShard;)Lnet/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder;"
 		)
 	)
-	private static RenderStateShard.TransparencyStateShard setTransparencyState(RenderStateShard.TransparencyStateShard p_110686_)
+	private static RenderStateShard.TransparencyStateShard setTransparencyState(RenderStateShard.TransparencyStateShard transparencyStateShard)
 	{
 		return TRANSLUCENT_TRANSPARENCY;
 	}
