@@ -117,6 +117,8 @@ tasks.register('apiJar', Jar).configure {
 	archiveClassifier = "API"
 }
 
+tasks.build.finalizedBy('apiJar')
+
 curseforge {
 	apiKey = project.hasProperty("curse_api_key") ? curse_api_key : ''
 	project {
