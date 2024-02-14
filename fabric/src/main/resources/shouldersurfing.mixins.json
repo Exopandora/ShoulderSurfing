@@ -12,18 +12,16 @@
 		"MixinItem",
 		"MixinLightTexture",
 		"MixinMouseHandler",
-		"MixinLivingEntityRenderer",
-		"MixinMouseHandler",
-		"MixinMouseHandler2",
 		"MixinOptions",
 		"MixinPlayer",
 		"MixinRenderType",
-		"MixinGameRenderer2",
-		"MixinGui2",
+		"MixinGameRendererFabric",
+		"MixinGuiFabric",
 		"MixinKeyboardHandler",
 		"MixinLevelRenderer",
+		"MixinLivingEntityRenderer",
 		"MixinMinecraft",
-		"MixinRenderType"
+		"MixinMouseHandlerFabric"
 	],
 	"injectors": {
 		"defaultRequire": 1

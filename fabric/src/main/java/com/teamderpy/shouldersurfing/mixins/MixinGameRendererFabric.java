@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 
 @Mixin(GameRenderer.class)
-public class MixinGameRenderer2
+public class MixinGameRendererFabric
 {
 	@Shadow
 	private Camera mainCamera;
