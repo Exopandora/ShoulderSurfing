@@ -41,7 +41,7 @@ public class ClientEventHandler
 	{
 		if(event.getEntity() == Minecraft.getInstance().getCameraEntity())
 		{
-			ShoulderRenderer.getInstance().postRenderCameraEntity(event.getEntity(), event.getPartialTick());
+			ShoulderRenderer.getInstance().postRenderCameraEntity(event.getEntity(), event.getPartialTick(), event.getMultiBufferSource());
 		}
 	}
 	
