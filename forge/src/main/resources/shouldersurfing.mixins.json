@@ -6,7 +6,7 @@
 	"client": [
 		"CameraAccessor",
 		"MixinAbstractClientPlayer",
-		"MixinForgeGui",
+		"MixinForgeIngameGui",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",

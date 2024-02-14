@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import com.teamderpy.shouldersurfing.config.Perspective;
 
 import net.minecraft.client.CameraType;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 
-@Mixin(ForgeGui.class)
-public class MixinForgeGui
+@Mixin(ForgeIngameGui.class)
+public class MixinForgeIngameGui
 {
 	@Redirect
 	(
