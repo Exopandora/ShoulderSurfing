@@ -15,7 +15,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 
 @Mixin(Gui.class)
-public abstract class MixinGui2
+public abstract class MixinGuiFabric
 {
 	@Shadow
 	protected Minecraft minecraft;
