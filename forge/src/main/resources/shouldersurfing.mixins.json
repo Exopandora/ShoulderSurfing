@@ -7,7 +7,6 @@
 	"client": [
 		"CameraAccessor",
 		"MixinAbstractClientPlayer",
-		"MixinForgeGui",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
@@ -16,6 +15,7 @@
 		"MixinOptions",
 		"MixinPlayer",
 		"MixinRenderType",
+		"MixinForgeGui",
 		"MixinShadersRender"
 	],
 	"injectors": {
