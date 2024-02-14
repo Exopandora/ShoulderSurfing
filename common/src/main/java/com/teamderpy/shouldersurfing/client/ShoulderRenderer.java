@@ -15,6 +15,8 @@ import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -268,17 +270,17 @@ public class ShoulderRenderer
 		if(this.shouldRenderTransparent(entity))
 		{
 			float alpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
-			float[] color = RenderSystem.getShaderColor();
-			RenderSystem.setShaderColor(color[0], color[1], color[2], Math.min(color[3], alpha));
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
 		}
 		
 		return false;
 	}
 	
-	public void postRenderCameraEntity(LivingEntity entity, float partialTick)
+	public void postRenderCameraEntity(LivingEntity entity, float partialTick, MultiBufferSource multiBufferSource)
 	{
 		if(this.shouldRenderTransparent(entity))
 		{
+			((BufferSource) multiBufferSource).endLastBatch();
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}

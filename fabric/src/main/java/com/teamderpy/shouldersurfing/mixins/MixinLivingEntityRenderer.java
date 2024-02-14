@@ -39,7 +39,7 @@ public class MixinLivingEntityRenderer<T extends LivingEntity>
 	{
 		if(entity == Minecraft.getInstance().getCameraEntity())
 		{
-			ShoulderRenderer.getInstance().postRenderCameraEntity(entity, partialTick);
+			ShoulderRenderer.getInstance().postRenderCameraEntity(entity, partialTick, multiBufferSource);
 		}
 	}
 }
