@@ -271,7 +271,7 @@ public class ShoulderRenderer
 		if(this.shouldRenderTransparent(entity))
 		{
 			this.playerAlpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.playerAlpha);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		
 		return false;

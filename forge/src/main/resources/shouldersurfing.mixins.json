@@ -10,7 +10,7 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
-		"MixinLightTexture",
+		"MixinModelPartCube",
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
