@@ -10,6 +10,8 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
+		"MixinLevelRenderer",
+		"MixinModelPartCube",
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
