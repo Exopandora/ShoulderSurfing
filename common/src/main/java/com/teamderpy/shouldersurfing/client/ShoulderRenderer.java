@@ -29,7 +29,6 @@ import net.minecraft.world.World;
 public class ShoulderRenderer
 {
 	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
-	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private double cameraDistance;
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
@@ -100,7 +99,7 @@ public class ShoulderRenderer
 				targetXOffset = 0;
 			}
 			
-			if(ShoulderHelper.angle(camera.getLookVector(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
+			if(ShoulderHelper.angle(camera.getLookVector(), Vector3f.YN) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
 			{
 				targetXOffset = 0;
 				targetYOffset = 0;
