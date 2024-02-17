@@ -10,6 +10,7 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
+		"MixinLevelRenderer",
 		"MixinModelPartCube",
 		"MixinMouseHandler",
 		"MixinOptions",
@@ -18,8 +19,7 @@
 		"MixinGameRendererFabric",
 		"MixinGuiFabric",
 		"MixinKeyboardHandler",
-		"MixinLevelRenderer",
-		"MixinLivingEntityRenderer",
+		"MixinLevelRendererFabric",
 		"MixinMinecraft",
 		"MixinMouseHandlerFabric"
 	],
