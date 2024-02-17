@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.math.vector.Matrix4f;
 
 @Mixin(WorldRenderer.class)
-public class MixinWorldRenderer
+public class MixinWorldRendererFabric
 {
 	@Inject
 	(

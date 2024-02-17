@@ -13,13 +13,13 @@
 		"MixinModelRenderer",
 		"MixinPlayerEntity",
 		"MixinRenderType",
+		"MixinWorldRenderer",
 		"MixinGameRendererFabric",
 		"MixinIngameGuiFabric",
 		"MixinKeyboardListener",
-		"MixinLivingRenderer",
 		"MixinMinecraft",
 		"MixinMouseHelper",
-		"MixinWorldRenderer"
+		"MixinWorldRendererFabric"
 	],
 	"injectors": {
 		"defaultRequire": 1

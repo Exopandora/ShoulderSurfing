@@ -5,11 +5,9 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -23,24 +21,6 @@ public class ClientEventHandler
 		if(Phase.START.equals(event.phase))
 		{
 			ShoulderInstance.getInstance().tick();
-		}
-	}
-	
-	@SubscribeEvent
-	public static void preRenderLivingEntityEvent(RenderLivingEvent.Pre<LivingEntity, ?> event)
-	{
-		if(event.isCancelable() && Minecraft.getInstance().screen == null && event.getEntity() == Minecraft.getInstance().getCameraEntity() && ShoulderRenderer.getInstance().preRenderCameraEntity(event.getEntity(), event.getPartialRenderTick()))
-		{
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
-	public static void postRenderLivingEntityEvent(RenderLivingEvent.Post<LivingEntity, ?> event)
-	{
-		if(event.getEntity() == Minecraft.getInstance().getCameraEntity())
-		{
-			ShoulderRenderer.getInstance().postRenderCameraEntity(event.getEntity(), event.getPartialRenderTick(), event.getBuffers());
 		}
 	}
 	

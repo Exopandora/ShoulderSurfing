@@ -12,6 +12,7 @@
 		"MixinModelRenderer",
 		"MixinPlayerEntity",
 		"MixinRenderType",
+		"MixinWorldRenderer",
 		"MixinShadersRender"
 	],
 	"injectors": {

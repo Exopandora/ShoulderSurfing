@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
@@ -262,7 +263,7 @@ public class ShoulderRenderer
 				|| Minecraft.getInstance().getCameraEntity().xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
 	}
 	
-	public boolean preRenderCameraEntity(LivingEntity entity, float partialTick)
+	public boolean preRenderCameraEntity(Entity entity, float partialTick)
 	{
 		if(this.skipEntityRendering())
 		{
@@ -277,7 +278,7 @@ public class ShoulderRenderer
 		return false;
 	}
 	
-	public void postRenderCameraEntity(LivingEntity entity, float partialTick, IRenderTypeBuffer multiBufferSource)
+	public void postRenderCameraEntity(Entity entity, float partialTick, IRenderTypeBuffer multiBufferSource)
 	{
 		if(this.shouldRenderTransparent(entity))
 		{
@@ -287,7 +288,7 @@ public class ShoulderRenderer
 		this.playerAlpha = 1.0F;
 	}
 	
-	private boolean shouldRenderTransparent(LivingEntity entity)
+	private boolean shouldRenderTransparent(Entity entity)
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D);
 	}
