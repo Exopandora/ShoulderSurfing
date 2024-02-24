@@ -8,9 +8,9 @@ import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
+import com.teamderpy.shouldersurfing.asm.IShoulderClassTransformer;
 
-public class EntityPlayerRayTrace extends ShoulderTransformer
+public class EntityPlayerRayTrace implements IShoulderClassTransformer
 {
 	@Override
 	public void transform(Mappings mappings, boolean obf, ClassWriter writer)
@@ -38,23 +38,5 @@ public class EntityPlayerRayTrace extends ShoulderTransformer
 	public String getClassId()
 	{
 		return "EntityPlayer";
-	}
-	
-	@Override
-	public String getMethodId()
-	{
-		return "EntityPlayer#rayTrace";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return false;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return true;
 	}
 }

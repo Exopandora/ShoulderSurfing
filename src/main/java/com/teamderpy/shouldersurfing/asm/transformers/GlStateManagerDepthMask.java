@@ -10,13 +10,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class GlStateManagerDepthMask extends ShoulderTransformer
+public class GlStateManagerDepthMask implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new VarInsnNode(ILOAD, 0));
@@ -44,17 +44,5 @@ public class GlStateManagerDepthMask extends ShoulderTransformer
 	public String getMethodId()
 	{
 		return "GlStateManager#depthMask";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

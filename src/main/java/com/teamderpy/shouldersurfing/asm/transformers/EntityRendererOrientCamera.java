@@ -2,9 +2,9 @@ package com.teamderpy.shouldersurfing.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.D2F;
 import static org.objectweb.asm.Opcodes.DLOAD;
-import static org.objectweb.asm.Opcodes.FLOAD;
 import static org.objectweb.asm.Opcodes.DNEG;
 import static org.objectweb.asm.Opcodes.FCONST_0;
+import static org.objectweb.asm.Opcodes.FLOAD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -14,13 +14,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class EntityRendererOrientCamera extends ShoulderTransformer
+public class EntityRendererOrientCamera implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new MethodInsnNode(INVOKESTATIC, mappings.map("GlStateManager", obf), mappings.map("GlStateManager#rotate", obf), mappings.desc("GlStateManager#rotate", obf), false));
@@ -34,7 +34,7 @@ public class EntityRendererOrientCamera extends ShoulderTransformer
 	}
 	
 	@Override
-	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
+	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		// GlStateManager.translate(0.0F, 0.0F, (float) -d3);
 		// ->
@@ -56,17 +56,5 @@ public class EntityRendererOrientCamera extends ShoulderTransformer
 	public String getMethodId()
 	{
 		return "EntityRenderer#orientCamera";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

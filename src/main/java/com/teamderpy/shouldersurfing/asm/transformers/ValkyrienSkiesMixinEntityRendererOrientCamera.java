@@ -8,13 +8,13 @@ import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class ValkyrienSkiesMixinEntityRendererOrientCamera extends ShoulderTransformer
+public class ValkyrienSkiesMixinEntityRendererOrientCamera implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new LdcInsnNode(15D));
@@ -22,7 +22,7 @@ public class ValkyrienSkiesMixinEntityRendererOrientCamera extends ShoulderTrans
 	}
 	
 	@Override
-	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
+	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		// d3 = 15D;
 		// ->
@@ -42,17 +42,5 @@ public class ValkyrienSkiesMixinEntityRendererOrientCamera extends ShoulderTrans
 	public String getMethodId()
 	{
 		return "ValkyrienSkiesMixinEntityRenderer#orientCamera";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

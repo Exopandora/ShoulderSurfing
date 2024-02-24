@@ -14,13 +14,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class ValkyrienSkiesMixinEntityRendererOrientCamera2 extends ShoulderTransformer
+public class ValkyrienSkiesMixinEntityRendererOrientCamera2 implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new MethodInsnNode(INVOKESTATIC, mappings.map("GlStateManager", false), mappings.map("SRG#GlStateManager#rotate", obf), mappings.desc("SRG#GlStateManager#rotate", obf), false));
@@ -34,7 +34,7 @@ public class ValkyrienSkiesMixinEntityRendererOrientCamera2 extends ShoulderTran
 	}
 	
 	@Override
-	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
+	public void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
 	{
 		// GlStateManager.translate(0.0F, 0.0F, (float) -d3);
 		// ->
@@ -56,17 +56,5 @@ public class ValkyrienSkiesMixinEntityRendererOrientCamera2 extends ShoulderTran
 	public String getMethodId()
 	{
 		return "ValkyrienSkiesMixinEntityRenderer#orientCamera";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

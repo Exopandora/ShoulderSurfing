@@ -7,13 +7,13 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class EntityRendererRayTrace extends ShoulderTransformer
+public class EntityRendererRayTrace implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("WorldClient", obf), mappings.map("WorldClient#rayTraceBlocks", obf), mappings.desc("WorldClient#rayTraceBlocks", obf), false));
@@ -41,17 +41,5 @@ public class EntityRendererRayTrace extends ShoulderTransformer
 	public String getMethodId()
 	{
 		return "EntityRenderer#orientCamera";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

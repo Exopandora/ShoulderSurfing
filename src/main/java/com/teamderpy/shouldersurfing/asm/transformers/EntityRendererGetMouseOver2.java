@@ -11,13 +11,13 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class EntityRendererGetMouseOver2 extends ShoulderTransformer
+public class EntityRendererGetMouseOver2 implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("AxisAlignedBB", obf), mappings.map("AxisAlignedBB#calculateIntercept", obf), mappings.desc("AxisAlignedBB#calculateIntercept", obf), false));
@@ -53,17 +53,5 @@ public class EntityRendererGetMouseOver2 extends ShoulderTransformer
 	public String getMethodId()
 	{
 		return "EntityRenderer#getMouseOver";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

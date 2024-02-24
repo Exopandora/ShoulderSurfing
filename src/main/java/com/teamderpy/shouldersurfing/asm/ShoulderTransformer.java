@@ -1,5 +1,10 @@
 package com.teamderpy.shouldersurfing.asm;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
@@ -16,37 +21,86 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import com.teamderpy.shouldersurfing.asm.transformers.EntityPlayerRayTrace;
+import com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver;
+import com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver2;
+import com.teamderpy.shouldersurfing.asm.transformers.EntityRendererOrientCamera;
+import com.teamderpy.shouldersurfing.asm.transformers.EntityRendererRayTrace;
+import com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerBlendFunc;
+import com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerBlendFuncSeparate;
+import com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerColor;
+import com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerDepthMask;
+import com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerDisableBlend;
+import com.teamderpy.shouldersurfing.asm.transformers.GuiCrosshairsBCRenderAttackIndicator;
+import com.teamderpy.shouldersurfing.asm.transformers.GuiIngameRenderAttackIndicator;
+import com.teamderpy.shouldersurfing.asm.transformers.ItemBoatRayTraceBlocks_1_11;
+import com.teamderpy.shouldersurfing.asm.transformers.ItemBoatRayTraceBlocks_1_9;
+import com.teamderpy.shouldersurfing.asm.transformers.ItemRayTraceBlocks;
+import com.teamderpy.shouldersurfing.asm.transformers.ValkyrienSkiesMixinEntityRendererOrientCamera;
+import com.teamderpy.shouldersurfing.asm.transformers.ValkyrienSkiesMixinEntityRendererOrientCamera2;
+
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 
-public abstract class ShoulderTransformer implements IClassTransformer
+public class ShoulderTransformer implements IClassTransformer
 {
 	private static final Mappings MAPPINGS = Mappings.load("mappings.json");
 	private static final Logger LOGGER = LogManager.getLogger("Shoulder Surfing");
 	private static final boolean OBFUSCATED = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	private static final Map<String, List<IShoulderTransformer>> TRANSFORMERS = build
+	(
+		new EntityPlayerRayTrace(),
+		new EntityRendererGetMouseOver(),
+		new EntityRendererGetMouseOver2(),
+		new EntityRendererOrientCamera(),
+		new EntityRendererRayTrace(),
+		new GlStateManagerColor(),
+		new GlStateManagerBlendFunc(),
+		new GlStateManagerBlendFuncSeparate(),
+		new GlStateManagerDepthMask(),
+		new GlStateManagerDisableBlend(),
+		new GuiIngameRenderAttackIndicator(),
+		new ItemRayTraceBlocks(),
+		new ItemBoatRayTraceBlocks_1_9(),
+		new ItemBoatRayTraceBlocks_1_11(),
+		new GuiCrosshairsBCRenderAttackIndicator(), // Better Combat compatibility: crosshair visibility
+		new ValkyrienSkiesMixinEntityRendererOrientCamera(), // Valkyrien Skies compatibility: camera distance
+		new ValkyrienSkiesMixinEntityRendererOrientCamera2() // Valkyrien Skies compatibility: camera offset
+	);
 	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
-		if(name.equals(this.getTransformedClassName(OBFUSCATED)))
+		if(TRANSFORMERS.containsKey(name))
 		{
+			List<IShoulderTransformer> transformers = TRANSFORMERS.remove(name);
 			ClassNode classNode = new ClassNode();
 			ClassReader classReader = new ClassReader(bytes);
 			classReader.accept(classNode, 0);
 			
-			if(this.hasMethodTransformer())
+			LOGGER.info("Attempting to transform class " + name + " -> " + transformedName);
+			
+			List<IShoulderMethodTransformer> methodTransformers = transformers.stream()
+				.filter(transformer -> transformer instanceof IShoulderMethodTransformer)
+				.map(transformer -> (IShoulderMethodTransformer) transformer)
+				.collect(Collectors.toList());
+			
+			if(!methodTransformers.isEmpty())
 			{
-				LOGGER.info("Attempting to transform method for class " + name + " -> " + transformedName);
-				this.transformMethod(MAPPINGS, OBFUSCATED, classNode);
+				this.transformMethods(methodTransformers, MAPPINGS, OBFUSCATED, classNode);
 			}
 			
 			ClassWriter writer = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 			classNode.accept(writer);
 			
-			if(this.hasClassTransformer())
+			List<IShoulderClassTransformer> classTransformers = transformers.stream()
+				.filter(transfomer -> transfomer instanceof IShoulderClassTransformer)
+				.map(transformer -> (IShoulderClassTransformer) transformer)
+				.collect(Collectors.toList());
+			
+			if(!classTransformers.isEmpty())
 			{
-				LOGGER.info("Attempting to transform class " + name + " -> " + transformedName);
-				this.transform(MAPPINGS, OBFUSCATED, writer);
+				this.transformClass(classTransformers, MAPPINGS, OBFUSCATED, writer);
 			}
 			
 			return writer.toByteArray();
@@ -54,76 +108,56 @@ public abstract class ShoulderTransformer implements IClassTransformer
 		
 		return bytes;
 	}
-
-	private void transformMethod(Mappings mappings, boolean obf, ClassNode classNode)
+	
+	private void transformClass(List<IShoulderClassTransformer> transformers, Mappings mappings, boolean obf, ClassWriter writer)
 	{
-		String methodId = this.getMethodId();
-		String methodName = mappings.map(methodId, obf);
-		String methodDesc = mappings.desc(methodId, obf);
+		for(IShoulderClassTransformer transformer : transformers)
+		{
+			LOGGER.info("Attempting to apply class transformer " + transformer.getClass().getSimpleName());
+			transformer.transform(MAPPINGS, OBFUSCATED, writer);
+		}
+	}
+	
+	private void transformMethods(List<IShoulderMethodTransformer> transformers, Mappings mappings, boolean obf, ClassNode classNode)
+	{
+		Map<String, List<IShoulderMethodTransformer>> method2transformers = transformers.stream()
+			.collect(Collectors.groupingBy(transformer -> mappings.map(transformer.getMethodId(), obf) + mappings.desc(transformer.getMethodId(), obf)));
 		
 		for(Object m : classNode.methods)
 		{
 			MethodNode method = (MethodNode) m;
+			String methodObf = method.name + method.desc;
 			
-			if(method.name.equals(methodName) && method.desc.equals(methodDesc))
+			if(method2transformers.containsKey(methodObf))
 			{
-				String methodDeobf = mappings.map(methodId, false) + mappings.desc(methodId, false);
-				String methodObf = method.name + method.desc;
-				int offset = ShoulderTransformer.locateOffset(method.instructions, this.searchList(mappings, obf), this.ignoreLabels(), this.ignoreLineNumber());
-				
-				if(offset == -1)
+				String methodDeobf = mappings.map(transformers.get(0).getMethodId(), false) + mappings.desc(transformers.get(0).getMethodId(), false);
+				method2transformers.remove(methodObf).forEach(transformer ->
 				{
-					LOGGER.info(this.getClass().getSimpleName() + ": Failed to locate offset for method " + methodDeobf + " -> " + methodObf);
-				}
-				else
-				{
-					LOGGER.info(this.getClass().getSimpleName() + ": Found offset " + offset + " for method " + methodDeobf + " -> " + methodObf);
-					this.transform(mappings, obf, method, offset);
-				}
+					String transformerName = transformer.getClass().getSimpleName();
+					LOGGER.info("Attempting to apply method transformer " + transformerName + ", " + methodObf + " -> " + methodDeobf);
+					InsnList searchList = transformer.searchList(mappings, obf);
+					boolean ignoreLabels = transformer.ignoreLabels();
+					boolean ignoreLineNumber = transformer.ignoreLineNumber();
+					int offset = ShoulderTransformer.locateOffset(method.instructions, searchList, ignoreLabels, ignoreLineNumber);
+					
+					if(offset == -1)
+					{
+						LOGGER.info("Failed to locate offset for transformer " + transformerName);
+					}
+					else
+					{
+						LOGGER.info("Found offset " + offset + " for transformer " + transformerName);
+						transformer.transform(mappings, obf, method, offset);
+					}
+				});
 			}
 		}
+		
+		method2transformers.values().stream().flatMap(List::stream).forEach(transformer ->
+		{
+			LOGGER.warn("Could not find method to apply " + transformer.getClass().getSimpleName());
+		});
 	}
-	
-	private String getTransformedClassName(boolean obf)
-	{
-		return MAPPINGS.map(this.getClassId(), obf).replace('/', '.');
-	}
-	
-	protected void transform(Mappings mappings, boolean obf, MethodNode method, int offset)
-	{
-		return;
-	}
-	
-	protected void transform(Mappings mappings, boolean obf, ClassWriter writer)
-	{
-		return;
-	}
-	
-	protected boolean ignoreLabels()
-	{
-		return true;
-	}
-	
-	protected boolean ignoreLineNumber()
-	{
-		return true;
-	}
-	
-	protected String getMethodId()
-	{
-		return null;
-	}
-	
-	protected InsnList searchList(Mappings mappings, boolean obf)
-	{
-		return null;
-	}
-	
-	protected abstract String getClassId();
-	
-	protected abstract boolean hasMethodTransformer();
-	
-	protected abstract boolean hasClassTransformer();
 	
 	/**
 	 * Locates the offset of a set of instructions in the Java byte code.
@@ -299,5 +333,10 @@ public abstract class ShoulderTransformer implements IClassTransformer
 		}
 		
 		return -1;
+	}
+	
+	private static Map<String, List<IShoulderTransformer>> build(IShoulderTransformer... transformers)
+	{
+		return Stream.of(transformers).collect(Collectors.groupingBy(transformer -> MAPPINGS.map(transformer.getClassId(), OBFUSCATED).replace('/', '.')));
 	}
 }

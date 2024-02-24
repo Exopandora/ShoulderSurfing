@@ -9,26 +9,7 @@ public class ShoulderPlugin implements IFMLLoadingPlugin
 	@Override
 	public String[] getASMTransformerClass()
 	{
-		return new String[]
-		{
-			"com.teamderpy.shouldersurfing.asm.transformers.EntityPlayerRayTrace",
-			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver",
-			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererGetMouseOver2",
-			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererOrientCamera",
-			"com.teamderpy.shouldersurfing.asm.transformers.EntityRendererRayTrace",
-			"com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerColor",
-			"com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerBlendFunc",
-			"com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerBlendFuncSeparate",
-			"com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerDepthMask",
-			"com.teamderpy.shouldersurfing.asm.transformers.GlStateManagerDisableBlend",
-			"com.teamderpy.shouldersurfing.asm.transformers.GuiIngameRenderAttackIndicator",
-			"com.teamderpy.shouldersurfing.asm.transformers.ItemRayTraceBlocks",
-			"com.teamderpy.shouldersurfing.asm.transformers.ItemBoatRayTraceBlocks_1_9",
-			"com.teamderpy.shouldersurfing.asm.transformers.ItemBoatRayTraceBlocks_1_11",
-			"com.teamderpy.shouldersurfing.asm.transformers.GuiCrosshairsBCRenderAttackIndicator", // Better Combat compatibility: crosshair visibility
-			"com.teamderpy.shouldersurfing.asm.transformers.ValkyrienSkiesMixinEntityRendererOrientCamera", // Valkyrien Skies compatibility: camera distance
-			"com.teamderpy.shouldersurfing.asm.transformers.ValkyrienSkiesMixinEntityRendererOrientCamera2" // Valkyrien Skies compatibility: camera offset
-		};
+		return new String[]{"com.teamderpy.shouldersurfing.asm.ShoulderTransformer"};
 	}
 	
 	@Override

@@ -8,13 +8,13 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class EntityRendererGetMouseOver extends ShoulderTransformer
+public class EntityRendererGetMouseOver implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("Vec3d", obf), mappings.map("Vec3d#addVector", obf), mappings.desc("Vec3d#addVector", obf), false));
@@ -51,17 +51,5 @@ public class EntityRendererGetMouseOver extends ShoulderTransformer
 	public String getMethodId()
 	{
 		return "EntityRenderer#getMouseOver";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

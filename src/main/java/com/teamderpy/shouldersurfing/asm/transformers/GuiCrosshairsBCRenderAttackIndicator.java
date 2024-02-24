@@ -8,13 +8,13 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class GuiCrosshairsBCRenderAttackIndicator extends ShoulderTransformer
+public class GuiCrosshairsBCRenderAttackIndicator implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new FieldInsnNode(GETFIELD, mappings.map("GameSettings", false), mappings.map("GameSettings#thirdPersonViewSRG", obf), mappings.desc("GameSettings#thirdPersonViewSRG", obf)));
@@ -34,7 +34,7 @@ public class GuiCrosshairsBCRenderAttackIndicator extends ShoulderTransformer
 	}
 	
 	@Override
-	protected String getClassId()
+	public String getClassId()
 	{
 		return "GuiCrosshairsBC";
 	}
@@ -43,17 +43,5 @@ public class GuiCrosshairsBCRenderAttackIndicator extends ShoulderTransformer
 	public String getMethodId()
 	{
 		return "GuiCrosshairsBC#renderAttackIndicator";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }

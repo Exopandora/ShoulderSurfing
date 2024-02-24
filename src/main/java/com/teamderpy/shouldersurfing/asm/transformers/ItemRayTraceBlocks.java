@@ -7,13 +7,13 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.teamderpy.shouldersurfing.asm.IShoulderMethodTransformer;
 import com.teamderpy.shouldersurfing.asm.Mappings;
-import com.teamderpy.shouldersurfing.asm.ShoulderTransformer;
 
-public class ItemRayTraceBlocks extends ShoulderTransformer
+public class ItemRayTraceBlocks implements IShoulderMethodTransformer
 {
 	@Override
-	protected InsnList searchList(Mappings mappings, boolean obf)
+	public InsnList searchList(Mappings mappings, boolean obf)
 	{
 		InsnList searchList = new InsnList();
 		searchList.add(new MethodInsnNode(INVOKEVIRTUAL, mappings.map("World", obf), mappings.map("World#rayTraceBlocks", obf), mappings.desc("World#rayTraceBlocks", obf), false));
@@ -32,26 +32,14 @@ public class ItemRayTraceBlocks extends ShoulderTransformer
 	}
 	
 	@Override
-	protected String getClassId()
+	public String getClassId()
 	{
 		return "Item";
 	}
 	
 	@Override
-	protected String getMethodId()
+	public String getMethodId()
 	{
 		return "Item#rayTrace";
-	}
-	
-	@Override
-	protected boolean hasMethodTransformer()
-	{
-		return true;
-	}
-	
-	@Override
-	protected boolean hasClassTransformer()
-	{
-		return false;
 	}
 }
