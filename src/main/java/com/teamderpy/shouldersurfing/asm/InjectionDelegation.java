@@ -3,6 +3,8 @@ package com.teamderpy.shouldersurfing.asm;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
+import org.lwjgl.opengl.GL11;
+
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
@@ -11,6 +13,7 @@ import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager.BlendState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -99,5 +102,38 @@ public final class InjectionDelegation
 	public static double ValkyrienSkiesMixinEntityRenderer_orientCamera_cameraDistance()
 	{
 		return ShoulderRenderer.getInstance().getCameraDistance();
+	}
+	
+	public static float GlStateManager_color(float alpha)
+	{
+		return Math.min(ShoulderRenderer.getInstance().getPlayerAlpha(), alpha);
+	}
+	
+	public static boolean GlStateManager_depthMask(boolean flag1)
+	{
+		return flag1 || ShoulderRenderer.getInstance().shouldRenderTransparent();
+	}
+	
+	public static boolean GlStateManager_disableBlend()
+	{
+		return ShoulderRenderer.getInstance().shouldRenderTransparent();
+	}
+	
+	public static boolean GlStateManager_blendFunc(int srcFactor, int dstFactor, BlendState blendState)
+	{
+		if(ShoulderRenderer.getInstance().shouldRenderTransparent() && srcFactor == GL11.GL_ONE && dstFactor == GL11.GL_ZERO && !(blendState.srcFactor == GL11.GL_SRC_COLOR && blendState.dstFactor == GL11.GL_ONE))
+		{
+			blendState.srcFactor = GL11.GL_SRC_ALPHA;
+			blendState.dstFactor = GL11.GL_ONE_MINUS_SRC_ALPHA;
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean GlStateManager_tryBlendFuncSeparate(int srcFactor, int dstFactor, int srcFactorAlpha, int dstFactorAlpha, BlendState blendState)
+	{
+		return ShoulderRenderer.getInstance().shouldRenderTransparent();
 	}
 }

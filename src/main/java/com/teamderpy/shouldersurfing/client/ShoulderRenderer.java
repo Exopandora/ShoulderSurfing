@@ -22,8 +22,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.DestFactor;
+import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -43,6 +46,11 @@ public class ShoulderRenderer
 	private Vec2f projected;
 	private EnumShaderCompatibility shaders = EnumShaderCompatibility.NONE;
 	private boolean isValkyrienSkiesInstalled = false;
+	private double cameraOffsetX;
+	private double cameraOffsetY;
+	private double cameraOffsetZ;
+	private float playerAlpha = 1.0F;
+	private boolean shouldRenderTransparent = false;
 	
 	public void offsetCrosshair(ScaledResolution window, float partialTicks)
 	{
@@ -167,10 +175,13 @@ public class ShoulderRenderer
 			double offsetX = ShoulderHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
 			double offsetY = ShoulderHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = ShoulderHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
-			Vec3d offset = new Vec3d(offsetX, -offsetY, -offsetZ);
+			Vec3d offset = new Vec3d(offsetX, offsetY, offsetZ);
 			this.cameraDistance = this.calcCameraDistance(world, offset.length(), yaw, pitch, partialTick);
 			Vec3d scaled = offset.normalize().scale(this.cameraDistance);
-			GlStateManager.translate(scaled.x, scaled.y, scaled.z);
+			this.cameraOffsetX = scaled.x;
+			this.cameraOffsetY = scaled.y;
+			this.cameraOffsetZ = scaled.z;
+			GlStateManager.translate(scaled.x, -scaled.y, -scaled.z);
 		}
 		else
 		{
@@ -288,6 +299,43 @@ public class ShoulderRenderer
 				|| Minecraft.getMinecraft().getRenderViewEntity().rotationPitch < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
 	}
 	
+	public boolean preRenderCameraEntity(Entity entity, float partialTick)
+	{
+		if(this.skipEntityRendering())
+		{
+			return true;
+		}
+		
+		if(this.shouldRenderTransparent(entity))
+		{
+			GlStateManager.depthMask(true);
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
+			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
+			this.playerAlpha = (float) MathHelper.clamp(Math.abs(this.cameraOffsetX) / (entity.width / 2.0D), 0.15F, 1.0F);
+			this.shouldRenderTransparent = true;
+			GlStateManager.color(1.0F, 1.0F, 1.0F, this.playerAlpha);
+		}
+		
+		return false;
+	}
+	
+	public void postRenderCameraEntity()
+	{
+		if(this.shouldRenderTransparent)
+		{
+			this.playerAlpha = 1.0F;
+			this.shouldRenderTransparent = false;
+			GlStateManager.disableBlend();
+			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
+		}
+	}
+	
+	private boolean shouldRenderTransparent(Entity entity)
+	{
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(this.cameraOffsetX) < (entity.width / 2.0D);
+	}
+	
 	public double getPlayerReach()
 	{
 		return Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
@@ -296,6 +344,31 @@ public class ShoulderRenderer
 	public double getCameraDistance()
 	{
 		return this.cameraDistance;
+	}
+	
+	public double getCameraOffsetX()
+	{
+		return this.cameraOffsetX;
+	}
+	
+	public double getCameraOffsetY()
+	{
+		return this.cameraOffsetY;
+	}
+	
+	public double getCameraOffsetZ()
+	{
+		return this.cameraOffsetZ;
+	}
+	
+	public float getPlayerAlpha()
+	{
+		return this.playerAlpha;
+	}
+	
+	public boolean shouldRenderTransparent()
+	{
+		return this.shouldRenderTransparent;
 	}
 	
 	public static ShoulderRenderer getInstance()

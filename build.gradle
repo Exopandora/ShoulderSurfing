@@ -12,6 +12,9 @@ buildscript {
 
 repositories {
 	maven {
+		url = "https://maven.minecraftforge.net/"
+	}
+	maven {
 		url = "https://www.cursemaven.com"
 		content {
 			includeGroup "curse.maven"
@@ -199,7 +202,7 @@ jar {
 			"Implementation-Version": "${version}",
 			"Implementation-Vendor" :"Exopandora",
 			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-			"FMLAT": "shouldersurfing_at.cfg",
+			"FMLAT": "accesstransformer.cfg",
 			"FMLCorePlugin": "com.teamderpy.shouldersurfing.asm.ShoulderPlugin",
 			"FMLCorePluginContainsFMLMod": "false"
 		])

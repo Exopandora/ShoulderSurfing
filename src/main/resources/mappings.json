@@ -65,6 +65,19 @@
                 "1.9": "bni"
             }
         },
+        "GlStateManager$BlendState": {
+            "name": "net/minecraft/client/renderer/GlStateManager$BlendState",
+            "obf": {
+                "1.12.2": "bus$b",
+                "1.12.1": "bus$b",
+                "1.12": "buq$b",
+                "1.11.2": "bqg$b",
+                "1.11": "bqe$b",
+                "1.10.2": "bob$b",
+                "1.9.4": "bnf$b",
+                "1.9": "bni$b"
+            }
+        },
         "GuiIngame": {
             "name": "net/minecraft/client/gui/GuiIngame",
             "obf": {
@@ -156,8 +169,8 @@
                 "1.9": "bbh"
             }
         },
-		"GuiCrosshairsBC": {
-			"name": "bettercombat/mod/client/gui/GuiCrosshairsBC",
+        "GuiCrosshairsBC": {
+            "name": "bettercombat/mod/client/gui/GuiCrosshairsBC",
             "obf": {
                 "1.12.2": "bettercombat/mod/client/gui/GuiCrosshairsBC",
                 "1.12.1": "bettercombat/mod/client/gui/GuiCrosshairsBC",
@@ -168,13 +181,13 @@
                 "1.9.4": "bettercombat/mod/main/GuiCrosshairsBC",
                 "1.9": "bettercombat/mod/main/GuiCrosshairsBC"
             }
-		},
-		"ValkyrienSkiesMixinEntityRenderer": {
-			"name": "org/valkyrienskies/mixin/client/renderer/MixinEntityRenderer",
+        },
+        "ValkyrienSkiesMixinEntityRenderer": {
+            "name": "org/valkyrienskies/mixin/client/renderer/MixinEntityRenderer",
             "obf": "org/valkyrienskies/mixin/client/renderer/MixinEntityRenderer"
-		},
-		"Item": {
-			"name": "net/minecraft/item/Item",
+        },
+        "Item": {
+            "name": "net/minecraft/item/Item",
             "obf": {
                 "1.12.2": "ain",
                 "1.12.1": "ain",
@@ -185,9 +198,9 @@
                 "1.9.4": "ado",
                 "1.9": "ado"
             }
-		},
-		"ItemBoat": {
-			"name": "net/minecraft/item/ItemBoat",
+        },
+        "ItemBoat": {
+            "name": "net/minecraft/item/ItemBoat",
             "obf": {
                 "1.12.2": "ahd",
                 "1.12.1": "ahd",
@@ -198,9 +211,9 @@
                 "1.9.4": "ace",
                 "1.9": "ace"
             }
-		},
-		"EnumHand": {
-			"name": "net/minecraft/util/EnumHand",
+        },
+        "EnumHand": {
+            "name": "net/minecraft/util/EnumHand",
             "obf": {
                 "1.12.2": "ub",
                 "1.12.1": "ub",
@@ -211,9 +224,9 @@
                 "1.9.4": "qm",
                 "1.9": "qm"
             }
-		},
-		"ActionResult": {
-			"name": "net/minecraft/util/ActionResult",
+        },
+        "ActionResult": {
+            "name": "net/minecraft/util/ActionResult",
             "obf": {
                 "1.12.2": "ue",
                 "1.12.1": "ue",
@@ -224,9 +237,9 @@
                 "1.9.4": "qp",
                 "1.9": "qp"
             }
-		},
-		"ItemStack": {
-			"name": "net/minecraft/item/ItemStack",
+        },
+        "ItemStack": {
+            "name": "net/minecraft/item/ItemStack",
             "obf": {
                 "1.12.2": "aip",
                 "1.12.1": "aip",
@@ -237,7 +250,7 @@
                 "1.9.4": "adq",
                 "1.9": "adq"
             }
-		}
+        }
     },
     "methods": {
         "Entity#rayTrace": {
@@ -339,6 +352,41 @@
             "desc": "(L$Vec3d;L$Vec3d;Z)L$RayTraceResult;",
             "obf": "a"
         },
+        "GlStateManager#color": {
+            "name": "color",
+            "desc": "(FFFF)V",
+            "obf": "c"
+        },
+        "GlStateManager#depthMask": {
+            "name": "depthMask",
+            "desc": "(Z)V",
+            "obf": "a"
+        },
+        "GlStateManager#disableBlend": {
+            "name": "disableBlend",
+            "desc": "()V",
+            "obf": "l"
+        },
+        "GlStateManager#blendFunc": {
+            "name": "blendFunc",
+            "desc": "(II)V",
+            "obf": "b"
+        },
+        "GlStateManager#tryBlendFuncSeparate": {
+            "name": "tryBlendFuncSeparate",
+            "desc": "(IIII)V",
+            "obf": "a"
+        },
+        "InjectionDelegation#GlStateManager_blendFunc": {
+            "name": "GlStateManager_blendFunc",
+            "desc": "(IIL$GlStateManager$BlendState;)Z",
+            "obf": "GlStateManager_blendFunc"
+        },
+        "InjectionDelegation#GlStateManager_tryBlendFuncSeparate": {
+            "name": "GlStateManager_tryBlendFuncSeparate",
+            "desc": "(IIIIL$GlStateManager$BlendState;)Z",
+            "obf": "GlStateManager_tryBlendFuncSeparate"
+        },
         "ValkyrienSkiesMixinEntityRenderer#orientCamera": {
             "name": "orientCamera",
             "desc": "(FLorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V",
@@ -374,6 +422,11 @@
             "name": "thirdPersonView",
             "desc": "I",
             "obf": "field_74320_O"
+        },
+        "GlStateManager#blendState": {
+            "name": "blendState",
+            "desc": "L$GlStateManager$BlendState;",
+            "obf": "field_179157_e"
         }
     }
 }

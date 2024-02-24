@@ -37,9 +37,27 @@ public class ClientEventHandler
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void preRenderLivingEntityEvent(RenderLivingEvent.Pre<?> event)
 	{
-		if(event.isCancelable() && event.getEntity().equals(Minecraft.getMinecraft().getRenderViewEntity()) && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().skipEntityRendering())
+		if(event.isCancelable() && event.getEntity() == Minecraft.getMinecraft().getRenderViewEntity() && Minecraft.getMinecraft().currentScreen == null && ShoulderRenderer.getInstance().preRenderCameraEntity(event.getEntity(), Minecraft.getMinecraft().getRenderPartialTicks()))
 		{
 			event.setCanceled(true);
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+	public void preRenderLivingEntityEventLast(RenderLivingEvent.Pre<?> event)
+	{
+		if(event.isCanceled() && event.getEntity() == Minecraft.getMinecraft().getRenderViewEntity())
+		{
+			ShoulderRenderer.getInstance().postRenderCameraEntity();
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public void postRenderLivingEntityEvent(RenderLivingEvent.Post<?> event)
+	{
+		if(event.getEntity() == Minecraft.getMinecraft().getRenderViewEntity())
+		{
+			ShoulderRenderer.getInstance().postRenderCameraEntity();
 		}
 	}
 	
