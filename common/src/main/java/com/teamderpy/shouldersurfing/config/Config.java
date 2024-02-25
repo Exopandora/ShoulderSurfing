@@ -293,7 +293,7 @@ public class Config
 				.defineList("adaptive_crosshair_use_items", () -> new ArrayList<String>(), item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			
 			this.adaptiveCrosshairHoldItemProperties = builder
-				.comment("Item properties for an item, that when held, trigger the dynamic crosshair in adaptive mode.")
+				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
 				.translation("Adaptive crosshair item properties (hold)")
 				.defineList("adaptive_crosshair_hold_item_properties", () ->
 				{
@@ -303,7 +303,7 @@ public class Config
 				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			
 			this.adaptiveCrosshairUseItemProperties = builder
-				.comment("Item properties for an item, that when used, trigger the dynamic crosshair in adaptive mode.")
+				.comment("Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.")
 				.translation("Adaptive crosshair item properties (use)")
 				.defineList("adaptive_crosshair_use_item_properties", () ->
 				{
