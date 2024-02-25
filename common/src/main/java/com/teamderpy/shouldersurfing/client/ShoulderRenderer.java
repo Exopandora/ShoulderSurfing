@@ -35,7 +35,7 @@ public class ShoulderRenderer
 	private double cameraOffsetX;
 	private double cameraOffsetY;
 	private double cameraOffsetZ;
-	private float playerAlpha = 1.0F;
+	private float cameraEntityAlpha = 1.0F;
 	
 	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
 	{
@@ -252,7 +252,7 @@ public class ShoulderRenderer
 		return new Vec2f(x, y);
 	}
 	
-	private boolean skipEntityRendering()
+	private boolean skipCameraEntityRendering()
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
 			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
@@ -262,14 +262,14 @@ public class ShoulderRenderer
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
 	{
-		if(this.skipEntityRendering())
+		if(this.skipCameraEntityRendering())
 		{
 			return true;
 		}
 		
-		if(this.shouldRenderTransparent(entity))
+		if(this.shouldRenderCameraEntityTransparent(entity))
 		{
-			this.playerAlpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
+			this.cameraEntityAlpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
 		}
 		
 		return false;
@@ -277,15 +277,15 @@ public class ShoulderRenderer
 	
 	public void postRenderCameraEntity(Entity entity, float partialTick, MultiBufferSource multiBufferSource)
 	{
-		if(this.shouldRenderTransparent(entity))
+		if(this.shouldRenderCameraEntityTransparent(entity))
 		{
 			((BufferSource) multiBufferSource).endLastBatch();
 		}
 		
-		this.playerAlpha = 1.0F;
+		this.cameraEntityAlpha = 1.0F;
 	}
 	
-	private boolean shouldRenderTransparent(Entity entity)
+	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D);
 	}
@@ -315,9 +315,9 @@ public class ShoulderRenderer
 		return this.cameraOffsetZ;
 	}
 	
-	public float getPlayerAlpha()
+	public float getCameraEntityAlpha()
 	{
-		return this.playerAlpha;
+		return this.cameraEntityAlpha;
 	}
 	
 	public static ShoulderRenderer getInstance()
