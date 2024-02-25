@@ -33,9 +33,6 @@ import net.minecraft.world.phys.Vec3;
 public class ShoulderHelper
 {
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
-	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
-	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
-	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
 	
 	public static ShoulderLook shoulderSurfingLook(Camera camera, Entity entity, float partialTick, double distanceSq)
 	{
@@ -186,28 +183,40 @@ public class ShoulderHelper
 	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, LivingEntity entity)
 	{
 		Item useItem = entity.getUseItem().getItem();
-		List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
+		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
+		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
 		
-		if(ItemProperties.getProperty(useItem, PULL_PROPERTY) != null || ItemProperties.getProperty(useItem, THROWING_PROPERTY) != null)
+		if(useItems.contains(Registry.ITEM.getKey(useItem).toString()))
 		{
 			return true;
 		}
-		else if(overrides.contains(Registry.ITEM.getKey(useItem).toString()))
+		
+		for(String useItemProperty : useItemProperties)
 		{
-			return true;
+			if(ItemProperties.getProperty(useItem, new ResourceLocation(useItemProperty)) != null)
+			{
+				return true;
+			}
 		}
+		
+		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
+		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
 		
 		for(ItemStack handStack : entity.getHandSlots())
 		{
 			Item handItem = handStack.getItem();
-			
-			if(ItemProperties.getProperty(handItem, CHARGED_PROPERTY) != null)
+
+			if(holdItems.contains(Registry.ITEM.getKey(handItem).toString()))
 			{
 				return true;
 			}
-			else if(overrides.contains(Registry.ITEM.getKey(handItem).toString()))
+			
+			for(String holdItemProperty : holdItemProperties)
 			{
-				return true;
+				if(ItemProperties.getProperty(handItem, new ResourceLocation(holdItemProperty)) != null)
+				{
+					return true;
+				}
 			}
 		}
 		
