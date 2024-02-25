@@ -20,6 +20,6 @@ public class MixinModelRenderer
 	)
 	public float compile(float alpha)
 	{
-		return Math.min(alpha, ShoulderRenderer.getInstance().getPlayerAlpha());
+		return Math.min(alpha, ShoulderRenderer.getInstance().getCameraEntityAlpha());
 	}
 }
