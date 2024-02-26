@@ -106,22 +106,22 @@ public final class InjectionDelegation
 	
 	public static float GlStateManager_color(float alpha)
 	{
-		return Math.min(ShoulderRenderer.getInstance().getPlayerAlpha(), alpha);
+		return Math.min(ShoulderRenderer.getInstance().getCameraEntityAlpha(), alpha);
 	}
 	
 	public static boolean GlStateManager_depthMask(boolean flag1)
 	{
-		return flag1 || ShoulderRenderer.getInstance().shouldRenderTransparent();
+		return flag1 || ShoulderRenderer.getInstance().shouldRenderCameraEntityTransparent();
 	}
 	
 	public static boolean GlStateManager_disableBlend()
 	{
-		return ShoulderRenderer.getInstance().shouldRenderTransparent();
+		return ShoulderRenderer.getInstance().shouldRenderCameraEntityTransparent();
 	}
 	
 	public static boolean GlStateManager_blendFunc(int srcFactor, int dstFactor, BlendState blendState)
 	{
-		if(ShoulderRenderer.getInstance().shouldRenderTransparent() && srcFactor == GL11.GL_ONE && dstFactor == GL11.GL_ZERO && !(blendState.srcFactor == GL11.GL_SRC_COLOR && blendState.dstFactor == GL11.GL_ONE))
+		if(ShoulderRenderer.getInstance().shouldRenderCameraEntityTransparent() && srcFactor == GL11.GL_ONE && dstFactor == GL11.GL_ZERO && !(blendState.srcFactor == GL11.GL_SRC_COLOR && blendState.dstFactor == GL11.GL_ONE))
 		{
 			blendState.srcFactor = GL11.GL_SRC_ALPHA;
 			blendState.dstFactor = GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -134,6 +134,6 @@ public final class InjectionDelegation
 	
 	public static boolean GlStateManager_tryBlendFuncSeparate(int srcFactor, int dstFactor, int srcFactorAlpha, int dstFactorAlpha, BlendState blendState)
 	{
-		return ShoulderRenderer.getInstance().shouldRenderTransparent();
+		return ShoulderRenderer.getInstance().shouldRenderCameraEntityTransparent();
 	}
 }

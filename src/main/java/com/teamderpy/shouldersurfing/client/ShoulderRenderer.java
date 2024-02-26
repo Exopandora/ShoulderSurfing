@@ -49,8 +49,8 @@ public class ShoulderRenderer
 	private double cameraOffsetX;
 	private double cameraOffsetY;
 	private double cameraOffsetZ;
-	private float playerAlpha = 1.0F;
-	private boolean shouldRenderTransparent = false;
+	private float cameraEntityAlpha = 1.0F;
+	private boolean shouldRenderCameraEntityTransparent = false;
 	
 	public void offsetCrosshair(ScaledResolution window, float partialTicks)
 	{
@@ -292,7 +292,7 @@ public class ShoulderRenderer
 		return null;
 	}
 	
-	public boolean skipEntityRendering()
+	public boolean skipCameraEntityRendering()
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
 			(this.cameraDistance < Minecraft.getMinecraft().getRenderViewEntity().width * Config.CLIENT.keepCameraOutOfHeadMultiplier()
@@ -301,20 +301,20 @@ public class ShoulderRenderer
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
 	{
-		if(this.skipEntityRendering())
+		if(this.skipCameraEntityRendering())
 		{
 			return true;
 		}
 		
-		if(this.shouldRenderTransparent(entity))
+		if(this.shouldRenderCameraEntityTransparent(entity))
 		{
 			GlStateManager.depthMask(true);
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-			this.playerAlpha = (float) MathHelper.clamp(Math.abs(this.cameraOffsetX) / (entity.width / 2.0D), 0.15F, 1.0F);
-			this.shouldRenderTransparent = true;
-			GlStateManager.color(1.0F, 1.0F, 1.0F, this.playerAlpha);
+			this.cameraEntityAlpha = (float) MathHelper.clamp(Math.abs(this.cameraOffsetX) / (entity.width / 2.0D), 0.15F, 1.0F);
+			this.shouldRenderCameraEntityTransparent = true;
+			GlStateManager.color(1.0F, 1.0F, 1.0F, this.cameraEntityAlpha);
 		}
 		
 		return false;
@@ -322,16 +322,16 @@ public class ShoulderRenderer
 	
 	public void postRenderCameraEntity()
 	{
-		if(this.shouldRenderTransparent)
+		if(this.shouldRenderCameraEntityTransparent)
 		{
-			this.playerAlpha = 1.0F;
-			this.shouldRenderTransparent = false;
+			this.cameraEntityAlpha = 1.0F;
+			this.shouldRenderCameraEntityTransparent = false;
 			GlStateManager.disableBlend();
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
 		}
 	}
 	
-	private boolean shouldRenderTransparent(Entity entity)
+	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(this.cameraOffsetX) < (entity.width / 2.0D);
 	}
@@ -361,14 +361,14 @@ public class ShoulderRenderer
 		return this.cameraOffsetZ;
 	}
 	
-	public float getPlayerAlpha()
+	public float getCameraEntityAlpha()
 	{
-		return this.playerAlpha;
+		return this.cameraEntityAlpha;
 	}
 	
-	public boolean shouldRenderTransparent()
+	public boolean shouldRenderCameraEntityTransparent()
 	{
-		return this.shouldRenderTransparent;
+		return this.shouldRenderCameraEntityTransparent;
 	}
 	
 	public static ShoulderRenderer getInstance()
