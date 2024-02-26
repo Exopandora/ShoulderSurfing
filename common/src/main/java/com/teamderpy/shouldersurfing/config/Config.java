@@ -73,7 +73,10 @@ public class Config
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
 		private final BooleanValue useCustomRaytraceDistance;
-		private final ConfigValue<List<? extends String>> adaptiveCrosshairItems;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItems;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItems;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemProperties;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemProperties;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
@@ -268,10 +271,10 @@ public class Config
 				.translation("Use custom raytrace distance")
 				.define("use_custom_raytrace_distance", true);
 			
-			this.adaptiveCrosshairItems = builder
-				.comment("Additional items that trigger the dynamic crosshair when in apative mode.")
-				.translation("Adaptive crosshair items")
-				.defineList("adaptive_crosshair_items", () ->
+			this.adaptiveCrosshairHoldItems = builder
+				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode.")
+				.translation("Adaptive crosshair items (hold)")
+				.defineList("adaptive_crosshair_hold_items", () ->
 				{
 					List<String> items = new ArrayList<String>();
 					items.add(BuiltInRegistries.ITEM.getKey(Items.SNOWBALL).toString());
@@ -281,6 +284,32 @@ public class Config
 					items.add(BuiltInRegistries.ITEM.getKey(Items.SPLASH_POTION).toString());
 					items.add(BuiltInRegistries.ITEM.getKey(Items.FISHING_ROD).toString());
 					items.add(BuiltInRegistries.ITEM.getKey(Items.LINGERING_POTION).toString());
+					return items;
+				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+			
+			this.adaptiveCrosshairUseItems = builder
+				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode.")
+				.translation("Adaptive crosshair items (use)")
+				.defineList("adaptive_crosshair_use_items", () -> new ArrayList<String>(), item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+			
+			this.adaptiveCrosshairHoldItemProperties = builder
+				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
+				.translation("Adaptive crosshair item properties (hold)")
+				.defineList("adaptive_crosshair_hold_item_properties", () ->
+				{
+					List<String> items = new ArrayList<String>();
+					items.add(new ResourceLocation("charged").toString());
+					return items;
+				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+			
+			this.adaptiveCrosshairUseItemProperties = builder
+				.comment("Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.")
+				.translation("Adaptive crosshair item properties (use)")
+				.defineList("adaptive_crosshair_use_item_properties", () ->
+				{
+					List<String> items = new ArrayList<String>();
+					items.add(new ResourceLocation("pull").toString());
+					items.add(new ResourceLocation("throwing").toString());
 					return items;
 				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			
@@ -639,9 +668,24 @@ public class Config
 			Config.set(this.limitPlayerReach, limitPlayerReach);
 		}
 		
-		public List<? extends String> getAdaptiveCrosshairItems()
+		public List<? extends String> getAdaptiveCrosshairHoldItems()
 		{
-			return this.adaptiveCrosshairItems.get();
+			return this.adaptiveCrosshairHoldItems.get();
+		}
+		
+		public List<? extends String> getAdaptiveCrosshairUseItems()
+		{
+			return this.adaptiveCrosshairUseItems.get();
+		}
+		
+		public List<? extends String> getAdaptiveCrosshairHoldItemProperties()
+		{
+			return this.adaptiveCrosshairHoldItemProperties.get();
+		}
+		
+		public List<? extends String> getAdaptiveCrosshairUseItemProperties()
+		{
+			return this.adaptiveCrosshairUseItemProperties.get();
 		}
 		
 		public void adjustCameraLeft()

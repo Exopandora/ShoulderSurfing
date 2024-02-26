@@ -4,8 +4,13 @@ plugins {
 	id 'fabric-loom'
 }
 
-tasks.withType(Jar) {
-	archivesBaseName("${mod_name}-Plugin")
+tasks.withType(Jar).configureEach {
+	archivesBaseName = "${mod_name}-Plugin"
+}
+
+java {
+	sourceCompatibility = java_version
+	targetCompatibility = java_version
 }
 
 eclipse {
@@ -18,21 +23,16 @@ dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
 	
-	implementation(project(":api")) {
-		transitive = false
-	}
-	
-	implementation(project(":common")) {
-		transitive = false
-	}
+	compileOnly project(":api")
+	compileOnly project(":common")
 	
 	compileOnly "org.spongepowered:mixin:${mixin_version}"
 }
 
 loom {
 	mixin {
-		defaultRefmapName = "${mod_id}.refmap.json"
-		useLegacyMixinAp = false
+		defaultRefmapName.set("${mod_id}.refmap.json")
+		useLegacyMixinAp.set(false)
 	}
 	
 	runs {

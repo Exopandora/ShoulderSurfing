@@ -5,11 +5,9 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent.ComputeCameraAngles;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -24,15 +22,6 @@ public class ClientEventHandler
 		if(Phase.START.equals(event.phase))
 		{
 			ShoulderInstance.getInstance().tick();
-		}
-	}
-	
-	@SubscribeEvent
-	public static void preRenderLivingEntityEvent(RenderLivingEvent.Pre<LivingEntity, ?> event)
-	{
-		if(event.isCancelable() && event.getEntity().equals(Minecraft.getInstance().getCameraEntity()) && Minecraft.getInstance().screen == null && ShoulderRenderer.getInstance().skipEntityRendering())
-		{
-			event.setCanceled(true);
 		}
 	}
 	

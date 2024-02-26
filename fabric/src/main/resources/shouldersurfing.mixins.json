@@ -6,18 +6,22 @@
 	"mixins": [],
 	"client": [
 		"CameraAccessor",
+		"MixinAbstractClientPlayer",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
-		"MixinLivingEntityRenderer",
+		"MixinLevelRenderer",
+		"MixinModelPartCube",
+		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
-		"MixinGameRenderer2",
-		"MixinGui2",
+		"MixinRenderType",
+		"MixinGameRendererFabric",
+		"MixinGuiFabric",
 		"MixinKeyboardHandler",
-		"MixinLevelRenderer",
+		"MixinLevelRendererFabric",
 		"MixinMinecraft",
-		"MixinMouseHandler"
+		"MixinMouseHandlerFabric"
 	],
 	"injectors": {
 		"defaultRequire": 1

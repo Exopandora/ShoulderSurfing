@@ -8,16 +8,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
+import com.teamderpy.shouldersurfing.config.Perspective;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 
 @Mixin(Gui.class)
-public class MixinGui2
+public abstract class MixinGuiFabric
 {
 	@Shadow
 	protected Minecraft minecraft;
+	
+	@Shadow
+	protected float scopeScale;
+	
+	@Shadow
+	abstract void renderSpyglassOverlay(GuiGraphics guiGraphics, float partialTick);
 	
 	@Inject
 	(
@@ -47,5 +54,23 @@ public class MixinGui2
 	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
 		ShoulderRenderer.getInstance().clearCrosshairOffset(guiGraphics.pose());
+	}
+	
+	@Inject
+	(
+		method = "render",
+		at = @At
+		(
+			value = "INVOKE",
+			target = "net/minecraft/client/CameraType.isFirstPerson()Z",
+			shift = Shift.BEFORE
+		)
+	)
+	private void renderSpyglass(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
+	{
+		if(this.minecraft.player.isScoping() && Perspective.SHOULDER_SURFING.equals(Perspective.current()))
+		{
+			this.renderSpyglassOverlay(guiGraphics, this.scopeScale);
+		}
 	}
 }
