@@ -29,9 +29,6 @@ public class ShoulderHelper
 {
 	public static final float DEG_TO_RAD = ((float)Math.PI / 180F);
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = Predicates.and(EntitySelectors.NOT_SPECTATING, entity -> entity != null && entity.canBeCollidedWith());
-	private static final ResourceLocation PULL_PROPERTY = new ResourceLocation("pull");
-	private static final ResourceLocation THROWING_PROPERTY = new ResourceLocation("throwing");
-	private static final ResourceLocation CHARGED_PROPERTY = new ResourceLocation("charged");
 	
 	public static ShoulderLook shoulderSurfingLook(Entity entity, float partialTick, double distanceSq)
 	{
@@ -233,22 +230,30 @@ public class ShoulderHelper
 	
 	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, EntityLivingBase entity)
 	{
-		List<? extends String> overrides = Config.CLIENT.getAdaptiveCrosshairItems();
 		ItemStack useStack = entity.getActiveItemStack();
 		
 		if(useStack != null) // 1.9 compatibility
 		{
 			Item useItem = useStack.getItem();
+			List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
+			List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
 			
-			if(useItem.getPropertyGetter(PULL_PROPERTY) != null || useItem.getPropertyGetter(THROWING_PROPERTY) != null)
+			if(useItems.contains(useItem.getRegistryName().toString()))
 			{
 				return true;
 			}
-			else if(overrides.contains(useItem.getRegistryName().toString()))
+			
+			for(String useItemProperty : useItemProperties)
 			{
-				return true;
+				if(useItem.getPropertyGetter(new ResourceLocation(useItemProperty)) != null)
+				{
+					return true;
+				}
 			}
 		}
+		
+		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
+		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
 		
 		for(ItemStack handStack : entity.getHeldEquipment())
 		{
@@ -256,13 +261,17 @@ public class ShoulderHelper
 			{
 				Item handItem = handStack.getItem();
 				
-				if(handItem.getPropertyGetter(CHARGED_PROPERTY) != null)
+				if(holdItems.contains(handItem.getRegistryName().toString()))
 				{
 					return true;
 				}
-				else if(overrides.contains(handItem.getRegistryName().toString()))
+				
+				for(String useItemProperty : holdItemProperties)
 				{
-					return true;
+					if(handItem.getPropertyGetter(new ResourceLocation(useItemProperty)) != null)
+					{
+						return true;
+					}
 				}
 			}
 		}

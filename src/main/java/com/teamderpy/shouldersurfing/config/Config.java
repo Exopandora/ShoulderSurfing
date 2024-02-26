@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import net.minecraft.init.Items;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -61,8 +62,11 @@ public class Config
 		private ConfigValue<CrosshairType> crosshairType;
 		private DoubleValue customRaytraceDistance;
 		private BooleanValue useCustomRaytraceDistance;
-		private ConfigValue<List<String>> adaptiveCrosshairItems;
-		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
+		private ConfigValue<List<String>> adaptiveCrosshairHoldItems;
+		private ConfigValue<List<String>> adaptiveCrosshairUseItems;
+		private ConfigValue<List<String>> adaptiveCrosshairHoldItemProperties;
+		private ConfigValue<List<String>> adaptiveCrosshairUseItemProperties;
+		private Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		private BooleanValue compatibilityValkyrienSkiesCameraShipCollision;
 		
 		private final Configuration config;
@@ -414,9 +418,24 @@ public class Config
 			Config.set(this.limitPlayerReach, limitPlayerReach);
 		}
 		
-		public List<String> getAdaptiveCrosshairItems()
+		public List<String> getAdaptiveCrosshairHoldItems()
 		{
-			return this.adaptiveCrosshairItems.get();
+			return this.adaptiveCrosshairHoldItems.get();
+		}
+		
+		public List<String> getAdaptiveCrosshairUseItems()
+		{
+			return this.adaptiveCrosshairUseItems.get();
+		}
+		
+		public List<String> getAdaptiveCrosshairHoldItemProperties()
+		{
+			return this.adaptiveCrosshairHoldItemProperties.get();
+		}
+		
+		public List<String> getAdaptiveCrosshairUseItemProperties()
+		{
+			return this.adaptiveCrosshairUseItemProperties.get();
 		}
 		
 		public boolean doCompatibilityValkyrienSkiesCameraShipCollision()
@@ -548,7 +567,7 @@ public class Config
 			this.customRaytraceDistance = new DoubleValue(this.config.get(Configuration.CATEGORY_GENERAL, "Custom raytrace distance", 400, "The raytrace distance used for the dynamic crosshair.", 0, Double.MAX_VALUE));
 			this.useCustomRaytraceDistance = new BooleanValue(this.config.get(Configuration.CATEGORY_GENERAL, "Use custom raytrace distance", true, "Whether or not to use the custom raytrace distance used for the dynamic crosshair."));
 			
-			this.adaptiveCrosshairItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive crosshair items", new String[]
+			this.adaptiveCrosshairHoldItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive crosshair items (hold)", new String[]
 			{
 				Items.SNOWBALL.getRegistryName().toString(),
 				Items.EGG.getRegistryName().toString(),
@@ -557,6 +576,16 @@ public class Config
 				Items.SPLASH_POTION.getRegistryName().toString(),
 				Items.FISHING_ROD.getRegistryName().toString(),
 				Items.LINGERING_POTION.getRegistryName().toString()
+			}));
+			this.adaptiveCrosshairUseItems = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive crosshair items (use)", new String[0]));
+			this.adaptiveCrosshairHoldItemProperties = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive crosshair item properties (hold)", new String[]
+			{
+				new ResourceLocation("charged").toString()
+			}));
+			this.adaptiveCrosshairUseItemProperties = new ListValue(this.config.get(Configuration.CATEGORY_GENERAL, "Adaptive crosshair item properties (use)", new String[]
+			{
+				new ResourceLocation("pull").toString(),
+				new ResourceLocation("throwing").toString()
 			}));
 			
 			String[] visibilities = ClientConfig.toStringArray(CrosshairVisibility.values());
