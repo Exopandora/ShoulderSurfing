@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[46,)"
+loaderVersion="[48,)"
 displayURL="https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded"
 logoFile="logo.png"
 authors="Sabar, Exopandora"
@@ -18,6 +18,6 @@ Code injection may fail if using mods that mess with the base files.
 [[dependencies.shouldersurfing]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20,)"
+    versionRange="[1.20.2,)"
     ordering="NONE"
     side="BOTH"
