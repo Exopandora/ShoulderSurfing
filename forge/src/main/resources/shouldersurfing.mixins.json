@@ -5,6 +5,7 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"client": [
 		"ActiveRenderInfoAccessor",
+		"MixinCapeLayer",
 		"MixinGameRenderer",
 		"MixinGameSettings",
 		"MixinIngameGui",

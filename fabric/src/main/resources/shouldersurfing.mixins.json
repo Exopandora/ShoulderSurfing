@@ -6,6 +6,7 @@
 	"mixins": [],
 	"client": [
 		"ActiveRenderInfoAccessor",
+		"MixinCapeLayer",
 		"MixinGameRenderer",
 		"MixinGameSettings",
 		"MixinIngameGui",
