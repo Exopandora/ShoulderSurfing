@@ -17,7 +17,11 @@ public abstract class MixinRenderType extends RenderStateShard
 	
 	@ModifyArg
 	(
-		method = {"method_34827" /* fabric */, "lambda$static$0" /* forge */},
+		method =
+		{
+			"method_34827", // fabric
+			"lambda$static$0(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;" // forge
+		},
 		at = @At
 		(
 			value = "INVOKE",
