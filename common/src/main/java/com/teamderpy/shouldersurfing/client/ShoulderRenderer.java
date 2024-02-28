@@ -288,7 +288,7 @@ public class ShoulderRenderer
 	
 	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
-		return ShoulderInstance.getInstance().doShoulderSurfing() && Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D);
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D);
 	}
 	
 	public double getPlayerReach()
