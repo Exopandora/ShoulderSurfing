@@ -69,6 +69,7 @@ public class Config
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
+		private final BooleanValue playerTransparency;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -252,6 +253,11 @@ public class Config
 				.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
 				.translation("Dynamically adjust offsets")
 				.define("dynamically_adjust_offsets", true);
+			
+			this.playerTransparency = builder
+				.comment("Whether or not to adjust the player model transparency when view is obstructed.")
+				.translation("Adjust player transparency")
+				.define("adjust_player_transparency", true);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -646,6 +652,16 @@ public class Config
 		public void setDynamicallyAdjustOffsets(boolean dynamicallyAdjustOffsets)
 		{
 			Config.set(this.dynamicallyAdjustOffsets, dynamicallyAdjustOffsets);
+		}
+		
+		public boolean isPlayerTransparencyEnabled()
+		{
+			return this.playerTransparency.get();
+		}
+		
+		public void PlayerTransparencyEnabled(boolean enabled)
+		{
+			Config.set(this.playerTransparency, enabled);
 		}
 		
 		public double getCustomRaytraceDistance()
