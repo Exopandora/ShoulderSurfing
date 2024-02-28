@@ -6,6 +6,7 @@
 	"client": [
 		"CameraAccessor",
 		"MixinAbstractClientPlayer",
+		"MixinCapeLayer",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
