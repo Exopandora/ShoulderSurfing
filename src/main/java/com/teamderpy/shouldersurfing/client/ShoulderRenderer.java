@@ -312,7 +312,20 @@ public class ShoulderRenderer
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-			this.cameraEntityAlpha = (float) MathHelper.clamp(Math.abs(this.cameraOffsetX) / (entity.width / 2.0D), 0.15F, 1.0F);
+			
+			float xAlpha = (float) MathHelper.clamp(Math.abs(this.cameraOffsetX) / (entity.width / 2.0D), 0, 1.0F);
+			float yAlpha = 0;
+			
+			if(this.cameraOffsetY > 0)
+			{
+				yAlpha = (float) MathHelper.clamp(this.cameraOffsetY / (entity.height - entity.getEyeHeight()), 0, 1.0F);
+			}
+			else if(this.cameraOffsetY < 0)
+			{
+				yAlpha = (float) MathHelper.clamp(-this.cameraOffsetY / -entity.getEyeHeight(), 0, 1.0F);
+			}
+			
+			this.cameraEntityAlpha = MathHelper.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), 0.15F, 1.0F);
 			this.shouldRenderCameraEntityTransparent = true;
 			GlStateManager.color(1.0F, 1.0F, 1.0F, this.cameraEntityAlpha);
 		}
@@ -333,7 +346,10 @@ public class ShoulderRenderer
 	
 	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
-		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && Math.abs(this.cameraOffsetX) < (entity.width / 2.0D);
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
+			(Math.abs(this.cameraOffsetX) < (entity.width / 2.0D)
+				&& (this.cameraOffsetY > 0 && this.cameraOffsetY < entity.height - entity.getEyeHeight()
+					|| this.cameraOffsetY < 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
 	public double getPlayerReach()
