@@ -18,7 +18,8 @@ public class MixinCapeLayer
 		(
 			value = "INVOKE",
 			target = "net/minecraft/client/renderer/RenderType.entitySolid(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;"
-		)
+		),
+		require = 0
 	)
 	private RenderType entitySolid(ResourceLocation texture)
 	{
