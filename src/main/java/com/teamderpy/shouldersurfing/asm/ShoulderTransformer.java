@@ -73,7 +73,7 @@ public class ShoulderTransformer implements IClassTransformer
 	{
 		if(TRANSFORMERS.containsKey(name))
 		{
-			List<IShoulderTransformer> transformers = TRANSFORMERS.remove(name);
+			List<IShoulderTransformer> transformers = TRANSFORMERS.get(name);
 			ClassNode classNode = new ClassNode();
 			ClassReader classReader = new ClassReader(bytes);
 			classReader.accept(classNode, 0);
@@ -131,7 +131,7 @@ public class ShoulderTransformer implements IClassTransformer
 			if(method2transformers.containsKey(methodObf))
 			{
 				String methodDeobf = mappings.map(transformers.get(0).getMethodId(), false) + mappings.desc(transformers.get(0).getMethodId(), false);
-				method2transformers.remove(methodObf).forEach(transformer ->
+				method2transformers.get(methodObf).forEach(transformer ->
 				{
 					String transformerName = transformer.getClass().getSimpleName();
 					LOGGER.info("Attempting to apply method transformer " + transformerName + ", " + methodObf + " -> " + methodDeobf);
