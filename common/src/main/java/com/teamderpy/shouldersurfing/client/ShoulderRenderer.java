@@ -270,7 +270,19 @@ public class ShoulderRenderer
 		
 		if(this.shouldRenderCameraEntityTransparent(entity))
 		{
-			this.cameraEntityAlpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0.15F, 1.0F);
+			float xAlpha = (float) Mth.clamp(Math.abs(this.cameraOffsetX) / (entity.getBbWidth() / 2.0D), 0, 1.0F);
+			float yAlpha = 0;
+			
+			if(this.cameraOffsetY > 0)
+			{
+				yAlpha = (float) Mth.clamp(this.cameraOffsetY / (entity.getBbHeight() - entity.getEyeHeight()), 0, 1.0F);
+			}
+			else if(this.cameraOffsetY < 0)
+			{
+				yAlpha = (float) Mth.clamp(-this.cameraOffsetY / -entity.getEyeHeight(), 0, 1.0F);
+			}
+			
+			this.cameraEntityAlpha = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), 0.15F, 1.0F);
 		}
 		
 		return false;
@@ -288,7 +300,10 @@ public class ShoulderRenderer
 	
 	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
-		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D);
+		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
+			(Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D)
+				&& (this.cameraOffsetY > 0 && this.cameraOffsetY < entity.getBbHeight() - entity.getEyeHeight()
+					|| this.cameraOffsetY < 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
 	public double getPlayerReach()
