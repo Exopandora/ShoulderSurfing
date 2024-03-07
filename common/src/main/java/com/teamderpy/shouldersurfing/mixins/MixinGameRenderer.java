@@ -3,7 +3,6 @@ package com.teamderpy.shouldersurfing.mixins;
 import java.util.function.Predicate;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -11,7 +10,6 @@ import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
@@ -21,11 +19,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(GameRenderer.class)
-public class MixinGameRenderer
+public abstract class MixinGameRenderer implements GameRendererAccessor
 {
-	@Shadow
-	private Camera mainCamera;
-	
 	@Redirect
 	(
 		method = "pick",
@@ -39,7 +34,7 @@ public class MixinGameRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{
-			return ShoulderHelper.traceEntities(this.mainCamera, shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), true);
+			return ShoulderHelper.traceEntities(this.getMainCamera(), shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), true);
 		}
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
