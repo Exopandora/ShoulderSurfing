@@ -17,12 +17,17 @@ public abstract class MixinRenderType extends RenderState
 	
 	@ModifyArg
 	(
-		method = "armorCutoutNoCull",
+		method =
+		{
+			"armorCutoutNoCull", // fabric/forge
+			"lambda$getArmorCutoutNoCull$0" // optifine
+		},
 		at = @At
 		(
 			value = "INVOKE",
 			target = "net/minecraft/client/renderer/RenderType$State$Builder.setTransparencyState(Lnet/minecraft/client/renderer/RenderState$TransparencyState;)Lnet/minecraft/client/renderer/RenderType$State$Builder;"
-		)
+		),
+		require = 1
 	)
 	private static RenderState.TransparencyState setTransparencyState(RenderState.TransparencyState transparencyState)
 	{
