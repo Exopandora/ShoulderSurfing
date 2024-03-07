@@ -204,7 +204,7 @@ public class ShoulderHelper
 		for(ItemStack handStack : entity.getHandSlots())
 		{
 			Item handItem = handStack.getItem();
-
+			
 			if(holdItems.contains(BuiltInRegistries.ITEM.getKey(handItem).toString()))
 			{
 				return true;
