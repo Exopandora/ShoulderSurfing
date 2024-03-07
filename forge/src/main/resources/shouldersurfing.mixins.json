@@ -5,6 +5,7 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"client": [
 		"CameraAccessor",
+		"GameRendererAccessor",
 		"MixinAbstractClientPlayer",
 		"MixinCapeLayer",
 		"MixinGameRenderer",
