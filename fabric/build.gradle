@@ -30,9 +30,9 @@ sourceSets {
 }
 
 dependencies {
-	compileOnly project(":api")
-	compileOnly project(":common")
-	compileOnly project(":plugin")
+	implementation project(":api")
+	implementation project(":common")
+	implementation project(":plugin")
 	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
