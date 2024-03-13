@@ -29,6 +29,7 @@ sourceSets {
 	main {
 		java {
 			compileClasspath += sourceSets.api.output
+			compileClasspath += project(":common").sourceSets.api.output
 			runtimeClasspath += sourceSets.api.output
 		}
 	}
@@ -37,6 +38,7 @@ sourceSets {
 mixin {
 	add sourceSets.main, "${mod_id}.refmap.json"
 	config "${mod_id}.mixins.json"
+	config "${mod_id}.compat.oculus.mixins.json"
 }
 
 minecraft {
@@ -77,14 +79,10 @@ minecraft {
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-	implementation(project(":common")) {
-		transitive = false
-	}
-	
-	implementation(project(":plugin")) {
-		transitive = false
-	}
-	
+	compileOnly project(":api")
+	compileOnly project(":common")
+	compileOnly project(":plugin")
+
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	implementation fg.deobf("mcp.mobius.waila:wthit:forge-${wthit_version}")

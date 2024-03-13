@@ -19,6 +19,18 @@ eclipse {
 	}
 }
 
+sourceSets {
+	api {
+		compileClasspath += sourceSets.main.compileClasspath
+	}
+	main {
+		java {
+			compileClasspath += sourceSets.api.output
+			runtimeClasspath += sourceSets.api.output
+		}
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
