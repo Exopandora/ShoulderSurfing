@@ -21,7 +21,8 @@
 		]
 	},
 	"mixins": [
-		"shouldersurfing.mixins.json"
+		"shouldersurfing.mixins.json",
+		"shouldersurfing.compat.iris.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.13",
