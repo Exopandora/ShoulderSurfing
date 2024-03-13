@@ -23,15 +23,5 @@ public class MixinSheets
 	private static void setSheet(CallbackInfo ci)
 	{
 		((BlendingStateHolder) ARMOR_TRIMS_SHEET_TYPE).setTransparencyType(TransparencyType.DECAL);
-		
-//		try
-//		{
-//			Method method = ARMOR_TRIMS_SHEET_TYPE.getClass().getMethod("setTransparencyType", TransparencyType.class);
-//			method.invoke(ARMOR_TRIMS_SHEET_TYPE, TransparencyType.DECAL);
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
 	}
 }
