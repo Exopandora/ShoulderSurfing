@@ -93,7 +93,7 @@ public class ShoulderHelper
 			playerReach = Math.max(playerReach, gameMode.getPlayerMode().isCreative() ? 6.0D : 3.0D);
 		}
 		
-		if(blockHit != null)
+		if(blockHit.getType() != HitResult.Type.MISS)
 		{
 			playerReach = blockHit.getLocation().distanceTo(eyePosition);
 		}
@@ -104,7 +104,7 @@ public class ShoulderHelper
 		{
 			double distance = eyePosition.distanceTo(entityHit.getLocation());
 			
-			if(distance < playerReach || blockHit == null)
+			if(distance < playerReach || blockHit.getType() != HitResult.Type.MISS)
 			{
 				return entityHit;
 			}
