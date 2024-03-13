@@ -12,7 +12,7 @@ import net.coderbot.batchedentityrendering.impl.TransparencyType;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 
-@Mixin(value = Sheets.class, priority = 1001)
+@Mixin(value = Sheets.class, priority = 1001 /* apply after iris */)
 public class MixinSheets
 {
 	@Shadow
