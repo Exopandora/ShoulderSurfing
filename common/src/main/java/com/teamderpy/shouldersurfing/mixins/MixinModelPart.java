@@ -8,17 +8,17 @@ import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 
 import net.minecraft.client.model.geom.ModelPart;
 
-@Mixin(ModelPart.Cube.class)
-public class MixinModelPartCube
+@Mixin(value = ModelPart.class, priority = 500 /* apply before sodium and iris */)
+public class MixinModelPart
 {
 	@ModifyVariable
 	(
 		at = @At("HEAD"),
-		method = "compile",
+		method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V",
 		index = 8,
 		argsOnly = true
 	)
-	public float compile(float alpha)
+	public float render(float alpha)
 	{
 		return Math.min(alpha, ShoulderRenderer.getInstance().getCameraEntityAlpha());
 	}

@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"plugin": "com.teamderpy.shouldersurfing.mixins.compatibility.ShoulderOculusCompatMixinPlugin",
+	"package": "com.teamderpy.shouldersurfing.mixins.compatibility",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [],
+	"client": [
+		"MixinSheets"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
