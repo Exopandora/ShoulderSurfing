@@ -1,7 +1,5 @@
 package com.teamderpy.shouldersurfing.client;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -10,12 +8,9 @@ import com.mojang.math.Vector4f;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
-
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +19,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public class ShoulderRenderer
 {
@@ -287,13 +283,8 @@ public class ShoulderRenderer
 		return false;
 	}
 	
-	public void postRenderCameraEntity(Entity entity, float partialTick, MultiBufferSource multiBufferSource)
+	public void postRenderCameraEntity(Entity entity, float partialTick)
 	{
-		if(this.shouldRenderCameraEntityTransparent(entity))
-		{
-			((BufferSource) multiBufferSource).endLastBatch();
-		}
-		
 		this.cameraEntityAlpha = 1.0F;
 	}
 	
