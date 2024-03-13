@@ -77,14 +77,10 @@ minecraft {
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-	implementation(project(":common")) {
-		transitive = false
-	}
-	
-	implementation(project(":plugin")) {
-		transitive = false
-	}
-	
+	implementation project(":api")
+	implementation project(":common")
+	implementation project(":plugin")
+
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	implementation 'org.jetbrains:annotations:24.0.1'

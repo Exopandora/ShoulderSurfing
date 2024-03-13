@@ -22,13 +22,9 @@ eclipse {
 }
 
 dependencies {
-	implementation(project(":common")) {
-		transitive = false
-	}
-	
-	implementation(project(":plugin")) {
-		transitive = false
-	}
+	implementation project(":api")
+	implementation project(":common")
+	implementation project(":plugin")
 	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings fileTree(dir: "../mapping", include: "**.jar")

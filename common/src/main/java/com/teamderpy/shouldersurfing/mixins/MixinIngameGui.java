@@ -16,9 +16,6 @@ import net.minecraft.client.settings.PointOfView;
 @Mixin(IngameGui.class)
 public class MixinIngameGui
 {
-	@Shadow
-	protected Minecraft minecraft;
-	
 	@Redirect
 	(
 		method = "renderCrosshair",
@@ -30,6 +27,6 @@ public class MixinIngameGui
 	)
 	private boolean doRenderCrosshair(PointOfView cameraType)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(this.minecraft.hitResult, ShoulderInstance.getInstance().isAiming());
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, ShoulderInstance.getInstance().isAiming());
 	}
 }
