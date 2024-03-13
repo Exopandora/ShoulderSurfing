@@ -21,14 +21,18 @@ eclipse {
 	}
 }
 
+sourceSets {
+	main {
+		java {
+			compileClasspath += project(":common").sourceSets.api.output
+		}
+	}
+}
+
 dependencies {
-	implementation(project(":common")) {
-		transitive = false
-	}
-	
-	implementation(project(":plugin")) {
-		transitive = false
-	}
+	compileOnly project(":api")
+	compileOnly project(":common")
+	compileOnly project(":plugin")
 	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()

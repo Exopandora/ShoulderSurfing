@@ -29,6 +29,7 @@ sourceSets {
 	main {
 		java {
 			compileClasspath += sourceSets.api.output
+			compileClasspath += project(":common").sourceSets.api.output
 			runtimeClasspath += sourceSets.api.output
 		}
 	}
@@ -37,6 +38,7 @@ sourceSets {
 mixin {
 	add sourceSets.main, "${mod_id}.refmap.json"
 	config "${mod_id}.mixins.json"
+	config "${mod_id}.compat.oculus.mixins.json"
 }
 
 minecraft {
@@ -77,6 +79,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
+	compileOnly project(":api")
 	compileOnly project(":common")
 	compileOnly project(":plugin")
 	
