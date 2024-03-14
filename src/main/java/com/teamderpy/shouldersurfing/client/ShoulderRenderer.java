@@ -348,8 +348,8 @@ public class ShoulderRenderer
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
 			(Math.abs(this.cameraOffsetX) < (entity.width / 2.0D)
-				&& (this.cameraOffsetY > 0 && this.cameraOffsetY < entity.height - entity.getEyeHeight()
-					|| this.cameraOffsetY < 0 && -this.cameraOffsetY < entity.getEyeHeight()));
+				&& (this.cameraOffsetY >= 0 && this.cameraOffsetY < entity.height - entity.getEyeHeight()
+					|| this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
 	public double getPlayerReach()
