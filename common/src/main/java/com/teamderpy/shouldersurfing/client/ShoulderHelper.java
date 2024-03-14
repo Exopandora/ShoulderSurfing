@@ -1,16 +1,10 @@
 package com.teamderpy.shouldersurfing.client;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.mixins.ActiveRenderInfoAccessor;
 import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -30,6 +24,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class ShoulderHelper
 {
@@ -97,7 +95,7 @@ public class ShoulderHelper
 			playerReach = Math.max(playerReach, gameMode.getPlayerMode().isCreative() ? 6.0D : 3.0D);
 		}
 		
-		if(blockHit.getType() != HitResult.Type.MISS)
+		if(blockHit.getType() != RayTraceResult.Type.MISS)
 		{
 			playerReach = blockHit.getLocation().distanceTo(eyePosition);
 		}
@@ -108,7 +106,7 @@ public class ShoulderHelper
 		{
 			double distance = eyePosition.distanceTo(entityHit.getLocation());
 			
-			if(distance < playerReach || blockHit.getType() != HitResult.Type.MISS)
+			if(distance < playerReach || blockHit.getType() != RayTraceResult.Type.MISS)
 			{
 				return entityHit;
 			}
