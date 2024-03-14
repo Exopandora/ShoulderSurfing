@@ -39,7 +39,7 @@ public class MixinWorldRenderer
 	{
 		if(entity == Minecraft.getInstance().getCameraEntity())
 		{
-			ShoulderRenderer.getInstance().postRenderCameraEntity(entity, partialTick, multiBufferSource);
+			ShoulderRenderer.getInstance().postRenderCameraEntity(entity, partialTick);
 		}
 	}
 }

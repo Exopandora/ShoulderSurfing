@@ -1,17 +1,13 @@
 package com.teamderpy.shouldersurfing.client;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.mixins.ActiveRenderInfoAccessor;
-
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -26,6 +22,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class ShoulderRenderer
 {
@@ -290,13 +287,8 @@ public class ShoulderRenderer
 		return false;
 	}
 	
-	public void postRenderCameraEntity(Entity entity, float partialTick, IRenderTypeBuffer multiBufferSource)
+	public void postRenderCameraEntity(Entity entity, float partialTick)
 	{
-		if(this.shouldRenderCameraEntityTransparent(entity))
-		{
-			((IRenderTypeBuffer.Impl) multiBufferSource).endBatch();
-		}
-		
 		this.cameraEntityAlpha = 1.0F;
 	}
 	
