@@ -21,7 +21,7 @@ public abstract class MixinRenderType extends RenderStateShard
 		{
 			"method_34827", // fabric
 			"lambda$static$0(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;", // forge
-			"m_285682_(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;" // optifine
+			"m_173205_(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;" // optifine
 		},
 		at = @At
 		(
