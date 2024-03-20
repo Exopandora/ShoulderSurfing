@@ -1,15 +1,9 @@
 package com.teamderpy.shouldersurfing.mixins;
 
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderHelper.ShoulderLook;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -17,6 +11,10 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Item.class)
 public class MixinItem
@@ -30,7 +28,7 @@ public class MixinItem
 			target = "Lnet/minecraft/world/level/ClipContext;"
 		)
 	)
-	private static ClipContext initClipContext(Vec3 start, Vec3 end, Block block, Fluid fluid, @Nullable Entity entity)
+	private static ClipContext initClipContext(Vec3 start, Vec3 end, Block block, Fluid fluid, @NotNull Entity entity)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{

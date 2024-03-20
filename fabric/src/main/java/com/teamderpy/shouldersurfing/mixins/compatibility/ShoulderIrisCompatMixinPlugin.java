@@ -40,6 +40,7 @@ public class ShoulderIrisCompatMixinPlugin implements IMixinConfigPlugin
 		{
 			e.printStackTrace();
 		}
+		
 		return false;
 	}
 	

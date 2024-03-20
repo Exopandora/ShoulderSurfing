@@ -3,7 +3,6 @@ package com.teamderpy.shouldersurfing.compatibility;
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
-
 import mcp.mobius.waila.api.IObjectPicker;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;

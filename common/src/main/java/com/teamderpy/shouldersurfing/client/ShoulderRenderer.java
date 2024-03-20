@@ -6,7 +6,6 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
 import net.minecraft.client.Camera;
@@ -52,7 +51,7 @@ public class ShoulderRenderer
 		if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			poseStack.pushPose();
-			poseStack.last().pose().translate(new Vector3f(this.translation.getX(), -this.translation.getY(), 0F));
+			poseStack.last().pose().translate(new Vector3f(this.translation.x(), -this.translation.y(), 0F));
 			this.lastTranslation = this.translation;
 		}
 		else
@@ -268,9 +267,9 @@ public class ShoulderRenderer
 	private boolean skipCameraEntityRendering()
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
-			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
-				|| Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90
-				|| Minecraft.getInstance().getCameraEntity() instanceof Player player && player.isScoping());
+			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
+				Minecraft.getInstance().getCameraEntity().getXRot() < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90 ||
+				Minecraft.getInstance().getCameraEntity() instanceof Player player && player.isScoping());
 	}
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
@@ -308,9 +307,9 @@ public class ShoulderRenderer
 	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
-			(Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D)
-				&& (this.cameraOffsetY >= 0 && this.cameraOffsetY < entity.getBbHeight() - entity.getEyeHeight()
-					|| this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
+			(Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D) &&
+				(this.cameraOffsetY >= 0 && this.cameraOffsetY < entity.getBbHeight() - entity.getEyeHeight() ||
+					this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
 	public boolean turn(Player player, double yRot, double xRot)
