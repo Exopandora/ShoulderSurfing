@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.mixins;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
@@ -25,7 +26,7 @@ public abstract class MixinPlayer extends Entity
 	}
 	
 	@Override
-	public HitResult pick(double distance, float partialTicks, boolean stopOnFluid)
+	public @NotNull HitResult pick(double distance, float partialTicks, boolean stopOnFluid)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		Camera camera = minecraft.getEntityRenderDispatcher().camera;

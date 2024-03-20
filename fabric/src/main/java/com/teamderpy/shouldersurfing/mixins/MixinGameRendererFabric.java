@@ -30,7 +30,6 @@ public class MixinGameRendererFabric
 			shift = Shift.AFTER
 		)
 	)
-	@SuppressWarnings("resource")
 	private void onCameraSetup(float partialTick, long nanos, PoseStack poseStack, CallbackInfo ci)
 	{
 		ShoulderRenderer.getInstance().offsetCamera(this.mainCamera, Minecraft.getInstance().level, partialTick);

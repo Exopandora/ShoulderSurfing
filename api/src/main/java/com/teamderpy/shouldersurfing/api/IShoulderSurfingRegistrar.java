@@ -13,9 +13,6 @@ public interface IShoulderSurfingRegistrar
 	
 	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate)
 	{
-		return this.registerAdaptiveItemCallback((minecraft, entity) ->
-		{
-			return StreamSupport.stream(entity.getHandSlots().spliterator(), false).anyMatch(predicate::test);
-		});
+		return this.registerAdaptiveItemCallback((minecraft, entity) -> StreamSupport.stream(entity.getHandSlots().spliterator(), false).anyMatch(predicate));
 	}
 }
