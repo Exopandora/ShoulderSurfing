@@ -3,15 +3,16 @@ package com.teamderpy.shouldersurfing.forge;
 import com.teamderpy.shouldersurfing.client.KeyHandler;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.ViewportEvent.ComputeCameraAngles;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandler
@@ -43,7 +44,10 @@ public class ClientEventHandler
 	@SuppressWarnings("resource")
 	public static void computeCameraAnglesEvent(ComputeCameraAngles event)
 	{
-		ShoulderRenderer.getInstance().offsetCamera(event.getCamera(), Minecraft.getInstance().level, (float) event.getPartialTick());
+		ShoulderRenderer renderer = ShoulderRenderer.getInstance();
+		renderer.offsetCamera(event.getCamera(), Minecraft.getInstance().level, (float) event.getPartialTick());
+		event.setPitch(renderer.getCameraXRot());
+		event.setYaw(renderer.getCameraYRot());
 	}
 	
 	@SubscribeEvent
@@ -59,5 +63,22 @@ public class ClientEventHandler
 	public static void keyInputEvent(InputEvent event)
 	{
 		KeyHandler.onInput();
+	}
+	
+	@SubscribeEvent
+	public static void onDatapackSyncEvent(OnDatapackSyncEvent event)
+	{
+		if(event.getPlayer() != null)
+		{
+			ShoulderRenderer.getInstance().resetCameraRotations(event.getPlayer());
+			ShoulderInstance.getInstance().resetCameraEntityRotations(event.getPlayer());
+		}
+	}
+	
+	@SubscribeEvent
+	public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
+	{
+		ShoulderRenderer.getInstance().resetCameraRotations(event.getEntity());
+		ShoulderInstance.getInstance().resetCameraEntityRotations(event.getEntity());
 	}
 }
