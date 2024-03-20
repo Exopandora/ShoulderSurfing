@@ -41,7 +41,6 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	@SuppressWarnings("resource")
 	public static void computeCameraAnglesEvent(ComputeCameraAngles event)
 	{
 		ShoulderRenderer renderer = ShoulderRenderer.getInstance();

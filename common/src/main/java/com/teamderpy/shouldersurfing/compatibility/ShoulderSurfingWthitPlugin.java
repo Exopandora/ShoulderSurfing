@@ -3,7 +3,6 @@ package com.teamderpy.shouldersurfing.compatibility;
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
-
 import mcp.mobius.waila.api.IObjectPicker;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
@@ -32,12 +31,6 @@ public class ShoulderSurfingWthitPlugin implements IWailaPlugin
 			if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 			{
 				Camera camera = mc.gameRenderer.getMainCamera();
-				
-				if(camera.getEntity() == null)
-				{
-					return ObjectPicker.MISS;
-				}
-				
 				MultiPlayerGameMode gameMode = mc.gameMode;
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
 				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);

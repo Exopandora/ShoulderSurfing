@@ -50,11 +50,6 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 				Minecraft minecraft = Minecraft.getInstance();
 				Camera camera = minecraft.gameRenderer.getMainCamera();
 				
-				if(camera.getEntity() == null)
-				{
-					return null;
-				}
-				
 				MultiPlayerGameMode gameMode = minecraft.gameMode;
 				ClipContext.Fluid fluidContext = registration.getConfig().getGeneral().getDisplayFluids().ctx;
 				double maxDistance = gameMode.getPickRange() + registration.getConfig().getGeneral().getReachDistance();
@@ -73,26 +68,26 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 					BlockState state = level.getBlockState(blockTarget.getBlockPos());
 					BlockEntity tileEntity = level.getBlockEntity(blockTarget.getBlockPos());
 					return this.registration.blockAccessor()
-							.blockState(state)
-							.blockEntity(tileEntity)
-							.level(level)
-							.player(player)
-							.serverData(this.registration.getServerData())
-							.serverConnected(this.registration.isServerConnected())
-							.hit(blockTarget)
-							.fakeBlock(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
-							.build();
+						.blockState(state)
+						.blockEntity(tileEntity)
+						.level(level)
+						.player(player)
+						.serverData(this.registration.getServerData())
+						.serverConnected(this.registration.isServerConnected())
+						.hit(blockTarget)
+						.fakeBlock(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
+						.build();
 				}
 				else if(target instanceof EntityHitResult entityTarget)
 				{
 					return this.registration.entityAccessor()
-							.level(level)
-							.player(player)
-							.serverData(this.registration.getServerData())
-							.serverConnected(this.registration.isServerConnected())
-							.hit(entityTarget)
-							.entity(entityTarget.getEntity())
-							.build();
+						.level(level)
+						.player(player)
+						.serverData(this.registration.getServerData())
+						.serverConnected(this.registration.isServerConnected())
+						.hit(entityTarget)
+						.entity(entityTarget.getEntity())
+						.build();
 				}
 			}
 			

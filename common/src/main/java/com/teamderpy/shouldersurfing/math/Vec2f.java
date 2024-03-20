@@ -2,28 +2,9 @@ package com.teamderpy.shouldersurfing.math;
 
 import net.minecraft.util.Mth;
 
-public class Vec2f
+public record Vec2f(float x, float y)
 {
 	public static final Vec2f ZERO = new Vec2f(0, 0);
-	
-	private final float x;
-	private final float y;
-	
-	public Vec2f(float x, float y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-	
-	public float getX()
-	{
-		return this.x;
-	}
-	
-	public float getY()
-	{
-		return this.y;
-	}
 	
 	public Vec2f negate()
 	{
