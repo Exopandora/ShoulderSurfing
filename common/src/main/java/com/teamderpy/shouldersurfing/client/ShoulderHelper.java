@@ -204,5 +204,5 @@ public class ShoulderHelper
 		return false;
 	}
 	
-	public static record ShoulderLook(Vec3 cameraPos, Vec3 traceEndPos, Vec3 headOffset) {}
+	public record ShoulderLook(Vec3 cameraPos, Vec3 traceEndPos, Vec3 headOffset) {}
 }

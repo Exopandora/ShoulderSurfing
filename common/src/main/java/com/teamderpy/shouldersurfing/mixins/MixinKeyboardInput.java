@@ -22,7 +22,7 @@ public abstract class MixinKeyboardInput extends Input
 	public void tick(boolean isMovingSlowly, float sneakingSpeedBonus, CallbackInfo ci)
 	{
 		Vec2f impulse = ShoulderInstance.getInstance().impulse(this.leftImpulse, this.forwardImpulse);
-		this.leftImpulse = impulse.getX();
-		this.forwardImpulse = impulse.getY();
+		this.leftImpulse = impulse.x();
+		this.forwardImpulse = impulse.y();
 	}
 }

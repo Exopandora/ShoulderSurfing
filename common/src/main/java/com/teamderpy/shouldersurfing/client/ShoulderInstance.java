@@ -1,7 +1,6 @@
 package com.teamderpy.shouldersurfing.client;
 
 import com.teamderpy.shouldersurfing.config.Config;
-import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.config.Perspective;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import net.minecraft.client.Minecraft;
@@ -98,7 +97,7 @@ public class ShoulderInstance
 				float cameraYRot = renderer.getCameraYRot();
 				Vec2f rotated = impulse.rotateDegrees(cameraYRot);
 				this.cameraEntityXRot = cameraXRot * 0.5F;
-				this.cameraEntityYRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.getX(), rotated.getY()) * Mth.RAD_TO_DEG);
+				this.cameraEntityYRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
 			}
 			
 			if(hasImpulse)
@@ -120,7 +119,6 @@ public class ShoulderInstance
 		this.cameraEntityYRot = entity.getYRot();
 	}
 	
-	@SuppressWarnings("resource")
 	public void changePerspective(Perspective perspective)
 	{
 		Minecraft.getInstance().options.setCameraType(perspective.getCameraType());
