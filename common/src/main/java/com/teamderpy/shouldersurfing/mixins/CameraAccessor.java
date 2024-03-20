@@ -23,4 +23,7 @@ public interface CameraAccessor
 	
 	@Invoker
 	double invokeGetMaxZoom(double distance);
+	
+	@Invoker
+	void invokeSetRotation(float yRot, float xRot);
 }

@@ -49,6 +49,8 @@ public class ShoulderSurfingForge
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
 	}
 	
 	@SubscribeEvent

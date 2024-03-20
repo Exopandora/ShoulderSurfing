@@ -81,7 +81,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
 	compileOnly project(":api")
 	compileOnly project(":common")
-	compileOnly project(":plugin")
+	runtimeOnly project(":plugin")
 	
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
