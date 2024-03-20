@@ -1,22 +1,15 @@
 package com.teamderpy.shouldersurfing.client;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.teamderpy.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.plugin.ShoulderSurfingRegistrar;
-
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -28,6 +21,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class ShoulderHelper
 {
@@ -35,10 +32,10 @@ public class ShoulderHelper
 	
 	public static ShoulderLook shoulderSurfingLook(Camera camera, Entity entity, float partialTick, double distanceSq)
 	{
-		Vec3 cameraOffset = ShoulderHelper.calcCameraOffset(camera, ShoulderRenderer.getInstance().getCameraDistance(), partialTick);
+		Vec3 cameraOffset = camera.getPosition().subtract(entity.getEyePosition(partialTick));
 		Vec3 headOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, cameraOffset);
-		Vec3 cameraPos = entity.getEyePosition(partialTick).add(cameraOffset);
-		Vec3 viewVector = entity.getViewVector(partialTick);
+		Vec3 cameraPos = camera.getPosition();
+		Vec3 viewVector = new Vec3(camera.getLookVector());
 		
 		if(Config.CLIENT.limitPlayerReach() && headOffset.lengthSqr() < distanceSq)
 		{
@@ -48,19 +45,6 @@ public class ShoulderHelper
 		double distance = Math.sqrt(distanceSq) + cameraOffset.distanceTo(headOffset);
 		Vec3 traceEnd = cameraPos.add(viewVector.scale(distance));
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
-	}
-	
-	public static Vec3 calcCameraOffset(@NotNull Camera camera, double distance, float partialTick)
-	{
-		ShoulderInstance instance = ShoulderInstance.getInstance();
-		double offsetX = Mth.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
-		double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
-		double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
-		return new Vec3(camera.getUpVector()).scale(offsetY)
-			.add(new Vec3(camera.getLeftVector()).scale(offsetX))
-			.add(new Vec3(camera.getLookVector()).scale(-offsetZ))
-			.normalize()
-			.scale(distance);
 	}
 	
 	public static Vec3 calcRayTraceHeadOffset(@NotNull Camera camera, Vec3 cameraOffset)
@@ -75,11 +59,11 @@ public class ShoulderHelper
 		return linePoint.add(lineNormal.scale(distance));
 	}
 	
-	public static HitResult traceBlocksAndEntities(Camera camera, MultiPlayerGameMode gameMode, double playerReachOverride, ClipContext.Fluid fluidContext, float partialTick, boolean traceEntities, boolean shoulderSurfing)
+	public static HitResult traceBlocksAndEntities(Camera camera, MultiPlayerGameMode gameMode, double playerReachOverride, ClipContext.Fluid fluidContext, float partialTick, boolean traceEntities, boolean doOffsetTrace)
 	{
 		Entity entity = camera.getEntity();
 		double playerReach = Math.max(gameMode.getPickRange(), playerReachOverride);
-		HitResult blockHit = traceBlocks(camera, entity, fluidContext, playerReach, partialTick, shoulderSurfing);
+		HitResult blockHit = traceBlocks(camera, entity, fluidContext, playerReach, partialTick, doOffsetTrace);
 		
 		if(!traceEntities)
 		{
@@ -98,7 +82,7 @@ public class ShoulderHelper
 			playerReach = blockHit.getLocation().distanceTo(eyePosition);
 		}
 		
-		EntityHitResult entityHit = traceEntities(camera, entity, playerReach, partialTick, shoulderSurfing);
+		EntityHitResult entityHit = traceEntities(camera, entity, playerReach, partialTick, doOffsetTrace);
 		
 		if(entityHit != null)
 		{
@@ -113,7 +97,7 @@ public class ShoulderHelper
 		return blockHit;
 	}
 	
-	public static EntityHitResult traceEntities(Camera camera, Entity entity, double playerReach, float partialTick, boolean shoulderSurfing)
+	public static EntityHitResult traceEntities(Camera camera, Entity entity, double playerReach, float partialTick, boolean doOffsetTrace)
 	{
 		double playerReachSq = playerReach * playerReach;
 		Vec3 viewVector = entity.getViewVector(1.0F)
@@ -123,7 +107,7 @@ public class ShoulderHelper
 			.expandTowards(viewVector)
 			.inflate(1.0D, 1.0D, 1.0D);
 		
-		if(shoulderSurfing)
+		if(doOffsetTrace)
 		{
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, playerReachSq);
 			Vec3 from = eyePosition.add(look.headOffset());
@@ -139,21 +123,19 @@ public class ShoulderHelper
 		}
 	}
 	
-	public static BlockHitResult traceBlocks(Camera camera, Entity entity, ClipContext.Fluid fluidContext, double distance, float partialTick, boolean shoulderSurfing)
+	public static BlockHitResult traceBlocks(Camera camera, Entity entity, ClipContext.Fluid fluidContext, double distance, float partialTick, boolean doOffsetTrace)
 	{
-		Vec3 eyePosition = entity.getEyePosition(partialTick);
-		
-		if(shoulderSurfing)
+		if(doOffsetTrace)
 		{
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
-			Vec3 from = eyePosition.add(look.headOffset());
+			Vec3 from = camera.getPosition();
 			Vec3 to = look.traceEndPos();
-			return entity.level().clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, fluidContext, entity));
+			return entity.level().clip(new ClipContext(from, to, ShoulderInstance.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE, fluidContext, entity));
 		}
 		else
 		{
-			Vec3 from = eyePosition;
-			Vec3 view = entity.getViewVector(partialTick);
+			Vec3 from = entity.getEyePosition(partialTick);
+			Vec3 view = new Vec3(camera.getLookVector());
 			Vec3 to = from.add(view.scale(distance));
 			ClipContext.Block blockContext = Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER;
 			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));

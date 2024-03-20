@@ -3,6 +3,7 @@ package com.teamderpy.shouldersurfing.client;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamderpy.shouldersurfing.config.Config;
+import com.teamderpy.shouldersurfing.config.CrosshairType;
 import com.teamderpy.shouldersurfing.math.Vec2f;
 import com.teamderpy.shouldersurfing.mixins.CameraAccessor;
 import net.minecraft.client.Camera;
@@ -33,6 +34,8 @@ public class ShoulderRenderer
 	private double cameraOffsetY;
 	private double cameraOffsetZ;
 	private float cameraEntityAlpha = 1.0F;
+	private float cameraXRot = 0F;
+	private float cameraYRot = 0F;
 	
 	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
 	{
@@ -69,9 +72,16 @@ public class ShoulderRenderer
 	
 	public void offsetCamera(Camera camera, Level level, float partialTick)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null && !(camera.getEntity() instanceof LivingEntity cameraEntity && cameraEntity.isSleeping()))
 		{
+			CameraAccessor accessor = ((CameraAccessor) camera);
 			ShoulderInstance instance = ShoulderInstance.getInstance();
+			
+			if(Config.CLIENT.isCameraDecoupled())
+			{
+				accessor.invokeSetRotation(this.cameraYRot, this.cameraXRot);
+			}
+			
 			double targetXOffset = Config.CLIENT.getOffsetX();
 			double targetYOffset = Config.CLIENT.getOffsetY();
 			double targetZOffset = Config.CLIENT.getOffsetZ();
@@ -153,7 +163,6 @@ public class ShoulderRenderer
 			instance.setTargetOffsetY(targetYOffset);
 			instance.setTargetOffsetZ(targetZOffset);
 			
-			CameraAccessor accessor = ((CameraAccessor) camera);
 			double x = Mth.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
 			double y = Mth.lerp(partialTick, camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
 			double z = Mth.lerp(partialTick, camera.getEntity().zo, camera.getEntity().getZ());
@@ -173,8 +182,16 @@ public class ShoulderRenderer
 	
 	private double calcCameraDistance(Camera camera, Level level, double distance, float partialTick)
 	{
-		Vec3 cameraPos = camera.getPosition();
-		Vec3 cameraOffset = ShoulderHelper.calcCameraOffset(camera, distance, partialTick);
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		double offsetX = Mth.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+		double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+		double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+		Vec3 cameraOffset = new Vec3(camera.getUpVector()).scale(offsetY)
+			.add(new Vec3(camera.getLeftVector()).scale(offsetX))
+			.add(new Vec3(camera.getLookVector()).scale(-offsetZ))
+			.normalize()
+			.scale(distance);
+		Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
 		
 		for(int i = 0; i < 8; i++)
 		{
@@ -183,14 +200,14 @@ public class ShoulderRenderer
 				.subtract(1, 1, 1)
 				.scale(0.075)
 				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
-			Vec3 from = cameraPos.add(offset);
+			Vec3 from = eyePosition.add(offset);
 			Vec3 to = from.add(cameraOffset);
 			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
 			HitResult hitResult = level.clip(context);
 			
 			if(hitResult.getType() != HitResult.Type.MISS)
 			{
-				double newDistance = hitResult.getLocation().distanceTo(cameraPos);
+				double newDistance = hitResult.getLocation().distanceTo(eyePosition);
 				
 				if(newDistance < distance)
 				{
@@ -297,6 +314,35 @@ public class ShoulderRenderer
 					|| this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
+	public boolean turn(Player player, double yRot, double xRot)
+	{
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		
+		if(instance.doShoulderSurfing() && Config.CLIENT.isCameraDecoupled())
+		{
+			float scaledXRot = (float) (xRot * 0.15F);
+			float scaledYRot = (float) (yRot * 0.15F);
+			this.cameraXRot = Mth.clamp(this.cameraXRot + scaledXRot, -90.0F, 90.0F);
+			this.cameraYRot = this.cameraYRot + scaledYRot;
+			
+			if(instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying())
+			{
+				player.setXRot(this.cameraXRot);
+				player.setYRot(this.cameraYRot);
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void resetCameraRotations(Entity entity)
+	{
+		this.cameraXRot = entity.getXRot();
+		this.cameraYRot = entity.getYRot();
+	}
+	
 	public double getPlayerReach()
 	{
 		return Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
@@ -325,6 +371,16 @@ public class ShoulderRenderer
 	public float getCameraEntityAlpha()
 	{
 		return this.cameraEntityAlpha;
+	}
+	
+	public float getCameraXRot()
+	{
+		return this.cameraXRot;
+	}
+	
+	public float getCameraYRot()
+	{
+		return this.cameraYRot;
 	}
 	
 	public static ShoulderRenderer getInstance()
