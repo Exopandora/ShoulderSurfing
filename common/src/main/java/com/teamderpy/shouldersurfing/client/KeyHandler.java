@@ -29,7 +29,7 @@ public class KeyHandler
 		super();
 	}
 	
-	public static void onInput()
+	public static void tick()
 	{
 		if(Minecraft.getInstance().screen == null)
 		{
