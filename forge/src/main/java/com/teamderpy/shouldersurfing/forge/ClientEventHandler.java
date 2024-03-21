@@ -62,7 +62,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void keyInputEvent(InputEvent event)
 	{
-		KeyHandler.onInput();
+		KeyHandler.tick();
 	}
 	
 	@SubscribeEvent
