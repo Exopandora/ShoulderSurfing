@@ -74,14 +74,14 @@ public class ShoulderSurfingForge
 	@SubscribeEvent
 	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
 	{
-		event.register(KeyHandler.KEYBIND_CAMERA_LEFT);
-		event.register(KeyHandler.KEYBIND_CAMERA_RIGHT);
-		event.register(KeyHandler.KEYBIND_CAMERA_IN);
-		event.register(KeyHandler.KEYBIND_CAMERA_OUT);
-		event.register(KeyHandler.KEYBIND_CAMERA_UP);
-		event.register(KeyHandler.KEYBIND_CAMERA_DOWN);
-		event.register(KeyHandler.KEYBIND_SWAP_SHOULDER);
-		event.register(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
-		event.register(KeyHandler.KEYBIND_FREE_LOOK);
+		event.register(KeyHandler.CAMERA_LEFT);
+		event.register(KeyHandler.CAMERA_RIGHT);
+		event.register(KeyHandler.CAMERA_IN);
+		event.register(KeyHandler.CAMERA_OUT);
+		event.register(KeyHandler.CAMERA_UP);
+		event.register(KeyHandler.CAMERA_DOWN);
+		event.register(KeyHandler.SWAP_SHOULDER);
+		event.register(KeyHandler.TOGGLE_SHOULDER_SURFING);
+		event.register(KeyHandler.FREE_LOOK);
 	}
 }
