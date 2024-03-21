@@ -29,6 +29,8 @@ public class ShoulderInstance
 	private double targetOffsetZ = Config.CLIENT.getOffsetZ();
 	private float cameraEntityXRot = 0F;
 	private float cameraEntityYRot = 0F;
+	private boolean isFreeLooking = false;
+	private float freeLookYRot = 0.0F;
 	
 	private ShoulderInstance()
 	{
@@ -61,6 +63,13 @@ public class ShoulderInstance
 		this.offsetX = this.lastOffsetX + (this.targetOffsetX - this.lastOffsetX) * Config.CLIENT.getCameraTransitionSpeedMultiplier();		
 		this.offsetY = this.lastOffsetY + (this.targetOffsetY - this.lastOffsetY) * Config.CLIENT.getCameraTransitionSpeedMultiplier();
 		this.offsetZ = this.lastOffsetZ + (this.targetOffsetZ - this.lastOffsetZ) * Config.CLIENT.getCameraTransitionSpeedMultiplier();
+		
+		this.isFreeLooking = KeyHandler.KEYBIND_FREE_LOOK.isDown() && !this.isAiming;
+		
+		if(!this.isFreeLooking)
+		{
+			this.freeLookYRot = ShoulderRenderer.getInstance().getCameraYRot();
+		}
 	}
 	
 	public Vec2f impulse(float leftImpulse, float forwardImpulse)
@@ -68,7 +77,11 @@ public class ShoulderInstance
 		Vec2f impulse = new Vec2f(leftImpulse, forwardImpulse);
 		Minecraft minecraft = Minecraft.getInstance();
 		
-		if(this.doShoulderSurfing && Config.CLIENT.isCameraDecoupled() && minecraft.getCameraEntity() instanceof LivingEntity cameraEntity)
+		if(this.doShoulderSurfing && this.isFreeLooking)
+		{
+			return impulse.rotateDegrees(Mth.degreesDifference(this.cameraEntityYRot, this.freeLookYRot));
+		}
+		else if(this.doShoulderSurfing && Config.CLIENT.isCameraDecoupled() && minecraft.getCameraEntity() instanceof LivingEntity cameraEntity)
 		{
 			boolean hasImpulse = impulse.lengthSquared() > 0;
 			float cameraEntityYRotO = this.cameraEntityYRot;
@@ -190,6 +203,11 @@ public class ShoulderInstance
 	public void setTargetOffsetZ(double targetOffsetZ)
 	{
 		this.targetOffsetZ = targetOffsetZ;
+	}
+	
+	public boolean isFreeLooking()
+	{
+		return this.isFreeLooking;
 	}
 	
 	public static ShoulderInstance getInstance()

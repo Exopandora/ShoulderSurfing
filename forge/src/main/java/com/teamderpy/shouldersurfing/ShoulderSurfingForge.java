@@ -82,5 +82,6 @@ public class ShoulderSurfingForge
 		event.register(KeyHandler.KEYBIND_CAMERA_DOWN);
 		event.register(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		event.register(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
+		event.register(KeyHandler.KEYBIND_FREE_LOOK);
 	}
 }

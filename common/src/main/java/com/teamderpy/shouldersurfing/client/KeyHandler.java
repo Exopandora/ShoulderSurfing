@@ -22,6 +22,7 @@ public class KeyHandler
 	public static final KeyMapping KEYBIND_CAMERA_DOWN = new KeyMapping("Camera down", GLFW.GLFW_KEY_PAGE_DOWN, KEY_CATEGORY);
 	public static final KeyMapping KEYBIND_SWAP_SHOULDER = new KeyMapping("Swap shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
 	public static final KeyMapping KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyMapping("Toggle perspective", InputConstants.UNKNOWN.getValue(), KEY_CATEGORY);
+	public static final KeyMapping KEYBIND_FREE_LOOK = new KeyMapping("Free look", GLFW.GLFW_KEY_LEFT_ALT, KEY_CATEGORY);
 	
 	private KeyHandler()
 	{
@@ -101,6 +102,8 @@ public class KeyHandler
 					Config.CLIENT.setDefaultPerspective(next);
 				}
 			}
+			
+			KEYBIND_FREE_LOOK.consumeClick();
 		}
 	}
 }
