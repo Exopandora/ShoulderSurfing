@@ -243,7 +243,7 @@ public class Config
 			this.centerCameraWhenLookingDownAngle = builder
 				.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
 				.translation("Center camera when looking down angle")
-				.defineInRange("center_camera_when_looking_down_angle", 15D, 0D, 90D);
+				.defineInRange("center_camera_when_looking_down_angle", 1D, 0D, 90D);
 			
 			this.hidePlayerWhenLookingUpAngle = builder
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
