@@ -24,7 +24,6 @@ eclipse {
 dependencies {
 	implementation project(":api")
 	implementation project(":common")
-	compileOnly project(":plugin")
 	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings fileTree(dir: "../mapping", include: "**.jar")

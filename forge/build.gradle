@@ -55,7 +55,6 @@ minecraft {
 					source sourceSets.main
 					source project(":api").sourceSets.main
 					source project(":common").sourceSets.main
-					source project(":plugin").sourceSets.main
 				}
 			}
 		}
