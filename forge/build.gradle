@@ -43,7 +43,9 @@ mixin {
 
 minecraft {
 	mappings channel: 'official', version: minecraft_version
-	
+
+	copyIdeResources = true
+
 	runs {
 		configureEach {
 			workingDirectory project.file('../run')
