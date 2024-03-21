@@ -26,6 +26,6 @@ public class MixinMouseHandlerFabric
 	)
 	private void onPress(long window, int button, int action, int modifiers, CallbackInfo info)
 	{
-		KeyHandler.onInput();
+		KeyHandler.tick();
 	}
 }
