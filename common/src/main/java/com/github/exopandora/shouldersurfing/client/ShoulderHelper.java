@@ -1,20 +1,14 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
-import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.CrosshairType;
+import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -23,7 +17,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 public class ShoulderHelper
@@ -148,57 +141,7 @@ public class ShoulderHelper
 		
 		if(minecraft.cameraEntity instanceof LivingEntity entity)
 		{
-			boolean result = isHoldingAdaptiveItemInternal(minecraft, entity);
-			
-			for(IAdaptiveItemCallback adaptiveItemCallback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
-			{
-				result |= adaptiveItemCallback.isHoldingAdaptiveItem(minecraft, entity);
-			}
-			
-			return result;
-		}
-		
-		return false;
-	}
-	
-	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, LivingEntity entity)
-	{
-		Item useItem = entity.getUseItem().getItem();
-		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
-		
-		if(useItems.contains(BuiltInRegistries.ITEM.getKey(useItem).toString()))
-		{
-			return true;
-		}
-		
-		for(String useItemProperty : useItemProperties)
-		{
-			if(ItemProperties.getProperty(useItem, new ResourceLocation(useItemProperty)) != null)
-			{
-				return true;
-			}
-		}
-		
-		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
-		
-		for(ItemStack handStack : entity.getHandSlots())
-		{
-			Item handItem = handStack.getItem();
-			
-			if(holdItems.contains(BuiltInRegistries.ITEM.getKey(handItem).toString()))
-			{
-				return true;
-			}
-			
-			for(String holdItemProperty : holdItemProperties)
-			{
-				if(ItemProperties.getProperty(handItem, new ResourceLocation(holdItemProperty)) != null)
-				{
-					return true;
-				}
-			}
+			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, entity));
 		}
 		
 		return false;
