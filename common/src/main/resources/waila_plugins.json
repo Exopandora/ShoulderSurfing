@@ -1,5 +1,5 @@
 {
 	"shouldersurfing:plugin": {
-		"initializer": "com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingWthitPlugin"
+		"initializer": "com.github.exopandora.shouldersurfing.compatibility.ShoulderSurfingWthitPlugin"
 	}
 }
