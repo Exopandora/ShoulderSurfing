@@ -38,6 +38,22 @@ public class ShoulderRenderer
 	private float cameraEntityAlpha = 1.0F;
 	private float cameraXRot = 0F;
 	private float cameraYRot = 0F;
+	private float cameraXRotOffset = 0F;
+	private float cameraYRotOffset = 0F;
+	private float cameraXRotOffsetO = 0F;
+	private float cameraYRotOffsetO = 0F;
+	
+	public void tick()
+	{
+		this.cameraXRotOffsetO = this.cameraXRotOffset;
+		this.cameraYRotOffsetO = this.cameraYRotOffset;
+		
+		if(!ShoulderInstance.getInstance().isFreeLooking())
+		{
+			this.cameraXRotOffset *= 0.5F;
+			this.cameraYRotOffset *= 0.5F;
+		}
+	}
 	
 	public void offsetCrosshair(MatrixStack poseStack, MainWindow window, float partialTicks)
 	{
@@ -76,17 +92,14 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null && !(camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).isSleeping()))
 		{
-			LivingEntity cameraEntity = (LivingEntity) camera.getEntity();
-			ActiveRenderInfoAccessor accessor = ((ActiveRenderInfoAccessor) camera);
-			ShoulderInstance instance = ShoulderInstance.getInstance();
+			ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
+			float cameraXRotWithOffset = MathHelper.clamp(MathHelper.rotLerp(partialTick, this.cameraXRotOffsetO, this.cameraXRotOffset) + this.cameraXRot, -90F, 90F);
+			float cameraYRotWithOffset = MathHelper.rotLerp(partialTick, this.cameraYRotOffsetO, this.cameraYRotOffset) + this.cameraYRot;
+			accessor.invokeSetRotation(cameraYRotWithOffset, cameraXRotWithOffset);
+			
 			double targetXOffset = Config.CLIENT.getOffsetX();
 			double targetYOffset = Config.CLIENT.getOffsetY();
 			double targetZOffset = Config.CLIENT.getOffsetZ();
-			
-			if(Config.CLIENT.isCameraDecoupled())
-			{
-				accessor.invokeSetRotation(this.cameraYRot, this.cameraXRot);
-			}
 			
 			if(camera.getEntity().isPassenger())
 			{
@@ -161,6 +174,7 @@ public class ShoulderRenderer
 				targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
 			}
 			
+			ShoulderInstance instance = ShoulderInstance.getInstance();
 			instance.setTargetOffsetX(targetXOffset);
 			instance.setTargetOffsetY(targetYOffset);
 			instance.setTargetOffsetZ(targetZOffset);
@@ -321,20 +335,28 @@ public class ShoulderRenderer
 	{
 		ShoulderInstance instance = ShoulderInstance.getInstance();
 		
-		if(instance.doShoulderSurfing() && Config.CLIENT.isCameraDecoupled())
+		if(instance.doShoulderSurfing())
 		{
 			float scaledXRot = (float) (xRot * 0.15F);
 			float scaledYRot = (float) (yRot * 0.15F);
+			
+			if(instance.isFreeLooking())
+			{
+				this.cameraXRotOffset = MathHelper.clamp(this.cameraXRotOffset + scaledXRot, -90.0F, 90.0F);
+				this.cameraYRotOffset = MathHelper.wrapDegrees(this.cameraYRotOffset + scaledYRot);
+				return true;
+			}
+			
 			this.cameraXRot = MathHelper.clamp(this.cameraXRot + scaledXRot, -90.0F, 90.0F);
 			this.cameraYRot = this.cameraYRot + scaledYRot;
 			
-			if(instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying())
+			if(Config.CLIENT.isCameraDecoupled() && (instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying()))
 			{
 				player.xRot = this.cameraXRot;
 				player.yRot = this.cameraYRot;
 			}
 			
-			return true;
+			return Config.CLIENT.isCameraDecoupled();
 		}
 		
 		return false;

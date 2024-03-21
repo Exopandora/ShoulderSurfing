@@ -1,14 +1,12 @@
 package com.teamderpy.shouldersurfing.client;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.config.Perspective;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
+import org.lwjgl.glfw.GLFW;
 
 public class KeyHandler
 {
@@ -22,6 +20,7 @@ public class KeyHandler
 	public static final KeyBinding KEYBIND_CAMERA_DOWN = new KeyBinding("Camera down", GLFW.GLFW_KEY_PAGE_DOWN, KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_SWAP_SHOULDER = new KeyBinding("Swap shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
 	public static final KeyBinding KEYBIND_TOGGLE_SHOULDER_SURFING = new KeyBinding("Toggle perspective", InputMappings.UNKNOWN.getValue(), KEY_CATEGORY);
+	public static final KeyBinding KEYBIND_FREE_LOOK = new KeyBinding("Free look", GLFW.GLFW_KEY_LEFT_ALT, KEY_CATEGORY);
 	
 	private KeyHandler()
 	{
@@ -101,6 +100,8 @@ public class KeyHandler
 					Config.CLIENT.setDefaultPerspective(next);
 				}
 			}
+			
+			KEYBIND_FREE_LOOK.consumeClick();
 		}
 	}
 }

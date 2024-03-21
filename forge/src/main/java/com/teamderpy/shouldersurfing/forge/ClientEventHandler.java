@@ -3,7 +3,6 @@ package com.teamderpy.shouldersurfing.forge;
 import com.teamderpy.shouldersurfing.client.KeyHandler;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.InputEvent;
@@ -23,6 +22,7 @@ public class ClientEventHandler
 		if(Phase.START.equals(event.phase))
 		{
 			ShoulderInstance.getInstance().tick();
+			ShoulderRenderer.getInstance().tick();
 		}
 	}
 	
@@ -45,8 +45,8 @@ public class ClientEventHandler
 	{
 		ShoulderRenderer renderer = ShoulderRenderer.getInstance();
 		renderer.offsetCamera(event.getInfo(), Minecraft.getInstance().level, (float) event.getRenderPartialTicks());
-		event.setPitch(renderer.getCameraXRot());
-		event.setYaw(renderer.getCameraYRot());
+		event.setPitch(event.getInfo().getXRot());
+		event.setYaw(event.getInfo().getYRot());
 	}
 	
 	@SubscribeEvent

@@ -7,7 +7,6 @@ import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
 import com.teamderpy.shouldersurfing.forge.ClientEventHandler;
 import com.teamderpy.shouldersurfing.plugin.PluginLoader;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -62,6 +61,7 @@ public class ShoulderSurfingForge
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
 		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
+		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_FREE_LOOK);
 	}
 	
 	@SubscribeEvent

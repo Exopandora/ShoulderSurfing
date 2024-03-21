@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.mixins;
 
+import com.teamderpy.shouldersurfing.client.ShoulderRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,5 +35,6 @@ public class MixinMinecraft
 	private void onStartTick(CallbackInfo info)
 	{
 		ShoulderInstance.getInstance().tick();
+		ShoulderRenderer.getInstance().tick();
 	}
 }
