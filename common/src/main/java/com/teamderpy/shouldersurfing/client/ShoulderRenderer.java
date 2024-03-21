@@ -112,63 +112,66 @@ public class ShoulderRenderer
 				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
 			}
 			
-			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity living && living.onClimbable())
+			if(!camera.getEntity().isSpectator())
 			{
-				targetXOffset = 0;
-			}
-			
-			if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
-			{
-				targetXOffset = 0;
-				targetYOffset = 0;
-			}
-			
-			if(Config.CLIENT.doDynamicallyAdjustOffsets())
-			{
-				Vec3 localCameraOffset = new Vec3(targetXOffset, targetYOffset, targetZOffset);
-				Vec3 worldCameraOffset = new Vec3(camera.getUpVector()).scale(targetYOffset)
-					.add(new Vec3(camera.getLeftVector()).scale(targetXOffset))
-					.add(new Vec3(camera.getLookVector()).scale(-targetZOffset))
-					.normalize()
-					.scale(localCameraOffset.length());
-				Vec3 worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
-				Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
-				double absOffsetX = Math.abs(targetXOffset);
-				double absOffsetY = Math.abs(targetYOffset);
-				double absOffsetZ = Math.abs(targetZOffset);
-				double targetX = absOffsetX;
-				double targetY = absOffsetY;
-				double clearance = camera.getEntity().getBbWidth() / 3.0D;
-				
-				for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
+				if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity living && living.onClimbable())
 				{
-					double scale = dz / absOffsetZ;
-					Vec3 from = eyePosition.add(worldCameraOffset.scale(scale));
-					Vec3 to = eyePosition.add(worldXYOffset).add(new Vec3(camera.getLookVector()).scale(-dz));
-					ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
-					HitResult hitResult = level.clip(context);
-					
-					if(hitResult.getType() != HitResult.Type.MISS)
-					{
-						double distance = hitResult.getLocation().distanceTo(from);
-						double newTargetX = Math.max(distance + absOffsetX * scale - clearance, 0);
-						
-						if(newTargetX < targetX)
-						{
-							targetX = newTargetX;
-						}
-						
-						double newTargetY = Math.max(distance + absOffsetY * scale - clearance, 0);
-						
-						if(newTargetY < targetY)
-						{
-							targetY = newTargetY;
-						}
-					}
+					targetXOffset = 0;
 				}
 				
-				targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
-				targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
+				if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
+				{
+					targetXOffset = 0;
+					targetYOffset = 0;
+				}
+				
+				if(Config.CLIENT.doDynamicallyAdjustOffsets())
+				{
+					Vec3 localCameraOffset = new Vec3(targetXOffset, targetYOffset, targetZOffset);
+					Vec3 worldCameraOffset = new Vec3(camera.getUpVector()).scale(targetYOffset)
+						.add(new Vec3(camera.getLeftVector()).scale(targetXOffset))
+						.add(new Vec3(camera.getLookVector()).scale(-targetZOffset))
+						.normalize()
+						.scale(localCameraOffset.length());
+					Vec3 worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
+					Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
+					double absOffsetX = Math.abs(targetXOffset);
+					double absOffsetY = Math.abs(targetYOffset);
+					double absOffsetZ = Math.abs(targetZOffset);
+					double targetX = absOffsetX;
+					double targetY = absOffsetY;
+					double clearance = camera.getEntity().getBbWidth() / 3.0D;
+					
+					for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
+					{
+						double scale = dz / absOffsetZ;
+						Vec3 from = eyePosition.add(worldCameraOffset.scale(scale));
+						Vec3 to = eyePosition.add(worldXYOffset).add(new Vec3(camera.getLookVector()).scale(-dz));
+						ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
+						HitResult hitResult = level.clip(context);
+						
+						if(hitResult.getType() != HitResult.Type.MISS)
+						{
+							double distance = hitResult.getLocation().distanceTo(from);
+							double newTargetX = Math.max(distance + absOffsetX * scale - clearance, 0);
+							
+							if(newTargetX < targetX)
+							{
+								targetX = newTargetX;
+							}
+							
+							double newTargetY = Math.max(distance + absOffsetY * scale - clearance, 0);
+							
+							if(newTargetY < targetY)
+							{
+								targetY = newTargetY;
+							}
+						}
+					}
+					
+					targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
+					targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
+				}
 			}
 			
 			ShoulderInstance instance = ShoulderInstance.getInstance();
@@ -184,12 +187,21 @@ public class ShoulderRenderer
 			double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
 			Vec3 offset = new Vec3(offsetX, offsetY, offsetZ);
-			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
-			Vec3 scaled = offset.normalize().scale(this.cameraDistance);
-			this.cameraOffsetX = scaled.x;
-			this.cameraOffsetY = scaled.y;
-			this.cameraOffsetZ = scaled.z;
-			accessor.invokeMove(-scaled.z, scaled.y, scaled.x);
+			
+			if(!camera.getEntity().isSpectator())
+			{
+				this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
+				Vec3 scaled = offset.normalize().scale(this.cameraDistance);
+				this.cameraOffsetX = scaled.x;
+				this.cameraOffsetY = scaled.y;
+				this.cameraOffsetZ = scaled.z;
+				accessor.invokeMove(-scaled.z, scaled.y, scaled.x);
+			}
+			else
+			{
+				this.cameraDistance = offset.length();
+				accessor.invokeMove(-offset.z, offset.y, offset.x);
+			}
 		}
 	}
 	
