@@ -17,10 +17,10 @@
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.teamderpy.shouldersurfing.ShoulderSurfingFabric"
+			"com.github.exopandora.shouldersurfing.ShoulderSurfingFabric"
 		],
 		"jade": [
-			"com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingJadePlugin"
+			"com.github.exopandora.shouldersurfing.compatibility.ShoulderSurfingJadePlugin"
 		]
 	},
 	"mixins": [
