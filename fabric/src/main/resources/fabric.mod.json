@@ -17,7 +17,7 @@
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.teamderpy.shouldersurfing.ShoulderSurfingFabric"
+			"com.github.exopandora.shouldersurfing.ShoulderSurfingFabric",
 		]
 	},
 	"mixins": [
@@ -34,7 +34,7 @@
 	"custom": {
 		"waila:plugins": {
 			"id": "shouldersurfing:waila_plugin",
-			"initializer": "com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingWailaPluginFabric",
+			"initializer": "com.github.exopandora.shouldersurfing.compatibility.ShoulderSurfingWthitPluginFabric",
 			"environment": "client"
 		}
 	}
