@@ -24,6 +24,7 @@ public class ClientEventHandler
 		if(Phase.START.equals(event.phase))
 		{
 			ShoulderInstance.getInstance().tick();
+			ShoulderRenderer.getInstance().tick();
 		}
 	}
 	
@@ -46,8 +47,8 @@ public class ClientEventHandler
 	{
 		ShoulderRenderer renderer = ShoulderRenderer.getInstance();
 		renderer.offsetCamera(event.getCamera(), Minecraft.getInstance().level, (float) event.getPartialTicks());
-		event.setPitch(renderer.getCameraXRot());
-		event.setYaw(renderer.getCameraYRot());
+		event.setPitch(event.getCamera().getXRot());
+		event.setYaw(event.getCamera().getYRot());
 	}
 	
 	@SubscribeEvent
