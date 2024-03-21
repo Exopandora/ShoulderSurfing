@@ -148,57 +148,7 @@ public class ShoulderHelper
 		
 		if(minecraft.cameraEntity instanceof LivingEntity entity)
 		{
-			boolean result = isHoldingAdaptiveItemInternal(minecraft, entity);
-			
-			for(IAdaptiveItemCallback adaptiveItemCallback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
-			{
-				result |= adaptiveItemCallback.isHoldingAdaptiveItem(minecraft, entity);
-			}
-			
-			return result;
-		}
-		
-		return false;
-	}
-	
-	private static boolean isHoldingAdaptiveItemInternal(Minecraft minecraft, LivingEntity entity)
-	{
-		Item useItem = entity.getUseItem().getItem();
-		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
-		
-		if(useItems.contains(BuiltInRegistries.ITEM.getKey(useItem).toString()))
-		{
-			return true;
-		}
-		
-		for(String useItemProperty : useItemProperties)
-		{
-			if(ItemProperties.getProperty(useItem, new ResourceLocation(useItemProperty)) != null)
-			{
-				return true;
-			}
-		}
-		
-		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
-		
-		for(ItemStack handStack : entity.getHandSlots())
-		{
-			Item handItem = handStack.getItem();
-
-			if(holdItems.contains(BuiltInRegistries.ITEM.getKey(handItem).toString()))
-			{
-				return true;
-			}
-			
-			for(String holdItemProperty : holdItemProperties)
-			{
-				if(ItemProperties.getProperty(handItem, new ResourceLocation(holdItemProperty)) != null)
-				{
-					return true;
-				}
-			}
+			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, entity));
 		}
 		
 		return false;
