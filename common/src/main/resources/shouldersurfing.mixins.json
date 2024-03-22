@@ -1,9 +1,8 @@
 {
 	"required": true,
-	"minVersion": "0.8",
+	"minVersion": "0.8.5",
 	"package": "com.github.exopandora.shouldersurfing.mixins",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [],
 	"client": [
 		"CameraAccessor",
 		"GameRendererAccessor",
@@ -18,13 +17,7 @@
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
-		"MixinRenderType",
-		"MixinGameRendererFabric",
-		"MixinGuiFabric",
-		"MixinKeyboardHandler",
-		"MixinLevelRendererFabric",
-		"MixinMinecraft",
-		"MixinMouseHandlerFabric"
+		"MixinRenderType"
 	],
 	"injectors": {
 		"defaultRequire": 1
