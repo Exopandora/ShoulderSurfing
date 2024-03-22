@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins;
+package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compatibility;
+package com.github.exopandora.shouldersurfing.compatibility.mixins;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.SemanticVersion;
