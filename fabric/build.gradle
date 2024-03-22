@@ -30,8 +30,8 @@ sourceSets {
 }
 
 dependencies {
-	implementation project(":api")
-	implementation project(":common")
+	compileOnly project(":api")
+	compileOnly project(":common")
 	
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	mappings loom.officialMojangMappings()
@@ -70,10 +70,6 @@ loom {
 }
 
 tasks.named('processResources', ProcessResources).configure {
-	outputs.upToDateWhen {
-		false
-	}
-	
 	from project(":common").sourceSets.main.resources
 	
 	inputs.property "version", mod_version
@@ -90,7 +86,7 @@ tasks.named('processResources', ProcessResources).configure {
 	duplicatesStrategy = 'exclude'
 }
 
-tasks.named('compileJava', JavaCompile).configure {
+tasks.withType(JavaCompile).configureEach {
 	source project(":api").sourceSets.main.allSource
 	source project(":common").sourceSets.main.allSource
 }

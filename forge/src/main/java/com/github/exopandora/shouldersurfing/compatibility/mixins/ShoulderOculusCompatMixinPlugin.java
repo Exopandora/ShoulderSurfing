@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compatibility;
+package com.github.exopandora.shouldersurfing.compatibility.mixins;
 
 import java.util.List;
 import java.util.Set;
