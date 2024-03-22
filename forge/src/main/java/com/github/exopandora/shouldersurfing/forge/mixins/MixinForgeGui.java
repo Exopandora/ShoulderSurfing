@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins;
+package com.github.exopandora.shouldersurfing.forge.mixins;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
