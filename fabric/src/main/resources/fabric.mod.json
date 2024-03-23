@@ -17,11 +17,12 @@
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.github.exopandora.shouldersurfing.ShoulderSurfingFabric",
+			"com.github.exopandora.shouldersurfing.fabric.ShoulderSurfingFabric"
 		]
 	},
 	"mixins": [
-		"shouldersurfing.mixins.json",
+		"shouldersurfing.common.mixins.json",
+		"shouldersurfing.fabric.mixins.json",
 		"shouldersurfing.compat.iris.mixins.json"
 	],
 	"depends": {
