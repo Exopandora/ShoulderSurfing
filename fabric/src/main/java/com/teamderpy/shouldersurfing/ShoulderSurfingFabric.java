@@ -16,7 +16,7 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 	@Override
 	public void onInitializeClient()
 	{
-		ModLoadingContext.registerConfig(ShoulderSurfing.MODID, Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
+		ModLoadingContext.registerConfig(ShoulderSurfing.MODID, Type.CLIENT, Config.CLIENT_SPEC);
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
 		{
 			ShoulderRenderer.getInstance().resetCameraRotations(handler.player);

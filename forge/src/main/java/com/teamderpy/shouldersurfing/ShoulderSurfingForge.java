@@ -35,7 +35,7 @@ public class ShoulderSurfingForge
 		modEventBus.addListener(this::loadComplete);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
-			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC, ShoulderSurfing.MODID + ".toml");
+			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 		});
