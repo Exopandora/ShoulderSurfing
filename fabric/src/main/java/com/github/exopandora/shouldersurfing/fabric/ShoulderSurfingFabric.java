@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing;
+package com.github.exopandora.shouldersurfing.fabric;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.KeyHandler;

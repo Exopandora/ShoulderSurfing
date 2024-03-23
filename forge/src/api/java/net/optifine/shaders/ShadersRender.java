@@ -5,5 +5,8 @@ import net.minecraft.client.Minecraft;
 
 public class ShadersRender
 {
-	public static void updateActiveRenderInfo(Camera camera, Minecraft mc, float partialTicks) {}
+	public static void updateActiveRenderInfo(Camera camera, Minecraft mc, float partialTicks)
+	{
+		throw new AssertionError();
+	}
 }
