@@ -16,7 +16,10 @@ val modVersion: String by project
 val javaVersion: String by project
 val minecraftVersion: String by project
 val forgeVersion: String by project
+val forgeCompatibleMinecraftVersions: String by project
 val mixinVersion: String by project
+val curseProjectId: String by project
+val modrinthProjectId: String by project
 
 tasks.withType<Jar>().configureEach {
 	archiveBaseName.set("$modName-Forge")
@@ -131,12 +134,10 @@ publishMods {
 	modLoaders.add("forge")
 	type = STABLE
 	
-	val compatibleVersions = provider {
-		findProperty("forge_compatible_minecraft_versions").toString().split(",")
-	}
+	val compatibleVersions = forgeCompatibleMinecraftVersions.split(",")
 	
 	curseforge {
-		projectId = findProperty("curse_project_id").toString()
+		projectId = curseProjectId
 		accessToken = findProperty("curse_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
@@ -145,7 +146,7 @@ publishMods {
 	}
 	
 	modrinth {
-		projectId = findProperty("modrinth_project_id").toString()
+		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 	}
