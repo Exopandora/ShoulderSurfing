@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.plugin;
+package com.github.exopandora.shouldersurfing.forge.plugin;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

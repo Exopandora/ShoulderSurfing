@@ -1,5 +1,6 @@
-package com.github.exopandora.shouldersurfing.plugin;
+package com.github.exopandora.shouldersurfing.fabric.plugin;
 
+import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 

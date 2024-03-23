@@ -1,7 +1,8 @@
 {
-	"required": true,,
-	"minVersion": "0.8.5",
-	"package": "com.github.exopandora.shouldersurfing.mixins",
+	"required": true,
+	"minVersion": "0.8.4",
+	"package": "com.github.exopandora.shouldersurfing.forge.mixins",
+	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"MixinShadersRender"
