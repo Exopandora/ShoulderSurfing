@@ -1,5 +1,6 @@
 plugins {
 	id("java")
+	id("idea")
 	id("net.minecraftforge.gradle") version("[6.0.16,6.2)")
 	id("org.spongepowered.mixin") version("0.7.+")
 	id("me.modmuss50.mod-publish-plugin")
@@ -159,5 +160,5 @@ publishMods {
 sourceSets.forEach {
 	val dir = layout.buildDirectory.dir("sourcesSets/${it.name}")
 	it.output.setResourcesDir(dir)
-	it.java.destinationDirectory = dir
+	it.java.destinationDirectory.set(dir)
 }
