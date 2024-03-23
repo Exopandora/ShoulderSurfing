@@ -3,9 +3,8 @@
 	"id": "shouldersurfing",
 	"version": "${version}",
 	"name": "Shoulder Surfing Reloaded",
-	"description": "Changes the vanilla third person camera to an over-the-shoulder camera, as made popular by Capcom's \"Resident Evil 4\".\nIncludes keybindings for adjusting the camera, along with various settings in the config file.\nCode injection may fail if using mods that mess with the base files.",
+	"description": "Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft, originally made by Sabar.",
 	"authors": [
-		"Sabar",
 		"Exopandora"
 	],
 	"contact": {
