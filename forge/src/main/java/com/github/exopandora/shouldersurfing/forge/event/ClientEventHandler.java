@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.forge;
+package com.github.exopandora.shouldersurfing.forge.event;
 
 import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
