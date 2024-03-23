@@ -1,5 +1,6 @@
 plugins {
 	id("java-library")
+	id("idea")
 	id("org.spongepowered.gradle.vanilla") version("0.2.1-SNAPSHOT")
 }
 
