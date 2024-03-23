@@ -2,6 +2,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
 	id("java")
+	id("idea")
 	id("fabric-loom")
 	id("me.modmuss50.mod-publish-plugin")
 }
