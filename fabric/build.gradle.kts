@@ -12,12 +12,15 @@ val modName: String by project
 val modVersion: String by project
 val javaVersion: String by project
 val minecraftVersion: String by project
-val fabricLoaderVersion: String by project
 val fabricVersion: String by project
+val fabricLoaderVersion: String by project
+val fabricCompatibleMinecraftVersions: String by project
 val forgeconfigapiportVersion: String by project
 val wthitVersionFabric: String by project
 val badpacketsVersion: String by project
 val jadeVersionFabric: String by project
+val curseProjectId: String by project
+val modrinthProjectId: String by project
 
 base {
 	archivesName.set("$modName-Fabric")
@@ -128,12 +131,10 @@ publishMods {
 	modLoaders.add("fabric")
 	type = STABLE
 	
-	val compatibleVersions = provider {
-		findProperty("fabric_compatible_minecraft_versions").toString().split(",")
-	}
+	val compatibleVersions = fabricCompatibleMinecraftVersions.split(",")
 	
 	curseforge {
-		projectId = findProperty("curse_project_id").toString()
+		projectId = curseProjectId
 		accessToken = findProperty("curse_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
@@ -143,7 +144,7 @@ publishMods {
 	}
 	
 	modrinth {
-		projectId = findProperty("modrinth_project_id").toString()
+		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 		requires("fabric-api", "forge-config-api-port")
