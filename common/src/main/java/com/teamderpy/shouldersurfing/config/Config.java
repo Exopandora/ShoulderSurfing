@@ -271,7 +271,7 @@ public class Config
 			this.crosshairType = builder
 				.comment("Crosshair type to use for shoulder surfing.")
 				.translation("Crosshair type")
-				.defineEnum("crosshair_type", CrosshairType.ADAPTIVE, CrosshairType.values());
+				.defineEnum("crosshair_type", CrosshairType.STATIC, CrosshairType.values());
 			
 			this.customRaytraceDistance = builder
 				.comment("The raytrace distance used for the dynamic crosshair.")
