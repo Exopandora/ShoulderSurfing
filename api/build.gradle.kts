@@ -1,12 +1,11 @@
 plugins {
 	id("java")
 	id("idea")
-	id("org.spongepowered.gradle.vanilla") version("0.2.1-SNAPSHOT")
+	alias(libs.plugins.vanillagradle)
 }
 
 val modName: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
 
 tasks.withType<Jar>().configureEach {
 	archiveBaseName.set("$modName-API")
@@ -18,9 +17,9 @@ java {
 }
 
 dependencies {
-	implementation("com.google.code.findbugs:jsr305:3.0.2")
+	implementation(libs.jsr305)
 }
 
 minecraft {
-	version(minecraftVersion)
+	version(libs.versions.minecraft.get())
 }
