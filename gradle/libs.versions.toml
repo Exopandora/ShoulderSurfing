@@ -1,0 +1,43 @@
+[versions]
+minecraft = "1.19.2"
+forge = "1.19.2-43.0.0"
+fabric-loader = "0.14.9"
+fabric-api = "0.58.6+1.19.2"
+mixin = "0.8.5"
+forgeconfigapiport = "4.2.0"
+wthit-common = "mojmap-5.13.4"
+wthit-forge = "forge-5.13.4"
+wthit-fabric = "fabric-5.13.4"
+jade-common = "4318615"
+jade-forge = "4318618"
+jade-fabric = "4318612"
+badpackets-forge = "forge-0.2.0"
+badpackets-fabric = "fabric-0.2.0"
+night-config = "3.6.5"
+
+[libraries]
+minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
+minecraft-fabric = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+forgeconfigapiport-common = { module = "net.minecraftforge:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-fabric = { module = "net.minecraftforge:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
+wthit-common = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-common" }
+wthit-forge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-forge" }
+wthit-fabric = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-fabric" }
+jade-common = { module = "curse.maven:jade-324717", version.ref = "jade-common" }
+jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
+jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
+badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
+badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
+nightconfig-core = { module = "com.electronwill.night-config:core", version.ref = "night-config" }
+nightconfig-toml = { module = "com.electronwill.night-config:toml", version.ref = "night-config" }
+
+[plugins]
+modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
+vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
+fabricloom = { id = "fabric-loom", version = "1.4.+" }
+mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }

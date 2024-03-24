@@ -1,9 +1,9 @@
 plugins {
 	id("java")
 	id("idea")
-	id("net.minecraftforge.gradle") version("[6.0.16,6.2)")
-	id("org.spongepowered.mixin") version("0.7.+")
-	id("me.modmuss50.mod-publish-plugin")
+	alias(libs.plugins.forgegradle)
+	alias(libs.plugins.mixingradle)
+	alias(libs.plugins.modpublishplugin)
 }
 
 repositories {
@@ -14,13 +14,7 @@ val modId: String by project
 val modName: String by project
 val modVersion: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
-val forgeVersion: String by project
 val forgeCompatibleMinecraftVersions: String by project
-val mixinVersion: String by project
-val wthitVersionForge: String by project
-val badpacketsVersion: String by project
-val jadeVersionForge: String by project
 val curseProjectId: String by project
 val modrinthProjectId: String by project
 
@@ -57,7 +51,7 @@ mixin {
 }
 
 minecraft {
-	mappings("official", minecraftVersion)
+	mappings("official", libs.versions.minecraft.get())
 	
 	copyIdeResources = true
 	
@@ -91,11 +85,11 @@ dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
 	
-	minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
-	annotationProcessor("org.spongepowered:mixin:$mixinVersion:processor")
-	implementation(fg.deobf("mcp.mobius.waila:wthit:forge-$wthitVersionForge"))
-	implementation(fg.deobf("lol.bai:badpackets:forge-$badpacketsVersion"))
-	implementation(fg.deobf("curse.maven:jade-324717:$jadeVersionForge"))
+	minecraft(libs.minecraft.forge)
+	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+	implementation(fg.deobf(libs.wthit.forge.get()))
+	implementation(fg.deobf(libs.badpackets.forge.get()))
+	implementation(fg.deobf(libs.jade.forge.get()))
 }
 
 tasks.named<JavaCompile>("compileJava").configure {
@@ -133,7 +127,7 @@ tasks.jar {
 }
 
 publishMods {
-	displayName = "$modName-Forge-$minecraftVersion-$modVersion"
+	displayName = "$modName-Forge-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
