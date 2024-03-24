@@ -1,0 +1,27 @@
+[versions]
+minecraft = "1.16.5"
+forge = "1.16.5-36.2.39"
+fabric-loader = "0.13.3"
+fabric-api = "0.28.0+1.16"
+mixin = "0.8.5"
+forgeconfigapiport = "1.0.0"
+night-config = "3.6.3"
+
+[libraries]
+minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
+minecraft-fabric = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+forgeconfigapiport-common = { module = "net.minecraftforge:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-fabric = { module = "net.minecraftforge:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
+nightconfig-core = { module = "com.electronwill.night-config:core", version.ref = "night-config" }
+nightconfig-toml = { module = "com.electronwill.night-config:toml", version.ref = "night-config" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
+
+[plugins]
+modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
+fabricloom = { id = "fabric-loom", version = "1.4.+" }
+mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }

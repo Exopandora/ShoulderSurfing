@@ -1,12 +1,11 @@
 plugins {
 	id("java")
 	id("idea")
-	id("fabric-loom")
+	alias(libs.plugins.fabricloom)
 }
 
 val modName: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
 
 tasks.withType<Jar>().configureEach {
 	archiveBaseName.set("$modName-API")
@@ -18,8 +17,8 @@ java {
 }
 
 dependencies {
-	minecraft("com.mojang:minecraft:${minecraftVersion}")
+	minecraft(libs.minecraft.fabric)
 	mappings(fileTree("../mapping") { include("**.jar") })
 	
-	implementation("com.google.code.findbugs:jsr305:3.0.2")
+	implementation(libs.jsr305)
 }

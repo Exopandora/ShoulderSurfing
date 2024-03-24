@@ -1,15 +1,12 @@
 plugins {
 	id("java")
 	id("idea")
-	id("fabric-loom")
+	alias(libs.plugins.fabricloom)
 }
 
 val modId: String by project
 val modName: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
-val mixinVersion: String by project
-val forgeconfigapiportVersion: String by project
 
 base {
 	archivesName.set("$modName-Common")
@@ -33,17 +30,17 @@ sourceSets {
 }
 
 dependencies {
-	minecraft("com.mojang:minecraft:${minecraftVersion}")
+	minecraft(libs.minecraft.fabric)
 	mappings(fileTree("../mapping") { include("**.jar") })
 	
 	compileOnly(project(":api"))
 	
-	compileOnly("org.spongepowered:mixin:$mixinVersion")
-	compileOnly("net.minecraftforge:forgeconfigapiport-fabric:$forgeconfigapiportVersion")
+	compileOnly(libs.mixin)
+	compileOnly(libs.forgeconfigapiport.common)
 	
-	implementation("com.google.code.findbugs:jsr305:3.0.2")
-	implementation("com.electronwill.night-config:core:3.6.3")
-	implementation("com.electronwill.night-config:toml:3.6.3")
+	implementation(libs.jsr305)
+	implementation(libs.nightconfig.core)
+	implementation(libs.nightconfig.toml)
 }
 
 loom {

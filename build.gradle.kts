@@ -3,15 +3,14 @@ import java.time.format.DateTimeFormatter
 
 plugins {
 	id("java")
-	id("me.modmuss50.mod-publish-plugin") version("0.5.1") apply false
-	id("fabric-loom") version("1.4.+") apply false
+	alias(libs.plugins.modpublishplugin) apply false
+	alias(libs.plugins.fabricloom) apply false
 }
 
 val modName: String by project
 val modAuthor: String by project
 val modVersion: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
 
 subprojects {
 	repositories {
@@ -41,7 +40,7 @@ subprojects {
 	}
 	
 	tasks.withType<Jar>().configureEach {
-		version = "$minecraftVersion-$modVersion"
+		version = "${libs.versions.minecraft.get()}-$modVersion"
 		manifest {
 			attributes(mapOf(
 				"Specification-Title" to modName,
@@ -52,7 +51,7 @@ subprojects {
 				"Implementation-Vendor" to modAuthor,
 				"Implementation-Timestamp" to DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now()),
 				"Built-On-Java" to "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})",
-				"Build-On-Minecraft" to minecraftVersion
+				"Build-On-Minecraft" to libs.versions.minecraft.get()
 			))
 		}
 	}
