@@ -3,21 +3,16 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
 	id("java")
 	id("idea")
-	id("fabric-loom")
-	id("me.modmuss50.mod-publish-plugin")
+	alias(libs.plugins.fabricloom)
+	alias(libs.plugins.modpublishplugin)
 }
 
 val modId: String by project
 val modName: String by project
 val modVersion: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
-val fabricVersion: String by project
-val fabricLoaderVersion: String by project
 val fabricCompatibleMinecraftVersions: String by project
-val forgeconfigapiportVersion: String by project
-val wthitVersionFabric: String by project
-val badpacketsVersion: String by project
+val curseProjectId: String by project
 val modrinthProjectId: String by project
 
 base {
@@ -41,18 +36,18 @@ dependencies {
 	implementation(project(":api"))
 	implementation(project(":common"))
 	
-	minecraft("com.mojang:minecraft:${minecraftVersion}")
+	minecraft(libs.minecraft.fabric)
 	mappings(loom.officialMojangMappings())
 	
-	modImplementation("net.fabricmc:fabric-loader:$fabricLoaderVersion")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
-	modImplementation("net.minecraftforge:forgeconfigapiport-fabric:$forgeconfigapiportVersion") {
-		exclude(group = "net.fabricmc.fabric-api")
+	modImplementation(libs.fabric.loader)
+	modImplementation(libs.fabric.api)
+	modImplementation(libs.forgeconfigapiport.fabric) {
+		isTransitive = false
 	}
-	modImplementation("mcp.mobius.waila:wthit:fabric-$wthitVersionFabric")
-	modImplementation("lol.bai:badpackets:fabric-$badpacketsVersion")
-	implementation("com.electronwill.night-config:core:3.6.5")
-	implementation("com.electronwill.night-config:toml:3.6.5")
+	modImplementation(libs.wthit.fabric)
+	modImplementation(libs.badpackets.fabric)
+	implementation(libs.nightconfig.core)
+	implementation(libs.nightconfig.toml)
 }
 
 loom {
@@ -121,7 +116,7 @@ tasks.build {
 }
 
 publishMods {
-	displayName = "$modName-Fabric-$minecraftVersion-$modVersion"
+	displayName = "$modName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<RemapJarTask>("remapJar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
