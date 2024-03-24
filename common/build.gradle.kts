@@ -1,16 +1,12 @@
 plugins {
 	id("java")
 	id("idea")
-	id("org.spongepowered.gradle.vanilla") version("0.2.1-SNAPSHOT")
+	alias(libs.plugins.vanillagradle)
 }
 
 val modName: String by project
 val javaVersion: String by project
 val minecraftVersion: String by project
-val mixinVersion: String by project
-val forgeconfigapiportVersion: String by project
-val wthitVersionApi: String by project
-val jadeVersionApi: String by project
 
 base {
 	archivesName.set("$modName-Common")
@@ -36,14 +32,14 @@ sourceSets {
 dependencies {
 	compileOnly(project(":api"))
 	
-	compileOnly("org.spongepowered:mixin:$mixinVersion")
-	compileOnly("fuzs.forgeconfigapiport:forgeconfigapiport-common:$forgeconfigapiportVersion")
-	compileOnly("mcp.mobius.waila:wthit:mojmap-$wthitVersionApi")
-	compileOnly("curse.maven:jade-324717:$jadeVersionApi")
+	compileOnly(libs.mixin)
+	compileOnly(libs.forgeconfigapiport.common)
+	compileOnly(libs.wthit.common)
+	compileOnly(libs.jade.common)
 	
-	implementation("com.google.code.findbugs:jsr305:3.0.2")
+	implementation(libs.jsr305)
 }
 
 minecraft {
-	version(minecraftVersion)
+	version(libs.versions.minecraft.get())
 }

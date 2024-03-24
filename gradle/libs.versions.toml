@@ -1,0 +1,40 @@
+[versions]
+minecraft = "1.20.1"
+forge = "1.20.1-47.0.1"
+fabric-loader = "0.14.21"
+fabric-api = "0.83.1+1.20.1"
+mixin = "0.8.5"
+forgeconfigapiport = "8.0.0"
+wthit-common = "mojmap-8.1.0"
+wthit-forge = "forge-8.1.0"
+wthit-fabric = "fabric-8.1.0"
+jade-common = "4573049"
+jade-forge = "4573193"
+jade-fabric = "4573047"
+badpackets-forge = "forge-0.4.1"
+badpackets-fabric = "fabric-0.4.1"
+
+[libraries]
+minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
+minecraft-fabric = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
+wthit-common = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-common" }
+wthit-forge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-forge" }
+wthit-fabric = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-fabric" }
+jade-common = { module = "curse.maven:jade-324717", version.ref = "jade-common" }
+jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
+jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
+badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
+badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
+
+[plugins]
+modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
+vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
+fabricloom = { id = "fabric-loom", version = "1.4.+" }
+mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
