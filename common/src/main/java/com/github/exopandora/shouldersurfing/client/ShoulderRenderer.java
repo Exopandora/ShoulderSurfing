@@ -223,7 +223,7 @@ public class ShoulderRenderer
 			Vector3d offset = new Vector3d(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
 				.subtract(1, 1, 1)
-				.scale(0.075)
+				.scale(0.15)
 				.yRot(-camera.getYRot() * ShoulderHelper.DEG_TO_RAD);
 			Vector3d from = eyePosition.add(offset);
 			Vector3d to = from.add(cameraOffset);
