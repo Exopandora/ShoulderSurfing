@@ -1,10 +1,10 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixins.CameraAccessor;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -223,7 +223,7 @@ public class ShoulderRenderer
 			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
 				.subtract(1, 1, 1)
-				.scale(0.075)
+				.scale(0.15)
 				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
 			Vec3 from = eyePosition.add(offset);
 			Vec3 to = from.add(cameraOffset);
