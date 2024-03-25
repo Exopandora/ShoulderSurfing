@@ -25,6 +25,16 @@ pluginManagement {
 				includeGroupByRegex("net\\.minecraftforge.*")
 			}
 		}
+		exclusiveContent {
+			forRepository {
+				maven("https://maven.neoforged.net/releases/")
+			}
+			filter {
+				includeGroupByRegex("net\\.neoforged.*")
+				includeGroup("codechicken")
+				includeGroup("net.covers1624")
+			}
+		}
 		gradlePluginPortal()
 	}
 }
@@ -34,4 +44,12 @@ plugins {
 }
 
 rootProject.name = "ShoulderSurfing"
-include("api", "common", "fabric", "forge")
+
+include(
+	":api",
+	":common",
+	":compatibility",
+	":forge",
+	":neoforge",
+	":fabric"
+)

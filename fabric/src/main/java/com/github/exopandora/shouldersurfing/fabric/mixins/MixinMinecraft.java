@@ -1,6 +1,8 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeModConfigEvents;
+import net.minecraftforge.fml.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,7 +12,6 @@ import com.github.exopandora.shouldersurfing.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.config.Config;
 
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 
@@ -25,7 +26,13 @@ public class MixinMinecraft
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
 		ShoulderInstance.getInstance().changePerspective(Config.CLIENT.getDefaultPerspective());
-		ModConfigEvents.reloading(ShoulderSurfing.MODID).register(Config::onConfigReload);
+		ForgeModConfigEvents.reloading(ShoulderSurfing.MODID).register(config ->
+		{
+			if(ModConfig.Type.CLIENT == config.getType())
+			{
+				Config.onConfigReload();
+			}
+		});
 	}
 	
 	@Inject

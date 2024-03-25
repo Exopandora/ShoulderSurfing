@@ -3,6 +3,7 @@ import java.time.format.DateTimeFormatter
 
 plugins {
 	id("java")
+	alias(libs.plugins.idea.ext)
 }
 
 val modName: String by project
@@ -11,6 +12,10 @@ val modVersion: String by project
 val javaVersion: String by project
 
 subprojects {
+	apply(plugin = "java")
+	
+	java.toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
+	
 	repositories {
 		mavenCentral()
 		exclusiveContent {

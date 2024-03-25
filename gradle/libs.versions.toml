@@ -1,34 +1,43 @@
 [versions]
 minecraft = "1.20.4"
 forge = "1.20.4-49.0.10"
+neoforge = "20.4.210"
 fabric-loader = "0.15.3"
 fabric-api = "0.91.3+1.20.4"
 mixin = "0.8.5"
-forgeconfigapiport = "20.4.0"
+forgeconfigapiport = "20.4.3"
 wthit-common = "mojmap-10.0.1"
 wthit-forge = "forge-10.0.1"
+wthit-neoforge = "neo-10.0.1"
 wthit-fabric = "fabric-10.0.1"
 jade-common = "4957720"
 jade-forge = "4939358"
+jade-neoforge = "5109393"
 jade-fabric = "4957713"
-badpackets-forge = "forge-0.5.4"
-badpackets-fabric = "fabric-0.5.4"
+badpackets-forge = "forge-0.6.1"
+badpackets-neoforge = "neo-0.6.1"
+badpackets-fabric = "fabric-0.6.1"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
+minecraft-neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
 minecraft-fabric = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
-forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi", version.ref = "forgeconfigapiport" }
 forgeconfigapiport-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-neoforge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-neoforge", version.ref = "forgeconfigapiport" }
 wthit-common = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-common" }
 wthit-forge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-forge" }
+wthit-neoforge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-neoforge" }
 wthit-fabric = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-fabric" }
 jade-common = { module = "curse.maven:jade-324717", version.ref = "jade-common" }
 jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
+jade-neoforge = { module = "curse.maven:jade-324717", version.ref = "jade-neoforge" }
 jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
+badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
@@ -37,4 +46,6 @@ modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
 vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.4.+" }
+neogradle = { id = "net.neoforged.gradle.userdev", version = "7.0.101" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
+idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.7" }

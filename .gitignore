@@ -163,6 +163,9 @@ run/*
 run/config/*
 !run/config/fabric_loader_dependencies.json
 
+### NeoForge ###
+neoforge/runs
+
 ### Wiki ###
 wiki/
 

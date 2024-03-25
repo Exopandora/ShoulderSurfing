@@ -15,8 +15,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Type;
 
 public class Config
 {
@@ -787,9 +785,9 @@ public class Config
 		}
 	}
 	
-	public static void onConfigReload(ModConfig config)
+	public static void onConfigReload()
 	{
-		if(ShoulderInstance.getInstance() != null && Type.CLIENT.equals(config.getType()) && Config.CLIENT.doRememberLastPerspective())
+		if(Config.CLIENT.doRememberLastPerspective())
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}

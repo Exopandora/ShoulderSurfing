@@ -1,25 +1,24 @@
 plugins {
-	id("java")
 	id("idea")
-	alias(libs.plugins.forgegradle)
-	alias(libs.plugins.mixingradle)
+	id("java")
+	alias(libs.plugins.neogradle)
 	alias(libs.plugins.modpublishplugin)
 }
 
 repositories {
-	maven("https://maven.minecraftforge.net/")
+	maven("https://maven.neoforged.net/releases/")
 }
 
 val modId: String by project
 val modName: String by project
 val modVersion: String by project
 val javaVersion: String by project
-val forgeCompatibleMinecraftVersions: String by project
+val neoForgeCompatibleMinecraftVersions: String by project
 val curseProjectId: String by project
 val modrinthProjectId: String by project
 
 base {
-	archivesName.set("$modName-Forge")
+	archivesName.set("$modName-NeoForge")
 }
 
 java {
@@ -27,60 +26,43 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
-mixin {
-	add(sourceSets.main.get(), "$modId.refmap.json")
+runs {
+	configureEach {
+		workingDirectory(project.file("../run"))
+		modSource(sourceSets.main.get())
+	}
 	
-	config("$modId.common.mixins.json")
-	config("$modId.forge.mixins.json")
-	config("$modId.compat.oculus.mixins.json")
-}
-
-minecraft {
-	mappings("official", libs.versions.minecraft.get())
+	create("client")
 	
-	copyIdeResources = true
-	
-	runs {
-		configureEach {
-			workingDirectory(project.file("../run"))
-			ideaModule("${rootProject.name}.${project.name}.main")
-			
-			mods {
-				create(modId) {
-					source(sourceSets.main.get())
-					source(project(":api").sourceSets.main.get())
-					source(project(":common").sourceSets.main.get())
-					source(project(":compatibility").sourceSets.main.get())
-				}
-			}
-		}
-		
-		create("client")
-		
-		create("server") {
-			args("--nogui")
-		}
+	create("server") {
+		programArgument("--nogui")
 	}
 }
+
+val notNeoTask = Spec<Task> { !it.name.startsWith("neo") }
 
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
 	compileOnly(project(":compatibility"))
 	
-	minecraft(libs.minecraft.forge)
-	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
-	implementation(fg.deobf(libs.wthit.forge.get()))
-	implementation(fg.deobf(libs.badpackets.forge.get()))
-	implementation(fg.deobf(libs.jade.forge.get()))
+	implementation(libs.minecraft.neoforge)
+	implementation(libs.forgeconfigapiport.neoforge)
+	implementation(libs.wthit.neoforge.get())
+	implementation(libs.badpackets.neoforge.get())
+	implementation(libs.jade.neoforge.get())
+	
+	testCompileOnly(project(":api"))
+	testCompileOnly(project(":common"))
+	testCompileOnly(project(":compatibility"))
 }
 
-tasks.named<JavaCompile>("compileJava").configure {
+tasks.withType<JavaCompile>().matching(notNeoTask).configureEach {
 	source(project(":api").sourceSets.main.get().allSource)
 	source(project(":common").sourceSets.main.get().allSource)
 }
 
-tasks.named<ProcessResources>("processResources").configure {
+tasks.withType<ProcessResources>().matching(notNeoTask).configureEach {
 	from(project(":common").sourceSets.main.get().resources)
 	
 	inputs.property("mod_version", modVersion)
@@ -105,19 +87,15 @@ tasks.build {
 	finalizedBy("apiJar")
 }
 
-tasks.jar {
-	finalizedBy("reobfJar")
-}
-
 publishMods {
 	displayName = "$modName-Forge-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
-	modLoaders.add("forge")
+	modLoaders.add("neoforge")
 	type = STABLE
 	
-	val compatibleVersions = forgeCompatibleMinecraftVersions.split(",")
+	val compatibleVersions = neoForgeCompatibleMinecraftVersions.split(",")
 	
 	curseforge {
 		projectId = curseProjectId
@@ -133,10 +111,4 @@ publishMods {
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 	}
-}
-
-sourceSets.forEach {
-	val dir = layout.buildDirectory.dir("sourcesSets/${it.name}")
-	it.output.setResourcesDir(dir)
-	it.java.destinationDirectory.set(dir)
 }

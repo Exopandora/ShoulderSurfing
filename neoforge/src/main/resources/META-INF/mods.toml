@@ -1,9 +1,18 @@
 modLoader = "javafml"
-loaderVersion = "[48,)"
+loaderVersion = "[2,)"
 displayURL = "https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded"
 logoFile = "logo.png"
 authors = "Exopandora"
 license = "MIT"
+
+[[mixins]]
+config = "shouldersurfing.common.mixins.json"
+
+[[mixins]]
+config = "shouldersurfing.neoforge.mixins.json"
+
+[[mixins]]
+config = "shouldersurfing.compat.oculus.mixins.json"
 
 [[mods]]
 modId = "shouldersurfing"
@@ -13,7 +22,14 @@ description = "Shoulder Surfing Reloaded is a highly configurable third person c
 
 [[dependencies.shouldersurfing]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.2,)"
+type = "required"
+versionRange = "[1.20.4,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.shouldersurfing]]
+modId = "forgeconfigapiport"
+type = "required"
+versionRange = "[20.4.3,)"
 ordering = "NONE"
 side = "CLIENT"
