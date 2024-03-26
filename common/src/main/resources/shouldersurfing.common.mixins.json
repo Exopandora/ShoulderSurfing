@@ -8,6 +8,7 @@
 		"CameraAccessor",
 		"MixinAbstractClientPlayer",
 		"MixinCapeLayer",
+		"MixinDebugScreenOverlay",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
