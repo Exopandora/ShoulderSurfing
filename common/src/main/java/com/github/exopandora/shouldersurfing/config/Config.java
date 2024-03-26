@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
+import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -790,6 +793,14 @@ public class Config
 		if(Config.CLIENT.doRememberLastPerspective())
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
+		}
+		
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		
+		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
+		{
+			ShoulderInstance.getInstance().resetCameraEntityRotations(cameraEntity);
+			ShoulderRenderer.getInstance().resetCameraRotations(cameraEntity);
 		}
 	}
 }
