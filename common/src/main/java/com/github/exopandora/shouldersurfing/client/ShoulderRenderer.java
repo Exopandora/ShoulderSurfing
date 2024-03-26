@@ -11,6 +11,7 @@ import com.mojang.math.Vector4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Locale;
 
 public class ShoulderRenderer
 {
@@ -373,6 +377,43 @@ public class ShoulderRenderer
 	{
 		this.cameraXRot = entity.getXRot();
 		this.cameraYRot = entity.getYRot();
+	}
+	
+	public void appendDebugText(List<String> left)
+	{
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && Config.CLIENT.isCameraDecoupled())
+		{
+			int index = this.findFacingDebugTextIndex(left);
+			
+			if(index != -1)
+			{
+				Direction direction = Direction.fromYRot(this.cameraYRot);
+				String axis = switch(direction)
+				{
+					case NORTH -> "Towards negative Z";
+					case SOUTH -> "Towards positive Z";
+					case WEST -> "Towards negative X";
+					case EAST -> "Towards positive X";
+					default -> "Invalid";
+				};
+				float yRot = Mth.wrapDegrees(this.cameraYRot);
+				float xRot = Mth.wrapDegrees(this.cameraXRot);
+				left.add(index + 1, String.format(Locale.ROOT, "Camera: %s (%s) (%.1f / %.1f)", direction, axis, yRot, xRot));
+			}
+		}
+	}
+	
+	private int findFacingDebugTextIndex(List<String> left)
+	{
+		for(int x = 0; x < left.size(); x++)
+		{
+			if(left.get(x).startsWith("Facing: "))
+			{
+				return x;
+			}
+		}
+		
+		return -1;
 	}
 	
 	public double getPlayerReach()

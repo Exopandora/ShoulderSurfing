@@ -9,6 +9,7 @@
 		"GameRendererAccessor",
 		"MixinAbstractClientPlayer",
 		"MixinCapeLayer",
+		"MixinDebugScreenOverlay",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
