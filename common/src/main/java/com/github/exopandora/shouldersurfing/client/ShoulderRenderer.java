@@ -1,9 +1,9 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixins.ActiveRenderInfoAccessor;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -24,6 +25,9 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Locale;
 
 public class ShoulderRenderer
 {
@@ -374,6 +378,54 @@ public class ShoulderRenderer
 	{
 		this.cameraXRot = entity.xRot;
 		this.cameraYRot = entity.yRot;
+	}
+	
+	public void appendDebugText(List<String> left)
+	{
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && Config.CLIENT.isCameraDecoupled())
+		{
+			int index = this.findFacingDebugTextIndex(left);
+			
+			if(index != -1)
+			{
+				Direction direction = Direction.fromYRot(this.cameraYRot);
+				String axis;
+				switch(direction)
+				{
+					case NORTH:
+						axis = "Towards negative Z";
+						break;
+					case SOUTH:
+						axis = "Towards positive Z";
+						break;
+					case WEST:
+						axis = "Towards negative X";
+						break;
+					case EAST:
+						axis = "Towards positive X";
+						break;
+					default:
+						axis = "Invalid";
+						break;
+				}
+				float yRot = MathHelper.wrapDegrees(this.cameraYRot);
+				float xRot = MathHelper.wrapDegrees(this.cameraXRot);
+				left.add(index + 1, String.format(Locale.ROOT, "Camera: %s (%s) (%.1f / %.1f)", direction, axis, yRot, xRot));
+			}
+		}
+	}
+	
+	private int findFacingDebugTextIndex(List<String> left)
+	{
+		for(int x = 0; x < left.size(); x++)
+		{
+			if(left.get(x).startsWith("Facing: "))
+			{
+				return x;
+			}
+		}
+		
+		return -1;
 	}
 	
 	public double getPlayerReach()
