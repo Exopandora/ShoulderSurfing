@@ -1,8 +1,11 @@
 package com.github.exopandora.shouldersurfing.config;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
+import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -791,6 +794,14 @@ public class Config
 		if(ShoulderInstance.getInstance() != null && Type.CLIENT.equals(config.getType()) && Config.CLIENT.doRememberLastPerspective())
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
+		}
+		
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		
+		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
+		{
+			ShoulderInstance.getInstance().resetCameraEntityRotations(cameraEntity);
+			ShoulderRenderer.getInstance().resetCameraRotations(cameraEntity);
 		}
 	}
 }
