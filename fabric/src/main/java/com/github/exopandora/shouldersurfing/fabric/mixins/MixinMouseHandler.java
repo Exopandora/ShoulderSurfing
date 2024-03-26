@@ -11,7 +11,7 @@ import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import net.minecraft.client.MouseHandler;
 
 @Mixin(MouseHandler.class)
-public class MixinMouseHandlerFabric
+public class MixinMouseHandler
 {
 	@Inject
 	(

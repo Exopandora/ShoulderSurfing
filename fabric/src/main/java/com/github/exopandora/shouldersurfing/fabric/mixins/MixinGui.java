@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public abstract class MixinGuiFabric
+public abstract class MixinGui
 {
 	@Shadow
 	protected Minecraft minecraft;
