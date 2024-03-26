@@ -6,12 +6,12 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [],
 	"client": [
-		"MixinGameRendererFabric",
-		"MixinGuiFabric",
+		"MixinGameRenderer",
+		"MixinGui",
 		"MixinKeyboardHandler",
-		"MixinLevelRendererFabric",
+		"MixinLevelRenderer",
 		"MixinMinecraft",
-		"MixinMouseHandlerFabric"
+		"MixinMouseHandler"
 	],
 	"injectors": {
 		"defaultRequire": 1
