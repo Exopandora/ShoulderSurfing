@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 
 @Mixin(LevelRenderer.class)
-public class MixinLevelRendererFabric
+public class MixinLevelRenderer
 {
 	@Inject
 	(
