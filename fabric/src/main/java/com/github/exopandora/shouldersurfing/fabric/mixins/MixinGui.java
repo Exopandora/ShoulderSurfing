@@ -1,5 +1,9 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
+import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -7,24 +11,11 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
-import com.github.exopandora.shouldersurfing.config.Perspective;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
-
 @Mixin(Gui.class)
 public abstract class MixinGui
 {
 	@Shadow
 	protected Minecraft minecraft;
-	
-	@Shadow
-	protected float scopeScale;
-	
-	@Shadow
-	abstract void renderSpyglassOverlay(GuiGraphics guiGraphics, float partialTick);
 	
 	@Inject
 	(
@@ -54,23 +45,5 @@ public abstract class MixinGui
 	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
 		ShoulderRenderer.getInstance().clearCrosshairOffset(guiGraphics.pose());
-	}
-	
-	@Inject
-	(
-		method = "render",
-		at = @At
-		(
-			value = "INVOKE",
-			target = "net/minecraft/client/CameraType.isFirstPerson()Z",
-			shift = Shift.BEFORE
-		)
-	)
-	private void renderSpyglass(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
-	{
-		if(this.minecraft.player.isScoping() && Perspective.SHOULDER_SURFING.equals(Perspective.current()))
-		{
-			this.renderSpyglassOverlay(guiGraphics, this.scopeScale);
-		}
 	}
 }
