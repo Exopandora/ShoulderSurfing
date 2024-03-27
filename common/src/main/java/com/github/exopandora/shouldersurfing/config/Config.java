@@ -1,16 +1,9 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -20,6 +13,13 @@ import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Config
 {
@@ -286,7 +286,7 @@ public class Config
 				.define("use_custom_raytrace_distance", true);
 			
 			this.adaptiveCrosshairHoldItems = builder
-				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode.")
+				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regex expressions. Example: 'minecraft:.*stone' matches 'minecraft:stone' and 'minecraft:cobblestone'.")
 				.translation("Adaptive crosshair items (hold)")
 				.defineList("adaptive_crosshair_hold_items", () ->
 				{
@@ -299,12 +299,12 @@ public class Config
 					items.add(Registry.ITEM.getKey(Items.FISHING_ROD).toString());
 					items.add(Registry.ITEM.getKey(Items.LINGERING_POTION).toString());
 					return items;
-				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+				}, Objects::nonNull);
 			
 			this.adaptiveCrosshairUseItems = builder
-				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode.")
+				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regex expressions. Example: 'minecraft:.*stone' matches 'minecraft:stone' and 'minecraft:cobblestone'.")
 				.translation("Adaptive crosshair items (use)")
-				.defineList("adaptive_crosshair_use_items", ArrayList::new, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+				.defineList("adaptive_crosshair_use_items", ArrayList::new, Objects::nonNull);
 			
 			this.adaptiveCrosshairHoldItemProperties = builder
 				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
