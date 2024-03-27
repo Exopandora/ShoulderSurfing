@@ -26,8 +26,9 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		Item useItem = entity.getUseItem().getItem();
 		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
 		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
+		String useItemId = Registry.ITEM.getKey(useItem).toString();
 		
-		if(useItems.contains(Registry.ITEM.getKey(useItem).toString()))
+		if(useItems.stream().anyMatch(useItemId::matches))
 		{
 			return true;
 		}
@@ -46,8 +47,9 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		for(ItemStack handStack : entity.getHandSlots())
 		{
 			Item handItem = handStack.getItem();
+			String handItemId = Registry.ITEM.getKey(handItem).toString();
 			
-			if(holdItems.contains(Registry.ITEM.getKey(handItem).toString()))
+			if(holdItems.stream().anyMatch(handItemId::matches))
 			{
 				return true;
 			}
