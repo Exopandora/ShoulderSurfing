@@ -29,7 +29,7 @@ public class MixinItem
 	)
 	private static ClipContext initClipContext(Vec3 start, Vec3 end, Block block, Fluid fluid, @NotNull Entity entity)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));

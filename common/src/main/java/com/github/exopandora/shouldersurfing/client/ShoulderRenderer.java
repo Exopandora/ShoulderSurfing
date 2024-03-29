@@ -359,14 +359,73 @@ public class ShoulderRenderer
 				return true;
 			}
 			
-			this.cameraXRot = Mth.clamp(this.cameraXRot + scaledXRot, -90.0F, 90.0F);
-			this.cameraYRot = this.cameraYRot + scaledYRot;
+			float cameraXRot = Mth.clamp(this.cameraXRot + scaledXRot, -90.0F, 90.0F);
+			float cameraYRot = this.cameraYRot + scaledYRot;
+			
+			if(player.isPassenger())
+			{
+				Entity vehicle = player.getVehicle();
+				float partialTick = Minecraft.getInstance().getFrameTime();
+				
+				float playerXRot = player.getXRot();
+				float playerYRot = player.getYRot();
+				float playerXRotO = player.xRotO;
+				float playerYRotO = player.yRotO;
+				float playerYHeadRot = player.yHeadRot;
+				float playerYHeadRotO = player.yHeadRotO;
+				float playerYBodyRot = player.yBodyRot;
+				float playerYBodyRotO = player.yBodyRotO;
+				
+				float vehicleXRot = vehicle.getXRot();
+				float vehicleYRot = vehicle.getYRot();
+				float vehicleXRotO = vehicle.xRotO;
+				float vehicleYRotO = vehicle.yRotO;
+				
+				vehicle.setXRot(Mth.rotLerp(partialTick, vehicleXRotO, vehicleXRot));
+				vehicle.setYRot(Mth.rotLerp(partialTick, vehicleYRotO, vehicleYRot));
+				
+				player.setXRot(cameraXRot);
+				player.setYRot(cameraYRot);
+				player.xRotO = this.cameraXRot;
+				player.yRotO = this.cameraYRot;
+				player.yHeadRot = cameraYRot;
+				player.yHeadRotO = this.cameraYRot;
+				player.yBodyRot = cameraYRot;
+				player.yBodyRotO = this.cameraYRot;
+				
+				vehicle.onPassengerTurned(player);
+				
+				if(player.getXRot() != cameraXRot)
+				{
+					cameraXRot = player.getXRot();
+				}
+				
+				if(player.getYRot() != cameraYRot)
+				{
+					cameraYRot = player.getYRot();
+				}
+				
+				player.setXRot(playerXRot);
+				player.setYRot(playerYRot);
+				player.xRotO = playerXRotO;
+				player.yRotO = playerYRotO;
+				player.yHeadRot = playerYHeadRot;
+				player.yHeadRotO = playerYHeadRotO;
+				player.yBodyRot = playerYBodyRot;
+				player.yBodyRotO = playerYBodyRotO;
+				
+				vehicle.setXRot(vehicleXRot);
+				vehicle.setYRot(vehicleYRot);
+			}
 			
 			if(Config.CLIENT.isCameraDecoupled() && (instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying()))
 			{
-				player.setXRot(this.cameraXRot);
-				player.setYRot(this.cameraYRot);
+				player.setXRot(cameraXRot);
+				player.setYRot(cameraYRot);
 			}
+			
+			this.cameraXRot = cameraXRot;
+			this.cameraYRot = cameraYRot;
 			
 			return Config.CLIENT.isCameraDecoupled();
 		}
