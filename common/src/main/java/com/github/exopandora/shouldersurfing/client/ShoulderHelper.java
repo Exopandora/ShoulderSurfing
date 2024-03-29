@@ -95,8 +95,7 @@ public class ShoulderHelper
 	public static EntityHitResult traceEntities(Camera camera, Entity entity, double playerReach, float partialTick, boolean doOffsetTrace)
 	{
 		double playerReachSq = playerReach * playerReach;
-		Vec3 viewVector = entity.getViewVector(1.0F)
-			.scale(playerReach);
+		Vec3 viewVector = new Vec3(camera.getLookVector()).scale(playerReach);
 		Vec3 eyePosition = entity.getEyePosition(partialTick);
 		AABB aabb = entity.getBoundingBox()
 			.expandTowards(viewVector)
@@ -141,7 +140,7 @@ public class ShoulderHelper
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		
-		if(minecraft.cameraEntity instanceof LivingEntity entity)
+		if(minecraft.getCameraEntity() instanceof LivingEntity entity)
 		{
 			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, entity));
 		}

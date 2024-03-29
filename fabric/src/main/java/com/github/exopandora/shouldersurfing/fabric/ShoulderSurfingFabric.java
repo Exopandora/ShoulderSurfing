@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric;
 
+import com.github.exopandora.shouldersurfing.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.KeyHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
@@ -18,16 +18,8 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 	public void onInitializeClient()
 	{
 		ModLoadingContext.registerConfig(ShoulderSurfing.MODID, Type.CLIENT, Config.CLIENT_SPEC);
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
-		{
-			ShoulderRenderer.getInstance().resetCameraRotations(handler.getPlayer());
-			ShoulderInstance.getInstance().resetCameraEntityRotations(handler.getPlayer());
-		});
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) ->
-		{
-			ShoulderRenderer.getInstance().resetCameraRotations(newPlayer);
-			ShoulderInstance.getInstance().resetCameraEntityRotations(newPlayer);
-		});
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ShoulderRenderer.getInstance().resetCameraRotations(handler.getPlayer()));
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> ShoulderRenderer.getInstance().resetCameraRotations(newPlayer));
 		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_LEFT);
 		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_RIGHT);
 		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_IN);
