@@ -16,24 +16,20 @@ public enum CrosshairType
 		{
 			return ShoulderHelper.isHoldingAdaptiveItem();
 		}
-		else if(this == CrosshairType.DYNAMIC || this == CrosshairType.DYNAMIC_WITH_1PP)
-		{
-			return true;
-		}
 		
-		return false;
+		return this == CrosshairType.DYNAMIC || this == CrosshairType.DYNAMIC_WITH_1PP;
 	}
 	
 	public boolean isAimingDecoupled()
 	{
-		return this == CrosshairType.STATIC;
+		return this == CrosshairType.STATIC || this == CrosshairType.STATIC_WITH_1PP;
 	}
 	
-	public boolean doSwitchPerspective()
+	public boolean doSwitchPerspective(boolean isAiming)
 	{
 		if(this == CrosshairType.STATIC_WITH_1PP || this == CrosshairType.DYNAMIC_WITH_1PP)
 		{
-			return ShoulderHelper.isHoldingAdaptiveItem();
+			return isAiming;
 		}
 		
 		return false;

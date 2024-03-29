@@ -97,8 +97,7 @@ public class ShoulderHelper
 	public static EntityRayTraceResult traceEntities(ActiveRenderInfo camera, Entity entity, double playerReach, float partialTick, boolean doOffsetTrace)
 	{
 		double playerReachSq = playerReach * playerReach;
-		Vector3d viewVector = entity.getViewVector(1.0F)
-			.scale(playerReach);
+		Vector3d viewVector = new Vector3d(camera.getLookVector()).scale(playerReach);
 		Vector3d eyePosition = entity.getEyePosition(partialTick);
 		AxisAlignedBB aabb = entity.getBoundingBox()
 			.expandTowards(viewVector)

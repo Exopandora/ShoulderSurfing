@@ -31,7 +31,7 @@ public class MixinItem
 	)
 	private static RayTraceContext initRayTraceContext(Vector3d start, Vector3d end, BlockMode block, FluidMode fluid, @NotNull Entity entity)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));

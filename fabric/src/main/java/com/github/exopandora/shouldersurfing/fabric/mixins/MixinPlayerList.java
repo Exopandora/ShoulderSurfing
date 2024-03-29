@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.management.PlayerList;
@@ -20,6 +19,5 @@ public abstract class MixinPlayerList
 	private void respawn(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir)
 	{
 		ShoulderRenderer.getInstance().resetCameraRotations(cir.getReturnValue());
-		ShoulderInstance.getInstance().resetCameraEntityRotations(cir.getReturnValue());
 	}
 }
