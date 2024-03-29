@@ -57,6 +57,7 @@ loom {
 			configName = "$modName Fabric Client"
 			ideConfigGenerated(true)
 			runDir("../run")
+			programArgs("--username", "Dev")
 		}
 		named("server") {
 			server()
