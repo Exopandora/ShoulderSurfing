@@ -69,7 +69,6 @@ public class ClientEventHandler
 		if(event.getPlayer() != null)
 		{
 			ShoulderRenderer.getInstance().resetCameraRotations(event.getPlayer());
-			ShoulderInstance.getInstance().resetCameraEntityRotations(event.getPlayer());
 		}
 	}
 	
@@ -77,6 +76,5 @@ public class ClientEventHandler
 	public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
 	{
 		ShoulderRenderer.getInstance().resetCameraRotations(event.getEntity());
-		ShoulderInstance.getInstance().resetCameraEntityRotations(event.getEntity());
 	}
 }
