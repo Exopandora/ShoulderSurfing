@@ -1,24 +1,33 @@
 <span style="font-family: Segoe UI;">
 	<h1><strong>ShoulderSurfing</strong></h1>
 	<p>
-		Revamped over-the-shoulder F5 third-person camera view
+		Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft.
 	</p>
 	<h2><strong>Features</strong></h2>
 	<ul>
 		<li>
-			Over-the-shoulder camera
+			Over-the-shoulder camera - see what you are interacting with in 3rd person
 		</li>
 		<li>
-			Hotkeys to move the camera (Default: arrow keys, page up and page down, O to swap shoulders)
+			Decoupled camera - walk left and right without turning your mouse
 		</li>
 		<li>
-			Corrective cross-hair positioning if dynamic crosshair is enabled
+			Free look (default: "left alt") - keep walking in a direction while looking in a different one
 		</li>
 		<li>
-			Hide player if the camera gets too close to it
+			Hotkeys to move the camera (default: "arrow keys", "page up" and "page down", "o" to switch shoulders)
 		</li>
 		<li>
-			Client-side only
+			Corrective cross-hair positioning when using adaptive or dynamic crosshair
+		</li>
+		<li>
+			Adaptive player transparency - fades the player model to transparent when view is obstructed
+		</li>
+		<li>
+			Highly configurable - customize your 3rd person experience with many configuration options
+		</li>
+		<li>
+			Client side only - no server mods required
 		</li>
 	</ul>
 	<h2><strong>Installation</strong></h2>
@@ -33,10 +42,10 @@
 	<h4><strong>Manual</strong></h4>
 	<ol>
 		<li>
-			Navigate to "..\.minecraft\mods"
+			Navigate to ".minecraft/mods"
 		</li>
 		<li>
-			Copy the "ShoulderSurfing-Forge-[VERSION].jar"
+			Move "ShoulderSurfing-Forge-[VERSION].jar" into the folder
 		</li>
 		<li>
 			Follow the steps below
@@ -46,7 +55,7 @@
 	<h4><strong>Launcher Settings</strong></h4>
 	<ol>
 		<li>
-			Select forge as your profile
+			Select Forge as your profile
 		</li>
 		<li>
 			Launch Minecraft
@@ -55,7 +64,7 @@
 			Join a world or server
 		</li>
 		<li>
-			Use "arrow keys", "page up" and "page down" to adjust the perspective ("O" to swap shoulder)
+			Use "arrow keys", "page up" and "page down" to adjust the perspective, "o" to switch shoulders
 		</li>
 	</ol>
 	<br/>
@@ -76,10 +85,10 @@
 	<h4><strong>Manual</strong></h4>
 	<ol>
 		<li>
-			Navigate to "..\.minecraft\mods"
+			Navigate to ".minecraft\mods"
 		</li>
 		<li>
-			Copy the "ShoulderSurfing-Fabric-[VERSION].jar"
+			Move "ShoulderSurfing-Fabric-[VERSION].jar" into the folder
 		</li>
 		<li>
 			Follow the steps below
@@ -89,7 +98,7 @@
 	<h4><strong>Launcher Settings</strong></h4>
 	<ol>
 		<li>
-			Select fabric as your profile
+			Select Fabric as your profile
 		</li>
 		<li>
 			Launch Minecraft
@@ -98,49 +107,75 @@
 			Join a world or server
 		</li>
 		<li>
-			Use "arrow keys", "page up" and "page down" to adjust the perspective ("O" to swap shoulder)
+			Use "arrow keys", "page up" and "page down" to adjust the perspective, "o" to switch shoulders
+		</li>
+	</ol>
+	<br/>
+		<h3><strong>NeoForge</strong></h3>
+	<h4><strong>Prerequisites</strong></h4>
+	<ol>
+		<li>
+			Make sure <a href="https://neoforged.net/">NeoForge</a> is installed
+		</li>
+		<li>
+			Make sure <a href="https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric">Forge Config API Port</a> is installed
+		</li>
+	</ol>
+	<br/>
+	<h4><strong>Manual</strong></h4>
+	<ol>
+		<li>
+			Navigate to ".minecraft/mods"
+		</li>
+		<li>
+			Move "ShoulderSurfing-NeoForge-[VERSION].jar" into the folder
+		</li>
+		<li>
+			Follow the steps below
+		</li>
+	</ol>
+	<br/>
+	<h4><strong>Launcher Settings</strong></h4>
+	<ol>
+		<li>
+			Select NeoForge as your profile
+		</li>
+		<li>
+			Launch Minecraft
+		</li>
+		<li>
+			Join a world or server
+		</li>
+		<li>
+			Use "arrow keys", "page up" and "page down" to adjust the perspective, "o" to switch shoulders
 		</li>
 	</ol>
 	<br/>
 	<h2><strong>Configuration</strong></h2>
+	<h3><strong>Version 3.0.0 and later</strong></h3>
 	<ul>
 		<li>
-			≥ 1.13: Manual: "..\.minecraft\config\shouldersurfing.toml"
+			Manual: ".minecraft/config/shouldersurfing-client.toml"
 		</li>
 		<li>
-			≤ 1.12: Ingame: Mods -> ShoulderSurfing -> Config (Manual: "..\.minecraft\config\shouldersurfing.cfg")
+			Ingame: Install <a href="https://www.curseforge.com/minecraft/mc-mods/config-menus-forge">Forge Config Screens</a>
 		</li>
 	</ul>
-	<h2><strong>Troubleshooting</strong></h2>
+	<h3><strong>Version 2.9.7 and older</strong></h3>
 	<ul>
 		<li>
-			<strong>Optifine:</strong>
-			<ul>
-				<li>
-					1.15: Shaders will be offset because of compatibility issues
-				</li>
-				<li>
-					1.15-1.16.1: The crosshair will not render in 3pp because of compatibility issues
-				</li>
-				<li>
-					≤ 1.14: Set "Render Quality" to "1.0x" for Shader Pack "(internal)" and switch back to Shader Pack "OFF"
-				</li>
-			</ul>
+			&ge; 1.13: Manual: "..\.minecraft\config\shouldersurfing.toml"
 		</li>
 		<li>
-			<strong>BetterCombat:</strong> Set "Enable 1PP Crosshair" to "false" and "Override Mod Crosshairs" to "true"
+			&le; 1.12: Ingame: Mods -> ShoulderSurfing -> Config (Manual: "..\.minecraft\config\shouldersurfing.cfg")
 		</li>
 	</ul>
 	<h2><strong>FAQ</strong></h2>
-	<span><strong>Q:</strong> Is this client-side only?</span><br/>
-	<span><strong>A:</strong> Yes.</span><br/>
 	<span><strong>Q:</strong> Can you port feature x to version y?</span><br/>
 	<span><strong>A:</strong> No.</span><br/>
 	<span><strong>Q:</strong> Can you port this to quilt, liteloader, rift, etc.?</span><br/>
 	<span><strong>A:</strong> No.</span><br/>
-	<span><strong>Q:</strong> Can you make the player always aim at where the crosshair is pointing at?</span><br/>
-	<span><strong>A:</strong> No, as it would break server compatibility.</span><br/>
-	<span><strong>Q:</strong> Can i add this to my modpack ?</span><br/>
+	<span><strong>Q:</strong> Can I add this to my modpack ?</span><br/>
 	<span><strong>A:</strong> Yes.</span><br/>
 	<h2><strong>License</strong></h2>
 	<p>
