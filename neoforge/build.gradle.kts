@@ -88,7 +88,7 @@ tasks.build {
 }
 
 publishMods {
-	displayName = "$modName-Forge-${libs.versions.minecraft.get()}-$modVersion"
+	displayName = "$modName-NeoForge-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
