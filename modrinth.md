@@ -1,4 +1,4 @@
-# Shoulder Surfing Reloaded</br> [![CurseForge Downloads](https://img.shields.io/curseforge/dt/243190?style=flat-square&logo=curseforge&label=CurseForge&color=%23F16436)](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded) [![Modrinth Downloads](https://img.shields.io/modrinth/dt/kepjj2sy?style=flat-square&logo=modrinth&label=Modrinth&color=%2300AF5C)](https://modrinth.com/mod/shoulder-surfing-reloaded) #
+# Shoulder Surfing Reloaded #
 Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft.
 
 # Features #
@@ -12,8 +12,6 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 * Client side only - no server mods required
 
 # Installation #
-Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/) or [Modrinth](https://modrinth.com/mod/shoulder-surfing-reloaded) or [build from source](#building-from-source).
-
 ## Forge ##
 ### Prerequisites ###
 1. Make sure [Minecraft Forge](http://files.minecraftforge.net/) is installed
@@ -32,8 +30,8 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 ## Fabric ##
 ### Prerequisites ###
 1. Make sure [Fabric](https://fabricmc.net/) is installed
-2. Make sure Fabric API ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api), [Modrinth](https://modrinth.com/mod/fabric-api)) is installed
-3. Make sure Forge Config API Port ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric), [Modrinth](https://modrinth.com/mod/forge-config-api-port)) is installed
+2. Make sure [Fabric API](https://modrinth.com/mod/fabric-api) is installed
+3. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -49,7 +47,7 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 ## NeoForge ##
 ### Prerequisites ###
 1. Make sure [NeoForge](https://neoforged.net/) is installed
-2. Make sure Forge Config API Port ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric), [Modrinth](https://modrinth.com/mod/forge-config-api-port)) is installed
+2. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -74,19 +72,6 @@ Ingame: Install Forge Config Screens ([CurseForge](https://www.curseforge.com/mi
 # API Documentation #
 The API Documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
 
-# Building From Source #
-Clone the repository and run the following command in the root directory of this repository:
-```bash
-gradlew build
-```
-The binaries for each platform can be found in the following directories:
-
-| Platform | Path                    |
-|----------|-------------------------|
-| Forge    | `./forge/build/libs`    |
-| Fabric   | `./fabric/build/libs`   |
-| NeoForge | `./neoforge/build/libs` |
-
 # FAQ #
 **Q:** Can you port feature x to version y?  
 **A:** No.
@@ -94,7 +79,7 @@ The binaries for each platform can be found in the following directories:
 **Q:** Can you port this to quilt, liteloader, rift, etc.?  
 **A:** No.
 
-**Q:** Can I add this to my mod pack?  
+**Q:** Can I add this to my modpack?  
 **A:** Yes.
 
 # License #
