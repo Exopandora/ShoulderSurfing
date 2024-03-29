@@ -1,24 +1,22 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Config
 {
@@ -800,7 +798,6 @@ public class Config
 		
 		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
 		{
-			ShoulderInstance.getInstance().resetCameraEntityRotations(cameraEntity);
 			ShoulderRenderer.getInstance().resetCameraRotations(cameraEntity);
 		}
 	}

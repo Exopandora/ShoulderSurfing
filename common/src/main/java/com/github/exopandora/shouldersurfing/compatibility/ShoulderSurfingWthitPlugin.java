@@ -34,12 +34,12 @@ public class ShoulderSurfingWthitPlugin implements IWailaPlugin
 			Minecraft minecraft = accessor.getClient();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			
-			if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+			if(ShoulderInstance.getInstance().doShoulderSurfing())
 			{
 				MultiPlayerGameMode gameMode = minecraft.gameMode;
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
 				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);
-				HitResult result = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, accessor.getMaxDistance(), fluidContext, accessor.getFrameDelta(), traceEntities, true);
+				HitResult result = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, accessor.getMaxDistance(), fluidContext, accessor.getFrameDelta(), traceEntities, !Config.CLIENT.getCrosshairType().isDynamic());
 				results.add(result, 0);
 			}
 			else

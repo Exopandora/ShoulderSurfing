@@ -37,9 +37,9 @@ public class MixinGameRenderer
 	)
 	private EntityHitResult getEntityHitResult(Entity shooter, Vec3 startVec, Vec3 endVec, AABB boundingBox, Predicate<Entity> filter, double distanceSq)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
+		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			return ShoulderHelper.traceEntities(this.mainCamera, shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), true);
+			return ShoulderHelper.traceEntities(this.mainCamera, shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), !Config.CLIENT.getCrosshairType().isDynamic());
 		}
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
