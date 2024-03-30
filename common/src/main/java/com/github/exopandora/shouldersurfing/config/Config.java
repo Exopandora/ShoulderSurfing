@@ -798,7 +798,7 @@ public class Config
 		
 		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
 		{
-			ShoulderRenderer.getInstance().resetCameraRotations(cameraEntity);
+			ShoulderRenderer.getInstance().resetState(cameraEntity);
 		}
 	}
 }
