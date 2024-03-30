@@ -18,8 +18,8 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 	public void onInitializeClient()
 	{
 		ModLoadingContext.registerConfig(ShoulderSurfing.MODID, Type.CLIENT, Config.CLIENT_SPEC);
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ShoulderRenderer.getInstance().resetCameraRotations(handler.getPlayer()));
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> ShoulderRenderer.getInstance().resetCameraRotations(newPlayer));
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ShoulderRenderer.getInstance().resetState(handler.getPlayer()));
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> ShoulderRenderer.getInstance().resetState(newPlayer));
 		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_LEFT);
 		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_RIGHT);
 		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_IN);
