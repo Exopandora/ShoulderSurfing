@@ -30,9 +30,9 @@ public class ShoulderRenderer
 	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
 	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private double cameraDistance;
-	private double maxCameraDistance = ShoulderInstance.getInstance().getOffset().length();
-	private double cameraDistanceLimit = this.maxCameraDistance;
-	private double cameraDistanceLimitO = this.maxCameraDistance;
+	private double targetCameraDistance = ShoulderInstance.getInstance().getOffset().length();
+	private double maxCameraDistance = this.targetCameraDistance;
+	private double maxCameraDistanceO = this.targetCameraDistance;
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
@@ -51,8 +51,8 @@ public class ShoulderRenderer
 	{
 		this.cameraXRotOffsetO = this.cameraXRotOffset;
 		this.cameraYRotOffsetO = this.cameraYRotOffset;
-		this.cameraDistanceLimitO = this.cameraDistanceLimit;
-		this.cameraDistanceLimit = Math.min(this.maxCameraDistance, this.cameraDistanceLimit + (ShoulderInstance.getInstance().getOffset().length() - this.cameraDistanceLimit) * Config.CLIENT.getCameraTransitionSpeedMultiplier());
+		this.maxCameraDistanceO = this.maxCameraDistance;
+		this.maxCameraDistance = Math.min(this.targetCameraDistance, this.maxCameraDistance + (ShoulderInstance.getInstance().getOffset().length() - this.maxCameraDistance) * Config.CLIENT.getCameraTransitionSpeedMultiplier());
 		
 		if(!ShoulderInstance.getInstance().isFreeLooking())
 		{
@@ -199,16 +199,16 @@ public class ShoulderRenderer
 			
 			if(!camera.getEntity().isSpectator())
 			{
-				this.maxCameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
+				this.targetCameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
 				
-				if(this.maxCameraDistance < this.cameraDistanceLimit)
+				if(this.targetCameraDistance < this.maxCameraDistance)
 				{
-					this.cameraDistanceLimit = this.maxCameraDistance;
-					this.cameraDistance = this.maxCameraDistance;
+					this.maxCameraDistance = this.targetCameraDistance;
+					this.cameraDistance = this.targetCameraDistance;
 				}
 				else
 				{
-					this.cameraDistance = Math.min(this.maxCameraDistance, Mth.lerp(partialTick, this.cameraDistanceLimitO, this.cameraDistanceLimit));
+					this.cameraDistance = Math.min(this.targetCameraDistance, Mth.lerp(partialTick, this.maxCameraDistanceO, this.maxCameraDistance));
 				}
 				
 				Vec3 scaled = offset.normalize().scale(this.cameraDistance);
@@ -453,9 +453,9 @@ public class ShoulderRenderer
 	{
 		this.cameraXRot = entity.getXRot();
 		this.cameraYRot = entity.getYRot();
-		this.maxCameraDistance = ShoulderInstance.getInstance().getOffset().length();
-		this.cameraDistanceLimit = this.maxCameraDistance;
-		this.cameraDistanceLimitO = this.maxCameraDistance;
+		this.targetCameraDistance = ShoulderInstance.getInstance().getOffset().length();
+		this.maxCameraDistance = this.targetCameraDistance;
+		this.maxCameraDistanceO = this.targetCameraDistance;
 		this.cameraXRotOffset = 0F;
 		this.cameraYRotOffset = 0F;
 		this.cameraXRotOffsetO = 0F;
