@@ -456,6 +456,13 @@ public class ShoulderRenderer
 		this.maxCameraDistance = ShoulderInstance.getInstance().getOffset().length();
 		this.cameraDistanceLimit = this.maxCameraDistance;
 		this.cameraDistanceLimitO = this.maxCameraDistance;
+		this.cameraXRotOffset = 0F;
+		this.cameraYRotOffset = 0F;
+		this.cameraXRotOffsetO = 0F;
+		this.cameraYRotOffsetO = 0F;
+		this.lastTranslation = Vec2f.ZERO;
+		this.translation = Vec2f.ZERO;
+		this.projected = null;
 	}
 	
 	public void appendDebugText(List<String> left)
