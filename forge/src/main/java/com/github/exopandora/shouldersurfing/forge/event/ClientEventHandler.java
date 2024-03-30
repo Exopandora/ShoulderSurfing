@@ -70,13 +70,13 @@ public class ClientEventHandler
 	{
 		if(event.getPlayer() != null)
 		{
-			ShoulderRenderer.getInstance().resetCameraRotations(event.getPlayer());
+			ShoulderRenderer.getInstance().resetState(event.getPlayer());
 		}
 	}
 	
 	@SubscribeEvent
 	public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
 	{
-		ShoulderRenderer.getInstance().resetCameraRotations(event.getEntity());
+		ShoulderRenderer.getInstance().resetState(event.getEntity());
 	}
 }

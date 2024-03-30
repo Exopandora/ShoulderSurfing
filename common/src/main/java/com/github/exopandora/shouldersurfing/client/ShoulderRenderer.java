@@ -30,6 +30,9 @@ public class ShoulderRenderer
 	private static final ShoulderRenderer INSTANCE = new ShoulderRenderer();
 	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private double cameraDistance;
+	private double targetCameraDistance = ShoulderInstance.getInstance().getOffset().length();
+	private double maxCameraDistance = this.targetCameraDistance;
+	private double maxCameraDistanceO = this.targetCameraDistance;
 	private Vec2f lastTranslation = Vec2f.ZERO;
 	private Vec2f translation = Vec2f.ZERO;
 	private Vec2f projected;
@@ -48,6 +51,8 @@ public class ShoulderRenderer
 	{
 		this.cameraXRotOffsetO = this.cameraXRotOffset;
 		this.cameraYRotOffsetO = this.cameraYRotOffset;
+		this.maxCameraDistanceO = this.maxCameraDistance;
+		this.maxCameraDistance = Math.min(this.targetCameraDistance, this.maxCameraDistance + (ShoulderInstance.getInstance().getOffset().length() - this.maxCameraDistance) * Config.CLIENT.getCameraTransitionSpeedMultiplier());
 		
 		if(!ShoulderInstance.getInstance().isFreeLooking())
 		{
@@ -194,7 +199,18 @@ public class ShoulderRenderer
 			
 			if(!camera.getEntity().isSpectator())
 			{
-				this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
+				this.targetCameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
+				
+				if(this.targetCameraDistance < this.maxCameraDistance)
+				{
+					this.maxCameraDistance = this.targetCameraDistance;
+					this.cameraDistance = this.targetCameraDistance;
+				}
+				else
+				{
+					this.cameraDistance = Math.min(this.targetCameraDistance, Mth.lerp(partialTick, this.maxCameraDistanceO, this.maxCameraDistance));
+				}
+				
 				Vec3 scaled = offset.normalize().scale(this.cameraDistance);
 				this.cameraOffsetX = scaled.x;
 				this.cameraOffsetY = scaled.y;
@@ -433,10 +449,13 @@ public class ShoulderRenderer
 		return false;
 	}
 	
-	public void resetCameraRotations(Entity entity)
+	public void resetState(Entity entity)
 	{
 		this.cameraXRot = entity.getXRot();
 		this.cameraYRot = entity.getYRot();
+		this.targetCameraDistance = ShoulderInstance.getInstance().getOffset().length();
+		this.maxCameraDistance = this.targetCameraDistance;
+		this.maxCameraDistanceO = this.targetCameraDistance;
 	}
 	
 	public void appendDebugText(List<String> left)
