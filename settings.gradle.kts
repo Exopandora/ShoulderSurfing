@@ -34,4 +34,10 @@ plugins {
 }
 
 rootProject.name = "ShoulderSurfing"
-include("api", "common", "fabric", "forge")
+include(
+	":api",
+	":common",
+	":compatibility",
+	":forge",
+	":fabric"
+)
