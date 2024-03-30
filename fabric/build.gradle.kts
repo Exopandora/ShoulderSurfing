@@ -24,17 +24,10 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
-sourceSets {
-	named("main") {
-		java {
-			compileClasspath += project(":common").sourceSets.named("api").get().output
-		}
-	}
-}
-
 dependencies {
-	implementation(project(":api"))
-	implementation(project(":common"))
+	compileOnly(project(":api"))
+	compileOnly(project(":common"))
+	compileOnly(project(":compatibility"))
 	
 	minecraft(libs.minecraft.fabric)
 	mappings(fileTree("../mapping") { include("**.jar") })
@@ -42,7 +35,8 @@ dependencies {
 	modImplementation(libs.fabric.loader)
 	modImplementation(libs.fabric.api)
 	modImplementation(libs.forgeconfigapiport.fabric) {
-		isTransitive = false
+		exclude(group = libs.fabric.loader.get().group)
+		exclude(group = libs.fabric.api.get().group)
 	}
 	implementation(libs.nightconfig.core)
 	implementation(libs.nightconfig.toml)
@@ -71,12 +65,12 @@ loom {
 }
 
 tasks.named<JavaCompile>("compileJava").configure {
-	source(project(":api").sourceSets.named("main").get().allSource)
-	source(project(":common").sourceSets.named("main").get().allSource)
+	source(project(":api").sourceSets.main.get().allSource)
+	source(project(":common").sourceSets.main.get().allSource)
 }
 
 tasks.named<ProcessResources>("processResources").configure {
-	from(project(":common").sourceSets.named("main").get().resources)
+	from(project(":common").sourceSets.main.get().resources)
 	
 	inputs.property("version", modVersion)
 	inputs.property("mod_name", modName)
@@ -93,10 +87,10 @@ tasks.named<ProcessResources>("processResources").configure {
 }
 
 tasks.register<Jar>("apiJar").configure {
-	from(project(":api").sourceSets.named("main").get().output)
-	from(project(":api").sourceSets.named("main").get().allSource)
+	from(project(":api").sourceSets.main.get().output)
+	from(project(":api").sourceSets.main.get().allSource)
 	
-	from(sourceSets.named("main").get().resources) {
+	from(sourceSets.main.get().resources) {
 		include("fabric.mod.json")
 	}
 	

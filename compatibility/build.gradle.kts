@@ -9,7 +9,7 @@ val modName: String by project
 val javaVersion: String by project
 
 base {
-	archivesName.set("$modName-API")
+	archivesName.set("$modName-Compatibility")
 }
 
 java {
@@ -31,4 +31,3 @@ loom {
 		useLegacyMixinAp.set(false)
 	}
 }
-

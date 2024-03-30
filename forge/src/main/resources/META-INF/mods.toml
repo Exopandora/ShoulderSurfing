@@ -1,19 +1,19 @@
-modLoader="javafml"
-loaderVersion="[33,)"
-displayURL="https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded"
-logoFile="logo.png"
-authors="Sabar, Exopandora"
-license="MIT"
+modLoader = "javafml"
+loaderVersion = "[33,)"
+displayURL = "https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded"
+logoFile = "logo.png"
+authors = "Exopandora"
+license = "MIT"
 
 [[mods]]
-modId="shouldersurfing"
-displayName="Shoulder Surfing"
-version="1.16.5-${version}"
-description="Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft, originally made by Sabar."
+modId = "shouldersurfing"
+displayName = "Shoulder Surfing"
+version = "1.16.5-${version}"
+description = "Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft, originally made by Sabar."
 
 [[dependencies.shouldersurfing]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.16,)"
-    ordering="NONE"
-    side="CLIENT"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16,)"
+ordering = "NONE"
+side = "CLIENT"

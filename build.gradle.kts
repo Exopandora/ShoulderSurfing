@@ -11,8 +11,13 @@ val modName: String by project
 val modAuthor: String by project
 val modVersion: String by project
 val javaVersion: String by project
+val javaToolchainVersion: String by project
 
 subprojects {
+	apply(plugin = "java")
+	
+	java.toolchain.languageVersion = JavaLanguageVersion.of(javaToolchainVersion)
+	
 	repositories {
 		mavenCentral()
 		exclusiveContent {
