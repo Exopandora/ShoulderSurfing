@@ -140,7 +140,7 @@ public class ShoulderInstance
 		
 		if(this.doShoulderSurfing && cameraEntity != null)
 		{
-			ShoulderRenderer.getInstance().resetCameraRotations(cameraEntity);
+			ShoulderRenderer.getInstance().resetState(cameraEntity);
 		}
 	}
 	
@@ -157,6 +157,11 @@ public class ShoulderInstance
 	public boolean isAiming()
 	{
 		return this.isAiming;
+	}
+	
+	public Vector3d getOffset()
+	{
+		return new Vector3d(this.getOffsetX(), this.getOffsetZ(), this.getOffsetY());
 	}
 	
 	public double getOffsetX()

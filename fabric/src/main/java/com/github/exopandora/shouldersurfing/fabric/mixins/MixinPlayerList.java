@@ -18,6 +18,6 @@ public abstract class MixinPlayerList
 	)
 	private void respawn(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir)
 	{
-		ShoulderRenderer.getInstance().resetCameraRotations(cir.getReturnValue());
+		ShoulderRenderer.getInstance().resetState(cir.getReturnValue());
 	}
 }
