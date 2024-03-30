@@ -6,6 +6,10 @@ plugins {
 	alias(libs.plugins.modpublishplugin)
 }
 
+repositories {
+	maven("https://maven.minecraftforge.net/")
+}
+
 val modId: String by project
 val modName: String by project
 val modVersion: String by project
