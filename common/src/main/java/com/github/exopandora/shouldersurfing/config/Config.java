@@ -260,9 +260,9 @@ public class Config
 				.define("adjust_player_transparency", true);
 			
 			this.isCameraDecoupled = builder
-					.comment("Whether or not to decouple the camera rotation from the player rotation.")
-					.translation("Decoupled camera")
-					.define("decoupled_camera", true);
+				.comment("Whether or not to decouple the camera rotation from the player rotation.")
+				.translation("Decoupled camera")
+				.define("decoupled_camera", true);
 			
 			builder.pop();
 			builder.push("crosshair");
