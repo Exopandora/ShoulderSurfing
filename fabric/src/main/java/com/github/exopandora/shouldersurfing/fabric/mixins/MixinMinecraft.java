@@ -42,7 +42,10 @@ public class MixinMinecraft
 	)
 	private void onStartTick(CallbackInfo info)
 	{
-		ShoulderInstance.getInstance().tick();
-		ShoulderRenderer.getInstance().tick();
+		if(Minecraft.getInstance().level != null)
+		{
+			ShoulderInstance.getInstance().tick();
+			ShoulderRenderer.getInstance().tick();
+		}
 	}
 }

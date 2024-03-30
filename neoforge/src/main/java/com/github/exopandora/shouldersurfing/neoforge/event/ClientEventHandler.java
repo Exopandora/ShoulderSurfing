@@ -19,7 +19,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void clientTickEvent(TickEvent.ClientTickEvent event)
 	{
-		if(TickEvent.Phase.START.equals(event.phase))
+		if(TickEvent.Phase.START.equals(event.phase) && Minecraft.getInstance().level != null)
 		{
 			ShoulderInstance.getInstance().tick();
 			ShoulderRenderer.getInstance().tick();
