@@ -18,8 +18,8 @@ val forgeCompatibleMinecraftVersions: String by project
 val curseProjectId: String by project
 val modrinthProjectId: String by project
 
-tasks.withType<Jar>().configureEach {
-	archiveBaseName.set("$modName-Forge")
+base {
+	archivesName.set("$modName-Forge")
 }
 
 java {
@@ -27,23 +27,8 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
-sourceSets {
-	create("api") {
-		java {
-			compileClasspath += project(":common").sourceSets.named("main").get().compileClasspath
-		}
-	}
-	named("main") {
-		java {
-			compileClasspath += sourceSets.named("api").get().output
-			compileClasspath += project(":common").sourceSets.named("api").get().output
-			runtimeClasspath += sourceSets.named("api").get().output
-		}
-	}
-}
-
 mixin {
-	add(sourceSets.named("main").get(), "$modId.refmap.json")
+	add(sourceSets.main.get(), "$modId.refmap.json")
 	
 	config("$modId.common.mixins.json")
 	config("$modId.forge.mixins.json")
@@ -59,23 +44,20 @@ minecraft {
 		configureEach {
 			workingDirectory(project.file("../run"))
 			ideaModule("${rootProject.name}.${project.name}.main")
-
+			
 			mods {
 				create(modId) {
-					source(sourceSets.named("api").get())
-					source(sourceSets.named("main").get())
-					source(project(":api").sourceSets.named("main").get())
-					source(project(":common").sourceSets.named("main").get())
+					source(sourceSets.main.get())
+					source(project(":api").sourceSets.main.get())
+					source(project(":common").sourceSets.main.get())
+					source(project(":compatibility").sourceSets.main.get())
 				}
 			}
 		}
 		
-		create("client") {
-			taskName("${modName}ForgeClient")
-		}
+		create("client")
 		
 		create("server") {
-			taskName("${modName}ForgeServer")
 			args("--nogui")
 		}
 	}
@@ -84,6 +66,7 @@ minecraft {
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
+	compileOnly(project(":compatibility"))
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
@@ -93,12 +76,12 @@ dependencies {
 }
 
 tasks.named<JavaCompile>("compileJava").configure {
-	source(project(":api").sourceSets.named("main").get().allSource)
-	source(project(":common").sourceSets.named("main").get().allSource)
+	source(project(":api").sourceSets.main.get().allSource)
+	source(project(":common").sourceSets.main.get().allSource)
 }
 
 tasks.named<ProcessResources>("processResources").configure {
-	from(project(":common").sourceSets.named("main").get().resources)
+	from(project(":common").sourceSets.main.get().resources)
 	
 	inputs.property("mod_version", modVersion)
 	inputs.property("mod_name", modName)
@@ -113,8 +96,8 @@ tasks.named<ProcessResources>("processResources").configure {
 }
 
 tasks.register<Jar>("apiJar").configure {
-	from(project(":api").sourceSets.named("main").get().output)
-	from(project(":api").sourceSets.named("main").get().allSource)
+	from(project(":api").sourceSets.main.get().output)
+	from(project(":api").sourceSets.main.get().allSource)
 	archiveClassifier = "API"
 }
 

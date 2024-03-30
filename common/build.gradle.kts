@@ -1,5 +1,5 @@
 plugins {
-	id("java")
+	id("java-library")
 	id("idea")
 	alias(libs.plugins.vanillagradle)
 }
@@ -17,20 +17,9 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
-sourceSets {
-	create("api") {
-		compileClasspath += sourceSets.named("main").get().compileClasspath
-	}
-	named("main") {
-		java {
-			compileClasspath += sourceSets.named("api").get().output
-			runtimeClasspath += sourceSets.named("api").get().output
-		}
-	}
-}
-
 dependencies {
 	compileOnly(project(":api"))
+	compileOnly(project(":compatibility"))
 	
 	compileOnly(libs.mixin)
 	compileOnly(libs.forgeconfigapiport.common)
