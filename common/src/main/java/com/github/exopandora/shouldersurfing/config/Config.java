@@ -82,7 +82,7 @@ public class Config
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
-			builder.push("perspective");
+			builder.push("camera");
 			builder.push("offset");
 			
 			this.offsetX = builder
@@ -199,31 +199,6 @@ public class Config
 				.translation("Keep camera out of head distance multiplier")
 				.defineInRange("keep_camera_out_of_head_distance_multiplier", 0.75D, 0D, Double.MAX_VALUE);
 			
-			this.defaultPerspective = builder
-				.comment("The default perspective when you load the game.")
-				.translation("Default perspective")
-				.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
-			
-			this.rememberLastPerspective = builder
-				.comment("Whether or not to remember the last perspective used.")
-				.translation("Remember last perspective")
-				.define("remember_last_perspective", true);
-			
-			this.replaceDefaultPerspective = builder
-				.comment("Whether or not to replace the default third person perspective.")
-				.translation("Replace default perspective")
-				.define("replace_default_perspective", false);
-			
-			this.skipThirdPersonFront = builder
-				.comment("Whether or not to skip the third person front perspective.")
-				.translation("Skip third person front perspective")
-				.define("skip_third_person_front_perspective", false);
-			
-			this.limitPlayerReach = builder
-				.comment("Whether or not to limit the player reach depending on the crosshair location (perspective offset).")
-				.translation("Limit player reach")
-				.define("limit_player_reach", true);
-			
 			this.cameraStepSize = builder
 				.comment("Size of the camera adjustment per step.")
 				.translation("Camera step size")
@@ -244,25 +219,53 @@ public class Config
 				.translation("Center camera when looking down angle")
 				.defineInRange("center_camera_when_looking_down_angle", 1D, 0D, 90D);
 			
-			this.hidePlayerWhenLookingUpAngle = builder
-				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
-				.translation("Center camera when looking down angle")
-				.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
-			
 			this.dynamicallyAdjustOffsets = builder
 				.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
 				.translation("Dynamically adjust offsets")
 				.define("dynamically_adjust_offsets", true);
+			
+			this.isCameraDecoupled = builder
+				.comment("Whether or not to decouple the camera rotation from the player rotation.")
+				.translation("Decoupled camera")
+				.define("decoupled_camera", true);
+			
+			builder.pop();
+			builder.push("perspective");
+			
+			this.defaultPerspective = builder
+				.comment("The default perspective when you load the game.")
+				.translation("Default perspective")
+				.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
+			
+			this.rememberLastPerspective = builder
+				.comment("Whether or not to remember the last perspective used.")
+				.translation("Remember last perspective")
+				.define("remember_last_perspective", true);
+			
+			this.replaceDefaultPerspective = builder
+				.comment("Whether or not to replace the default third person perspective.")
+				.translation("Replace default perspective")
+				.define("replace_default_perspective", false);
+			
+			this.skipThirdPersonFront = builder
+				.comment("Whether or not to skip the third person front perspective.")
+				.translation("Skip third person front perspective")
+				.define("skip_third_person_front_perspective", false);
 			
 			this.playerTransparency = builder
 				.comment("Whether or not to adjust the player model transparency when view is obstructed.")
 				.translation("Adjust player transparency")
 				.define("adjust_player_transparency", true);
 			
-			this.isCameraDecoupled = builder
-				.comment("Whether or not to decouple the camera rotation from the player rotation.")
-				.translation("Decoupled camera")
-				.define("decoupled_camera", true);
+			this.hidePlayerWhenLookingUpAngle = builder
+				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
+				.translation("Center camera when looking down angle")
+				.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
+			
+			this.limitPlayerReach = builder
+				.comment("Whether or not to limit the player reach, such that only block that could be reached in first person, will be reachable.")
+				.translation("Limit player reach")
+				.define("limit_player_reach", true);
 			
 			builder.pop();
 			builder.push("crosshair");
