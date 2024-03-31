@@ -219,6 +219,9 @@ public class ShoulderRenderer
 			else
 			{
 				this.cameraDistance = offset.length();
+				this.cameraOffsetX = offset.x;
+				this.cameraOffsetY = offset.y;
+				this.cameraOffsetZ = offset.z;
 				accessor.invokeMove(-offset.z, offset.y, offset.x);
 			}
 		}
@@ -312,16 +315,16 @@ public class ShoulderRenderer
 
 	}
 	
-	private boolean skipCameraEntityRendering()
+	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
 	{
-		return ShoulderInstance.getInstance().doShoulderSurfing() &&
-			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
-				Minecraft.getInstance().getCameraEntity().xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+		return ShoulderInstance.getInstance().doShoulderSurfing() && !cameraEntity.isSpectator() &&
+			(this.cameraDistance < cameraEntity.getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
+				cameraEntity.yRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
 	}
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
 	{
-		if(this.skipCameraEntityRendering())
+		if(this.shouldSkipCameraEntityRendering(entity))
 		{
 			return true;
 		}
@@ -354,7 +357,7 @@ public class ShoulderRenderer
 	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
-			(Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D) &&
+			!entity.isSpectator() && (Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D) &&
 				(this.cameraOffsetY >= 0 && this.cameraOffsetY < entity.getBbHeight() - entity.getEyeHeight() ||
 					this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
