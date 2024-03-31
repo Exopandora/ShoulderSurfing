@@ -7,7 +7,6 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -273,43 +271,8 @@ public class ShoulderRenderer
 			MultiPlayerGameMode gameMode = Minecraft.getInstance().gameMode;
 			HitResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, this.getPlayerReach(), ClipContext.Fluid.NONE, partialTick, true, false);
 			Vec3 position = hitResult.getLocation().subtract(camera.getPosition());
-			this.projected = this.project2D(position, modelViewMatrix, projectionMatrix);
+			this.projected = ShoulderHelper.project2D(position, modelViewMatrix, projectionMatrix);
 		}
-	}
-	
-	@Nullable
-	private Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
-	{
-		Window window = Minecraft.getInstance().getWindow();
-		int screenWidth = window.getScreenWidth();
-		int screenHeight = window.getScreenHeight();
-		
-		if(screenWidth == 0 || screenHeight == 0)
-		{
-			return null;
-		}
-		
-		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
-		vec.transform(modelView);
-		vec.transform(projection);
-		
-		if(vec.w() == 0.0F)
-		{
-			return null;
-		}
-		
-		float w = (1.0F / vec.w()) * 0.5F;
-		float x = (vec.x() * w + 0.5F) * screenWidth;
-		float y = (vec.y() * w + 0.5F) * screenHeight;
-		float z = vec.z() * w + 0.5F;
-		vec.set(x, y, z, w);
-		
-		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y))
-		{
-			return null;
-		}
-		
-		return new Vec2f(x, y);
 	}
 	
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
