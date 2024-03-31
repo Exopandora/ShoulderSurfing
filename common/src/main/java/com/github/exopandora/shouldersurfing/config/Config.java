@@ -98,7 +98,7 @@ public class Config
 			this.offsetZ = builder
 				.comment("Third person camera z-offset.")
 				.translation("z-offset")
-				.defineInRange("offset_z", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.defineInRange("offset_z", 4.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.push("min");
 			
