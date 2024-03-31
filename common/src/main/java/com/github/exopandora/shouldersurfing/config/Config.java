@@ -60,7 +60,6 @@ public class Config
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue skipThirdPersonFront;
 		private final BooleanValue rememberLastPerspective;
-		private final BooleanValue limitPlayerReach;
 		private final DoubleValue cameraStepSize;
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue centerCameraWhenClimbing;
@@ -261,11 +260,6 @@ public class Config
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
 				.translation("Center camera when looking down angle")
 				.defineInRange("hide_player_when_looking_up_angle", 15D, 0D, 90D);
-			
-			this.limitPlayerReach = builder
-				.comment("Whether or not to limit the player reach, such that only block that could be reached in first person, will be reachable.")
-				.translation("Limit player reach")
-				.define("limit_player_reach", true);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -690,16 +684,6 @@ public class Config
 		public void setCustomRaytraceDistance(double raytraceDistance)
 		{
 			Config.set(this.customRaytraceDistance, raytraceDistance);
-		}
-		
-		public boolean limitPlayerReach()
-		{
-			return this.limitPlayerReach.get();
-		}
-		
-		public void setLimitPlayerReach(boolean limitPlayerReach)
-		{
-			Config.set(this.limitPlayerReach, limitPlayerReach);
 		}
 		
 		public List<? extends String> getAdaptiveCrosshairHoldItems()

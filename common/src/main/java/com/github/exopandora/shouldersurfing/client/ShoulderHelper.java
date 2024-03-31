@@ -35,7 +35,7 @@ public class ShoulderHelper
 		Vec3 cameraPos = camera.getPosition();
 		Vec3 viewVector = new Vec3(camera.getLookVector());
 		
-		if(Config.CLIENT.limitPlayerReach() && headOffset.lengthSqr() < distanceSq)
+		if(headOffset.lengthSqr() < distanceSq)
 		{
 			distanceSq -= headOffset.lengthSqr();
 		}
