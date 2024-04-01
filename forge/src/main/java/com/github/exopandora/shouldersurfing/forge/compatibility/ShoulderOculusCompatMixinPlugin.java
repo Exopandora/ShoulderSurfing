@@ -1,22 +1,28 @@
 package com.github.exopandora.shouldersurfing.forge.compatibility;
 
-import java.util.List;
-import java.util.Set;
-
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import net.minecraftforge.fml.loading.FMLLoader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 {
+	private final Map<String, Supplier<Predicate<ArtifactVersion>>> rules = new HashMap<String, Supplier<Predicate<ArtifactVersion>>>();
+	
 	@Override
 	public void onLoad(String mixinPackage)
 	{
-		
+		this.rules.put(mixinPackage + ".MixinSheets", () -> parseVersionRangeSilent("[1.7.0-snapshot,)")::containsVersion);
+		this.rules.put(mixinPackage + ".MixinSheetsLegacy", () -> parseVersionRangeSilent("[1.6.15,1.7.0)")::containsVersion);
 	}
 	
 	@Override
@@ -28,11 +34,16 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
 	{
-		ArtifactVersion oculusVersion = new DefaultArtifactVersion("1.6.15");
-		return FMLLoader.getLoadingModList().getMods().stream().anyMatch(info ->
+		if(this.rules.containsKey(mixinClassName))
 		{
-			return info.getModId().equals("oculus") && info.getVersion().compareTo(oculusVersion) >= 0;
-		});
+			Predicate<ArtifactVersion> oculusVersion = this.rules.get(mixinClassName).get();
+			return FMLLoader.getLoadingModList().getMods().stream().anyMatch(info ->
+			{
+				return info.getModId().equals("oculus") && oculusVersion.test(info.getVersion());
+			});
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -57,5 +68,17 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
 	{
 		
+	}
+	
+	private static VersionRange parseVersionRangeSilent(String predicate)
+	{
+		try
+		{
+			return VersionRange.createFromVersionSpec(predicate);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }
