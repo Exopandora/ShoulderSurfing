@@ -33,3 +33,18 @@ type = "required"
 versionRange = "[20.4.3,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.shouldersurfing]]
+modId = "betterthirdperson"
+type = "incompatible"
+side = "CLIENT"
+
+[[dependencies.shouldersurfing]]
+modId = "cameraoverhaul"
+type = "incompatible"
+side = "CLIENT"
+
+[[dependencies.shouldersurfing]]
+modId = "nimble"
+type = "incompatible"
+side = "CLIENT"

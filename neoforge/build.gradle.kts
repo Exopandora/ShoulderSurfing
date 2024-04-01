@@ -105,6 +105,7 @@ publishMods {
 		clientRequired = true
 		serverRequired = false
 		requires("forge-config-api-port-fabric")
+		incompatible("better-third-person", "cameraoverhaul", "nimble")
 	}
 	
 	modrinth {
@@ -112,5 +113,6 @@ publishMods {
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 		requires("forge-config-api-port")
+		incompatible("better-third-person", "cameraoverhaul", "nimble")
 	}
 }
