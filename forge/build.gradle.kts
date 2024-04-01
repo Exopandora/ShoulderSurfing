@@ -32,7 +32,6 @@ mixin {
 	
 	config("$modId.common.mixins.json")
 	config("$modId.forge.mixins.json")
-	config("$modId.compat.oculus.mixins.json")
 }
 
 minecraft {
