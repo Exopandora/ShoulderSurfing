@@ -33,5 +33,10 @@
 		"minecraft": ">=1.20.0 <=1.20.1",
 		"forgeconfigapiport": ">=7.0.0",
 		"java": ">=17"
+	},
+	"breaks": {
+		"betterthirdperson": "*",
+		"cameraoverhaul": "*",
+		"nimble": "*"
 	}
 }
