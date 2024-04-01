@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.compatibility.mixins;
 
-import net.irisshaders.batchedentityrendering.impl.BlendingStateHolder;
-import net.irisshaders.batchedentityrendering.impl.TransparencyType;
+import net.coderbot.batchedentityrendering.impl.BlendingStateHolder;
+import net.coderbot.batchedentityrendering.impl.TransparencyType;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import org.spongepowered.asm.mixin.Final;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Sheets.class, priority = 1001 /* apply after iris */)
-public class MixinSheets
+public class MixinSheetsLegacy
 {
 	@Shadow
 	@Final
