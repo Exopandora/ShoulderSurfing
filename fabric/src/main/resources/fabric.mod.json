@@ -19,7 +19,7 @@
 			"com.github.exopandora.shouldersurfing.fabric.ShoulderSurfingFabric"
 		],
 		"jade": [
-			"com.github.exopandora.shouldersurfing.compatibility.ShoulderSurfingJadePlugin"
+			"com.github.exopandora.shouldersurfing.integration.ShoulderSurfingJadePlugin"
 		]
 	},
 	"mixins": [
@@ -42,7 +42,7 @@
 	"custom": {
 		"waila:plugins": {
 			"id": "shouldersurfing:waila_plugin",
-			"initializer": "com.teamderpy.shouldersurfing.compatibility.ShoulderSurfingWthitPlugin",
+			"initializer": "com.github.exopandora.shouldersurfing.integration.ShoulderSurfingWthitPlugin",
 			"environment": "client"
 		}
 	}
