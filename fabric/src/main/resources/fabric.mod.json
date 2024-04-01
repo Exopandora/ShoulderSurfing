@@ -34,6 +34,11 @@
 		"forgeconfigapiport": ">=4.0.0",
 		"java": ">=17"
 	},
+	"breaks": {
+		"betterthirdperson": "*",
+		"cameraoverhaul": "*",
+		"nimble": "*"
+	},
 	"custom": {
 		"waila:plugins": {
 			"id": "shouldersurfing:waila_plugin",
