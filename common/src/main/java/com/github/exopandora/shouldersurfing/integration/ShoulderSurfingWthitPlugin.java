@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.compatibility;
+package com.github.exopandora.shouldersurfing.integration;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;

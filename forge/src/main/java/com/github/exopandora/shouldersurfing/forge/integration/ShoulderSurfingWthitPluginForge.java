@@ -1,6 +1,7 @@
-package com.github.exopandora.shouldersurfing.compatibility;
+package com.github.exopandora.shouldersurfing.forge.integration;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.integration.ShoulderSurfingWthitPlugin;
 import mcp.mobius.waila.api.IObjectPicker;
 import mcp.mobius.waila.api.WailaPlugin;
 import mcp.mobius.waila.plugin.core.pick.ObjectPicker;

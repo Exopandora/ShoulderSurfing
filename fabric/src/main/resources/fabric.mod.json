@@ -17,6 +17,12 @@
 	"entrypoints": {
 		"client": [
 			"com.github.exopandora.shouldersurfing.fabric.ShoulderSurfingFabric"
+<<<<<<< HEAD
+=======
+		],
+		"jade": [
+			"com.github.exopandora.shouldersurfing.integration.ShoulderSurfingJadePlugin"
+>>>>>>> 5a01ba6 (Move integration plugins to integrations package)
 		]
 	},
 	"mixins": [
@@ -39,7 +45,7 @@
 	"custom": {
 		"waila:plugins": {
 			"id": "shouldersurfing:waila_plugin",
-			"initializer": "com.github.exopandora.shouldersurfing.compatibility.ShoulderSurfingWthitPluginFabric",
+			"initializer": "com.github.exopandora.shouldersurfing.integration.ShoulderSurfingWthitPluginFabric",
 			"environment": "client"
 		}
 	}
