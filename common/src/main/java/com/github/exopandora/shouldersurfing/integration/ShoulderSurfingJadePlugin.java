@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.compatibility;
+package com.github.exopandora.shouldersurfing.integration;
 
 import org.jetbrains.annotations.Nullable;
 
