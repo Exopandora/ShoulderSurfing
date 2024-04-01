@@ -70,7 +70,8 @@ public class ShoulderInstance
 	private boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
-			(cameraEntity.isUsingItem() || (minecraft.options.keyUse.isDown() || minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
+			(cameraEntity.isUsingItem() && cameraEntity.getUseItem().getItem().getFoodProperties() == null ||
+				(minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() || minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
 	}
 	
 	public Vec2f impulse(float leftImpulse, float forwardImpulse)
