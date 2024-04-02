@@ -13,6 +13,8 @@
 		"MixinIngameGui",
 		"MixinItem",
 		"MixinModelRenderer",
+		"MixinMouseHelper",
+		"MixinMovementInputFromOptions",
 		"MixinPlayerEntity",
 		"MixinRenderType",
 		"MixinWorldRenderer",
@@ -20,7 +22,8 @@
 		"MixinIngameGuiFabric",
 		"MixinKeyboardListener",
 		"MixinMinecraft",
-		"MixinMouseHelper",
+		"MixinMouseHelperFabric",
+		"MixinPlayerList",
 		"MixinWorldRendererFabric"
 	],
 	"injectors": {

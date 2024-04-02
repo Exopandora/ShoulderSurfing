@@ -70,6 +70,7 @@ public class Config
 		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
 		private final BooleanValue playerTransparency;
+		private final BooleanValue isCameraDecoupled;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -258,6 +259,11 @@ public class Config
 				.comment("Whether or not to adjust the player model transparency when view is obstructed.")
 				.translation("Adjust player transparency")
 				.define("adjust_player_transparency", true);
+			
+			this.isCameraDecoupled = builder
+				.comment("Whether or not to decouple the camera rotation from the player rotation.")
+				.translation("Decoupled camera")
+				.define("decoupled_camera", true);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -659,9 +665,19 @@ public class Config
 			return this.playerTransparency.get();
 		}
 		
-		public void PlayerTransparencyEnabled(boolean enabled)
+		public void setPlayerTransparencyEnabled(boolean enabled)
 		{
 			Config.set(this.playerTransparency, enabled);
+		}
+		
+		public boolean isCameraDecoupled()
+		{
+			return this.isCameraDecoupled.get();
+		}
+		
+		public void setIsCameraDecoupled(boolean enabled)
+		{
+			Config.set(this.isCameraDecoupled, enabled);
 		}
 		
 		public double getCustomRaytraceDistance()

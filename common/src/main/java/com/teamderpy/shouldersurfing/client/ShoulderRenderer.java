@@ -10,6 +10,7 @@ import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -35,6 +36,8 @@ public class ShoulderRenderer
 	private double cameraOffsetY;
 	private double cameraOffsetZ;
 	private float cameraEntityAlpha = 1.0F;
+	private float cameraXRot = 0F;
+	private float cameraYRot = 0F;
 	
 	public void offsetCrosshair(MatrixStack poseStack, MainWindow window, float partialTicks)
 	{
@@ -71,12 +74,19 @@ public class ShoulderRenderer
 	
 	public void offsetCamera(ActiveRenderInfo camera, World level, float partialTick)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null)
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null && !(camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).isSleeping()))
 		{
+			LivingEntity cameraEntity = (LivingEntity) camera.getEntity();
+			ActiveRenderInfoAccessor accessor = ((ActiveRenderInfoAccessor) camera);
 			ShoulderInstance instance = ShoulderInstance.getInstance();
 			double targetXOffset = Config.CLIENT.getOffsetX();
 			double targetYOffset = Config.CLIENT.getOffsetY();
 			double targetZOffset = Config.CLIENT.getOffsetZ();
+			
+			if(Config.CLIENT.isCameraDecoupled())
+			{
+				accessor.invokeSetRotation(this.cameraYRot, this.cameraXRot);
+			}
 			
 			if(camera.getEntity().isPassenger())
 			{
@@ -105,7 +115,6 @@ public class ShoulderRenderer
 			
 			if(Config.CLIENT.doDynamicallyAdjustOffsets())
 			{
-				ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
 				Vector3d localCameraOffset = new Vector3d(targetXOffset, targetYOffset, targetZOffset);
 				Vector3d worldCameraOffset = new Vector3d(camera.getUpVector()).scale(targetYOffset)
 					.add(new Vector3d(accessor.getLeft()).scale(targetXOffset))
@@ -156,7 +165,6 @@ public class ShoulderRenderer
 			instance.setTargetOffsetY(targetYOffset);
 			instance.setTargetOffsetZ(targetZOffset);
 			
-			ActiveRenderInfoAccessor accessor = ((ActiveRenderInfoAccessor) camera);
 			double x = MathHelper.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
 			double y = MathHelper.lerp(partialTick, camera.getEntity().yo, camera.getEntity().getY()) + MathHelper.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
 			double z = MathHelper.lerp(partialTick, camera.getEntity().zo, camera.getEntity().getZ());
@@ -176,8 +184,17 @@ public class ShoulderRenderer
 	
 	private double calcCameraDistance(ActiveRenderInfo camera, World level, double distance, float partialTick)
 	{
-		Vector3d cameraPos = camera.getPosition();
-		Vector3d cameraOffset = ShoulderHelper.calcCameraOffset(camera, distance, partialTick);
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
+		double offsetX = MathHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
+		double offsetY = MathHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
+		double offsetZ = MathHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
+		Vector3d cameraOffset = new Vector3d(camera.getUpVector()).scale(offsetY)
+			.add(new Vector3d(accessor.getLeft()).scale(offsetX))
+			.add(new Vector3d(camera.getLookVector()).scale(-offsetZ))
+			.normalize()
+			.scale(distance);
+		Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
 		
 		for(int i = 0; i < 8; i++)
 		{
@@ -186,14 +203,14 @@ public class ShoulderRenderer
 				.subtract(1, 1, 1)
 				.scale(0.075)
 				.yRot(-camera.getYRot() * ShoulderHelper.DEG_TO_RAD);
-			Vector3d from = cameraPos.add(offset);
+			Vector3d from = eyePosition.add(offset);
 			Vector3d to = from.add(cameraOffset);
 			RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, camera.getEntity());
 			RayTraceResult hitResult = level.clip(context);
 			
 			if(hitResult.getType() != Type.MISS)
 			{
-				double newDistance = hitResult.getLocation().distanceTo(cameraPos);
+				double newDistance = hitResult.getLocation().distanceTo(eyePosition);
 				
 				if(newDistance < distance)
 				{
@@ -300,6 +317,35 @@ public class ShoulderRenderer
 					|| this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
+	public boolean turn(PlayerEntity player, double yRot, double xRot)
+	{
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		
+		if(instance.doShoulderSurfing() && Config.CLIENT.isCameraDecoupled())
+		{
+			float scaledXRot = (float) (xRot * 0.15F);
+			float scaledYRot = (float) (yRot * 0.15F);
+			this.cameraXRot = MathHelper.clamp(this.cameraXRot + scaledXRot, -90.0F, 90.0F);
+			this.cameraYRot = this.cameraYRot + scaledYRot;
+			
+			if(instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying())
+			{
+				player.xRot = this.cameraXRot;
+				player.yRot = this.cameraYRot;
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void resetCameraRotations(Entity entity)
+	{
+		this.cameraXRot = entity.xRot;
+		this.cameraYRot = entity.yRot;
+	}
+	
 	public double getPlayerReach()
 	{
 		return Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
@@ -328,6 +374,16 @@ public class ShoulderRenderer
 	public float getCameraEntityAlpha()
 	{
 		return this.cameraEntityAlpha;
+	}
+	
+	public float getCameraXRot()
+	{
+		return this.cameraXRot;
+	}
+	
+	public float getCameraYRot()
+	{
+		return this.cameraYRot;
 	}
 	
 	public static ShoulderRenderer getInstance()

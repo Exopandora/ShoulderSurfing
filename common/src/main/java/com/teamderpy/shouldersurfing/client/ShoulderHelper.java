@@ -31,15 +31,16 @@ import java.util.function.Predicate;
 
 public class ShoulderHelper
 {
-	public static final float DEG_TO_RAD = ((float)Math.PI / 180F);
+	public static final float DEG_TO_RAD = (float) (Math.PI / 180F);
+	public static final float RAD_TO_DEG = (float) (180F / Math.PI);
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
 	
 	public static ShoulderLook shoulderSurfingLook(ActiveRenderInfo camera, Entity entity, float partialTick, double distanceSq)
 	{
-		Vector3d cameraOffset = ShoulderHelper.calcCameraOffset(camera, ShoulderRenderer.getInstance().getCameraDistance(), partialTick);
+		Vector3d cameraOffset = camera.getPosition().subtract(entity.getEyePosition(partialTick));
 		Vector3d headOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, cameraOffset);
-		Vector3d cameraPos = entity.getEyePosition(partialTick).add(cameraOffset);
-		Vector3d viewVector = entity.getViewVector(partialTick);
+		Vector3d cameraPos = camera.getPosition();
+		Vector3d viewVector = new Vector3d(camera.getLookVector());
 		
 		if(Config.CLIENT.limitPlayerReach() && headOffset.lengthSqr() < distanceSq)
 		{
@@ -49,20 +50,6 @@ public class ShoulderHelper
 		double distance = Math.sqrt(distanceSq) + cameraOffset.distanceTo(headOffset);
 		Vector3d traceEnd = cameraPos.add(viewVector.scale(distance));
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
-	}
-	
-	public static Vector3d calcCameraOffset(@NotNull ActiveRenderInfo camera, double distance, float partialTick)
-	{
-		ActiveRenderInfoAccessor accessor = (ActiveRenderInfoAccessor) camera;
-		ShoulderInstance instance = ShoulderInstance.getInstance();
-		double offsetX = MathHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
-		double offsetY = MathHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
-		double offsetZ = MathHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
-		return new Vector3d(camera.getUpVector()).scale(offsetY)
-			.add(new Vector3d(accessor.getLeft()).scale(offsetX))
-			.add(new Vector3d(camera.getLookVector()).scale(-offsetZ))
-			.normalize()
-			.scale(distance);
 	}
 	
 	public static Vector3d calcRayTraceHeadOffset(@NotNull ActiveRenderInfo camera, Vector3d cameraOffset)
@@ -77,11 +64,11 @@ public class ShoulderHelper
 		return linePoint.add(lineNormal.scale(distance));
 	}
 	
-	public static RayTraceResult traceBlocksAndEntities(ActiveRenderInfo camera, PlayerController gameMode, double playerReachOverride, RayTraceContext.FluidMode fluidContext, float partialTick, boolean traceEntities, boolean shoulderSurfing)
+	public static RayTraceResult traceBlocksAndEntities(ActiveRenderInfo camera, PlayerController gameMode, double playerReachOverride, RayTraceContext.FluidMode fluidContext, float partialTick, boolean traceEntities, boolean doOffsetTrace)
 	{
 		Entity entity = camera.getEntity();
 		double playerReach = Math.max(gameMode.getPickRange(), playerReachOverride);
-		RayTraceResult blockHit = traceBlocks(camera, entity, fluidContext, playerReach, partialTick, shoulderSurfing);
+		RayTraceResult blockHit = traceBlocks(camera, entity, fluidContext, playerReach, partialTick, doOffsetTrace);
 		
 		if(!traceEntities)
 		{
@@ -100,7 +87,7 @@ public class ShoulderHelper
 			playerReach = blockHit.getLocation().distanceTo(eyePosition);
 		}
 		
-		EntityRayTraceResult entityHit = traceEntities(camera, entity, playerReach, partialTick, shoulderSurfing);
+		EntityRayTraceResult entityHit = traceEntities(camera, entity, playerReach, partialTick, doOffsetTrace);
 		
 		if(entityHit != null)
 		{
@@ -115,7 +102,7 @@ public class ShoulderHelper
 		return blockHit;
 	}
 	
-	public static EntityRayTraceResult traceEntities(ActiveRenderInfo camera, Entity entity, double playerReach, float partialTick, boolean shoulderSurfing)
+	public static EntityRayTraceResult traceEntities(ActiveRenderInfo camera, Entity entity, double playerReach, float partialTick, boolean doOffsetTrace)
 	{
 		double playerReachSq = playerReach * playerReach;
 		Vector3d viewVector = entity.getViewVector(1.0F)
@@ -125,7 +112,7 @@ public class ShoulderHelper
 			.expandTowards(viewVector)
 			.inflate(1.0D, 1.0D, 1.0D);
 		
-		if(shoulderSurfing)
+		if(doOffsetTrace)
 		{
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, playerReachSq);
 			Vector3d from = eyePosition.add(look.headOffset());
@@ -141,21 +128,19 @@ public class ShoulderHelper
 		}
 	}
 	
-	public static BlockRayTraceResult traceBlocks(ActiveRenderInfo camera, Entity entity, RayTraceContext.FluidMode fluidContext, double distance, float partialTick, boolean shoulderSurfing)
+	public static BlockRayTraceResult traceBlocks(ActiveRenderInfo camera, Entity entity, RayTraceContext.FluidMode fluidContext, double distance, float partialTick, boolean doOffsetTrace)
 	{
-		Vector3d eyePosition = entity.getEyePosition(partialTick);
-		
-		if(shoulderSurfing)
+		if(doOffsetTrace)
 		{
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
-			Vector3d from = eyePosition.add(look.headOffset());
+			Vector3d from = camera.getPosition();
 			Vector3d to = look.traceEndPos();
-			return entity.level.clip(new RayTraceContext(from, to, RayTraceContext.BlockMode.OUTLINE, fluidContext, entity));
+			return entity.level.clip(new RayTraceContext(from, to, ShoulderInstance.getInstance().isAiming() ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE, fluidContext, entity));
 		}
 		else
 		{
-			Vector3d from = eyePosition;
-			Vector3d view = entity.getViewVector(partialTick);
+			Vector3d from = entity.getEyePosition(partialTick);
+			Vector3d view = new Vector3d(camera.getLookVector());
 			Vector3d to = from.add(view.scale(distance));
 			RayTraceContext.BlockMode blockContext = Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC ? RayTraceContext.BlockMode.OUTLINE : RayTraceContext.BlockMode.COLLIDER;
 			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));

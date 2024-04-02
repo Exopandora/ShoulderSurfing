@@ -11,7 +11,7 @@ import com.teamderpy.shouldersurfing.client.KeyHandler;
 import net.minecraft.client.MouseHelper;
 
 @Mixin(MouseHelper.class)
-public class MixinMouseHelper
+public class MixinMouseHelperFabric
 {
 	@Inject
 	(

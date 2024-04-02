@@ -12,6 +12,8 @@
 		"MixinIngameGui",
 		"MixinItem",
 		"MixinModelRenderer",
+		"MixinMouseHelper",
+		"MixinMovementInputFromOptions",
 		"MixinPlayerEntity",
 		"MixinRenderType",
 		"MixinWorldRenderer",

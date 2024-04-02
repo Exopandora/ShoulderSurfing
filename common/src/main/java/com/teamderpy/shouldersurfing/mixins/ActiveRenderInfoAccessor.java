@@ -27,4 +27,7 @@ public interface ActiveRenderInfoAccessor
 	
 	@Invoker
 	double invokeGetMaxZoom(double distance);
+	
+	@Invoker
+	void invokeSetRotation(float yRot, float xRot);
 }

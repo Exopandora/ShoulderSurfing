@@ -1,4 +1,4 @@
-package com.teamderpy.shouldersurfing.plugin;
+package com.teamderpy.shouldersurfing.testplugin;
 
 import com.teamderpy.shouldersurfing.api.IShoulderSurfingPlugin;
 import com.teamderpy.shouldersurfing.api.IShoulderSurfingRegistrar;

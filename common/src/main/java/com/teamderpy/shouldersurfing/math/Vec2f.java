@@ -1,5 +1,8 @@
 package com.teamderpy.shouldersurfing.math;
 
+import com.teamderpy.shouldersurfing.client.ShoulderHelper;
+import net.minecraft.util.math.MathHelper;
+
 public class Vec2f
 {
 	public static final Vec2f ZERO = new Vec2f(0, 0);
@@ -56,6 +59,21 @@ public class Vec2f
 	public Vec2f divide(Vec2f vec)
 	{
 		return new Vec2f(this.x / vec.x, this.y / vec.y);
+	}
+	
+	public Vec2f rotateDegrees(float angle)
+	{
+		return this.rotate(angle * ShoulderHelper.DEG_TO_RAD);
+	}
+	
+	public Vec2f rotate(float angle)
+	{
+		return new Vec2f(this.x * MathHelper.cos(angle) - this.y * MathHelper.sin(angle), this.x * MathHelper.sin(angle) + this.y * MathHelper.cos(angle));
+	}
+	
+	public double lengthSquared()
+	{
+		return this.x * this.x + this.y * this.y;
 	}
 	
 	@Override
