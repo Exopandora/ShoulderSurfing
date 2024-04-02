@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "com.teamderpy.shouldersurfing.mixins",
+	"package": "com.github.exopandora.shouldersurfing.mixins",
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "shouldersurfing.refmap.json",
 	"client": [
