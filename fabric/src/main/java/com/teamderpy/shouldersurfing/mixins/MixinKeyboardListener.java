@@ -26,7 +26,7 @@ public class MixinKeyboardListener
 	{
 		if(window == this.minecraft.getWindow().getWindow())
 		{
-			KeyHandler.onInput();
+			KeyHandler.tick();
 		}
 	}
 }
