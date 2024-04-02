@@ -53,15 +53,15 @@ public class ShoulderSurfingForge
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
 		
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_LEFT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_RIGHT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_IN);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_OUT);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_UP);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
-		ClientRegistry.registerKeyBinding(KeyHandler.KEYBIND_FREE_LOOK);
+		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_LEFT);
+		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_RIGHT);
+		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_IN);
+		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_OUT);
+		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_UP);
+		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_DOWN);
+		ClientRegistry.registerKeyBinding(KeyHandler.SWAP_SHOULDER);
+		ClientRegistry.registerKeyBinding(KeyHandler.TOGGLE_SHOULDER_SURFING);
+		ClientRegistry.registerKeyBinding(KeyHandler.FREE_LOOK);
 	}
 	
 	@SubscribeEvent

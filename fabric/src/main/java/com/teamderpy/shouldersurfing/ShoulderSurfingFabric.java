@@ -22,15 +22,15 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 			ShoulderRenderer.getInstance().resetCameraRotations(handler.player);
 			ShoulderInstance.getInstance().resetCameraEntityRotations(handler.player);
 		});
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_LEFT);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_RIGHT);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_IN);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_OUT);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_UP);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_CAMERA_DOWN);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_SWAP_SHOULDER);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_TOGGLE_SHOULDER_SURFING);
-		KeyBindingHelper.registerKeyBinding(KeyHandler.KEYBIND_FREE_LOOK);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_LEFT);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_RIGHT);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_IN);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_OUT);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_UP);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.CAMERA_DOWN);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.SWAP_SHOULDER);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.TOGGLE_SHOULDER_SURFING);
+		KeyBindingHelper.registerKeyBinding(KeyHandler.FREE_LOOK);
 		PluginLoader.getInstance().loadPlugins();
 	}
 }

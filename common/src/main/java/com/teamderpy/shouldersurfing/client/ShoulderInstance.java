@@ -64,7 +64,7 @@ public class ShoulderInstance
 		this.offsetY = this.lastOffsetY + (this.targetOffsetY - this.lastOffsetY) * Config.CLIENT.getCameraTransitionSpeedMultiplier();
 		this.offsetZ = this.lastOffsetZ + (this.targetOffsetZ - this.lastOffsetZ) * Config.CLIENT.getCameraTransitionSpeedMultiplier();
 		
-		this.isFreeLooking = KeyHandler.KEYBIND_FREE_LOOK.isDown() && !this.isAiming;
+		this.isFreeLooking = KeyHandler.FREE_LOOK.isDown() && !this.isAiming;
 		
 		if(!this.isFreeLooking)
 		{
