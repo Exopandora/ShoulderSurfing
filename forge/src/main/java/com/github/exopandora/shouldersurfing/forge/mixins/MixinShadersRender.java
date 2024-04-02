@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins;
+package com.github.exopandora.shouldersurfing.forge.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import org.spongepowered.asm.mixin.Mixin;

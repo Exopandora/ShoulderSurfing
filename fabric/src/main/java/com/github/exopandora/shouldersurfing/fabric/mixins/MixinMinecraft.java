@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins;
+package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;

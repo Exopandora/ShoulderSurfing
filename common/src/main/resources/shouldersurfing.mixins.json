@@ -1,0 +1,24 @@
+{
+	"required": true,
+	"minVersion": "0.8.5",
+	"package": "com.github.exopandora.shouldersurfing.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"ActiveRenderInfoAccessor",
+		"GameRendererAccessor",
+		"MixinCapeLayer",
+		"MixinGameRenderer",
+		"MixinGameSettings",
+		"MixinIngameGui",
+		"MixinItem",
+		"MixinModelRenderer",
+		"MixinMouseHelper",
+		"MixinMovementInputFromOptions",
+		"MixinPlayerEntity",
+		"MixinRenderType",
+		"MixinWorldRenderer"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
