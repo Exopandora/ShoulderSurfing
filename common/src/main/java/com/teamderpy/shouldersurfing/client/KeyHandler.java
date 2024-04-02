@@ -28,10 +28,9 @@ public class KeyHandler
 		super();
 	}
 	
-	@SuppressWarnings("resource")
 	public static void onInput()
 	{
-		if(Minecraft.getInstance() != null && Minecraft.getInstance().screen == null)
+		if(Minecraft.getInstance().screen == null)
 		{
 			ShoulderInstance shoulderInstance = ShoulderInstance.getInstance();
 			

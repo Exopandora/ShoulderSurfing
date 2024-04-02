@@ -273,8 +273,8 @@ public class ShoulderRenderer
 	private boolean skipCameraEntityRendering()
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() &&
-			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier()
-				|| Minecraft.getInstance().getCameraEntity().xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+			(this.cameraDistance < Minecraft.getInstance().getCameraEntity().getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
+				Minecraft.getInstance().getCameraEntity().xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
 	}
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
@@ -312,9 +312,9 @@ public class ShoulderRenderer
 	private boolean shouldRenderCameraEntityTransparent(Entity entity)
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
-			(Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D)
-				&& (this.cameraOffsetY >= 0 && this.cameraOffsetY < entity.getBbHeight() - entity.getEyeHeight()
-					|| this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
+			(Math.abs(this.cameraOffsetX) < (entity.getBbWidth() / 2.0D) &&
+				(this.cameraOffsetY >= 0 && this.cameraOffsetY < entity.getBbHeight() - entity.getEyeHeight() ||
+					this.cameraOffsetY <= 0 && -this.cameraOffsetY < entity.getEyeHeight()));
 	}
 	
 	public boolean turn(PlayerEntity player, double yRot, double xRot)

@@ -74,7 +74,6 @@ public enum Perspective
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	public static Perspective current()
 	{
 		return Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderInstance.getInstance().doShoulderSurfing());

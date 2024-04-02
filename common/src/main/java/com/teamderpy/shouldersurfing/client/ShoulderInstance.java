@@ -121,7 +121,6 @@ public class ShoulderInstance
 		this.cameraEntityYRot = entity.yRot;
 	}
 	
-	@SuppressWarnings("resource")
 	public void changePerspective(Perspective perspective)
 	{
 		Minecraft.getInstance().options.setCameraType(perspective.getCameraType());

@@ -41,7 +41,6 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	@SuppressWarnings("resource")
 	public static void computeCameraAnglesEvent(CameraSetup event)
 	{
 		ShoulderRenderer renderer = ShoulderRenderer.getInstance();
@@ -51,7 +50,6 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	@SuppressWarnings("resource")
 	public static void renderLevelStageEvent(RenderWorldLastEvent event)
 	{
 		ShoulderRenderer.getInstance().updateDynamicRaytrace(Minecraft.getInstance().gameRenderer.getMainCamera(), event.getMatrixStack().last().pose(), event.getProjectionMatrix(), event.getPartialTicks());

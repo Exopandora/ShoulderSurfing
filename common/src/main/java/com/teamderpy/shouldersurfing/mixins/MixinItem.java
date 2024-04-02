@@ -1,5 +1,6 @@
 package com.teamderpy.shouldersurfing.mixins;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,7 +32,7 @@ public class MixinItem
 			target = "Lnet/minecraft/util/math/RayTraceContext;"
 		)
 	)
-	private static RayTraceContext initRayTraceContext(Vector3d start, Vector3d end, BlockMode block, FluidMode fluid, @Nullable Entity entity)
+	private static RayTraceContext initRayTraceContext(Vector3d start, Vector3d end, BlockMode block, FluidMode fluid, @NotNull Entity entity)
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Config.CLIENT.getCrosshairType().isDynamic())
 		{

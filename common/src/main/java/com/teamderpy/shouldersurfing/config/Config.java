@@ -302,7 +302,7 @@ public class Config
 			this.adaptiveCrosshairUseItems = builder
 				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode.")
 				.translation("Adaptive crosshair items (use)")
-				.defineList("adaptive_crosshair_use_items", () -> new ArrayList<String>(), item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+				.defineList("adaptive_crosshair_use_items", ArrayList::new, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
 			
 			this.adaptiveCrosshairHoldItemProperties = builder
 				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
@@ -331,7 +331,7 @@ public class Config
 			{
 				ConfigValue<CrosshairVisibility> crosshairVisibility = builder
 					.comment("Crosshair visibility for " + entry.toString().toLowerCase() + ".")
-					.translation(entry.toString() + " crosshair visibility")
+					.translation(entry + " crosshair visibility")
 					.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
 				this.crosshairVisibility.put(entry, crosshairVisibility);
 			}

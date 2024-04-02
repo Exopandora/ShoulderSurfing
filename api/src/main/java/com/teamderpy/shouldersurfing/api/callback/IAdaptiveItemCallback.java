@@ -11,17 +11,17 @@ public interface IAdaptiveItemCallback
 {
 	boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity);
 	
-	public static IAdaptiveItemCallback mainHandMatches(IItemProvider... items)
+	static IAdaptiveItemCallback mainHandMatches(IItemProvider... items)
 	{
 		return (minecraft, entity) -> containsItem(entity.getMainHandItem().getItem(), items);
 	}
 	
-	public static IAdaptiveItemCallback offHandMatches(IItemProvider... items)
+	static IAdaptiveItemCallback offHandMatches(IItemProvider... items)
 	{
 		return (minecraft, entity) -> containsItem(entity.getOffhandItem().getItem(), items);
 	}
 	
-	public static IAdaptiveItemCallback anyHandMatches(IItemProvider... items)
+	static IAdaptiveItemCallback anyHandMatches(IItemProvider... items)
 	{
 		return (minecraft, entity) -> StreamSupport.stream(entity.getHandSlots().spliterator(), false)
 			.anyMatch(stack -> containsItem(stack.getItem(), items));

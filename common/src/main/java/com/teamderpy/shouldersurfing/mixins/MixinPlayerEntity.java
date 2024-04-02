@@ -1,11 +1,8 @@
 package com.teamderpy.shouldersurfing.mixins;
 
-import org.spongepowered.asm.mixin.Mixin;
-
 import com.teamderpy.shouldersurfing.client.ShoulderHelper;
 import com.teamderpy.shouldersurfing.client.ShoulderInstance;
 import com.teamderpy.shouldersurfing.config.Config;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
@@ -15,6 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends Entity
@@ -25,7 +24,7 @@ public abstract class MixinPlayerEntity extends Entity
 	}
 	
 	@Override
-	public RayTraceResult pick(double distance, float partialTicks, boolean stopOnFluid)
+	public @NotNull RayTraceResult pick(double distance, float partialTicks, boolean stopOnFluid)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		ActiveRenderInfo camera = minecraft.getEntityRenderDispatcher().camera;
