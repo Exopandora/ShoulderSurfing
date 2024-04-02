@@ -115,63 +115,62 @@ public class ShoulderRenderer
 				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
 			}
 			
-			if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).onClimbable())
+			if(!camera.getEntity().isSpectator())
 			{
-				targetXOffset = 0;
-			}
-			
-			if(ShoulderHelper.angle(camera.getLookVector(), Vector3f.YN) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
-			{
-				targetXOffset = 0;
-				targetYOffset = 0;
-			}
-			
-			if(Config.CLIENT.doDynamicallyAdjustOffsets())
-			{
-				Vector3d localCameraOffset = new Vector3d(targetXOffset, targetYOffset, targetZOffset);
-				Vector3d worldCameraOffset = new Vector3d(camera.getUpVector()).scale(targetYOffset)
-					.add(new Vector3d(accessor.getLeft()).scale(targetXOffset))
-					.add(new Vector3d(camera.getLookVector()).scale(-targetZOffset))
-					.normalize()
-					.scale(localCameraOffset.length());
-				Vector3d worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
-				Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
-				double absOffsetX = Math.abs(targetXOffset);
-				double absOffsetY = Math.abs(targetYOffset);
-				double absOffsetZ = Math.abs(targetZOffset);
-				double targetX = absOffsetX;
-				double targetY = absOffsetY;
-				double clearance = Minecraft.getInstance().getCameraEntity().getBbWidth() / 3.0D;
-				
-				for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
+				if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).onClimbable())
 				{
-					double scale = dz / absOffsetZ;
-					Vector3d from = eyePosition.add(worldCameraOffset.scale(scale));
-					Vector3d to = eyePosition.add(worldXYOffset).add(new Vector3d(camera.getLookVector()).scale(-dz));
-					RayTraceContext context = new RayTraceContext(from, to, BlockMode.VISUAL, FluidMode.NONE, camera.getEntity());
-					BlockRayTraceResult hitResult = level.clip(context);
-					
-					if(hitResult.getType() != Type.MISS)
-					{
-						double distance = hitResult.getLocation().distanceTo(from);
-						double newTargetX = Math.max(distance + absOffsetX * scale - clearance, 0);
-						
-						if(newTargetX < targetX)
-						{
-							targetX = newTargetX;
-						}
-						
-						double newTargetY = Math.max(distance + absOffsetY * scale - clearance, 0);
-						
-						if(newTargetY < targetY)
-						{
-							targetY = newTargetY;
-						}
-					}
+					targetXOffset = 0;
 				}
 				
-				targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
-				targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
+				if(ShoulderHelper.angle(camera.getLookVector(), Vector3f.YN) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * ShoulderHelper.DEG_TO_RAD)
+				{
+					targetXOffset = 0;
+					targetYOffset = 0;
+				}
+				
+				if(Config.CLIENT.doDynamicallyAdjustOffsets())
+				{
+					Vector3d localCameraOffset = new Vector3d(targetXOffset, targetYOffset, targetZOffset);
+					Vector3d worldCameraOffset = new Vector3d(camera.getUpVector()).scale(targetYOffset).add(new Vector3d(accessor.getLeft()).scale(targetXOffset)).add(new Vector3d(camera.getLookVector()).scale(-targetZOffset)).normalize().scale(localCameraOffset.length());
+					Vector3d worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
+					Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
+					double absOffsetX = Math.abs(targetXOffset);
+					double absOffsetY = Math.abs(targetYOffset);
+					double absOffsetZ = Math.abs(targetZOffset);
+					double targetX = absOffsetX;
+					double targetY = absOffsetY;
+					double clearance = Minecraft.getInstance().getCameraEntity().getBbWidth() / 3.0D;
+					
+					for(double dz = 0; dz <= absOffsetZ; dz += 0.03125D)
+					{
+						double scale = dz / absOffsetZ;
+						Vector3d from = eyePosition.add(worldCameraOffset.scale(scale));
+						Vector3d to = eyePosition.add(worldXYOffset).add(new Vector3d(camera.getLookVector()).scale(-dz));
+						RayTraceContext context = new RayTraceContext(from, to, BlockMode.VISUAL, FluidMode.NONE, camera.getEntity());
+						BlockRayTraceResult hitResult = level.clip(context);
+						
+						if(hitResult.getType() != Type.MISS)
+						{
+							double distance = hitResult.getLocation().distanceTo(from);
+							double newTargetX = Math.max(distance + absOffsetX * scale - clearance, 0);
+							
+							if(newTargetX < targetX)
+							{
+								targetX = newTargetX;
+							}
+							
+							double newTargetY = Math.max(distance + absOffsetY * scale - clearance, 0);
+							
+							if(newTargetY < targetY)
+							{
+								targetY = newTargetY;
+							}
+						}
+					}
+					
+					targetXOffset = Math.signum(Config.CLIENT.getOffsetX()) * targetX;
+					targetYOffset = Math.signum(Config.CLIENT.getOffsetY()) * targetY;
+				}
 			}
 			
 			ShoulderInstance instance = ShoulderInstance.getInstance();
@@ -187,12 +186,21 @@ public class ShoulderRenderer
 			double offsetY = MathHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = MathHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
 			Vector3d offset = new Vector3d(offsetX, offsetY, offsetZ);
-			this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
-			Vector3d scaled = offset.normalize().scale(this.cameraDistance);
-			this.cameraOffsetX = scaled.x;
-			this.cameraOffsetY = scaled.y;
-			this.cameraOffsetZ = scaled.z;
-			accessor.invokeMove(-scaled.z, scaled.y, scaled.x);
+			
+			if(!camera.getEntity().isSpectator())
+			{
+				this.cameraDistance = this.calcCameraDistance(camera, level, accessor.invokeGetMaxZoom(offset.length()), partialTick);
+				Vector3d scaled = offset.normalize().scale(this.cameraDistance);
+				this.cameraOffsetX = scaled.x;
+				this.cameraOffsetY = scaled.y;
+				this.cameraOffsetZ = scaled.z;
+				accessor.invokeMove(-scaled.z, scaled.y, scaled.x);
+			}
+			else
+			{
+				this.cameraDistance = offset.length();
+				accessor.invokeMove(-offset.z, offset.y, offset.x);
+			}
 		}
 	}
 	
