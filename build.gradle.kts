@@ -1,6 +1,3 @@
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-
 plugins {
 	id("java")
 	alias(libs.plugins.idea.ext)
