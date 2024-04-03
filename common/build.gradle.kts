@@ -6,7 +6,6 @@ plugins {
 
 val modName: String by project
 val javaVersion: String by project
-val minecraftVersion: String by project
 
 base {
 	archivesName.set("$modName-Common")
