@@ -22,9 +22,7 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -274,44 +272,8 @@ public class ShoulderRenderer
 			PlayerController gameMode = Minecraft.getInstance().gameMode;
 			RayTraceResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, this.getPlayerReach(), RayTraceContext.FluidMode.NONE, partialTick, true, false);
 			Vector3d position = hitResult.getLocation().subtract(camera.getPosition());
-			this.projected = this.project2D(position, modelViewMatrix, projectionMatrix);
+			this.projected = ShoulderHelper.project2D(position, modelViewMatrix, projectionMatrix);
 		}
-	}
-	
-	@Nullable
-	private Vec2f project2D(Vector3d position, Matrix4f modelView, Matrix4f projection)
-	{
-		MainWindow window = Minecraft.getInstance().getWindow();
-		int screenWidth = window.getScreenWidth();
-		int screenHeight = window.getScreenHeight();
-		
-		if(screenWidth == 0 || screenHeight == 0)
-		{
-			return null;
-		}
-		
-		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
-		vec.transform(modelView);
-		vec.transform(projection);
-		
-		if(vec.w() == 0.0F)
-		{
-			return null;
-		}
-		
-		float w = (1.0F / vec.w()) * 0.5F;
-		float x = (vec.x() * w + 0.5F) * screenWidth;
-		float y = (vec.y() * w + 0.5F) * screenHeight;
-		float z = vec.z() * w + 0.5F;
-		vec.set(x, y, z, w);
-		
-		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y))
-		{
-			return null;
-		}
-		
-		return new Vec2f(x, y);
-
 	}
 	
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
