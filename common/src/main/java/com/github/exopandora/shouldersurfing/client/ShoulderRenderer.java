@@ -280,7 +280,7 @@ public class ShoulderRenderer
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && !cameraEntity.isSpectator() &&
 			(this.cameraDistance < cameraEntity.getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
-				cameraEntity.yRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+				cameraEntity.xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
 	}
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
@@ -305,6 +305,7 @@ public class ShoulderRenderer
 			}
 			
 			this.cameraEntityAlpha = MathHelper.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), 0.15F, 1.0F);
+			System.out.println(this.cameraEntityAlpha);
 		}
 		
 		return false;
