@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.MouseHelper;
 
 @Mixin(MouseHelper.class)
-public class MixinMouseHelperFabric
+public class MixinMouseHelper
 {
 	@Inject
 	(

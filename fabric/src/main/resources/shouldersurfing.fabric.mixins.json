@@ -6,13 +6,13 @@
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [],
 	"client": [
-		"MixinGameRendererFabric",
-		"MixinIngameGuiFabric",
+		"MixinGameRenderer",
+		"MixinIngameGui",
 		"MixinKeyboardListener",
 		"MixinMinecraft",
-		"MixinMouseHelperFabric",
+		"MixinMouseHelper",
 		"MixinPlayerList",
-		"MixinWorldRendererFabric"
+		"MixinWorldRenderer"
 	],
 	"injectors": {
 		"defaultRequire": 1

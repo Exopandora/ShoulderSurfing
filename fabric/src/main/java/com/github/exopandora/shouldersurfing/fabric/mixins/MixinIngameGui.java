@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IngameGui;
 
 @Mixin(IngameGui.class)
-public class MixinIngameGuiFabric
+public class MixinIngameGui
 {
 	@Shadow
 	protected Minecraft minecraft;
