@@ -58,10 +58,7 @@ subprojects {
 				"Specification-Version" to modVersion,
 				"Implementation-Title" to project.name,
 				"Implementation-Version" to modVersion,
-				"Implementation-Vendor" to modAuthor,
-				"Implementation-Timestamp" to DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now()),
-				"Built-On-Java" to "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})",
-				"Build-On-Minecraft" to libs.versions.minecraft.get()
+				"Implementation-Vendor" to modAuthor
 			))
 		}
 	}
