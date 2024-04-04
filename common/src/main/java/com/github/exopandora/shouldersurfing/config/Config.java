@@ -342,19 +342,9 @@ public class Config
 			return this.offsetX.get();
 		}
 		
-		public void setOffsetX(double offsetX)
-		{
-			Config.set(this.offsetX, offsetX);
-		}
-		
 		public double getOffsetY()
 		{
 			return this.offsetY.get();
-		}
-		
-		public void setOffsetY(double offsetY)
-		{
-			Config.set(this.offsetY, offsetY);
 		}
 		
 		public double getOffsetZ()
@@ -362,19 +352,9 @@ public class Config
 			return this.offsetZ.get();
 		}
 		
-		public void setOffsetZ(double offsetZ)
-		{
-			Config.set(this.offsetZ, offsetZ);
-		}
-		
 		public double getMinOffsetX()
 		{
 			return this.minOffsetX.get();
-		}
-		
-		public void setMinOffsetX(double minOffsetX)
-		{
-			Config.set(this.minOffsetX, minOffsetX);
 		}
 		
 		public double getMinOffsetY()
@@ -382,19 +362,9 @@ public class Config
 			return this.minOffsetY.get();
 		}
 		
-		public void setMinOffsetY(double minOffsetY)
-		{
-			Config.set(this.minOffsetY, minOffsetY);
-		}
-		
 		public double getMinOffsetZ()
 		{
 			return this.minOffsetZ.get();
-		}
-		
-		public void setMinOffsetZ(double minOffsetZ)
-		{
-			Config.set(this.minOffsetZ, minOffsetZ);
 		}
 		
 		public double getMaxOffsetX()
@@ -402,19 +372,9 @@ public class Config
 			return this.maxOffsetX.get();
 		}
 		
-		public void setMaxOffsetX(double maxOffsetX)
-		{
-			Config.set(this.maxOffsetX, maxOffsetX);
-		}
-		
 		public double getMaxOffsetY()
 		{
 			return this.maxOffsetY.get();
-		}
-		
-		public void setMaxOffsetY(double maxOffsetY)
-		{
-			Config.set(this.maxOffsetY, maxOffsetY);
 		}
 		
 		public double getMaxOffsetZ()
@@ -422,19 +382,9 @@ public class Config
 			return this.maxOffsetZ.get();
 		}
 		
-		public void setMaxOffsetZ(double maxOffsetZ)
-		{
-			Config.set(this.maxOffsetZ, maxOffsetZ);
-		}
-		
 		public boolean isUnlimitedOffsetX()
 		{
 			return this.unlimitedOffsetX.get();
-		}
-		
-		public void setUnlimitedOffsetX(boolean unlimitedOffsetX)
-		{
-			Config.set(this.unlimitedOffsetX, unlimitedOffsetX);
 		}
 		
 		public boolean isUnlimitedOffsetY()
@@ -442,19 +392,9 @@ public class Config
 			return this.unlimitedOffsetY.get();
 		}
 		
-		public void setUnlimitedOffsetY(boolean unlimitedOffsetY)
-		{
-			Config.set(this.unlimitedOffsetY, unlimitedOffsetY);
-		}
-		
 		public boolean isUnlimitedOffsetZ()
 		{
 			return this.unlimitedOffsetZ.get();
-		}
-		
-		public void setUnlimitedOffsetZ(boolean unlimitedOffsetZ)
-		{
-			Config.set(this.unlimitedOffsetZ, unlimitedOffsetZ);
 		}
 		
 		public double getPassengerOffsetXMultiplier()
@@ -462,19 +402,9 @@ public class Config
 			return this.passengerOffsetXMultiplier.get();
 		}
 		
-		public void setPassengerOffsetXMultiplier(double passengerOffsetXMultiplier)
-		{
-			Config.set(this.passengerOffsetXMultiplier, passengerOffsetXMultiplier);
-		}
-		
 		public double getPassengerOffsetYMultiplier()
 		{
 			return this.passengerOffsetYMultiplier.get();
-		}
-		
-		public void setPassengerOffsetYMultiplier(double passengerOffsetYMultiplier)
-		{
-			Config.set(this.passengerOffsetYMultiplier, passengerOffsetYMultiplier);
 		}
 		
 		public double getPassengerOffsetZMultiplier()
@@ -482,19 +412,9 @@ public class Config
 			return this.passengerOffsetZMultiplier.get();
 		}
 		
-		public void setPassengerOffsetZMultiplier(double passengerOffsetZMultiplier)
-		{
-			Config.set(this.passengerOffsetZMultiplier, passengerOffsetZMultiplier);
-		}
-		
 		public double getSprintOffsetXMultiplier()
 		{
 			return this.sprintOffsetXMultiplier.get();
-		}
-		
-		public void setSprintOffsetXMultiplier(double sprintOffsetXMultiplier)
-		{
-			Config.set(this.sprintOffsetXMultiplier, sprintOffsetXMultiplier);
 		}
 		
 		public double getSprintOffsetYMultiplier()
@@ -502,19 +422,9 @@ public class Config
 			return this.sprintOffsetYMultiplier.get();
 		}
 		
-		public void setSprintOffsetYMultiplier(double sprintOffsetYMultiplier)
-		{
-			Config.set(this.sprintOffsetYMultiplier, sprintOffsetYMultiplier);
-		}
-		
 		public double getSprintOffsetZMultiplier()
 		{
 			return this.sprintOffsetZMultiplier.get();
-		}
-		
-		public void setSprintOffsetZMultiplier(double sprintOffsetZMultiplier)
-		{
-			Config.set(this.sprintOffsetZMultiplier, sprintOffsetZMultiplier);
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
@@ -522,19 +432,9 @@ public class Config
 			return this.crosshairVisibility.get(perspective).get();
 		}
 		
-		public void setCrosshairVisibility(Perspective perspective, CrosshairVisibility visibility)
-		{
-			Config.set(this.crosshairVisibility.get(perspective), visibility);
-		}
-		
 		public boolean useCustomRaytraceDistance()
 		{
 			return this.useCustomRaytraceDistance.get();
-		}
-		
-		public void setUseCustomRaytraceDistance(boolean useCustomRaytraceDistance)
-		{
-			Config.set(this.useCustomRaytraceDistance, useCustomRaytraceDistance);
 		}
 		
 		public double keepCameraOutOfHeadMultiplier()
@@ -542,29 +442,14 @@ public class Config
 			return this.keepCameraOutOfHeadMultiplier.get();
 		}
 		
-		public void setKeepCameraOutOfHeadMultiplier(double multiplier)
-		{
-			Config.set(this.keepCameraOutOfHeadMultiplier, multiplier);
-		}
-		
 		public boolean replaceDefaultPerspective()
 		{
 			return this.replaceDefaultPerspective.get();
 		}
 		
-		public void setReplaceDefaultPerspective(boolean enabled)
-		{
-			Config.set(this.replaceDefaultPerspective, enabled);
-		}
-		
 		public boolean skipThirdPersonFront()
 		{
 			return this.skipThirdPersonFront.get();
-		}
-		
-		public void setSkipThirdPersonFront(boolean skipThirdPersonFront)
-		{
-			Config.set(this.skipThirdPersonFront, skipThirdPersonFront);
 		}
 		
 		public Perspective getDefaultPerspective()
@@ -582,19 +467,9 @@ public class Config
 			return this.crosshairType.get();
 		}
 		
-		public void setCrosshairType(CrosshairType type)
-		{
-			Config.set(this.crosshairType, type);
-		}
-		
 		public boolean doRememberLastPerspective()
 		{
 			return this.rememberLastPerspective.get();
-		}
-		
-		public void setRememberLastPerspective(boolean enabled)
-		{
-			Config.set(this.rememberLastPerspective, enabled);
 		}
 		
 		public double getCameraStepSize()
@@ -602,19 +477,9 @@ public class Config
 			return this.cameraStepSize.get();
 		}
 		
-		public void setCameraStepSize(double cameraStepSize)
-		{
-			Config.set(this.cameraStepSize, cameraStepSize);
-		}
-		
 		public boolean doCenterCameraWhenClimbing()
 		{
 			return this.centerCameraWhenClimbing.get();
-		}
-		
-		public void setCenterCameraWhenClimbing(boolean enabled)
-		{
-			Config.set(this.centerCameraWhenClimbing, enabled);
 		}
 		
 		public double getCameraTransitionSpeedMultiplier()
@@ -622,19 +487,9 @@ public class Config
 			return this.cameraTransitionSpeedMultiplier.get();
 		}
 		
-		public void setCameraInterpolationSpeedMultiplier(double cameraTransitionSpeedMultiplier)
-		{
-			Config.set(this.cameraTransitionSpeedMultiplier, cameraTransitionSpeedMultiplier);
-		}
-		
 		public double getCenterCameraWhenLookingDownAngle()
 		{
 			return this.centerCameraWhenLookingDownAngle.get();
-		}
-		
-		public void setCenterCameraWhenLookingDown(double centerCameraWhenLookingDownAngle)
-		{
-			Config.set(this.centerCameraWhenLookingDownAngle, centerCameraWhenLookingDownAngle);
 		}
 		
 		public double getHidePlayerWhenLookingUpAngle()
@@ -642,19 +497,9 @@ public class Config
 			return this.hidePlayerWhenLookingUpAngle.get();
 		}
 		
-		public void setHidePlayerWhenLookingUpAngle(double hidePlayerWhenLookingUpAngle)
-		{
-			Config.set(this.hidePlayerWhenLookingUpAngle, hidePlayerWhenLookingUpAngle);
-		}
-		
 		public boolean doDynamicallyAdjustOffsets()
 		{
 			return this.dynamicallyAdjustOffsets.get();
-		}
-		
-		public void setDynamicallyAdjustOffsets(boolean dynamicallyAdjustOffsets)
-		{
-			Config.set(this.dynamicallyAdjustOffsets, dynamicallyAdjustOffsets);
 		}
 		
 		public boolean isPlayerTransparencyEnabled()
@@ -662,29 +507,14 @@ public class Config
 			return this.playerTransparency.get();
 		}
 		
-		public void setPlayerTransparencyEnabled(boolean enabled)
-		{
-			Config.set(this.playerTransparency, enabled);
-		}
-		
 		public boolean isCameraDecoupled()
 		{
 			return this.isCameraDecoupled.get();
 		}
 		
-		public void setIsCameraDecoupled(boolean enabled)
-		{
-			Config.set(this.isCameraDecoupled, enabled);
-		}
-		
 		public double getCustomRaytraceDistance()
 		{
 			return this.customRaytraceDistance.get();
-		}
-		
-		public void setCustomRaytraceDistance(double raytraceDistance)
-		{
-			Config.set(this.customRaytraceDistance, raytraceDistance);
 		}
 		
 		public List<? extends String> getAdaptiveCrosshairHoldItems()
@@ -709,32 +539,32 @@ public class Config
 		
 		public void adjustCameraLeft()
 		{
-			this.setOffsetX(this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
+			Config.set(this.offsetX, this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
 		}
 		
 		public void adjustCameraRight()
 		{
-			this.setOffsetX(this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isUnlimitedOffsetX()));
+			Config.set(this.offsetX, this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isUnlimitedOffsetX()));
 		}
 		
 		public void adjustCameraUp()
 		{
-			this.setOffsetY(this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isUnlimitedOffsetY()));
+			Config.set(this.offsetY, this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isUnlimitedOffsetY()));
 		}
 		
 		public void adjustCameraDown()
 		{
-			this.setOffsetY(this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isUnlimitedOffsetY()));
+			Config.set(this.offsetY, this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isUnlimitedOffsetY()));
 		}
 		
 		public void adjustCameraIn()
 		{
-			this.setOffsetZ(this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isUnlimitedOffsetZ()));
+			Config.set(this.offsetZ, this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
 		public void adjustCameraOut()
 		{
-			this.setOffsetZ(this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
+			Config.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
 		private double addStep(double value, double max, boolean unlimited)
@@ -763,7 +593,7 @@ public class Config
 		
 		public void swapShoulder()
 		{
-			this.setOffsetX(-this.getOffsetX());
+			Config.set(this.offsetX, -this.getOffsetX());
 		}
 	}
 	
