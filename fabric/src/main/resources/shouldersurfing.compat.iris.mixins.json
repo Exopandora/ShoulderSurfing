@@ -2,7 +2,7 @@
 	"required": true,
 	"minVersion": "0.8.5",
 	"plugin": "com.github.exopandora.shouldersurfing.fabric.compatibility.ShoulderIrisCompatMixinPlugin",
-	"package": "com.github.exopandora.shouldersurfing.compatibility.mixins",
+	"package": "com.github.exopandora.shouldersurfing.mixins.compatibility",
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [],
