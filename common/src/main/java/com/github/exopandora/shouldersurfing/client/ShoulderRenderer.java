@@ -72,7 +72,7 @@ public class ShoulderRenderer
 			this.translation = this.lastTranslation.add(interpolated);
 		}
 		
-		if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderInstance.getInstance().doShoulderSurfing())
+		if(ShoulderInstance.getInstance().isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			poseStack.pushPose();
 			poseStack.last().pose().translate(this.translation.x(), -this.translation.y(), 0F);
@@ -86,7 +86,7 @@ public class ShoulderRenderer
 	
 	public void clearCrosshairOffset(PoseStack poseStack)
 	{
-		if(Config.CLIENT.getCrosshairType().isDynamic() && ShoulderInstance.getInstance().doShoulderSurfing() && !Vec2f.ZERO.equals(this.lastTranslation))
+		if(ShoulderInstance.getInstance().isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) && !Vec2f.ZERO.equals(this.lastTranslation))
 		{
 			poseStack.popPose();
 		}

@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -96,7 +97,10 @@ public class ShoulderInstance
 			
 			if(shouldAimAtTarget)
 			{
-				HitResult hitResult = ShoulderHelper.traceBlocksAndEntities(minecraft.gameRenderer.getMainCamera(), minecraft.gameMode, Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance(), ClipContext.Fluid.NONE, 1.0F, true, !Config.CLIENT.getCrosshairType().isDynamic());
+				Camera camera = minecraft.gameRenderer.getMainCamera();
+				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
+				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(cameraEntity);
+				HitResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
 				Vec3 eyePosition = cameraEntity.getEyePosition();
 				double dx = hitResult.getLocation().x - eyePosition.x;
 				double dy = hitResult.getLocation().y - eyePosition.y;
@@ -142,6 +146,11 @@ public class ShoulderInstance
 		{
 			ShoulderRenderer.getInstance().resetState(cameraEntity);
 		}
+	}
+	
+	public boolean isCrosshairDynamic(Entity entity)
+	{
+		return this.doShoulderSurfing && Config.CLIENT.getCrosshairType().isDynamic(entity, this.isAiming);
 	}
 	
 	public boolean doShoulderSurfing()
