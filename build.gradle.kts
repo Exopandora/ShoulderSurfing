@@ -35,11 +35,6 @@ subprojects {
 				includeGroup("mcp.mobius.waila")
 			}
 		}
-		maven("https://www.cursemaven.com") {
-			content {
-				includeGroup("curse.maven")
-			}
-		}
 	}
 	
 	tasks.withType<Jar>().configureEach {
