@@ -127,14 +127,15 @@ public class ShoulderHelper
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
 			Vec3 from = camera.getPosition();
 			Vec3 to = look.traceEndPos();
-			return entity.level().clip(new ClipContext(from, to, ShoulderInstance.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE, fluidContext, entity));
+			ClipContext.Block blockContext = ShoulderInstance.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
+			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
 		else
 		{
 			Vec3 from = entity.getEyePosition(partialTick);
 			Vec3 view = new Vec3(camera.getLookVector());
 			Vec3 to = from.add(view.scale(distance));
-			ClipContext.Block blockContext = Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC ? ClipContext.Block.OUTLINE : ClipContext.Block.COLLIDER;
+			ClipContext.Block blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
 			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
 	}
