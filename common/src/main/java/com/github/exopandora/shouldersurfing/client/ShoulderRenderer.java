@@ -280,7 +280,7 @@ public class ShoulderRenderer
 	{
 		return ShoulderInstance.getInstance().doShoulderSurfing() && !cameraEntity.isSpectator() &&
 			(this.cameraDistance < cameraEntity.getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
-				cameraEntity.xRot < Config.CLIENT.getCenterCameraWhenLookingDownAngle() - 90);
+				this.cameraXRot < Config.CLIENT.getHidePlayerWhenLookingUpAngle() - 90);
 	}
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick)
