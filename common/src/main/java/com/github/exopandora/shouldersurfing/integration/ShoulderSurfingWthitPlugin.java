@@ -42,7 +42,8 @@ public abstract class ShoulderSurfingWthitPlugin implements IWailaPlugin
 				MultiPlayerGameMode gameMode = mc.gameMode;
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
 				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);
-				return ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, !Config.CLIENT.getCrosshairType().isDynamic());
+				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
+				return ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, !isCrosshairDynamic);
 			}
 			
 			return this.defaultObjectPicker.pick(mc, maxDistance, partialTick, config);
