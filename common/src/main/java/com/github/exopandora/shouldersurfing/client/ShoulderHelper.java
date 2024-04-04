@@ -45,7 +45,7 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static Vec3 calcRayTraceHeadOffset(@NotNull Camera camera, Vec3 cameraOffset)
+	public static Vec3 calcRayTraceHeadOffset(Camera camera, Vec3 cameraOffset)
 	{
 		Vec3 lookVector = new Vec3(camera.getLookVector());
 		return ShoulderHelper.calcPlaneWithLineIntersection(Vec3.ZERO, lookVector, cameraOffset, lookVector);
@@ -138,18 +138,6 @@ public class ShoulderHelper
 			ClipContext.Block blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
 			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
-	}
-	
-	public static boolean isHoldingAdaptiveItem()
-	{
-		Minecraft minecraft = Minecraft.getInstance();
-		
-		if(minecraft.getCameraEntity() instanceof LivingEntity entity)
-		{
-			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, entity));
-		}
-		
-		return false;
 	}
 	
 	public static @Nullable Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
