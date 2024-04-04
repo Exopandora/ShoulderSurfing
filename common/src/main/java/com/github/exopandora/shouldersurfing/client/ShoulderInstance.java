@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
+import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -77,31 +78,32 @@ public class ShoulderInstance
 	
 	public Vec2f impulse(float leftImpulse, float forwardImpulse)
 	{
-		this.isAiming = ShoulderHelper.isHoldingAdaptiveItem();
-		Vec2f impulse = new Vec2f(leftImpulse, forwardImpulse);
 		Minecraft minecraft = Minecraft.getInstance();
+		Entity cameraEntity = minecraft.getCameraEntity();
+		this.isAiming = isHoldingAdaptiveItem(minecraft, cameraEntity);
+		Vec2f impulse = new Vec2f(leftImpulse, forwardImpulse);
 		
 		if(this.doShoulderSurfing && this.isFreeLooking)
 		{
-			return impulse.rotateDegrees(Mth.degreesDifference(minecraft.getCameraEntity().getYRot(), this.freeLookYRot));
+			return impulse.rotateDegrees(Mth.degreesDifference(cameraEntity.getYRot(), this.freeLookYRot));
 		}
-		else if(this.doShoulderSurfing && minecraft.player != null && minecraft.getCameraEntity() == minecraft.player)
+		else if(this.doShoulderSurfing && minecraft.player != null && cameraEntity == minecraft.player)
 		{
-			LivingEntity cameraEntity = minecraft.player;
+			LivingEntity player = minecraft.player;
 			ShoulderRenderer renderer = ShoulderRenderer.getInstance();
-			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(cameraEntity, minecraft);
+			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(player, minecraft);
 			boolean hasImpulse = impulse.lengthSquared() > 0;
-			float xRot = cameraEntity.getXRot();
-			float yRot = cameraEntity.getYRot();
+			float xRot = player.getXRot();
+			float yRot = player.getYRot();
 			float yRotO = yRot;
 			
 			if(shouldAimAtTarget)
 			{
 				Camera camera = minecraft.gameRenderer.getMainCamera();
 				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
-				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(cameraEntity);
+				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
 				HitResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
-				Vec3 eyePosition = cameraEntity.getEyePosition();
+				Vec3 eyePosition = player.getEyePosition();
 				double dx = hitResult.getLocation().x - eyePosition.x;
 				double dy = hitResult.getLocation().y - eyePosition.y;
 				double dz = hitResult.getLocation().z - eyePosition.z;
@@ -109,7 +111,7 @@ public class ShoulderInstance
 				xRot = (float) Mth.wrapDegrees(-Mth.atan2(dy, xz) * Mth.RAD_TO_DEG);
 				yRot = (float) Mth.wrapDegrees(Mth.atan2(dz, dx) * Mth.RAD_TO_DEG - 90.0F);
 			}
-			else if(Config.CLIENT.isCameraDecoupled() && (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) || !Config.CLIENT.isCameraDecoupled())
+			else if(Config.CLIENT.isCameraDecoupled() && (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying()) || !Config.CLIENT.isCameraDecoupled())
 			{
 				xRot = renderer.getCameraXRot();
 				yRot = renderer.getCameraYRot();
@@ -129,11 +131,21 @@ public class ShoulderInstance
 				impulse = impulse.rotateDegrees(Mth.degreesDifference(yRot, renderer.getCameraYRot()));
 			}
 			
-			cameraEntity.setXRot(xRot);
-			cameraEntity.setYRot(yRot);
+			player.setXRot(xRot);
+			player.setYRot(yRot);
 		}
 		
 		return impulse;
+	}
+	
+	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
+	{
+		if(entity instanceof LivingEntity living)
+		{
+			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, living));
+		}
+		
+		return false;
 	}
 	
 	public void changePerspective(Perspective perspective)
