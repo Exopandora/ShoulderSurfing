@@ -55,7 +55,8 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 				ClipContext.Fluid fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
 				double maxDistance = gameMode.getPickRange() + IWailaConfig.get().getGeneral().getReachDistance();
 				float partialTick = minecraft.getFrameTime();
-				HitResult target = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, true, !Config.CLIENT.getCrosshairType().isDynamic());
+				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
+				HitResult target = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, true, !isCrosshairDynamic);
 				Player player = minecraft.player;
 				Level level = minecraft.level;
 				

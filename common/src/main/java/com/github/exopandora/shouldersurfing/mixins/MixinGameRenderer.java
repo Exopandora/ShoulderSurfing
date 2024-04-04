@@ -39,7 +39,10 @@ public class MixinGameRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			return ShoulderHelper.traceEntities(this.mainCamera, shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), !Config.CLIENT.getCrosshairType().isDynamic());
+			double rayTraceDistance = Math.sqrt(distanceSq);
+			float partialTick = Minecraft.getInstance().getFrameTime();
+			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(shooter);
+			return ShoulderHelper.traceEntities(this.mainCamera, shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
 		}
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
