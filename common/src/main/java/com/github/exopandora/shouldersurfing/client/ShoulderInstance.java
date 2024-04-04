@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
+import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
@@ -77,31 +78,32 @@ public class ShoulderInstance
 	
 	public Vec2f impulse(float leftImpulse, float forwardImpulse)
 	{
-		this.isAiming = ShoulderHelper.isHoldingAdaptiveItem();
-		Vec2f impulse = new Vec2f(leftImpulse, forwardImpulse);
 		Minecraft minecraft = Minecraft.getInstance();
+		Entity cameraEntity = minecraft.getCameraEntity();
+		this.isAiming = isHoldingAdaptiveItem(minecraft, cameraEntity);
+		Vec2f impulse = new Vec2f(leftImpulse, forwardImpulse);
 		
 		if(this.doShoulderSurfing && this.isFreeLooking)
 		{
-			return impulse.rotateDegrees(MathHelper.degreesDifference(minecraft.getCameraEntity().yRot, this.freeLookYRot));
+			return impulse.rotateDegrees(MathHelper.degreesDifference(cameraEntity.yRot, this.freeLookYRot));
 		}
-		else if(this.doShoulderSurfing && minecraft.player != null && minecraft.getCameraEntity() == minecraft.player)
+		else if(this.doShoulderSurfing && minecraft.player != null && cameraEntity == minecraft.player)
 		{
-			LivingEntity cameraEntity = minecraft.player;
+			LivingEntity player = minecraft.player;
 			ShoulderRenderer renderer = ShoulderRenderer.getInstance();
-			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(cameraEntity, minecraft);
+			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(player, minecraft);
 			boolean hasImpulse = impulse.lengthSquared() > 0;
-			float xRot = cameraEntity.xRot;
-			float yRot = cameraEntity.yRot;
+			float xRot = player.xRot;
+			float yRot = player.yRot;
 			float yRotO = yRot;
 			
 			if(shouldAimAtTarget)
 			{
 				ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
 				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
-				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(cameraEntity);
+				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
 				RayTraceResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, RayTraceContext.FluidMode.NONE, 1.0F, true, !isCrosshairDynamic);
-				Vector3d eyePosition = cameraEntity.getEyePosition(1.0F);
+				Vector3d eyePosition = player.getEyePosition(1.0F);
 				double dx = hitResult.getLocation().x - eyePosition.x;
 				double dy = hitResult.getLocation().y - eyePosition.y;
 				double dz = hitResult.getLocation().z - eyePosition.z;
@@ -109,7 +111,7 @@ public class ShoulderInstance
 				xRot = (float) MathHelper.wrapDegrees(-MathHelper.atan2(dy, xz) * ShoulderHelper.RAD_TO_DEG);
 				yRot = (float) MathHelper.wrapDegrees(MathHelper.atan2(dz, dx) * ShoulderHelper.RAD_TO_DEG - 90.0F);
 			}
-			else if(Config.CLIENT.isCameraDecoupled() && (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) || !Config.CLIENT.isCameraDecoupled())
+			else if(Config.CLIENT.isCameraDecoupled() && (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying()) || !Config.CLIENT.isCameraDecoupled())
 			{
 				xRot = renderer.getCameraXRot();
 				yRot = renderer.getCameraYRot();
@@ -129,11 +131,21 @@ public class ShoulderInstance
 				impulse = impulse.rotateDegrees(MathHelper.degreesDifference(yRot, renderer.getCameraYRot()));
 			}
 			
-			cameraEntity.xRot = xRot;
-			cameraEntity.yRot = yRot;
+			player.xRot = xRot;
+			player.yRot = yRot;
 		}
 		
 		return impulse;
+	}
+	
+	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
+	{
+		if(entity instanceof LivingEntity)
+		{
+			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, (LivingEntity) entity));
+		}
+		
+		return false;
 	}
 	
 	public void changePerspective(Perspective perspective)

@@ -49,7 +49,7 @@ public class ShoulderHelper
 		return new ShoulderLook(cameraPos, traceEnd, headOffset);
 	}
 	
-	public static Vector3d calcRayTraceHeadOffset(@NotNull ActiveRenderInfo camera, Vector3d cameraOffset)
+	public static Vector3d calcRayTraceHeadOffset(ActiveRenderInfo camera, Vector3d cameraOffset)
 	{
 		Vector3d lookVector = new Vector3d(camera.getLookVector());
 		return ShoulderHelper.calcPlaneWithLineIntersection(Vector3d.ZERO, lookVector, cameraOffset, lookVector);
@@ -142,18 +142,6 @@ public class ShoulderHelper
 			RayTraceContext.BlockMode blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE;
 			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
 		}
-	}
-	
-	public static boolean isHoldingAdaptiveItem()
-	{
-		Minecraft minecraft = Minecraft.getInstance();
-		
-		if(minecraft.cameraEntity instanceof LivingEntity)
-		{
-			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, (LivingEntity) minecraft.cameraEntity));
-		}
-		
-		return false;
 	}
 	
 	public static double angle(Vector3f a, Vector3f b)
