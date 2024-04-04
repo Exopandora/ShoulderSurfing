@@ -57,18 +57,19 @@ public class Config
 		private final DoubleValue sprintOffsetZMultiplier;
 		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
-		private final BooleanValue replaceDefaultPerspective;
-		private final BooleanValue skipThirdPersonFront;
-		private final BooleanValue rememberLastPerspective;
 		private final DoubleValue cameraStepSize;
-		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue centerCameraWhenClimbing;
 		private final DoubleValue cameraTransitionSpeedMultiplier;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
-		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
-		private final BooleanValue playerTransparency;
 		private final BooleanValue isCameraDecoupled;
+		
+		private final BooleanValue replaceDefaultPerspective;
+		private final BooleanValue skipThirdPersonFront;
+		private final DoubleValue hidePlayerWhenLookingUpAngle;
+		private final ConfigValue<Perspective> defaultPerspective;
+		private final BooleanValue rememberLastPerspective;
+		private final BooleanValue playerTransparency;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
