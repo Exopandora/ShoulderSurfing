@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
+import net.minecraft.entity.Entity;
 
 public enum CrosshairType
 {
@@ -10,11 +10,11 @@ public enum CrosshairType
 	STATIC_WITH_1PP,
 	DYNAMIC_WITH_1PP;
 	
-	public boolean isDynamic()
+	public boolean isDynamic(Entity entity, boolean isAiming)
 	{
 		if(this == CrosshairType.ADAPTIVE)
 		{
-			return ShoulderHelper.isHoldingAdaptiveItem();
+			return isAiming;
 		}
 		
 		return this == CrosshairType.DYNAMIC || this == CrosshairType.DYNAMIC_WITH_1PP;

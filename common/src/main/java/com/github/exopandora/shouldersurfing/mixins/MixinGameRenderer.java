@@ -34,7 +34,10 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
-			return ShoulderHelper.traceEntities(this.getMainCamera(), shooter, Math.sqrt(distanceSq), Minecraft.getInstance().getFrameTime(), !Config.CLIENT.getCrosshairType().isDynamic());
+			double rayTraceDistance = Math.sqrt(distanceSq);
+			float partialTick = Minecraft.getInstance().getFrameTime();
+			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(shooter);
+			return ShoulderHelper.traceEntities(this.getMainCamera(), shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
 		}
 		
 		return ProjectileHelper.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);

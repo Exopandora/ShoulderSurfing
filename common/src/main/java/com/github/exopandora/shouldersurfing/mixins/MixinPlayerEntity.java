@@ -32,7 +32,8 @@ public abstract class MixinPlayerEntity extends Entity
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && camera != null)
 		{
 			RayTraceContext.FluidMode fluidContext = stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE;
-			return ShoulderHelper.traceBlocks(camera, this, fluidContext, distance, partialTicks, !Config.CLIENT.getCrosshairType().isDynamic());
+			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
+			return ShoulderHelper.traceBlocks(camera, this, fluidContext, distance, partialTicks, !isCrosshairDynamic);
 		}
 		
 		return super.pick(distance, partialTicks, stopOnFluid);
