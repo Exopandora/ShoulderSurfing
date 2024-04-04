@@ -131,14 +131,15 @@ public class ShoulderHelper
 			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
 			Vector3d from = camera.getPosition();
 			Vector3d to = look.traceEndPos();
-			return entity.level.clip(new RayTraceContext(from, to, ShoulderInstance.getInstance().isAiming() ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE, fluidContext, entity));
+			RayTraceContext.BlockMode blockContext = ShoulderInstance.getInstance().isAiming() ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE;
+			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
 		}
 		else
 		{
 			Vector3d from = entity.getEyePosition(partialTick);
 			Vector3d view = new Vector3d(camera.getLookVector());
 			Vector3d to = from.add(view.scale(distance));
-			RayTraceContext.BlockMode blockContext = Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC ? RayTraceContext.BlockMode.OUTLINE : RayTraceContext.BlockMode.COLLIDER;
+			RayTraceContext.BlockMode blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE;
 			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
 		}
 	}
