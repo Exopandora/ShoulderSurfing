@@ -39,8 +39,6 @@ runs {
 	}
 }
 
-val notNeoTask = Spec<Task> { !it.name.startsWith("neo") }
-
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
@@ -56,6 +54,8 @@ dependencies {
 	testCompileOnly(project(":common"))
 	testCompileOnly(project(":compatibility"))
 }
+
+val notNeoTask = Spec<Task> { !it.name.startsWith("neo") }
 
 tasks.withType<JavaCompile>().matching(notNeoTask).configureEach {
 	source(project(":api").sourceSets.main.get().allSource)
