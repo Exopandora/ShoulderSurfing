@@ -1,11 +1,11 @@
 package com.github.exopandora.shouldersurfing.forge;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
 import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.common.MinecraftForge;

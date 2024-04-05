@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.plugin;
+package com.github.exopandora.shouldersurfing.api.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;

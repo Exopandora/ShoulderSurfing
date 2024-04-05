@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.plugin;
+package com.github.exopandora.shouldersurfing.api.impl;
 
 import java.io.Reader;
 import java.nio.file.Files;
