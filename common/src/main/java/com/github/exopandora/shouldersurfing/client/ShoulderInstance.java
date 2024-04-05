@@ -3,7 +3,7 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
-import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
+import com.github.exopandora.shouldersurfing.api.impl.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
