@@ -1,13 +1,11 @@
 package com.github.exopandora.shouldersurfing.forge;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
-import org.apache.commons.lang3.tuple.Pair;
-
+import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
 import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -24,6 +22,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
+import org.apache.commons.lang3.tuple.Pair;
 
 @Mod(ShoulderSurfing.MODID)
 public class ShoulderSurfingForge

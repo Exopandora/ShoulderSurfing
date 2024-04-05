@@ -1,9 +1,9 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.impl.ShoulderSurfingRegistrar;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
-import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
@@ -73,7 +73,7 @@ public class ShoulderInstance
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
 			(cameraEntity.isUsingItem() && cameraEntity.getUseItem().getItem().getFoodProperties() == null || !cameraEntity.isFallFlying() &&
-				minecraft.hitResult != null && (minecraft.options.keyUse.isDown() && minecraft.hitResult.getType() != HitResult.Type.MISS &&
+				minecraft.hitResult != null && (minecraft.options.keyUse.isDown() && minecraft.hitResult.getType() != RayTraceResult.Type.MISS &&
 				!cameraEntity.isUsingItem() || minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
 	}
 	

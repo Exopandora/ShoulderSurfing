@@ -1,9 +1,9 @@
-package com.github.exopandora.shouldersurfing.forge.plugin;
+package com.github.exopandora.shouldersurfing.forge.api.impl;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
+import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 
