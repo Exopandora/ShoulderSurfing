@@ -4,7 +4,7 @@ import com.github.exopandora.shouldersurfing.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
+import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
 import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
