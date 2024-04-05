@@ -1,4 +1,6 @@
-# Shoulder Surfing Reloaded</br> [![CurseForge Downloads](https://img.shields.io/curseforge/dt/243190?style=flat-square&logo=curseforge&label=CurseForge&color=%23F16436)](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded) [![Modrinth Downloads](https://img.shields.io/modrinth/dt/kepjj2sy?style=flat-square&logo=modrinth&label=Modrinth&color=%2300AF5C)](https://modrinth.com/mod/shoulder-surfing-reloaded) #
+# Shoulder Surfing Reloaded #
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/243190?style=flat-square&logo=curseforge&label=CurseForge&color=%23F16436)](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded) [![Modrinth Downloads](https://img.shields.io/modrinth/dt/kepjj2sy?style=flat-square&logo=modrinth&label=Modrinth&color=%2300AF5C)](https://modrinth.com/mod/shoulder-surfing-reloaded) ![GitHub License](https://img.shields.io/github/license/Exopandora/ShoulderSurfing?style=flat-square&label=License)
+
 Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft.
 
 # Features #
@@ -73,6 +75,7 @@ Ingame: Install Forge Config Screens ([CurseForge](https://www.curseforge.com/mi
 
 # API Documentation #
 The API Documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
+It currently allows other mod developers to define custom rules for when and what items should have adaptive crosshair functionality.
 
 # Building From Source #
 Clone the repository and run the following command in the root directory of this repository:
