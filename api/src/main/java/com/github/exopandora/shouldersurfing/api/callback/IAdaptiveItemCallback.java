@@ -1,11 +1,11 @@
 package com.github.exopandora.shouldersurfing.api.callback;
 
-import java.util.stream.StreamSupport;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+
+import java.util.stream.StreamSupport;
 
 public interface IAdaptiveItemCallback
 {
