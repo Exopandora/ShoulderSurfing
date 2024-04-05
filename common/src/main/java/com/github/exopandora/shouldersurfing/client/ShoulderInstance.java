@@ -73,7 +73,8 @@ public class ShoulderInstance
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
 			(cameraEntity.isUsingItem() && cameraEntity.getUseItem().getItem().getFoodProperties() == null || !cameraEntity.isFallFlying() &&
-				(minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() || minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
+				minecraft.hitResult != null && (minecraft.options.keyUse.isDown() && minecraft.hitResult.getType() != HitResult.Type.MISS &&
+				!cameraEntity.isUsingItem() || minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
 	}
 	
 	public Vec2f impulse(float leftImpulse, float forwardImpulse)
