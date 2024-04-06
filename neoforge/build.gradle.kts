@@ -11,14 +11,18 @@ repositories {
 
 val modId: String by project
 val modName: String by project
+val modAuthor: String by project
 val modVersion: String by project
+val modDescription: String by project
+val modUrl: String by project
 val javaVersion: String by project
+val jarName: String by project
 val neoForgeCompatibleMinecraftVersions: String by project
 val curseProjectId: String by project
 val modrinthProjectId: String by project
 
 base {
-	archivesName.set("$modName-NeoForge")
+	archivesName.set("$jarName-NeoForge")
 }
 
 java {
@@ -65,15 +69,20 @@ tasks.withType<JavaCompile>().matching(notNeoTask).configureEach {
 tasks.withType<ProcessResources>().matching(notNeoTask).configureEach {
 	from(project(":common").sourceSets.main.get().resources)
 	
-	inputs.property("mod_version", modVersion)
-	inputs.property("mod_name", modName)
+	val properties = mapOf(
+		"modVersion" to modVersion,
+		"modId" to modId,
+		"modName" to modName,
+		"modAuthor" to modAuthor,
+		"modDescription" to modDescription,
+		"modUrl" to modUrl,
+		"minecraftVersion" to libs.versions.minecraft.get()
+	)
 	
-	filesMatching("META-INF/mods.toml") {
-		expand(mapOf("version" to modVersion))
-	}
+	inputs.properties(properties)
 	
-	filesMatching("pack.mcmeta") {
-		expand(mapOf("mod_name" to modName))
+	filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml")) {
+		expand(properties)
 	}
 }
 
@@ -88,7 +97,7 @@ tasks.build {
 }
 
 publishMods {
-	displayName = "$modName-NeoForge-${libs.versions.minecraft.get()}-$modVersion"
+	displayName = "$jarName-NeoForge-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }

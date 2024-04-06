@@ -1,8 +1,8 @@
 modLoader = "javafml"
 loaderVersion = "[2,)"
-displayURL = "https://minecraft.curseforge.com/projects/shoulder-surfing-reloaded"
+displayURL = "${modUrl}"
 logoFile = "logo.png"
-authors = "Exopandora"
+authors = "${modAuthor}"
 license = "MIT"
 
 [[mixins]]
@@ -15,36 +15,36 @@ config = "shouldersurfing.neoforge.mixins.json"
 config = "shouldersurfing.compat.oculus.mixins.json"
 
 [[mods]]
-modId = "shouldersurfing"
-displayName = "Shoulder Surfing"
-version = "1.20.4-${version}"
-description = "Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft, originally made by Sabar."
+modId = "${modId}"
+displayName = "${modName}"
+version = "${minecraftVersion}-${modVersion}"
+description = "${modDescription}"
 
-[[dependencies.shouldersurfing]]
+[[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.shouldersurfing]]
+[[dependencies.${modId}]]
 modId = "forgeconfigapiport"
 type = "required"
 versionRange = "[20.4.3,)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.shouldersurfing]]
+[[dependencies.${modId}]]
 modId = "betterthirdperson"
 type = "incompatible"
 side = "CLIENT"
 
-[[dependencies.shouldersurfing]]
+[[dependencies.${modId}]]
 modId = "cameraoverhaul"
 type = "incompatible"
 side = "CLIENT"
 
-[[dependencies.shouldersurfing]]
+[[dependencies.${modId}]]
 modId = "nimble"
 type = "incompatible"
 side = "CLIENT"
