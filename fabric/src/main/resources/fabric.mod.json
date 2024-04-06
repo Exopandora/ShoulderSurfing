@@ -1,15 +1,15 @@
 {
 	"schemaVersion": 1,
-	"id": "shouldersurfing",
-	"version": "${version}",
-	"name": "Shoulder Surfing Reloaded",
-	"description": "Shoulder Surfing Reloaded is a highly configurable third person camera mod for minecraft, originally made by Sabar.",
+	"id": "${modId}",
+	"version": "${modVersion}",
+	"name": "${modName}",
+	"description": "${modDescription}",
 	"authors": [
-		"Exopandora"
+		"${modAuthor}"
 	],
 	"contact": {
-		"homepage": "https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded",
-		"sources": "https://github.com/Exopandora/shouldersurfing"
+		"homepage": "${modUrl}",
+		"sources": "${modUrl}"
 	},
 	"license": "MIT",
 	"icon": "logo.png",
