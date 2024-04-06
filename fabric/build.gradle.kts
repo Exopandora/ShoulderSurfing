@@ -9,14 +9,18 @@ plugins {
 
 val modId: String by project
 val modName: String by project
+val modAuthor: String by project
 val modVersion: String by project
+val modDescription: String by project
+val modUrl: String by project
 val javaVersion: String by project
+val jarName: String by project
 val fabricCompatibleMinecraftVersions: String by project
 val curseProjectId: String by project
 val modrinthProjectId: String by project
 
 base {
-	archivesName.set("$modName-Fabric")
+	archivesName.set("$jarName-Fabric")
 }
 
 java {
@@ -72,37 +76,29 @@ tasks.named<JavaCompile>("compileJava").configure {
 	source(project(":common").sourceSets.main.get().allSource)
 }
 
-tasks.named<ProcessResources>("processResources").configure {
+tasks.withType<ProcessResources>().configureEach {
 	from(project(":common").sourceSets.main.get().resources)
 	
-	inputs.property("version", modVersion)
-	inputs.property("mod_name", modName)
+	val properties = mapOf(
+		"modVersion" to modVersion,
+		"modId" to modId,
+		"modName" to modName,
+		"modAuthor" to modAuthor,
+		"modDescription" to modDescription,
+		"modUrl" to modUrl,
+		"minecraftVersion" to libs.versions.minecraft.get()
+	)
 	
-	filesMatching("fabric.mod.json") {
-		expand(mapOf("version" to modVersion))
+	inputs.properties(properties)
+	
+	filesMatching(listOf("pack.mcmeta", "fabric.mod.json")) {
+		expand(properties)
 	}
-	
-	filesMatching("pack.mcmeta") {
-		expand(mapOf("mod_name" to modName))
-	}
-	
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.register<Jar>("apiJar").configure {
 	from(project(":api").sourceSets.main.get().output)
 	from(project(":api").sourceSets.main.get().allSource)
-	
-	from(sourceSets.main.get().resources) {
-		include("fabric.mod.json")
-	}
-	
-	inputs.property("version", modVersion)
-	
-	filesMatching("fabric.mod.json") {
-		expand(mapOf("version" to modVersion))
-	}
-	
 	archiveClassifier = "API"
 }
 
@@ -111,7 +107,7 @@ tasks.build {
 }
 
 publishMods {
-	displayName = "$modName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
+	displayName = "$jarName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<RemapJarTask>("remapJar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }

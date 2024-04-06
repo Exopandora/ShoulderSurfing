@@ -4,11 +4,11 @@ plugins {
 	alias(libs.plugins.vanillagradle)
 }
 
-val modName: String by project
+val jarName: String by project
 val javaVersion: String by project
 
 base {
-	archivesName.set("$modName-API")
+	archivesName.set("$jarName-API")
 }
 
 java {
