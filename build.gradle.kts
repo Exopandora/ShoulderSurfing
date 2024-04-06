@@ -1,3 +1,5 @@
+import org.gradle.configurationcache.extensions.capitalized
+
 plugins {
 	id("java")
 	alias(libs.plugins.modpublishplugin) apply false
@@ -48,8 +50,8 @@ subprojects {
 				"Specification-Title" to modName,
 				"Specification-Vendor" to modAuthor,
 				"Specification-Version" to modVersion,
-				"Implementation-Title" to project.name,
-				"Implementation-Version" to modVersion,
+				"Implementation-Title" to project.name.capitalized(),
+				"Implementation-Version" to "${libs.versions.minecraft.get()}-$modVersion",
 				"Implementation-Vendor" to modAuthor
 			))
 		}

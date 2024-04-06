@@ -5,11 +5,11 @@ plugins {
 }
 
 val modId: String by project
-val modName: String by project
+val jarName: String by project
 val javaVersion: String by project
 
 base {
-	archivesName.set("$modName-Compatibility")
+	archivesName.set("$jarName-Compatibility")
 }
 
 java {
