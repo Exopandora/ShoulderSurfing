@@ -60,7 +60,10 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void keyInputEvent(InputEvent event)
 	{
-		KeyHandler.tick();
+		if(Minecraft.getInstance().screen == null)
+		{
+			KeyHandler.tick();
+		}
 	}
 	
 	@SubscribeEvent
