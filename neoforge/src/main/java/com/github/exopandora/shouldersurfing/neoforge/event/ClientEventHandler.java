@@ -6,6 +6,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
@@ -89,5 +90,11 @@ public class ClientEventHandler
 	public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
 	{
 		ShoulderRenderer.getInstance().resetState(event.getEntity());
+	}
+	
+	@SubscribeEvent
+	public static void movementInputUpdateEvent(MovementInputUpdateEvent event)
+	{
+		ShoulderInstance.getInstance().onMovementInputUpdate(event.getInput());
 	}
 }

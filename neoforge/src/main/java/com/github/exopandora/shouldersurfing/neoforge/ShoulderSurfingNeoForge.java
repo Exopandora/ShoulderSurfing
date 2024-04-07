@@ -1,12 +1,11 @@
 package com.github.exopandora.shouldersurfing.neoforge;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
 import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
-import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
-
 import fuzs.forgeconfigapiport.neoforge.api.forge.v4.ForgeConfigRegistry;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -51,6 +50,7 @@ public class ShoulderSurfingNeoForge
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
+		NeoForge.EVENT_BUS.addListener(ClientEventHandler::movementInputUpdateEvent);
 	}
 	
 	@SubscribeEvent

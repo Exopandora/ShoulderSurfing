@@ -52,6 +52,7 @@ public class ShoulderSurfingForge
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
+		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::movementInputUpdateEvent);
 	}
 	
 	@SubscribeEvent
