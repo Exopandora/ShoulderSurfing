@@ -5,6 +5,7 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
+		"MixinClientPlayerEntity",
 		"MixinGameRenderer",
 		"MixinIngameGui",
 		"MixinMinecraft",

@@ -16,7 +16,6 @@
 		"MixinItem",
 		"MixinModelRenderer",
 		"MixinMouseHelper",
-		"MixinMovementInputFromOptions",
 		"MixinPlayerEntity",
 		"MixinPlayerRenderer",
 		"MixinRenderType",

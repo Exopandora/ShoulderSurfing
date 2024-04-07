@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -77,23 +78,25 @@ public class ShoulderInstance
 				!cameraEntity.isUsingItem() || minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
 	}
 	
-	public Vec2f impulse(float leftImpulse, float forwardImpulse)
+	public void onMovementInputUpdate(MovementInput input)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
+		Vec2f moveVector = new Vec2f(input.leftImpulse, input.forwardImpulse);
 		this.isAiming = isHoldingAdaptiveItem(minecraft, cameraEntity);
-		Vec2f impulse = new Vec2f(leftImpulse, forwardImpulse);
 		
 		if(this.doShoulderSurfing && this.isFreeLooking)
 		{
-			return impulse.rotateDegrees(MathHelper.degreesDifference(cameraEntity.yRot, this.freeLookYRot));
+			moveVector.rotateDegrees(MathHelper.degreesDifference(cameraEntity.yRot, this.freeLookYRot));
+			input.leftImpulse = moveVector.getX();
+			input.forwardImpulse = moveVector.getY();
 		}
 		else if(this.doShoulderSurfing && minecraft.player != null && cameraEntity == minecraft.player)
 		{
 			LivingEntity player = minecraft.player;
 			ShoulderRenderer renderer = ShoulderRenderer.getInstance();
 			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(player, minecraft);
-			boolean hasImpulse = impulse.lengthSquared() > 0;
+			boolean hasImpulse = moveVector.lengthSquared() > 0;
 			float xRot = player.xRot;
 			float yRot = player.yRot;
 			float yRotO = yRot;
@@ -121,7 +124,7 @@ public class ShoulderInstance
 			{
 				float cameraXRot = renderer.getCameraXRot();
 				float cameraYRot = renderer.getCameraYRot();
-				Vec2f rotated = impulse.rotateDegrees(cameraYRot);
+				Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
 				xRot = cameraXRot * 0.5F;
 				yRot = (float) MathHelper.wrapDegrees(Math.atan2(-rotated.getX(), rotated.getY()) * ShoulderHelper.RAD_TO_DEG);
 				yRot = yRotO + MathHelper.degreesDifference(yRotO, yRot) * 0.25F;
@@ -129,14 +132,15 @@ public class ShoulderInstance
 			
 			if(hasImpulse)
 			{
-				impulse = impulse.rotateDegrees(MathHelper.degreesDifference(yRot, renderer.getCameraYRot()));
+				moveVector = moveVector.rotateDegrees(MathHelper.degreesDifference(yRot, renderer.getCameraYRot()));
 			}
 			
 			player.xRot = xRot;
 			player.yRot = yRot;
+			
+			input.leftImpulse = moveVector.getX();
+			input.forwardImpulse = moveVector.getY();
 		}
-		
-		return impulse;
 	}
 	
 	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
