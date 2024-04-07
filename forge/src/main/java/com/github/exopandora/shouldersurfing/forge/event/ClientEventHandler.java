@@ -5,6 +5,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.ViewportEvent.ComputeCameraAngles;
@@ -81,5 +82,11 @@ public class ClientEventHandler
 	public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
 	{
 		ShoulderRenderer.getInstance().resetState(event.getEntity());
+	}
+	
+	@SubscribeEvent
+	public static void movementInputUpdateEvent(MovementInputUpdateEvent event)
+	{
+		ShoulderInstance.getInstance().onMovementInputUpdate(event.getInput());
 	}
 }
