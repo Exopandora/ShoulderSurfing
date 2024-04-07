@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
+import com.github.exopandora.shouldersurfing.client.KeyHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeModConfigEvents;
 import net.minecraftforge.fml.config.ModConfig;
@@ -47,5 +48,15 @@ public class MixinMinecraft
 			ShoulderInstance.getInstance().tick();
 			ShoulderRenderer.getInstance().tick();
 		}
+	}
+	
+	@Inject
+	(
+		at = @At("HEAD"),
+		method = "handleKeybinds"
+	)
+	private void handleKeybinds(CallbackInfo info)
+	{
+		KeyHandler.tick();
 	}
 }

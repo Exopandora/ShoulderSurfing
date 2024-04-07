@@ -12,7 +12,6 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
-		"MixinKeyboardInput",
 		"MixinLevelRenderer",
 		"MixinModelPart",
 		"MixinMouseHandler",

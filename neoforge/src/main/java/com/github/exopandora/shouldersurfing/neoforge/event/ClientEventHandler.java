@@ -61,13 +61,19 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void keyInputEvent(InputEvent.Key event)
 	{
-		KeyHandler.tick();
+		if(Minecraft.getInstance().screen == null)
+		{
+			KeyHandler.tick();
+		}
 	}
 	
 	@SubscribeEvent
 	public static void mouseInputEvent(InputEvent.MouseButton.Pre event)
 	{
-		KeyHandler.tick();
+		if(Minecraft.getInstance().screen == null)
+		{
+			KeyHandler.tick();
+		}
 	}
 	
 	@SubscribeEvent
