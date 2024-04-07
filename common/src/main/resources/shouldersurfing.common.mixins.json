@@ -13,6 +13,7 @@
 		"MixinGui",
 		"MixinItem",
 		"MixinLevelRenderer",
+		"MixinLocalPlayer",
 		"MixinModelPart",
 		"MixinMouseHandler",
 		"MixinOptions",
