@@ -151,9 +151,10 @@ public class ShoulderInstance
 	
 	public void changePerspective(Perspective perspective)
 	{
-		Minecraft.getInstance().options.setCameraType(perspective.getCameraType());
+		Minecraft minecraft = Minecraft.getInstance();
+		minecraft.options.setCameraType(perspective.getCameraType());
+		Entity cameraEntity = minecraft.getCameraEntity();
 		this.doShoulderSurfing = Perspective.SHOULDER_SURFING.equals(perspective);
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
 		if(this.doShoulderSurfing && cameraEntity != null)
 		{
