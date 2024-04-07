@@ -7,7 +7,6 @@
 	"client": [
 		"MixinGameRenderer",
 		"MixinIngameGui",
-		"MixinKeyboardListener",
 		"MixinMinecraft",
 		"MixinMouseHelper",
 		"MixinPlayerList",
