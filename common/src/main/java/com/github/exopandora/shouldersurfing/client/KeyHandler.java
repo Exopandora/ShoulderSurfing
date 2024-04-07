@@ -31,79 +31,96 @@ public class KeyHandler
 	
 	public static void tick()
 	{
-		if(Minecraft.getInstance().screen == null)
+		ShoulderInstance shoulderInstance = ShoulderInstance.getInstance();
+		Minecraft minecraft = Minecraft.getInstance();
+		
+		while(TOGGLE_SHOULDER_SURFING.consumeClick())
 		{
-			ShoulderInstance shoulderInstance = ShoulderInstance.getInstance();
-			
-			if(TOGGLE_SHOULDER_SURFING.consumeClick())
-			{
-				if(shoulderInstance.doShoulderSurfing())
-				{
-					shoulderInstance.changePerspective(Perspective.FIRST_PERSON);
-				}
-				else if(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON)
-				{
-					shoulderInstance.changePerspective(Perspective.SHOULDER_SURFING);
-				}
-			}
-			
 			if(shoulderInstance.doShoulderSurfing())
 			{
-				if(CAMERA_LEFT.consumeClick())
-				{
-					Config.CLIENT.adjustCameraLeft();
-				}
-				
-				if(CAMERA_RIGHT.consumeClick())
-				{
-					Config.CLIENT.adjustCameraRight();
-				}
-				
-				if(CAMERA_OUT.consumeClick())
-				{
-					Config.CLIENT.adjustCameraOut();
-				}
-				
-				if(CAMERA_IN.consumeClick())
-				{
-					Config.CLIENT.adjustCameraIn();
-				}
-				
-				if(CAMERA_UP.consumeClick())
-				{
-					Config.CLIENT.adjustCameraUp();
-				}
-				
-				if(CAMERA_DOWN.consumeClick())
-				{
-					Config.CLIENT.adjustCameraDown();
-				}
-				
-				if(SWAP_SHOULDER.consumeClick())
-				{
-					Config.CLIENT.swapShoulder();
-				}
+				shoulderInstance.changePerspective(Perspective.FIRST_PERSON);
 			}
-			
-			if(Minecraft.getInstance().options.keyTogglePerspective.consumeClick())
+			else if(minecraft.options.getCameraType() == CameraType.FIRST_PERSON)
 			{
-				Perspective perspective = Perspective.current();
-				Perspective next = perspective.next();
-				boolean firstPerson = next.getCameraType().isFirstPerson();
-				shoulderInstance.changePerspective(next);
-				
-				if(perspective.getCameraType().isFirstPerson() != firstPerson)
-				{
-					Minecraft.getInstance().gameRenderer.checkEntityPostEffect(firstPerson ? Minecraft.getInstance().getCameraEntity() : null);
-				}
-				
-				if(Config.CLIENT.doRememberLastPerspective())
-				{
-					Config.CLIENT.setDefaultPerspective(next);
-				}
+				shoulderInstance.changePerspective(Perspective.SHOULDER_SURFING);
+			}
+		}
+		
+		while(CAMERA_LEFT.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.adjustCameraLeft();
+			}
+		}
+		
+		while(CAMERA_RIGHT.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.adjustCameraRight();
+			}
+		}
+		
+		while(CAMERA_OUT.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.adjustCameraOut();
+			}
+		}
+		
+		while(CAMERA_IN.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.adjustCameraIn();
+			}
+		}
+		
+		while(CAMERA_UP.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.adjustCameraUp();
+			}
+		}
+		
+		while(CAMERA_DOWN.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.adjustCameraDown();
+			}
+		}
+		
+		while(SWAP_SHOULDER.consumeClick())
+		{
+			if(shoulderInstance.doShoulderSurfing())
+			{
+				Config.CLIENT.swapShoulder();
+			}
+		}
+		
+		while(minecraft.options.keyTogglePerspective.consumeClick())
+		{
+			Perspective perspective = Perspective.current();
+			Perspective next = perspective.next();
+			boolean isFirstPerson = next.getCameraType().isFirstPerson();
+			shoulderInstance.changePerspective(next);
+			minecraft.levelRenderer.needsUpdate();
+			
+			if(perspective.getCameraType().isFirstPerson() != isFirstPerson)
+			{
+				minecraft.gameRenderer.checkEntityPostEffect(isFirstPerson ? minecraft.getCameraEntity() : null);
 			}
 			
-			FREE_LOOK.consumeClick();
+			if(Config.CLIENT.doRememberLastPerspective())
+			{
+				Config.CLIENT.setDefaultPerspective(next);
+			}
 		}
+		
+		while(FREE_LOOK.consumeClick());
 	}
 }
