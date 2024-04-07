@@ -8,6 +8,7 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinLevelRenderer",
+		"MixinLocalPlayer",
 		"MixinMinecraft",
 		"MixinMouseHandler"
 	],
