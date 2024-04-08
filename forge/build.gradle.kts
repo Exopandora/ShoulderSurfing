@@ -134,14 +134,14 @@ publishMods {
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
 		clientRequired = true
 		serverRequired = false
-		incompatible("better-third-person", "cameraoverhaul", "nimble")
+		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 	
 	modrinth {
 		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "cameraoverhaul", "nimble")
+		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 }
 
