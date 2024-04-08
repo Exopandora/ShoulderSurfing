@@ -42,8 +42,6 @@ public class ShoulderSurfingNeoForge
 	@SubscribeEvent
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		NeoForge.EVENT_BUS.addListener(ClientEventHandler::keyInputEvent);
-		NeoForge.EVENT_BUS.addListener(ClientEventHandler::mouseInputEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);

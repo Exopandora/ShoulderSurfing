@@ -5,7 +5,6 @@ import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -22,6 +21,11 @@ public class ClientEventHandler
 	{
 		if(TickEvent.Phase.START.equals(event.phase) && Minecraft.getInstance().level != null)
 		{
+			if(Minecraft.getInstance().screen == null)
+			{
+				KeyHandler.tick();
+			}
+			
 			ShoulderInstance.getInstance().tick();
 			ShoulderRenderer.getInstance().tick();
 		}
@@ -56,24 +60,6 @@ public class ClientEventHandler
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
 			ShoulderRenderer.getInstance().updateDynamicRaytrace(event.getCamera(), event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
-		}
-	}
-	
-	@SubscribeEvent
-	public static void keyInputEvent(InputEvent.Key event)
-	{
-		if(Minecraft.getInstance().screen == null)
-		{
-			KeyHandler.tick();
-		}
-	}
-	
-	@SubscribeEvent
-	public static void mouseInputEvent(InputEvent.MouseButton.Pre event)
-	{
-		if(Minecraft.getInstance().screen == null)
-		{
-			KeyHandler.tick();
 		}
 	}
 	
