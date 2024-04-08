@@ -48,3 +48,13 @@ side = "CLIENT"
 modId = "nimble"
 type = "incompatible"
 side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "valkyrienskies"
+type = "incompatible"
+side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "theoneprobe"
+type = "discouraged"
+side = "CLIENT"
