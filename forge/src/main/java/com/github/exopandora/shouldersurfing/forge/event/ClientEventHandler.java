@@ -24,6 +24,11 @@ public class ClientEventHandler
 	{
 		if(Phase.START.equals(event.phase) && Minecraft.getInstance().level != null)
 		{
+			if(Minecraft.getInstance().screen == null)
+			{
+				KeyHandler.tick();
+			}
+			
 			ShoulderInstance.getInstance().tick();
 			ShoulderRenderer.getInstance().tick();
 		}
@@ -56,15 +61,6 @@ public class ClientEventHandler
 	public static void renderLevelStageEvent(RenderLevelLastEvent event)
 	{
 		ShoulderRenderer.getInstance().updateDynamicRaytrace(Minecraft.getInstance().gameRenderer.getMainCamera(), event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
-	}
-	
-	@SubscribeEvent
-	public static void keyInputEvent(InputEvent event)
-	{
-		if(Minecraft.getInstance().screen == null)
-		{
-			KeyHandler.tick();
-		}
 	}
 	
 	@SubscribeEvent
