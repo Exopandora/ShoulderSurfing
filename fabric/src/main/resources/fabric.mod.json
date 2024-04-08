@@ -33,7 +33,11 @@
 	"breaks": {
 		"betterthirdperson": "*",
 		"cameraoverhaul": "*",
-		"nimble": "*"
+		"nimble": "*",
+		"valkyrienskies": "*"
+	},
+	"conflicts": {
+		"theoneprobe": "*"
 	},
 	"custom": {
 		"waila:plugins": {
