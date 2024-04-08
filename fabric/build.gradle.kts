@@ -122,7 +122,7 @@ publishMods {
 		clientRequired = true
 		serverRequired = false
 		requires("fabric-api", "forge-config-api-port-fabric")
-		incompatible("better-third-person", "cameraoverhaul", "nimble-fabric")
+		incompatible("better-third-person", "cameraoverhaul", "nimble-fabric", "the-one-probe", "valkyrien-skies")
 	}
 	
 	modrinth {
@@ -130,6 +130,6 @@ publishMods {
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 		requires("fabric-api", "forge-config-api-port")
-		incompatible("better-third-person", "cameraoverhaul", "nimble")
+		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 }

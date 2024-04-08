@@ -33,6 +33,10 @@
 	"breaks": {
 		"betterthirdperson": "*",
 		"cameraoverhaul": "*",
-		"nimble": "*"
+		"nimble": "*",
+		"valkyrienskies": "*"
+	},
+	"conflicts": {
+		"theoneprobe": "*"
 	}
 }
