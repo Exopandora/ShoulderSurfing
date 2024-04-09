@@ -105,6 +105,8 @@ Shoulder Surfing Reloaded is known to be incompatible with the following mods (a
 - Better Third Person
 - CameraOverhaul
 - Nimble
+- The One Probe
+- Valkyrien Skies
 
 # License #
 MIT License, Original project by Sabar: [Minecraft Forum](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1287308-shoulder-surfing-modded-third-person-camera), [GitHub](https://github.com/sabarjp/ShoulderSurfing)
