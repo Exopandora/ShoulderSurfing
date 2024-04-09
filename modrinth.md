@@ -63,14 +63,11 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 # Configuration #
 ### Version 3.0.0 and later ###
 Manual: `.minecraft/config/shouldersurfing-client.toml`  
-Ingame: Install Forge Config Screens ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/config-menus-forge), [Modrinth](https://modrinth.com/mod/forge-config-screens))
+Ingame: Install [Forge Config Screens](https://www.curseforge.com/minecraft/mc-mods/config-menus-forge)
 
 ### Version 2.9.7 and older ###
 ≥ 1.13: Manual: `.minecraft/config/shouldersurfing.toml`  
 ≤ 1.12: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing.cfg`)
-
-# API Documentation #
-The API Documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
 
 # FAQ #
 **Q:** Can you port feature x to version y?  
