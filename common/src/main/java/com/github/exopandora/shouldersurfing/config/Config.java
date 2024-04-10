@@ -70,6 +70,10 @@ public class Config
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue rememberLastPerspective;
 		private final BooleanValue playerTransparency;
+		private final BooleanValue turnPlayerWhenUsingItem;
+		private final BooleanValue turnPlayerWhenAttacking;
+		private final BooleanValue turnPlayerWhenInteracting;
+		private final BooleanValue turnPlayerWhenPicking;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -261,6 +265,26 @@ public class Config
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
 				.translation("Center camera when looking down angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
+			
+			this.turnPlayerWhenUsingItem = builder
+				.comment("Whether or not to turn the player when using an item. This config option only applies when camera is decoupled.")
+				.translation("Turn player when using an item")
+				.define("turn_player_when_using_item", true);
+			
+			this.turnPlayerWhenAttacking = builder
+				.comment("Whether or not to turn the player when attacking. This config option only applies when camera is decoupled.")
+				.translation("Turn player when attacking")
+				.define("turn_player_when_attacking", true);
+			
+			this.turnPlayerWhenInteracting = builder
+				.comment("Whether or not to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
+				.translation("Turn player when interacting with blocks")
+				.define("turn_player_when_interacting", true);
+			
+			this.turnPlayerWhenPicking = builder
+				.comment("Whether or not to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
+				.translation("Turn player when picking")
+				.define("turn_player_when_picking", true);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -505,6 +529,26 @@ public class Config
 		public boolean isPlayerTransparencyEnabled()
 		{
 			return this.playerTransparency.get();
+		}
+		
+		public boolean doTurnPlayerWhenUsingItem()
+		{
+			return this.turnPlayerWhenUsingItem.get();
+		}
+		
+		public boolean doTurnPlayerWhenAttacking()
+		{
+			return this.turnPlayerWhenAttacking.get();
+		}
+		
+		public boolean doTurnPlayerWhenInteracting()
+		{
+			return this.turnPlayerWhenInteracting.get();
+		}
+		
+		public boolean doTurnPlayerWhenPicking()
+		{
+			return this.turnPlayerWhenPicking.get();
 		}
 		
 		public boolean isCameraDecoupled()
