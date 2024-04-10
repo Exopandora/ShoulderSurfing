@@ -74,7 +74,7 @@ public class ShoulderInstance
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
 			(cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible() || !cameraEntity.isFallFlying() && minecraft.hitResult != null &&
-				(minecraft.options.keyUse.isDown() && minecraft.hitResult.getType() != RayTraceResult.Type.MISS && !cameraEntity.isUsingItem() ||
+				minecraft.hitResult.getType() != RayTraceResult.Type.MISS && (minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() ||
 					minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
 	}
 	
