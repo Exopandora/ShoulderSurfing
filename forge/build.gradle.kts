@@ -35,6 +35,7 @@ mixin {
 	add(sourceSets.main.get(), "$modId.refmap.json")
 	
 	config("$modId.common.mixins.json")
+	config("$modId.common.compat.mixins.json")
 	config("$modId.forge.mixins.json")
 	config("$modId.compat.oculus.mixins.json")
 }
