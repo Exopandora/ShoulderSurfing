@@ -14,7 +14,7 @@ public class MixinCustomizableModelPart
 	(
 		at = @At("HEAD"),
 		method = "compile",
-		index = 9,
+		index = 8,
 		argsOnly = true,
 		remap = false,
 		require = 0

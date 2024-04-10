@@ -73,9 +73,11 @@ public class ShoulderInstance
 	private boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
-			(cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible() || !cameraEntity.isFallFlying() && minecraft.hitResult != null &&
-				minecraft.hitResult.getType() != RayTraceResult.Type.MISS && (minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() ||
-					minecraft.options.keyAttack.isDown() || minecraft.options.keyPickItem.isDown()));
+			(Config.CLIENT.doTurnPlayerWhenUsingItem() && cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible() ||
+				!cameraEntity.isFallFlying() && minecraft.hitResult != null && minecraft.hitResult.getType() != RayTraceResult.Type.MISS &&
+					(Config.CLIENT.doTurnPlayerWhenInteracting() && minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() ||
+						Config.CLIENT.doTurnPlayerWhenAttacking() && minecraft.options.keyAttack.isDown() ||
+						Config.CLIENT.doTurnPlayerWhenPicking() && minecraft.options.keyPickItem.isDown()));
 	}
 	
 	public void onMovementInputUpdate(MovementInput input)
