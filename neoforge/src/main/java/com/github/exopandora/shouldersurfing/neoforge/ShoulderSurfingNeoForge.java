@@ -48,7 +48,7 @@ public class ShoulderSurfingNeoForge
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
-		NeoForge.EVENT_BUS.addListener(ClientEventHandler::movementInputUpdateEvent);
+		NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
 	}
 	
 	@SubscribeEvent
