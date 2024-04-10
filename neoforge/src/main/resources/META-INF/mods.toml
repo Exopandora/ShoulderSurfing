@@ -9,6 +9,9 @@ license = "MIT"
 config = "shouldersurfing.common.mixins.json"
 
 [[mixins]]
+config = "shouldersurfing.common.compat.mixins.json"
+
+[[mixins]]
 config = "shouldersurfing.neoforge.mixins.json"
 
 [[mixins]]

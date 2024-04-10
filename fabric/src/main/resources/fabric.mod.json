@@ -24,6 +24,7 @@
 	},
 	"mixins": [
 		"shouldersurfing.common.mixins.json",
+		"shouldersurfing.common.compat.mixins.json",
 		"shouldersurfing.fabric.mixins.json",
 		"shouldersurfing.compat.iris.mixins.json"
 	],
