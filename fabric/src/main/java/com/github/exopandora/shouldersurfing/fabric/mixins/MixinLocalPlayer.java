@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(LocalPlayer.class)
+@Mixin(value = LocalPlayer.class, priority = 1500 /* apply after other mods */)
 public class MixinLocalPlayer
 {
 	@Shadow

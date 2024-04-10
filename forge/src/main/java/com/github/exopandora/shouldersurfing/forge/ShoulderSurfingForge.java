@@ -49,7 +49,7 @@ public class ShoulderSurfingForge
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::movementInputUpdateEvent);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		
 		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_LEFT);
 		ClientRegistry.registerKeyBinding(KeyHandler.CAMERA_RIGHT);
