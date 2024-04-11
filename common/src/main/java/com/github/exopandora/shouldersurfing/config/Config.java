@@ -272,7 +272,7 @@ public class Config
 			
 			this.hidePlayerWhenLookingUpAngle = builder
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
-				.translation("Center camera when looking down angle")
+				.translation("Center camera when looking up angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 			
 			this.turnPlayerWhenUsingItem = builder
