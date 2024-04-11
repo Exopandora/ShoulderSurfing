@@ -1,0 +1,46 @@
+name: Compatibility issue
+description: Report an incompatibility with another mod
+title: "Incompatible with MOD"
+labels: ["compatibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please make sure you have read the [incompatibility](https://github.com/Exopandora/ShoulderSurfing?tab=readme-ov-file#incompatibility) section before submitting a new issue.
+        In order to isolate a conflicting mod, you can use the method described [here](https://gist.github.com/TomeWyrm/a8cff19ce112edbc3c8a).
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the incompatibility
+      placeholder: |
+        A clear and concise description of how the incompatibility presents itself.
+        If applicable, add screenshots to help explain the issue.
+    validations:
+      required: true
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: Minecraft version
+    validations:
+      required: true
+  - type: input
+    id: mod-name
+    attributes:
+      label: Incompatible mod name
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Incompatible mod version
+    validations:
+      required: true
+  - type: input
+    id: logs
+    attributes:
+      label: Game Logs
+      description: |
+        Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
+    validations:
+      required: true

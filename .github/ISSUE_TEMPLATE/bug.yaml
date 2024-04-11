@@ -1,17 +1,22 @@
 name: Bug Report
 description: Create a bug report to help improve Shoulder Surfing
-title: "[BUG] [MC-VERSION] Short description of the bug"
+title: "Short description of the bug"
+labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
         Please make sure you have read the [FAQ](https://github.com/Exopandora/ShoulderSurfing#faq) section before submitting a new issue.
+        Please open an incompatibility issue when the bug is not present without any other mods installed.
+        In order to find the conflicting mod, you can use the method described [here](https://gist.github.com/TomeWyrm/a8cff19ce112edbc3c8a).
   - type: textarea
     id: description
     attributes:
       label: Description
       description: Describe the bug
-      placeholder: A clear and concise description of what the bug is.
+      placeholder: |
+        A clear and concise description of what the bug is.
+        If applicable, add screenshots to help explain your problem.
     validations:
       required: true
   - type: textarea
@@ -26,38 +31,20 @@ body:
         4. See error
     validations:
       required: true
-  - type: textarea
-    id: expected-behavior
+  - type: input
+    id: minecraft-version
     attributes:
-      label: Expected Behavior
-      description: A clear and concise description of what you expected to happen.
+      label: Minecraft version
     validations:
       required: true
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: Screenshots
-      description: If applicable, add screenshots to help explain your problem.
-    validations:
-      required: false
   - type: input
     id: logs
     attributes:
       label: Game Logs
       description: |
-        Post the crash report and the latest log as a [gist](https://gist.github.com/) and copy the link here.
-        The crash report file is located in `.minecraft/crash-reports`.
-        The log is located at `.minecraft/logs/latest.log`.
-        If the game does not crash, open a world and hold `F3` + `C` for 10 seconds to force it.
+        Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
     validations:
       required: true
-  - type: input
-    id: other-mods
-    attributes:
-      label: Other Mods
-      description: If you know the issue is caused by another mod fill in its name and version.
-    validations:
-      required: false
   - type: textarea
     id: additional-information
     attributes:

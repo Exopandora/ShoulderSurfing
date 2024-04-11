@@ -1,10 +1,9 @@
 ---
 name: Feature request
-about: Suggest an idea for Shoulder Surfing
-title: "[FEATURE] Short description of the feature"
-labels: ''
+about: Suggest an idea for Shoulder Surfing Reloaded
+title: "Short description of the feature"
+labels: feature
 assignees: ''
-
 ---
 
 **Describe your feature**
