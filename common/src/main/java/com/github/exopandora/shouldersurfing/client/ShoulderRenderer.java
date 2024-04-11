@@ -121,7 +121,7 @@ public class ShoulderRenderer
 			
 			if(!camera.getEntity().isSpectator())
 			{
-				if(Config.CLIENT.doCenterCameraWhenClimbing() && camera.getEntity() instanceof LivingEntity living && living.onClimbable())
+				if(shouldCenterCamera(camera.getEntity()))
 				{
 					targetXOffset = 0;
 				}
@@ -224,6 +224,11 @@ public class ShoulderRenderer
 				accessor.invokeMove(-offset.z, offset.y, offset.x);
 			}
 		}
+	}
+	
+	private static boolean shouldCenterCamera(Entity entity) {
+		return entity instanceof LivingEntity living && (Config.CLIENT.doCenterCameraWhenClimbing() && living.onClimbable() ||
+			Config.CLIENT.doCenterCameraWhenFallFlying() && living.isFallFlying());
 	}
 	
 	private double calcCameraDistance(Camera camera, Level level, double distance, float partialTick)
