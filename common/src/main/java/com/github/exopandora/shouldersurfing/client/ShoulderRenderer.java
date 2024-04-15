@@ -140,7 +140,7 @@ public class ShoulderRenderer
 						.add(new Vec3(camera.getLookVector()).scale(-targetZOffset))
 						.normalize()
 						.scale(localCameraOffset.length());
-					Vec3 worldXYOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, worldCameraOffset);
+					Vec3 worldXYOffset = ShoulderHelper.calcRayTraceStartOffset(camera, worldCameraOffset);
 					Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
 					double absOffsetX = Math.abs(targetXOffset);
 					double absOffsetY = Math.abs(targetYOffset);
