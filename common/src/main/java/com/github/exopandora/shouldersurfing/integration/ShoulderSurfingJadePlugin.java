@@ -1,10 +1,9 @@
 package com.github.exopandora.shouldersurfing.integration;
 
+import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
 import org.jetbrains.annotations.Nullable;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.config.Config;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -56,7 +55,7 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 				double maxDistance = gameMode.getPickRange() + IWailaConfig.get().getGeneral().getReachDistance();
 				float partialTick = minecraft.getFrameTime();
 				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-				HitResult target = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, true, !isCrosshairDynamic);
+				HitResult target = ShoulderRayTracer.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, true, !isCrosshairDynamic);
 				Player player = minecraft.player;
 				Level level = minecraft.level;
 				
