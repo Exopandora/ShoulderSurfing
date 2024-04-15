@@ -1,15 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import java.util.function.Predicate;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.config.Config;
-
+import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +9,11 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.function.Predicate;
 
 @Mixin(GameRenderer.class)
 public abstract class MixinGameRenderer implements GameRendererAccessor
@@ -37,7 +34,7 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 			double rayTraceDistance = Math.sqrt(distanceSq);
 			float partialTick = Minecraft.getInstance().getFrameTime();
 			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(shooter);
-			return ShoulderHelper.traceEntities(this.getMainCamera(), shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
+			return ShoulderRayTracer.traceEntities(this.getMainCamera(), shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
 		}
 		
 		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
