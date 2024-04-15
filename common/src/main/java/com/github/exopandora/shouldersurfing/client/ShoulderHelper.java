@@ -1,7 +1,5 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.CrosshairType;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.math.Matrix4f;
@@ -9,24 +7,17 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+<<<<<<< HEAD
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.util.Mth;
+=======
+>>>>>>> 36c8bbb (Extract ray tracing methods to ShoulderRayTracer)
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Predicate;
-
 public class ShoulderHelper
 {
-	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
-	
 	public static ShoulderLook shoulderSurfingLook(Camera camera, Entity entity, float partialTick, double distanceSq)
 	{
 		Vec3 cameraOffset = camera.getPosition().subtract(entity.getEyePosition(partialTick));
@@ -56,6 +47,7 @@ public class ShoulderHelper
 		return linePoint.add(lineNormal.scale(distance));
 	}
 	
+<<<<<<< HEAD
 	public static HitResult traceBlocksAndEntities(Camera camera, MultiPlayerGameMode gameMode, double playerReachOverride, ClipContext.Fluid fluidContext, float partialTick, boolean traceEntities, boolean doOffsetTrace)
 	{
 		Entity entity = camera.getEntity();
@@ -149,6 +141,8 @@ public class ShoulderHelper
 		return Mth.sqrt(vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
 	}
 	
+=======
+>>>>>>> 36c8bbb (Extract ray tracing methods to ShoulderRayTracer)
 	public static @Nullable Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
 	{
 		Window window = Minecraft.getInstance().getWindow();

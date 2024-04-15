@@ -1,8 +1,7 @@
 package com.github.exopandora.shouldersurfing.integration;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
 import mcp.mobius.waila.api.IObjectPicker;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
@@ -35,7 +34,7 @@ public class ShoulderSurfingWthitPlugin implements IWailaPlugin
 				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
 				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);
 				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-				return ShoulderHelper.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, !isCrosshairDynamic);
+				return ShoulderRayTracer.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, !isCrosshairDynamic);
 			}
 			
 			return ObjectPicker.INSTANCE.pick(mc, maxDistance, partialTick, config);
