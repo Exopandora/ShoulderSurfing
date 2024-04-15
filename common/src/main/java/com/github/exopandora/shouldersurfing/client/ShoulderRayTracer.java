@@ -68,10 +68,10 @@ public class ShoulderRayTracer
 		
 		if(doOffsetTrace)
 		{
-			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, playerReachSq);
-			Vec3 from = eyePosition.add(look.headOffset());
-			Vec3 to = look.traceEndPos();
-			aabb = aabb.move(look.headOffset());
+			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(camera, entity, partialTick, playerReachSq);
+			Vec3 from = context.startPos();
+			Vec3 to = context.endPos();
+			aabb = aabb.move(context.startPos().subtract(eyePosition));
 			return ProjectileUtil.getEntityHitResult(entity, from, to, aabb, ENTITY_IS_PICKABLE, from.distanceToSqr(to));
 		}
 		else
@@ -86,11 +86,11 @@ public class ShoulderRayTracer
 	{
 		if(doOffsetTrace)
 		{
-			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
+			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(camera, entity, partialTick, distance * distance);
 			Vec3 from = camera.getPosition();
-			Vec3 to = look.traceEndPos();
+			Vec3 to = context.endPos();
 			ClipContext.Block blockContext = ShoulderInstance.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
-			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
+			return entity.level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
 		else
 		{
@@ -98,7 +98,7 @@ public class ShoulderRayTracer
 			Vec3 view = new Vec3(camera.getLookVector());
 			Vec3 to = from.add(view.scale(distance));
 			ClipContext.Block blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
-			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
+			return entity.level.clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
 	}
 }

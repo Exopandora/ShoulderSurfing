@@ -1,8 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.client.ShoulderRayTraceContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -32,11 +31,8 @@ public class MixinItem
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			Minecraft minecraft = Minecraft.getInstance();
-			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
-			Vec3 eyePosition = entity.getEyePosition(1.0F);
-			Vec3 from = eyePosition.add(look.headOffset());
-			Vec3 to = look.traceEndPos();
-			return new ClipContext(from, to, block, fluid, entity);
+			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
+			return new ClipContext(context.startPos(), context.endPos(), block, fluid, entity);
 		}
 		
 		return new ClipContext(start, end, block, fluid, entity);
