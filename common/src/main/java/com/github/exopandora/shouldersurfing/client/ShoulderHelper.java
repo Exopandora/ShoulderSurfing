@@ -7,41 +7,17 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ShoulderHelper
 {
-	public static ShoulderLook shoulderSurfingLook(Camera camera, Entity entity, float partialTick, double distanceSq)
-	{
-		Vec3 cameraOffset = camera.getPosition().subtract(entity.getEyePosition(partialTick));
-		Vec3 headOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, cameraOffset);
-		Vec3 cameraPos = camera.getPosition();
-		Vec3 viewVector = new Vec3(camera.getLookVector());
-		
-		if(headOffset.lengthSqr() < distanceSq)
-		{
-			distanceSq -= headOffset.lengthSqr();
-		}
-		
-		double distance = Math.sqrt(distanceSq) + cameraOffset.distanceTo(headOffset);
-		Vec3 traceEnd = cameraPos.add(viewVector.scale(distance));
-		return new ShoulderLook(cameraPos, traceEnd, headOffset);
-	}
-	
-	public static Vec3 calcRayTraceHeadOffset(Camera camera, Vec3 cameraOffset)
+	public static Vec3 calcRayTraceStartOffset(Camera camera, Vec3 cameraOffset)
 	{
 		Vec3 lookVector = new Vec3(camera.getLookVector());
-		return ShoulderHelper.calcPlaneWithLineIntersection(Vec3.ZERO, lookVector, cameraOffset, lookVector);
-	}
-	
-	public static Vec3 calcPlaneWithLineIntersection(Vec3 planePoint, Vec3 planeNormal, Vec3 linePoint, Vec3 lineNormal)
-	{
-		double distance = (planeNormal.dot(planePoint) - planeNormal.dot(linePoint)) / planeNormal.dot(lineNormal);
-		return linePoint.add(lineNormal.scale(distance));
+		double distance = (lookVector.dot(Vec3.ZERO) - lookVector.dot(cameraOffset)) / lookVector.dot(lookVector);
+		return cameraOffset.add(lookVector.scale(distance));
 	}
 	
 	public static @Nullable Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
@@ -87,6 +63,4 @@ public class ShoulderHelper
 	{
 		return Mth.sqrt(vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
 	}
-	
-	public record ShoulderLook(Vec3 cameraPos, Vec3 traceEndPos, Vec3 headOffset) {}
 }
