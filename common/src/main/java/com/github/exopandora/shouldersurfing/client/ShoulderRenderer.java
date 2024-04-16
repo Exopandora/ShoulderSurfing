@@ -275,7 +275,7 @@ public class ShoulderRenderer
 		if(ShoulderInstance.getInstance().doShoulderSurfing())
 		{
 			PlayerController gameMode = Minecraft.getInstance().gameMode;
-			RayTraceResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, gameMode, this.getPlayerReach(), RayTraceContext.FluidMode.NONE, partialTick, true, false);
+			RayTraceResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, gameMode, this.getPlayerReach(), RayTraceContext.FluidMode.NONE, partialTick, true, false);
 			Vector3d position = hitResult.getLocation().subtract(camera.getPosition());
 			this.projected = ShoulderHelper.project2D(position, modelViewMatrix, projectionMatrix);
 		}

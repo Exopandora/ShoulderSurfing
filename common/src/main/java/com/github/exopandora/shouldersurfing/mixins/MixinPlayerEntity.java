@@ -1,8 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
@@ -33,7 +32,7 @@ public abstract class MixinPlayerEntity extends Entity
 		{
 			RayTraceContext.FluidMode fluidContext = stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE;
 			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-			return ShoulderHelper.traceBlocks(camera, this, fluidContext, distance, partialTicks, !isCrosshairDynamic);
+			return ShoulderRayTracer.traceBlocks(camera, this, fluidContext, distance, partialTicks, !isCrosshairDynamic);
 		}
 		
 		return super.pick(distance, partialTicks, stopOnFluid);

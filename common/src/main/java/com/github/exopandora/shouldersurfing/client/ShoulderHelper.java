@@ -1,33 +1,21 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.CrosshairType;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Predicate;
-
 public class ShoulderHelper
 {
 	public static final float DEG_TO_RAD = (float) (Math.PI / 180F);
 	public static final float RAD_TO_DEG = (float) (180F / Math.PI);
-	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
 	
 	public static ShoulderLook shoulderSurfingLook(ActiveRenderInfo camera, Entity entity, float partialTick, double distanceSq)
 	{
@@ -56,99 +44,6 @@ public class ShoulderHelper
 	{
 		double distance = (planeNormal.dot(planePoint) - planeNormal.dot(linePoint)) / planeNormal.dot(lineNormal);
 		return linePoint.add(lineNormal.scale(distance));
-	}
-	
-	public static RayTraceResult traceBlocksAndEntities(ActiveRenderInfo camera, PlayerController gameMode, double playerReachOverride, RayTraceContext.FluidMode fluidContext, float partialTick, boolean traceEntities, boolean doOffsetTrace)
-	{
-		Entity entity = camera.getEntity();
-		double playerReach = Math.max(gameMode.getPickRange(), playerReachOverride);
-		RayTraceResult blockHit = traceBlocks(camera, entity, fluidContext, playerReach, partialTick, doOffsetTrace);
-		
-		if(!traceEntities)
-		{
-			return blockHit;
-		}
-		
-		Vector3d eyePosition = entity.getEyePosition(partialTick);
-		
-		if(gameMode.hasFarPickRange())
-		{
-			playerReach = Math.max(playerReach, gameMode.getPlayerMode().isCreative() ? 6.0D : 3.0D);
-		}
-		
-		if(blockHit.getType() != RayTraceResult.Type.MISS)
-		{
-			playerReach = blockHit.getLocation().distanceTo(eyePosition);
-		}
-		
-		EntityRayTraceResult entityHit = traceEntities(camera, entity, playerReach, partialTick, doOffsetTrace);
-		
-		if(entityHit != null)
-		{
-			double distance = eyePosition.distanceTo(entityHit.getLocation());
-			
-			if(distance < playerReach || blockHit.getType() != RayTraceResult.Type.MISS)
-			{
-				return entityHit;
-			}
-		}
-		
-		return blockHit;
-	}
-	
-	public static EntityRayTraceResult traceEntities(ActiveRenderInfo camera, Entity entity, double playerReach, float partialTick, boolean doOffsetTrace)
-	{
-		double playerReachSq = playerReach * playerReach;
-		Vector3d viewVector = new Vector3d(camera.getLookVector()).scale(playerReach);
-		Vector3d eyePosition = entity.getEyePosition(partialTick);
-		AxisAlignedBB aabb = entity.getBoundingBox()
-			.expandTowards(viewVector)
-			.inflate(1.0D, 1.0D, 1.0D);
-		
-		if(doOffsetTrace)
-		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, playerReachSq);
-			Vector3d from = eyePosition.add(look.headOffset());
-			Vector3d to = look.traceEndPos();
-			aabb = aabb.move(look.headOffset());
-			return ProjectileHelper.getEntityHitResult(entity, from, to, aabb, ENTITY_IS_PICKABLE, from.distanceToSqr(to));
-		}
-		else
-		{
-			Vector3d from = eyePosition;
-			Vector3d to = from.add(viewVector);
-			return ProjectileHelper.getEntityHitResult(entity, from, to, aabb, ENTITY_IS_PICKABLE, playerReachSq);
-		}
-	}
-	
-	public static BlockRayTraceResult traceBlocks(ActiveRenderInfo camera, Entity entity, RayTraceContext.FluidMode fluidContext, double distance, float partialTick, boolean doOffsetTrace)
-	{
-		if(doOffsetTrace)
-		{
-			ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
-			Vector3d from = camera.getPosition();
-			Vector3d to = look.traceEndPos();
-			RayTraceContext.BlockMode blockContext = ShoulderInstance.getInstance().isAiming() ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE;
-			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
-		}
-		else
-		{
-			Vector3d from = entity.getEyePosition(partialTick);
-			Vector3d view = new Vector3d(camera.getLookVector());
-			Vector3d to = from.add(view.scale(distance));
-			RayTraceContext.BlockMode blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE;
-			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
-		}
-	}
-	
-	public static double angle(Vector3f a, Vector3f b)
-	{
-		return Math.acos(a.dot(b) / (length(a) * length(b)));
-	}
-	
-	public static double length(Vector3f vec)
-	{
-		return MathHelper.sqrt(vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
 	}
 	
 	public static @Nullable Vec2f project2D(Vector3d position, Matrix4f modelView, Matrix4f projection)
@@ -183,6 +78,16 @@ public class ShoulderHelper
 		}
 		
 		return new Vec2f(x, y);
+	}
+	
+	public static double angle(Vector3f a, Vector3f b)
+	{
+		return Math.acos(a.dot(b) / (length(a) * length(b)));
+	}
+	
+	public static double length(Vector3f vec)
+	{
+		return MathHelper.sqrt(vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
 	}
 	
 	public static class ShoulderLook

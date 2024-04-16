@@ -108,7 +108,7 @@ public class ShoulderInstance
 				ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
 				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
 				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
-				RayTraceResult hitResult = ShoulderHelper.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, RayTraceContext.FluidMode.NONE, 1.0F, true, !isCrosshairDynamic);
+				RayTraceResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, RayTraceContext.FluidMode.NONE, 1.0F, true, !isCrosshairDynamic);
 				Vector3d eyePosition = player.getEyePosition(1.0F);
 				double dx = hitResult.getLocation().x - eyePosition.x;
 				double dy = hitResult.getLocation().y - eyePosition.y;
