@@ -68,10 +68,10 @@ public class ShoulderRayTracer
 		
 		if(doOffsetTrace)
 		{
-			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, playerReachSq);
-			Vector3d from = eyePosition.add(look.headOffset());
-			Vector3d to = look.traceEndPos();
-			aabb = aabb.move(look.headOffset());
+			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(camera, entity, partialTick, playerReachSq);
+			Vector3d from = context.startPos();
+			Vector3d to = context.endPos();
+			aabb = aabb.move(context.startPos().subtract(eyePosition));
 			return ProjectileHelper.getEntityHitResult(entity, from, to, aabb, ENTITY_IS_PICKABLE, from.distanceToSqr(to));
 		}
 		else
@@ -86,9 +86,9 @@ public class ShoulderRayTracer
 	{
 		if(doOffsetTrace)
 		{
-			ShoulderHelper.ShoulderLook look = ShoulderHelper.shoulderSurfingLook(camera, entity, partialTick, distance * distance);
+			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(camera, entity, partialTick, distance * distance);
 			Vector3d from = camera.getPosition();
-			Vector3d to = look.traceEndPos();
+			Vector3d to = context.endPos();
 			RayTraceContext.BlockMode blockContext = ShoulderInstance.getInstance().isAiming() ? RayTraceContext.BlockMode.COLLIDER : RayTraceContext.BlockMode.OUTLINE;
 			return entity.level.clip(new RayTraceContext(from, to, blockContext, fluidContext, entity));
 		}

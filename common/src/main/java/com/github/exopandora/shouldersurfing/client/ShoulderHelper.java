@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.math.Vec2f;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
@@ -17,33 +16,11 @@ public class ShoulderHelper
 	public static final float DEG_TO_RAD = (float) (Math.PI / 180F);
 	public static final float RAD_TO_DEG = (float) (180F / Math.PI);
 	
-	public static ShoulderLook shoulderSurfingLook(ActiveRenderInfo camera, Entity entity, float partialTick, double distanceSq)
-	{
-		Vector3d cameraOffset = camera.getPosition().subtract(entity.getEyePosition(partialTick));
-		Vector3d headOffset = ShoulderHelper.calcRayTraceHeadOffset(camera, cameraOffset);
-		Vector3d cameraPos = camera.getPosition();
-		Vector3d viewVector = new Vector3d(camera.getLookVector());
-		
-		if(headOffset.lengthSqr() < distanceSq)
-		{
-			distanceSq -= headOffset.lengthSqr();
-		}
-		
-		double distance = Math.sqrt(distanceSq) + cameraOffset.distanceTo(headOffset);
-		Vector3d traceEnd = cameraPos.add(viewVector.scale(distance));
-		return new ShoulderLook(cameraPos, traceEnd, headOffset);
-	}
-	
-	public static Vector3d calcRayTraceHeadOffset(ActiveRenderInfo camera, Vector3d cameraOffset)
+	public static Vector3d calcRayTraceStartOffset(ActiveRenderInfo camera, Vector3d cameraOffset)
 	{
 		Vector3d lookVector = new Vector3d(camera.getLookVector());
-		return ShoulderHelper.calcPlaneWithLineIntersection(Vector3d.ZERO, lookVector, cameraOffset, lookVector);
-	}
-	
-	public static Vector3d calcPlaneWithLineIntersection(Vector3d planePoint, Vector3d planeNormal, Vector3d linePoint, Vector3d lineNormal)
-	{
-		double distance = (planeNormal.dot(planePoint) - planeNormal.dot(linePoint)) / planeNormal.dot(lineNormal);
-		return linePoint.add(lineNormal.scale(distance));
+		double distance = (lookVector.dot(Vector3d.ZERO) - lookVector.dot(cameraOffset)) / lookVector.dot(lookVector);
+		return cameraOffset.add(lookVector.scale(distance));
 	}
 	
 	public static @Nullable Vec2f project2D(Vector3d position, Matrix4f modelView, Matrix4f projection)
@@ -88,34 +65,5 @@ public class ShoulderHelper
 	public static double length(Vector3f vec)
 	{
 		return MathHelper.sqrt(vec.x() * vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
-	}
-	
-	public static class ShoulderLook
-	{
-		private final Vector3d cameraPos;
-		private final Vector3d traceEndPos;
-		private final Vector3d headOffset;
-		
-		public ShoulderLook(Vector3d cameraPos, Vector3d traceEndPos, Vector3d headOffset)
-		{
-			this.cameraPos = cameraPos;
-			this.traceEndPos = traceEndPos;
-			this.headOffset = headOffset;
-		}
-		
-		public Vector3d cameraPos()
-		{
-			return this.cameraPos;
-		}
-		
-		public Vector3d traceEndPos()
-		{
-			return this.traceEndPos;
-		}
-		
-		public Vector3d headOffset()
-		{
-			return this.headOffset;
-		}
 	}
 }
