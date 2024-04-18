@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.language.IModInfo;
 
 public class PluginLoaderForge extends PluginLoader
 {
@@ -18,7 +19,8 @@ public class PluginLoaderForge extends PluginLoader
 			
 			if(Files.exists(path))
 			{
-				this.loadPlugin(modFileInfo.getMods().get(0).getModId(), path);
+				IModInfo modInfo = modFileInfo.getMods().get(0);
+				this.loadPlugin(modInfo.getDisplayName(), modInfo.getModId(), path);
 			}
 		}
 	}

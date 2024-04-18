@@ -1,14 +1,14 @@
 package com.github.exopandora.shouldersurfing.api.impl;
 
+import com.github.exopandora.shouldersurfing.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.IShoulderSurfingPlugin;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ServiceLoader;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.github.exopandora.shouldersurfing.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.IShoulderSurfingPlugin;
 
 public abstract class PluginLoader
 {
@@ -18,8 +18,10 @@ public abstract class PluginLoader
 	
 	public abstract void loadPlugins();
 	
-	protected void loadPlugin(String modid, Path path)
+	protected void loadPlugin(String modName, String modId, Path path)
 	{
+		ShoulderSurfing.LOGGER.info("Registering plugin for {} ({})", modName, modId);
+		
 		try(Reader reader = Files.newBufferedReader(path))
 		{
 			JsonObject configuration = JsonParser.parseReader(reader).getAsJsonObject();
@@ -29,16 +31,15 @@ public abstract class PluginLoader
 				String entrypoint = configuration.get(ENTRYPOINT_KEY).getAsString();
 				IShoulderSurfingPlugin plugin = (IShoulderSurfingPlugin) Class.forName(entrypoint).getConstructor().newInstance();
 				plugin.register(ShoulderSurfingRegistrar.getInstance());
-				ShoulderSurfing.LOGGER.info("Registered plugin " + modid);
 			}
 			else
 			{
-				ShoulderSurfing.LOGGER.error("Plugin for " + modid + " does not contain an entrypoint");
+				ShoulderSurfing.LOGGER.error("Plugin for {} ({}) does not contain an entrypoint", modName, modId);
 			}
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
-			ShoulderSurfing.LOGGER.error("Failed to register plugin " + modid, e);
+			ShoulderSurfing.LOGGER.error("Failed to load plugin for {} ({})", modName, modId, e);
 		}
 	}
 	

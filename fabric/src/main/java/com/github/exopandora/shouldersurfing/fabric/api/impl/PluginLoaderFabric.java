@@ -13,7 +13,7 @@ public class PluginLoaderFabric extends PluginLoader
 		{
 			mod.findPath(PLUGIN_JSON_PATH).ifPresent(path ->
 			{
-				this.loadPlugin(mod.getMetadata().getId(), path);
+				this.loadPlugin(mod.getMetadata().getName(), mod.getMetadata().getId(), path);
 			});
 		}
 	}
