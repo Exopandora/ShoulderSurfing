@@ -22,7 +22,7 @@ public class MixinMinecraft
 	)
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
-		ShoulderInstance.getInstance().changePerspective(Config.CLIENT.getDefaultPerspective());
+		ShoulderInstance.getInstance().init();
 		ModConfigEvent.RELOADING.register(Config::onConfigReload);
 	}
 	

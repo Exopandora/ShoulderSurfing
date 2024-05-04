@@ -37,6 +37,14 @@ public class ShoulderInstance
 		super();
 	}
 	
+	public void init()
+	{
+		if(Config.CLIENT.doRememberLastPerspective())
+		{
+			this.changePerspective(Config.CLIENT.getDefaultPerspective());
+		}
+	}
+	
 	public void tick()
 	{
 		if(!Perspective.FIRST_PERSON.equals(Perspective.current()))
