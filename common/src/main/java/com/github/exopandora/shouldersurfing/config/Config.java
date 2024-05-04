@@ -665,7 +665,7 @@ public class Config
 	
 	public static void onConfigReload(ModConfig config)
 	{
-		if(ShoulderInstance.getInstance() != null && Type.CLIENT.equals(config.getType()) && Config.CLIENT.doRememberLastPerspective())
+		if(Type.CLIENT.equals(config.getType()) && Config.CLIENT.doRememberLastPerspective())
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
