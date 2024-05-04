@@ -73,7 +73,7 @@ public class ShoulderSurfingForge
 	@SubscribeEvent
 	public void modConfigLoadingEvent(ModConfig.Loading event)
 	{
-		ShoulderInstance.getInstance().changePerspective(Config.CLIENT.getDefaultPerspective());
+		ShoulderInstance.getInstance().init();
 	}
 	
 	@SubscribeEvent
