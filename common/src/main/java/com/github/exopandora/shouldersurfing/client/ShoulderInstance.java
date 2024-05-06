@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.impl.ShoulderSurfingRegistrar;
+import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
@@ -165,12 +166,15 @@ public class ShoulderInstance
 	
 	public void changePerspective(Perspective perspective)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		minecraft.options.setCameraType(perspective.getCameraType());
-		Entity cameraEntity = minecraft.getCameraEntity();
-		this.doShoulderSurfing = Perspective.SHOULDER_SURFING.equals(perspective);
+		((OptionsDuck) Minecraft.getInstance().options).setCameraTypeDirect(perspective.getCameraType());
+		this.setShoulderSurfing(Perspective.SHOULDER_SURFING.equals(perspective));
+	}
+	
+	private void onShoulderSurfingActivated()
+	{
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
-		if(this.doShoulderSurfing && cameraEntity != null)
+		if(cameraEntity != null)
 		{
 			ShoulderRenderer.getInstance().resetState(cameraEntity);
 		}
@@ -188,6 +192,11 @@ public class ShoulderInstance
 	
 	public void setShoulderSurfing(boolean doShoulderSurfing)
 	{
+		if(!this.doShoulderSurfing && doShoulderSurfing)
+		{
+			this.onShoulderSurfingActivated();
+		}
+		
 		this.doShoulderSurfing = doShoulderSurfing;
 	}
 	
