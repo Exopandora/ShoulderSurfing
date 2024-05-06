@@ -15,6 +15,7 @@
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinModelPart",
+		"MixinModelPart$Cube",
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
