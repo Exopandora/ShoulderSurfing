@@ -1,22 +1,22 @@
 [versions]
-minecraft = "1.20.4"
-forge = "1.20.4-49.0.10"
-neoforge = "20.4.210"
-fabric-loader = "0.15.3"
-fabric-api = "0.91.3+1.20.4"
+minecraft = "1.20.6"
+forge = "1.20.6-50.0.7"
+neoforge = "20.6.42-beta"
+fabric-loader = "0.15.10"
+fabric-api = "0.97.8+1.20.6"
 mixin = "0.8.5"
-forgeconfigapiport = "20.4.3"
-wthit-common = "mojmap-10.0.1"
-wthit-forge = "forge-10.0.1"
-wthit-neoforge = "neo-10.0.1"
-wthit-fabric = "fabric-10.0.1"
-jade-common = "4957720"
-jade-forge = "4939358"
-jade-neoforge = "5109393"
-jade-fabric = "4957713"
-badpackets-forge = "forge-0.6.1"
-badpackets-neoforge = "neo-0.6.1"
-badpackets-fabric = "fabric-0.6.1"
+forgeconfigapiport = "20.6.0"
+wthit-common = "mojmap-11.1.2"
+wthit-forge = "mojmap-11.1.2" # temporarily use common artifact for compilation
+wthit-neoforge = "mojmap-11.1.2" # temporarily use common artifact for compilation
+wthit-fabric = "fabric-11.1.2"
+jade-common = "5288707" # 14.0.2
+jade-forge = "5288707" # temporarily use common artifact for compilation
+jade-neoforge = "5288707" # temporarily use common artifact for compilation
+jade-fabric = "5288679" # 1.20.5-14.0.2
+badpackets-forge = "fabric-0.7.2" # temporarily use fabric artifact for compilation
+badpackets-neoforge = "neo-0.7.2"
+badpackets-fabric = "fabric-0.7.2"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -45,7 +45,7 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
 vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
-fabricloom = { id = "fabric-loom", version = "1.4.+" }
-neogradle = { id = "net.neoforged.gradle.userdev", version = "7.0.101" }
+fabricloom = { id = "fabric-loom", version = "1.6-SNAPSHOT" }
+neogradle = { id = "net.neoforged.gradle.userdev", version = "7.0.120" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.7" }

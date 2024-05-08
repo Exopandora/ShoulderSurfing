@@ -8,9 +8,11 @@ import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -82,7 +84,7 @@ public class ShoulderInstance
 	private boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
-			(Config.CLIENT.doTurnPlayerWhenUsingItem() && cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible() ||
+			(Config.CLIENT.doTurnPlayerWhenUsingItem() && cameraEntity.isUsingItem() && !cameraEntity.getUseItem().has(DataComponents.FOOD) ||
 				!cameraEntity.isFallFlying() && minecraft.hitResult != null && minecraft.hitResult.getType() != HitResult.Type.MISS &&
 					(Config.CLIENT.doTurnPlayerWhenInteracting() && minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() ||
 						Config.CLIENT.doTurnPlayerWhenAttacking() && minecraft.options.keyAttack.isDown() ||
@@ -104,7 +106,7 @@ public class ShoulderInstance
 		}
 		else if(this.doShoulderSurfing && minecraft.player != null && cameraEntity == minecraft.player)
 		{
-			LivingEntity player = minecraft.player;
+			Player player = minecraft.player;
 			ShoulderRenderer renderer = ShoulderRenderer.getInstance();
 			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(player, minecraft);
 			boolean hasImpulse = moveVector.lengthSquared() > 0;
@@ -117,7 +119,7 @@ public class ShoulderInstance
 				Camera camera = minecraft.gameRenderer.getMainCamera();
 				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
 				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
-				HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
+				HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, player, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
 				Vec3 eyePosition = player.getEyePosition();
 				double dx = hitResult.getLocation().x - eyePosition.x;
 				double dy = hitResult.getLocation().y - eyePosition.y;

@@ -272,10 +272,9 @@ public class ShoulderRenderer
 	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing())
+		if(ShoulderInstance.getInstance().doShoulderSurfing() && Minecraft.getInstance().player != null)
 		{
-			MultiPlayerGameMode gameMode = Minecraft.getInstance().gameMode;
-			HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, gameMode, this.getPlayerReach(), ClipContext.Fluid.NONE, partialTick, true, false);
+			HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, Minecraft.getInstance().player, this.getPlayerReach(), ClipContext.Fluid.NONE, partialTick, true, false);
 			Vec3 position = hitResult.getLocation().subtract(camera.getPosition());
 			this.projected = ShoulderHelper.project2D(position, modelViewMatrix, projectionMatrix);
 		}

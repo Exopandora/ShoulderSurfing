@@ -44,20 +44,12 @@ minecraft {
 	mappings("official", libs.versions.minecraft.get())
 	
 	copyIdeResources = true
+	reobf = false
 	
 	runs {
 		configureEach {
 			workingDirectory(project.file("../run"))
 			ideaModule("${rootProject.name}.${project.name}.main")
-			
-			mods {
-				create(modId) {
-					source(sourceSets.main.get())
-					source(project(":api").sourceSets.main.get())
-					source(project(":common").sourceSets.main.get())
-					source(project(":compatibility").sourceSets.main.get())
-				}
-			}
 		}
 		
 		create("client")
@@ -73,11 +65,28 @@ dependencies {
 	compileOnly(project(":common"))
 	compileOnly(project(":compatibility"))
 	
+	implementation("net.sf.jopt-simple:jopt-simple:5.0.4") {
+		version { strictly("5.0.4") }
+	}
+	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
-	implementation(fg.deobf(libs.wthit.forge.get()))
-	implementation(fg.deobf(libs.badpackets.forge.get()))
-	implementation(fg.deobf(libs.jade.forge.get()))
+	implementation(libs.wthit.forge.get())
+	implementation(libs.badpackets.forge.get())
+	implementation(libs.jade.forge.get())
+}
+
+tasks.withType<Jar>().configureEach {
+	manifest {
+		attributes(mapOf(
+			"MixinConfigs" to listOf(
+				"$modId.common.compat.mixins.json",
+				"$modId.common.mixins.json",
+				"$modId.compat.oculus.mixins.json",
+				"$modId.forge.mixins.json"
+			).joinToString(",")
+		))
+	}
 }
 
 tasks.named<JavaCompile>("compileJava").configure {
@@ -113,10 +122,6 @@ tasks.register<Jar>("apiJar").configure {
 
 tasks.build {
 	finalizedBy("apiJar")
-}
-
-tasks.jar {
-	finalizedBy("reobfJar")
 }
 
 publishMods {

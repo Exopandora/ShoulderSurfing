@@ -27,7 +27,7 @@ public class MixinGameRenderer
 	
 	@Redirect
 	(
-		method = "pick",
+		method = "pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;",
 		at = @At
 		(
 			value = "INVOKE",

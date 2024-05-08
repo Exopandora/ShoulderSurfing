@@ -81,7 +81,7 @@ tasks.withType<ProcessResources>().matching(notNeoTask).configureEach {
 	
 	inputs.properties(properties)
 	
-	filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml")) {
+	filesMatching(listOf("pack.mcmeta", "META-INF/neoforge.mods.toml")) {
 		expand(properties)
 	}
 }

@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "[3,)"
 displayURL = "${modUrl}"
 logoFile = "logo.png"
 authors = "${modAuthor}"
@@ -12,9 +12,6 @@ config = "shouldersurfing.common.mixins.json"
 config = "shouldersurfing.common.compat.mixins.json"
 
 [[mixins]]
-config = "shouldersurfing.neoforge.mixins.json"
-
-[[mixins]]
 config = "shouldersurfing.compat.oculus.mixins.json"
 
 [[mods]]
@@ -22,18 +19,19 @@ modId = "${modId}"
 displayName = "${modName}"
 version = "${minecraftVersion}-${modVersion}"
 description = "${modDescription}"
+displayTest = "NONE"
 
 [[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.4,)"
+versionRange = "[1.20.6,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
 modId = "forgeconfigapiport"
 type = "required"
-versionRange = "[20.4.3,)"
+versionRange = "[20.6.0,)"
 ordering = "NONE"
 side = "CLIENT"
 

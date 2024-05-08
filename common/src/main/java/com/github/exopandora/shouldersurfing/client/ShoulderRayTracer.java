@@ -3,8 +3,10 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.CrosshairType;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
@@ -19,11 +21,11 @@ public class ShoulderRayTracer
 {
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
 	
-	public static HitResult traceBlocksAndEntities(Camera camera, MultiPlayerGameMode gameMode, double playerReachOverride, ClipContext.Fluid fluidContext, float partialTick, boolean traceEntities, boolean doOffsetTrace)
+	public static HitResult traceBlocksAndEntities(Camera camera, Player player, double interactionRangeOverride, ClipContext.Fluid fluidContext, float partialTick, boolean traceEntities, boolean doOffsetTrace)
 	{
 		Entity entity = camera.getEntity();
-		double playerReach = Math.max(gameMode.getPickRange(), playerReachOverride);
-		HitResult blockHit = traceBlocks(camera, entity, fluidContext, playerReach, partialTick, doOffsetTrace);
+		double interactionRange = Math.max(maxInteractionRange(player), interactionRangeOverride);
+		HitResult blockHit = traceBlocks(camera, entity, fluidContext, interactionRange, partialTick, doOffsetTrace);
 		
 		if(!traceEntities)
 		{
@@ -32,23 +34,18 @@ public class ShoulderRayTracer
 		
 		Vec3 eyePosition = entity.getEyePosition(partialTick);
 		
-		if(gameMode.hasFarPickRange())
-		{
-			playerReach = Math.max(playerReach, gameMode.getPlayerMode().isCreative() ? 6.0D : 3.0D);
-		}
-		
 		if(blockHit.getType() != HitResult.Type.MISS)
 		{
-			playerReach = blockHit.getLocation().distanceTo(eyePosition);
+			interactionRange = blockHit.getLocation().distanceTo(eyePosition);
 		}
 		
-		EntityHitResult entityHit = traceEntities(camera, entity, playerReach, partialTick, doOffsetTrace);
+		EntityHitResult entityHit = traceEntities(camera, entity, interactionRange, partialTick, doOffsetTrace);
 		
 		if(entityHit != null)
 		{
 			double distance = eyePosition.distanceTo(entityHit.getLocation());
 			
-			if(distance < playerReach || blockHit.getType() != HitResult.Type.MISS)
+			if(distance < interactionRange || blockHit.getType() != HitResult.Type.MISS)
 			{
 				return entityHit;
 			}
@@ -100,5 +97,10 @@ public class ShoulderRayTracer
 			ClipContext.Block blockContext = ShoulderInstance.getInstance().isAiming() || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
 			return entity.level().clip(new ClipContext(from, to, blockContext, fluidContext, entity));
 		}
+	}
+	
+	public static double maxInteractionRange(Player player)
+	{
+		return Math.max(player.blockInteractionRange(), player.entityInteractionRange());
 	}
 }

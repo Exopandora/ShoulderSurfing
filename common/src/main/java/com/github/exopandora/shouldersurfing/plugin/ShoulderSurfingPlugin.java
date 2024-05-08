@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -23,10 +22,10 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	
 	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity)
 	{
-		Item useItem = entity.getUseItem().getItem();
+		ItemStack useStack = entity.getUseItem();
 		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
 		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
-		String useItemId = BuiltInRegistries.ITEM.getKey(useItem).toString();
+		String useItemId = BuiltInRegistries.ITEM.getKey(useStack.getItem()).toString();
 		
 		if(useItems.stream().anyMatch(useItemId::matches))
 		{
@@ -35,7 +34,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		
 		for(String useItemProperty : useItemProperties)
 		{
-			if(ItemProperties.getProperty(useItem, new ResourceLocation(useItemProperty)) != null)
+			if(ItemProperties.getProperty(useStack, new ResourceLocation(useItemProperty)) != null)
 			{
 				return true;
 			}
@@ -46,8 +45,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		
 		for(ItemStack handStack : entity.getHandSlots())
 		{
-			Item handItem = handStack.getItem();
-			String handItemId = BuiltInRegistries.ITEM.getKey(handItem).toString();
+			String handItemId = BuiltInRegistries.ITEM.getKey(handStack.getItem()).toString();
 			
 			if(holdItems.stream().anyMatch(handItemId::matches))
 			{
@@ -56,7 +54,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			
 			for(String holdItemProperty : holdItemProperties)
 			{
-				if(ItemProperties.getProperty(handItem, new ResourceLocation(holdItemProperty)) != null)
+				if(ItemProperties.getProperty(handStack, new ResourceLocation(holdItemProperty)) != null)
 				{
 					return true;
 				}

@@ -5,21 +5,21 @@ import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
-import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public class ClientEventHandler
 {
 	@SubscribeEvent
-	public static void clientTickEvent(TickEvent.ClientTickEvent event)
+	public static void clientTickEvent(ClientTickEvent.Pre event)
 	{
-		if(TickEvent.Phase.START.equals(event.phase) && Minecraft.getInstance().level != null)
+		if(Minecraft.getInstance().level != null)
 		{
 			if(Minecraft.getInstance().screen == null)
 			{
@@ -32,14 +32,14 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void preRenderGuiOverlayEvent(RenderGuiOverlayEvent.Pre event)
+	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event)
 	{
-		if(VanillaGuiOverlay.CROSSHAIR.id().equals(event.getOverlay().id()))
+		if(VanillaGuiLayers.CROSSHAIR.equals(event.getName()))
 		{
-			ShoulderRenderer.getInstance().offsetCrosshair(event.getGuiGraphics().pose(), event.getWindow(), event.getPartialTick());
+			ShoulderRenderer.getInstance().offsetCrosshair(event.getGuiGraphics().pose(), Minecraft.getInstance().getWindow(), event.getPartialTick());
 		}
-		//Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
-		else if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id().equals(event.getOverlay().id()))
+		//Using BOSS_OVERLAY to pop matrix, because when CROSSHAIR is cancelled, it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
+		else if(VanillaGuiLayers.BOSS_OVERLAY.equals(event.getName()))
 		{
 			ShoulderRenderer.getInstance().clearCrosshairOffset(event.getGuiGraphics().pose());
 		}
@@ -59,7 +59,7 @@ public class ClientEventHandler
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
-			ShoulderRenderer.getInstance().updateDynamicRaytrace(event.getCamera(), event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
+			ShoulderRenderer.getInstance().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getPartialTick());
 		}
 	}
 	

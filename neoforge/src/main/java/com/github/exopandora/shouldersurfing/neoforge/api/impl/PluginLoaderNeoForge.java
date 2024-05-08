@@ -19,7 +19,7 @@ public class PluginLoaderNeoForge extends PluginLoader
 			
 			if(Files.exists(path))
 			{
-				IModInfo modInfo = modFileInfo.getMods().get(0);
+				IModInfo modInfo = modFileInfo.getMods().getFirst();
 				this.loadPlugin(modInfo.getDisplayName(), modInfo.getModId(), path);
 			}
 		}
