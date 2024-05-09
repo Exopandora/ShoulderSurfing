@@ -7,7 +7,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(LocalPlayer.class)
+@Mixin(value = LocalPlayer.class, priority = 500 /* apply before essential client */)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer
 {
 	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile)
