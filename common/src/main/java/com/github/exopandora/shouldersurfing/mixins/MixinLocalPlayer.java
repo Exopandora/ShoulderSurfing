@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(LocalPlayer.class)
+@Mixin(value = LocalPlayer.class, priority = 500 /* apply before essential client */)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer
 {
 	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey)
