@@ -78,6 +78,9 @@ public class Config
 		private final BooleanValue turnPlayerWhenAttacking;
 		private final BooleanValue turnPlayerWhenInteracting;
 		private final BooleanValue turnPlayerWhenPicking;
+		private final BooleanValue turnPlayerWhenAttackingRequiresTarget;
+		private final BooleanValue turnPlayerWhenInteractingRequiresTarget;
+		private final BooleanValue turnPlayerWhenPickingRequiresTarget;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -294,6 +297,21 @@ public class Config
 				.comment("Whether or not to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
 				.translation("Turn player when picking")
 				.define("turn_player_when_picking", true);
+			
+			this.turnPlayerWhenAttackingRequiresTarget = builder
+				.comment("Whether or not turning the player when attacking requires a target.")
+				.translation("Turn player when attacking requires target")
+				.define("turn_player_when_attacking_requires_target", false);
+			
+			this.turnPlayerWhenInteractingRequiresTarget = builder
+				.comment("Whether or not turning the player when interacting with blocks requires a target.")
+				.translation("Turn player when interacting with blocks requires target")
+				.define("turn_player_when_interacting_requires_target", true);
+			
+			this.turnPlayerWhenPickingRequiresTarget = builder
+				.comment("Whether or not turning the player when picking blocks or entities requires a target.")
+				.translation("Turn player when picking requires target")
+				.define("turn_player_when_picking_requires_target", true);
 			
 			builder.pop();
 			builder.push("crosshair");
@@ -563,6 +581,21 @@ public class Config
 		public boolean doTurnPlayerWhenPicking()
 		{
 			return this.turnPlayerWhenPicking.get();
+		}
+		
+		public boolean doRequireTargetTurningPlayerWhenAttacking()
+		{
+			return this.turnPlayerWhenAttackingRequiresTarget.get();
+		}
+		
+		public boolean doRequireTargetTurningPlayerWhenInteracting()
+		{
+			return this.turnPlayerWhenInteractingRequiresTarget.get();
+		}
+		
+		public boolean doRequireTargetTurningPlayerWhenPicking()
+		{
+			return this.turnPlayerWhenPickingRequiresTarget.get();
 		}
 		
 		public boolean isCameraDecoupled()
