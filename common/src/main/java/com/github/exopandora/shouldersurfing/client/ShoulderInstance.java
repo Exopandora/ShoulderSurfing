@@ -82,11 +82,35 @@ public class ShoulderInstance
 	private boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
-			(Config.CLIENT.doTurnPlayerWhenUsingItem() && cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible() ||
-				!cameraEntity.isFallFlying() && minecraft.hitResult != null && minecraft.hitResult.getType() != HitResult.Type.MISS &&
-					(Config.CLIENT.doTurnPlayerWhenInteracting() && minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() ||
-						Config.CLIENT.doTurnPlayerWhenAttacking() && minecraft.options.keyAttack.isDown() ||
-						Config.CLIENT.doTurnPlayerWhenPicking() && minecraft.options.keyPickItem.isDown()));
+			(isUsingItem(cameraEntity) || !cameraEntity.isFallFlying() && (isInteracting(cameraEntity, minecraft) || isAttacking(minecraft) || isPicking(minecraft)));
+	}
+	
+	private static boolean isUsingItem(LivingEntity cameraEntity)
+	{
+		return Config.CLIENT.doTurnPlayerWhenUsingItem() && cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible();
+	}
+	
+	private static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return Config.CLIENT.doTurnPlayerWhenInteracting() && minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() &&
+			(!Config.CLIENT.doRequireTargetTurningPlayerWhenInteracting() || hasTarget(minecraft));
+	}
+	
+	private static boolean isAttacking(Minecraft minecraft)
+	{
+		return Config.CLIENT.doTurnPlayerWhenAttacking() && minecraft.options.keyAttack.isDown() &&
+			(!Config.CLIENT.doRequireTargetTurningPlayerWhenAttacking() || hasTarget(minecraft));
+	}
+	
+	private static boolean isPicking(Minecraft minecraft)
+	{
+		return Config.CLIENT.doTurnPlayerWhenPicking() && minecraft.options.keyPickItem.isDown() &&
+			(!Config.CLIENT.doRequireTargetTurningPlayerWhenPicking() || hasTarget(minecraft));
+	}
+	
+	private static boolean hasTarget(Minecraft minecraft)
+	{
+		return minecraft.hitResult != null && minecraft.hitResult.getType() != HitResult.Type.MISS;
 	}
 	
 	public void onMovementInputUpdate(Input input)
