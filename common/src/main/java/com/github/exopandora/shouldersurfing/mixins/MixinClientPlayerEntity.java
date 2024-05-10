@@ -7,7 +7,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(ClientPlayerEntity.class)
+@Mixin(value = ClientPlayerEntity.class, priority = 500 /* apply before essential client */)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 {
 	public MixinClientPlayerEntity(ClientWorld level, GameProfile gameProfile)
