@@ -34,7 +34,7 @@ public abstract class MixinOptions implements OptionsDuck
 	}
 	
 	@Unique
-	public void setCameraTypeDirect(CameraType cameraType)
+	public void shouldersurfing$setCameraTypeDirect(CameraType cameraType)
 	{
 		this.cameraType = cameraType;
 	}
