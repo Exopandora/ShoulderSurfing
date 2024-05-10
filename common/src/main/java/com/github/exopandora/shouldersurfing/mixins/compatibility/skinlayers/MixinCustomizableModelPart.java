@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compatibility;
+package com.github.exopandora.shouldersurfing.mixins.compatibility.skinlayers;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Pseudo
-@Mixin(targets = {"dev.tr7zw.skinlayers.render.CustomizableModelPart"})
+@Mixin(targets = "dev.tr7zw.skinlayers.render.CustomizableModelPart")
 public class MixinCustomizableModelPart
 {
 	@ModifyVariable
@@ -16,8 +16,7 @@ public class MixinCustomizableModelPart
 		method = "compile",
 		index = 9,
 		argsOnly = true,
-		remap = false,
-		require = 0
+		remap = false
 	)
 	private float render(float alpha)
 	{
