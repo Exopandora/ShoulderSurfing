@@ -32,7 +32,7 @@ public abstract class MixinGameSettings implements GameSettingsDuck
 	}
 	
 	@Unique
-	public void setCameraTypeDirect(PointOfView cameraType)
+	public void shouldersurfing$setCameraTypeDirect(PointOfView cameraType)
 	{
 		this.cameraType = cameraType;
 	}

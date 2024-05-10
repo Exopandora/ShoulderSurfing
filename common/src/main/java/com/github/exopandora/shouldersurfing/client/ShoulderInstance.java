@@ -190,7 +190,7 @@ public class ShoulderInstance
 	
 	public void changePerspective(Perspective perspective)
 	{
-		((GameSettingsDuck) Minecraft.getInstance().options).setCameraTypeDirect(perspective.getCameraType());
+		((GameSettingsDuck) Minecraft.getInstance().options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
 		this.setShoulderSurfing(Perspective.SHOULDER_SURFING.equals(perspective));
 	}
 	

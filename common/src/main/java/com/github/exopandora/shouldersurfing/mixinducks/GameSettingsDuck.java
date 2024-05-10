@@ -4,5 +4,5 @@ import net.minecraft.client.settings.PointOfView;
 
 public interface GameSettingsDuck
 {
-	void setCameraTypeDirect(PointOfView cameraType);
+	void shouldersurfing$setCameraTypeDirect(PointOfView cameraType);
 }
