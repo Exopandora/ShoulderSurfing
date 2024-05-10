@@ -122,6 +122,7 @@ Shoulder Surfing Reloaded is known to have minor incompatibility issues with the
 - Inmis (backpack does not render transparent)
 - MedievalWeapons (player is permanently in aiming mode)
   - Workaround: Remove `minecraft:throwing` from `adaptive_crosshair_use_item_properties` in the config
+- MrCrayfish's Gun Mod (crosshair does not render when using ads)
 - Tweakeroo (freecam movement)
 - YDM's Weapon Master (weapons do not render transparent)
 
