@@ -506,9 +506,19 @@ public class ShoulderRenderer
 		return this.cameraXRot;
 	}
 	
+	public void setCameraXRot(float cameraXRot)
+	{
+		this.cameraXRot = cameraXRot;
+	}
+	
 	public float getCameraYRot()
 	{
 		return this.cameraYRot;
+	}
+	
+	public void setCameraYRot(float cameraYRot)
+	{
+		this.cameraYRot = cameraYRot;
 	}
 	
 	public static ShoulderRenderer getInstance()
