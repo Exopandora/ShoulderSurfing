@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compatibility;
+package com.github.exopandora.shouldersurfing.mixins.compatibility.iris;
 
 import net.irisshaders.batchedentityrendering.impl.BlendingStateHolder;
 import net.irisshaders.batchedentityrendering.impl.TransparencyType;
