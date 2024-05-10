@@ -438,7 +438,7 @@ public class ShoulderRenderer
 	{
 		if(ShoulderInstance.getInstance().doShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && Config.CLIENT.isCameraDecoupled())
 		{
-			int index = this.findFacingDebugTextIndex(left);
+			int index = findFacingDebugTextIndex(left);
 			
 			if(index != -1)
 			{
@@ -458,7 +458,7 @@ public class ShoulderRenderer
 		}
 	}
 	
-	private int findFacingDebugTextIndex(List<String> left)
+	private static int findFacingDebugTextIndex(List<String> left)
 	{
 		for(int x = 0; x < left.size(); x++)
 		{
