@@ -7,7 +7,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(value = LocalPlayer.class, priority = 500 /* apply before essential client */)
+@Mixin(value = LocalPlayer.class, priority = 1500 /* apply after essential client, so turn method gets overwritten */)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer
 {
 	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile)
