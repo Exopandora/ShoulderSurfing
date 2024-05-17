@@ -84,11 +84,11 @@ gradlew build
 ```
 The binaries for each platform can be found in the following directories:
 
-| Platform | Path                    |
-|----------|-------------------------|
-| Forge    | `./forge/build/libs`    |
-| Fabric   | `./fabric/build/libs`   |
-| NeoForge | `./neoforge/build/libs` |
+| Platform | Path                                  |
+|----------|---------------------------------------|
+| Forge    | `ShoulderSurfing/forge/build/libs`    |
+| Fabric   | `ShoulderSurfing/fabric/build/libs`   |
+| NeoForge | `ShoulderSurfing/neoforge/build/libs` |
 
 # FAQ #
 **Q:** Can you port feature x to version y?  
