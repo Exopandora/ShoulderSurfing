@@ -1,18 +1,19 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.impl.ShoulderSurfingRegistrar;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.Perspective;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
-import com.github.exopandora.shouldersurfing.api.impl.ShoulderSurfingRegistrar;
 import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -32,8 +33,8 @@ public class ShoulderInstance
 	private double targetOffsetX = Config.CLIENT.getOffsetX();
 	private double targetOffsetY = Config.CLIENT.getOffsetY();
 	private double targetOffsetZ = Config.CLIENT.getOffsetZ();
-	private boolean isFreeLooking = false;
-	private float freeLookYRot = 0.0F;
+	private boolean isFreeLooking;
+	private float freeLookYRot;
 	
 	private ShoulderInstance()
 	{
@@ -79,6 +80,75 @@ public class ShoulderInstance
 		{
 			this.freeLookYRot = ShoulderRenderer.getInstance().getCameraYRot();
 		}
+		
+		Minecraft minecraft = Minecraft.getInstance();
+		LocalPlayer player = minecraft.player;
+		this.isAiming = isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
+		
+		if(this.doShoulderSurfing && !this.isFreeLooking && player != null && minecraft.getCameraEntity() == player)
+		{
+			if(this.shouldEntityAimAtTarget(player, minecraft))
+			{
+				Camera camera = minecraft.gameRenderer.getMainCamera();
+				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
+				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
+				HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, player, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
+				Vec3 eyePosition = player.getEyePosition();
+				double dx = hitResult.getLocation().x - eyePosition.x;
+				double dy = hitResult.getLocation().y - eyePosition.y;
+				double dz = hitResult.getLocation().z - eyePosition.z;
+				double xz = Math.sqrt(dx * dx + dz * dz);
+				player.setXRot((float) Mth.wrapDegrees(-Mth.atan2(dy, xz) * Mth.RAD_TO_DEG));
+				player.setYRot((float) Mth.wrapDegrees(Mth.atan2(dz, dx) * Mth.RAD_TO_DEG - 90.0F));
+				player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround()));
+			}
+			else if(this.shouldEntityFollowCamera(player))
+			{
+				ShoulderRenderer renderer = ShoulderRenderer.getInstance();
+				player.setXRot(renderer.getCameraXRot());
+				player.setYRot(renderer.getCameraYRot());
+			}
+		}
+	}
+	
+	public void onMovementInputUpdate(Input input)
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		Entity cameraEntity = minecraft.getCameraEntity();
+		Vec2f moveVector = new Vec2f(input.leftImpulse, input.forwardImpulse);
+		
+		if(this.doShoulderSurfing && this.isFreeLooking)
+		{
+			moveVector.rotateDegrees(Mth.degreesDifference(cameraEntity.getYRot(), this.freeLookYRot));
+			input.leftImpulse = moveVector.x();
+			input.forwardImpulse = moveVector.y();
+		}
+		else if(this.doShoulderSurfing && minecraft.player != null && cameraEntity == minecraft.player)
+		{
+			if(moveVector.lengthSquared() > 0)
+			{
+				ShoulderRenderer renderer = ShoulderRenderer.getInstance();
+				LocalPlayer player = minecraft.player;
+				float yRot = player.getYRot();
+				
+				if(!this.shouldEntityAimAtTarget(player, minecraft) && !this.shouldEntityFollowCamera(player))
+				{
+					float yRotO = yRot;
+					float cameraXRot = renderer.getCameraXRot();
+					float cameraYRot = renderer.getCameraYRot();
+					Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
+					yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
+					yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * 0.25F;
+					player.setXRot(cameraXRot * 0.5F);
+					player.setYRot(yRot);
+				}
+				
+				moveVector = moveVector.rotateDegrees(Mth.degreesDifference(yRot, renderer.getCameraYRot()));
+			}
+			
+			input.leftImpulse = moveVector.x();
+			input.forwardImpulse = moveVector.y();
+		}
 	}
 	
 	private boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
@@ -115,69 +185,9 @@ public class ShoulderInstance
 		return minecraft.hitResult != null && minecraft.hitResult.getType() != HitResult.Type.MISS;
 	}
 	
-	public void onMovementInputUpdate(Input input)
+	private boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		Entity cameraEntity = minecraft.getCameraEntity();
-		Vec2f moveVector = new Vec2f(input.leftImpulse, input.forwardImpulse);
-		this.isAiming = isHoldingAdaptiveItem(minecraft, cameraEntity);
-		
-		if(this.doShoulderSurfing && this.isFreeLooking)
-		{
-			moveVector.rotateDegrees(Mth.degreesDifference(cameraEntity.getYRot(), this.freeLookYRot));
-			input.leftImpulse = moveVector.x();
-			input.forwardImpulse = moveVector.y();
-		}
-		else if(this.doShoulderSurfing && minecraft.player != null && cameraEntity == minecraft.player)
-		{
-			Player player = minecraft.player;
-			ShoulderRenderer renderer = ShoulderRenderer.getInstance();
-			boolean shouldAimAtTarget = this.shouldEntityAimAtTarget(player, minecraft);
-			boolean hasImpulse = moveVector.lengthSquared() > 0;
-			float xRot = player.getXRot();
-			float yRot = player.getYRot();
-			float yRotO = yRot;
-			
-			if(shouldAimAtTarget)
-			{
-				Camera camera = minecraft.gameRenderer.getMainCamera();
-				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
-				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
-				HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, player, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
-				Vec3 eyePosition = player.getEyePosition();
-				double dx = hitResult.getLocation().x - eyePosition.x;
-				double dy = hitResult.getLocation().y - eyePosition.y;
-				double dz = hitResult.getLocation().z - eyePosition.z;
-				double xz = Math.sqrt(dx * dx + dz * dz);
-				xRot = (float) Mth.wrapDegrees(-Mth.atan2(dy, xz) * Mth.RAD_TO_DEG);
-				yRot = (float) Mth.wrapDegrees(Mth.atan2(dz, dx) * Mth.RAD_TO_DEG - 90.0F);
-			}
-			else if(Config.CLIENT.isCameraDecoupled() && (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying()) || !Config.CLIENT.isCameraDecoupled())
-			{
-				xRot = renderer.getCameraXRot();
-				yRot = renderer.getCameraYRot();
-			}
-			else if(hasImpulse)
-			{
-				float cameraXRot = renderer.getCameraXRot();
-				float cameraYRot = renderer.getCameraYRot();
-				Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
-				xRot = cameraXRot * 0.5F;
-				yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
-				yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * 0.25F;
-			}
-			
-			if(hasImpulse)
-			{
-				moveVector = moveVector.rotateDegrees(Mth.degreesDifference(yRot, renderer.getCameraYRot()));
-			}
-			
-			player.setXRot(xRot);
-			player.setYRot(yRot);
-			
-			input.leftImpulse = moveVector.x();
-			input.forwardImpulse = moveVector.y();
-		}
+		return !Config.CLIENT.isCameraDecoupled() || (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying());
 	}
 	
 	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
