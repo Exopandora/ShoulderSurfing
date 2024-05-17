@@ -7,7 +7,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(value = ClientPlayerEntity.class, priority = 500 /* apply before essential client */)
+@Mixin(value = ClientPlayerEntity.class, priority = 1500 /* apply after essential client, so turn method gets overwritten */)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 {
 	public MixinClientPlayerEntity(ClientWorld level, GameProfile gameProfile)
