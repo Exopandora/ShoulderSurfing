@@ -119,6 +119,8 @@ public class ShoulderRenderer
 				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
 			}
 			
+			Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
+			
 			if(!camera.getEntity().isSpectator())
 			{
 				if(shouldCenterCamera(camera.getEntity()))
@@ -141,7 +143,6 @@ public class ShoulderRenderer
 						.normalize()
 						.scale(localCameraOffset.length());
 					Vec3 worldXYOffset = ShoulderHelper.calcRayTraceStartOffset(camera, worldCameraOffset);
-					Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
 					double absOffsetX = Math.abs(targetXOffset);
 					double absOffsetY = Math.abs(targetYOffset);
 					double absOffsetZ = Math.abs(targetZOffset);
@@ -185,11 +186,7 @@ public class ShoulderRenderer
 			instance.setTargetOffsetX(targetXOffset);
 			instance.setTargetOffsetY(targetYOffset);
 			instance.setTargetOffsetZ(targetZOffset);
-			
-			double x = Mth.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
-			double y = Mth.lerp(partialTick, camera.getEntity().yo, camera.getEntity().getY()) + Mth.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
-			double z = Mth.lerp(partialTick, camera.getEntity().zo, camera.getEntity().getZ());
-			accessor.invokeSetPosition(x, y, z);
+			accessor.invokeSetPosition(eyePosition.x(), eyePosition.y(), eyePosition.z());
 			double offsetX = Mth.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
 			double offsetY = Mth.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = Mth.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
