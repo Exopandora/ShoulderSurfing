@@ -9,6 +9,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -92,13 +93,19 @@ public class ShoulderInstance
 				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
 				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
 				HitResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, ClipContext.Fluid.NONE, 1.0F, true, !isCrosshairDynamic);
-				Vec3 eyePosition = player.getEyePosition();
-				double dx = hitResult.getLocation().x - eyePosition.x;
-				double dy = hitResult.getLocation().y - eyePosition.y;
-				double dz = hitResult.getLocation().z - eyePosition.z;
-				double xz = Math.sqrt(dx * dx + dz * dz);
-				player.setXRot((float) Mth.wrapDegrees(-Mth.atan2(dy, xz) * Mth.RAD_TO_DEG));
-				player.setYRot((float) Mth.wrapDegrees(Mth.atan2(dz, dx) * Mth.RAD_TO_DEG - 90.0F));
+				float yHeadRot = player.yHeadRot;
+				float yHeadRotO = player.yHeadRotO;
+				float yBodyRot = player.yBodyRot;
+				float yBodyRotO = player.yBodyRotO;
+				float xRotO = player.xRotO;
+				float yRotO = player.yRotO;
+				player.lookAt(EntityAnchorArgument.Anchor.EYES, hitResult.getLocation());
+				player.yHeadRot = yHeadRot;
+				player.yHeadRotO = yHeadRotO;
+				player.yBodyRot = yBodyRot;
+				player.yBodyRotO = yBodyRotO;
+				player.xRotO = xRotO;
+				player.yRotO = yRotO;
 				player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.isOnGround()));
 			}
 			else if(this.shouldEntityFollowCamera(player))
