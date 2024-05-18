@@ -18,9 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public abstract class MixinGui
 {
-	@Final
 	@Shadow
-	private Minecraft minecraft;
+	private @Final Minecraft minecraft;
 	
 	@Inject
 	(
