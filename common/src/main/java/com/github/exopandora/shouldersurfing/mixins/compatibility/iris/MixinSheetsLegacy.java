@@ -15,8 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinSheetsLegacy
 {
 	@Shadow
-	@Final
-	private static RenderType ARMOR_TRIMS_SHEET_TYPE;
+	private static @Final RenderType ARMOR_TRIMS_SHEET_TYPE;
 	
 	@Inject(method = "<clinit>", at = @At("TAIL"))
 	private static void setSheet(CallbackInfo ci)

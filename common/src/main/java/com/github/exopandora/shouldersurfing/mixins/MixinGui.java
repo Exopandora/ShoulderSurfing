@@ -15,9 +15,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Gui.class)
 public class MixinGui
 {
-	@Final
 	@Shadow
-	private Minecraft minecraft;
+	private @Final Minecraft minecraft;
 	
 	@Redirect
 	(
