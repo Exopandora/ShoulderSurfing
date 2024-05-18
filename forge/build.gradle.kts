@@ -117,6 +117,13 @@ tasks.jar {
 	finalizedBy("reobfJar")
 }
 
+tasks.configureEach {
+	when(name) {
+		"configureReobfTaskForReobfJar" -> mustRunAfter(tasks.jar)
+		"configureReobfTaskForReobfJarJar" -> mustRunAfter(tasks.jarJar)
+	}
+}
+
 publishMods {
 	displayName = "$jarName-Forge-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<Jar>("jar").get().archiveFile
