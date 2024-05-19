@@ -93,7 +93,9 @@ public class ShoulderRenderer
 	
 	public void offsetCamera(Camera camera, Level level, float partialTick)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && level != null && !(camera.getEntity() instanceof LivingEntity cameraEntity && cameraEntity.isSleeping()))
+		ShoulderInstance instance = ShoulderInstance.getInstance();
+		
+		if(instance.doShoulderSurfing() && level != null && !(camera.getEntity() instanceof LivingEntity cameraEntity && cameraEntity.isSleeping()))
 		{
 			CameraAccessor accessor = ((CameraAccessor) camera);
 			float cameraXRotWithOffset = Mth.clamp(Mth.rotLerp(partialTick, this.cameraXRotOffsetO, this.cameraXRotOffset) + this.cameraXRot, -90F, 90F);
@@ -116,6 +118,13 @@ public class ShoulderRenderer
 				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getSprintOffsetXMultiplier() - 1);
 				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getSprintOffsetYMultiplier() - 1);
 				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
+			}
+			
+			if(instance.isAiming())
+			{
+				targetXOffset += Config.CLIENT.getOffsetX() * (Config.CLIENT.getAimingOffsetXMultiplier() - 1);
+				targetYOffset += Config.CLIENT.getOffsetY() * (Config.CLIENT.getAimingOffsetYMultiplier() - 1);
+				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getAimingOffsetZMultiplier() - 1);
 			}
 			
 			Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
@@ -181,7 +190,6 @@ public class ShoulderRenderer
 				}
 			}
 			
-			ShoulderInstance instance = ShoulderInstance.getInstance();
 			instance.setTargetOffsetX(targetXOffset);
 			instance.setTargetOffsetY(targetYOffset);
 			instance.setTargetOffsetZ(targetZOffset);
