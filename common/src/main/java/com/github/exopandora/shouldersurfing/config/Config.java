@@ -59,6 +59,10 @@ public class Config
 		private final DoubleValue sprintOffsetYMultiplier;
 		private final DoubleValue sprintOffsetZMultiplier;
 		
+		private final DoubleValue aimingOffsetXMultiplier;
+		private final DoubleValue aimingOffsetYMultiplier;
+		private final DoubleValue aimingOffsetZMultiplier;
+		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
 		private final BooleanValue centerCameraWhenClimbing;
@@ -199,6 +203,24 @@ public class Config
 			this.sprintOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is sprinting.")
 				.translation("Sprint z-offset multiplier")
+				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+			
+			builder.pop();
+			builder.push("aiming");
+			
+			this.aimingOffsetXMultiplier = builder
+				.comment("x-offset multiplier for when the player is aiming.")
+				.translation("Aiming x-offset multiplier")
+				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.aimingOffsetYMultiplier = builder
+				.comment("y-offset multiplier for when the player is aiming.")
+				.translation("Aiming y-offset multiplier")
+				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.aimingOffsetZMultiplier = builder
+				.comment("z-offset multiplier for when the player is aiming.")
+				.translation("Aiming z-offset multiplier")
 				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -476,6 +498,21 @@ public class Config
 		public double getSprintOffsetZMultiplier()
 		{
 			return this.sprintOffsetZMultiplier.get();
+		}
+		
+		public double getAimingOffsetXMultiplier()
+		{
+			return this.aimingOffsetXMultiplier.get();
+		}
+		
+		public double getAimingOffsetYMultiplier()
+		{
+			return this.aimingOffsetYMultiplier.get();
+		}
+		
+		public double getAimingOffsetZMultiplier()
+		{
+			return this.aimingOffsetZMultiplier.get();
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
