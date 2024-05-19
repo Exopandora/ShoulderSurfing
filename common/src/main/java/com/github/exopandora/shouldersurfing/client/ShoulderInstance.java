@@ -8,6 +8,7 @@ import com.github.exopandora.shouldersurfing.mixinducks.GameSettingsDuck;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.play.client.CPlayerPacket;
@@ -92,13 +93,19 @@ public class ShoulderInstance
 				double rayTraceDistance = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
 				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(player);
 				RayTraceResult hitResult = ShoulderRayTracer.traceBlocksAndEntities(camera, minecraft.gameMode, rayTraceDistance, RayTraceContext.FluidMode.NONE, 1.0F, true, !isCrosshairDynamic);
-				Vector3d eyePosition = player.getEyePosition(1.0F);
-				double dx = hitResult.getLocation().x - eyePosition.x;
-				double dy = hitResult.getLocation().y - eyePosition.y;
-				double dz = hitResult.getLocation().z - eyePosition.z;
-				double xz = Math.sqrt(dx * dx + dz * dz);
-				player.xRot = (float) MathHelper.wrapDegrees(-MathHelper.atan2(dy, xz) * ShoulderHelper.RAD_TO_DEG);
-				player.yRot = (float) MathHelper.wrapDegrees(MathHelper.atan2(dz, dx) * ShoulderHelper.RAD_TO_DEG - 90.0F);
+				float yHeadRot = player.yHeadRot;
+				float yHeadRotO = player.yHeadRotO;
+				float yBodyRot = player.yBodyRot;
+				float yBodyRotO = player.yBodyRotO;
+				float xRotO = player.xRotO;
+				float yRotO = player.yRotO;
+				player.lookAt(EntityAnchorArgument.Type.EYES, hitResult.getLocation());
+				player.yHeadRot = yHeadRot;
+				player.yHeadRotO = yHeadRotO;
+				player.yBodyRot = yBodyRot;
+				player.yBodyRotO = yBodyRotO;
+				player.xRotO = xRotO;
+				player.yRotO = yRotO;
 				player.connection.send(new CPlayerPacket.RotationPacket(player.yRot, player.xRot, player.isOnGround()));
 			}
 			else if(this.shouldEntityFollowCamera(player))
