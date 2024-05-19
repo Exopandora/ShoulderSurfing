@@ -6,7 +6,6 @@
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"ActiveRenderInfoAccessor",
-		"GameRendererAccessor",
 		"MixinAbstractClientPlayerEntity",
 		"MixinCapeLayer",
 		"MixinClientPlayerEntity",

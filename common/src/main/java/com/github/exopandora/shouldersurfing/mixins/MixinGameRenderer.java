@@ -1,25 +1,29 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import java.util.function.Predicate;
-
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
 import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-
+import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.function.Predicate;
 
 @Mixin(GameRenderer.class)
-public abstract class MixinGameRenderer implements GameRendererAccessor
+public abstract class MixinGameRenderer
 {
+	@Shadow
+	private @Final ActiveRenderInfo mainCamera;
+	
 	@Redirect
 	(
 		method = "pick",
@@ -36,7 +40,7 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 			double rayTraceDistance = Math.sqrt(distanceSq);
 			float partialTick = Minecraft.getInstance().getFrameTime();
 			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(shooter);
-			return ShoulderRayTracer.traceEntities(this.getMainCamera(), shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
+			return ShoulderRayTracer.traceEntities(this.mainCamera, shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
 		}
 		
 		return ProjectileHelper.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
