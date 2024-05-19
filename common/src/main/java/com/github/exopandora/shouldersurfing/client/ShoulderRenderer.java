@@ -122,6 +122,8 @@ public class ShoulderRenderer
 				targetZOffset += Config.CLIENT.getOffsetZ() * (Config.CLIENT.getSprintOffsetZMultiplier() - 1);
 			}
 			
+			Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
+			
 			if(!camera.getEntity().isSpectator())
 			{
 				if(shouldCenterCamera(camera.getEntity()))
@@ -140,7 +142,6 @@ public class ShoulderRenderer
 					Vector3d localCameraOffset = new Vector3d(targetXOffset, targetYOffset, targetZOffset);
 					Vector3d worldCameraOffset = new Vector3d(camera.getUpVector()).scale(targetYOffset).add(new Vector3d(accessor.getLeft()).scale(targetXOffset)).add(new Vector3d(camera.getLookVector()).scale(-targetZOffset)).normalize().scale(localCameraOffset.length());
 					Vector3d worldXYOffset = ShoulderHelper.calcRayTraceStartOffset(camera, worldCameraOffset);
-					Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
 					double absOffsetX = Math.abs(targetXOffset);
 					double absOffsetY = Math.abs(targetYOffset);
 					double absOffsetZ = Math.abs(targetZOffset);
@@ -184,11 +185,7 @@ public class ShoulderRenderer
 			instance.setTargetOffsetX(targetXOffset);
 			instance.setTargetOffsetY(targetYOffset);
 			instance.setTargetOffsetZ(targetZOffset);
-			
-			double x = MathHelper.lerp(partialTick, camera.getEntity().xo, camera.getEntity().getX());
-			double y = MathHelper.lerp(partialTick, camera.getEntity().yo, camera.getEntity().getY()) + MathHelper.lerp(partialTick, accessor.getEyeHeightOld(), accessor.getEyeHeight());
-			double z = MathHelper.lerp(partialTick, camera.getEntity().zo, camera.getEntity().getZ());
-			accessor.invokeSetPosition(x, y, z);
+			accessor.invokeSetPosition(eyePosition.x(), eyePosition.y(), eyePosition.z());
 			double offsetX = MathHelper.lerp(partialTick, instance.getOffsetXOld(), instance.getOffsetX());
 			double offsetY = MathHelper.lerp(partialTick, instance.getOffsetYOld(), instance.getOffsetY());
 			double offsetZ = MathHelper.lerp(partialTick, instance.getOffsetZOld(), instance.getOffsetZ());
