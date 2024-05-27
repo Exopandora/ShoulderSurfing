@@ -1,19 +1,16 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.KeyHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.config.Config;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.main.GameConfig;
+import net.minecraftforge.fml.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.github.exopandora.shouldersurfing.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.config.Config;
-
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.main.GameConfig;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft
@@ -25,8 +22,14 @@ public class MixinMinecraft
 	)
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
-		ShoulderInstance.getInstance().init();
-		ModConfigEvents.reloading(ShoulderSurfing.MODID).register(Config::onConfigReload);
+		ShoulderSurfingImpl.getInstance().init();
+		ModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config ->
+		{
+			if(ModConfig.Type.CLIENT == config.getType())
+			{
+				Config.onConfigReload();
+			}
+		});
 	}
 	
 	@Inject
@@ -38,18 +41,7 @@ public class MixinMinecraft
 	{
 		if(Minecraft.getInstance().level != null)
 		{
-			ShoulderInstance.getInstance().tick();
-			ShoulderRenderer.getInstance().tick();
+			ShoulderSurfingImpl.getInstance().tick();
 		}
-	}
-	
-	@Inject
-	(
-		at = @At("HEAD"),
-		method = "handleKeybinds"
-	)
-	private void handleKeybinds(CallbackInfo info)
-	{
-		KeyHandler.tick();
 	}
 }

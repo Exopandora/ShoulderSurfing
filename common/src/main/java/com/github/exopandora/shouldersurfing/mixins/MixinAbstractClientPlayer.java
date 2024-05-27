@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.config.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -22,6 +22,6 @@ public class MixinAbstractClientPlayer
 	)
 	private boolean isFirstPerson(CameraType cameraType)
 	{
-		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING.equals(Perspective.current());
+		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current();
 	}
 }

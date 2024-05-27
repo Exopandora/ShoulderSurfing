@@ -1,10 +1,7 @@
 package com.github.exopandora.shouldersurfing.integration;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
-import org.jetbrains.annotations.Nullable;
-
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -17,6 +14,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
+import org.jetbrains.annotations.Nullable;
 import snownee.jade.api.Accessor;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
@@ -45,17 +43,20 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 		@Override
 		public @Nullable Accessor<?> onRayTrace(HitResult hitResult, @Nullable Accessor<?> accessor, @Nullable Accessor<?> originalAccessor)
 		{
-			if(ShoulderInstance.getInstance().doShoulderSurfing())
+			ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+			Minecraft minecraft = Minecraft.getInstance();
+			
+			if(instance.isShoulderSurfing() && minecraft.gameMode != null && minecraft.level != null)
 			{
-				Minecraft minecraft = Minecraft.getInstance();
 				Camera camera = minecraft.gameRenderer.getMainCamera();
-				
 				MultiPlayerGameMode gameMode = minecraft.gameMode;
 				ClipContext.Fluid fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
-				double maxDistance = gameMode.getPickRange() + IWailaConfig.get().getGeneral().getReachDistance();
+				double interactionRangeOverride = gameMode.getPickRange() + IWailaConfig.get().getGeneral().getReachDistance();
 				float partialTick = minecraft.getFrameTime();
-				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-				HitResult target = ShoulderRayTracer.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, true, !isCrosshairDynamic);
+				PickContext pickContext = new PickContext.Builder(camera)
+					.withFluidContext(fluidContext)
+					.build();
+				HitResult target = instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, gameMode);
 				Player player = minecraft.player;
 				Level level = minecraft.level;
 				
