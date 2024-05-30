@@ -46,7 +46,7 @@ runs {
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
-	compileOnly(project(":compatibility"))
+	compileOnly(project(":compat"))
 	
 	implementation(libs.minecraft.neoforge)
 	implementation(libs.forgeconfigapiport.neoforge)
@@ -56,7 +56,7 @@ dependencies {
 	
 	testCompileOnly(project(":api"))
 	testCompileOnly(project(":common"))
-	testCompileOnly(project(":compatibility"))
+	testCompileOnly(project(":compat"))
 }
 
 val notNeoTask = Spec<Task> { !it.name.startsWith("neo") }
@@ -114,7 +114,7 @@ publishMods {
 		clientRequired = true
 		serverRequired = false
 		requires("forge-config-api-port-fabric")
-		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
+		incompatible("better-third-person", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 	
 	modrinth {
@@ -122,6 +122,6 @@ publishMods {
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
 		requires("forge-config-api-port")
-		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
+		incompatible("better-third-person", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 }

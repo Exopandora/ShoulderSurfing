@@ -1,10 +1,11 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
-import net.minecraft.client.Minecraft;
+import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
+import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -737,11 +738,9 @@ public class Config
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
 		
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		
-		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
+		if(!Config.CLIENT.isCameraDecoupled())
 		{
-			ShoulderRenderer.getInstance().resetState(cameraEntity);
+			ShoulderSurfingImpl.getInstance().resetState();
 		}
 	}
 }

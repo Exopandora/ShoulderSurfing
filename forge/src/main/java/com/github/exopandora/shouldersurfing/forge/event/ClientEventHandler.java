@@ -1,16 +1,12 @@
 package com.github.exopandora.shouldersurfing.forge.event;
 
-import com.github.exopandora.shouldersurfing.client.KeyHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.ViewportEvent.ComputeCameraAngles;
-import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandler
@@ -20,23 +16,8 @@ public class ClientEventHandler
 	{
 		if(Phase.START.equals(event.phase) && Minecraft.getInstance().level != null)
 		{
-			if(Minecraft.getInstance().screen == null)
-			{
-				KeyHandler.tick();
-			}
-			
-			ShoulderInstance.getInstance().tick();
-			ShoulderRenderer.getInstance().tick();
+			ShoulderSurfingImpl.getInstance().tick();
 		}
-	}
-	
-	@SubscribeEvent
-	public static void computeCameraAnglesEvent(ComputeCameraAngles event)
-	{
-		ShoulderRenderer renderer = ShoulderRenderer.getInstance();
-		renderer.offsetCamera(event.getCamera(), Minecraft.getInstance().level, (float) event.getPartialTick());
-		event.setPitch(event.getCamera().getXRot());
-		event.setYaw(event.getCamera().getYRot());
 	}
 	
 	@SubscribeEvent
@@ -44,28 +25,13 @@ public class ClientEventHandler
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
-			ShoulderRenderer.getInstance().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), event.getProjectionMatrix(), event.getPartialTick());
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), RenderSystem.getProjectionMatrix(), event.getPartialTick());
 		}
-	}
-	
-	@SubscribeEvent
-	public static void onDatapackSyncEvent(OnDatapackSyncEvent event)
-	{
-		if(event.getPlayer() != null)
-		{
-			ShoulderRenderer.getInstance().resetState(event.getPlayer());
-		}
-	}
-	
-	@SubscribeEvent
-	public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
-	{
-		ShoulderRenderer.getInstance().resetState(event.getEntity());
 	}
 	
 	@SubscribeEvent
 	public static void movementInputUpdateEvent(MovementInputUpdateEvent event)
 	{
-		ShoulderInstance.getInstance().onMovementInputUpdate(event.getInput());
+		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getInput());
 	}
 }

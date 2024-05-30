@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -18,7 +18,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	@Override
 	public void turn(double yRot, double xRot)
 	{
-		if(!ShoulderRenderer.getInstance().turn(this, yRot, xRot))
+		if(!ShoulderSurfingImpl.getInstance().getCamera().turn(this, yRot, xRot))
 		{
 			super.turn(yRot, xRot);
 		}

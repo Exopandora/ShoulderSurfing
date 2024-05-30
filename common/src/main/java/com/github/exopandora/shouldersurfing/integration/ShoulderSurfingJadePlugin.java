@@ -1,7 +1,8 @@
 package com.github.exopandora.shouldersurfing.integration;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
+import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -42,17 +43,20 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 		@Override
 		public @Nullable Accessor<?> onRayTrace(HitResult hitResult, @Nullable Accessor<?> accessor, @Nullable Accessor<?> originalAccessor)
 		{
+			ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 			Minecraft minecraft = Minecraft.getInstance();
 			
-			if(ShoulderInstance.getInstance().doShoulderSurfing() && minecraft.player != null && minecraft.level != null)
+			if(instance.isShoulderSurfing() && minecraft.player != null && minecraft.level != null)
 			{
+				Player player = minecraft.player;
 				Camera camera = minecraft.gameRenderer.getMainCamera();
 				ClipContext.Fluid fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
-				double interactionRangeOverride = ShoulderRayTracer.maxInteractionRange(minecraft.player) + IWailaConfig.get().getGeneral().getExtendedReach();
+				double interactionRangeOverride = IObjectPicker.maxInteractionRange(player) + IWailaConfig.get().getGeneral().getExtendedReach();
 				float partialTick = minecraft.getFrameTime();
-				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-				HitResult target = ShoulderRayTracer.traceBlocksAndEntities(camera, minecraft.player, interactionRangeOverride, fluidContext, partialTick, true, !isCrosshairDynamic);
-				Player player = minecraft.player;
+				PickContext pickContext = new PickContext.Builder(camera)
+					.withFluidContext(fluidContext)
+					.build();
+				HitResult target = instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 				Level level = minecraft.level;
 				
 				if(Type.MISS.equals(target.getType()))

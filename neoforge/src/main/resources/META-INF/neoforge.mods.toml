@@ -41,11 +41,6 @@ type = "incompatible"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
-modId = "cameraoverhaul"
-type = "incompatible"
-side = "CLIENT"
-
-[[dependencies.${modId}]]
 modId = "nimble"
 type = "incompatible"
 side = "CLIENT"

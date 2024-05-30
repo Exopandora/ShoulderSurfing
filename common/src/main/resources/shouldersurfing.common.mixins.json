@@ -5,9 +5,11 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-		"CameraAccessor",
+		"GameRendererAccessor",
 		"MixinAbstractClientPlayer",
+		"MixinCamera",
 		"MixinCapeLayer",
+		"MixinClientPacketListener",
 		"MixinDebugScreenOverlay",
 		"MixinGameRenderer",
 		"MixinGui",

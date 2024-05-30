@@ -5,12 +5,10 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"MixinGameRenderer",
 		"MixinGui",
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
-		"MixinMinecraft",
-		"MixinMouseHandler"
+		"MixinMinecraft"
 	],
 	"injectors": {
 		"defaultRequire": 1

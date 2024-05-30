@@ -1,11 +1,11 @@
 package com.github.exopandora.shouldersurfing.forge;
 
-import com.github.exopandora.shouldersurfing.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.impl.PluginLoader;
-import com.github.exopandora.shouldersurfing.client.KeyHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
+import com.github.exopandora.shouldersurfing.client.InputHandler;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
+import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(ShoulderSurfing.MODID)
+@Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingForge
 {
 	public ShoulderSurfingForge()
@@ -45,10 +45,7 @@ public class ShoulderSurfingForge
 	public void clientSetup(FMLClientSetupEvent event)
 	{
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::onDatapackSyncEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::playerRespawnEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
 	}
 	
@@ -61,13 +58,13 @@ public class ShoulderSurfingForge
 	@SubscribeEvent
 	public void modConfigLoadingEvent(ModConfigEvent.Loading event)
 	{
-		ShoulderInstance.getInstance().init();
+		ShoulderSurfingImpl.getInstance().init();
 	}
 	
 	@SubscribeEvent
 	public void modConfigReloadingEvent(ModConfigEvent.Reloading event)
 	{
-		if(ShoulderSurfing.MODID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT)
+		if(ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT)
 		{
 			Config.onConfigReload();
 		}
@@ -76,14 +73,14 @@ public class ShoulderSurfingForge
 	@SubscribeEvent
 	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
 	{
-		event.register(KeyHandler.CAMERA_LEFT);
-		event.register(KeyHandler.CAMERA_RIGHT);
-		event.register(KeyHandler.CAMERA_IN);
-		event.register(KeyHandler.CAMERA_OUT);
-		event.register(KeyHandler.CAMERA_UP);
-		event.register(KeyHandler.CAMERA_DOWN);
-		event.register(KeyHandler.SWAP_SHOULDER);
-		event.register(KeyHandler.TOGGLE_SHOULDER_SURFING);
-		event.register(KeyHandler.FREE_LOOK);
+		event.register(InputHandler.CAMERA_LEFT);
+		event.register(InputHandler.CAMERA_RIGHT);
+		event.register(InputHandler.CAMERA_IN);
+		event.register(InputHandler.CAMERA_OUT);
+		event.register(InputHandler.CAMERA_UP);
+		event.register(InputHandler.CAMERA_DOWN);
+		event.register(InputHandler.SWAP_SHOULDER);
+		event.register(InputHandler.TOGGLE_SHOULDER_SURFING);
+		event.register(InputHandler.FREE_LOOK);
 	}
 }
