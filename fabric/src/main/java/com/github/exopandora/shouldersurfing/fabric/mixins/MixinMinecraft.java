@@ -1,12 +1,12 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.KeyHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 import net.minecraftforge.api.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,8 +22,14 @@ public class MixinMinecraft
 	)
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
-		ShoulderInstance.getInstance().init();
-		ModConfigEvent.RELOADING.register(Config::onConfigReload);
+		ShoulderSurfingImpl.getInstance().init();
+		ModConfigEvent.RELOADING.register(config ->
+		{
+			if(ShoulderSurfingCommon.MOD_ID.equals(config.getModId()) && ModConfig.Type.CLIENT == config.getType())
+			{
+				Config.onConfigReload();
+			}
+		});
 	}
 	
 	@Inject
@@ -35,18 +41,7 @@ public class MixinMinecraft
 	{
 		if(Minecraft.getInstance().level != null)
 		{
-			ShoulderInstance.getInstance().tick();
-			ShoulderRenderer.getInstance().tick();
+			ShoulderSurfingImpl.getInstance().tick();
 		}
-	}
-	
-	@Inject
-	(
-		at = @At("HEAD"),
-		method = "handleKeybinds"
-	)
-	private void handleKeybinds(CallbackInfo info)
-	{
-		KeyHandler.tick();
 	}
 }

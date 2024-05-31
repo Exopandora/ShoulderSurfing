@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.client.DebugScreenOverlayHandler;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +19,6 @@ public class MixinDebugScreenOverlay
 	)
 	private void getGameInformation(CallbackInfoReturnable<List<String>> cir)
 	{
-		ShoulderRenderer.getInstance().appendDebugText(cir.getReturnValue());
+		DebugScreenOverlayHandler.appendDebugText(cir.getReturnValue());
 	}
 }

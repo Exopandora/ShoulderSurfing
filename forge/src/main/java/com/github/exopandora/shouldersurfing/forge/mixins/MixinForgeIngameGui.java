@@ -1,13 +1,11 @@
 package com.github.exopandora.shouldersurfing.forge.mixins;
 
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import net.minecraft.client.CameraType;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import com.github.exopandora.shouldersurfing.config.Perspective;
-
-import net.minecraft.client.CameraType;
-import net.minecraftforge.client.gui.ForgeIngameGui;
 
 @Mixin(ForgeIngameGui.class)
 public class MixinForgeIngameGui
@@ -23,6 +21,6 @@ public class MixinForgeIngameGui
 	)
 	private boolean isFirstPerson(CameraType cameraType)
 	{
-		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING.equals(Perspective.current());
+		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current();
 	}
 }

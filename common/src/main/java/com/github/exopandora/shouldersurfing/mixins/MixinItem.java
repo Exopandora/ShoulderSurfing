@@ -1,7 +1,8 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTraceContext;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -26,15 +27,19 @@ public class MixinItem
 			target = "Lnet/minecraft/world/level/ClipContext;"
 		)
 	)
-	private static ClipContext initClipContext(Vec3 start, Vec3 end, Block block, Fluid fluid, @NotNull Entity entity)
+	private static ClipContext initClipContext(Vec3 start, Vec3 end, ClipContext.Block blockContext, ClipContext.Fluid fluidContext, @NotNull Entity entity)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing())
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
 		{
 			Minecraft minecraft = Minecraft.getInstance();
-			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
-			return new ClipContext(context.startPos(), context.endPos(), block, fluid, entity);
+			Camera camera = minecraft.gameRenderer.getMainCamera();
+			PickContext pickContext = new PickContext.Builder(camera)
+				.withFluidContext(fluidContext)
+				.withEntity(entity)
+				.build();
+			return pickContext.toClipContext(start.distanceTo(end), minecraft.getFrameTime());
 		}
 		
-		return new ClipContext(start, end, block, fluid, entity);
+		return new ClipContext(start, end, blockContext, fluidContext, entity);
 	}
 }

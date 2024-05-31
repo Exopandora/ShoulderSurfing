@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.config.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.mixinducks.AbstractClientPlayerDuck;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.CameraType;
@@ -49,6 +49,6 @@ public abstract class MixinAbstractClientPlayer extends Player implements Abstra
 	)
 	private boolean isFirstPerson(CameraType cameraType)
 	{
-		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING.equals(Perspective.current());
+		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current();
 	}
 }
