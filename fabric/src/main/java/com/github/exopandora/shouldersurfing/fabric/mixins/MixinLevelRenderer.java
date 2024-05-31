@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Camera;
@@ -20,8 +20,8 @@ public class MixinLevelRenderer
 		method = "renderLevel",
 		at = @At("TAIL")
 	)
-	private void renderLevel(PoseStack poseStack, float partialTick, long nanos, boolean shouldRenderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, CallbackInfo ci)
+	private void renderLevel(PoseStack poseStack, float partialTick, long nanos, boolean shouldRenderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().updateDynamicRaytrace(camera, poseStack.last().pose(), matrix4f, partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, poseStack.last().pose(), projectionMatrix, partialTick);
 	}
 }

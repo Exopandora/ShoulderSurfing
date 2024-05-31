@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.config.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.mixinducks.AbstractClientPlayerDuck;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -53,6 +52,6 @@ public abstract class MixinAbstractClientPlayer extends Player implements Abstra
 	)
 	private boolean isFirstPerson(CameraType cameraType)
 	{
-		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING.equals(Perspective.current());
+		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current();
 	}
 }

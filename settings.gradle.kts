@@ -37,7 +37,6 @@ rootProject.name = "ShoulderSurfing"
 include(
 	":api",
 	":common",
-	":compatibility",
 	":forge",
 	":fabric"
 )

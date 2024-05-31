@@ -56,6 +56,11 @@ public record Vec2f(float x, float y)
 		return this.x * this.x + this.y * this.y;
 	}
 	
+	public Vec2f lerp(Vec2f vec, float f)
+	{
+		return new Vec2f(Mth.lerp(f, this.x, vec.x), Mth.lerp(f, this.y, vec.y));
+	}
+	
 	@Override
 	public String toString()
 	{

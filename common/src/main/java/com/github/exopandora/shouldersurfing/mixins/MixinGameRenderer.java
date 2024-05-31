@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
@@ -27,16 +27,20 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 			target = "net/minecraft/world/entity/projectile/ProjectileUtil.getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;"
 		)
 	)
-	private EntityHitResult getEntityHitResult(Entity shooter, Vec3 startVec, Vec3 endVec, AABB boundingBox, Predicate<Entity> filter, double distanceSq)
+	private EntityHitResult getEntityHitResult(Entity shooter, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing())
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		
+		if(instance.isShoulderSurfing())
 		{
-			double rayTraceDistance = Math.sqrt(distanceSq);
+			PickContext pickContext = new PickContext.Builder(this.getMainCamera())
+				.withEntity(shooter)
+				.build();
+			double interactionRange = Math.sqrt(interactionRangeSq);
 			float partialTick = Minecraft.getInstance().getFrameTime();
-			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(shooter);
-			return ShoulderRayTracer.traceEntities(this.getMainCamera(), shooter, rayTraceDistance, partialTick, !isCrosshairDynamic);
+			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
 		
-		return ProjectileUtil.getEntityHitResult(shooter, startVec, endVec, boundingBox, filter, distanceSq);
+		return ProjectileUtil.getEntityHitResult(shooter, startPos, endPos, boundingBox, filter, interactionRangeSq);
 	}
 }

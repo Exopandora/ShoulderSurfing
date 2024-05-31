@@ -1,16 +1,15 @@
 package com.github.exopandora.shouldersurfing.integration;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ObjectPicker;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import mcp.mobius.waila.api.IObjectPicker;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.WailaConstants;
-import mcp.mobius.waila.plugin.core.pick.ObjectPicker;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 
@@ -25,19 +24,27 @@ public class ShoulderSurfingWthitPlugin implements IWailaPlugin
 	private static class ShoulderSurfingObjectPicker implements IObjectPicker
 	{
 		@Override
-		public HitResult pick(Minecraft mc, double maxDistance, float partialTick, IPluginConfig config)
+		public HitResult pick(Minecraft minecraft, double maxDistance, float partialTick, IPluginConfig config)
 		{
-			if(ShoulderInstance.getInstance().doShoulderSurfing())
+			ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+			
+			if(instance.isShoulderSurfing() && minecraft.gameMode != null)
 			{
-				Camera camera = mc.gameRenderer.getMainCamera();
-				MultiPlayerGameMode gameMode = mc.gameMode;
-				ClipContext.Fluid fluidContext = config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE;
-				boolean traceEntities = config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY);
-				boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-				return ShoulderRayTracer.traceBlocksAndEntities(camera, gameMode, maxDistance, fluidContext, partialTick, traceEntities, !isCrosshairDynamic);
+				Camera camera = minecraft.gameRenderer.getMainCamera();
+				PickContext pickContext = new PickContext.Builder(camera)
+					.withFluidContext(config.getBoolean(WailaConstants.CONFIG_SHOW_FLUID) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE)
+					.build();
+				ObjectPicker objectPicker = instance.getObjectPicker();
+				
+				if(config.getBoolean(WailaConstants.CONFIG_SHOW_ENTITY))
+				{
+					return objectPicker.pick(pickContext, maxDistance, partialTick, minecraft.gameMode);
+				}
+				
+				return objectPicker.pickBlocks(pickContext, maxDistance, partialTick);
 			}
 			
-			return ObjectPicker.INSTANCE.pick(mc, maxDistance, partialTick, config);
+			return mcp.mobius.waila.plugin.core.pick.ObjectPicker.INSTANCE.pick(minecraft, maxDistance, partialTick, config);
 		}
 	}
 }

@@ -1,11 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Mixin;
-
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -15,6 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer extends Entity
@@ -25,18 +23,19 @@ public abstract class MixinPlayer extends Entity
 	}
 	
 	@Override
-	public @NotNull HitResult pick(double distance, float partialTicks, boolean stopOnFluid)
+	public @NotNull HitResult pick(double interactionRange, float partialTick, boolean stopOnFluid)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		Camera camera = minecraft.getEntityRenderDispatcher().camera;
+		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && camera != null)
+		if(instance.isShoulderSurfing())
 		{
-			ClipContext.Fluid fluidContext = stopOnFluid ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE;
-			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-			return ShoulderRayTracer.traceBlocks(camera, this, fluidContext, distance, partialTicks, !isCrosshairDynamic);
+			PickContext pickContext = new PickContext.Builder(camera)
+				.withFluidContext(stopOnFluid ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE)
+				.build();
+			return instance.getObjectPicker().pickBlocks(pickContext, interactionRange, partialTick);
 		}
 		
-		return super.pick(distance, partialTicks, stopOnFluid);
+		return super.pick(interactionRange, partialTick, stopOnFluid);
 	}
 }
