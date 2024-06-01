@@ -112,40 +112,36 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	public boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
-			(isUsingItem(cameraEntity) || !cameraEntity.isFallFlying() && (isInteracting(cameraEntity, minecraft) || isAttacking(minecraft) || isPicking(minecraft)));
+			(isUsingItem(cameraEntity, minecraft) || !cameraEntity.isFallFlying() && (isInteracting(cameraEntity, minecraft) ||
+				isAttacking(minecraft) || isPicking(minecraft)));
 	}
 	
-	private static boolean isUsingItem(LivingEntity cameraEntity)
+	private static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return Config.CLIENT.doTurnPlayerWhenUsingItem() && cameraEntity.isUsingItem() && !cameraEntity.getUseItem().has(DataComponents.FOOD);
+		return cameraEntity.isUsingItem() && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult) &&
+			!cameraEntity.getUseItem().has(DataComponents.FOOD);
 	}
 	
 	private static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return Config.CLIENT.doTurnPlayerWhenInteracting() && minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() &&
-			(!Config.CLIENT.doRequireTargetTurningPlayerWhenInteracting() || hasTarget(minecraft));
+		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() &&
+			Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult);
 	}
 	
 	private static boolean isAttacking(Minecraft minecraft)
 	{
-		return Config.CLIENT.doTurnPlayerWhenAttacking() && minecraft.options.keyAttack.isDown() &&
-			(!Config.CLIENT.doRequireTargetTurningPlayerWhenAttacking() || hasTarget(minecraft));
+		return minecraft.options.keyAttack.isDown() && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult);
 	}
 	
 	private static boolean isPicking(Minecraft minecraft)
 	{
-		return Config.CLIENT.doTurnPlayerWhenPicking() && minecraft.options.keyPickItem.isDown() &&
-			(!Config.CLIENT.doRequireTargetTurningPlayerWhenPicking() || hasTarget(minecraft));
-	}
-	
-	private static boolean hasTarget(Minecraft minecraft)
-	{
-		return minecraft.hitResult != null && minecraft.hitResult.getType() != HitResult.Type.MISS;
+		return minecraft.options.keyPickItem.isDown() && Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult);
 	}
 	
 	public boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
 	{
-		return !Config.CLIENT.isCameraDecoupled() || (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying());
+		return (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) ||
+			!Config.CLIENT.isCameraDecoupled();
 	}
 	
 	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
