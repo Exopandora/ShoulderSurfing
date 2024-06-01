@@ -345,7 +345,7 @@ public class Config
 				.define("use_custom_raytrace_distance", true);
 			
 			this.adaptiveCrosshairHoldItems = builder
-				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regex expressions. Example: 'minecraft:.*stone' matches 'minecraft:stone' and 'minecraft:cobblestone'.")
+				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
 				.translation("Adaptive crosshair items (hold)")
 				.defineList("adaptive_crosshair_hold_items", () ->
 				{
@@ -361,7 +361,7 @@ public class Config
 				}, Objects::nonNull);
 			
 			this.adaptiveCrosshairUseItems = builder
-				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regex expressions. Example: 'minecraft:.*stone' matches 'minecraft:stone' and 'minecraft:cobblestone'.")
+				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
 				.translation("Adaptive crosshair items (use)")
 				.defineList("adaptive_crosshair_use_items", ArrayList::new, Objects::nonNull);
 			
