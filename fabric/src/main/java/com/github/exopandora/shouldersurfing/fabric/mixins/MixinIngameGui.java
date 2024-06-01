@@ -30,7 +30,7 @@ public class MixinIngameGui
 	)
 	private void offsetCrosshair(MatrixStack poseStack, float partialTick, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(poseStack, this.minecraft.getWindow(), partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(poseStack, this.minecraft.getWindow());
 	}
 	
 	@Inject

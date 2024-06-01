@@ -25,7 +25,7 @@ public class ClientEventHandler
 	{
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getMatrixStack(), event.getWindow(), event.getPartialTicks());
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getMatrixStack(), event.getWindow());
 		}
 		//Using BOSSHEALTH to pop matrix because when CROSSHAIRS is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(event.getType().equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH))
