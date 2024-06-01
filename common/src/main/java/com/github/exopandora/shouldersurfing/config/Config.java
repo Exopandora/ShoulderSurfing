@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.config;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.ResourceLocation;
@@ -76,13 +77,10 @@ public class Config
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue rememberLastPerspective;
 		private final BooleanValue playerTransparency;
-		private final BooleanValue turnPlayerWhenUsingItem;
-		private final BooleanValue turnPlayerWhenAttacking;
-		private final BooleanValue turnPlayerWhenInteracting;
-		private final BooleanValue turnPlayerWhenPicking;
-		private final BooleanValue turnPlayerWhenAttackingRequiresTarget;
-		private final BooleanValue turnPlayerWhenInteractingRequiresTarget;
-		private final BooleanValue turnPlayerWhenPickingRequiresTarget;
+		private final ConfigValue<TurningMode> turningModeWhenUsingItem;
+		private final ConfigValue<TurningMode> turningModeWhenAttacking;
+		private final ConfigValue<TurningMode> turningModeWhenInteraction;
+		private final ConfigValue<TurningMode> turningModeWhenPicking;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -298,41 +296,29 @@ public class Config
 				.translation("Center camera when looking up angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 			
-			this.turnPlayerWhenUsingItem = builder
-				.comment("Whether or not to turn the player when using an item. This config option only applies when camera is decoupled.")
+			builder.push("player_turning");
+			
+			this.turningModeWhenUsingItem = builder
+				.comment("Whether to turn the player when using an item. This config option only applies when camera is decoupled.")
 				.translation("Turn player when using an item")
-				.define("turn_player_when_using_item", true);
+				.defineEnum("when_using_item", TurningMode.ALWAYS, TurningMode.values());
 			
-			this.turnPlayerWhenAttacking = builder
-				.comment("Whether or not to turn the player when attacking. This config option only applies when camera is decoupled.")
+			this.turningModeWhenAttacking = builder
+				.comment("Whether to turn the player when attacking. This config option only applies when camera is decoupled.")
 				.translation("Turn player when attacking")
-				.define("turn_player_when_attacking", true);
+				.defineEnum("when_attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
 			
-			this.turnPlayerWhenInteracting = builder
-				.comment("Whether or not to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
+			this.turningModeWhenInteraction = builder
+				.comment("Whether to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
 				.translation("Turn player when interacting with blocks")
-				.define("turn_player_when_interacting", true);
+				.defineEnum("when_interacting", TurningMode.ALWAYS, TurningMode.values());
 			
-			this.turnPlayerWhenPicking = builder
-				.comment("Whether or not to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
+			this.turningModeWhenPicking = builder
+				.comment("Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
 				.translation("Turn player when picking")
-				.define("turn_player_when_picking", true);
+				.defineEnum("when_picking", TurningMode.ALWAYS, TurningMode.values());
 			
-			this.turnPlayerWhenAttackingRequiresTarget = builder
-				.comment("Whether or not turning the player when attacking requires a target.")
-				.translation("Turn player when attacking requires target")
-				.define("turn_player_when_attacking_requires_target", false);
-			
-			this.turnPlayerWhenInteractingRequiresTarget = builder
-				.comment("Whether or not turning the player when interacting with blocks requires a target.")
-				.translation("Turn player when interacting with blocks requires target")
-				.define("turn_player_when_interacting_requires_target", true);
-			
-			this.turnPlayerWhenPickingRequiresTarget = builder
-				.comment("Whether or not turning the player when picking blocks or entities requires a target.")
-				.translation("Turn player when picking requires target")
-				.define("turn_player_when_picking_requires_target", true);
-			
+			builder.pop();
 			builder.pop();
 			builder.push("crosshair");
 			
@@ -598,39 +584,24 @@ public class Config
 			return this.playerTransparency.get();
 		}
 		
-		public boolean doTurnPlayerWhenUsingItem()
+		public TurningMode getTurningModeWhenUsingItem()
 		{
-			return this.turnPlayerWhenUsingItem.get();
+			return this.turningModeWhenUsingItem.get();
 		}
 		
-		public boolean doTurnPlayerWhenAttacking()
+		public TurningMode getTurningModeWhenAttacking()
 		{
-			return this.turnPlayerWhenAttacking.get();
+			return this.turningModeWhenAttacking.get();
 		}
 		
-		public boolean doTurnPlayerWhenInteracting()
+		public TurningMode getTurningModeWhenInteracting()
 		{
-			return this.turnPlayerWhenInteracting.get();
+			return this.turningModeWhenInteraction.get();
 		}
 		
-		public boolean doTurnPlayerWhenPicking()
+		public TurningMode getTurningModeWhenPicking()
 		{
-			return this.turnPlayerWhenPicking.get();
-		}
-		
-		public boolean doRequireTargetTurningPlayerWhenAttacking()
-		{
-			return this.turnPlayerWhenAttackingRequiresTarget.get();
-		}
-		
-		public boolean doRequireTargetTurningPlayerWhenInteracting()
-		{
-			return this.turnPlayerWhenInteractingRequiresTarget.get();
-		}
-		
-		public boolean doRequireTargetTurningPlayerWhenPicking()
-		{
-			return this.turnPlayerWhenPickingRequiresTarget.get();
+			return this.turningModeWhenPicking.get();
 		}
 		
 		public boolean isCameraDecoupled()
