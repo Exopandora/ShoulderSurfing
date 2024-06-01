@@ -137,13 +137,16 @@ public class InputHandler
 				
 				if(!this.instance.shouldEntityAimAtTarget(player, minecraft) && !this.instance.shouldEntityFollowCamera(player))
 				{
-					float yRotO = yRot;
 					float cameraXRot = camera.getXRot();
 					float cameraYRot = camera.getYRot();
 					Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
+					float xRot = cameraXRot * 0.5F;
+					float xRotO = player.getXRot();
+					float yRotO = yRot;
 					yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
+					xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * 0.25F;
 					yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * 0.25F;
-					player.setXRot(cameraXRot * 0.5F);
+					player.setXRot(xRot);
 					player.setYRot(yRot);
 				}
 				
