@@ -20,7 +20,6 @@ public class CrosshairRenderer implements ICrosshairRenderer
 {
 	private final ShoulderSurfingImpl instance;
 	private Vec2f offset;
-	private Vec2f offsetO;
 	private Vec2f projected;
 	
 	public CrosshairRenderer(ShoulderSurfingImpl instance)
@@ -32,35 +31,28 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	private void init()
 	{
 		this.offset = Vec2f.ZERO;
-		this.offsetO = Vec2f.ZERO;
 		this.projected = null;
 	}
 	
-	public void offsetCrosshair(PoseStack poseStack, Window window, float partialTicks)
+	public void offsetCrosshair(PoseStack poseStack, Window window)
 	{
 		if(this.projected != null)
 		{
 			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 			Vec2f center = screenSize.divide(2);
-			Vec2f projectedOffset = this.projected.subtract(center).divide((float) window.getGuiScale());
-			this.offset = this.offsetO.lerp(projectedOffset, partialTicks);
+			this.offset = this.projected.subtract(center).divide((float) window.getGuiScale());
 		}
 		
 		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			poseStack.pushPose();
 			poseStack.last().pose().translate(this.offset.x(), -this.offset.y(), 0F);
-			this.offsetO = this.offset;
-		}
-		else
-		{
-			this.offsetO = Vec2f.ZERO;
 		}
 	}
 	
 	public void clearCrosshairOffset(PoseStack poseStack)
 	{
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) && !Vec2f.ZERO.equals(this.offsetO))
+		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			poseStack.popPose();
 		}
