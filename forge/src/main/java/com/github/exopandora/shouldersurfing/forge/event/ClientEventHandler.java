@@ -16,7 +16,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent event)
 	{
-		if(Phase.START.equals(event.phase) && Minecraft.getInstance().level != null)
+		if(Phase.START.equals(event.phase) && Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())
 		{
 			ShoulderSurfingImpl.getInstance().tick();
 		}
