@@ -26,7 +26,7 @@ public class ClientEventHandler
 	{
 		if(VanillaGuiOverlay.CROSSHAIR.id().equals(event.getOverlay().id()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getGuiGraphics().pose(), event.getWindow(), event.getPartialTick());
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getGuiGraphics().pose(), event.getWindow());
 		}
 		//Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id().equals(event.getOverlay().id()))
