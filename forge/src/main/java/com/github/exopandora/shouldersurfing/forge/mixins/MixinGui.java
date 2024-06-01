@@ -20,7 +20,8 @@ public class MixinGui
 	@Inject
 	(
 		method = "renderCrosshair",
-		at = @At("HEAD")
+		at = @At("HEAD"),
+		remap = false
 	)
 	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
@@ -30,7 +31,8 @@ public class MixinGui
 	@Inject
 	(
 		method = "renderCrosshair",
-		at = @At("RETURN")
+		at = @At("RETURN"),
+		remap = false
 	)
 	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
