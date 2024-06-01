@@ -1,16 +1,16 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTracer;
-import net.minecraft.client.Minecraft;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.util.math.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -23,18 +23,19 @@ public abstract class MixinPlayerEntity extends Entity
 	}
 	
 	@Override
-	public @NotNull RayTraceResult pick(double distance, float partialTicks, boolean stopOnFluid)
+	public @NotNull RayTraceResult pick(double interactionRange, float partialTick, boolean stopOnFluid)
 	{
-		Minecraft minecraft = Minecraft.getInstance();
-		ActiveRenderInfo camera = minecraft.getEntityRenderDispatcher().camera;
+		ActiveRenderInfo camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(ShoulderInstance.getInstance().doShoulderSurfing() && camera != null)
+		if(instance.isShoulderSurfing())
 		{
-			RayTraceContext.FluidMode fluidContext = stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE;
-			boolean isCrosshairDynamic = ShoulderInstance.getInstance().isCrosshairDynamic(camera.getEntity());
-			return ShoulderRayTracer.traceBlocks(camera, this, fluidContext, distance, partialTicks, !isCrosshairDynamic);
+			PickContext pickContext = new PickContext.Builder(camera)
+				.withFluidContext(stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE)
+				.build();
+			return instance.getObjectPicker().pickBlocks(pickContext, interactionRange, partialTick);
 		}
 		
-		return super.pick(distance, partialTicks, stopOnFluid);
+		return super.pick(interactionRange, partialTick, stopOnFluid);
 	}
 }

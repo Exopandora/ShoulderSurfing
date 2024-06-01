@@ -1,13 +1,12 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRayTraceContext;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.vector.Vector3d;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,15 +25,19 @@ public class MixinItem
 			target = "Lnet/minecraft/util/math/RayTraceContext;"
 		)
 	)
-	private static RayTraceContext initRayTraceContext(Vector3d start, Vector3d end, BlockMode block, FluidMode fluid, @NotNull Entity entity)
+	private static RayTraceContext initClipContext(Vector3d start, Vector3d end, RayTraceContext.BlockMode blockContext, RayTraceContext.FluidMode fluidContext, @NotNull Entity entity)
 	{
-		if(ShoulderInstance.getInstance().doShoulderSurfing())
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
 		{
 			Minecraft minecraft = Minecraft.getInstance();
-			ShoulderRayTraceContext context = ShoulderRayTraceContext.from(minecraft.gameRenderer.getMainCamera(), entity, 1.0F, start.distanceToSqr(end));
-			return new RayTraceContext(context.startPos(), context.endPos(), block, fluid, entity);
+			ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
+			PickContext pickContext = new PickContext.Builder(camera)
+				.withFluidContext(fluidContext)
+				.withEntity(entity)
+				.build();
+			return pickContext.toClipContext(start.distanceTo(end), minecraft.getFrameTime());
 		}
 		
-		return new RayTraceContext(start, end, block, fluid, entity);
+		return new RayTraceContext(start, end, blockContext, fluidContext, entity);
 	}
 }

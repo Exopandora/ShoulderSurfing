@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.math;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderHelper;
 import net.minecraft.util.math.MathHelper;
 
 public class Vec2f
@@ -16,12 +15,12 @@ public class Vec2f
 		this.y = y;
 	}
 	
-	public float getX()
+	public float x()
 	{
 		return this.x;
 	}
 	
-	public float getY()
+	public float y()
 	{
 		return this.y;
 	}
@@ -63,7 +62,7 @@ public class Vec2f
 	
 	public Vec2f rotateDegrees(float angle)
 	{
-		return this.rotate(angle * ShoulderHelper.DEG_TO_RAD);
+		return this.rotate(angle * MathUtil.DEG_TO_RAD);
 	}
 	
 	public Vec2f rotate(float angle)
@@ -74,6 +73,11 @@ public class Vec2f
 	public double lengthSquared()
 	{
 		return this.x * this.x + this.y * this.y;
+	}
+	
+	public Vec2f lerp(Vec2f vec, float f)
+	{
+		return new Vec2f(MathHelper.lerp(f, this.x, vec.x), MathHelper.lerp(f, this.y, vec.y));
 	}
 	
 	@Override

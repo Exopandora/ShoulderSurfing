@@ -6,11 +6,8 @@
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"MixinClientPlayerEntity",
-		"MixinGameRenderer",
 		"MixinIngameGui",
 		"MixinMinecraft",
-		"MixinMouseHelper",
-		"MixinPlayerList",
 		"MixinWorldRenderer"
 	],
 	"injectors": {

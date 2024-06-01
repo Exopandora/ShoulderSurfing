@@ -20,6 +20,7 @@
 		]
 	},
 	"mixins": [
+		"shouldersurfing.api.mixins.json",
 		"shouldersurfing.common.mixins.json",
 		"shouldersurfing.common.compat.mixins.json",
 		"shouldersurfing.fabric.mixins.json"
@@ -33,7 +34,6 @@
 	},
 	"breaks": {
 		"betterthirdperson": "*",
-		"cameraoverhaul": "*",
 		"nimble": "*",
 		"valkyrienskies": "*"
 	},

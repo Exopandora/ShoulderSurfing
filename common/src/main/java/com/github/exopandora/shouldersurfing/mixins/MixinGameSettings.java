@@ -1,10 +1,10 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.GameSettingsDuck;
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.settings.PointOfView;
+import net.minecraft.client.GameSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,7 +27,7 @@ public abstract class MixinGameSettings implements GameSettingsDuck
 	{
 		if(cameraType != this.cameraType)
 		{
-			ShoulderInstance.getInstance().setShoulderSurfing(Config.CLIENT.replaceDefaultPerspective() && cameraType.equals(PointOfView.THIRD_PERSON_BACK));
+			ShoulderSurfingImpl.getInstance().setShoulderSurfing(Config.CLIENT.replaceDefaultPerspective() && cameraType.equals(PointOfView.THIRD_PERSON_BACK));
 		}
 	}
 	

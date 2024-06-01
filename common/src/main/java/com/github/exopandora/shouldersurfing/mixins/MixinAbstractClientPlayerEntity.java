@@ -33,9 +33,9 @@ public abstract class MixinAbstractClientPlayerEntity extends PlayerEntity imple
 	public Vector3d shouldersurfing$getDeltaMovementLerped(float partialTick)
 	{
 		Vector3d deltaMovement = this.getDeltaMovement();
-		double x = MathHelper.lerp(partialTick, deltaMovementOnPreviousTick.x, deltaMovement.x);
-		double y = MathHelper.lerp(partialTick, deltaMovementOnPreviousTick.y, deltaMovement.y);
-		double z = MathHelper.lerp(partialTick, deltaMovementOnPreviousTick.z, deltaMovement.z);
+		double x = MathHelper.lerp(partialTick, this.deltaMovementOnPreviousTick.x, deltaMovement.x);
+		double y = MathHelper.lerp(partialTick, this.deltaMovementOnPreviousTick.y, deltaMovement.y);
+		double z = MathHelper.lerp(partialTick, this.deltaMovementOnPreviousTick.z, deltaMovement.z);
 		return new Vector3d(x, y, z);
 	}
 }

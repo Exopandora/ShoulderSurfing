@@ -19,8 +19,8 @@ public abstract class MixinRenderType extends RenderState
 	(
 		method =
 		{
-			"armorCutoutNoCull", // fabric/forge
-			"lambda$getArmorCutoutNoCull$0" // optifine
+			"armorCutoutNoCull(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;", // fabric/forge
+			"lambda$getArmorCutoutNoCull$0(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;" // optifine
 		},
 		at = @At
 		(
@@ -29,7 +29,7 @@ public abstract class MixinRenderType extends RenderState
 		),
 		require = 1
 	)
-	private static RenderState.TransparencyState setTransparencyState(RenderState.TransparencyState transparencyState)
+	private static RenderState.TransparencyState setTransparencyState(RenderState.TransparencyState transparencyStateShard)
 	{
 		return TRANSLUCENT_TRANSPARENCY;
 	}

@@ -22,7 +22,6 @@ dependencies {
 	mappings(fileTree("../mapping") { include("**.jar") })
 	
 	compileOnly(project(":api"))
-	compileOnly(project(":compatibility"))
 	
 	compileOnly(libs.mixin)
 	compileOnly(libs.forgeconfigapiport.common)

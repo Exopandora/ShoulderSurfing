@@ -1,15 +1,15 @@
 package com.github.exopandora.shouldersurfing.plugin;
 
-import com.github.exopandora.shouldersurfing.api.IShoulderSurfingPlugin;
-import com.github.exopandora.shouldersurfing.api.IShoulderSurfingRegistrar;
+import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
+import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 

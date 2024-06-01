@@ -34,9 +34,9 @@ java {
 mixin {
 	add(sourceSets.main.get(), "$modId.refmap.json")
 	
+	config("$modId.api.mixins.json")
 	config("$modId.common.mixins.json")
 	config("$modId.common.compat.mixins.json")
-	config("$modId.forge.mixins.json")
 }
 
 minecraft {
@@ -54,7 +54,6 @@ minecraft {
 					source(sourceSets.main.get())
 					source(project(":api").sourceSets.main.get())
 					source(project(":common").sourceSets.main.get())
-					source(project(":compatibility").sourceSets.main.get())
 				}
 			}
 		}
@@ -70,7 +69,6 @@ minecraft {
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
-	compileOnly(project(":compatibility"))
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
@@ -83,6 +81,7 @@ tasks.named<JavaCompile>("compileJava").configure {
 }
 
 tasks.named<ProcessResources>("processResources").configure {
+	from(project(":api").sourceSets.main.get().resources)
 	from(project(":common").sourceSets.main.get().resources)
 	
 	val properties = mapOf(
@@ -106,6 +105,7 @@ tasks.register<Jar>("apiJar").configure {
 	from(project(":api").sourceSets.main.get().output)
 	from(project(":api").sourceSets.main.get().allSource)
 	archiveClassifier = "API"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.build {
@@ -140,13 +140,13 @@ publishMods {
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
 		clientRequired = true
 		serverRequired = false
-		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
+		incompatible("better-third-person", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 	
 	modrinth {
 		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
+		incompatible("better-third-person", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 }

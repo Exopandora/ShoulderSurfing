@@ -1,18 +1,16 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
+import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Type;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -733,18 +731,16 @@ public class Config
 		}
 	}
 	
-	public static void onConfigReload(ModConfig config)
+	public static void onConfigReload()
 	{
-		if(Type.CLIENT.equals(config.getType()) && Config.CLIENT.doRememberLastPerspective())
+		if(Config.CLIENT.doRememberLastPerspective())
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
 		
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		
-		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
+		if(!Config.CLIENT.isCameraDecoupled())
 		{
-			ShoulderRenderer.getInstance().resetState(cameraEntity);
+			ShoulderSurfingImpl.getInstance().resetState();
 		}
 	}
 }

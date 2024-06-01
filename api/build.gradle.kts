@@ -21,6 +21,8 @@ dependencies {
 	minecraft(libs.minecraft.fabric)
 	mappings(fileTree("../mapping") { include("**.jar") })
 	
+	compileOnly(libs.mixin)
+	
 	implementation(libs.jsr305)
 }
 

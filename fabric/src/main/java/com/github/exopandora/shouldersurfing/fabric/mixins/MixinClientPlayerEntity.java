@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.MovementInput;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,6 +28,6 @@ public class MixinClientPlayerEntity
 	)
 	private void aiStep(CallbackInfo ci)
 	{
-		ShoulderInstance.getInstance().onMovementInputUpdate(this.input);
+		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(this.input);
 	}
 }

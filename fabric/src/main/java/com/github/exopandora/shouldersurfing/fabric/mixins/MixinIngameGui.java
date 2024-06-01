@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IngameGui;
@@ -30,7 +30,7 @@ public class MixinIngameGui
 	)
 	private void offsetCrosshair(MatrixStack poseStack, float partialTick, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().offsetCrosshair(poseStack, this.minecraft.getWindow(), this.minecraft.getFrameTime());
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(poseStack, this.minecraft.getWindow(), partialTick);
 	}
 	
 	@Inject
@@ -45,6 +45,6 @@ public class MixinIngameGui
 	)
 	private void clearCrosshairOffset(MatrixStack poseStack, float partialTick, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().clearCrosshairOffset(poseStack);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(poseStack);
 	}
 }

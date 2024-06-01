@@ -1,12 +1,10 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
-
-import net.minecraft.client.renderer.model.ModelRenderer;
 
 @Mixin(value = ModelRenderer.class, priority = 500 /* apply before sodium and iris */)
 public class MixinModelRenderer
@@ -20,6 +18,6 @@ public class MixinModelRenderer
 	)
 	public float render(float alpha)
 	{
-		return Math.min(alpha, ShoulderRenderer.getInstance().getCameraEntityAlpha());
+		return Math.min(alpha, ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().getCameraEntityAlpha());
 	}
 }

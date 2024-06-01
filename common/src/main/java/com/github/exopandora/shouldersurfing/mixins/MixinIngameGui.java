@@ -1,11 +1,11 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.Perspective;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IngameGui;
-import net.minecraft.client.settings.PointOfView;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,6 +29,6 @@ public class MixinIngameGui
 	)
 	private boolean doRenderCrosshair(PointOfView cameraType)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(this.minecraft.hitResult, ShoulderInstance.getInstance().isAiming());
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(this.minecraft.hitResult, ShoulderSurfingImpl.getInstance().isAiming());
 	}
 }
