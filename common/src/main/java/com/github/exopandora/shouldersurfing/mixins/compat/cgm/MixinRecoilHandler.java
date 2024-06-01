@@ -17,8 +17,10 @@ public class MixinRecoilHandler
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/client/player/LocalPlayer.getXRot()F"
-		)
+			target = "net/minecraft/client/player/LocalPlayer.getXRot()F",
+			remap = true
+		),
+		remap = false
 	)
 	private float getXRot(LocalPlayer player)
 	{
@@ -38,8 +40,10 @@ public class MixinRecoilHandler
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/client/player/LocalPlayer.setXRot(F)V"
-		)
+			target = "net/minecraft/client/player/LocalPlayer.setXRot(F)V",
+			remap = true
+		),
+		remap = false
 	)
 	private void setXRot(LocalPlayer player, float xRot)
 	{
