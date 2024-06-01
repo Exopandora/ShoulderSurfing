@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins.compat.iris;
 
+import com.github.exopandora.shouldersurfing.config.Config;
 import net.irisshaders.batchedentityrendering.impl.BlendingStateHolder;
 import net.irisshaders.batchedentityrendering.impl.TransparencyType;
 import net.minecraft.client.renderer.RenderType;
@@ -20,6 +21,9 @@ public class MixinSheets
 	@Inject(method = "<clinit>", at = @At("TAIL"))
 	private static void setSheet(CallbackInfo ci)
 	{
-		((BlendingStateHolder) ARMOR_TRIMS_SHEET_TYPE).setTransparencyType(TransparencyType.DECAL);
+		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		{
+			((BlendingStateHolder) ARMOR_TRIMS_SHEET_TYPE).setTransparencyType(TransparencyType.DECAL);
+		}
 	}
 }

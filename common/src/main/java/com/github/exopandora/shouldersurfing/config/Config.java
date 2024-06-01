@@ -289,7 +289,7 @@ public class Config
 				.define("skip_third_person_front_perspective", false);
 			
 			this.playerTransparency = builder
-				.comment("Whether or not to adjust the player model transparency when view is obstructed.")
+				.comment("Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
 				.translation("Adjust player transparency")
 				.define("adjust_player_transparency", true);
 			
