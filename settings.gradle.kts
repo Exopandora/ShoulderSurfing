@@ -48,7 +48,7 @@ rootProject.name = "ShoulderSurfing"
 include(
 	":api",
 	":common",
-	":compatibility",
+	":compat",
 	":forge",
 	":neoforge",
 	":fabric"

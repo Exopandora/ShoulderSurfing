@@ -1,15 +1,18 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
-import net.minecraft.client.Minecraft;
+import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
+import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.TurningMode;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -56,6 +59,10 @@ public class Config
 		private final DoubleValue sprintOffsetYMultiplier;
 		private final DoubleValue sprintOffsetZMultiplier;
 		
+		private final DoubleValue aimingOffsetXMultiplier;
+		private final DoubleValue aimingOffsetYMultiplier;
+		private final DoubleValue aimingOffsetZMultiplier;
+		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
 		private final BooleanValue centerCameraWhenClimbing;
@@ -71,10 +78,11 @@ public class Config
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue rememberLastPerspective;
 		private final BooleanValue playerTransparency;
-		private final BooleanValue turnPlayerWhenUsingItem;
-		private final BooleanValue turnPlayerWhenAttacking;
-		private final BooleanValue turnPlayerWhenInteracting;
-		private final BooleanValue turnPlayerWhenPicking;
+		private final ConfigValue<TurningMode> turningModeWhenUsingItem;
+		private final ConfigValue<TurningMode> turningModeWhenAttacking;
+		private final ConfigValue<TurningMode> turningModeWhenInteraction;
+		private final ConfigValue<TurningMode> turningModeWhenPicking;
+		private final IntValue turningLockTime;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -196,6 +204,24 @@ public class Config
 				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
 			
 			builder.pop();
+			builder.push("aiming");
+			
+			this.aimingOffsetXMultiplier = builder
+				.comment("x-offset multiplier for when the player is aiming.")
+				.translation("Aiming x-offset multiplier")
+				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.aimingOffsetYMultiplier = builder
+				.comment("y-offset multiplier for when the player is aiming.")
+				.translation("Aiming y-offset multiplier")
+				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+			
+			this.aimingOffsetZMultiplier = builder
+				.comment("z-offset multiplier for when the player is aiming.")
+				.translation("Aiming z-offset multiplier")
+				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.pop();
 			builder.pop();
 			
@@ -263,7 +289,7 @@ public class Config
 				.define("skip_third_person_front_perspective", false);
 			
 			this.playerTransparency = builder
-				.comment("Whether or not to adjust the player model transparency when view is obstructed.")
+				.comment("Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
 				.translation("Adjust player transparency")
 				.define("adjust_player_transparency", true);
 			
@@ -272,26 +298,34 @@ public class Config
 				.translation("Center camera when looking up angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 			
-			this.turnPlayerWhenUsingItem = builder
-				.comment("Whether or not to turn the player when using an item. This config option only applies when camera is decoupled.")
+			builder.push("player_turning");
+			
+			this.turningModeWhenUsingItem = builder
+				.comment("Whether to turn the player when using an item.")
 				.translation("Turn player when using an item")
-				.define("turn_player_when_using_item", true);
+				.defineEnum("when_using_item", TurningMode.ALWAYS, TurningMode.values());
 			
-			this.turnPlayerWhenAttacking = builder
-				.comment("Whether or not to turn the player when attacking. This config option only applies when camera is decoupled.")
+			this.turningModeWhenAttacking = builder
+				.comment("Whether to turn the player when attacking. This config option only applies when camera is decoupled.")
 				.translation("Turn player when attacking")
-				.define("turn_player_when_attacking", true);
+				.defineEnum("when_attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
 			
-			this.turnPlayerWhenInteracting = builder
-				.comment("Whether or not to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
+			this.turningModeWhenInteraction = builder
+				.comment("Whether to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
 				.translation("Turn player when interacting with blocks")
-				.define("turn_player_when_interacting", true);
+				.defineEnum("when_interacting", TurningMode.ALWAYS, TurningMode.values());
 			
-			this.turnPlayerWhenPicking = builder
-				.comment("Whether or not to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
+			this.turningModeWhenPicking = builder
+				.comment("Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
 				.translation("Turn player when picking")
-				.define("turn_player_when_picking", true);
+				.defineEnum("when_picking", TurningMode.ALWAYS, TurningMode.values());
 			
+			this.turningLockTime = builder
+				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
+				.translation("Turning lock time (ticks)")
+				.defineInRange("turning_lock_time", 4, 0, Integer.MAX_VALUE);
+			
+			builder.pop();
 			builder.pop();
 			builder.push("crosshair");
 			
@@ -457,6 +491,21 @@ public class Config
 			return this.sprintOffsetZMultiplier.get();
 		}
 		
+		public double getAimingOffsetXMultiplier()
+		{
+			return this.aimingOffsetXMultiplier.get();
+		}
+		
+		public double getAimingOffsetYMultiplier()
+		{
+			return this.aimingOffsetYMultiplier.get();
+		}
+		
+		public double getAimingOffsetZMultiplier()
+		{
+			return this.aimingOffsetZMultiplier.get();
+		}
+		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
 		{
 			return this.crosshairVisibility.get(perspective).get();
@@ -542,24 +591,29 @@ public class Config
 			return this.playerTransparency.get();
 		}
 		
-		public boolean doTurnPlayerWhenUsingItem()
+		public TurningMode getTurningModeWhenUsingItem()
 		{
-			return this.turnPlayerWhenUsingItem.get();
+			return this.turningModeWhenUsingItem.get();
 		}
 		
-		public boolean doTurnPlayerWhenAttacking()
+		public TurningMode getTurningModeWhenAttacking()
 		{
-			return this.turnPlayerWhenAttacking.get();
+			return this.turningModeWhenAttacking.get();
 		}
 		
-		public boolean doTurnPlayerWhenInteracting()
+		public TurningMode getTurningModeWhenInteracting()
 		{
-			return this.turnPlayerWhenInteracting.get();
+			return this.turningModeWhenInteraction.get();
 		}
 		
-		public boolean doTurnPlayerWhenPicking()
+		public TurningMode getTurningModeWhenPicking()
 		{
-			return this.turnPlayerWhenPicking.get();
+			return this.turningModeWhenPicking.get();
+		}
+		
+		public int getTurningLockTime()
+		{
+			return this.turningLockTime.get();
 		}
 		
 		public boolean isCameraDecoupled()
@@ -667,11 +721,9 @@ public class Config
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
 		
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		
-		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled())
+		if(!Config.CLIENT.isCameraDecoupled())
 		{
-			ShoulderRenderer.getInstance().resetState(cameraEntity);
+			ShoulderSurfingImpl.getInstance().resetState();
 		}
 	}
 }

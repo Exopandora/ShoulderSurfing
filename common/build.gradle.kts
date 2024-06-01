@@ -18,7 +18,7 @@ java {
 
 dependencies {
 	compileOnly(project(":api"))
-	compileOnly(project(":compatibility"))
+	compileOnly(project(":compat"))
 	
 	compileOnly(libs.mixin)
 	compileOnly(libs.forgeconfigapiport.common)

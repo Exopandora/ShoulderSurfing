@@ -37,7 +37,6 @@
 	},
 	"breaks": {
 		"betterthirdperson": "*",
-		"cameraoverhaul": "*",
 		"nimble": "*",
 		"valkyrienskies": "*"
 	},

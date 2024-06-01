@@ -1,9 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.KeyHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderInstance;
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeModConfigEvents;
 import net.minecraft.client.Minecraft;
@@ -24,8 +22,8 @@ public class MixinMinecraft
 	)
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
-		ShoulderInstance.getInstance().init();
-		ForgeModConfigEvents.reloading(ShoulderSurfing.MODID).register(config ->
+		ShoulderSurfingImpl.getInstance().init();
+		ForgeModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config ->
 		{
 			if(ModConfig.Type.CLIENT == config.getType())
 			{
@@ -41,20 +39,9 @@ public class MixinMinecraft
 	)
 	private void onStartTick(CallbackInfo info)
 	{
-		if(Minecraft.getInstance().level != null)
+		if(Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())
 		{
-			ShoulderInstance.getInstance().tick();
-			ShoulderRenderer.getInstance().tick();
+			ShoulderSurfingImpl.getInstance().tick();
 		}
-	}
-	
-	@Inject
-	(
-		at = @At("HEAD"),
-		method = "handleKeybinds"
-	)
-	private void handleKeybinds(CallbackInfo info)
-	{
-		KeyHandler.tick();
 	}
 }

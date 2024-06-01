@@ -55,7 +55,7 @@ minecraft {
 					source(sourceSets.main.get())
 					source(project(":api").sourceSets.main.get())
 					source(project(":common").sourceSets.main.get())
-					source(project(":compatibility").sourceSets.main.get())
+					source(project(":compat").sourceSets.main.get())
 				}
 			}
 		}
@@ -71,7 +71,7 @@ minecraft {
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":common"))
-	compileOnly(project(":compatibility"))
+	compileOnly(project(":compat"))
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
@@ -119,6 +119,13 @@ tasks.jar {
 	finalizedBy("reobfJar")
 }
 
+tasks.configureEach {
+	when(name) {
+		"configureReobfTaskForReobfJar" -> mustRunAfter(tasks.jar)
+		"configureReobfTaskForReobfJarJar" -> mustRunAfter(tasks.jarJar)
+	}
+}
+
 publishMods {
 	displayName = "$jarName-Forge-${libs.versions.minecraft.get()}-$modVersion"
 	file = tasks.named<Jar>("jar").get().archiveFile
@@ -136,14 +143,14 @@ publishMods {
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
 		clientRequired = true
 		serverRequired = false
-		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
+		incompatible("better-third-person", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 	
 	modrinth {
 		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "cameraoverhaul", "nimble", "the-one-probe", "valkyrien-skies")
+		incompatible("better-third-person", "nimble", "the-one-probe", "valkyrien-skies")
 	}
 }
 

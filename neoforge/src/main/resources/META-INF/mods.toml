@@ -12,9 +12,6 @@ config = "shouldersurfing.common.mixins.json"
 config = "shouldersurfing.common.compat.mixins.json"
 
 [[mixins]]
-config = "shouldersurfing.neoforge.mixins.json"
-
-[[mixins]]
 config = "shouldersurfing.compat.oculus.mixins.json"
 
 [[mods]]
@@ -39,11 +36,6 @@ side = "CLIENT"
 
 [[dependencies.${modId}]]
 modId = "betterthirdperson"
-type = "incompatible"
-side = "CLIENT"
-
-[[dependencies.${modId}]]
-modId = "cameraoverhaul"
 type = "incompatible"
 side = "CLIENT"
 

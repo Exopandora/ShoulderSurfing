@@ -1,25 +1,26 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderRenderer;
-import com.github.exopandora.shouldersurfing.config.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.player.LocalPlayer;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static org.spongepowered.asm.mixin.injection.At.Shift;
 
 @Mixin(Gui.class)
 public abstract class MixinGui
 {
 	@Shadow
-	protected Minecraft minecraft;
+	private @Final Minecraft minecraft;
 	
 	@Inject
 	(
@@ -33,7 +34,7 @@ public abstract class MixinGui
 	)
 	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
 	}
 	
 	@Inject
@@ -48,7 +49,7 @@ public abstract class MixinGui
 	)
 	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderRenderer.getInstance().clearCrosshairOffset(guiGraphics.pose());
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(guiGraphics.pose());
 	}
 	
 	@Redirect
@@ -63,6 +64,6 @@ public abstract class MixinGui
 	)
 	private boolean isFirstPerson(CameraType cameraType)
 	{
-		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING.equals(Perspective.current()) && minecraft.player.isScoping();
+		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current() && this.minecraft.player.isScoping();
 	}
 }
