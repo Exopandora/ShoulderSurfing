@@ -12,6 +12,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class Config
 		private final ConfigValue<TurningMode> turningModeWhenAttacking;
 		private final ConfigValue<TurningMode> turningModeWhenInteraction;
 		private final ConfigValue<TurningMode> turningModeWhenPicking;
+		private final IntValue turningLockTime;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -299,7 +301,7 @@ public class Config
 			builder.push("player_turning");
 			
 			this.turningModeWhenUsingItem = builder
-				.comment("Whether to turn the player when using an item. This config option only applies when camera is decoupled.")
+				.comment("Whether to turn the player when using an item.")
 				.translation("Turn player when using an item")
 				.defineEnum("when_using_item", TurningMode.ALWAYS, TurningMode.values());
 			
@@ -317,6 +319,11 @@ public class Config
 				.comment("Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
 				.translation("Turn player when picking")
 				.defineEnum("when_picking", TurningMode.ALWAYS, TurningMode.values());
+			
+			this.turningLockTime = builder
+				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
+				.translation("Turning lock time (ticks)")
+				.defineInRange("turning_lock_time", 4, 0, Integer.MAX_VALUE);
 			
 			builder.pop();
 			builder.pop();
@@ -602,6 +609,11 @@ public class Config
 		public TurningMode getTurningModeWhenPicking()
 		{
 			return this.turningModeWhenPicking.get();
+		}
+		
+		public int getTurningLockTime()
+		{
+			return this.turningLockTime.get();
 		}
 		
 		public boolean isCameraDecoupled()
