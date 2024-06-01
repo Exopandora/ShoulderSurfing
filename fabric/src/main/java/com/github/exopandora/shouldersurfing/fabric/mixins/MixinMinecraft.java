@@ -39,7 +39,7 @@ public class MixinMinecraft
 	)
 	private void onStartTick(CallbackInfo info)
 	{
-		if(Minecraft.getInstance().level != null)
+		if(Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())
 		{
 			ShoulderSurfingImpl.getInstance().tick();
 		}

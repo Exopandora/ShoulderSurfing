@@ -14,7 +14,10 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent.Pre event)
 	{
-		ShoulderSurfingImpl.getInstance().tick();
+		if(!Minecraft.getInstance().isPaused())
+		{
+			ShoulderSurfingImpl.getInstance().tick();
+		}
 	}
 	
 	@SubscribeEvent
