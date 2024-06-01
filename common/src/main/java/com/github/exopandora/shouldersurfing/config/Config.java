@@ -301,24 +301,24 @@ public class Config
 			builder.push("player_turning");
 			
 			this.turningModeWhenUsingItem = builder
-				.comment("Whether to turn the player when using an item.")
+				.comment("Whether to turn the player when using an item. This config option only applies when camera is decoupled.")
 				.translation("Turn player when using an item")
-				.defineEnum("when_using_item", TurningMode.ALWAYS, TurningMode.values());
+				.defineEnum("using_item", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningModeWhenAttacking = builder
 				.comment("Whether to turn the player when attacking. This config option only applies when camera is decoupled.")
 				.translation("Turn player when attacking")
-				.defineEnum("when_attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
+				.defineEnum("attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
 			
 			this.turningModeWhenInteraction = builder
 				.comment("Whether to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
 				.translation("Turn player when interacting with blocks")
-				.defineEnum("when_interacting", TurningMode.ALWAYS, TurningMode.values());
+				.defineEnum("interacting", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningModeWhenPicking = builder
 				.comment("Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
 				.translation("Turn player when picking")
-				.defineEnum("when_picking", TurningMode.ALWAYS, TurningMode.values());
+				.defineEnum("picking", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningLockTime = builder
 				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
