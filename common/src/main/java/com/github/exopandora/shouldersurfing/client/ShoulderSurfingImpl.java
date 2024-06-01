@@ -27,6 +27,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	private boolean isTemporaryFirstPerson;
 	private boolean isAiming;
 	private boolean isFreeLooking;
+	private int turningLockTime;
 	
 	public void init()
 	{
@@ -73,8 +74,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 			
 			if(!this.isFreeLooking && minecraft.getCameraEntity() == player)
 			{
-				if(this.shouldEntityAimAtTarget(player, minecraft))
+				boolean shouldAimAtTarget = this.shouldEntityAimAtTargetInternal(player, minecraft);
+				
+				if(shouldAimAtTarget || this.turningLockTime > 0)
 				{
+					this.turningLockTime = shouldAimAtTarget ? Config.CLIENT.getTurningLockTime() : (this.turningLockTime - 1);
 					this.lookAtTarget(player, minecraft);
 				}
 				else if(this.shouldEntityFollowCamera(player))
@@ -108,11 +112,16 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround()));
 	}
 	
-	public boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
+	private boolean shouldEntityAimAtTargetInternal(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
 			(isUsingItem(cameraEntity, minecraft) || !cameraEntity.isFallFlying() && (isInteracting(cameraEntity, minecraft) ||
 				isAttacking(minecraft) || isPicking(minecraft)));
+	}
+	
+	public boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return this.turningLockTime > 0 || this.shouldEntityAimAtTargetInternal(cameraEntity, minecraft);
 	}
 	
 	private static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
@@ -249,6 +258,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	{
 		this.camera.resetState();
 		this.crosshairRenderer.resetState();
+		this.turningLockTime = 0;
 	}
 	
 	public static ShoulderSurfingImpl getInstance()
