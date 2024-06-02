@@ -29,5 +29,6 @@ public class MixinLocalPlayer
 	private void aiStep(CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(this.input);
+		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
 	}
 }
