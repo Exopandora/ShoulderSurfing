@@ -29,5 +29,6 @@ public class MixinClientPlayerEntity
 	private void aiStep(CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(this.input);
+		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
 	}
 }

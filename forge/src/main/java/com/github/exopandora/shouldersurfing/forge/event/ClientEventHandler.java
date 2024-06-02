@@ -44,5 +44,6 @@ public class ClientEventHandler
 	public static void movementInputUpdateEvent(InputUpdateEvent event)
 	{
 		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getMovementInput());
+		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
 	}
 }
