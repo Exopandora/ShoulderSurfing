@@ -10,8 +10,6 @@ import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
@@ -28,6 +26,9 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	private boolean isAiming;
 	private boolean isFreeLooking;
 	private int turningLockTime;
+	private boolean updatePlayerRotations;
+	private float playerXRotO;
+	private float playerYRotO;
 	
 	public void init()
 	{
@@ -54,6 +55,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 		
 		this.isAiming = isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
+		this.updatePlayerRotations = false;
 		LocalPlayer player = minecraft.player;
 		
 		if(this.isShoulderSurfing && Config.CLIENT.getCrosshairType().doSwitchPerspective(this.isAiming))
@@ -96,20 +98,21 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		double interactionRange = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
 		PickContext pickContext = new PickContext.Builder(camera).build();
 		HitResult hitResult = this.objectPicker.pick(pickContext, interactionRange, 1.0F, minecraft.gameMode);
-		float yHeadRot = player.yHeadRot;
-		float yHeadRotO = player.yHeadRotO;
-		float yBodyRot = player.yBodyRot;
-		float yBodyRotO = player.yBodyRotO;
-		float xRotO = player.xRotO;
-		float yRotO = player.yRotO;
-		player.lookAt(EntityAnchorArgument.Anchor.EYES, hitResult.getLocation());
-		player.yHeadRot = yHeadRot;
-		player.yHeadRotO = yHeadRotO;
-		player.yBodyRot = yBodyRot;
-		player.yBodyRotO = yBodyRotO;
-		player.xRotO = xRotO;
-		player.yRotO = yRotO;
-		player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround()));
+		this.playerXRotO = player.getXRot();
+		this.playerYRotO = player.getYRot();
+		this.updatePlayerRotations = true;
+		EntityHelper.lookAtTarget(player, hitResult.getLocation());
+	}
+	
+	public void updatePlayerRotations()
+	{
+		LocalPlayer player = Minecraft.getInstance().player;
+		
+		if(this.updatePlayerRotations && player != null)
+		{
+			player.xRotO = this.playerXRotO;
+			player.yRotO = this.playerYRotO;
+		}
 	}
 	
 	private boolean shouldEntityAimAtTargetInternal(LivingEntity cameraEntity, Minecraft minecraft)
