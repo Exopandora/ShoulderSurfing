@@ -8,10 +8,11 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 {
@@ -28,7 +29,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
 		String useItemId = BuiltInRegistries.ITEM.getKey(useStack.getItem()).toString();
 		
-		if(useItems.stream().anyMatch(useItemId::matches))
+		if(useItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(useItemId)))
 		{
 			return true;
 		}
@@ -48,7 +49,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		{
 			String handItemId = BuiltInRegistries.ITEM.getKey(handStack.getItem()).toString();
 			
-			if(holdItems.stream().anyMatch(handItemId::matches))
+			if(holdItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(handItemId)))
 			{
 				return true;
 			}
@@ -63,5 +64,17 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		}
 		
 		return false;
+	}
+	
+	private static Predicate<String> expressionToMatchPredicate(String expression)
+	{
+		try
+		{
+			return Pattern.compile(expression).asMatchPredicate();
+		}
+		catch(Exception e)
+		{
+			return expression::equals;
+		}
 	}
 }
