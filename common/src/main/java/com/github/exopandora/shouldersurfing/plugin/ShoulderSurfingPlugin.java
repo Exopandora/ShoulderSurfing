@@ -12,6 +12,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 {
@@ -28,7 +30,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
 		String useItemId = Registry.ITEM.getKey(useItem).toString();
 		
-		if(useItems.stream().anyMatch(useItemId::matches))
+		if(useItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(useItemId)))
 		{
 			return true;
 		}
@@ -49,7 +51,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			Item handItem = handStack.getItem();
 			String handItemId = Registry.ITEM.getKey(handItem).toString();
 			
-			if(holdItems.stream().anyMatch(handItemId::matches))
+			if(holdItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(handItemId)))
 			{
 				return true;
 			}
@@ -64,5 +66,17 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		}
 		
 		return false;
+	}
+	
+	private static Predicate<String> expressionToMatchPredicate(String expression)
+	{
+		try
+		{
+			return Pattern.compile(expression).asMatchPredicate();
+		}
+		catch(Exception e)
+		{
+			return expression::equals;
+		}
 	}
 }
