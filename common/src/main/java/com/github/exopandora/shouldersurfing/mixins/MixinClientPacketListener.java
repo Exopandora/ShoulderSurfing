@@ -64,7 +64,7 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 		
 		if(instance.isShoulderSurfing())
 		{
-			Player player = Minecraft.getInstance().player;
+			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.getRelativeArguments().contains(RelativeMovement.X_ROT);
 			boolean isRelativeYRot = packet.getRelativeArguments().contains(RelativeMovement.Y_ROT);
 			
