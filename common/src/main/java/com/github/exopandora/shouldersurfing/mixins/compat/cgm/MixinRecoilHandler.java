@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -24,9 +23,9 @@ public class MixinRecoilHandler
 		method = "onRenderTick",
 		at = @At
 		(
-			value = "RETURN",
-			ordinal = 2,
-			shift = Shift.AFTER
+			value = "INVOKE",
+			target = "net/minecraft/client/Minecraft.getDeltaFrameTime()F",
+			remap = true
 		),
 		remap = false
 	)
