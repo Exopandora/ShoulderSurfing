@@ -6,5 +6,5 @@ import org.apache.logging.log4j.Logger;
 public class ShoulderSurfingCommon
 {
 	public static final String MOD_ID = "shouldersurfing";
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger("ShoulderSurfing");
 }
