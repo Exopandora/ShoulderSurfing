@@ -98,6 +98,7 @@ tasks.register<Jar>("apiJar").configure {
 	from(project(":api").sourceSets.main.get().output)
 	from(project(":api").sourceSets.main.get().allSource)
 	archiveClassifier = "API"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.build {
