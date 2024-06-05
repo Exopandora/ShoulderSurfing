@@ -7,7 +7,8 @@
 	"client": [
 		"cgm.MixinRecoilHandler",
 		"epicfight.MixinRenderEngine",
-		"skinlayers.MixinCustomizableModelPart"
+		"skinlayers.MixinCustomizableModelPart",
+		"theoneprobe.MixinOverlayRenderer"
 	],
 	"injectors": {
 		"defaultRequire": 0
