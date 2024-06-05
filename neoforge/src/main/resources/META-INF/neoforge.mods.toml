@@ -49,8 +49,3 @@ side = "CLIENT"
 modId = "valkyrienskies"
 type = "incompatible"
 side = "CLIENT"
-
-[[dependencies.${modId}]]
-modId = "theoneprobe"
-type = "discouraged"
-side = "CLIENT"
