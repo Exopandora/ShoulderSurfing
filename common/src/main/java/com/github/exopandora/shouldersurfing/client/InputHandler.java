@@ -136,7 +136,7 @@ public class InputHandler
 				ClientPlayerEntity player = minecraft.player;
 				float yRot = player.yRot;
 				
-				if(!this.instance.shouldEntityAimAtTarget(player, minecraft) && !this.instance.shouldEntityFollowCamera(player))
+				if(this.instance.isEntityRotationDecoupled(player, minecraft))
 				{
 					float cameraXRot = camera.getXRot();
 					float cameraYRot = camera.getYRot();

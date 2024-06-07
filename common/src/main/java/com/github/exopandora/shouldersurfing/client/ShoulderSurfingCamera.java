@@ -317,10 +317,18 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				cameraYRot = constraintRotations.y();
 			}
 			
-			if(Config.CLIENT.isCameraDecoupled() && (this.instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying()))
+			if(Config.CLIENT.isCameraDecoupled())
 			{
-				player.xRot = cameraXRot;
-				player.yRot = cameraYRot;
+				if(this.instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying())
+				{
+					player.xRot = cameraXRot;
+					player.yRot = cameraYRot;
+				}
+				else if(Config.CLIENT.doSyncPlayerXRotWithInputs() && this.instance.isEntityRotationDecoupled(player, Minecraft.getInstance()))
+				{
+					player.xRot = cameraXRot;
+					player.xRotO += MathHelper.degreesDifference(this.xRot, cameraXRot);
+				}
 			}
 			
 			this.xRot = cameraXRot;
