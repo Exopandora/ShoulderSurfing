@@ -93,6 +93,8 @@ public class Config
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemProperties;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 		
+		private final BooleanValue centerPlayerSounds;
+		
 		public ClientConfig(ForgeConfigSpec.Builder builder)
 		{
 			builder.push("camera");
@@ -399,6 +401,14 @@ public class Config
 			
 			builder.pop();
 			builder.pop();
+			builder.push("sounds");
+			
+			this.centerPlayerSounds = builder
+				.comment("Whether to center sounds made by the player.")
+				.translation("Center player sounds")
+				.define("center_player_sounds", false);
+			
+			builder.pop();
 		}
 		
 		public double getOffsetX()
@@ -644,6 +654,11 @@ public class Config
 		public List<? extends String> getAdaptiveCrosshairUseItemProperties()
 		{
 			return this.adaptiveCrosshairUseItemProperties.get();
+		}
+		
+		public boolean doCenterPlayerSounds()
+		{
+			return this.centerPlayerSounds.get();
 		}
 		
 		public void adjustCameraLeft()
