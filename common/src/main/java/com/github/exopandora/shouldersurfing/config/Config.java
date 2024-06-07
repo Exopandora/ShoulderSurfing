@@ -84,6 +84,7 @@ public class Config
 		private final ConfigValue<TurningMode> turningModeWhenInteraction;
 		private final ConfigValue<TurningMode> turningModeWhenPicking;
 		private final IntValue turningLockTime;
+		private final BooleanValue syncPlayerXRotWithInputs;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -303,6 +304,11 @@ public class Config
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
 				.translation("Center camera when looking up angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
+			
+			this.syncPlayerXRotWithInputs = builder
+				.comment("Whether to synchronize the x-rot of the player with mouse or controller inputs. This config option only applies when camera is decoupled.")
+				.translation("Sync player x-rot with mouse or controller inputs")
+				.define("sync_player_x_rot_with_inputs", false);
 			
 			builder.push("turning");
 			
@@ -663,6 +669,11 @@ public class Config
 		public boolean doCenterPlayerSounds()
 		{
 			return this.centerPlayerSounds.get();
+		}
+		
+		public boolean doSyncPlayerXRotWithInputs()
+		{
+			return this.syncPlayerXRotWithInputs.get();
 		}
 		
 		public void adjustCameraLeft()

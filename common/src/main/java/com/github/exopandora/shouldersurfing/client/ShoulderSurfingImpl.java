@@ -127,6 +127,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		return this.turningLockTime > 0 || this.shouldEntityAimAtTargetInternal(cameraEntity, minecraft);
 	}
 	
+	public boolean isEntityRotationDecoupled(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return !this.shouldEntityAimAtTarget(cameraEntity, minecraft) && !this.shouldEntityFollowCamera(cameraEntity);
+	}
+	
 	private static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return cameraEntity.isUsingItem() && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult) &&
