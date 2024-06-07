@@ -74,10 +74,11 @@ public class Config
 		
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue skipThirdPersonFront;
-		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue rememberLastPerspective;
+		
 		private final BooleanValue playerTransparency;
+		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		private final ConfigValue<TurningMode> turningModeWhenUsingItem;
 		private final ConfigValue<TurningMode> turningModeWhenAttacking;
 		private final ConfigValue<TurningMode> turningModeWhenInteraction;
@@ -290,6 +291,9 @@ public class Config
 				.translation("Skip third person front perspective")
 				.define("skip_third_person_front_perspective", false);
 			
+			builder.pop();
+			builder.push("player");
+			
 			this.playerTransparency = builder
 				.comment("Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
 				.translation("Adjust player transparency")
@@ -300,27 +304,27 @@ public class Config
 				.translation("Center camera when looking up angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 			
-			builder.push("player_turning");
+			builder.push("turning");
 			
 			this.turningModeWhenUsingItem = builder
 				.comment("Whether to turn the player when using an item. This config option only applies when camera is decoupled.")
 				.translation("Turn player when using an item")
-				.defineEnum("using_item", TurningMode.ALWAYS, TurningMode.values());
+				.defineEnum("when_using_item", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningModeWhenAttacking = builder
 				.comment("Whether to turn the player when attacking. This config option only applies when camera is decoupled.")
 				.translation("Turn player when attacking")
-				.defineEnum("attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
+				.defineEnum("when_attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
 			
 			this.turningModeWhenInteraction = builder
 				.comment("Whether to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
 				.translation("Turn player when interacting with blocks")
-				.defineEnum("interacting", TurningMode.ALWAYS, TurningMode.values());
+				.defineEnum("when_interacting", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningModeWhenPicking = builder
 				.comment("Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
 				.translation("Turn player when picking")
-				.defineEnum("picking", TurningMode.ALWAYS, TurningMode.values());
+				.defineEnum("when_picking", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningLockTime = builder
 				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
@@ -401,7 +405,7 @@ public class Config
 			
 			builder.pop();
 			builder.pop();
-			builder.push("sounds");
+			builder.push("audio");
 			
 			this.centerPlayerSounds = builder
 				.comment("Whether to center sounds made by the player.")
