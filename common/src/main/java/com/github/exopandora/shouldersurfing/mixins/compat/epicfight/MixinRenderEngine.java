@@ -30,4 +30,19 @@ public class MixinRenderEngine
 			ci.cancel();
 		}
 	}
+	
+	@Inject
+	(
+		method = "setRangedWeaponThirdPerson",
+		at = @At("HEAD"),
+		cancellable = true,
+		remap = false
+	)
+	private void setRangedWeaponThirdPerson(CallbackInfo ci)
+	{
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
+		{
+			ci.cancel();
+		}
+	}
 }
