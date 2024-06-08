@@ -37,7 +37,7 @@ public abstract class MixinClientLevel extends Level
 	}
 	
 	@Shadow
-	abstract void playSound(double x, double y, double z, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch, boolean isGlobal, long seed);
+	abstract void playSound(double x, double y, double z, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch, boolean isDelayed, long seed);
 	
 	@Inject
 	(
@@ -66,14 +66,14 @@ public abstract class MixinClientLevel extends Level
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void playLocalSound(double x, double y, double z, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch, boolean isGlobal, CallbackInfo ci)
+	private void playLocalSound(double x, double y, double z, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch, boolean isDelayed, CallbackInfo ci)
 	{
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
 		if(cameraEntity != null && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.doCenterPlayerSounds() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z)
 		{
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
-			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isGlobal, this.random.nextLong());
+			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isDelayed, this.random.nextLong());
 			ci.cancel();
 		}
 	}
