@@ -25,17 +25,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 {
 	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private final ShoulderSurfingImpl instance;
-	private double offsetX;
-	private double offsetY;
-	private double offsetZ;
-	private double offsetXO;
-	private double offsetYO;
-	private double offsetZO;
+	private Vector3d offset;
+	private Vector3d offsetO;
+	private Vector3d renderOffset;
+	private Vector3d targetOffset;
 	private double cameraDistance;
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
-	private Vector3d renderOffset;
-	private Vector3d targetOffset;
 	private float xRot;
 	private float yRot;
 	private float xRotOffset;
@@ -58,21 +54,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.init();
 		}
 		
+		double cameraTransitionSpeedMultiplier = Config.CLIENT.getCameraTransitionSpeedMultiplier();
 		this.xRotOffsetO = this.xRotOffset;
 		this.yRotOffsetO = this.yRotOffset;
-		
-		this.offsetXO = this.offsetX;
-		this.offsetYO = this.offsetY;
-		this.offsetZO = this.offsetZ;
-		
-		double cameraTransitionSpeedMultiplier = Config.CLIENT.getCameraTransitionSpeedMultiplier();
-		
-		this.offsetX = this.offsetXO + (this.targetOffset.x() - this.offsetXO) * cameraTransitionSpeedMultiplier;
-		this.offsetY = this.offsetYO + (this.targetOffset.y() - this.offsetYO) * cameraTransitionSpeedMultiplier;
-		this.offsetZ = this.offsetZO + (this.targetOffset.z() - this.offsetZO) * cameraTransitionSpeedMultiplier;
-		
+		this.offsetO = this.offset;
+		this.offset = lerp(this.offsetO, this.targetOffset, cameraTransitionSpeedMultiplier);
 		this.maxCameraDistanceO = this.maxCameraDistance;
-		this.maxCameraDistance = this.maxCameraDistance + (this.getOffset().length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
+		this.maxCameraDistance = this.maxCameraDistance + (this.offset.length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
 		
 		if(!this.instance.isFreeLooking())
 		{
@@ -84,15 +72,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private void init()
 	{
-		this.offsetX = Config.CLIENT.getOffsetX();
-		this.offsetY = Config.CLIENT.getOffsetY();
-		this.offsetZ = Config.CLIENT.getOffsetZ();
-		this.offsetXO = this.offsetX;
-		this.offsetYO = this.offsetY;
-		this.offsetZO = this.offsetZ;
-		this.renderOffset = new Vector3d(this.offsetX, this.offsetY, this.offsetZ);
-		this.targetOffset = this.renderOffset;
-		this.maxCameraDistance = this.renderOffset.length();
+		this.offset = new Vector3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
+		this.offsetO = this.offset;
+		this.renderOffset = this.offset;
+		this.targetOffset = this.offset;
+		this.maxCameraDistance = this.offset.length();
 		this.maxCameraDistanceO = this.maxCameraDistance;
 		
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
@@ -172,12 +156,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		this.targetOffset = targetOffset;
-		
-		double offsetX = MathHelper.lerp(partialTick, this.offsetXO, this.offsetX);
-		double offsetY = MathHelper.lerp(partialTick, this.offsetYO, this.offsetY);
-		double offsetZ = MathHelper.lerp(partialTick, this.offsetZO, this.offsetZ);
-		
-		Vector3d lerpedOffset = new Vector3d(offsetX, offsetY, offsetZ);
+		Vector3d lerpedOffset = lerp(this.offsetO, this.offset, partialTick);
 		
 		if(cameraEntity.isSpectator())
 		{
@@ -409,7 +388,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	@Override
 	public Vector3d getOffset()
 	{
-		return new Vector3d(this.offsetX, this.offsetY, this.offsetZ);
+		return this.offset;
 	}
 	
 	@Override
@@ -465,5 +444,10 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	public static double angle(Vector3f a, Vector3f b)
 	{
 		return Math.acos(a.dot(b) / (length(a) * length(b)));
+	}
+	
+	public static Vector3d lerp(Vector3d a, Vector3d b, double d)
+	{
+		return new Vector3d(MathHelper.lerp(d, a.x(), b.x()), MathHelper.lerp(d, a.y(), b.y()), MathHelper.lerp(d, a.z(), b.z()));
 	}
 }
