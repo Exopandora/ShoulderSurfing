@@ -17,6 +17,13 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
+idea {
+	module {
+		isDownloadSources = true
+		isDownloadJavadoc = true
+	}
+}
+
 dependencies {
 	minecraft(libs.minecraft.fabric)
 	mappings(fileTree("../mapping") { include("**.jar") })
