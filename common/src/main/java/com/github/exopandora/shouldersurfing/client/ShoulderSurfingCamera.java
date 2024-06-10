@@ -23,17 +23,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 {
 	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private final ShoulderSurfingImpl instance;
-	private double offsetX;
-	private double offsetY;
-	private double offsetZ;
-	private double offsetXO;
-	private double offsetYO;
-	private double offsetZO;
+	private Vec3 offset;
+	private Vec3 offsetO;
+	private Vec3 renderOffset;
+	private Vec3 targetOffset;
 	private double cameraDistance;
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
-	private Vec3 renderOffset;
-	private Vec3 targetOffset;
 	private float xRot;
 	private float yRot;
 	private float xRotOffset;
@@ -56,21 +52,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.init();
 		}
 		
+		double cameraTransitionSpeedMultiplier = Config.CLIENT.getCameraTransitionSpeedMultiplier();
 		this.xRotOffsetO = this.xRotOffset;
 		this.yRotOffsetO = this.yRotOffset;
-		
-		this.offsetXO = this.offsetX;
-		this.offsetYO = this.offsetY;
-		this.offsetZO = this.offsetZ;
-		
-		double cameraTransitionSpeedMultiplier = Config.CLIENT.getCameraTransitionSpeedMultiplier();
-		
-		this.offsetX = this.offsetXO + (this.targetOffset.x() - this.offsetXO) * cameraTransitionSpeedMultiplier;
-		this.offsetY = this.offsetYO + (this.targetOffset.y() - this.offsetYO) * cameraTransitionSpeedMultiplier;
-		this.offsetZ = this.offsetZO + (this.targetOffset.z() - this.offsetZO) * cameraTransitionSpeedMultiplier;
-		
+		this.offsetO = this.offset;
+		this.offset = this.offsetO.lerp(this.targetOffset, cameraTransitionSpeedMultiplier);
 		this.maxCameraDistanceO = this.maxCameraDistance;
-		this.maxCameraDistance = this.maxCameraDistance + (this.getOffset().length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
+		this.maxCameraDistance = this.maxCameraDistance + (this.offset.length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
 		
 		if(!this.instance.isFreeLooking())
 		{
@@ -82,15 +70,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private void init()
 	{
-		this.offsetX = Config.CLIENT.getOffsetX();
-		this.offsetY = Config.CLIENT.getOffsetY();
-		this.offsetZ = Config.CLIENT.getOffsetZ();
-		this.offsetXO = this.offsetX;
-		this.offsetYO = this.offsetY;
-		this.offsetZO = this.offsetZ;
-		this.renderOffset = new Vec3(this.offsetX, this.offsetY, this.offsetZ);
-		this.targetOffset = this.renderOffset;
-		this.maxCameraDistance = this.renderOffset.length();
+		this.offset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
+		this.offsetO = this.offset;
+		this.renderOffset = this.offset;
+		this.targetOffset = this.offset;
+		this.maxCameraDistance = this.offset.length();
 		this.maxCameraDistanceO = this.maxCameraDistance;
 		
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
@@ -170,12 +154,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		this.targetOffset = targetOffset;
-		
-		double offsetX = Mth.lerp(partialTick, this.offsetXO, this.offsetX);
-		double offsetY = Mth.lerp(partialTick, this.offsetYO, this.offsetY);
-		double offsetZ = Mth.lerp(partialTick, this.offsetZO, this.offsetZ);
-		
-		Vec3 lerpedOffset = new Vec3(offsetX, offsetY, offsetZ);
+		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick);
 		
 		if(cameraEntity.isSpectator())
 		{
@@ -407,7 +386,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	@Override
 	public Vec3 getOffset()
 	{
-		return new Vec3(this.offsetX, this.offsetY, this.offsetZ);
+		return this.offset;
 	}
 	
 	@Override
