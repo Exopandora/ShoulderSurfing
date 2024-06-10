@@ -16,6 +16,13 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
+idea {
+	module {
+		isDownloadSources = true
+		isDownloadJavadoc = true
+	}
+}
+
 dependencies {
 	compileOnly(project(":api"))
 	
