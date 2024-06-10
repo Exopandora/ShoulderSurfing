@@ -30,6 +30,13 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
+idea {
+	module {
+		isDownloadSources = true
+		isDownloadJavadoc = true
+	}
+}
+
 runs {
 	configureEach {
 		workingDirectory(project.file("../run"))
