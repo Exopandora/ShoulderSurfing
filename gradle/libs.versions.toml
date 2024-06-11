@@ -6,17 +6,17 @@ fabric-loader = "0.15.10"
 fabric-api = "0.97.8+1.20.6"
 mixin = "0.8.5"
 forgeconfigapiport = "20.6.0"
-wthit-common = "mojmap-11.1.2"
-wthit-forge = "mojmap-11.1.2" # temporarily use common artifact for compilation
-wthit-neoforge = "mojmap-11.1.2" # temporarily use common artifact for compilation
-wthit-fabric = "fabric-11.1.2"
-jade-common = "5288707" # 14.0.2
-jade-forge = "5288707" # temporarily use common artifact for compilation
-jade-neoforge = "5288707" # temporarily use common artifact for compilation
-jade-fabric = "5288679" # 1.20.5-14.0.2
-badpackets-forge = "fabric-0.7.2" # temporarily use fabric artifact for compilation
-badpackets-neoforge = "neo-0.7.2"
-badpackets-fabric = "fabric-0.7.2"
+wthit-common = "mojmap-11.3.0"
+wthit-forge = "forge-11.3.0"
+wthit-neoforge = "neo-11.3.0"
+wthit-fabric = "fabric-11.3.0"
+jade-common = "5366595" # 1.20.6-14.2.3-neoforge
+jade-forge = "5366595" # temporarily use common artifact for compilation
+jade-neoforge = "5366595" # 1.20.6-14.2.3
+jade-fabric = "5366604" # 1.20.6-14.2.3
+badpackets-forge = "forge-0.7.3"
+badpackets-neoforge = "neo-0.7.3"
+badpackets-fabric = "fabric-0.7.3"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
