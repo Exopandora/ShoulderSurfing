@@ -26,7 +26,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		return this;
 	}
 	
-	public IShoulderSurfingRegistrar registerAdaptiveItemCallback(ITargetCameraOffsetCallback targetCameraOffsetCallback)
+	public IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback targetCameraOffsetCallback)
 	{
 		this.targetCameraOffsetCallbacks.add(targetCameraOffsetCallback);
 		return this;
