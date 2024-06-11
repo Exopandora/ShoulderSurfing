@@ -62,7 +62,7 @@ public abstract class MixinActiveRenderInfo
 		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity && ((LivingEntity) cameraEntity).isSleeping()))
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
-			Vector3d cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity, -x);
+			Vector3d cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity);
 			this.move(cameraOffset.x(), cameraOffset.y(), cameraOffset.z());
 		}
 		else

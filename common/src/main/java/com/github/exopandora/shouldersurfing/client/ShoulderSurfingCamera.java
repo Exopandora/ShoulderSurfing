@@ -106,7 +106,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		return new Vec2f(cameraXRotWithOffset, cameraYRotWithOffset);
 	}
 	
-	public Vector3d calcOffset(ActiveRenderInfo camera, IBlockReader level, float partialTick, Entity cameraEntity, double maxZoom)
+	public Vector3d calcOffset(ActiveRenderInfo camera, IBlockReader level, float partialTick, Entity cameraEntity)
 	{
 		Vector3d defaultOffset = new Vector3d(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
 		Vector3d targetOffset = defaultOffset;
@@ -165,7 +165,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		else
 		{
-			double targetCameraDistance = maxZoom(camera, level, lerpedOffset, maxZoom, partialTick);
+			double targetCameraDistance = maxZoom(camera, level, lerpedOffset, partialTick);
 			
 			if(targetCameraDistance < this.maxCameraDistance)
 			{
@@ -232,13 +232,12 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		return new Vector3d(targetXOffset, targetYOffset, targetOffset.z());
 	}
 	
-	private static double maxZoom(ActiveRenderInfo camera, IBlockReader level, Vector3d cameraOffset, double distance, float partialTick)
+	private static double maxZoom(ActiveRenderInfo camera, IBlockReader level, Vector3d cameraOffset, float partialTick)
 	{
+		double distance = cameraOffset.length();
 		Vector3d worldOffset = new Vector3d(camera.getUpVector()).scale(cameraOffset.y())
 			.add(new Vector3d(((ActiveRenderInfoAccessor) camera).getLeft()).scale(cameraOffset.x()))
-			.add(new Vector3d(camera.getLookVector()).scale(-cameraOffset.z()))
-			.normalize()
-			.scale(distance);
+			.add(new Vector3d(camera.getLookVector()).scale(-cameraOffset.z()));
 		Vector3d eyePosition = camera.getEntity().getEyePosition(partialTick);
 		
 		for(int i = 0; i < 8; i++)
