@@ -608,7 +608,7 @@ public class Config
 		
 		public boolean isPlayerTransparencyEnabled()
 		{
-			return this.playerTransparency.get();
+			return Config.CLIENT_SPEC.isLoaded() ? this.playerTransparency.get() : this.playerTransparency.getDefault();
 		}
 		
 		public TurningMode getTurningModeWhenUsingItem()
