@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import com.github.exopandora.shouldersurfing.config.Config;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -23,6 +24,6 @@ public class MixinCapeLayer
 	)
 	private RenderType entitySolid(ResourceLocation texture)
 	{
-		return RenderType.itemEntityTranslucentCull(texture);
+		return Config.CLIENT.isPlayerTransparencyEnabled() ? RenderType.itemEntityTranslucentCull(texture) : RenderType.entitySolid(texture);
 	}
 }

@@ -1,11 +1,11 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import com.github.exopandora.shouldersurfing.config.Config;
+import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-
-import net.minecraft.client.renderer.RenderState;
-import net.minecraft.client.renderer.RenderType;
 
 @Mixin(RenderType.class)
 public abstract class MixinRenderType extends RenderState
@@ -31,6 +31,6 @@ public abstract class MixinRenderType extends RenderState
 	)
 	private static RenderState.TransparencyState setTransparencyState(RenderState.TransparencyState transparencyStateShard)
 	{
-		return TRANSLUCENT_TRANSPARENCY;
+		return Config.CLIENT.isPlayerTransparencyEnabled() ? TRANSLUCENT_TRANSPARENCY : transparencyStateShard;
 	}
 }
