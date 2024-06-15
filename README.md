@@ -103,9 +103,8 @@ The binaries for each platform can be found in the following directories:
 # Incompatibility #
 Shoulder Surfing Reloaded is known to be incompatible with the following mods (a-z):
 - Better Third Person
-- CameraOverhaul
+- Camera Utils
 - Nimble
-- The One Probe
 - Valkyrien Skies
 
 # License #
