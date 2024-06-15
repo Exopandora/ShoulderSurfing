@@ -119,17 +119,23 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(cameraEntity.isPassenger())
 		{
-			targetOffset = targetOffset.add(defaultOffset.scale(Config.CLIENT.getPassengerOffsetXMultiplier() - 1));
+			Vector3d passengerOffsetMultipliers = Config.CLIENT.getPassengerOffsetMultipliers();
+			Vector3d delta = defaultOffset.multiply(passengerOffsetMultipliers.subtract(1, 1, 1));
+			targetOffset = targetOffset.add(delta);
 		}
 		
 		if(cameraEntity.isSprinting())
 		{
-			targetOffset = targetOffset.add(defaultOffset.scale(Config.CLIENT.getSprintOffsetXMultiplier() - 1));
+			Vector3d sprintOffsetMultipliers = Config.CLIENT.getSprintOffsetMultipliers();
+			Vector3d delta = defaultOffset.multiply(sprintOffsetMultipliers.subtract(1, 1, 1));
+			targetOffset = targetOffset.add(delta);
 		}
 		
 		if(this.instance.isAiming())
 		{
-			targetOffset = targetOffset.add(defaultOffset.scale(Config.CLIENT.getAimingOffsetXMultiplier() - 1));
+			Vector3d aimingOffsetMultipliers = Config.CLIENT.getAimingOffsetMultipliers();
+			Vector3d delta = defaultOffset.multiply(aimingOffsetMultipliers.subtract(1, 1, 1));
+			targetOffset = targetOffset.add(delta);
 		}
 		
 		if(!cameraEntity.isSpectator())
