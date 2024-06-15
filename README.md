@@ -110,9 +110,8 @@ Shoulder Surfing Reloaded is designed to work with the following mods (a-z):
 
 Shoulder Surfing Reloaded is known to be incompatible with the following mods (a-z):
 - Better Third Person
-- CameraOverhaul
+- Camera Utils
 - Nimble
-- The One Probe
 - Valkyrien Skies
 
 Shoulder Surfing Reloaded is known to have minor incompatibility issues with the following mods (a-z):
