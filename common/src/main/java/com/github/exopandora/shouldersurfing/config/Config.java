@@ -8,6 +8,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -177,17 +178,17 @@ public class Config
 			this.passengerOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when the player is a passenger.")
 				.translation("Passenger x-offset multiplier")
-				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_x", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			this.passengerOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when the player is a passenger.")
 				.translation("Passenger y-offset multiplier")
-				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_y", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			this.passengerOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is a passenger.")
 				.translation("Passenger z-offset multiplier")
-				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_z", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("sprint");
@@ -195,17 +196,17 @@ public class Config
 			this.sprintOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when the player is sprinting.")
 				.translation("Sprint x-offset multiplier")
-				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_x", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			this.sprintOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when the player is sprinting.")
 				.translation("Sprint y-offset multiplier")
-				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_y", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			this.sprintOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is sprinting.")
 				.translation("Sprint z-offset multiplier")
-				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_z", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("aiming");
@@ -213,17 +214,17 @@ public class Config
 			this.aimingOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when the player is aiming.")
 				.translation("Aiming x-offset multiplier")
-				.defineInRange("multiplier_offset_x", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_x", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			this.aimingOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when the player is aiming.")
 				.translation("Aiming y-offset multiplier")
-				.defineInRange("multiplier_offset_y", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_y", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			this.aimingOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is aiming.")
 				.translation("Aiming z-offset multiplier")
-				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
+				.defineInRange("multiplier_offset_z", 1.0D, Double.MIN_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.pop();
@@ -496,6 +497,11 @@ public class Config
 			return this.passengerOffsetZMultiplier.get();
 		}
 		
+		public Vec3 getPassengerOffsetMultipliers()
+		{
+			return new Vec3(this.getPassengerOffsetXMultiplier(), this.getPassengerOffsetYMultiplier(), this.getPassengerOffsetZMultiplier());
+		}
+		
 		public double getSprintOffsetXMultiplier()
 		{
 			return this.sprintOffsetXMultiplier.get();
@@ -511,6 +517,11 @@ public class Config
 			return this.sprintOffsetZMultiplier.get();
 		}
 		
+		public Vec3 getSprintOffsetMultipliers()
+		{
+			return new Vec3(this.getSprintOffsetXMultiplier(), this.getSprintOffsetYMultiplier(), this.getSprintOffsetZMultiplier());
+		}
+		
 		public double getAimingOffsetXMultiplier()
 		{
 			return this.aimingOffsetXMultiplier.get();
@@ -524,6 +535,11 @@ public class Config
 		public double getAimingOffsetZMultiplier()
 		{
 			return this.aimingOffsetZMultiplier.get();
+		}
+		
+		public Vec3 getAimingOffsetMultipliers()
+		{
+			return new Vec3(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
