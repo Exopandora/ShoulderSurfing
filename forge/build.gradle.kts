@@ -79,8 +79,7 @@ dependencies {
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
 	implementation(libs.wthit.forge.get())
-	implementation(libs.badpackets.forge.get())
-	implementation(libs.jade.forge.get())
+	compileOnly(libs.jade.common.get())
 }
 
 tasks.withType<Jar>().configureEach {

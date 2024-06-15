@@ -14,12 +14,12 @@ public class MixinCustomizableModelPart
 	(
 		at = @At("HEAD"),
 		method = "compile",
-		index = 9,
+		index = 6,
 		argsOnly = true,
 		remap = false
 	)
-	private float render(float alpha)
+	private int compile(int color)
 	{
-		return Math.min(alpha, ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().getCameraEntityAlpha());
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlpha(color);
 	}
 }

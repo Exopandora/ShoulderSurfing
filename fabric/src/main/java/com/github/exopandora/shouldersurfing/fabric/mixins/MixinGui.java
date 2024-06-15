@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,7 +23,7 @@ public class MixinGui
 		method = "renderCrosshair",
 		at = @At("HEAD")
 	)
-	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
+	private void offsetCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
 	}
@@ -32,7 +33,7 @@ public class MixinGui
 		method = "renderCrosshair",
 		at = @At("RETURN")
 	)
-	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
+	private void clearCrosshairOffset(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(guiGraphics.pose());
 	}

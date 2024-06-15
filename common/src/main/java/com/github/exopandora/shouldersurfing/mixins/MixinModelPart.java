@@ -12,12 +12,12 @@ public class MixinModelPart
 	@ModifyVariable
 	(
 		at = @At("HEAD"),
-		method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V",
-		index = 8,
+		method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V",
+		index = 5,
 		argsOnly = true
 	)
-	public float render(float alpha)
+	public int render(int color)
 	{
-		return Math.min(alpha, ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().getCameraEntityAlpha());
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlpha(color);
 	}
 }

@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinCamera
 {
 	@Shadow
-	protected abstract void move(double x, double y, double z);
+	protected abstract void move(float x, float y, float z);
 	
 	@Shadow
 	protected abstract void setRotation(float yRot, float xRot);
@@ -53,17 +53,17 @@ public abstract class MixinCamera
 		at = @At
 		(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/Camera;move(DDD)V",
+			target = "Lnet/minecraft/client/Camera;move(FFF)V",
 			ordinal = 0
 		)
 	)
-	private void setupPosition(Camera cameraIn, double x, double y, double z, BlockGetter level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick)
+	private void setupPosition(Camera cameraIn, float x, float y, float z, BlockGetter level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick)
 	{
 		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
 			Vec3 cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity);
-			this.move(cameraOffset.x(), cameraOffset.y(), cameraOffset.z());
+			this.move((float) -cameraOffset.z(), (float) cameraOffset.y(), (float) -cameraOffset.x());
 		}
 		else
 		{

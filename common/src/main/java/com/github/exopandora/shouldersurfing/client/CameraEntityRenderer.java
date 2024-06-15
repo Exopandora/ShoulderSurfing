@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -66,6 +67,19 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 			!entity.isSpectator() && (Math.abs(renderOffset.x()) < (entity.getBbWidth() / 2.0D) &&
 			(renderOffset.y() >= 0 && renderOffset.y() < entity.getBbHeight() - entity.getEyeHeight() ||
 				renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight()));
+	}
+	
+	public int applyCameraEntityAlpha(int color)
+	{
+		int cameraEntityAlpha = FastColor.as8BitChannel(this.cameraEntityAlpha);
+		int alpha = FastColor.ARGB32.alpha(color);
+		
+		if(cameraEntityAlpha < alpha)
+		{
+			return FastColor.ABGR32.transparent(color) + (cameraEntityAlpha << 24);
+		}
+		
+		return color;
 	}
 	
 	@Override

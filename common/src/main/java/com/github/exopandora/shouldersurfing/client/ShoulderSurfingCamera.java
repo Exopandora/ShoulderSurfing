@@ -175,7 +175,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.renderOffset = lerpedOffset.normalize().scale(this.cameraDistance);
 		}
 		
-		return new Vec3(-this.renderOffset.z(), this.renderOffset.y(), this.renderOffset.x());
+		return this.renderOffset;
 	}
 	
 	private static boolean shouldCenterCamera(Entity entity)
@@ -316,7 +316,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)
 	{
 		Entity vehicle = player.getVehicle();
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 		
 		float playerXRot = player.getXRot();
 		float playerYRot = player.getYRot();

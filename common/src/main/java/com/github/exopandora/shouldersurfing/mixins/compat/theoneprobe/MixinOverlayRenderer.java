@@ -39,7 +39,8 @@ public class MixinOverlayRenderer
 				.withFluidContext(fluidContext)
 				.withEntity(entity)
 				.build();
-			return pickContext.toClipContext(start.distanceTo(end), minecraft.getFrameTime());
+			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+			return pickContext.toClipContext(start.distanceTo(end), partialTick);
 		}
 		
 		return new ClipContext(start, end, blockContext, fluidContext, entity);

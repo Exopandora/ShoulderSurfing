@@ -36,7 +36,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		
 		for(String useItemProperty : useItemProperties)
 		{
-			if(ItemProperties.getProperty(useStack, new ResourceLocation(useItemProperty)) != null)
+			if(ItemProperties.getProperty(useStack, ResourceLocation.parse(useItemProperty)) != null)
 			{
 				return true;
 			}
@@ -56,7 +56,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			
 			for(String holdItemProperty : holdItemProperties)
 			{
-				if(ItemProperties.getProperty(handStack, new ResourceLocation(holdItemProperty)) != null)
+				if(ItemProperties.getProperty(handStack, ResourceLocation.parse(holdItemProperty)) != null)
 				{
 					return true;
 				}

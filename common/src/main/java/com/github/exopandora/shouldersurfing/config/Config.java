@@ -383,9 +383,9 @@ public class Config
 				.defineList("adaptive_crosshair_hold_item_properties", () ->
 				{
 					List<String> items = new ArrayList<String>();
-					items.add(new ResourceLocation("charged").toString());
+					items.add(ResourceLocation.withDefaultNamespace("charged").toString());
 					return items;
-				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+				}, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
 			
 			this.adaptiveCrosshairUseItemProperties = builder
 				.comment("Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.")
@@ -393,10 +393,10 @@ public class Config
 				.defineList("adaptive_crosshair_use_item_properties", () ->
 				{
 					List<String> items = new ArrayList<String>();
-					items.add(new ResourceLocation("pull").toString());
-					items.add(new ResourceLocation("throwing").toString());
+					items.add(ResourceLocation.withDefaultNamespace("pull").toString());
+					items.add(ResourceLocation.withDefaultNamespace("throwing").toString());
 					return items;
-				}, item -> item != null && ResourceLocation.isValidResourceLocation(item.toString()));
+				}, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
 			
 			builder.push("visibility");
 			

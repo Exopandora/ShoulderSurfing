@@ -27,8 +27,8 @@ public class ClientEventHandler
 		{
 			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getGuiGraphics().pose(), Minecraft.getInstance().getWindow());
 		}
-		//Using BOSS_OVERLAY to pop matrix, because when CROSSHAIR is cancelled, it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
-		else if(VanillaGuiLayers.BOSS_OVERLAY.equals(event.getName()))
+		//Using HOTBAR to pop matrix, because when CROSSHAIR is cancelled, it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
+		else if(VanillaGuiLayers.HOTBAR.equals(event.getName()))
 		{
 			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(event.getGuiGraphics().pose());
 		}
@@ -39,7 +39,7 @@ public class ClientEventHandler
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getPartialTick());
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getPartialTick().getGameTimeDeltaPartialTick(true));
 		}
 	}
 	

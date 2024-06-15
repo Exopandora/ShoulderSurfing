@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[3,)"
+loaderVersion = "[4,)"
 displayURL = "${modUrl}"
 logoFile = "logo.png"
 authors = "${modAuthor}"
@@ -24,14 +24,14 @@ displayTest = "NONE"
 [[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.6,)"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
 modId = "forgeconfigapiport"
 type = "required"
-versionRange = "[20.6.0,)"
+versionRange = "[21.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
 

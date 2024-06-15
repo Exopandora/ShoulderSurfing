@@ -93,6 +93,10 @@ tasks.withType<ProcessResources>().matching(notNeoTask).configureEach {
 	}
 }
 
+tasks.withType<Test> {
+	enabled = false
+}
+
 tasks.register<Jar>("apiJar").configure {
 	from(project(":api").sourceSets.main.get().output)
 	from(project(":api").sourceSets.main.get().allSource)

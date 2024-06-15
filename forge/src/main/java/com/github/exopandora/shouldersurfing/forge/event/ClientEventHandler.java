@@ -12,9 +12,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class ClientEventHandler
 {
 	@SubscribeEvent
-	public static void clientTickEvent(ClientTickEvent event)
+	public static void clientTickEvent(ClientTickEvent.Pre event)
 	{
-		if(Phase.START.equals(event.phase) && Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())
+		if(!Minecraft.getInstance().isPaused())
 		{
 			ShoulderSurfingImpl.getInstance().tick();
 		}
@@ -25,7 +25,7 @@ public class ClientEventHandler
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), RenderSystem.getProjectionMatrix(), event.getPartialTick());
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), RenderSystem.getProjectionMatrix(), Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));
 		}
 	}
 	

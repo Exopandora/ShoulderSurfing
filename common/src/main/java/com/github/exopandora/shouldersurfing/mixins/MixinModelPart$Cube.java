@@ -13,11 +13,11 @@ public class MixinModelPart$Cube
 	(
 		at = @At("HEAD"),
 		method = "compile",
-		index = 8,
+		index = 5,
 		argsOnly = true
 	)
-	public float compile(float alpha)
+	public int compile(int color)
 	{
-		return Math.min(alpha, ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().getCameraEntityAlpha());
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlpha(color);
 	}
 }
