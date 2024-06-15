@@ -120,21 +120,21 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		if(cameraEntity.isPassenger())
 		{
 			Vector3d passengerOffsetMultipliers = Config.CLIENT.getPassengerOffsetMultipliers();
-			Vector3d delta = defaultOffset.multiply(passengerOffsetMultipliers.subtract(1, 1, 1));
+			Vector3d delta = defaultOffset.multiply(passengerOffsetMultipliers).subtract(defaultOffset);
 			targetOffset = targetOffset.add(delta);
 		}
 		
 		if(cameraEntity.isSprinting())
 		{
 			Vector3d sprintOffsetMultipliers = Config.CLIENT.getSprintOffsetMultipliers();
-			Vector3d delta = defaultOffset.multiply(sprintOffsetMultipliers.subtract(1, 1, 1));
+			Vector3d delta = defaultOffset.multiply(sprintOffsetMultipliers).subtract(defaultOffset);
 			targetOffset = targetOffset.add(delta);
 		}
 		
 		if(this.instance.isAiming())
 		{
 			Vector3d aimingOffsetMultipliers = Config.CLIENT.getAimingOffsetMultipliers();
-			Vector3d delta = defaultOffset.multiply(aimingOffsetMultipliers.subtract(1, 1, 1));
+			Vector3d delta = defaultOffset.multiply(aimingOffsetMultipliers).subtract(defaultOffset);
 			targetOffset = targetOffset.add(delta);
 		}
 		
@@ -155,6 +155,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				targetOffset = calcDynamicOffsets(camera, cameraEntity, level, targetOffset);
 			}
 		}
+		
+		double targetOffsetX = Config.CLIENT.isUnlimitedOffsetX() ? targetOffset.x() : Math.min(targetOffset.x(), Config.CLIENT.getMaxOffsetX());
+		double targetOffsetY = Config.CLIENT.isUnlimitedOffsetY() ? targetOffset.y() : Math.min(targetOffset.y(), Config.CLIENT.getMaxOffsetY());
+		double targetOffsetZ = Config.CLIENT.isUnlimitedOffsetZ() ? targetOffset.z() : Math.min(targetOffset.z(), Config.CLIENT.getMaxOffsetZ());
+		targetOffset = new Vector3d(targetOffsetX, targetOffsetY, targetOffsetZ);
 		
 		for(ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks)
 		{
