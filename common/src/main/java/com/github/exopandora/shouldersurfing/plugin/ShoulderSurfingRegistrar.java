@@ -20,12 +20,14 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		super();
 	}
 	
+	@Override
 	public IShoulderSurfingRegistrar registerAdaptiveItemCallback(IAdaptiveItemCallback adaptiveItemCallback)
 	{
 		this.adaptiveItemCallbacks.add(adaptiveItemCallback);
 		return this;
 	}
 	
+	@Override
 	public IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback targetCameraOffsetCallback)
 	{
 		this.targetCameraOffsetCallbacks.add(targetCameraOffsetCallback);
