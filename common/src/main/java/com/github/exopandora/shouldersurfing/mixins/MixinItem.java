@@ -27,7 +27,7 @@ public class MixinItem
 	)
 	private static RayTraceContext initClipContext(Vector3d start, Vector3d end, RayTraceContext.BlockMode blockContext, RayTraceContext.FluidMode fluidContext, @NotNull Entity entity)
 	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player)
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			ActiveRenderInfo camera = minecraft.gameRenderer.getMainCamera();
