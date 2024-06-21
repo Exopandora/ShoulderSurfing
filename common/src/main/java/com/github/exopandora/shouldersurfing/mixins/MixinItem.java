@@ -27,7 +27,7 @@ public class MixinItem
 	)
 	private static ClipContext initClipContext(Vec3 start, Vec3 end, ClipContext.Block blockContext, ClipContext.Fluid fluidContext, @NotNull Entity entity)
 	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player)
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide)
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
