@@ -63,7 +63,7 @@ public abstract class MixinActiveRenderInfo
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
 			Vector3d cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity);
-			this.move(cameraOffset.x(), cameraOffset.y(), cameraOffset.z());
+			this.move(-cameraOffset.z(), cameraOffset.y(), cameraOffset.x());
 		}
 		else
 		{
