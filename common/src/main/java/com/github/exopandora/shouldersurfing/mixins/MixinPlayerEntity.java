@@ -28,7 +28,7 @@ public abstract class MixinPlayerEntity extends Entity
 		ActiveRenderInfo camera = Minecraft.getInstance().gameRenderer.getMainCamera();
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(instance.isShoulderSurfing())
+		if(instance.isShoulderSurfing() && this.level.isClientSide)
 		{
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withFluidContext(stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE)
