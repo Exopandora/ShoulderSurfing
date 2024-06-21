@@ -186,7 +186,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.renderOffset = lerpedOffset.normalize().scale(this.cameraDistance);
 		}
 		
-		return new Vec3(-this.renderOffset.z(), this.renderOffset.y(), this.renderOffset.x());
+		return this.renderOffset;
 	}
 	
 	private static boolean shouldCenterCamera(Entity entity)

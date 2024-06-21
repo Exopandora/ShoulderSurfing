@@ -63,7 +63,7 @@ public abstract class MixinCamera
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
 			Vec3 cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity);
-			this.move(cameraOffset.x(), cameraOffset.y(), cameraOffset.z());
+			this.move(-cameraOffset.z(), cameraOffset.y(), cameraOffset.x());
 		}
 		else
 		{
