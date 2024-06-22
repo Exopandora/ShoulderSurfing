@@ -39,6 +39,8 @@ public class Config
 		private final DoubleValue offsetX;
 		private final DoubleValue offsetY;
 		private final DoubleValue offsetZ;
+
+		private final DoubleValue fallFlyingOffsetY;
 		
 		private final DoubleValue minOffsetX;
 		private final DoubleValue minOffsetY;
@@ -117,6 +119,11 @@ public class Config
 				.comment("Third person camera z-offset.")
 				.translation("z-offset")
 				.defineInRange("offset_z", 4.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.fallFlyingOffsetY = builder
+				.comment("Third person camera y-offset when using Elytra.")
+				.translation("Elytra y-offset")
+				.defineInRange("fall_flying_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.push("min");
 			
@@ -435,6 +442,11 @@ public class Config
 		public double getOffsetZ()
 		{
 			return this.offsetZ.get();
+		}
+
+		public double getFallFlyingOffsetY()
+		{
+			return this.fallFlyingOffsetY.get();
 		}
 		
 		public double getMinOffsetX()
