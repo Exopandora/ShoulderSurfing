@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.CapeLayer;
 import net.minecraft.util.ResourceLocation;
 
-@Mixin(CapeLayer.class)
+@Mixin(value = CapeLayer.class, priority = 500 /* apply before capes mod */)
 public class MixinCapeLayer
 {
 	@Redirect
