@@ -114,12 +114,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			targetOffset = targetCameraOffsetCallback.pre(this.instance, targetOffset, defaultOffset);
 		}
-
-		if(cameraEntity instanceof LivingEntity living && living.isFallFlying())
-		{
-			Vec3 delta = new Vec3(0.0, Config.CLIENT.getFallFlyingOffsetY(), 0.0);
-			targetOffset = targetOffset.add(delta);
-		}
 		
 		if(cameraEntity.isPassenger())
 		{
@@ -139,6 +133,12 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			Vec3 aimingOffsetMultipliers = Config.CLIENT.getAimingOffsetMultipliers();
 			Vec3 delta = defaultOffset.multiply(aimingOffsetMultipliers).subtract(defaultOffset);
+			targetOffset = targetOffset.add(delta);
+		}
+
+		if(cameraEntity instanceof LivingEntity living && living.isFallFlying())
+		{
+			Vec3 delta = Config.CLIENT.getFallFlyingOffsetModifiers();
 			targetOffset = targetOffset.add(delta);
 		}
 		

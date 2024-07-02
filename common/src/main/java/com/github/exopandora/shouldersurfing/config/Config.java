@@ -39,8 +39,6 @@ public class Config
 		private final DoubleValue offsetX;
 		private final DoubleValue offsetY;
 		private final DoubleValue offsetZ;
-
-		private final DoubleValue fallFlyingOffsetY;
 		
 		private final DoubleValue minOffsetX;
 		private final DoubleValue minOffsetY;
@@ -65,6 +63,10 @@ public class Config
 		private final DoubleValue aimingOffsetXMultiplier;
 		private final DoubleValue aimingOffsetYMultiplier;
 		private final DoubleValue aimingOffsetZMultiplier;
+
+		private final DoubleValue fallFlyingOffsetXModifier;
+		private final DoubleValue fallFlyingOffsetYModifier;
+		private final DoubleValue fallFlyingOffsetZModifier;
 		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
@@ -119,11 +121,6 @@ public class Config
 				.comment("Third person camera z-offset.")
 				.translation("z-offset")
 				.defineInRange("offset_z", 4.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
-			
-			this.fallFlyingOffsetY = builder
-				.comment("Third person camera y-offset when using Elytra.")
-				.translation("Elytra y-offset")
-				.defineInRange("fall_flying_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.push("min");
 			
@@ -233,6 +230,26 @@ public class Config
 				.translation("Aiming z-offset multiplier")
 				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
 			
+			builder.pop();
+			builder.pop();
+			builder.push("modifier");
+			builder.push("fallFlying");
+
+			this.fallFlyingOffsetXModifier = builder
+				.comment("Third person camera x-offset when using Elytra.")
+				.translation("Elytra x-offset")
+				.defineInRange("fall_flying_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+
+			this.fallFlyingOffsetYModifier = builder
+				.comment("Third person camera y-offset when using Elytra.")
+				.translation("Elytra y-offset")
+				.defineInRange("fall_flying_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
+
+			this.fallFlyingOffsetZModifier = builder
+				.comment("Third person camera z-offset when using Elytra.")
+				.translation("Elytra z-offset")
+				.defineInRange("fall_flying_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+
 			builder.pop();
 			builder.pop();
 			builder.pop();
@@ -443,11 +460,6 @@ public class Config
 		{
 			return this.offsetZ.get();
 		}
-
-		public double getFallFlyingOffsetY()
-		{
-			return this.fallFlyingOffsetY.get();
-		}
 		
 		public double getMinOffsetX()
 		{
@@ -552,6 +564,26 @@ public class Config
 		public Vec3 getAimingOffsetMultipliers()
 		{
 			return new Vec3(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
+		}
+
+		public double getFallFlyingOffsetXModifier()
+		{
+			return this.fallFlyingOffsetXModifier.get();
+		}
+
+		public double getFallFlyingOffsetYModifier()
+		{
+			return this.fallFlyingOffsetYModifier.get();
+		}
+
+		public double getFallFlyingOffsetZModifier()
+		{
+			return this.fallFlyingOffsetZModifier.get();
+		}
+		
+		public Vec3 getFallFlyingOffsetModifiers()
+		{
+			return new Vec3(this.fallFlyingOffsetXModifier(), this.fallFlyingOffsetYModifier(), this.fallFlyingOffsetZModifier());
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
