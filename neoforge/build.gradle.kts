@@ -1,12 +1,8 @@
 plugins {
 	id("idea")
 	id("java")
-	alias(libs.plugins.neogradle)
+	alias(libs.plugins.moddevgradle)
 	alias(libs.plugins.modpublishplugin)
-}
-
-repositories {
-	maven("https://maven.neoforged.net/releases/")
 }
 
 val modId: String by project
@@ -37,16 +33,28 @@ idea {
 	}
 }
 
-runs {
-	configureEach {
-		workingDirectory(project.file("../run"))
-		modSource(sourceSets.main.get())
+neoForge {
+	version = libs.versions.neoforge.get()
+	
+	runs {
+		configureEach {
+			gameDirectory = file("../run")
+		}
+		
+		create("client") {
+			client()
+		}
+		
+		create("server") {
+			server()
+			programArgument("--nogui")
+		}
 	}
 	
-	create("client")
-	
-	create("server") {
-		programArgument("--nogui")
+	mods {
+		create(modId) {
+			sourceSet(sourceSets.main.get())
+		}
 	}
 }
 
@@ -55,25 +63,18 @@ dependencies {
 	compileOnly(project(":common"))
 	compileOnly(project(":compat"))
 	
-	implementation(libs.minecraft.neoforge)
 	implementation(libs.forgeconfigapiport.neoforge)
 	implementation(libs.wthit.neoforge.get())
 	implementation(libs.badpackets.neoforge.get())
 	implementation(libs.jade.neoforge.get())
-	
-	testCompileOnly(project(":api"))
-	testCompileOnly(project(":common"))
-	testCompileOnly(project(":compat"))
 }
 
-val notNeoTask = Spec<Task> { !it.name.startsWith("neo") }
-
-tasks.withType<JavaCompile>().matching(notNeoTask).configureEach {
+tasks.named<JavaCompile>("compileJava") {
 	source(project(":api").sourceSets.main.get().allSource)
 	source(project(":common").sourceSets.main.get().allSource)
 }
 
-tasks.withType<ProcessResources>().matching(notNeoTask).configureEach {
+tasks.withType<ProcessResources> {
 	from(project(":common").sourceSets.main.get().resources)
 	
 	val properties = mapOf(
@@ -93,11 +94,7 @@ tasks.withType<ProcessResources>().matching(notNeoTask).configureEach {
 	}
 }
 
-tasks.withType<Test> {
-	enabled = false
-}
-
-tasks.register<Jar>("apiJar").configure {
+tasks.register<Jar>("apiJar") {
 	from(project(":api").sourceSets.main.get().output)
 	from(project(":api").sourceSets.main.get().allSource)
 	archiveClassifier = "API"

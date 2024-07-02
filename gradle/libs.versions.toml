@@ -1,15 +1,15 @@
 [versions]
 minecraft = "1.21"
 forge = "1.21-51.0.6"
-neoforge = "21.0.6-beta"
+neoforge = "21.0.42-beta"
 fabric-loader = "0.15.11"
 fabric-api = "0.100.1+1.21"
 mixin = "0.8.5"
 forgeconfigapiport = "21.0.0"
-wthit-common = "mojmap-12.0.0"
-wthit-forge = "mojmap-12.0.0" # temporarily use common atrifact for compilation
-wthit-neoforge = "mojmap-12.0.0" # temporarily use common atrifact for compilation
-wthit-fabric = "fabric-12.0.0"
+wthit-common = "mojmap-12.2.2"
+wthit-forge = "forge-12.2.2"
+wthit-neoforge = "neo-12.2.2"
+wthit-fabric = "fabric-12.2.2"
 jade-common = "5427896" # 1.21-15.0.4-fabric-api
 jade-forge = "5427896" # temporarily use common artifact for compilation
 jade-neoforge = "5427817" # 1.21-15.0.4-neoforge
@@ -45,7 +45,7 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
 vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
-fabricloom = { id = "fabric-loom", version = "1.6-SNAPSHOT" }
-neogradle = { id = "net.neoforged.gradle.userdev", version = "7.0.142" }
+fabricloom = { id = "fabric-loom", version = "1.7-SNAPSHOT" }
+moddevgradle = { id = "net.neoforged.moddev", version = "0.1.116" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.7" }
