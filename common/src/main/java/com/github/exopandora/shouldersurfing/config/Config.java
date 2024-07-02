@@ -232,24 +232,24 @@ public class Config
 			
 			builder.pop();
 			builder.pop();
-			builder.push("modifier");
-			builder.push("fallFlying");
-
+			builder.push("modifiers");
+			builder.push("fall_flying");
+			
 			this.fallFlyingOffsetXModifier = builder
 				.comment("Third person camera x-offset when using Elytra.")
 				.translation("Elytra x-offset")
-				.defineInRange("fall_flying_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
-
+				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
 			this.fallFlyingOffsetYModifier = builder
 				.comment("Third person camera y-offset when using Elytra.")
 				.translation("Elytra y-offset")
-				.defineInRange("fall_flying_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
-
+				.defineInRange("modifier_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
 			this.fallFlyingOffsetZModifier = builder
 				.comment("Third person camera z-offset when using Elytra.")
 				.translation("Elytra z-offset")
-				.defineInRange("fall_flying_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
-
+				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
 			builder.pop();
 			builder.pop();
 			builder.pop();
