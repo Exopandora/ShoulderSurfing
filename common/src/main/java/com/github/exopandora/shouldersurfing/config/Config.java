@@ -583,7 +583,7 @@ public class Config
 		
 		public Vec3 getFallFlyingOffsetModifiers()
 		{
-			return new Vec3(this.fallFlyingOffsetXModifier(), this.fallFlyingOffsetYModifier(), this.fallFlyingOffsetZModifier());
+			return new Vec3(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
