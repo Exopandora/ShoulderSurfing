@@ -63,6 +63,10 @@ public class Config
 		private final DoubleValue aimingOffsetXMultiplier;
 		private final DoubleValue aimingOffsetYMultiplier;
 		private final DoubleValue aimingOffsetZMultiplier;
+
+		private final DoubleValue fallFlyingOffsetXModifier;
+		private final DoubleValue fallFlyingOffsetYModifier;
+		private final DoubleValue fallFlyingOffsetZModifier;
 		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
@@ -226,6 +230,26 @@ public class Config
 				.translation("Aiming z-offset multiplier")
 				.defineInRange("multiplier_offset_z", 1.0D, 0, Double.MAX_VALUE);
 			
+			builder.pop();
+			builder.pop();
+			builder.push("modifier");
+			builder.push("fallFlying");
+
+			this.fallFlyingOffsetXModifier = builder
+				.comment("Third person camera x-offset when using Elytra.")
+				.translation("Elytra x-offset")
+				.defineInRange("fall_flying_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+
+			this.fallFlyingOffsetYModifier = builder
+				.comment("Third person camera y-offset when using Elytra.")
+				.translation("Elytra y-offset")
+				.defineInRange("fall_flying_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
+
+			this.fallFlyingOffsetZModifier = builder
+				.comment("Third person camera z-offset when using Elytra.")
+				.translation("Elytra z-offset")
+				.defineInRange("fall_flying_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+
 			builder.pop();
 			builder.pop();
 			builder.pop();
@@ -540,6 +564,26 @@ public class Config
 		public Vector3d getAimingOffsetMultipliers()
 		{
 			return new Vector3d(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
+		}
+
+		public double getFallFlyingOffsetXModifier()
+		{
+			return this.fallFlyingOffsetXModifier.get();
+		}
+
+		public double getFallFlyingOffsetYModifier()
+		{
+			return this.fallFlyingOffsetYModifier.get();
+		}
+
+		public double getFallFlyingOffsetZModifier()
+		{
+			return this.fallFlyingOffsetZModifier.get();
+		}
+		
+		public Vector3d getFallFlyingOffsetModifiers()
+		{
+			return new Vector3d(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
 		}
 		
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
