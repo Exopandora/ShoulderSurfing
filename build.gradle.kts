@@ -1,4 +1,4 @@
-import org.gradle.configurationcache.extensions.capitalized
+@file:Suppress("UnstableApiUsage")
 
 plugins {
 	id("java")
@@ -22,7 +22,7 @@ subprojects {
 				maven("https://maven.fabricmc.net/")
 			}
 			filter {
-				includeGroupByRegex("net\\.fabricmc.*")
+				includeGroupAndSubgroups("net.fabricmc")
 				includeGroup("fabric-loom")
 			}
 		}
@@ -31,7 +31,7 @@ subprojects {
 				maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
 			}
 			filter {
-				includeGroupByRegex("fuzs.*")
+				includeGroupAndSubgroups("fuzs")
 			}
 		}
 		maven("https://maven2.bai.lol") {
@@ -54,7 +54,7 @@ subprojects {
 				"Specification-Title" to modName,
 				"Specification-Vendor" to modAuthor,
 				"Specification-Version" to modVersion,
-				"Implementation-Title" to project.name.capitalized(),
+				"Implementation-Title" to project.name,
 				"Implementation-Version" to "${libs.versions.minecraft.get()}-$modVersion",
 				"Implementation-Vendor" to modAuthor
 			))
