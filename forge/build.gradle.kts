@@ -82,12 +82,12 @@ dependencies {
 	implementation(libs.jetbrains.annotations)
 }
 
-tasks.named<JavaCompile>("compileJava").configure {
+tasks.named<JavaCompile>("compileJava") {
 	source(project(":api").sourceSets.main.get().allSource)
 	source(project(":common").sourceSets.main.get().allSource)
 }
 
-tasks.named<ProcessResources>("processResources").configure {
+tasks.named<ProcessResources>("processResources") {
 	from(project(":api").sourceSets.main.get().resources)
 	from(project(":common").sourceSets.main.get().resources)
 	
@@ -108,7 +108,7 @@ tasks.named<ProcessResources>("processResources").configure {
 	}
 }
 
-tasks.register<Jar>("apiJar").configure {
+tasks.register<Jar>("apiJar") {
 	from(project(":api").sourceSets.main.get().output)
 	from(project(":api").sourceSets.main.get().allSource)
 	archiveClassifier = "API"
