@@ -70,6 +70,12 @@ Ingame: Install [Forge Config Screens](https://www.curseforge.com/minecraft/mc-m
 ≤ 1.12: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing.cfg`)
 
 # FAQ #
+**Q:** Why is the player not looking at the position of the crosshair when holding item x?  
+**A:** This needs to be configured using the config options `adaptive_crosshair_hold_items` or `adaptive_crosshair_use_items`.
+
+**Q:** Why is the player not render correctly when using shader pack x?  
+**A:** This is caused by player transparency effects of Shoulder Surfing Reloaded. Either disable them in the config (`adjust_player_transparency`) and restart your game or report this to the authors of the shader pack.
+
 **Q:** Can you port feature x to version y?  
 **A:** No.
 
