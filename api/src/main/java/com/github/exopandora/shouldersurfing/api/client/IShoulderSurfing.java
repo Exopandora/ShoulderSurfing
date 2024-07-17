@@ -12,6 +12,8 @@ public interface IShoulderSurfing
 	
 	IObjectPicker getObjectPicker();
 	
+	IClientConfig getClientConfig();
+	
 	boolean isShoulderSurfing();
 	
 	boolean isAiming();
