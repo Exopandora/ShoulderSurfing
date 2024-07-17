@@ -10,7 +10,6 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -247,7 +246,7 @@ public class Config
 			this.fallFlyingOffsetYModifier = builder
 				.comment("Third person camera y-offset when using Elytra.")
 				.translation("Elytra y-offset")
-				.defineInRange("modifier_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetZModifier = builder
 				.comment("Third person camera z-offset when using Elytra.")
