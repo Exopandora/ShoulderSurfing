@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
@@ -255,6 +256,12 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	public ObjectPicker getObjectPicker()
 	{
 		return this.objectPicker;
+	}
+	
+	@Override
+	public IClientConfig getClientConfig()
+	{
+		return Config.CLIENT;
 	}
 	
 	public InputHandler getInputHandler()
