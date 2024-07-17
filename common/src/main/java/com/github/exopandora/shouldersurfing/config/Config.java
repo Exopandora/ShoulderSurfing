@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.config;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
@@ -8,7 +9,6 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -34,7 +34,7 @@ public class Config
 		CLIENT = pair.getLeft();
 	}
 	
-	public static class ClientConfig
+	public static class ClientConfig implements IClientConfig
 	{
 		private final DoubleValue offsetX;
 		private final DoubleValue offsetY;
@@ -446,171 +446,181 @@ public class Config
 			builder.pop();
 		}
 		
+		@Override
 		public double getOffsetX()
 		{
 			return this.offsetX.get();
 		}
 		
+		@Override
 		public double getOffsetY()
 		{
 			return this.offsetY.get();
 		}
 		
+		@Override
 		public double getOffsetZ()
 		{
 			return this.offsetZ.get();
 		}
 		
+		@Override
 		public double getMinOffsetX()
 		{
 			return this.minOffsetX.get();
 		}
 		
+		@Override
 		public double getMinOffsetY()
 		{
 			return this.minOffsetY.get();
 		}
 		
+		@Override
 		public double getMinOffsetZ()
 		{
 			return this.minOffsetZ.get();
 		}
 		
+		@Override
 		public double getMaxOffsetX()
 		{
 			return this.maxOffsetX.get();
 		}
 		
+		@Override
 		public double getMaxOffsetY()
 		{
 			return this.maxOffsetY.get();
 		}
 		
+		@Override
 		public double getMaxOffsetZ()
 		{
 			return this.maxOffsetZ.get();
 		}
 		
+		@Override
 		public boolean isUnlimitedOffsetX()
 		{
 			return this.unlimitedOffsetX.get();
 		}
 		
+		@Override
 		public boolean isUnlimitedOffsetY()
 		{
 			return this.unlimitedOffsetY.get();
 		}
 		
+		@Override
 		public boolean isUnlimitedOffsetZ()
 		{
 			return this.unlimitedOffsetZ.get();
 		}
 		
+		@Override
 		public double getPassengerOffsetXMultiplier()
 		{
 			return this.passengerOffsetXMultiplier.get();
 		}
 		
+		@Override
 		public double getPassengerOffsetYMultiplier()
 		{
 			return this.passengerOffsetYMultiplier.get();
 		}
 		
+		@Override
 		public double getPassengerOffsetZMultiplier()
 		{
 			return this.passengerOffsetZMultiplier.get();
 		}
 		
-		public Vec3 getPassengerOffsetMultipliers()
-		{
-			return new Vec3(this.getPassengerOffsetXMultiplier(), this.getPassengerOffsetYMultiplier(), this.getPassengerOffsetZMultiplier());
-		}
-		
+		@Override
 		public double getSprintOffsetXMultiplier()
 		{
 			return this.sprintOffsetXMultiplier.get();
 		}
 		
+		@Override
 		public double getSprintOffsetYMultiplier()
 		{
 			return this.sprintOffsetYMultiplier.get();
 		}
 		
+		@Override
 		public double getSprintOffsetZMultiplier()
 		{
 			return this.sprintOffsetZMultiplier.get();
 		}
 		
-		public Vec3 getSprintOffsetMultipliers()
-		{
-			return new Vec3(this.getSprintOffsetXMultiplier(), this.getSprintOffsetYMultiplier(), this.getSprintOffsetZMultiplier());
-		}
-		
+		@Override
 		public double getAimingOffsetXMultiplier()
 		{
 			return this.aimingOffsetXMultiplier.get();
 		}
 		
+		@Override
 		public double getAimingOffsetYMultiplier()
 		{
 			return this.aimingOffsetYMultiplier.get();
 		}
 		
+		@Override
 		public double getAimingOffsetZMultiplier()
 		{
 			return this.aimingOffsetZMultiplier.get();
 		}
 		
-		public Vec3 getAimingOffsetMultipliers()
-		{
-			return new Vec3(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
-		}
-
+		@Override
 		public double getFallFlyingOffsetXModifier()
 		{
 			return this.fallFlyingOffsetXModifier.get();
 		}
 
+		@Override
 		public double getFallFlyingOffsetYModifier()
 		{
 			return this.fallFlyingOffsetYModifier.get();
 		}
 
+		@Override
 		public double getFallFlyingOffsetZModifier()
 		{
 			return this.fallFlyingOffsetZModifier.get();
 		}
 		
-		public Vec3 getFallFlyingOffsetModifiers()
-		{
-			return new Vec3(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
-		}
-		
+		@Override
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
 		{
 			return this.crosshairVisibility.get(perspective).get();
 		}
 		
+		@Override
 		public boolean useCustomRaytraceDistance()
 		{
 			return this.useCustomRaytraceDistance.get();
 		}
 		
+		@Override
 		public double keepCameraOutOfHeadMultiplier()
 		{
 			return this.keepCameraOutOfHeadMultiplier.get();
 		}
 		
+		@Override
 		public boolean replaceDefaultPerspective()
 		{
 			return this.replaceDefaultPerspective.get();
 		}
 		
+		@Override
 		public boolean skipThirdPersonFront()
 		{
 			return this.skipThirdPersonFront.get();
 		}
 		
+		@Override
 		public Perspective getDefaultPerspective()
 		{
 			return this.defaultPerspective.get();
@@ -621,116 +631,139 @@ public class Config
 			Config.set(this.defaultPerspective, perspective);
 		}
 		
+		@Override
 		public CrosshairType getCrosshairType()
 		{
 			return this.crosshairType.get();
 		}
 		
+		@Override
 		public boolean doRememberLastPerspective()
 		{
 			return this.rememberLastPerspective.get();
 		}
 		
+		@Override
 		public double getCameraStepSize()
 		{
 			return this.cameraStepSize.get();
 		}
 		
+		@Override
 		public boolean doCenterCameraWhenClimbing()
 		{
 			return this.centerCameraWhenClimbing.get();
 		}
 		
+		@Override
 		public boolean doCenterCameraWhenFallFlying()
 		{
 			return this.centerCameraWhenFallFlying.get();
 		}
 		
+		@Override
 		public double getCameraTransitionSpeedMultiplier()
 		{
 			return this.cameraTransitionSpeedMultiplier.get();
 		}
 		
+		@Override
 		public double getCenterCameraWhenLookingDownAngle()
 		{
 			return this.centerCameraWhenLookingDownAngle.get();
 		}
 		
+		@Override
 		public double getHidePlayerWhenLookingUpAngle()
 		{
 			return this.hidePlayerWhenLookingUpAngle.get();
 		}
 		
+		@Override
 		public boolean doDynamicallyAdjustOffsets()
 		{
 			return this.dynamicallyAdjustOffsets.get();
 		}
 		
+		@Override
 		public boolean isPlayerTransparencyEnabled()
 		{
 			return Config.CLIENT_SPEC.isLoaded() ? this.playerTransparency.get() : this.playerTransparency.getDefault();
 		}
 		
+		@Override
 		public TurningMode getTurningModeWhenUsingItem()
 		{
 			return this.turningModeWhenUsingItem.get();
 		}
 		
+		@Override
 		public TurningMode getTurningModeWhenAttacking()
 		{
 			return this.turningModeWhenAttacking.get();
 		}
 		
+		@Override
 		public TurningMode getTurningModeWhenInteracting()
 		{
 			return this.turningModeWhenInteraction.get();
 		}
 		
+		@Override
 		public TurningMode getTurningModeWhenPicking()
 		{
 			return this.turningModeWhenPicking.get();
 		}
 		
+		@Override
 		public int getTurningLockTime()
 		{
 			return this.turningLockTime.get();
 		}
 		
+		@Override
 		public boolean isCameraDecoupled()
 		{
 			return this.isCameraDecoupled.get();
 		}
 		
+		@Override
 		public double getCustomRaytraceDistance()
 		{
 			return this.customRaytraceDistance.get();
 		}
 		
+		@Override
 		public List<? extends String> getAdaptiveCrosshairHoldItems()
 		{
 			return this.adaptiveCrosshairHoldItems.get();
 		}
 		
+		@Override
 		public List<? extends String> getAdaptiveCrosshairUseItems()
 		{
 			return this.adaptiveCrosshairUseItems.get();
 		}
 		
+		@Override
 		public List<? extends String> getAdaptiveCrosshairHoldItemProperties()
 		{
 			return this.adaptiveCrosshairHoldItemProperties.get();
 		}
 		
+		@Override
 		public List<? extends String> getAdaptiveCrosshairUseItemProperties()
 		{
 			return this.adaptiveCrosshairUseItemProperties.get();
 		}
 		
+		@Override
 		public boolean doCenterPlayerSounds()
 		{
 			return this.centerPlayerSounds.get();
 		}
 		
+		@Override
 		public boolean doSyncPlayerXRotWithInputs()
 		{
 			return this.syncPlayerXRotWithInputs.get();
