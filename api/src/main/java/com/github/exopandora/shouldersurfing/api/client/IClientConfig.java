@@ -54,6 +54,42 @@ public interface IClientConfig
 		return new Vector3d(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
 	}
 	
+	double getFallFlyingOffsetXMultiplier();
+	double getFallFlyingOffsetYMultiplier();
+	double getFallFlyingOffsetZMultiplier();
+	
+	default Vector3d getFallFlyingMultipliers()
+	{
+		return new Vector3d(this.getFallFlyingOffsetXMultiplier(), this.getFallFlyingOffsetYMultiplier(), this.getFallFlyingOffsetZMultiplier());
+	}
+	
+	double getPassengerOffsetXModifier();
+	double getPassengerOffsetYModifier();
+	double getPassengerOffsetZModifier();
+	
+	default Vector3d getPassengerOffsetModifiers()
+	{
+		return new Vector3d(this.getPassengerOffsetXModifier(), this.getPassengerOffsetYModifier(), this.getPassengerOffsetZModifier());
+	}
+	
+	double getSprintOffsetXModifier();
+	double getSprintOffsetYModifier();
+	double getSprintOffsetZModifier();
+	
+	default Vector3d getSprintOffsetModifiers()
+	{
+		return new Vector3d(this.getSprintOffsetXModifier(), this.getSprintOffsetYModifier(), this.getSprintOffsetZModifier());
+	}
+	
+	double getAimingOffsetXModifier();
+	double getAimingOffsetYModifier();
+	double getAimingOffsetZModifier();
+	
+	default Vector3d getAimingOffsetModifiers()
+	{
+		return new Vector3d(this.getAimingOffsetXModifier(), this.getAimingOffsetYModifier(), this.getAimingOffsetZModifier());
+	}
+	
 	double getFallFlyingOffsetXModifier();
 	double getFallFlyingOffsetYModifier();
 	double getFallFlyingOffsetZModifier();
