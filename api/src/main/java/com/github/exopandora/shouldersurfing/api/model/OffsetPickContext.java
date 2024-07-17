@@ -8,8 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.function.BiFunction;
-
 public final class OffsetPickContext extends PickContext
 {
 	public OffsetPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity)
@@ -33,16 +31,16 @@ public final class OffsetPickContext extends PickContext
 	@Override
 	public Couple<Vec3> entityTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick, Vec3::add);
+		return this.calcRay(this.camera(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
 	}
 	
 	@Override
 	public Couple<Vec3> blockTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick, (eyePosition, rayTraceStartOffset) -> this.camera().getPosition());
+		return this.calcRay(this.camera(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
 	}
 	
-	private Couple<Vec3> calcRay(Camera camera, double interactionRange, float partialTick, BiFunction<Vec3, Vec3, Vec3> startPosFunc)
+	private Couple<Vec3> calcRay(Camera camera, double interactionRange, float partialTick, PickOrigin pickOrigin)
 	{
 		Vec3 eyePosition = this.entity().getEyePosition(partialTick);
 		Vec3 cameraPos = camera.getPosition();
@@ -59,7 +57,7 @@ public final class OffsetPickContext extends PickContext
 		}
 		
 		double distance = interactionRange + cameraOffset.distanceTo(rayTraceStartOffset);
-		Vec3 startPos = startPosFunc.apply(eyePosition, rayTraceStartOffset);
+		Vec3 startPos = pickOrigin.calc(cameraPos, eyePosition, rayTraceStartOffset);
 		Vec3 endPos = cameraPos.add(viewVector.scale(distance));
 		return new Couple<Vec3>(startPos, endPos);
 	}
