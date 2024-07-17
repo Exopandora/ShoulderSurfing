@@ -64,7 +64,23 @@ public class Config
 		private final DoubleValue aimingOffsetXMultiplier;
 		private final DoubleValue aimingOffsetYMultiplier;
 		private final DoubleValue aimingOffsetZMultiplier;
-
+		
+		private final DoubleValue fallFlyingOffsetXMultiplier;
+		private final DoubleValue fallFlyingOffsetYMultiplier;
+		private final DoubleValue fallFlyingOffsetZMultiplier;
+		
+		private final DoubleValue passengerOffsetXModifier;
+		private final DoubleValue passengerOffsetYModifier;
+		private final DoubleValue passengerOffsetZModifier;
+		
+		private final DoubleValue sprintOffsetXModifier;
+		private final DoubleValue sprintOffsetYModifier;
+		private final DoubleValue sprintOffsetZModifier;
+		
+		private final DoubleValue aimingOffsetXModifier;
+		private final DoubleValue aimingOffsetYModifier;
+		private final DoubleValue aimingOffsetZModifier;
+		
 		private final DoubleValue fallFlyingOffsetXModifier;
 		private final DoubleValue fallFlyingOffsetYModifier;
 		private final DoubleValue fallFlyingOffsetZModifier;
@@ -234,22 +250,94 @@ public class Config
 				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
+			builder.push("fall_flying");
+			
+			this.fallFlyingOffsetXMultiplier = builder
+				.comment("x-offset multiplier for when using Elytra.")
+				.translation("Elytra x-offset multiplier")
+				.defineInRange("modifier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.fallFlyingOffsetYMultiplier = builder
+				.comment("y-offset multiplier for when using Elytra.")
+				.translation("Elytra y-offset multiplier")
+				.defineInRange("modifier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.fallFlyingOffsetZMultiplier = builder
+				.comment("z-offset multiplier for when using Elytra.")
+				.translation("Elytra z-offset multiplier")
+				.defineInRange("modifier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.pop();
 			builder.push("modifiers");
+			builder.push("passenger");
+			
+			this.passengerOffsetXModifier = builder
+				.comment("x-offset modifier for when the player is a passenger.")
+				.translation("Passenger x-offset modifier")
+				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.passengerOffsetYModifier = builder
+				.comment("y-offset modifier for when the player is a passenger.")
+				.translation("Passenger y-offset modifier")
+				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.passengerOffsetZModifier = builder
+				.comment("z-offset modifier for when the player is a passenger.")
+				.translation("Passenger z-offset modifier")
+				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			builder.pop();
+			builder.push("sprint");
+			
+			this.sprintOffsetXModifier = builder
+				.comment("x-offset modifier for when the player is sprinting.")
+				.translation("Sprint x-offset modifier")
+				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.sprintOffsetYModifier = builder
+				.comment("y-offset modifier for when the player is sprinting.")
+				.translation("Sprint y-offset modifier")
+				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.sprintOffsetZModifier = builder
+				.comment("z-offset modifier for when the player is sprinting.")
+				.translation("Sprint z-offset modifier")
+				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			builder.pop();
+			builder.push("aiming");
+			
+			this.aimingOffsetXModifier = builder
+				.comment("x-offset modifier for when the player is aiming.")
+				.translation("Aiming x-offset modifier")
+				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.aimingOffsetYModifier = builder
+				.comment("y-offset modifier for when the player is aiming.")
+				.translation("Aiming y-offset modifier")
+				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.aimingOffsetZModifier = builder
+				.comment("z-offset modifier for when the player is aiming.")
+				.translation("Aiming z-offset modifier")
+				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.push("fall_flying");
 			
 			this.fallFlyingOffsetXModifier = builder
-				.comment("Third person camera x-offset when using Elytra.")
+				.comment("x-offset modifier for when using Elytra.")
 				.translation("Elytra x-offset")
 				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetYModifier = builder
-				.comment("Third person camera y-offset when using Elytra.")
+				.comment("y-offset modifier for when using Elytra.")
 				.translation("Elytra y-offset")
 				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetZModifier = builder
-				.comment("Third person camera z-offset when using Elytra.")
+				.comment("z-offset modifier for when using Elytra.")
 				.translation("Elytra z-offset")
 				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
@@ -589,17 +677,89 @@ public class Config
 		}
 		
 		@Override
+		public double getFallFlyingOffsetXMultiplier()
+		{
+			return this.fallFlyingOffsetXMultiplier.get();
+		}
+		
+		@Override
+		public double getFallFlyingOffsetYMultiplier()
+		{
+			return this.fallFlyingOffsetYMultiplier.get();
+		}
+		
+		@Override
+		public double getFallFlyingOffsetZMultiplier()
+		{
+			return this.fallFlyingOffsetZMultiplier.get();
+		}
+		
+		@Override
+		public double getPassengerOffsetXModifier()
+		{
+			return this.passengerOffsetXModifier.get();
+		}
+		
+		@Override
+		public double getPassengerOffsetYModifier()
+		{
+			return this.passengerOffsetYModifier.get();
+		}
+		
+		@Override
+		public double getPassengerOffsetZModifier()
+		{
+			return this.passengerOffsetZModifier.get();
+		}
+		
+		@Override
+		public double getSprintOffsetXModifier()
+		{
+			return this.sprintOffsetXModifier.get();
+		}
+		
+		@Override
+		public double getSprintOffsetYModifier()
+		{
+			return this.sprintOffsetYModifier.get();
+		}
+		
+		@Override
+		public double getSprintOffsetZModifier()
+		{
+			return this.sprintOffsetZModifier.get();
+		}
+		
+		@Override
+		public double getAimingOffsetXModifier()
+		{
+			return this.aimingOffsetXModifier.get();
+		}
+		
+		@Override
+		public double getAimingOffsetYModifier()
+		{
+			return this.aimingOffsetYModifier.get();
+		}
+		
+		@Override
+		public double getAimingOffsetZModifier()
+		{
+			return this.aimingOffsetZModifier.get();
+		}
+		
+		@Override
 		public double getFallFlyingOffsetXModifier()
 		{
 			return this.fallFlyingOffsetXModifier.get();
 		}
-
+		
 		@Override
 		public double getFallFlyingOffsetYModifier()
 		{
 			return this.fallFlyingOffsetYModifier.get();
 		}
-
+		
 		@Override
 		public double getFallFlyingOffsetZModifier()
 		{
