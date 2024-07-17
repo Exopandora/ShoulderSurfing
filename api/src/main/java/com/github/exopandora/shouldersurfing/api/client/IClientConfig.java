@@ -54,6 +54,42 @@ public interface IClientConfig
 		return new Vec3(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
 	}
 	
+	double getFallFlyingOffsetXMultiplier();
+	double getFallFlyingOffsetYMultiplier();
+	double getFallFlyingOffsetZMultiplier();
+	
+	default Vec3 getFallFlyingMultipliers()
+	{
+		return new Vec3(this.getFallFlyingOffsetXMultiplier(), this.getFallFlyingOffsetYMultiplier(), this.getFallFlyingOffsetZMultiplier());
+	}
+	
+	double getPassengerOffsetXModifier();
+	double getPassengerOffsetYModifier();
+	double getPassengerOffsetZModifier();
+	
+	default Vec3 getPassengerOffsetModifiers()
+	{
+		return new Vec3(this.getPassengerOffsetXModifier(), this.getPassengerOffsetYModifier(), this.getPassengerOffsetZModifier());
+	}
+	
+	double getSprintOffsetXModifier();
+	double getSprintOffsetYModifier();
+	double getSprintOffsetZModifier();
+	
+	default Vec3 getSprintOffsetModifiers()
+	{
+		return new Vec3(this.getSprintOffsetXModifier(), this.getSprintOffsetYModifier(), this.getSprintOffsetZModifier());
+	}
+	
+	double getAimingOffsetXModifier();
+	double getAimingOffsetYModifier();
+	double getAimingOffsetZModifier();
+	
+	default Vec3 getAimingOffsetModifiers()
+	{
+		return new Vec3(this.getAimingOffsetXModifier(), this.getAimingOffsetYModifier(), this.getAimingOffsetZModifier());
+	}
+	
 	double getFallFlyingOffsetXModifier();
 	double getFallFlyingOffsetYModifier();
 	double getFallFlyingOffsetZModifier();
