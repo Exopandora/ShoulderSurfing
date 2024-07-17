@@ -246,7 +246,7 @@ public class Config
 			this.fallFlyingOffsetYModifier = builder
 				.comment("Third person camera y-offset when using Elytra.")
 				.translation("Elytra y-offset")
-				.defineInRange("modifier_offset_y", 0.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetZModifier = builder
 				.comment("Third person camera z-offset when using Elytra.")
