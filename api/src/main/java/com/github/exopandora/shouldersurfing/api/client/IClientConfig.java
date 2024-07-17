@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.api.client;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -99,6 +100,9 @@ public interface IClientConfig
 	TurningMode getTurningModeWhenPicking();
 	
 	int getTurningLockTime();
+	
+	PickOrigin getEntityPickOrigin();
+	PickOrigin getBlockPickOrigin();
 	
 	boolean isCameraDecoupled();
 	

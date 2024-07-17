@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.item.Items;
@@ -90,6 +91,8 @@ public class Config
 		private final ConfigValue<TurningMode> turningModeWhenPicking;
 		private final IntValue turningLockTime;
 		private final BooleanValue syncPlayerXRotWithInputs;
+		private final ConfigValue<PickOrigin> entityPickOrigin;
+		private final ConfigValue<PickOrigin> blockPickOrigin;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -361,6 +364,19 @@ public class Config
 				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
 				.translation("Turning lock time (ticks)")
 				.defineInRange("turning_lock_time", 4, 0, Integer.MAX_VALUE);
+			
+			builder.pop();
+			builder.push("pick_origin");
+			
+			this.entityPickOrigin = builder
+				.comment("The origin where the entity pick starts.")
+				.translation("Entity pick origin")
+				.defineEnum("entity_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
+			
+			this.blockPickOrigin = builder
+				.comment("The origin where the block pick starts.")
+				.translation("Block pick origin")
+				.defineEnum("block_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
 			
 			builder.pop();
 			builder.pop();
@@ -719,6 +735,18 @@ public class Config
 		public int getTurningLockTime()
 		{
 			return this.turningLockTime.get();
+		}
+		
+		@Override
+		public PickOrigin getEntityPickOrigin()
+		{
+			return this.entityPickOrigin.get();
+		}
+		
+		@Override
+		public PickOrigin getBlockPickOrigin()
+		{
+			return this.blockPickOrigin.get();
 		}
 		
 		@Override
