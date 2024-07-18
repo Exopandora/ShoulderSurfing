@@ -454,6 +454,19 @@ public class Config
 				.defineInRange("turning_lock_time", 4, 0, Integer.MAX_VALUE);
 			
 			builder.pop();
+			builder.pop();
+			builder.push("object_picker");
+			
+			this.customRaytraceDistance = builder
+				.comment("The raytrace distance used for the dynamic crosshair.")
+				.translation("Custom raytrace distance")
+				.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
+			
+			this.useCustomRaytraceDistance = builder
+				.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair.")
+				.translation("Use custom raytrace distance")
+				.define("use_custom_raytrace_distance", true);
+			
 			builder.push("pick_origin");
 			
 			this.entityPickOrigin = builder
@@ -474,16 +487,6 @@ public class Config
 				.comment("Crosshair type to use for shoulder surfing.")
 				.translation("Crosshair type")
 				.defineEnum("crosshair_type", CrosshairType.STATIC, CrosshairType.values());
-			
-			this.customRaytraceDistance = builder
-				.comment("The raytrace distance used for the dynamic crosshair.")
-				.translation("Custom raytrace distance")
-				.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
-			
-			this.useCustomRaytraceDistance = builder
-				.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair.")
-				.translation("Use custom raytrace distance")
-				.define("use_custom_raytrace_distance", true);
 			
 			this.adaptiveCrosshairHoldItems = builder
 				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
