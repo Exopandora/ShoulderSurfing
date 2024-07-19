@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compat.iris;
+package com.github.exopandora.shouldersurfing.compat.mixins.iris;
 
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.coderbot.batchedentityrendering.impl.BlendingStateHolder;
