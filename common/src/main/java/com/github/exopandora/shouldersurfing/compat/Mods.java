@@ -1,21 +1,21 @@
 package com.github.exopandora.shouldersurfing.compat;
 
 import com.github.exopandora.shouldersurfing.IPlatform;
-import net.minecraft.Util;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum Mods
 {
 	CREATE;
 	
-	private final Function<Mods, @Nullable String> version = Util.memoize(IPlatform.INSTANCE::getModVersion);
+	private static final Map<Mods, @Nullable String> MODS_TO_VERSION = new HashMap<Mods, String>();
 	
 	@Nullable
 	public String getModVersion()
 	{
-		return this.version.apply(this);
+		return MODS_TO_VERSION.computeIfAbsent(this, IPlatform.INSTANCE::getModVersion);
 	}
 	
 	public boolean isLoaded()
