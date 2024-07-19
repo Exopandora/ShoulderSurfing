@@ -26,11 +26,8 @@ subprojects {
 				includeGroup("fabric-loom")
 			}
 		}
-		exclusiveContent {
-			forRepository {
-				maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
-			}
-			filter {
+		maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") {
+			content {
 				includeGroupAndSubgroups("net.minecraftforge")
 			}
 		}
