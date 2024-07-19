@@ -10,10 +10,12 @@ public class Platform implements IPlatform
 	@Override
 	public @Nullable String getModVersion(Mods mod)
 	{
-		return switch(mod)
+		if(Mods.CREATE == mod)
 		{
-			case CREATE -> findModVersionForId("create");
-		};
+			return findModVersionForId("create");
+		}
+		
+		throw new IllegalArgumentException();
 	}
 	
 	private static String findModVersionForId(String modId)
