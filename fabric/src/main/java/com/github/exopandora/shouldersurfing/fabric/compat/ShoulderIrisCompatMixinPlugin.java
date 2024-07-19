@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.compat;
 
-import net.fabricmc.loader.api.FabricLoader;
+import com.github.exopandora.shouldersurfing.compat.Mods;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import org.objectweb.asm.tree.ClassNode;
@@ -36,11 +36,13 @@ public class ShoulderIrisCompatMixinPlugin implements IMixinConfigPlugin
 	{
 		if(this.rules.containsKey(mixinClassName))
 		{
-			Predicate<Version> irisVersion = this.rules.get(mixinClassName).get();
-			return FabricLoader.getInstance().getAllMods().stream().anyMatch(modContainer ->
+			String irisVersion = Mods.IRIS.getModVersion();
+			
+			if(irisVersion != null)
 			{
-				return modContainer.getMetadata().getId().equals("iris") && irisVersion.test(modContainer.getMetadata().getVersion());
-			});
+				Predicate<Version> versionPredicate = this.rules.get(mixinClassName).get();
+				return versionPredicate.test(parseVersionSilent(irisVersion));
+			}
 		}
 		
 		return false;
@@ -68,6 +70,18 @@ public class ShoulderIrisCompatMixinPlugin implements IMixinConfigPlugin
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
 	{
 		
+	}
+	
+	private static Version parseVersionSilent(String version)
+	{
+		try
+		{
+			return Version.parse(version);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 	
 	private static VersionPredicate parseVersionPredicateSilent(String predicate)
