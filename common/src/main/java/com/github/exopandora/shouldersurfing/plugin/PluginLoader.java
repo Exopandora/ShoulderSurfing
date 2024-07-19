@@ -8,13 +8,11 @@ import com.google.gson.JsonParser;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.ServiceLoader;
 
 public abstract class PluginLoader
 {
-	private static final PluginLoader INSTANCE = find(ServiceLoader.load(PluginLoader.class));
+	private static final PluginLoader INSTANCE = ServiceLoader.load(PluginLoader.class).iterator().next();
 	private static final String ENTRYPOINT_KEY = "entrypoint";
 	protected static final String PLUGIN_JSON_PATH = "shouldersurfing_plugin.json";
 	
@@ -48,17 +46,5 @@ public abstract class PluginLoader
 	public static PluginLoader getInstance()
 	{
 		return INSTANCE;
-	}
-	
-	private static <S> S find(ServiceLoader<S> serviceLoader)
-	{
-		Iterator<S> iterator = serviceLoader.iterator();
-		
-		if(iterator.hasNext())
-		{
-			return iterator.next();
-		}
-		
-		throw new NoSuchElementException();
 	}
 }
