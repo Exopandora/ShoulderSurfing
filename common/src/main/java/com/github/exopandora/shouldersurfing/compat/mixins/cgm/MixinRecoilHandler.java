@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compat.cgm;
+package com.github.exopandora.shouldersurfing.compat.mixins.cgm;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.player.LocalPlayer;
