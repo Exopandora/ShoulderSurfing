@@ -36,7 +36,7 @@ public class MixinContraptionHandlerClient
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaFrameTime();
-			double interactionRange = IObjectPicker.maxInteractionRange(player);
+			double interactionRange = minecraft.gameMode.getPickRange();
 			Couple<Vec3> blockTrace = new PickContext.Builder(camera)
 				.build()
 				.blockTrace(interactionRange, partialTick);
