@@ -16,7 +16,6 @@ public class Platform implements IPlatform
 		};
 	}
 	
-	@SuppressWarnings("UnstableApiUsage")
 	private static String findModVersionForId(String modId)
 	{
 		return FMLLoader.getLoadingModList().getMods().stream()
