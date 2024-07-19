@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compat.skinlayers;
+package com.github.exopandora.shouldersurfing.compat.mixins.skinlayers;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import org.spongepowered.asm.mixin.Mixin;

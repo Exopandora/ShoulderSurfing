@@ -1,7 +1,10 @@
 package com.github.exopandora.shouldersurfing.plugin;
 
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
+import com.github.exopandora.shouldersurfing.compat.Mods;
+import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -20,6 +23,19 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	public void register(IShoulderSurfingRegistrar registrar)
 	{
 		registrar.registerAdaptiveItemCallback(ShoulderSurfingPlugin::isHoldingAdaptiveItem);
+		
+		if(Mods.CREATE.isLoaded())
+		{
+			try
+			{
+				ShoulderSurfingCommon.LOGGER.info("Registering compatibility callback for create mod");
+				registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback());
+			}
+			catch(Throwable t)
+			{
+				ShoulderSurfingCommon.LOGGER.error("Failed to load compatibility callback for create mod", t);
+			}
+		}
 	}
 	
 	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity)
