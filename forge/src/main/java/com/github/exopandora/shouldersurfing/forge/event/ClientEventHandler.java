@@ -29,7 +29,7 @@ public class ClientEventHandler
 		{
 			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getMatrixStack(), event.getWindow());
 		}
-		//Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
+		// Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(ForgeIngameGui.BOSS_HEALTH_ELEMENT.equals(event.getOverlay()))
 		{
 			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(event.getMatrixStack());
