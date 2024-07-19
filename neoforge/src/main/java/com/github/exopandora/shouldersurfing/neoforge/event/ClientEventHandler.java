@@ -27,7 +27,7 @@ public class ClientEventHandler
 		{
 			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(event.getGuiGraphics().pose(), Minecraft.getInstance().getWindow());
 		}
-		//Using HOTBAR to pop matrix, because when CROSSHAIR is cancelled, it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
+		// Using HOTBAR to pop matrix, because when CROSSHAIR is cancelled, it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(VanillaGuiLayers.HOTBAR.equals(event.getName()))
 		{
 			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(event.getGuiGraphics().pose());
