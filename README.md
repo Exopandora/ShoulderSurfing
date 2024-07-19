@@ -109,6 +109,7 @@ The binaries for each platform can be found in the following directories:
 # Compatibility #
 Shoulder Surfing Reloaded is designed to work with the following mods (a-z):
 - 3D Skin Layers
+- Create
 - Iris
 - Oculus
 - OptiFine
@@ -126,8 +127,8 @@ Shoulder Surfing Reloaded is known to have minor incompatibility issues with the
 - EssentialClient (player look script hooks do not work)
 - Inmis (backpack does not render transparent)
 - MedievalWeapons (player is permanently in aiming mode)
-  - Workaround: Remove `minecraft:throwing` from `adaptive_crosshair_use_item_properties` in the config
-- MrCrayfish's Gun Mod (crosshair does not render when using ads)
+    - Workaround: Remove `minecraft:throwing` from `adaptive_crosshair_use_item_properties` in the config
+- MrCrayfish's Gun Mod (crosshair does not render when using ads, fov does not update when using ads)
 - Tweakeroo (freecam movement)
 - YDM's Weapon Master (weapons do not render transparent)
 
