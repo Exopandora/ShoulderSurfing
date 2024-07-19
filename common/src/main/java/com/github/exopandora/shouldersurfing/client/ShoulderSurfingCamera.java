@@ -161,9 +161,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			}
 		}
 		
-		double targetOffsetX = Config.CLIENT.isUnlimitedOffsetX() ? targetOffset.x() : Math.min(targetOffset.x(), Config.CLIENT.getMaxOffsetX());
-		double targetOffsetY = Config.CLIENT.isUnlimitedOffsetY() ? targetOffset.y() : Math.min(targetOffset.y(), Config.CLIENT.getMaxOffsetY());
-		double targetOffsetZ = Config.CLIENT.isUnlimitedOffsetZ() ? targetOffset.z() : Math.min(targetOffset.z(), Config.CLIENT.getMaxOffsetZ());
+		double targetOffsetX = Config.CLIENT.isUnlimitedOffsetX() ? targetOffset.x() : Mth.clamp(targetOffset.x(), Config.CLIENT.getMinOffsetX(), Config.CLIENT.getMaxOffsetX());
+		double targetOffsetY = Config.CLIENT.isUnlimitedOffsetY() ? targetOffset.y() : Mth.clamp(targetOffset.y(), Config.CLIENT.getMinOffsetY(), Config.CLIENT.getMaxOffsetY());
+		double targetOffsetZ = Config.CLIENT.isUnlimitedOffsetZ() ? targetOffset.z() : Mth.clamp(targetOffset.z(), Config.CLIENT.getMinOffsetZ(), Config.CLIENT.getMaxOffsetZ());
 		targetOffset = new Vec3(targetOffsetX, targetOffsetY, targetOffsetZ);
 		
 		for(ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks)
