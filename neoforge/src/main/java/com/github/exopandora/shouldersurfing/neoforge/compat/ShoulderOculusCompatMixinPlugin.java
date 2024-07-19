@@ -1,7 +1,9 @@
 package com.github.exopandora.shouldersurfing.neoforge.compat;
 
+import com.github.exopandora.shouldersurfing.compat.Mods;
 import net.neoforged.fml.loading.FMLLoader;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -36,11 +38,13 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	{
 		if(this.rules.containsKey(mixinClassName))
 		{
-			Predicate<ArtifactVersion> oculusVersion = this.rules.get(mixinClassName).get();
-			return FMLLoader.getLoadingModList().getMods().stream().anyMatch(info ->
+			String oculusVersion = Mods.OCULUS.getModVersion();
+			
+			if(oculusVersion != null)
 			{
-				return info.getModId().equals("oculus") && oculusVersion.test(info.getVersion());
-			});
+				Predicate<ArtifactVersion> versionPredicate = this.rules.get(mixinClassName).get();
+				return versionPredicate.test(new DefaultArtifactVersion(oculusVersion));
+			}
 		}
 		
 		return false;

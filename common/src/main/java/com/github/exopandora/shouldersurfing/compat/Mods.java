@@ -8,7 +8,9 @@ import java.util.function.Function;
 
 public enum Mods
 {
-	CREATE;
+	CREATE,
+	IRIS,
+	OCULUS;
 	
 	private final Function<Mods, @Nullable String> version = Util.memoize(IPlatform.INSTANCE::getModVersion);
 	
