@@ -1,7 +1,8 @@
 package com.github.exopandora.shouldersurfing.forge.compat;
 
-import net.minecraftforge.fml.loading.FMLLoader;
+import com.github.exopandora.shouldersurfing.compat.Mods;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -14,7 +15,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-@SuppressWarnings("UnstableApiUsage")
 public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 {
 	private final Map<String, Supplier<Predicate<ArtifactVersion>>> rules = new HashMap<String, Supplier<Predicate<ArtifactVersion>>>();
@@ -37,11 +37,13 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	{
 		if(this.rules.containsKey(mixinClassName))
 		{
-			Predicate<ArtifactVersion> oculusVersion = this.rules.get(mixinClassName).get();
-			return FMLLoader.getLoadingModList().getMods().stream().anyMatch(info ->
+			String oculusVersion = Mods.OCULUS.getModVersion();
+			
+			if(oculusVersion != null)
 			{
-				return info.getModId().equals("oculus") && oculusVersion.test(info.getVersion());
-			});
+				Predicate<ArtifactVersion> versionPredicate = this.rules.get(mixinClassName).get();
+				return versionPredicate.test(new DefaultArtifactVersion(oculusVersion));
+			}
 		}
 		
 		return false;
