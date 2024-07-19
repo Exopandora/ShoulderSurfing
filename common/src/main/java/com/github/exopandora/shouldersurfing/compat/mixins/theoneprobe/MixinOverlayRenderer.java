@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compat.theoneprobe;
+package com.github.exopandora.shouldersurfing.compat.mixins.theoneprobe;
 
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;

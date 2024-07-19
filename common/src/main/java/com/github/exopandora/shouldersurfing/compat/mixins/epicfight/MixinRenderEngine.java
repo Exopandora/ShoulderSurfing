@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.mixins.compat.epicfight;
+package com.github.exopandora.shouldersurfing.compat.mixins.epicfight;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import org.spongepowered.asm.mixin.Mixin;

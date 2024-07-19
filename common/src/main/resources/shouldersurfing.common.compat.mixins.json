@@ -1,11 +1,12 @@
 {
 	"required": true,
 	"minVersion": "0.8.4",
-	"package": "com.github.exopandora.shouldersurfing.mixins.compat",
+	"package": "com.github.exopandora.shouldersurfing.compat.mixins",
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"cgm.MixinRecoilHandler",
+		"create.MixinContraptionHandlerClient",
 		"epicfight.MixinRenderEngine",
 		"skinlayers.MixinCustomizableModelPart",
 		"theoneprobe.MixinOverlayRenderer"
