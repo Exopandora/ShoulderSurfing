@@ -1,10 +1,9 @@
-package com.github.exopandora.shouldersurfing.mixins.compat.theoneprobe;
+package com.github.exopandora.shouldersurfing.compat.mixins.theoneprobe;
 
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
