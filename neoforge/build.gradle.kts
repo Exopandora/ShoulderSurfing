@@ -5,6 +5,17 @@ plugins {
 	alias(libs.plugins.modpublishplugin)
 }
 
+repositories {
+	exclusiveContent {
+		forRepository {
+			maven("https://api.modrinth.com/maven")
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
+}
+
 val modId: String by project
 val modName: String by project
 val modAuthor: String by project
@@ -67,6 +78,7 @@ dependencies {
 	implementation(libs.wthit.neoforge.get())
 	implementation(libs.badpackets.neoforge.get())
 	implementation(libs.jade.neoforge.get())
+	compileOnly(libs.create.common)
 }
 
 tasks.named<JavaCompile>("compileJava") {

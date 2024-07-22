@@ -8,6 +8,16 @@ plugins {
 
 repositories {
 	maven("https://maven.minecraftforge.net/")
+	
+	exclusiveContent {
+		forRepository {
+			maven("https://api.modrinth.com/maven")
+		}
+		forRepositories(fg.repository)
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
 }
 
 val modId: String by project
@@ -80,6 +90,7 @@ dependencies {
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
 	implementation(libs.wthit.forge.get())
 	compileOnly(libs.jade.common.get())
+	compileOnly(fg.deobf(libs.create.common.get()))
 }
 
 tasks.withType<Jar> {
