@@ -78,7 +78,7 @@ dependencies {
 	implementation(libs.wthit.neoforge.get())
 	implementation(libs.badpackets.neoforge.get())
 	implementation(libs.jade.neoforge.get())
-	compileOnly(libs.create.common)
+	compileOnly(libs.create.neoforge)
 }
 
 tasks.named<JavaCompile>("compileJava") {

@@ -90,7 +90,7 @@ dependencies {
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
 	implementation(libs.wthit.forge.get())
 	compileOnly(libs.jade.common.get())
-	compileOnly(fg.deobf(libs.create.common.get()))
+	compileOnly(fg.deobf(libs.create.forge.get()))
 }
 
 tasks.withType<Jar> {
