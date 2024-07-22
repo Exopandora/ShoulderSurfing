@@ -8,6 +8,16 @@ plugins {
 
 repositories {
 	maven("https://maven.minecraftforge.net/")
+	
+	exclusiveContent {
+		forRepository {
+			maven("https://api.modrinth.com/maven")
+		}
+		forRepositories(fg.repository)
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
 }
 
 val modId: String by project
@@ -81,6 +91,7 @@ dependencies {
 	implementation(libs.wthit.forge.get())
 	implementation(libs.badpackets.forge.get())
 	implementation(libs.jade.forge.get())
+	compileOnly(fg.deobf(libs.create.common.get()))
 }
 
 tasks.withType<Jar> {

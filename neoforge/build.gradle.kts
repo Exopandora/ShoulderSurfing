@@ -7,6 +7,15 @@ plugins {
 
 repositories {
 	maven("https://maven.neoforged.net/releases/")
+	
+	exclusiveContent {
+		forRepository {
+			maven("https://api.modrinth.com/maven")
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
 }
 
 val modId: String by project
@@ -60,6 +69,7 @@ dependencies {
 	implementation(libs.wthit.neoforge.get())
 	implementation(libs.badpackets.neoforge.get())
 	implementation(libs.jade.neoforge.get())
+	compileOnly(libs.create.common)
 	
 	testCompileOnly(project(":api"))
 	testCompileOnly(project(":common"))
