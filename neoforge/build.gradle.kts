@@ -75,9 +75,9 @@ dependencies {
 	compileOnly(project(":compat"))
 	
 	implementation(libs.forgeconfigapiport.neoforge)
-	implementation(libs.wthit.neoforge.get())
-	implementation(libs.badpackets.neoforge.get())
-	implementation(libs.jade.neoforge.get())
+	implementation(libs.wthit.neoforge)
+	implementation(libs.badpackets.neoforge)
+	implementation(libs.jade.neoforge)
 	compileOnly(libs.create.neoforge)
 }
 
