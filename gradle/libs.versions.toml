@@ -11,6 +11,7 @@ wthit-fabric = "fabric-4.13.2"
 badpackets-forge = "forge-0.1.2"
 badpackets-fabric = "fabric-0.1.2"
 night-config = "3.6.3"
+create-common = "1.18.2-0.5.1.f" # forge artifact
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -25,6 +26,7 @@ wthit-forge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-forge" }
 wthit-fabric = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-fabric" }
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
+create-common = { module = "maven.modrinth:create", version.ref = "create-common" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 nightconfig-core = { module = "com.electronwill.night-config:core", version.ref = "night-config" }
 nightconfig-toml = { module = "com.electronwill.night-config:toml", version.ref = "night-config" }

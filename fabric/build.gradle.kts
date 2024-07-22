@@ -7,6 +7,17 @@ plugins {
 	alias(libs.plugins.modpublishplugin)
 }
 
+repositories {
+	exclusiveContent {
+		forRepository {
+			maven("https://api.modrinth.com/maven")
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
+}
+
 val modId: String by project
 val modName: String by project
 val modAuthor: String by project
@@ -45,6 +56,7 @@ dependencies {
 	modImplementation(libs.badpackets.fabric)
 	implementation(libs.nightconfig.core)
 	implementation(libs.nightconfig.toml)
+	modCompileOnly(libs.create.common)
 }
 
 loom {
