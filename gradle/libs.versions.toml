@@ -13,6 +13,7 @@ jade-forge = "4573193"
 jade-fabric = "4573047"
 badpackets-forge = "forge-0.4.1"
 badpackets-fabric = "fabric-0.4.1"
+create-common = "1.20.1-0.5.1.f" # forge artifact
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -30,6 +31,7 @@ jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
 jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
+create-common = { module = "maven.modrinth:create", version.ref = "create-common" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]
