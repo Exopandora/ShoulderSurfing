@@ -20,7 +20,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	@Override
 	public void turn(double yRot, double xRot)
 	{
-		if(!ShoulderSurfingImpl.getInstance().getCamera().turn(this, yRot, xRot))
+		if(!ShoulderSurfingImpl.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot))
 		{
 			super.turn(yRot, xRot);
 		}

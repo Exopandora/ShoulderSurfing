@@ -8,6 +8,7 @@ import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,6 +38,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private float xRotOffsetO;
 	private float yRotOffsetO;
 	private float freeLookYRot;
+	private float lastMovedYRot;
 	private boolean initialized;
 	
 	public ShoulderSurfingCamera(ShoulderSurfingImpl instance)
@@ -282,7 +284,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		return distance;
 	}
 	
-	public boolean turn(Player player, double yRot, double xRot)
+	public boolean turn(LocalPlayer player, double yRot, double xRot)
 	{
 		if(this.instance.isShoulderSurfing())
 		{
@@ -310,15 +312,33 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			
 			if(Config.CLIENT.isCameraDecoupled())
 			{
+				boolean isMoving = player.input.leftImpulse != 0.0F || player.input.forwardImpulse != 0.0F || player.isFallFlying();
+				
 				if(this.instance.isAiming() && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || player.isFallFlying())
 				{
 					player.setXRot(cameraXRot);
 					player.setYRot(cameraYRot);
 				}
-				else if(Config.CLIENT.doSyncPlayerXRotWithInputs() && this.instance.isEntityRotationDecoupled(player, Minecraft.getInstance()))
+				else if(this.instance.isEntityRotationDecoupled(player, Minecraft.getInstance()))
 				{
-					player.setXRot(cameraXRot);
-					player.xRotO += Mth.degreesDifference(this.xRot, cameraXRot);
+					if(Config.CLIENT.shouldPlayerXRotFollowCamera())
+					{
+						player.setXRot(cameraXRot);
+						player.xRotO += Mth.degreesDifference(this.xRot, cameraXRot);
+					}
+					
+					if(Config.CLIENT.shouldPlayerYRotFollowCamera() && !isMoving)
+					{
+						float maxFollowAngle = (float) Config.CLIENT.getMaxPlayerYRotFollowAngle();
+						float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledYRot, maxFollowAngle);
+						player.yRotO = player.getYRot();
+						player.setYRot(playerYRot);
+					}
+				}
+				
+				if(isMoving)
+				{
+					this.lastMovedYRot = player.getYRot();
 				}
 			}
 			
@@ -449,6 +469,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	public float getFreeLookYRot()
 	{
 		return this.freeLookYRot;
+	}
+	
+	public void setLastMovedYRot(float lastMovedYRot)
+	{
+		this.lastMovedYRot = lastMovedYRot;
 	}
 	
 	public static double length(Vector3f vec)
