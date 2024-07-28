@@ -320,6 +320,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				{
 					player.xRot = cameraXRot;
 					player.yRot = cameraYRot;
+					player.xRotO = this.xRot;
+					player.yRotO = this.yRot;
 				}
 				else if(this.instance.isEntityRotationDecoupled(player, Minecraft.getInstance()))
 				{
