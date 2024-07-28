@@ -103,6 +103,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		this.playerYRotO = player.getYRot();
 		this.updatePlayerRotations = true;
 		EntityHelper.lookAtTarget(player, hitResult.getLocation());
+		this.camera.setLastMovedYRot(player.getYRot());
 	}
 	
 	public void updatePlayerRotations()
