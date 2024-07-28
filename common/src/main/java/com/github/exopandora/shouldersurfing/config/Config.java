@@ -106,7 +106,9 @@ public class Config
 		private final ConfigValue<TurningMode> turningModeWhenInteraction;
 		private final ConfigValue<TurningMode> turningModeWhenPicking;
 		private final IntValue turningLockTime;
-		private final BooleanValue syncPlayerXRotWithInputs;
+		private final BooleanValue playerXRotFollowsCamera;
+		private final BooleanValue playerYRotFollowsCamera;
+		private final DoubleValue maxPlayerFollowAngleYRot;
 		private final ConfigValue<PickOrigin> entityPickOrigin;
 		private final ConfigValue<PickOrigin> blockPickOrigin;
 		
@@ -421,10 +423,20 @@ public class Config
 				.translation("Center camera when looking up angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 			
-			this.syncPlayerXRotWithInputs = builder
-				.comment("Whether to synchronize the x-rot of the player with mouse or controller inputs. This config option only applies when camera is decoupled.")
-				.translation("Sync player x-rot with mouse or controller inputs")
-				.define("sync_player_x_rot_with_inputs", false);
+			this.playerXRotFollowsCamera = builder
+				.comment("Whether the x-rot of the player should follow the camera x-rot. This config option only applies when camera is decoupled.")
+				.translation("Player x-rot follows camera")
+				.define("player_x_rot_follows_camera", false);
+			
+			this.playerYRotFollowsCamera = builder
+				.comment("Whether the y-rot of the player should follow the camera y-rot. This config option only applies when camera is decoupled.")
+				.translation("Player y-rot follows camera")
+				.define("player_y_rot_follows_camera", false);
+			
+			this.maxPlayerFollowAngleYRot = builder
+				.comment("The maximum angle to which the player y-rot follows the camera y-rot. Set to 180 to disable.")
+				.translation("Max player y-rot follow angle")
+				.defineInRange("player_x_rot_max_follow_angle", 90D, 0D, 180D);
 			
 			builder.push("turning");
 			
@@ -955,9 +967,21 @@ public class Config
 		}
 		
 		@Override
-		public boolean doSyncPlayerXRotWithInputs()
+		public boolean shouldPlayerXRotFollowCamera()
 		{
-			return this.syncPlayerXRotWithInputs.get();
+			return this.playerXRotFollowsCamera.get();
+		}
+		
+		@Override
+		public boolean shouldPlayerYRotFollowCamera()
+		{
+			return this.playerYRotFollowsCamera.get();
+		}
+		
+		@Override
+		public double getMaxPlayerYRotFollowAngle()
+		{
+			return this.maxPlayerFollowAngleYRot.get();
 		}
 		
 		public void adjustCameraLeft()
