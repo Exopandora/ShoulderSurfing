@@ -151,5 +151,14 @@ public interface IClientConfig
 	
 	boolean doCenterPlayerSounds();
 	
-	boolean doSyncPlayerXRotWithInputs();
+	@Deprecated
+	default boolean doSyncPlayerXRotWithInputs()
+	{
+		return this.shouldPlayerXRotFollowCamera();
+	}
+	
+	boolean shouldPlayerXRotFollowCamera();
+	boolean shouldPlayerYRotFollowCamera();
+	
+	double getMaxPlayerYRotFollowAngle();
 }

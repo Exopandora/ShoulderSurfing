@@ -18,7 +18,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 	@Override
 	public void turn(double yRot, double xRot)
 	{
-		if(!ShoulderSurfingImpl.getInstance().getCamera().turn(this, yRot, xRot))
+		if(!ShoulderSurfingImpl.getInstance().getCamera().turn((ClientPlayerEntity) (Object) this, yRot, xRot))
 		{
 			super.turn(yRot, xRot);
 		}
