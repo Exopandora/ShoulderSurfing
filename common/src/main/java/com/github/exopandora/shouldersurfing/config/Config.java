@@ -482,13 +482,13 @@ public class Config
 			builder.push("pick_origin");
 			
 			this.entityPickOrigin = builder
-				.comment("The origin where the entity pick starts.")
-				.translation("Entity pick origin")
+				.comment("The origin where the entity pick starts when using the static crosshair.")
+				.translation("Entity pick origin (static crosshair)")
 				.defineEnum("entity_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
 			
 			this.blockPickOrigin = builder
-				.comment("The origin where the block pick starts.")
-				.translation("Block pick origin")
+				.comment("The origin where the block pick starts when using the static crosshair.")
+				.translation("Block pick origin (static crosshair)")
 				.defineEnum("block_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
 			
 			builder.pop();
