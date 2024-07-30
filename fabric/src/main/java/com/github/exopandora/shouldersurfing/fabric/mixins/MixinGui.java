@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -34,7 +35,10 @@ public abstract class MixinGui
 	)
 	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
+		if(ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow()))
+		{
+			RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.0F);
+		}
 	}
 	
 	@Inject
@@ -49,7 +53,10 @@ public abstract class MixinGui
 	)
 	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().clearCrosshairOffset(guiGraphics.pose());
+		if(ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics.pose()))
+		{
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		}
 	}
 	
 	@Redirect
