@@ -22,19 +22,20 @@ public final class DynamicPickContext extends PickContext
 	@Override
 	public Couple<Vector3d> entityTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick);
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getPickVector());
 	}
 	
 	@Override
 	public Couple<Vector3d> blockTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick);
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getPickVector());
 	}
 	
-	private Couple<Vector3d> calcRay(ActiveRenderInfo camera, double interactionRange, float partialTick)
+	private Couple<Vector3d> calcRay(ActiveRenderInfo camera, Entity entity, double interactionRange, float partialTick, PickVector pickVector)
 	{
 		Vector3d startPos = this.entity().getEyePosition(partialTick);
-		Vector3d endPos = startPos.add(new Vector3d(camera.getLookVector()).scale(interactionRange));
+		Vector3d viewVector = pickVector.calc(camera, entity, partialTick);
+		Vector3d endPos = startPos.add(viewVector.scale(interactionRange));
 		return new Couple<Vector3d>(startPos, endPos);
 	}
 }

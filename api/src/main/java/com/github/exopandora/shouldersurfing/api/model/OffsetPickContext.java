@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.api.accessors.ActiveRenderInfoAcces
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
@@ -32,18 +31,18 @@ public final class OffsetPickContext extends PickContext
 	@Override
 	public Couple<Vector3d> entityTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
 	}
 	
 	@Override
 	public Couple<Vector3d> blockTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
 	}
 	
-	private Couple<Vector3d> calcRay(ActiveRenderInfo camera, double interactionRange, float partialTick, PickOrigin pickOrigin)
+	private Couple<Vector3d> calcRay(ActiveRenderInfo camera, Entity entity, double interactionRange, float partialTick, PickOrigin pickOrigin)
 	{
-		Vector3d eyePosition = this.entity().getEyePosition(partialTick);
+		Vector3d eyePosition = entity.getEyePosition(partialTick);
 		Vector3d cameraPos = camera.getPosition();
 		Vector3d cameraOffset = cameraPos.subtract(eyePosition);
 		Vector3d renderOffset = ShoulderSurfing.getInstance().getCamera().getRenderOffset();

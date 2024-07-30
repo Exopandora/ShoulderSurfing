@@ -4,23 +4,22 @@ import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
-import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
-import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerController;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
 import org.jetbrains.annotations.Nullable;
 
 public class CrosshairRenderer implements ICrosshairRenderer
 {
 	private final ShoulderSurfingImpl instance;
-	private Vec2f offset;
 	private Vec2f projected;
 	
 	public CrosshairRenderer(ShoulderSurfingImpl instance)
@@ -31,32 +30,36 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	private void init()
 	{
-		this.offset = Vec2f.ZERO;
 		this.projected = null;
 	}
 	
-	public void offsetCrosshair(MatrixStack poseStack, MainWindow window)
+	public boolean preRenderCrosshair(MatrixStack poseStack, MainWindow window)
 	{
-		if(this.projected != null)
+		boolean isCrosshairOutOfBounds = this.projected == null;
+		
+		if(!isCrosshairOutOfBounds && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 			Vec2f center = screenSize.divide(2);
-			this.offset = this.projected.subtract(center).divide((float) window.getGuiScale());
+			Vec2f offset = this.projected.subtract(center).divide((float) window.getGuiScale());
+			
+			poseStack.pushPose();
+			poseStack.last().pose().translate(new Vector3f(offset.x(), -offset.y(), 0F));
 		}
 		
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
-		{
-			poseStack.pushPose();
-			poseStack.last().pose().translate(new Vector3f(this.offset.x(), -this.offset.y(), 0F));
-		}
+		return isCrosshairOutOfBounds;
 	}
 	
-	public void clearCrosshairOffset(MatrixStack poseStack)
+	public boolean postRenderCrosshair(MatrixStack poseStack)
 	{
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
+		boolean isCrosshairOutOfBounds = this.projected == null;
+		
+		if(!isCrosshairOutOfBounds && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			poseStack.popPose();
 		}
+		
+		return isCrosshairOutOfBounds;
 	}
 	
 	public void updateDynamicRaytrace(ActiveRenderInfo camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
@@ -109,7 +112,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		float z = vec.z() * w + 0.5F;
 		vec.set(x, y, z, w);
 		
-		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y))
+		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y) || w < 0.0F)
 		{
 			return null;
 		}
