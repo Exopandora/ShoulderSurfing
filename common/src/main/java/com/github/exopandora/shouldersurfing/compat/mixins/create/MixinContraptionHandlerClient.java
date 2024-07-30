@@ -33,6 +33,7 @@ public class MixinContraptionHandlerClient
 			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
 			double interactionRange = IObjectPicker.maxInteractionRange(player);
 			var blockTrace = new PickContext.Builder(camera)
+				.withEntity(player)
 				.build()
 				.blockTrace(interactionRange, partialTick);
 			cir.setReturnValue(Couple.create(blockTrace.left(), blockTrace.right()));
