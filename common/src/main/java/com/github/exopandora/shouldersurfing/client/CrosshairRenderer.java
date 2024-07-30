@@ -34,7 +34,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.projected = null;
 	}
 	
-	public void offsetCrosshair(PoseStack poseStack, Window window)
+	public boolean offsetCrosshair(PoseStack poseStack, Window window)
 	{
 		if(this.projected != null)
 		{
@@ -45,14 +45,21 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		
 		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
+			if(this.projected == null)
+			{
+				return true;
+			}
+			
 			poseStack.pushPose();
 			poseStack.last().pose().translate(this.offset.x(), -this.offset.y(), 0F);
 		}
+		
+		return false;
 	}
 	
 	public void clearCrosshairOffset(PoseStack poseStack)
 	{
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
+		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) && this.projected != null)
 		{
 			poseStack.popPose();
 		}
@@ -108,7 +115,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		float z = vec.z() * w + 0.5F;
 		vec.set(x, y, z, w);
 		
-		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y))
+		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y) || w < 0.0F)
 		{
 			return null;
 		}

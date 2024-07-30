@@ -31,18 +31,18 @@ public final class OffsetPickContext extends PickContext
 	@Override
 	public Couple<Vec3> entityTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
 	}
 	
 	@Override
 	public Couple<Vec3> blockTrace(double interactionRange, float partialTick)
 	{
-		return this.calcRay(this.camera(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
 	}
 	
-	private Couple<Vec3> calcRay(Camera camera, double interactionRange, float partialTick, PickOrigin pickOrigin)
+	private static Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickOrigin pickOrigin)
 	{
-		Vec3 eyePosition = this.entity().getEyePosition(partialTick);
+		Vec3 eyePosition = entity.getEyePosition(partialTick);
 		Vec3 cameraPos = camera.getPosition();
 		Vec3 cameraOffset = cameraPos.subtract(eyePosition);
 		Vec3 renderOffset = ShoulderSurfing.getInstance().getCamera().getRenderOffset();

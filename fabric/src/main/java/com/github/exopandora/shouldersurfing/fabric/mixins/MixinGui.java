@@ -21,11 +21,15 @@ public class MixinGui
 	@Inject
 	(
 		method = "renderCrosshair",
-		at = @At("HEAD")
+		at = @At("HEAD"),
+		cancellable = true
 	)
 	private void offsetCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
+		if(ShoulderSurfingImpl.getInstance().getCrosshairRenderer().offsetCrosshair(guiGraphics.pose(), this.minecraft.getWindow()))
+		{
+			ci.cancel();
+		}
 	}
 	
 	@Inject
