@@ -109,7 +109,7 @@ public class Config
 		private final IntValue turningLockTime;
 		private final BooleanValue playerXRotFollowsCamera;
 		private final BooleanValue playerYRotFollowsCamera;
-		private final DoubleValue maxPlayerFollowAngleYRot;
+		private final DoubleValue playerYRotFollowAngleLimit;
 		private final ConfigValue<PickOrigin> entityPickOrigin;
 		private final ConfigValue<PickOrigin> blockPickOrigin;
 		private final ConfigValue<PickVector> pickVector;
@@ -435,10 +435,10 @@ public class Config
 				.translation("Player y-rot follows camera")
 				.define("player_y_rot_follows_camera", false);
 			
-			this.maxPlayerFollowAngleYRot = builder
-				.comment("The maximum angle to which the player y-rot follows the camera y-rot. Set to 180 to disable.")
-				.translation("Max player y-rot follow angle")
-				.defineInRange("player_x_rot_max_follow_angle", 90D, 0D, 180D);
+			this.playerYRotFollowAngleLimit = builder
+				.comment("The maximum angle to which the player y-rot follows the camera y-rot. This config option only applies when player y-rot follows camera option is enabled.")
+				.translation("Player y-rot follow angle limit")
+				.defineInRange("player_y_rot_follow_angle_limit", 90D, 0D, 180D);
 			
 			builder.push("turning");
 			
@@ -995,9 +995,9 @@ public class Config
 		}
 		
 		@Override
-		public double getMaxPlayerYRotFollowAngle()
+		public double getPlayerYRotFollowAngleLimit()
 		{
-			return this.maxPlayerFollowAngleYRot.get();
+			return this.playerYRotFollowAngleLimit.get();
 		}
 		
 		public void adjustCameraLeft()

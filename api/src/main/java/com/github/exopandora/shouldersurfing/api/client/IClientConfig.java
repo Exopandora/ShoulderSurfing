@@ -163,5 +163,5 @@ public interface IClientConfig
 	boolean shouldPlayerXRotFollowCamera();
 	boolean shouldPlayerYRotFollowCamera();
 	
-	double getMaxPlayerYRotFollowAngle();
+	double getPlayerYRotFollowAngleLimit();
 }
