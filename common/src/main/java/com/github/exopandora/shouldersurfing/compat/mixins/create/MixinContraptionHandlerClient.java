@@ -6,6 +6,7 @@ import com.simibubi.create.content.contraptions.ContraptionHandlerClient;
 import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +23,7 @@ public class MixinContraptionHandlerClient
 		cancellable = true,
 		remap = false
 	)
-	private static void getRayInputs(CallbackInfoReturnable<Couple<Vec3>> cir)
+	private static void getRayInputs(LocalPlayer player, CallbackInfoReturnable<Couple<Vec3>> cir)
 	{
 		if(ShoulderSurfing.getInstance().isShoulderSurfing())
 		{
@@ -31,6 +32,7 @@ public class MixinContraptionHandlerClient
 			float partialTick = minecraft.getDeltaFrameTime();
 			double interactionRange = minecraft.gameMode.getPickRange();
 			var blockTrace = new PickContext.Builder(camera)
+				.withEntity(player)
 				.build()
 				.blockTrace(interactionRange, partialTick);
 			cir.setReturnValue(Couple.create(blockTrace.left(), blockTrace.right()));
