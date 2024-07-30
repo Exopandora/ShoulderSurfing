@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
@@ -111,6 +112,7 @@ public class Config
 		private final DoubleValue maxPlayerFollowAngleYRot;
 		private final ConfigValue<PickOrigin> entityPickOrigin;
 		private final ConfigValue<PickOrigin> blockPickOrigin;
+		private final ConfigValue<PickVector> pickVector;
 		
 		private final ConfigValue<CrosshairType> crosshairType;
 		private final DoubleValue customRaytraceDistance;
@@ -490,6 +492,14 @@ public class Config
 				.comment("The origin where the block pick starts when using the static crosshair.")
 				.translation("Block pick origin (static crosshair)")
 				.defineEnum("block_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
+			
+			builder.pop();
+			builder.push("pick_vector");
+			
+			this.pickVector = builder
+				.comment("The vector direction of the raytrace when picking objects. This config option only applies when using the dynamic crosshair.")
+				.translation("Pick vector (dynamic crosshair)")
+				.defineEnum("pick_vector", PickVector.CAMERA, PickVector.values());
 			
 			builder.pop();
 			builder.pop();
@@ -922,6 +932,12 @@ public class Config
 		public PickOrigin getBlockPickOrigin()
 		{
 			return this.blockPickOrigin.get();
+		}
+		
+		@Override
+		public PickVector getPickVector()
+		{
+			return this.pickVector.get();
 		}
 		
 		@Override
