@@ -32,6 +32,7 @@ public abstract class MixinPlayerEntity extends Entity
 		{
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withFluidContext(stopOnFluid ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE)
+				.withEntity(this)
 				.build();
 			return instance.getObjectPicker().pickBlocks(pickContext, interactionRange, partialTick);
 		}
