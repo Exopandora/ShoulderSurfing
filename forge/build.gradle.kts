@@ -103,7 +103,7 @@ tasks.named<ProcessResources>("processResources") {
 	
 	inputs.properties(properties)
 	
-	filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml")) {
+	filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml", "**/lang/*.json")) {
 		expand(properties)
 	}
 }

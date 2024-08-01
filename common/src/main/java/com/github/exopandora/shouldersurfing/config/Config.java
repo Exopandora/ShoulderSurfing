@@ -4,8 +4,8 @@ import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
+import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.item.Items;
@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class Config
 {
@@ -132,52 +134,52 @@ public class Config
 			
 			this.offsetX = builder
 				.comment("Third person camera x-offset.")
-				.translation("x-offset")
+				.translation(MOD_ID + ".configuration.camera.offset.offset_x")
 				.defineInRange("offset_x", -0.75D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.offsetY = builder
 				.comment("Third person camera y-offset.")
-				.translation("y-offset")
+				.translation(MOD_ID + ".configuration.camera.offset.offset_y")
 				.defineInRange("offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.offsetZ = builder
 				.comment("Third person camera z-offset.")
-				.translation("z-offset")
+				.translation(MOD_ID + ".configuration.camera.offset.offset_z")
 				.defineInRange("offset_z", 4.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.push("min");
 			
 			this.minOffsetX = builder
-				.comment("If x-offset is limited this is the minimum amount.")
-				.translation("Minimum x-offset")
+				.comment("When x-offset is limited this is the minimum amount.")
+				.translation(MOD_ID + ".configuration.offset.min.min_offset_x")
 				.defineInRange("min_offset_x", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.minOffsetY = builder
-				.comment("If y-offset is limited this is the minimum amount.")
-				.translation("Minimum y-offset")
+				.comment("When y-offset is limited this is the minimum amount.")
+				.translation(MOD_ID + ".configuration.offset.min.min_offset_y")
 				.defineInRange("min_offset_y", -1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.minOffsetZ = builder
-				.comment("If z-offset is limited this is the minimum amount.")
-				.translation("Minimum z-offset")
+				.comment("When z-offset is limited this is the minimum amount.")
+				.translation(MOD_ID + ".configuration.offset.min.min_offset_z")
 				.defineInRange("min_offset_z", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("max");
 			
 			this.maxOffsetX = builder
-				.comment("If x-offset is limited this is the maximum amount.")
-				.translation("Maximum x-offset")
+				.comment("When x-offset is limited this is the maximum amount.")
+				.translation(MOD_ID + ".configuration.offset.max.max_offset_x")
 				.defineInRange("max_offset_x", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.maxOffsetY = builder
-				.comment("If y-offset is limited this is the maximum amount.")
-				.translation("Maximum y-offset")
+				.comment("When y-offset is limited this is the maximum amount.")
+				.translation(MOD_ID + ".configuration.offset.max.max_offset_y")
 				.defineInRange("max_offset_y", 1.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.maxOffsetZ = builder
-				.comment("If z-offset is limited this is the maximum amount.")
-				.translation("Maximum z-offset")
+				.comment("When z-offset is limited this is the maximum amount.")
+				.translation(MOD_ID + ".configuration.offset.max.max_offset_z")
 				.defineInRange("max_offset_z", 5.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -185,17 +187,17 @@ public class Config
 			
 			this.unlimitedOffsetX = builder
 				.comment("Whether or not x-offset adjustment has limits.")
-				.translation("Unlimited x-offset")
+				.translation(MOD_ID + ".configuration.offset.limits.unlimited_offset_x")
 				.define("unlimited_offset_x", false);
 			
 			this.unlimitedOffsetY = builder
 				.comment("Whether or not y-offset adjustment has limits.")
-				.translation("Unlimited y-offset")
+				.translation(MOD_ID + ".configuration.offset.limits.unlimited_offset_y")
 				.define("unlimited_offset_y", false);
 			
 			this.unlimitedOffsetZ = builder
 				.comment("Whether or not z-offset adjustment has limits.")
-				.translation("Unlimited z-offset")
+				.translation(MOD_ID + ".configuration.offset.limits.unlimited_offset_z")
 				.define("unlimited_offset_z", false);
 			
 			builder.pop();
@@ -204,17 +206,17 @@ public class Config
 			
 			this.passengerOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when the player is a passenger.")
-				.translation("Passenger x-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.passenger.multiplier_offset_x")
 				.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.passengerOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when the player is a passenger.")
-				.translation("Passenger y-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.passenger.multiplier_offset_y")
 				.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.passengerOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is a passenger.")
-				.translation("Passenger z-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.passenger.multiplier_offset_z")
 				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -222,17 +224,17 @@ public class Config
 			
 			this.sprintOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when the player is sprinting.")
-				.translation("Sprint x-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.sprint.multiplier_offset_x")
 				.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.sprintOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when the player is sprinting.")
-				.translation("Sprint y-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.sprint.multiplier_offset_y")
 				.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.sprintOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is sprinting.")
-				.translation("Sprint z-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.sprint.multiplier_offset_z")
 				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -240,17 +242,17 @@ public class Config
 			
 			this.aimingOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when the player is aiming.")
-				.translation("Aiming x-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.aiming.multiplier_offset_x")
 				.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.aimingOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when the player is aiming.")
-				.translation("Aiming y-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.aiming.multiplier_offset_y")
 				.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.aimingOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when the player is aiming.")
-				.translation("Aiming z-offset multiplier")
+				.translation(MOD_ID + ".configuration.offset.multiplier.aiming.multiplier_offset_z")
 				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -258,18 +260,18 @@ public class Config
 			
 			this.fallFlyingOffsetXMultiplier = builder
 				.comment("x-offset multiplier for when using Elytra.")
-				.translation("Elytra x-offset multiplier")
-				.defineInRange("modifier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.translation(MOD_ID + ".configuration.offset.multiplier.fall_flying.multiplier_offset_x")
+				.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetYMultiplier = builder
 				.comment("y-offset multiplier for when using Elytra.")
-				.translation("Elytra y-offset multiplier")
-				.defineInRange("modifier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.translation(MOD_ID + ".configuration.offset.multiplier.fall_flying.multiplier_offset_y")
+				.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetZMultiplier = builder
 				.comment("z-offset multiplier for when using Elytra.")
-				.translation("Elytra z-offset multiplier")
-				.defineInRange("modifier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+				.translation(MOD_ID + ".configuration.offset.multiplier.fall_flying.multiplier_offset_z")
+				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.pop();
@@ -278,17 +280,17 @@ public class Config
 			
 			this.passengerOffsetXModifier = builder
 				.comment("x-offset modifier for when the player is a passenger.")
-				.translation("Passenger x-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.passenger.modifier_offset_x")
 				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.passengerOffsetYModifier = builder
 				.comment("y-offset modifier for when the player is a passenger.")
-				.translation("Passenger y-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.passenger.modifier_offset_y")
 				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.passengerOffsetZModifier = builder
 				.comment("z-offset modifier for when the player is a passenger.")
-				.translation("Passenger z-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.passenger.modifier_offset_z")
 				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -296,17 +298,17 @@ public class Config
 			
 			this.sprintOffsetXModifier = builder
 				.comment("x-offset modifier for when the player is sprinting.")
-				.translation("Sprint x-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.sprint.modifier_offset_x")
 				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.sprintOffsetYModifier = builder
 				.comment("y-offset modifier for when the player is sprinting.")
-				.translation("Sprint y-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.sprint.modifier_offset_y")
 				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.sprintOffsetZModifier = builder
 				.comment("z-offset modifier for when the player is sprinting.")
-				.translation("Sprint z-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.sprint.modifier_offset_z")
 				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -314,17 +316,17 @@ public class Config
 			
 			this.aimingOffsetXModifier = builder
 				.comment("x-offset modifier for when the player is aiming.")
-				.translation("Aiming x-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.aiming.modifier_offset_x")
 				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.aimingOffsetYModifier = builder
 				.comment("y-offset modifier for when the player is aiming.")
-				.translation("Aiming y-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.aiming.modifier_offset_y")
 				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.aimingOffsetZModifier = builder
 				.comment("z-offset modifier for when the player is aiming.")
-				.translation("Aiming z-offset modifier")
+				.translation(MOD_ID + ".configuration.offset.modifier.aiming.modifier_offset_z")
 				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -332,17 +334,17 @@ public class Config
 			
 			this.fallFlyingOffsetXModifier = builder
 				.comment("x-offset modifier for when using Elytra.")
-				.translation("Elytra x-offset")
+				.translation(MOD_ID + ".configuration.offset.modifier.fall_flying.modifier_offset_x")
 				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetYModifier = builder
 				.comment("y-offset modifier for when using Elytra.")
-				.translation("Elytra y-offset")
+				.translation(MOD_ID + ".configuration.offset.modifier.fall_flying.modifier_offset_y")
 				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.fallFlyingOffsetZModifier = builder
 				.comment("z-offset modifier for when using Elytra.")
-				.translation("Elytra z-offset")
+				.translation(MOD_ID + ".configuration.offset.modifier.fall_flying.modifier_offset_z")
 				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
@@ -351,42 +353,42 @@ public class Config
 			
 			this.keepCameraOutOfHeadMultiplier = builder
 				.comment("The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.")
-				.translation("Keep camera out of head distance multiplier")
+				.translation(MOD_ID + ".configuration.camera.keep_camera_out_of_head_distance_multiplier")
 				.defineInRange("keep_camera_out_of_head_distance_multiplier", 0.75D, 0D, Double.MAX_VALUE);
 			
 			this.cameraStepSize = builder
 				.comment("Size of the camera adjustment per step.")
-				.translation("Camera step size")
+				.translation(MOD_ID + ".configuration.camera.camera_step_size")
 				.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			this.centerCameraWhenClimbing = builder
 				.comment("Whether or not to temporarily center the camera when climbing.")
-				.translation("Center camera when climbing")
+				.translation(MOD_ID + ".configuration.camera.center_camera_when_climbing")
 				.define("center_camera_when_climbing", true);
 			
 			this.centerCameraWhenFallFlying = builder
 				.comment("Whether or not to temporarily center the camera when using Elytra.")
-				.translation("Center camera when using Elytra")
+				.translation(MOD_ID + ".configuration.camera.center_camera_when_fall_flying")
 				.define("center_camera_when_fall_flying", false);
 			
 			this.cameraTransitionSpeedMultiplier = builder
 				.comment("The speed multiplier at which the camera transitions between positions.")
-				.translation("Camera transition speed multiplier")
+				.translation(MOD_ID + ".configuration.camera.camera_transition_speed_multiplier")
 				.defineInRange("camera_transition_speed_multiplier", 0.25D, 0.05D, 1.0D);
 			
 			this.centerCameraWhenLookingDownAngle = builder
 				.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
-				.translation("Center camera when looking down angle")
+				.translation(MOD_ID + ".configuration.camera.center_camera_when_looking_down_angle")
 				.defineInRange("center_camera_when_looking_down_angle", 1D, 0D, 90D);
 			
 			this.dynamicallyAdjustOffsets = builder
 				.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
-				.translation("Dynamically adjust offsets")
+				.translation(MOD_ID + ".configuration.camera.dynamically_adjust_offsets")
 				.define("dynamically_adjust_offsets", true);
 			
 			this.isCameraDecoupled = builder
 				.comment("Whether or not to decouple the camera rotation from the player rotation.")
-				.translation("Decoupled camera")
+				.translation(MOD_ID + ".configuration.camera.decoupled_camera")
 				.define("decoupled_camera", true);
 			
 			builder.pop();
@@ -394,77 +396,77 @@ public class Config
 			
 			this.defaultPerspective = builder
 				.comment("The default perspective when you load the game.")
-				.translation("Default perspective")
+				.translation(MOD_ID + ".configuration.perspective.default_perspective")
 				.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
 			
 			this.rememberLastPerspective = builder
 				.comment("Whether or not to remember the last perspective used.")
-				.translation("Remember last perspective")
+				.translation(MOD_ID + ".configuration.perspective.remember_last_perspective")
 				.define("remember_last_perspective", true);
 			
 			this.replaceDefaultPerspective = builder
 				.comment("Whether or not to replace the default third person perspective.")
-				.translation("Replace default perspective")
+				.translation(MOD_ID + ".configuration.perspective.replace_default_perspective")
 				.define("replace_default_perspective", false);
 			
 			this.skipThirdPersonFront = builder
 				.comment("Whether or not to skip the third person front perspective.")
-				.translation("Skip third person front perspective")
+				.translation(MOD_ID + ".configuration.perspective.skip_third_person_front_perspective")
 				.define("skip_third_person_front_perspective", false);
 			
 			builder.pop();
 			builder.push("player");
 			
 			this.playerTransparency = builder
-				.comment("Whether or not to adjust the player model transparency when view is obstructed.")
-				.translation("Adjust player transparency")
+				.comment("Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
+				.translation(MOD_ID + ".configuration.player.adjust_player_transparency")
 				.define("adjust_player_transparency", true);
 			
 			this.hidePlayerWhenLookingUpAngle = builder
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
-				.translation("Center camera when looking up angle")
+				.translation(MOD_ID + ".configuration.player.hide_player_when_looking_up_angle")
 				.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 			
 			this.playerXRotFollowsCamera = builder
 				.comment("Whether the x-rot of the player should follow the camera x-rot. This config option only applies when camera is decoupled.")
-				.translation("Player x-rot follows camera")
+				.translation(MOD_ID + ".configuration.player.player_x_rot_follows_camera")
 				.define("player_x_rot_follows_camera", false);
 			
 			this.playerYRotFollowsCamera = builder
 				.comment("Whether the y-rot of the player should follow the camera y-rot. This config option only applies when camera is decoupled.")
-				.translation("Player y-rot follows camera")
+				.translation(MOD_ID + ".configuration.player.player_y_rot_follows_camera")
 				.define("player_y_rot_follows_camera", false);
 			
 			this.playerYRotFollowAngleLimit = builder
 				.comment("The maximum angle to which the player y-rot follows the camera y-rot. This config option only applies when player y-rot follows camera option is enabled.")
-				.translation("Player y-rot follow angle limit")
+				.translation(MOD_ID + ".configuration.player.player_y_rot_follow_angle_limit")
 				.defineInRange("player_y_rot_follow_angle_limit", 90D, 0D, 180D);
 			
 			builder.push("turning");
 			
 			this.turningModeWhenUsingItem = builder
 				.comment("Whether to turn the player when using an item. This config option only applies when camera is decoupled.")
-				.translation("Turn player when using an item")
+				.translation(MOD_ID + ".configuration.player.turning.when_using_item")
 				.defineEnum("when_using_item", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningModeWhenAttacking = builder
 				.comment("Whether to turn the player when attacking. This config option only applies when camera is decoupled.")
-				.translation("Turn player when attacking")
+				.translation(MOD_ID + ".configuration.player.turning.when_attacking")
 				.defineEnum("when_attacking", TurningMode.REQUIRES_TARGET, TurningMode.values());
 			
 			this.turningModeWhenInteraction = builder
 				.comment("Whether to turn the player when interacting with blocks. This config option only applies when camera is decoupled.")
-				.translation("Turn player when interacting with blocks")
+				.translation(MOD_ID + ".configuration.player.turning.when_interacting")
 				.defineEnum("when_interacting", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningModeWhenPicking = builder
 				.comment("Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.")
-				.translation("Turn player when picking")
+				.translation(MOD_ID + ".configuration.player.turning.when_picking")
 				.defineEnum("when_picking", TurningMode.ALWAYS, TurningMode.values());
 			
 			this.turningLockTime = builder
 				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
-				.translation("Turning lock time (ticks)")
+				.translation(MOD_ID + ".configuration.player.turning.turning_lock_time")
 				.defineInRange("turning_lock_time", 4, 0, Integer.MAX_VALUE);
 			
 			builder.pop();
@@ -473,24 +475,24 @@ public class Config
 			
 			this.customRaytraceDistance = builder
 				.comment("The raytrace distance used for the dynamic crosshair.")
-				.translation("Custom raytrace distance")
+				.translation(MOD_ID + ".configuration.object_picker.custom_raytrace_distance")
 				.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
 			
 			this.useCustomRaytraceDistance = builder
 				.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair.")
-				.translation("Use custom raytrace distance")
+				.translation(MOD_ID + ".configuration.object_picker.use_custom_raytrace_distance")
 				.define("use_custom_raytrace_distance", true);
 			
 			builder.push("pick_origin");
 			
 			this.entityPickOrigin = builder
 				.comment("The origin where the entity pick starts when using the static crosshair.")
-				.translation("Entity pick origin (static crosshair)")
+				.translation(MOD_ID + ".configuration.object_picker.pick_origin.entity_pick_origin")
 				.defineEnum("entity_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
 			
 			this.blockPickOrigin = builder
 				.comment("The origin where the block pick starts when using the static crosshair.")
-				.translation("Block pick origin (static crosshair)")
+				.translation(MOD_ID + ".configuration.object_picker.pick_origin.block_pick_origin")
 				.defineEnum("block_pick_origin", PickOrigin.PLAYER, PickOrigin.values());
 			
 			builder.pop();
@@ -498,7 +500,7 @@ public class Config
 			
 			this.pickVector = builder
 				.comment("The vector direction of the raytrace when picking objects. This config option only applies when using the dynamic crosshair.")
-				.translation("Pick vector (dynamic crosshair)")
+				.translation(MOD_ID + ".configuration.object_picker.pick_vector.pick_vector")
 				.defineEnum("pick_vector", PickVector.CAMERA, PickVector.values());
 			
 			builder.pop();
@@ -507,12 +509,12 @@ public class Config
 			
 			this.crosshairType = builder
 				.comment("Crosshair type to use for shoulder surfing.")
-				.translation("Crosshair type")
+				.translation(MOD_ID + ".configuration.crosshair.crosshair_type")
 				.defineEnum("crosshair_type", CrosshairType.STATIC, CrosshairType.values());
 			
 			this.adaptiveCrosshairHoldItems = builder
 				.comment("Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
-				.translation("Adaptive crosshair items (hold)")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_items")
 				.defineList("adaptive_crosshair_hold_items", () ->
 				{
 					List<String> items = new ArrayList<String>();
@@ -528,12 +530,12 @@ public class Config
 			
 			this.adaptiveCrosshairUseItems = builder
 				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
-				.translation("Adaptive crosshair items (use)")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_items")
 				.defineList("adaptive_crosshair_use_items", ArrayList::new, Objects::nonNull);
 			
 			this.adaptiveCrosshairHoldItemProperties = builder
 				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
-				.translation("Adaptive crosshair item properties (hold)")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_item_properties")
 				.defineList("adaptive_crosshair_hold_item_properties", () ->
 				{
 					List<String> items = new ArrayList<String>();
@@ -543,7 +545,7 @@ public class Config
 			
 			this.adaptiveCrosshairUseItemProperties = builder
 				.comment("Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.")
-				.translation("Adaptive crosshair item properties (use)")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_properties")
 				.defineList("adaptive_crosshair_use_item_properties", () ->
 				{
 					List<String> items = new ArrayList<String>();
@@ -556,9 +558,10 @@ public class Config
 			
 			for(Perspective entry : Perspective.values())
 			{
+				String key = entry.toString().toLowerCase();
 				ConfigValue<CrosshairVisibility> crosshairVisibility = builder
-					.comment("Crosshair visibility for " + entry.toString().toLowerCase() + ".")
-					.translation(entry + " crosshair visibility")
+					.comment("Crosshair visibility for " + key.replace('_', ' ') + ".")
+					.translation(MOD_ID + ".configuration.crosshair.visibility." + key)
 					.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
 				this.crosshairVisibility.put(entry, crosshairVisibility);
 			}
@@ -569,7 +572,7 @@ public class Config
 			
 			this.centerPlayerSounds = builder
 				.comment("Whether to center sounds made by the player.")
-				.translation("Center player sounds")
+				.translation(MOD_ID + ".configuration.audio.center_player_sounds")
 				.define("center_player_sounds", false);
 			
 			builder.pop();
