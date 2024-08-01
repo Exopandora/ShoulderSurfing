@@ -100,7 +100,7 @@ tasks.withType<ProcessResources> {
 	
 	inputs.properties(properties)
 	
-	filesMatching(listOf("pack.mcmeta", "META-INF/neoforge.mods.toml")) {
+	filesMatching(listOf("pack.mcmeta", "META-INF/neoforge.mods.toml", "**/lang/*.json")) {
 		expand(properties)
 	}
 }
