@@ -6,6 +6,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
+import fuzs.forgeconfigapiport.forge.api.neoforge.v4.NeoForgeConfigRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,7 +34,7 @@ public class ShoulderSurfingForge
 		modEventBus.addListener(this::loadComplete);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
-			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
+			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);

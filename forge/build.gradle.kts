@@ -88,6 +88,7 @@ dependencies {
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+	implementation(libs.forgeconfigapiport.forge)
 	implementation(libs.wthit.forge)
 	compileOnly(libs.jade.common)
 	compileOnly(fg.deobf(libs.create.forge.get()))
@@ -158,6 +159,7 @@ publishMods {
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
 		clientRequired = true
 		serverRequired = false
+		requires("forge-config-api-port-fabric")
 		incompatible("better-third-person", "nimble", "valkyrien-skies")
 	}
 	
@@ -165,6 +167,7 @@ publishMods {
 		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
+		requires("forge-config-api-port")
 		incompatible("better-third-person", "nimble", "valkyrien-skies")
 	}
 }

@@ -29,9 +29,9 @@ ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
-modId = "forgeconfigapiport"
+modId = "neoforge"
 type = "required"
-versionRange = "[21.0.0,)"
+versionRange = "[21.0.143,)"
 ordering = "NONE"
 side = "CLIENT"
 

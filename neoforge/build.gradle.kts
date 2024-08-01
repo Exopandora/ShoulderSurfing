@@ -74,7 +74,6 @@ dependencies {
 	compileOnly(project(":common"))
 	compileOnly(project(":compat"))
 	
-	implementation(libs.forgeconfigapiport.neoforge)
 	implementation(libs.wthit.neoforge)
 	implementation(libs.badpackets.neoforge)
 	implementation(libs.jade.neoforge)
@@ -133,7 +132,6 @@ publishMods {
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
 		clientRequired = true
 		serverRequired = false
-		requires("forge-config-api-port-fabric")
 		incompatible("better-third-person", "nimble", "valkyrien-skies")
 	}
 	
@@ -141,7 +139,6 @@ publishMods {
 		projectId = modrinthProjectId
 		accessToken = findProperty("modrinth_api_key").toString()
 		minecraftVersions.set(compatibleVersions)
-		requires("forge-config-api-port")
 		incompatible("better-third-person", "nimble", "valkyrien-skies")
 	}
 }

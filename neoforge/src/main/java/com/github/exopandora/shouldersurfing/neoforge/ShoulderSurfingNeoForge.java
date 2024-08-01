@@ -6,10 +6,10 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
-import fuzs.forgeconfigapiport.neoforge.api.forge.v4.ForgeConfigRegistry;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -17,19 +17,22 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingNeoForge
 {
-	public ShoulderSurfingNeoForge(IEventBus modEventBus)
+	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus)
 	{
 		modEventBus.addListener(this::clientSetup);
 		modEventBus.addListener(this::loadComplete);
 		
 		if(FMLEnvironment.dist.isClient())
 		{
-			ForgeConfigRegistry.INSTANCE.register(Type.CLIENT, Config.CLIENT_SPEC);
+			modContainer.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
+			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);

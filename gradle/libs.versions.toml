@@ -29,9 +29,9 @@ minecraft-fabric = { module = "com.mojang:minecraft", version.ref = "minecraft" 
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
-forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-forgeapi", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "forgeconfigapiport" }
 forgeconfigapiport-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
-forgeconfigapiport-neoforge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-neoforge", version.ref = "forgeconfigapiport" }
+forgeconfigapiport-forge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-forge", version.ref = "forgeconfigapiport" }
 wthit-common = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-common" }
 wthit-forge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-forge" }
 wthit-neoforge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-neoforge" }

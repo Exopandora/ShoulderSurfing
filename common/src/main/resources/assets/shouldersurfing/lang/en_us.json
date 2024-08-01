@@ -1,0 +1,22 @@
+{
+  "shouldersurfing.configuration.camera": "Camera",
+  "shouldersurfing.configuration.offset": "Offset",
+  "shouldersurfing.configuration.min": "Min",
+  "shouldersurfing.configuration.max": "Max",
+  "shouldersurfing.configuration.limits": "Limit",
+  "shouldersurfing.configuration.multiplier": "Multipliers",
+  "shouldersurfing.configuration.passenger": "Passenger",
+  "shouldersurfing.configuration.sprint": "Sprinting",
+  "shouldersurfing.configuration.aiming": "Aiming",
+  "shouldersurfing.configuration.fall_flying": "Fall Flying",
+  "shouldersurfing.configuration.modifiers": "Modifiers",
+  "shouldersurfing.configuration.perspective": "Perspective",
+  "shouldersurfing.configuration.crosshair": "Crosshair",
+  "shouldersurfing.configuration.visibility": "Visibility",
+  "shouldersurfing.configuration.player": "Player",
+  "shouldersurfing.configuration.turning": "Turning",
+  "shouldersurfing.configuration.audio": "Audio",
+  "shouldersurfing.configuration.object_picker": "Object Picker",
+  "shouldersurfing.configuration.pick_vector": "Pick Vector",
+  "shouldersurfing.configuration.pick_origin": "Pick Origin"
+}

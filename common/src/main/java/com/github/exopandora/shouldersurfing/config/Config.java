@@ -4,18 +4,18 @@ import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
+import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ import java.util.Objects;
 
 public class Config
 {
-	public static final ForgeConfigSpec CLIENT_SPEC;
+	public static final ModConfigSpec CLIENT_SPEC;
 	public static final ClientConfig CLIENT;
 	
 	static
 	{
-		Pair<ClientConfig, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
+		Pair<ClientConfig, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(ClientConfig::new);
 		CLIENT_SPEC = pair.getRight();
 		CLIENT = pair.getLeft();
 	}
@@ -125,7 +125,7 @@ public class Config
 		
 		private final BooleanValue centerPlayerSounds;
 		
-		public ClientConfig(ForgeConfigSpec.Builder builder)
+		public ClientConfig(ModConfigSpec.Builder builder)
 		{
 			builder.push("camera");
 			builder.push("offset");
@@ -524,12 +524,12 @@ public class Config
 					items.add(BuiltInRegistries.ITEM.getKey(Items.FISHING_ROD).toString());
 					items.add(BuiltInRegistries.ITEM.getKey(Items.LINGERING_POTION).toString());
 					return items;
-				}, Objects::nonNull);
+				}, String::new, Objects::nonNull);
 			
 			this.adaptiveCrosshairUseItems = builder
 				.comment("Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
 				.translation("Adaptive crosshair items (use)")
-				.defineList("adaptive_crosshair_use_items", ArrayList::new, Objects::nonNull);
+				.defineList("adaptive_crosshair_use_items", ArrayList::new, String::new, Objects::nonNull);
 			
 			this.adaptiveCrosshairHoldItemProperties = builder
 				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
@@ -539,7 +539,7 @@ public class Config
 					List<String> items = new ArrayList<String>();
 					items.add(ResourceLocation.withDefaultNamespace("charged").toString());
 					return items;
-				}, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
+				}, String::new, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
 			
 			this.adaptiveCrosshairUseItemProperties = builder
 				.comment("Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.")
@@ -550,7 +550,7 @@ public class Config
 					items.add(ResourceLocation.withDefaultNamespace("pull").toString());
 					items.add(ResourceLocation.withDefaultNamespace("throwing").toString());
 					return items;
-				}, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
+				}, String::new, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
 			
 			builder.push("visibility");
 			
@@ -1060,7 +1060,7 @@ public class Config
 		}
 	}
 	
-	protected static <T> void set(ForgeConfigSpec.ConfigValue<T> configValue, T value)
+	protected static <T> void set(ModConfigSpec.ConfigValue<T> configValue, T value)
 	{
 		if(value != null && !value.equals(configValue.get()))
 		{
