@@ -88,7 +88,9 @@ dependencies {
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
-	implementation(libs.forgeconfigapiport.forge)
+	implementation(libs.forgeconfigapiport.forge) {
+		exclude(group = "io.github.llamalad7")
+	}
 	implementation(libs.wthit.forge)
 	compileOnly(libs.jade.common)
 	compileOnly(fg.deobf(libs.create.forge.get()))
