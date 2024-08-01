@@ -102,7 +102,7 @@ tasks.withType<ProcessResources> {
 	
 	inputs.properties(properties)
 	
-	filesMatching(listOf("pack.mcmeta", "fabric.mod.json")) {
+	filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "**/lang/*.json")) {
 		expand(properties)
 	}
 }
