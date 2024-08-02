@@ -19,6 +19,7 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 ## Forge ##
 ### Prerequisites ###
 1. Make sure [Minecraft Forge](http://files.minecraftforge.net/) is installed
+2. Make sure Forge Config API Port ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric), [Modrinth](https://modrinth.com/mod/forge-config-api-port)) is installed
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -51,7 +52,6 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 ## NeoForge ##
 ### Prerequisites ###
 1. Make sure [NeoForge](https://neoforged.net/) is installed
-2. Make sure Forge Config API Port ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric), [Modrinth](https://modrinth.com/mod/forge-config-api-port)) is installed
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
