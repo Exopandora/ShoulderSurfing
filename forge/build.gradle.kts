@@ -64,7 +64,7 @@ minecraft {
 	
 	runs {
 		configureEach {
-			workingDirectory(project.file("../run"))
+			workingDirectory(file("../run"))
 			ideaModule("${rootProject.name}.${project.name}.main")
 			
 			mods {
@@ -92,10 +92,10 @@ dependencies {
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
-	implementation(fg.deobf(libs.wthit.forge.get()))
-	implementation(fg.deobf(libs.badpackets.forge.get()))
-	implementation(fg.deobf(libs.jade.forge.get()))
-	compileOnly(fg.deobf(libs.create.common.get()))
+	implementation(fg.deobf(libs.wthit.forge))
+	implementation(fg.deobf(libs.badpackets.forge))
+	implementation(fg.deobf(libs.jade.forge))
+	compileOnly(fg.deobf(libs.create.common))
 }
 
 tasks.named<JavaCompile>("compileJava") {
