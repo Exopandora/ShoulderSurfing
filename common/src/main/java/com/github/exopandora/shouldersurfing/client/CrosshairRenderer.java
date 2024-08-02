@@ -19,7 +19,6 @@ import org.joml.Vector4f;
 public class CrosshairRenderer implements ICrosshairRenderer
 {
 	private final ShoulderSurfingImpl instance;
-	private Vec2f offset;
 	private Vec2f projected;
 	
 	public CrosshairRenderer(ShoulderSurfingImpl instance)
@@ -30,39 +29,37 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	private void init()
 	{
-		this.offset = Vec2f.ZERO;
 		this.projected = null;
 	}
 	
-	public boolean offsetCrosshair(PoseStack poseStack, Window window)
+	public boolean preRenderCrosshair(PoseStack poseStack, Window window)
 	{
-		if(this.projected != null)
+		boolean isCrosshairOutOfBounds = this.projected == null;
+		
+		if(!isCrosshairOutOfBounds && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 			Vec2f center = screenSize.divide(2);
-			this.offset = this.projected.subtract(center).divide((float) window.getGuiScale());
-		}
-		
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
-		{
-			if(this.projected == null)
-			{
-				return true;
-			}
+			Vec2f offset = this.projected.subtract(center).divide((float) window.getGuiScale());
 			
 			poseStack.pushPose();
-			poseStack.last().pose().translate(this.offset.x(), -this.offset.y(), 0F);
+			poseStack.last().pose().translate(offset.x(), -offset.y(), 0F);
 		}
 		
-		return false;
+		return isCrosshairOutOfBounds;
 	}
 	
-	public void clearCrosshairOffset(PoseStack poseStack)
+	@SuppressWarnings("UnusedReturnValue")
+	public boolean postRenderCrosshair(PoseStack poseStack)
 	{
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) && this.projected != null)
+		boolean isCrosshairOutOfBounds = this.projected == null;
+		
+		if(!isCrosshairOutOfBounds && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			poseStack.popPose();
 		}
+		
+		return isCrosshairOutOfBounds;
 	}
 	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
