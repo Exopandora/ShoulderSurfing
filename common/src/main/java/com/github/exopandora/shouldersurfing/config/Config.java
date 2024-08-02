@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
