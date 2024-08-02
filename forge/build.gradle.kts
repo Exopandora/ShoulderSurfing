@@ -63,7 +63,7 @@ minecraft {
 	
 	runs {
 		configureEach {
-			workingDirectory(project.file("../run"))
+			workingDirectory(file("../run"))
 			ideaModule("${rootProject.name}.${project.name}.main")
 			
 			mods {
