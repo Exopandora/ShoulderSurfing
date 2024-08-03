@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.mojang.blaze3d.platform.Window;
@@ -32,11 +33,9 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.projected = null;
 	}
 	
-	public boolean preRenderCrosshair(PoseStack poseStack, Window window)
+	public void preRenderCrosshair(PoseStack poseStack, Window window)
 	{
-		boolean isCrosshairOutOfBounds = this.projected == null;
-		
-		if(!isCrosshairOutOfBounds && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
+		if(this.projected != null && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 			Vec2f center = screenSize.divide(2);
@@ -45,21 +44,20 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			poseStack.pushPose();
 			poseStack.last().pose().translate(offset.x(), -offset.y(), 0F);
 		}
-		
-		return isCrosshairOutOfBounds;
 	}
 	
-	@SuppressWarnings("UnusedReturnValue")
-	public boolean postRenderCrosshair(PoseStack poseStack)
+	public void postRenderCrosshair(PoseStack poseStack)
 	{
-		boolean isCrosshairOutOfBounds = this.projected == null;
-		
-		if(!isCrosshairOutOfBounds && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
+		if(this.projected != null && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
 		{
 			poseStack.popPose();
 		}
-		
-		return isCrosshairOutOfBounds;
+	}
+	
+	public boolean doRenderCrosshair()
+	{
+		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, this.instance.isAiming()) &&
+			(this.projected != null || !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
 	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)

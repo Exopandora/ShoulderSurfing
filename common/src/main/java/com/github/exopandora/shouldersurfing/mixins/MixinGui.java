@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -29,7 +28,7 @@ public class MixinGui
 	)
 	private boolean doRenderCrosshair(CameraType cameraType)
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(this.minecraft.hitResult, ShoulderSurfingImpl.getInstance().isAiming());
+		return ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
 	@Redirect

@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.forge.mixins;
 
+import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -27,7 +28,10 @@ public class MixinGui
 	)
 	private void offsetCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
-		if(ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow()))
+		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
+		
+		if(!crosshairRenderer.doRenderCrosshair())
 		{
 			ci.cancel();
 		}
