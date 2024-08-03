@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.forge.event;
 
+import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -27,7 +28,10 @@ public class ClientEventHandler
 	{
 		if(ForgeIngameGui.CROSSHAIR_ELEMENT.equals(event.getOverlay()))
 		{
-			if(ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(event.getMatrixStack(), event.getWindow()))
+			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+			crosshairRenderer.preRenderCrosshair(event.getMatrixStack(), Minecraft.getInstance().getWindow());
+			
+			if(!crosshairRenderer.doRenderCrosshair())
 			{
 				event.setCanceled(true);
 			}
