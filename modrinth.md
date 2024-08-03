@@ -15,7 +15,7 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 ## Forge ##
 ### Prerequisites ###
 1. Make sure [Minecraft Forge](http://files.minecraftforge.net/) is installed
-2. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed
+2. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed [≥ 1.21]
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -48,6 +48,7 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 ## NeoForge ##
 ### Prerequisites ###
 1. Make sure [NeoForge](https://neoforged.net/) is installed
+2. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed [≤1.20.6]
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
