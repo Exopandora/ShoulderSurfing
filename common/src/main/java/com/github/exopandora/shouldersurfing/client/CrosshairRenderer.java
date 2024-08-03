@@ -54,6 +54,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		}
 	}
 	
+	@Override
 	public boolean doRenderCrosshair()
 	{
 		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, this.instance.isAiming()) &&
