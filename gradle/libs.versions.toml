@@ -1,11 +1,11 @@
 [versions]
-minecraft = "1.21"
-forge = "1.21-51.0.6"
-neoforge = "21.0.143"
+minecraft = "1.21.1"
+forge = "1.21.1-52.0.1"
+neoforge = "21.1.1"
 fabric-loader = "0.16.0"
-fabric-api = "0.100.7+1.21"
+fabric-api = "0.102.0+1.21.1"
 mixin = "0.8.5"
-forgeconfigapiport = "21.0.7"
+forgeconfigapiport = "21.1.0"
 wthit-common = "mojmap-12.2.2"
 wthit-forge = "forge-12.2.2"
 wthit-neoforge = "neo-12.2.2"
@@ -54,6 +54,6 @@ modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
 vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.7-SNAPSHOT" }
-moddevgradle = { id = "net.neoforged.moddev", version = "1.0.15" }
+moddevgradle = { id = "net.neoforged.moddev", version = "2.0.5-beta" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.7" }
