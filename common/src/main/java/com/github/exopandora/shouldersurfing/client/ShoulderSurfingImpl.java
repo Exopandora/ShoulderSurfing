@@ -74,6 +74,13 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		
 		if(this.isShoulderSurfing && player != null)
 		{
+			boolean isTurningLockActive = this.turningLockTime > 0;
+			
+			if(isTurningLockActive && !Config.CLIENT.isCameraDecoupled())
+			{
+				this.turningLockTime = 0;
+			}
+			
 			this.isFreeLooking = InputHandler.FREE_LOOK.isDown() && !this.isAiming;
 			this.camera.tick();
 			
@@ -81,7 +88,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 			{
 				boolean shouldAimAtTarget = this.shouldEntityAimAtTargetInternal(player, minecraft);
 				
-				if(shouldAimAtTarget || this.turningLockTime > 0)
+				if(shouldAimAtTarget || isTurningLockActive)
 				{
 					this.turningLockTime = shouldAimAtTarget ? Config.CLIENT.getTurningLockTime() : (this.turningLockTime - 1);
 					this.lookAtTarget(player, minecraft);
