@@ -1078,10 +1078,5 @@ public class Config
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
 		}
-		
-		if(!Config.CLIENT.isCameraDecoupled())
-		{
-			ShoulderSurfingImpl.getInstance().resetState();
-		}
 	}
 }
