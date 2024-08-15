@@ -11,6 +11,9 @@ displayName = "${modName}"
 version = "${minecraftVersion}-${modVersion}"
 description = "${modDescription}"
 
+[modproperties.${modId}]
+incompatibleMods = ["betterthirdperson", "nimble", "valkyrienskies"]
+
 [[dependencies.${modId}]]
 modId = "minecraft"
 mandatory = true

@@ -15,13 +15,22 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.ModLoadingStage;
+import net.minecraftforge.fml.ModLoadingWarning;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.forgespi.language.IModInfo;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingForge
@@ -43,11 +52,19 @@ public class ShoulderSurfingForge
 	}
 	
 	@SubscribeEvent
+	@SuppressWarnings("UnstableApiUsage")
 	public void clientSetup(FMLClientSetupEvent event)
 	{
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
+		
+		Map<String, Object> modProperties = ModLoadingContext.get().getActiveContainer().getModInfo().getModProperties();
+		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
+		FMLLoader.getLoadingModList().getMods().stream()
+			.filter(info -> incompatibleModIds.contains(info.getModId()))
+			.map(ShoulderSurfingForge::createIncompatibleModWarning)
+			.forEach(ModLoader.get()::addWarning);
 	}
 	
 	@SubscribeEvent
@@ -83,5 +100,13 @@ public class ShoulderSurfingForge
 		event.register(InputHandler.SWAP_SHOULDER);
 		event.register(InputHandler.TOGGLE_SHOULDER_SURFING);
 		event.register(InputHandler.FREE_LOOK);
+	}
+	
+	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod)
+	{
+		String translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
+		String modId = incompatibleMod.getModId();
+		String modVersion = incompatibleMod.getVersion().toString();
+		return new ModLoadingWarning(null, ModLoadingStage.VALIDATE, translationKey, ShoulderSurfingCommon.MOD_ID, modId, modVersion);
 	}
 }
