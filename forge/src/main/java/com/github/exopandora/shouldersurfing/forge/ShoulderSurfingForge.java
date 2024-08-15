@@ -13,7 +13,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.ModLoadingStage;
+import net.minecraftforge.fml.ModLoadingWarning;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -21,8 +24,14 @@ import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
+import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingForge
@@ -59,6 +68,13 @@ public class ShoulderSurfingForge
 		ClientRegistry.registerKeyBinding(InputHandler.SWAP_SHOULDER);
 		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_SHOULDER_SURFING);
 		ClientRegistry.registerKeyBinding(InputHandler.FREE_LOOK);
+		
+		Map<String, Object> modProperties = ModLoadingContext.get().getActiveContainer().getModInfo().getModProperties();
+		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
+		FMLLoader.getLoadingModList().getMods().stream()
+			.filter(info -> incompatibleModIds.contains(info.getModId()))
+			.map(ShoulderSurfingForge::createIncompatibleModWarning)
+			.forEach(ModLoader.get()::addWarning);
 	}
 	
 	@SubscribeEvent
@@ -80,5 +96,13 @@ public class ShoulderSurfingForge
 		{
 			Config.onConfigReload();
 		}
+	}
+	
+	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod)
+	{
+		String translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
+		String modId = incompatibleMod.getModId();
+		String modVersion = incompatibleMod.getVersion().toString();
+		return new ModLoadingWarning(null, ModLoadingStage.VALIDATE, translationKey, ShoulderSurfingCommon.MOD_ID, modId, modVersion);
 	}
 }
