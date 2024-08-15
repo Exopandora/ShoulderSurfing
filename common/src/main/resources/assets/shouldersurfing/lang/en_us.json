@@ -37,7 +37,7 @@
 
   "min.button": "Edit",
   "${modId}.configuration.min": "Min",
-  "${modId}.configuration.min.tooltip": "Minimum offsets",
+  "${modId}.configuration.min.tooltip": "Minimum offsets.",
   "${modId}.configuration.offset.min.min_offset_x": "Minimum x-offset",
   "${modId}.configuration.offset.min.min_offset_x.tooltip": "When x-offset is limited this is the minimum amount.",
   "${modId}.configuration.offset.min.min_offset_y": "Minimum y-offset",
@@ -47,7 +47,7 @@
 
   "max.button": "Edit",
   "${modId}.configuration.max": "Max",
-  "${modId}.configuration.max.tooltip": "Maximum offsets",
+  "${modId}.configuration.max.tooltip": "Maximum offsets.",
   "${modId}.configuration.offset.max.max_offset_x": "Maximum x-offset",
   "${modId}.configuration.offset.max.max_offset_x.tooltip": "When x-offset is limited this is the maximum amount.",
   "${modId}.configuration.offset.max.max_offset_y": "Maximum y-offset",
@@ -57,7 +57,7 @@
 
   "limits.button": "Edit",
   "${modId}.configuration.limits": "Limit",
-  "${modId}.configuration.limits.tooltip": "Offset limits",
+  "${modId}.configuration.limits.tooltip": "Offset limits.",
   "${modId}.configuration.offset.limits.unlimited_offset_x": "Unlimited x-offset",
   "${modId}.configuration.offset.limits.unlimited_offset_x.tooltip": "Whether or not x-offset adjustment has limits.",
   "${modId}.configuration.offset.limits.unlimited_offset_y": "Unlimited y-offset",
@@ -67,11 +67,11 @@
 
   "multiplier.button": "Edit",
   "${modId}.configuration.multiplier": "Multipliers",
-  "${modId}.configuration.multiplier.tooltip": "Offset multipliers",
+  "${modId}.configuration.multiplier.tooltip": "Offset multipliers.",
 
   "passenger.button": "Edit",
   "${modId}.configuration.passenger": "Passenger",
-  "${modId}.configuration.passenger.tooltip": "Passenger offsets",
+  "${modId}.configuration.passenger.tooltip": "Passenger offsets.",
   
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x": "Passenger x-offset multiplier",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x.tooltip": "x-offset multiplier for when the player is a passenger.",
@@ -82,7 +82,7 @@
 
   "sprint.button": "Edit",
   "${modId}.configuration.sprint": "Sprinting",
-  "${modId}.configuration.sprint.tooltip": "Sprinting offsets",
+  "${modId}.configuration.sprint.tooltip": "Sprinting offsets.",
 
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x": "Sprint x-offset multiplier",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x.tooltip": "x-offset multiplier for when the player is sprinting.",
@@ -93,7 +93,7 @@
 
   "aiming.button": "Edit",
   "${modId}.configuration.aiming": "Aiming",
-  "${modId}.configuration.aiming.tooltip": "Aiming offsets",
+  "${modId}.configuration.aiming.tooltip": "Aiming offsets.",
 
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_x": "Aiming x-offset multiplier",
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_x.tooltip": "x-offset multiplier for when the player is aiming.",
@@ -104,7 +104,7 @@
 
   "fall_flying.button": "Edit",
   "${modId}.configuration.fall_flying": "Fall Flying",
-  "${modId}.configuration.fall_flying.tooltip": "Fall Flying offsets",
+  "${modId}.configuration.fall_flying.tooltip": "Fall Flying offsets.",
 
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_x": "Elytra x-offset multiplier",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_x.tooltip": "x-offset multiplier for when using Elytra.",
@@ -115,7 +115,7 @@
 
   "modifiers.button": "Edit",
   "${modId}.configuration.modifiers": "Modifiers",
-  "${modId}.configuration.modifiers.tooltip": "Offset modifiers",
+  "${modId}.configuration.modifiers.tooltip": "Offset modifiers.",
 
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_x": "Passenger x-offset modifier",
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_x.tooltip": "x-offset modifier for when the player is a passenger.",
@@ -147,7 +147,7 @@
 
   "perspective.button": "Edit",
   "${modId}.configuration.perspective": "Perspective",
-  "${modId}.configuration.perspective.tooltip": "Perspective settings",
+  "${modId}.configuration.perspective.tooltip": "Perspective settings.",
 
   "${modId}.configuration.perspective.default_perspective": "Default perspective",
   "${modId}.configuration.perspective.default_perspective.tooltip": "The default perspective when you load the game.",
@@ -160,7 +160,7 @@
 
   "player.button": "Edit",
   "${modId}.configuration.player": "Player",
-  "${modId}.configuration.player.tooltip": "Player settings",
+  "${modId}.configuration.player.tooltip": "Player settings.",
 
   "${modId}.configuration.player.adjust_player_transparency": "Adjust player transparency",
   "${modId}.configuration.player.adjust_player_transparency.tooltip": "Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.",
@@ -175,7 +175,7 @@
 
   "turning.button": "Edit",
   "${modId}.configuration.turning": "Turning",
-  "${modId}.configuration.turning.tooltip": "Turning settings",
+  "${modId}.configuration.turning.tooltip": "Turning settings.",
 
   "${modId}.configuration.player.turning.when_using_item": "Turn player when using an item",
   "${modId}.configuration.player.turning.when_using_item.tooltip": "Whether to turn the player when using an item. This config option only applies when camera is decoupled.",
@@ -190,7 +190,7 @@
 
   "object_picker.button": "Edit",
   "${modId}.configuration.object_picker": "Object Picker",
-  "${modId}.configuration.object_picker.tooltip": "Object Picker settings",
+  "${modId}.configuration.object_picker.tooltip": "Object Picker settings.",
 
   "${modId}.configuration.object_picker.custom_raytrace_distance": "Custom raytrace distance",
   "${modId}.configuration.object_picker.custom_raytrace_distance.tooltip": "The raytrace distance used for the dynamic crosshair.",
@@ -199,7 +199,7 @@
 
   "pick_origin.button": "Edit",
   "${modId}.configuration.pick_origin": "Pick Origin",
-  "${modId}.configuration.pick_origin.tooltip": "Pick Origin settings",
+  "${modId}.configuration.pick_origin.tooltip": "Pick Origin settings.",
 
   "${modId}.configuration.object_picker.pick_origin.entity_pick_origin": "Entity pick origin (static crosshair)",
   "${modId}.configuration.object_picker.pick_origin.entity_pick_origin.tooltip": "The origin where the entity pick starts when using the static crosshair.",
@@ -208,14 +208,14 @@
 
   "pick_vector.button": "Edit",
   "${modId}.configuration.pick_vector": "Pick Vector",
-  "${modId}.configuration.pick_vector.tooltip": "Pick Vector settings",
+  "${modId}.configuration.pick_vector.tooltip": "Pick Vector settings.",
 
   "${modId}.configuration.object_picker.pick_vector.pick_vector": "Pick vector (dynamic crosshair)",
   "${modId}.configuration.object_picker.pick_vector.pick_vector.tooltip": "The vector direction of the raytrace when picking objects. This config option only applies when using the dynamic crosshair.",
 
   "crosshair.button": "Edit",
   "${modId}.configuration.crosshair": "Crosshair",
-  "${modId}.configuration.crosshair.tooltip": "Crosshair settings",
+  "${modId}.configuration.crosshair.tooltip": "Crosshair settings.",
 
   "${modId}.configuration.crosshair.crosshair_type": "Crosshair type",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "Crosshair type to use for shoulder surfing.",
@@ -238,7 +238,7 @@
 
   "visibility.button": "Edit",
   "${modId}.configuration.visibility": "Visibility",
-  "${modId}.configuration.visibility.tooltip": "Visibility settings",
+  "${modId}.configuration.visibility.tooltip": "Visibility settings.",
 
   "${modId}.configuration.crosshair.visibility.first_person": "First person crosshair visibility",
   "${modId}.configuration.crosshair.visibility.first_person.tooltip": "Crosshair visibility for first person.",
@@ -251,9 +251,9 @@
 
   "audio.button": "Edit",
   "${modId}.configuration.audio": "Audio",
-  "${modId}.configuration.audio.tooltip": "Audio settings",
+  "${modId}.configuration.audio.tooltip": "Audio settings.",
 
-  "${modId}.configuration.audio.center_player_sounds": "Center player sounds",
+  "${modId}.configuration.audio.center_player_sounds": "Center player sounds.",
   "${modId}.configuration.audio.center_player_sounds.tooltip": "Whether to center sounds made by the player.",
 
   "${modId}.modloadingissue.incompatiblemod": "Mod §e{2}§r is §cincompatible§r with §3{3}§r.\n§7Currently, §3{3}§r§7 is §o{4}§r"
