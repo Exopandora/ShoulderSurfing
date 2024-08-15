@@ -37,7 +37,7 @@
 
   "min.button": "編輯",
   "${modId}.configuration.min": "最小值",
-  "${modId}.configuration.min.tooltip": "最小偏移量",
+  "${modId}.configuration.min.tooltip": "最小偏移量。",
   "${modId}.configuration.offset.min.min_offset_x": "最小 X 偏移",
   "${modId}.configuration.offset.min.min_offset_x.tooltip": "當 X 偏移受限時，這是最小值。",
   "${modId}.configuration.offset.min.min_offset_y": "最小 Y 偏移",
@@ -47,7 +47,7 @@
 
   "max.button": "編輯",
   "${modId}.configuration.max": "最大值",
-  "${modId}.configuration.max.tooltip": "最大偏移量",
+  "${modId}.configuration.max.tooltip": "最大偏移量。",
   "${modId}.configuration.offset.max.max_offset_x": "最大 X 偏移",
   "${modId}.configuration.offset.max.max_offset_x.tooltip": "當 X 偏移受限時，這是最大值。",
   "${modId}.configuration.offset.max.max_offset_y": "最大 Y 偏移",
@@ -57,7 +57,7 @@
 
   "limits.button": "編輯",
   "${modId}.configuration.limits": "限制",
-  "${modId}.configuration.limits.tooltip": "偏移限制",
+  "${modId}.configuration.limits.tooltip": "偏移限制。",
   "${modId}.configuration.offset.limits.unlimited_offset_x": "無限制 X 偏移",
   "${modId}.configuration.offset.limits.unlimited_offset_x.tooltip": "X 偏移調整是否有限制。",
   "${modId}.configuration.offset.limits.unlimited_offset_y": "無限制 Y 偏移",
@@ -67,11 +67,11 @@
 
   "multiplier.button": "編輯",
   "${modId}.configuration.multiplier": "倍率",
-  "${modId}.configuration.multiplier.tooltip": "偏移倍率",
+  "${modId}.configuration.multiplier.tooltip": "偏移倍率。",
 
   "passenger.button": "編輯",
   "${modId}.configuration.passenger": "乘客",
-  "${modId}.configuration.passenger.tooltip": "乘客偏移",
+  "${modId}.configuration.passenger.tooltip": "乘客偏移。",
   
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x": "乘客 X 偏移倍率",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x.tooltip": "玩家為乘客時的 X 偏移倍率。",
@@ -82,7 +82,7 @@
 
   "sprint.button": "編輯",
   "${modId}.configuration.sprint": "衝刺",
-  "${modId}.configuration.sprint.tooltip": "衝刺偏移",
+  "${modId}.configuration.sprint.tooltip": "衝刺偏移。",
 
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x": "衝刺 X 偏移倍率",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x.tooltip": "玩家衝刺時的 X 偏移倍率。",
@@ -93,7 +93,7 @@
 
   "aiming.button": "編輯",
   "${modId}.configuration.aiming": "瞄準",
-  "${modId}.configuration.aiming.tooltip": "瞄準偏移",
+  "${modId}.configuration.aiming.tooltip": "瞄準偏移。",
 
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_x": "瞄準 X 偏移倍率",
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_x.tooltip": "玩家瞄準時的 X 偏移倍率。",
@@ -104,7 +104,7 @@
 
   "fall_flying.button": "編輯",
   "${modId}.configuration.fall_flying": "滑翔",
-  "${modId}.configuration.fall_flying.tooltip": "滑翔偏移",
+  "${modId}.configuration.fall_flying.tooltip": "滑翔偏移。",
 
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_x": "鞘翅 X 偏移倍率",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_x.tooltip": "使用鞘翅時的 X 偏移倍率。",
@@ -115,7 +115,7 @@
 
   "modifiers.button": "編輯",
   "${modId}.configuration.modifiers": "修改器",
-  "${modId}.configuration.modifiers.tooltip": "偏移修改器",
+  "${modId}.configuration.modifiers.tooltip": "偏移修改器。",
 
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_x": "乘客 X 偏移修改器",
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_x.tooltip": "玩家為乘客時的 X 偏移修改器。",
@@ -147,7 +147,7 @@
 
   "perspective.button": "編輯",
   "${modId}.configuration.perspective": "視角",
-  "${modId}.configuration.perspective.tooltip": "視角設定",
+  "${modId}.configuration.perspective.tooltip": "視角設定。",
 
   "${modId}.configuration.perspective.default_perspective": "預設視角",
   "${modId}.configuration.perspective.default_perspective.tooltip": "載入遊戲時的預設視角。",
@@ -160,7 +160,7 @@
 
   "player.button": "編輯",
   "${modId}.configuration.player": "玩家",
-  "${modId}.configuration.player.tooltip": "玩家設定",
+  "${modId}.configuration.player.tooltip": "玩家設定。",
 
   "${modId}.configuration.player.adjust_player_transparency": "調整玩家透明度",
   "${modId}.configuration.player.adjust_player_transparency.tooltip": "當視線被阻擋時，是否調整玩家模型的透明度。更改此值可能需要重新啟動遊戲才能完全生效。",
@@ -175,7 +175,7 @@
 
   "turning.button": "編輯",
   "${modId}.configuration.turning": "轉向",
-  "${modId}.configuration.turning.tooltip": "轉向設定",
+  "${modId}.configuration.turning.tooltip": "轉向設定。",
 
   "${modId}.configuration.player.turning.when_using_item": "使用物品時轉動玩家",
   "${modId}.configuration.player.turning.when_using_item.tooltip": "使用物品時是否轉動玩家。此設定選項僅在相機分離時適用。",
@@ -190,7 +190,7 @@
 
   "object_picker.button": "編輯",
   "${modId}.configuration.object_picker": "物件選擇器",
-  "${modId}.configuration.object_picker.tooltip": "物件選擇器設定",
+  "${modId}.configuration.object_picker.tooltip": "物件選擇器設定。",
 
   "${modId}.configuration.object_picker.custom_raytrace_distance": "自訂光線追蹤距離",
   "${modId}.configuration.object_picker.custom_raytrace_distance.tooltip": "動態準心使用的光線追蹤距離。",
@@ -199,7 +199,7 @@
 
   "pick_origin.button": "編輯",
   "${modId}.configuration.pick_origin": "選擇起點",
-  "${modId}.configuration.pick_origin.tooltip": "選擇起點設定",
+  "${modId}.configuration.pick_origin.tooltip": "選擇起點設定。",
 
   "${modId}.configuration.object_picker.pick_origin.entity_pick_origin": "實體選擇起點（靜態準心）",
   "${modId}.configuration.object_picker.pick_origin.entity_pick_origin.tooltip": "使用靜態準心時實體選擇開始的起點。",
@@ -208,14 +208,14 @@
 
   "pick_vector.button": "編輯",
   "${modId}.configuration.pick_vector": "選擇向量",
-  "${modId}.configuration.pick_vector.tooltip": "選擇向量設定",
+  "${modId}.configuration.pick_vector.tooltip": "選擇向量設定。",
 
   "${modId}.configuration.object_picker.pick_vector.pick_vector": "選擇向量（動態準心）",
   "${modId}.configuration.object_picker.pick_vector.pick_vector.tooltip": "選擇物件時光線追蹤的向量方向。此設定選項僅在使用動態準心時適用。",
 
   "crosshair.button": "編輯",
   "${modId}.configuration.crosshair": "準心",
-  "${modId}.configuration.crosshair.tooltip": "準心設定",
+  "${modId}.configuration.crosshair.tooltip": "準心設定。",
 
   "${modId}.configuration.crosshair.crosshair_type": "準心類型",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "騎乘視角使用的準心類型。",
@@ -238,7 +238,7 @@
 
   "visibility.button": "編輯",
   "${modId}.configuration.visibility": "可見度",
-  "${modId}.configuration.visibility.tooltip": "可見度設定",
+  "${modId}.configuration.visibility.tooltip": "可見度設定。",
 
   "${modId}.configuration.crosshair.visibility.first_person": "第一人稱準心可見度",
   "${modId}.configuration.crosshair.visibility.first_person.tooltip": "第一人稱的準心可見度。",
@@ -251,7 +251,7 @@
 
   "audio.button": "編輯",
   "${modId}.configuration.audio": "音訊",
-  "${modId}.configuration.audio.tooltip": "音訊設定",
+  "${modId}.configuration.audio.tooltip": "音訊設定。",
 
   "${modId}.configuration.audio.center_player_sounds": "置中玩家音效",
   "${modId}.configuration.audio.center_player_sounds.tooltip": "是否置中玩家發出的音效。"
