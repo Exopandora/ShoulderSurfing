@@ -132,6 +132,7 @@ tasks.configureEach {
 
 publishMods {
 	displayName = "$jarName-Forge-${libs.versions.minecraft.get()}-$modVersion"
+	version = "${rootProject.version}+forge"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
