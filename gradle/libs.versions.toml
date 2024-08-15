@@ -35,7 +35,7 @@ create-common = { module = "maven.modrinth:create", version.ref = "create-common
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]
-modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.5.1" }
+modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }
 vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.4.+" }
