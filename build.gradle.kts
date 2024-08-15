@@ -10,10 +10,13 @@ val modVersion: String by project
 val javaVersion: String by project
 val javaToolchainVersion: String by project
 
+version = "${libs.versions.minecraft.get()}-$modVersion"
+
 subprojects {
 	apply(plugin = "java")
 	
 	java.toolchain.languageVersion = JavaLanguageVersion.of(javaToolchainVersion)
+	version = rootProject.version
 	
 	repositories {
 		mavenCentral()
@@ -45,7 +48,6 @@ subprojects {
 	}
 	
 	tasks.withType<Jar>().configureEach {
-		version = "${libs.versions.minecraft.get()}-$modVersion"
 		manifest {
 			attributes(mapOf(
 				"Specification-Title" to modName,
