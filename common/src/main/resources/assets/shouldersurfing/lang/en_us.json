@@ -254,5 +254,7 @@
   "${modId}.configuration.audio.tooltip": "Audio settings",
 
   "${modId}.configuration.audio.center_player_sounds": "Center player sounds",
-  "${modId}.configuration.audio.center_player_sounds.tooltip": "Whether to center sounds made by the player."
+  "${modId}.configuration.audio.center_player_sounds.tooltip": "Whether to center sounds made by the player.",
+
+  "${modId}.modloadingissue.incompatiblemod": "Mod §e{2}§r is §cincompatible§r with §3{3}§r.\n§7Currently, §3{3}§r§7 is §o{4}§r"
 }
