@@ -13,23 +13,22 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class InputHandler
 {
-	private static final String KEY_CATEGORY = "Shoulder Surfing";
-	
-	public static final KeyBinding CAMERA_LEFT = new KeyBinding("key." + MOD_ID + ".adjust_camera_left", GLFW.GLFW_KEY_LEFT, KEY_CATEGORY);
-	public static final KeyBinding CAMERA_RIGHT = new KeyBinding("key." + MOD_ID + ".adjust_camera_right", GLFW.GLFW_KEY_RIGHT, KEY_CATEGORY);
-	public static final KeyBinding CAMERA_IN = new KeyBinding("key." + MOD_ID + ".adjust_camera_in", GLFW.GLFW_KEY_UP, KEY_CATEGORY);
-	public static final KeyBinding CAMERA_OUT = new KeyBinding("key." + MOD_ID + ".adjust_camera_out", GLFW.GLFW_KEY_DOWN, KEY_CATEGORY);
-	public static final KeyBinding CAMERA_UP = new KeyBinding("key." + MOD_ID + ".adjust_camera_up", GLFW.GLFW_KEY_PAGE_UP, KEY_CATEGORY);
-	public static final KeyBinding CAMERA_DOWN = new KeyBinding("key." + MOD_ID + ".adjust_camera_down", GLFW.GLFW_KEY_PAGE_DOWN, KEY_CATEGORY);
-	public static final KeyBinding SWAP_SHOULDER = new KeyBinding("key." + MOD_ID + ".swap_shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
-	public static final KeyBinding TOGGLE_SHOULDER_SURFING = new KeyBinding("key." + MOD_ID + ".toggle_perspective", InputMappings.UNKNOWN.getValue(), KEY_CATEGORY);
-	public static final KeyBinding FREE_LOOK = new KeyBinding("key." + MOD_ID + ".free_look", GLFW.GLFW_KEY_LEFT_ALT, KEY_CATEGORY);
+	public static final KeyBinding CAMERA_LEFT = createKeyMapping("adjust_camera_left", GLFW.GLFW_KEY_LEFT);
+	public static final KeyBinding CAMERA_RIGHT = createKeyMapping("adjust_camera_right", GLFW.GLFW_KEY_RIGHT);
+	public static final KeyBinding CAMERA_IN = createKeyMapping("adjust_camera_in", GLFW.GLFW_KEY_UP);
+	public static final KeyBinding CAMERA_OUT = createKeyMapping("adjust_camera_out", GLFW.GLFW_KEY_DOWN);
+	public static final KeyBinding CAMERA_UP = createKeyMapping("adjust_camera_up", GLFW.GLFW_KEY_PAGE_UP);
+	public static final KeyBinding CAMERA_DOWN = createKeyMapping("adjust_camera_down", GLFW.GLFW_KEY_PAGE_DOWN);
+	public static final KeyBinding SWAP_SHOULDER = createKeyMapping("swap_shoulder", GLFW.GLFW_KEY_O);
+	public static final KeyBinding TOGGLE_SHOULDER_SURFING = createKeyMapping("toggle_perspective", InputMappings.UNKNOWN.getValue());
+	public static final KeyBinding FREE_LOOK = createKeyMapping("free_look", GLFW.GLFW_KEY_LEFT_ALT);
 	
 	private final ShoulderSurfingImpl instance;
 	
@@ -159,5 +158,10 @@ public class InputHandler
 			input.leftImpulse = moveVector.x();
 			input.forwardImpulse = moveVector.y();
 		}
+	}
+	
+	private static @NotNull KeyBinding createKeyMapping(String key, int keyCode)
+	{
+		return new KeyBinding("key." + MOD_ID + "." + key, keyCode, "Shoulder Surfing");
 	}
 }
