@@ -27,6 +27,7 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 		KeyBindingHelper.registerKeyBinding(InputHandler.SWAP_SHOULDER);
 		KeyBindingHelper.registerKeyBinding(InputHandler.TOGGLE_SHOULDER_SURFING);
 		KeyBindingHelper.registerKeyBinding(InputHandler.FREE_LOOK);
+		KeyBindingHelper.registerKeyBinding(InputHandler.TOGGLE_CAMERA_COUPLING);
 		PluginLoader.getInstance().loadPlugins();
 	}
 }

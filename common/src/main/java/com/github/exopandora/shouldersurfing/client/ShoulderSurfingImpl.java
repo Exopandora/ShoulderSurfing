@@ -211,6 +211,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 	}
 	
+	public void toggleCameraCoupling()
+	{
+		Config.CLIENT.toggleCameraCoupling();
+	}
+	
 	@Override
 	public void swapShoulder()
 	{

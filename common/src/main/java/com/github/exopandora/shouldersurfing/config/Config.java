@@ -1062,6 +1062,11 @@ public class Config
 		{
 			Config.set(this.offsetX, -this.getOffsetX());
 		}
+		
+		public void toggleCameraCoupling()
+		{
+			Config.set(this.isCameraDecoupled, !this.isCameraDecoupled());
+		}
 	}
 	
 	protected static <T> void set(ModConfigSpec.ConfigValue<T> configValue, T value)
