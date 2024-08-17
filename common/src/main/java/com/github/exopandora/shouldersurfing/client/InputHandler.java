@@ -14,19 +14,21 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.lwjgl.glfw.GLFW;
 
+import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
+
 public class InputHandler
 {
 	private static final String KEY_CATEGORY = "Shoulder Surfing";
 	
-	public static final KeyMapping CAMERA_LEFT = new KeyMapping("Camera left", GLFW.GLFW_KEY_LEFT, KEY_CATEGORY);
-	public static final KeyMapping CAMERA_RIGHT = new KeyMapping("Camera right", GLFW.GLFW_KEY_RIGHT, KEY_CATEGORY);
-	public static final KeyMapping CAMERA_IN = new KeyMapping("Camera closer", GLFW.GLFW_KEY_UP, KEY_CATEGORY);
-	public static final KeyMapping CAMERA_OUT = new KeyMapping("Camera farther", GLFW.GLFW_KEY_DOWN, KEY_CATEGORY);
-	public static final KeyMapping CAMERA_UP = new KeyMapping("Camera up", GLFW.GLFW_KEY_PAGE_UP, KEY_CATEGORY);
-	public static final KeyMapping CAMERA_DOWN = new KeyMapping("Camera down", GLFW.GLFW_KEY_PAGE_DOWN, KEY_CATEGORY);
-	public static final KeyMapping SWAP_SHOULDER = new KeyMapping("Swap shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
-	public static final KeyMapping TOGGLE_SHOULDER_SURFING = new KeyMapping("Toggle perspective", InputConstants.UNKNOWN.getValue(), KEY_CATEGORY);
-	public static final KeyMapping FREE_LOOK = new KeyMapping("Free look", GLFW.GLFW_KEY_LEFT_ALT, KEY_CATEGORY);
+	public static final KeyMapping CAMERA_LEFT = new KeyMapping("key." + MOD_ID + ".adjust_camera_left", GLFW.GLFW_KEY_LEFT, KEY_CATEGORY);
+	public static final KeyMapping CAMERA_RIGHT = new KeyMapping("key." + MOD_ID + ".adjust_camera_right", GLFW.GLFW_KEY_RIGHT, KEY_CATEGORY);
+	public static final KeyMapping CAMERA_IN = new KeyMapping("key." + MOD_ID + ".adjust_camera_in", GLFW.GLFW_KEY_UP, KEY_CATEGORY);
+	public static final KeyMapping CAMERA_OUT = new KeyMapping("key." + MOD_ID + ".adjust_camera_out", GLFW.GLFW_KEY_DOWN, KEY_CATEGORY);
+	public static final KeyMapping CAMERA_UP = new KeyMapping("key." + MOD_ID + ".adjust_camera_up", GLFW.GLFW_KEY_PAGE_UP, KEY_CATEGORY);
+	public static final KeyMapping CAMERA_DOWN = new KeyMapping("key." + MOD_ID + ".adjust_camera_down", GLFW.GLFW_KEY_PAGE_DOWN, KEY_CATEGORY);
+	public static final KeyMapping SWAP_SHOULDER = new KeyMapping("key." + MOD_ID + ".swap_shoulder", GLFW.GLFW_KEY_O, KEY_CATEGORY);
+	public static final KeyMapping TOGGLE_SHOULDER_SURFING = new KeyMapping("key." + MOD_ID + ".toggle_perspective", InputConstants.UNKNOWN.getValue(), KEY_CATEGORY);
+	public static final KeyMapping FREE_LOOK = new KeyMapping("key." + MOD_ID + ".free_look", GLFW.GLFW_KEY_LEFT_ALT, KEY_CATEGORY);
 	
 	private final ShoulderSurfingImpl instance;
 	
