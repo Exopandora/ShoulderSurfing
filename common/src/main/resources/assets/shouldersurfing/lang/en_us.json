@@ -266,5 +266,6 @@
   "key.${modId}.adjust_camera_down": "Adjust Camera Down",
   "key.${modId}.swap_shoulder": "Swap Shoulder",
   "key.${modId}.toggle_perspective": "Toggle Perspective",
-  "key.${modId}.free_look": "Free Look"
+  "key.${modId}.free_look": "Free Look",
+  "key.${modId}.toggle_camera_coupling": "Toggle Camera Coupling"
 }
