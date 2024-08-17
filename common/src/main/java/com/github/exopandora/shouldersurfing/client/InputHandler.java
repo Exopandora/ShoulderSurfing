@@ -28,6 +28,7 @@ public class InputHandler
 	public static final KeyMapping SWAP_SHOULDER = createKeyMapping("swap_shoulder", GLFW.GLFW_KEY_O);
 	public static final KeyMapping TOGGLE_SHOULDER_SURFING = createKeyMapping("toggle_perspective", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping FREE_LOOK = createKeyMapping("free_look", GLFW.GLFW_KEY_LEFT_ALT);
+	public static final KeyMapping TOGGLE_CAMERA_COUPLING = createKeyMapping("toggle_camera_coupling", InputConstants.UNKNOWN.getValue());
 	
 	private final ShoulderSurfingImpl instance;
 	
@@ -114,6 +115,11 @@ public class InputHandler
 		}
 		
 		while(FREE_LOOK.consumeClick());
+		
+		while(TOGGLE_CAMERA_COUPLING.consumeClick())
+		{
+			this.instance.toggleCameraCoupling();
+		}
 	}
 	
 	public void updateMovementInput(Input input)
