@@ -120,6 +120,7 @@ Shoulder Surfing Reloaded is known to be incompatible with the following mods (a
 - Camera Utils
 - Nimble
 - Valkyrien Skies
+- YDM's Custom Camera View
 
 Shoulder Surfing Reloaded is known to have minor incompatibility issues with the following mods (a-z):
 - Clutter (hats do not render transparent)

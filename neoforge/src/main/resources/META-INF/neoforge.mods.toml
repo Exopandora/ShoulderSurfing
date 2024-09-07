@@ -54,3 +54,8 @@ side = "CLIENT"
 modId = "valkyrienskies"
 type = "incompatible"
 side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "customcameraview"
+type = "incompatible"
+side = "CLIENT"

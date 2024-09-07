@@ -12,7 +12,7 @@ version = "${minecraftVersion}-${modVersion}"
 description = "${modDescription}"
 
 [modproperties.${modId}]
-incompatibleMods = ["betterthirdperson", "nimble", "valkyrienskies"]
+incompatibleMods = ["betterthirdperson", "customcameraview", "nimble", "valkyrienskies"]
 
 [[dependencies.${modId}]]
 modId = "minecraft"
