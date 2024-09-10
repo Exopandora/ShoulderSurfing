@@ -110,6 +110,7 @@ The binaries for each platform can be found in the following directories:
 Shoulder Surfing Reloaded is designed to work with the following mods (a-z):
 - 3D Skin Layers
 - Create
+- Entity Model Features
 - Iris
 - Oculus
 - OptiFine
