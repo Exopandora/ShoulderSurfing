@@ -222,11 +222,11 @@
 
   "adaptive_crosshair_hold_items.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items": "Uyarlanabilir nişangah itemleri (tutuş)",
-  "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "Tutulduğu zaman uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "Tutulduğu zaman uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' aynı zamanda 'minecraft:wooden_sword'u ve 'minecraft:netherite_sword'u da etkiler.",
 
   "adaptive_crosshair_use_items.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "Uyarlanabilir nişangah itemleri (kullan)",
-  "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Kullanıldığında uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Kullanıldığında uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' aynı zamanda 'minecraft:wooden_sword'u ve 'minecraft:netherite_sword'u da etkiler.",
 
   "adaptive_crosshair_hold_item_properties.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties": "Uyarlanabilir nişangah item özellikleri (tutuş)",
@@ -256,7 +256,7 @@
   "${modId}.configuration.audio.center_player_sounds": "Oyuncu ortalama sesi.",
   "${modId}.configuration.audio.center_player_sounds.tooltip": "Oyuncunun yaptığı seslerin ortalanıp ortalanmayacağı.",
 
-  "${modId}.modloadingissue.incompatiblemod": "Mod §e{2}§r is §cincompatible§r with §3{3}§r.\n§7Currently, §3{3}§r§7 is §o{4}§r",
+  "${modId}.modloadingissue.incompatiblemod": "§e{2}§r isimli mod §3{3}§r isimli mod ile §cbirlikte çalışamaz.§r.\n§7Şu anda, §3{3}§r§7'nin §o{4}§r versiyonu yüklü.",
 
   "key.${modId}.adjust_camera_left": "Kamerayı Sola Ayarla",
   "key.${modId}.adjust_camera_right": "Kamerayı Sağa Ayarla",
