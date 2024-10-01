@@ -11,8 +11,6 @@
   "${modId}.configuration.camera.keep_camera_out_of_head_distance_multiplier.tooltip": "Eğer oyuncu modeli kameraya çok yaklaşırsa gizlenip gizlenmeyeceği belirleyen mesafe çarpanı. Devre dışı bırakmak için 0 yapın.",
   "${modId}.configuration.camera.camera_step_size": "Kamera adım boyutu",
   "${modId}.configuration.camera.camera_step_size.tooltip": "Adım başına kamera ayarının boyutu.",
-  "${modId}.configuration.camera.center_camera_when_climbing": "Tırmanırken kamerayı ortala",
-  "${modId}.configuration.camera.center_camera_when_climbing.tooltip": "Tırmanırken kameranın geçici olarak ortalanıp ortalanmayacağı.",
   "${modId}.configuration.camera.camera_transition_speed_multiplier": "Kamera geçiş hızı çarpanı",
   "${modId}.configuration.camera.camera_transition_speed_multiplier.tooltip": "Kameranın pozisyonlar arasında geçiş yaptığı hız çarpanı.",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle": "Aşağı bakarken kamerayı ortala",

@@ -11,8 +11,6 @@
   "${modId}.configuration.camera.keep_camera_out_of_head_distance_multiplier.tooltip": "當相機過於靠近玩家模型時隱藏玩家模型的距離倍率。設為 0 以停用。",
   "${modId}.configuration.camera.camera_step_size": "相機步進大小",
   "${modId}.configuration.camera.camera_step_size.tooltip": "每次步進調整相機的幅度。",
-  "${modId}.configuration.camera.center_camera_when_climbing": "攀爬時置中相機",
-  "${modId}.configuration.camera.center_camera_when_climbing.tooltip": "攀爬時是否暫時置中相機。",
   "${modId}.configuration.camera.camera_transition_speed_multiplier": "相機轉換速度倍率",
   "${modId}.configuration.camera.camera_transition_speed_multiplier.tooltip": "相機在不同位置之間轉換的速度倍率。",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle": "向下看時置中相機的角度",

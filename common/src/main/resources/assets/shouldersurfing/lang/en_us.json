@@ -11,8 +11,6 @@
   "${modId}.configuration.camera.keep_camera_out_of_head_distance_multiplier.tooltip": "The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.",
   "${modId}.configuration.camera.camera_step_size": "Camera step size",
   "${modId}.configuration.camera.camera_step_size.tooltip": "Size of the camera adjustment per step.",
-  "${modId}.configuration.camera.center_camera_when_climbing": "Center camera when climbing",
-  "${modId}.configuration.camera.center_camera_when_climbing.tooltip": "Whether or not to temporarily center the camera when climbing.",
   "${modId}.configuration.camera.camera_transition_speed_multiplier": "Camera transition speed multiplier",
   "${modId}.configuration.camera.camera_transition_speed_multiplier.tooltip": "The speed multiplier at which the camera transitions between positions.",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle": "Center camera when looking down angle",
@@ -111,6 +109,17 @@
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z": "Elytra z-offset multiplier",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z.tooltip": "z-offset multiplier for when using Elytra.",
 
+  "climbing.button": "Edit",
+  "${modId}.configuration.climbing": "Climbing",
+  "${modId}.configuration.climbing.tooltip": "Climbing offsets.",
+
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_x": "Climbing x-offset multiplier",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_x.tooltip": "x-offset multiplier for when the player is climbing.",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_y": "Climbing y-offset multiplier",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_y.tooltip": "y-offset multiplier for when the player is climbing.",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z": "Climbing z-offset multiplier",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is climbing.",
+
   "modifiers.button": "Edit",
   "${modId}.configuration.modifiers": "Modifiers",
   "${modId}.configuration.modifiers.tooltip": "Offset modifiers.",
@@ -142,6 +151,13 @@
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_y.tooltip": "y-offset modifier for when using Elytra.",
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_z": "Elytra z-offset modifier",
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_z.tooltip": "z-offset modifier for when using Elytra.",
+
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_x": "Climbing x-offset modifier",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_x.tooltip": "x-offset modifier for when the player is climbing.",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_y": "Climbing y-offset modifier",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_y.tooltip": "y-offset modifier for when the player is climbing.",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_z": "Climbing z-offset modifier",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_z.tooltip": "z-offset modifier for when the player is climbing.",
 
   "perspective.button": "Edit",
   "${modId}.configuration.perspective": "Perspective",
