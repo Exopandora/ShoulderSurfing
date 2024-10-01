@@ -13,8 +13,6 @@
   "${modId}.configuration.camera.camera_step_size.tooltip": "Size of the camera adjustment per step.",
   "${modId}.configuration.camera.center_camera_when_climbing": "Center camera when climbing",
   "${modId}.configuration.camera.center_camera_when_climbing.tooltip": "Whether or not to temporarily center the camera when climbing.",
-  "${modId}.configuration.camera.center_camera_when_fall_flying": "Center camera when using Elytra",
-  "${modId}.configuration.camera.center_camera_when_fall_flying.tooltip": "Whether or not to temporarily center the camera when using Elytra.",
   "${modId}.configuration.camera.camera_transition_speed_multiplier": "Camera transition speed multiplier",
   "${modId}.configuration.camera.camera_transition_speed_multiplier.tooltip": "The speed multiplier at which the camera transitions between positions.",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle": "Center camera when looking down angle",

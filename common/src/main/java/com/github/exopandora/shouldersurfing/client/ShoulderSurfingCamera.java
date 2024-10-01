@@ -217,8 +217,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private static boolean shouldCenterCamera(Entity entity)
 	{
-		return entity instanceof LivingEntity living && (Config.CLIENT.doCenterCameraWhenClimbing() && living.onClimbable() ||
-			Config.CLIENT.doCenterCameraWhenFallFlying() && living.isFallFlying());
+		return entity instanceof LivingEntity living && Config.CLIENT.doCenterCameraWhenClimbing() && living.onClimbable();
 	}
 	
 	private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset)
