@@ -168,9 +168,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(!cameraEntity.isSpectator())
 		{
-			if(shouldCenterCamera(cameraEntity))
+			if(cameraEntity instanceof LivingEntity && ((LivingEntity) cameraEntity).onClimbable())
 			{
-				targetOffset = new Vector3d(0, targetOffset.y(), targetOffset.z());
+				Vector3d climbingOffsetMultipliers = Config.CLIENT.getClimbingMultipliers();
+				Vector3d delta = defaultOffset.multiply(climbingOffsetMultipliers).subtract(defaultOffset);
+				targetOffset = targetOffset.add(delta).add(Config.CLIENT.getClimbingOffsetModifiers());
 			}
 			
 			if(angle(camera.getLookVector(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * MathUtil.DEG_TO_RAD)
@@ -217,11 +219,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return this.renderOffset;
-	}
-	
-	private static boolean shouldCenterCamera(Entity entity)
-	{
-		return entity instanceof LivingEntity && Config.CLIENT.doCenterCameraWhenClimbing() && ((LivingEntity) entity).onClimbable();
 	}
 	
 	private static Vector3d calcDynamicOffsets(ActiveRenderInfo camera, Entity cameraEntity, IBlockReader level, Vector3d targetOffset)

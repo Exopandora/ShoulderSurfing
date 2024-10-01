@@ -64,6 +64,15 @@ public interface IClientConfig
 		return new Vector3d(this.getFallFlyingOffsetXMultiplier(), this.getFallFlyingOffsetYMultiplier(), this.getFallFlyingOffsetZMultiplier());
 	}
 	
+	double getClimbingOffsetXMultiplier();
+	double getClimbingOffsetYMultiplier();
+	double getClimbingOffsetZMultiplier();
+	
+	default Vector3d getClimbingMultipliers()
+	{
+		return new Vector3d(this.getClimbingOffsetXMultiplier(), this.getClimbingOffsetYMultiplier(), this.getClimbingOffsetZMultiplier());
+	}
+	
 	double getPassengerOffsetXModifier();
 	double getPassengerOffsetYModifier();
 	double getPassengerOffsetZModifier();
@@ -100,6 +109,15 @@ public interface IClientConfig
 		return new Vector3d(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
 	}
 	
+	double getClimbingOffsetXModifier();
+	double getClimbingOffsetYModifier();
+	double getClimbingOffsetZModifier();
+	
+	default Vector3d getClimbingOffsetModifiers()
+	{
+		return new Vector3d(this.getClimbingOffsetXModifier(), this.getClimbingOffsetYModifier(), this.getClimbingOffsetZModifier());
+	}
+	
 	CrosshairVisibility getCrosshairVisibility(Perspective perspective);
 	
 	boolean useCustomRaytraceDistance();
@@ -118,7 +136,11 @@ public interface IClientConfig
 	
 	double getCameraStepSize();
 	
-	boolean doCenterCameraWhenClimbing();
+	@Deprecated
+	default boolean doCenterCameraWhenClimbing()
+	{
+		return this.getClimbingOffsetXMultiplier() == 0.0F;
+	}
 	
 	@Deprecated
 	default boolean doCenterCameraWhenFallFlying()
