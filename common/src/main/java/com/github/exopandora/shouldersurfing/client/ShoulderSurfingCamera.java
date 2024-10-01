@@ -12,6 +12,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -64,6 +65,17 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.maxCameraDistanceO = this.maxCameraDistance;
 		this.maxCameraDistance = this.maxCameraDistance + (this.offset.length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
 		
+		if(!Config.CLIENT.isCameraDecoupled())
+		{
+			Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+			
+			if(cameraEntity != null && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof BoatEntity)
+			{
+				BoatEntity boat = (BoatEntity) cameraEntity.getVehicle();
+				this.yRot += boat.yRot - boat.yRotO;
+			}
+		}
+		
 		if(!this.instance.isFreeLooking())
 		{
 			this.freeLookYRot = this.yRot;
@@ -101,10 +113,17 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.initialized = true;
 	}
 	
-	public Vec2f calcRotations(float partialTick)
+	public Vec2f calcRotations(Entity cameraEntity, float partialTick)
 	{
 		float cameraXRotWithOffset = MathHelper.clamp(MathHelper.rotLerp(partialTick, this.xRotOffsetO, this.xRotOffset) + this.xRot, -90F, 90F);
 		float cameraYRotWithOffset = MathHelper.rotLerp(partialTick, this.yRotOffsetO, this.yRotOffset) + this.yRot;
+		
+		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled() && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof BoatEntity)
+		{
+			BoatEntity boat = (BoatEntity) cameraEntity.getVehicle();
+			cameraYRotWithOffset += (boat.yRot - boat.yRotO) * partialTick;
+		}
+		
 		return new Vec2f(cameraXRotWithOffset, cameraYRotWithOffset);
 	}
 	
