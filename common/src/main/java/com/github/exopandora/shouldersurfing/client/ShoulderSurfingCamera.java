@@ -140,39 +140,54 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(cameraEntity.isPassenger())
 		{
-			Vector3d passengerOffsetMultipliers = Config.CLIENT.getPassengerOffsetMultipliers();
-			Vector3d delta = defaultOffset.multiply(passengerOffsetMultipliers).subtract(defaultOffset);
-			targetOffset = targetOffset.add(delta).add(Config.CLIENT.getPassengerOffsetModifiers());
+			targetOffset = applyModifiersAndMultipliers(
+				targetOffset,
+				defaultOffset,
+				Config.CLIENT.getPassengerOffsetModifiers(),
+				Config.CLIENT.getPassengerOffsetMultipliers()
+			);
 		}
 		
 		if(cameraEntity.isSprinting())
 		{
-			Vector3d sprintOffsetMultipliers = Config.CLIENT.getSprintOffsetMultipliers();
-			Vector3d delta = defaultOffset.multiply(sprintOffsetMultipliers).subtract(defaultOffset);
-			targetOffset = targetOffset.add(delta).add(Config.CLIENT.getSprintOffsetModifiers());
+			targetOffset = applyModifiersAndMultipliers(
+				targetOffset,
+				defaultOffset,
+				Config.CLIENT.getSprintOffsetModifiers(),
+				Config.CLIENT.getSprintOffsetMultipliers()
+			);
 		}
 		
 		if(this.instance.isAiming())
 		{
-			Vector3d aimingOffsetMultipliers = Config.CLIENT.getAimingOffsetMultipliers();
-			Vector3d delta = defaultOffset.multiply(aimingOffsetMultipliers).subtract(defaultOffset);
-			targetOffset = targetOffset.add(delta).add(Config.CLIENT.getAimingOffsetModifiers());
+			targetOffset = applyModifiersAndMultipliers(
+				targetOffset,
+				defaultOffset,
+				Config.CLIENT.getAimingOffsetModifiers(),
+				Config.CLIENT.getAimingOffsetMultipliers()
+			);
 		}
 		
 		if(cameraEntity instanceof LivingEntity && ((LivingEntity) cameraEntity).isFallFlying())
 		{
-			Vector3d fallFlyingOffsetMultipliers = Config.CLIENT.getFallFlyingMultipliers();
-			Vector3d delta = defaultOffset.multiply(fallFlyingOffsetMultipliers).subtract(defaultOffset);
-			targetOffset = targetOffset.add(delta).add(Config.CLIENT.getFallFlyingOffsetModifiers());
+			targetOffset = applyModifiersAndMultipliers(
+				targetOffset,
+				defaultOffset,
+				Config.CLIENT.getFallFlyingOffsetModifiers(),
+				Config.CLIENT.getFallFlyingMultipliers()
+			);
 		}
 		
 		if(!cameraEntity.isSpectator())
 		{
 			if(cameraEntity instanceof LivingEntity && ((LivingEntity) cameraEntity).onClimbable())
 			{
-				Vector3d climbingOffsetMultipliers = Config.CLIENT.getClimbingMultipliers();
-				Vector3d delta = defaultOffset.multiply(climbingOffsetMultipliers).subtract(defaultOffset);
-				targetOffset = targetOffset.add(delta).add(Config.CLIENT.getClimbingOffsetModifiers());
+				targetOffset = applyModifiersAndMultipliers(
+					targetOffset,
+					defaultOffset,
+					Config.CLIENT.getClimbingOffsetModifiers(),
+					Config.CLIENT.getClimbingMultipliers()
+				);
 			}
 			
 			if(angle(camera.getLookVector(), VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * MathUtil.DEG_TO_RAD)
@@ -219,6 +234,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return this.renderOffset;
+	}
+	
+	private static Vector3d applyModifiersAndMultipliers(Vector3d targetVec, Vector3d originalVec, Vector3d modifiers, Vector3d multipliers)
+	{
+		return targetVec.add(originalVec.multiply(multipliers).subtract(originalVec)).add(modifiers);
 	}
 	
 	private static Vector3d calcDynamicOffsets(ActiveRenderInfo camera, Entity cameraEntity, IBlockReader level, Vector3d targetOffset)
