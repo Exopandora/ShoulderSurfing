@@ -13,8 +13,6 @@
   "${modId}.configuration.camera.camera_step_size.tooltip": "Adım başına kamera ayarının boyutu.",
   "${modId}.configuration.camera.center_camera_when_climbing": "Tırmanırken kamerayı ortala",
   "${modId}.configuration.camera.center_camera_when_climbing.tooltip": "Tırmanırken kameranın geçici olarak ortalanıp ortalanmayacağı.",
-  "${modId}.configuration.camera.center_camera_when_fall_flying": "Elytra kullanırken kamerayı ortala",
-  "${modId}.configuration.camera.center_camera_when_fall_flying.tooltip": "Elytra kullanırken kameranın geçici olarak ortalanıp ortalanmayacağı.",
   "${modId}.configuration.camera.camera_transition_speed_multiplier": "Kamera geçiş hızı çarpanı",
   "${modId}.configuration.camera.camera_transition_speed_multiplier.tooltip": "Kameranın pozisyonlar arasında geçiş yaptığı hız çarpanı.",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle": "Aşağı bakarken kamerayı ortala",
