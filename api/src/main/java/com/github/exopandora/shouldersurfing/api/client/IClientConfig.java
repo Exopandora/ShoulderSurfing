@@ -3,8 +3,8 @@ package com.github.exopandora.shouldersurfing.api.client;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
+import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -180,12 +180,6 @@ public interface IClientConfig
 	List<? extends String> getAdaptiveCrosshairUseItemProperties();
 	
 	boolean doCenterPlayerSounds();
-	
-	@Deprecated
-	default boolean doSyncPlayerXRotWithInputs()
-	{
-		return this.shouldPlayerXRotFollowCamera();
-	}
 	
 	boolean shouldPlayerXRotFollowCamera();
 	boolean shouldPlayerYRotFollowCamera();
