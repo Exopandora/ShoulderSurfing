@@ -64,6 +64,15 @@ public interface IClientConfig
 		return new Vec3(this.getFallFlyingOffsetXMultiplier(), this.getFallFlyingOffsetYMultiplier(), this.getFallFlyingOffsetZMultiplier());
 	}
 	
+	double getClimbingOffsetXMultiplier();
+	double getClimbingOffsetYMultiplier();
+	double getClimbingOffsetZMultiplier();
+	
+	default Vec3 getClimbingMultipliers()
+	{
+		return new Vec3(this.getClimbingOffsetXMultiplier(), this.getClimbingOffsetYMultiplier(), this.getClimbingOffsetZMultiplier());
+	}
+	
 	double getPassengerOffsetXModifier();
 	double getPassengerOffsetYModifier();
 	double getPassengerOffsetZModifier();
@@ -100,6 +109,15 @@ public interface IClientConfig
 		return new Vec3(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
 	}
 	
+	double getClimbingOffsetXModifier();
+	double getClimbingOffsetYModifier();
+	double getClimbingOffsetZModifier();
+	
+	default Vec3 getClimbingOffsetModifiers()
+	{
+		return new Vec3(this.getClimbingOffsetXModifier(), this.getClimbingOffsetYModifier(), this.getClimbingOffsetZModifier());
+	}
+	
 	CrosshairVisibility getCrosshairVisibility(Perspective perspective);
 	
 	boolean useCustomRaytraceDistance();
@@ -118,7 +136,11 @@ public interface IClientConfig
 	
 	double getCameraStepSize();
 	
-	boolean doCenterCameraWhenClimbing();
+	@Deprecated(forRemoval = true)
+	default boolean doCenterCameraWhenClimbing()
+	{
+		return this.getClimbingOffsetXMultiplier() == 0.0F;
+	}
 	
 	@Deprecated(forRemoval = true)
 	default boolean doCenterCameraWhenFallFlying()

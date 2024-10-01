@@ -71,6 +71,10 @@ public class Config
 		private final DoubleValue fallFlyingOffsetYMultiplier;
 		private final DoubleValue fallFlyingOffsetZMultiplier;
 		
+		private final DoubleValue climbingOffsetXMultiplier;
+		private final DoubleValue climbingOffsetYMultiplier;
+		private final DoubleValue climbingOffsetZMultiplier;
+		
 		private final DoubleValue passengerOffsetXModifier;
 		private final DoubleValue passengerOffsetYModifier;
 		private final DoubleValue passengerOffsetZModifier;
@@ -87,9 +91,12 @@ public class Config
 		private final DoubleValue fallFlyingOffsetYModifier;
 		private final DoubleValue fallFlyingOffsetZModifier;
 		
+		private final DoubleValue climbingOffsetXModifier;
+		private final DoubleValue climbingOffsetYModifier;
+		private final DoubleValue climbingOffsetZModifier;
+		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
-		private final BooleanValue centerCameraWhenClimbing;
 		private final DoubleValue cameraTransitionSpeedMultiplier;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
@@ -272,6 +279,24 @@ public class Config
 				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
+			builder.push("climbing");
+			
+			this.climbingOffsetXMultiplier = builder
+				.comment("x-offset multiplier for when the player is climbing.")
+				.translation(MOD_ID + ".configuration.offset.multiplier.climbing.multiplier_offset_x")
+				.defineInRange("multiplier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.climbingOffsetYMultiplier = builder
+				.comment("y-offset multiplier for when the player is climbing.")
+				.translation(MOD_ID + ".configuration.offset.multiplier.climbing.multiplier_offset_y")
+				.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.climbingOffsetZMultiplier = builder
+				.comment("z-offset multiplier for when the player is climbing.")
+				.translation(MOD_ID + ".configuration.offset.multiplier.climbing.multiplier_offset_z")
+				.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.pop();
 			builder.push("modifiers");
 			builder.push("passenger");
@@ -346,6 +371,24 @@ public class Config
 				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
 			builder.pop();
+			builder.push("climbing");
+			
+			this.climbingOffsetXModifier = builder
+				.comment("x-offset modifier for when the player is climbing.")
+				.translation(MOD_ID + ".configuration.offset.modifier.climbing.modifier_offset_x")
+				.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.climbingOffsetYModifier = builder
+				.comment("y-offset modifier for when the player is climbing.")
+				.translation(MOD_ID + ".configuration.offset.modifier.climbing.modifier_offset_y")
+				.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			this.climbingOffsetZModifier = builder
+				.comment("z-offset modifier for when the player is climbing.")
+				.translation(MOD_ID + ".configuration.offset.modifier.climbing.modifier_offset_z")
+				.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.pop();
 			builder.pop();
 			
@@ -358,11 +401,6 @@ public class Config
 				.comment("Size of the camera adjustment per step.")
 				.translation(MOD_ID + ".configuration.camera.camera_step_size")
 				.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
-			
-			this.centerCameraWhenClimbing = builder
-				.comment("Whether or not to temporarily center the camera when climbing.")
-				.translation(MOD_ID + ".configuration.camera.center_camera_when_climbing")
-				.define("center_camera_when_climbing", true);
 			
 			this.cameraTransitionSpeedMultiplier = builder
 				.comment("The speed multiplier at which the camera transitions between positions.")
@@ -716,6 +754,24 @@ public class Config
 		}
 		
 		@Override
+		public double getClimbingOffsetXMultiplier()
+		{
+			return this.climbingOffsetXMultiplier.get();
+		}
+		
+		@Override
+		public double getClimbingOffsetYMultiplier()
+		{
+			return this.climbingOffsetYMultiplier.get();
+		}
+		
+		@Override
+		public double getClimbingOffsetZMultiplier()
+		{
+			return this.climbingOffsetZMultiplier.get();
+		}
+		
+		@Override
 		public double getPassengerOffsetXModifier()
 		{
 			return this.passengerOffsetXModifier.get();
@@ -788,6 +844,24 @@ public class Config
 		}
 		
 		@Override
+		public double getClimbingOffsetXModifier()
+		{
+			return this.climbingOffsetXModifier.get();
+		}
+		
+		@Override
+		public double getClimbingOffsetYModifier()
+		{
+			return this.climbingOffsetYModifier.get();
+		}
+		
+		@Override
+		public double getClimbingOffsetZModifier()
+		{
+			return this.climbingOffsetZModifier.get();
+		}
+		
+		@Override
 		public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
 		{
 			return this.crosshairVisibility.get(perspective).get();
@@ -844,12 +918,6 @@ public class Config
 		public double getCameraStepSize()
 		{
 			return this.cameraStepSize.get();
-		}
-		
-		@Override
-		public boolean doCenterCameraWhenClimbing()
-		{
-			return this.centerCameraWhenClimbing.get();
 		}
 		
 		@Override

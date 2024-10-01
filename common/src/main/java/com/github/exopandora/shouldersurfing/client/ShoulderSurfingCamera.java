@@ -164,9 +164,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(!cameraEntity.isSpectator())
 		{
-			if(shouldCenterCamera(cameraEntity))
+			if(cameraEntity instanceof LivingEntity living && living.onClimbable())
 			{
-				targetOffset = new Vec3(0, targetOffset.y(), targetOffset.z());
+				Vec3 climbingOffsetMultipliers = Config.CLIENT.getClimbingMultipliers();
+				Vec3 delta = defaultOffset.multiply(climbingOffsetMultipliers).subtract(defaultOffset);
+				targetOffset = targetOffset.add(delta).add(Config.CLIENT.getClimbingOffsetModifiers());
 			}
 			
 			if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
@@ -213,11 +215,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return this.renderOffset;
-	}
-	
-	private static boolean shouldCenterCamera(Entity entity)
-	{
-		return entity instanceof LivingEntity living && Config.CLIENT.doCenterCameraWhenClimbing() && living.onClimbable();
 	}
 	
 	private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset)
