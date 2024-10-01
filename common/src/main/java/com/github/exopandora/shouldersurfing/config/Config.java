@@ -7,7 +7,6 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -91,7 +90,6 @@ public class Config
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
 		private final BooleanValue centerCameraWhenClimbing;
-		private final BooleanValue centerCameraWhenFallFlying;
 		private final DoubleValue cameraTransitionSpeedMultiplier;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
@@ -365,11 +363,6 @@ public class Config
 				.comment("Whether or not to temporarily center the camera when climbing.")
 				.translation(MOD_ID + ".configuration.camera.center_camera_when_climbing")
 				.define("center_camera_when_climbing", true);
-			
-			this.centerCameraWhenFallFlying = builder
-				.comment("Whether or not to temporarily center the camera when using Elytra.")
-				.translation(MOD_ID + ".configuration.camera.center_camera_when_fall_flying")
-				.define("center_camera_when_fall_flying", false);
 			
 			this.cameraTransitionSpeedMultiplier = builder
 				.comment("The speed multiplier at which the camera transitions between positions.")
@@ -857,12 +850,6 @@ public class Config
 		public boolean doCenterCameraWhenClimbing()
 		{
 			return this.centerCameraWhenClimbing.get();
-		}
-		
-		@Override
-		public boolean doCenterCameraWhenFallFlying()
-		{
-			return this.centerCameraWhenFallFlying.get();
 		}
 		
 		@Override

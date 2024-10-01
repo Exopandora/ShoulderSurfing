@@ -119,7 +119,12 @@ public interface IClientConfig
 	double getCameraStepSize();
 	
 	boolean doCenterCameraWhenClimbing();
-	boolean doCenterCameraWhenFallFlying();
+	
+	@Deprecated
+	default boolean doCenterCameraWhenFallFlying()
+	{
+		return this.getFallFlyingOffsetYMultiplier() == 0.0F;
+	}
 	
 	double getCameraTransitionSpeedMultiplier();
 	
