@@ -42,7 +42,7 @@ public abstract class MixinCamera
 		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
-			Vec2f rotations = camera.calcRotations(partialTick);
+			Vec2f rotations = camera.calcRotations(cameraEntity, partialTick);
 			this.setRotation(rotations.y(), rotations.x());
 		}
 	}
