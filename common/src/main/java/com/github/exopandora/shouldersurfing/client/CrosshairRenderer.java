@@ -73,11 +73,24 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	{
 		if(this.instance.isShoulderSurfing() && Minecraft.getInstance().player != null)
 		{
+			boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
 			double interactionRangeOverride = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
 			Player player = Minecraft.getInstance().player;
-			PickContext pickContext = new PickContext.Builder(camera).dynamicTrace().build();
+			PickContext.Builder pickContextBuilder = new PickContext.Builder(camera);
+			if (isDynamic)
+				pickContextBuilder.dynamicTrace();
+			PickContext pickContext = pickContextBuilder.build();
 			HitResult hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
-			Vec3 position = hitResult.getLocation().subtract(camera.getPosition());
+			Vec3 position = hitResult.getLocation();
+
+			if (!isDynamic){
+				pickContext = new PickContext.Builder(camera).hybridTrace(position).build();
+				hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
+				position = hitResult.getLocation();
+				
+			}
+
+			position = position.subtract(camera.getPosition());
 			this.projected = project2D(position, modelViewMatrix, projectionMatrix);
 		}
 	}

@@ -53,6 +53,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private ClipContext.Fluid fluidContext;
 		private Entity entity;
 		private Boolean offsetTrace = null;
+		private Vec3 endPos = null;
 		
 		public Builder(Camera camera)
 		{
@@ -83,10 +84,21 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			return this;
 		}
 		
+		public Builder hybridTrace(Vec3 endPos)
+		{
+			this.endPos = endPos;
+			return this;
+		}
+		
 		public PickContext build()
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
+			if (this.endPos != null)
+			{
+				return new HybridPickContext(this.camera, fluidContext, entity, endPos);
+			}
+
 			boolean offsetTrace = this.offsetTrace == null ?
 				!ShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(entity) : this.offsetTrace;
 			

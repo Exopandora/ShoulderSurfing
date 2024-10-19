@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.DeltaTracker;
@@ -53,7 +54,7 @@ public class MixinGui
 
 		// Draw secondary crosshair
 		boolean isCrosshairDynamic = crosshairRenderer.isCrosshairDynamic(minecraft.getCameraEntity());
-		if (!isCrosshairDynamic){
+		if (!isCrosshairDynamic && ShoulderSurfing.getInstance().isShoulderSurfing()){
 			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
 			this.renderCrosshair(guiGraphics, deltaTracker);
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);

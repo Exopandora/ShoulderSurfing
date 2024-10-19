@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
-public final class DynamicPickContext extends PickContext
+public sealed class DynamicPickContext extends PickContext permits HybridPickContext
 {
 	public DynamicPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity)
 	{
@@ -31,7 +31,7 @@ public final class DynamicPickContext extends PickContext
 		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getPickVector());
 	}
 	
-	private static Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickVector pickVector)
+	protected Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickVector pickVector)
 	{
 		Vec3 startPos = entity.getEyePosition(partialTick);
 		Vec3 viewVector = pickVector.calc(camera, entity, partialTick);
