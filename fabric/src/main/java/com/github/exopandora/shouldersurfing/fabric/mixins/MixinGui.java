@@ -43,19 +43,21 @@ public class MixinGui
 
 		// Draw primary crosshair
 		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
-
 		if(!crosshairRenderer.doRenderCrosshair())
 		{
 			return;
 		}
 		this.renderCrosshair(guiGraphics, deltaTracker);
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics.pose());
+		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
 
 
 		// Draw secondary crosshair
-		// if (crosshairRenderer.isCrosshairDynamic(minecraft.getCameraEntity())){
-
-		// }
+		boolean isCrosshairDynamic = crosshairRenderer.isCrosshairDynamic(minecraft.getCameraEntity());
+		if (!isCrosshairDynamic){
+			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
+			this.renderCrosshair(guiGraphics, deltaTracker);
+			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
+		}
 	}
 
 }

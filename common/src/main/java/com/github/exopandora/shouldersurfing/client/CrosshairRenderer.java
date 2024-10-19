@@ -35,7 +35,11 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	public void preRenderCrosshair(PoseStack poseStack, Window window)
 	{
-		if(this.projected != null && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
+		this.preRenderCrosshair(poseStack, window, this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
+	}
+	public void preRenderCrosshair(PoseStack poseStack, Window window, boolean isDynamic)
+	{
+		if(this.projected != null && isDynamic)
 		{
 			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 			Vec2f center = screenSize.divide(2);
@@ -48,7 +52,11 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	public void postRenderCrosshair(PoseStack poseStack)
 	{
-		if(this.projected != null && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
+		this.postRenderCrosshair(poseStack, this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
+	}
+	public void postRenderCrosshair(PoseStack poseStack, boolean isDynamic)
+	{
+		if(this.projected != null && isDynamic)
 		{
 			poseStack.popPose();
 		}
