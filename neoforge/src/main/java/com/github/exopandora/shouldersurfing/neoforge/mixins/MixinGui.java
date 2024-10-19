@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.neoforge.mixins;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.mixinducks.GuiDuck;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -18,12 +19,11 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public class MixinGui
+public abstract class MixinGui
+implements GuiDuck
 {
 	@Shadow
 	private @Final Minecraft minecraft;
-	@Shadow
-	private void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker){ throw new AssertionError(); }
 
 	/**
 	 * Targets `new GuiLayerManager().add(CROSSHAIR, this::renderCrosshair)`
@@ -35,29 +35,6 @@ public class MixinGui
 		index = 1
 	)
 	private Layer WrapRenderCrosshair(Layer original){
-		return this::renderCrosshairWrapper;
+		return this::shouldersurfing$RenderCrosshair;
 	}
-
-	@Unique
-	private void renderCrosshairWrapper(GuiGraphics guiGraphics, DeltaTracker deltaTracker){
-		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-
-		// Draw primary crosshair
-		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
-		if(!crosshairRenderer.doRenderCrosshair())
-		{
-			return;
-		}
-		this.renderCrosshair(guiGraphics, deltaTracker);
-		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
-
-
-		// Draw secondary crosshair
-		if (crosshairRenderer.doRenderSecondaryCrosshair()){
-			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
-			this.renderCrosshair(guiGraphics, deltaTracker);
-			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
-		}
-	}
-
 }

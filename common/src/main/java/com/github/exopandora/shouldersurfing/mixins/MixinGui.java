@@ -1,10 +1,14 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.mixinducks.GuiDuck;
 import net.minecraft.client.CameraType;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,9 +17,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Gui.class)
 public class MixinGui
+implements GuiDuck
 {
 	@Shadow
 	private @Final Minecraft minecraft;
+	@Shadow
+	private void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker){ throw new AssertionError(); }
 	
 	@Redirect
 	(
@@ -44,5 +51,30 @@ public class MixinGui
 	private boolean isFirstPerson(CameraType cameraType)
 	{
 		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current() && this.minecraft.player.isScoping();
+	}
+
+
+	/**
+	 * Used in loader-specific mixins
+	 */
+	public void shouldersurfing$RenderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker){
+		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+
+		// Draw primary crosshair
+		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
+		if(!crosshairRenderer.doRenderCrosshair())
+		{
+			return;
+		}
+		this.renderCrosshair(guiGraphics, deltaTracker);
+		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
+
+
+		// Draw secondary crosshair
+		if (crosshairRenderer.doRenderSecondaryCrosshair()){
+			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
+			this.renderCrosshair(guiGraphics, deltaTracker);
+			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
+		}
 	}
 }
