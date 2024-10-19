@@ -53,8 +53,7 @@ public class MixinGui
 
 
 		// Draw secondary crosshair
-		boolean isCrosshairDynamic = crosshairRenderer.isCrosshairDynamic(minecraft.getCameraEntity());
-		if (!isCrosshairDynamic && ShoulderSurfing.getInstance().isShoulderSurfing()){
+		if (crosshairRenderer.doRenderSecondaryCrosshair()){
 			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
 			this.renderCrosshair(guiGraphics, deltaTracker);
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);

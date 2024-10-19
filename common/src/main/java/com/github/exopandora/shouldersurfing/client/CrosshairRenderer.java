@@ -69,6 +69,15 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			(this.projected != null || !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
 	
+	public boolean doRenderSecondaryCrosshair()
+	{
+		return this.projected != null
+			&& this.instance.isShoulderSurfing()
+			&& Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, this.instance.isAiming())
+			&& !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity())
+			;
+	}
+	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
 	{
 		if(this.instance.isShoulderSurfing() && Minecraft.getInstance().player != null)
@@ -82,16 +91,22 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			PickContext pickContext = pickContextBuilder.build();
 			HitResult hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 			Vec3 position = hitResult.getLocation();
+			Vec2f primaryCross = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
 
-			if (!isDynamic){
+			if (isDynamic)
+				this.projected = primaryCross;
+			else {
 				pickContext = new PickContext.Builder(camera).hybridTrace(position).build();
 				hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 				position = hitResult.getLocation();
-				
-			}
+				Vec2f secondaryCross = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
 
-			position = position.subtract(camera.getPosition());
-			this.projected = project2D(position, modelViewMatrix, projectionMatrix);
+				// Don't render secondary if too close to primary
+				if (secondaryCross==null || secondaryCross.subtract(primaryCross).lengthSquared() < 16*16)
+					this.projected = null;
+				else
+					this.projected = secondaryCross;
+			}
 		}
 	}
 	
