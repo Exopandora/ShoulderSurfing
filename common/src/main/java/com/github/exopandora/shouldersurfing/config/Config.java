@@ -129,6 +129,11 @@ public class Config
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemProperties;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemProperties;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
+
+		private final BooleanValue showObstructionCrosshair;
+		private final BooleanValue showObstructionWhenAiming;
+		private final IntValue obstructionCrosshairOverlapSize;
+		private final DoubleValue obstructionPhysicalDistanceMax;
 		
 		private final BooleanValue centerPlayerSounds;
 		
@@ -585,7 +590,26 @@ public class Config
 					items.add(ResourceLocation.withDefaultNamespace("throwing").toString());
 					return items;
 				}, String::new, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
+				
+			builder.push("obstruction");
+				
+			this.showObstructionCrosshair = builder
+				.translation(MOD_ID + ".configuration.obstruction.show_obstruction")
+				.define("show_obstruction", true);
 			
+			this.showObstructionWhenAiming = builder
+				.translation(MOD_ID + ".configuration.obstruction.only_when_aiming")
+				.define("only_when_aiming", true);
+			
+			this.obstructionCrosshairOverlapSize = builder
+				.translation(MOD_ID + ".configuration.obstruction.crosshair_overlap_size")
+				.defineInRange("crosshair_overlap_size", 8, 0, Integer.MAX_VALUE);
+			
+			this.obstructionPhysicalDistanceMax = builder
+				.translation(MOD_ID + ".configuration.obstruction.physical_distance_max")
+				.defineInRange("physical_distance_max", 20, 0, Double.MAX_VALUE);
+			
+			builder.pop();
 			builder.push("visibility");
 			
 			for(Perspective entry : Perspective.values())
@@ -597,7 +621,7 @@ public class Config
 					.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());
 				this.crosshairVisibility.put(entry, crosshairVisibility);
 			}
-			
+
 			builder.pop();
 			builder.pop();
 			builder.push("audio");
@@ -1034,6 +1058,27 @@ public class Config
 		{
 			return this.adaptiveCrosshairUseItemProperties.get();
 		}
+		
+		@Override
+		public boolean getShowObstructionCrosshair(){
+			return this.showObstructionCrosshair.get();
+		}
+
+		@Override
+		public boolean getShowObstructionWhenAiming(){
+			return this.showObstructionWhenAiming.get();
+		}
+
+		@Override
+		public double getObstructionPhysicalDistanceMax(){
+			return this.obstructionPhysicalDistanceMax.get();
+		}
+
+		@Override
+		public int getObstructionCrosshairOverlapSize(){
+			return this.obstructionCrosshairOverlapSize.get();
+		}
+
 		
 		@Override
 		public boolean doCenterPlayerSounds()
