@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
-public sealed class DynamicPickContext extends PickContext permits HybridPickContext
+public sealed class DynamicPickContext extends PickContext permits ObstructionPickContext
 {
 	public DynamicPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity)
 	{

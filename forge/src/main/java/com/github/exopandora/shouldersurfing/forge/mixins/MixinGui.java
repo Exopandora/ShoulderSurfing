@@ -19,21 +19,27 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public abstract class MixinGui
-implements GuiDuck
+public abstract class MixinGui implements GuiDuck
 {
 	@Shadow
 	private @Final Minecraft minecraft;
-
+	
 	/**
 	 * Targets `new LayeredDraw().add(this::renderCrosshair)`
 	 */
-	@ModifyArg(
+	@ModifyArg
+	(
 		method="<init>",
-		at = @At(value="INVOKE", target="net/minecraft/client/gui/LayeredDraw.add(Lnet/minecraft/client/gui/LayeredDraw$Layer;)Lnet/minecraft/client/gui/LayeredDraw;", ordinal = 1),
-		index = 0
+		index = 0,
+		at = @At
+		(
+			value = "INVOKE",
+			ordinal = 1,
+			target = "net/minecraft/client/gui/LayeredDraw.add(Lnet/minecraft/client/gui/LayeredDraw$Layer;)Lnet/minecraft/client/gui/LayeredDraw;"
+		)
 	)
-	private Layer WrapRenderCrosshair(Layer original){
-		return this::shouldersurfing$RenderCrosshair;
+	private Layer WrapRenderCrosshair(Layer original)
+	{
+		return this::shouldersurfing$renderCrosshair;
 	}
 }

@@ -16,8 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Gui.class)
-public class MixinGui
-implements GuiDuck
+public class MixinGui implements GuiDuck
 {
 	@Shadow
 	private @Final Minecraft minecraft;
@@ -52,14 +51,15 @@ implements GuiDuck
 	{
 		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current() && this.minecraft.player.isScoping();
 	}
-
-
+	
+	
 	/**
 	 * Used in loader-specific mixins
 	 */
-	public void shouldersurfing$RenderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker){
+	public void shouldersurfing$renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker)
+	{
 		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-
+		
 		// Draw primary crosshair
 		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
 		if(!crosshairRenderer.doRenderCrosshair())
@@ -68,10 +68,11 @@ implements GuiDuck
 		}
 		this.renderCrosshair(guiGraphics, deltaTracker);
 		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
-
-
-		// Draw secondary crosshair
-		if (crosshairRenderer.doRenderSecondaryCrosshair()){
+		
+		
+		// Draw obstruction crosshair
+		if (crosshairRenderer.doRenderObstructionCrosshair())
+		{
 			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
 			this.renderCrosshair(guiGraphics, deltaTracker);
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);

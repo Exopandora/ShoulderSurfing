@@ -66,7 +66,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			(this.crosshairOffset != null || !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
 	
-	public boolean doRenderSecondaryCrosshair()
+	public boolean doRenderObstructionCrosshair()
 	{
 		double physDistMax = Config.CLIENT.getObstructionPhysicalDistanceMax();
 		int screenDistMin = Config.CLIENT.getObstructionCrosshairOverlapSize();
@@ -101,7 +101,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			// Trace obstruction crosshair
 			if (!isDynamic)
 			{
-				pickContext = pickContextBuilder.hybridTrace(position).build();
+				pickContext = pickContextBuilder.obstructionTrace(position).build();
 				hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 				position = hitResult.getLocation();
 			}

@@ -1060,25 +1060,29 @@ public class Config
 		}
 		
 		@Override
-		public boolean getShowObstructionCrosshair(){
+		public boolean getShowObstructionCrosshair()
+		{
 			return this.showObstructionCrosshair.get();
 		}
-
+		
 		@Override
-		public boolean getShowObstructionWhenAiming(){
+		public boolean getShowObstructionWhenAiming()
+		{
 			return this.showObstructionWhenAiming.get();
 		}
-
+		
 		@Override
-		public double getObstructionPhysicalDistanceMax(){
+		public double getObstructionPhysicalDistanceMax()
+		{
 			return this.obstructionPhysicalDistanceMax.get();
 		}
-
+		
 		@Override
-		public int getObstructionCrosshairOverlapSize(){
+		public int getObstructionCrosshairOverlapSize()
+		{
 			return this.obstructionCrosshairOverlapSize.get();
 		}
-
+		
 		
 		@Override
 		public boolean doCenterPlayerSounds()
