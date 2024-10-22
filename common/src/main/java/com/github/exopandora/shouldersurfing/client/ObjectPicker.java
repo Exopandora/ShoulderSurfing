@@ -59,7 +59,7 @@ public class ObjectPicker implements IObjectPicker
 			.expandTowards(viewVector)
 			.inflate(1.0D, 1.0D, 1.0D);
 		Couple<Vec3> entityRay = context.entityTrace(interactionRange, partialTick);
-		double interactionRangeSq = Mth.square(interactionRange);
+		double interactionRangeSq = entityRay.left().distanceToSqr(entityRay.right());
 		return ProjectileUtil.getEntityHitResult(context.entity(), entityRay.left(), entityRay.right(), aabb, ENTITY_IS_PICKABLE, interactionRangeSq);
 	}
 	
