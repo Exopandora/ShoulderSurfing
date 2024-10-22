@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
-public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext
+public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext, ObstructionPickContext
 {
 	private final Camera camera;
 	private final ClipContext.Fluid fluidContext;

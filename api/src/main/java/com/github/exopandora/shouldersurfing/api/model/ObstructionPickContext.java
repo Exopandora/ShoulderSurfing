@@ -1,24 +1,42 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
-public final class ObstructionPickContext extends DynamicPickContext
+public final class ObstructionPickContext extends PickContext
 {
-	private final Vec3 endPos;
+	private final Vec3 target;
 	
-	public ObstructionPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Vec3 endPos)
+	public ObstructionPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Vec3 target)
 	{
 		super(camera, fluidContext, entity);
-		this.endPos = endPos;
+		this.target = target;
 	}
 	
 	@Override
-	protected Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickVector pickVector)
+	public ClipContext.Block blockContext()
 	{
-		Vec3 startPos = entity.getEyePosition(partialTick);
-		return new Couple<Vec3>(startPos, endPos);
+		return ShoulderSurfing.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
+	}
+	
+	@Override
+	public Couple<Vec3> entityTrace(double interactionRange, float partialTick)
+	{
+		return calcRay(partialTick);
+	}
+	
+	@Override
+	public Couple<Vec3> blockTrace(double interactionRange, float partialTick)
+	{
+		return calcRay(partialTick);
+	}
+	
+	private Couple<Vec3> calcRay(float partialTick)
+	{
+		Vec3 startPos = this.entity().getEyePosition(partialTick);
+		return new Couple<Vec3>(startPos, target);
 	}
 }
