@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
-public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext
+public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext, ObstructionPickContext
 {
 	private final Camera camera;
 	private final ClipContext.Fluid fluidContext;
@@ -53,6 +53,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private ClipContext.Fluid fluidContext;
 		private Entity entity;
 		private Boolean offsetTrace = null;
+		private Vec3 target = null;
 		
 		public Builder(Camera camera)
 		{
@@ -83,10 +84,21 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			return this;
 		}
 		
+		public Builder obstructionTrace(Vec3 endPos)
+		{
+			this.target = endPos;
+			return this;
+		}
+		
 		public PickContext build()
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
+			if (this.target != null)
+			{
+				return new ObstructionPickContext(this.camera, fluidContext, entity, target);
+			}
+			
 			boolean offsetTrace = this.offsetTrace == null ?
 				!ShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(entity) : this.offsetTrace;
 			

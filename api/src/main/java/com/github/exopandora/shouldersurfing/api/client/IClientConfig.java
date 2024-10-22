@@ -179,6 +179,11 @@ public interface IClientConfig
 	List<? extends String> getAdaptiveCrosshairHoldItemProperties();
 	List<? extends String> getAdaptiveCrosshairUseItemProperties();
 	
+	boolean getShowObstructionCrosshair();
+	boolean getShowObstructionWhenAiming();
+	int getObstructionCrosshairOverlapSize();
+	double getObstructionPhysicalDistanceMax();
+	
 	boolean doCenterPlayerSounds();
 	
 	boolean shouldPlayerXRotFollowCamera();

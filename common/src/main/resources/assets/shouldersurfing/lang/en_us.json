@@ -250,6 +250,17 @@
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties": "Adaptive crosshair item properties (use)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties.tooltip": "Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.",
 
+  "obstruction.button": "Edit",
+  "${modId}.configuration.obstruction": "Obstruction Indicator",
+  "${modId}.configuration.obstruction.show_obstruction": "Show obstruction crosshair",
+  "${modId}.configuration.obstruction.show_obstruction.tooltip": "When the crosshair type is Static, shows an additional crosshair on obstacles that stand between you and your target.",
+  "${modId}.configuration.obstruction.only_when_aiming": "Only when aiming",
+  "${modId}.configuration.obstruction.only_when_aiming.tooltip": "Only shows obstructions when using items that would trigger the Adaptative crosshair.",
+  "${modId}.configuration.obstruction.crosshair_overlap_size": "Prevent crosshairs overlap",
+  "${modId}.configuration.obstruction.crosshair_overlap_size.tooltip": "Ignores obstructions that are visually close enough to the main crosshair. Distance measured in pixels.",
+  "${modId}.configuration.obstruction.physical_distance_max": "Maximum detection range",
+  "${modId}.configuration.obstruction.physical_distance_max.tooltip": "Ignores obstructions that are too far away from the player. Distance measured in blocks, set to 0 to disable.",
+
   "visibility.button": "Edit",
   "${modId}.configuration.visibility": "Visibility",
   "${modId}.configuration.visibility.tooltip": "Visibility settings.",

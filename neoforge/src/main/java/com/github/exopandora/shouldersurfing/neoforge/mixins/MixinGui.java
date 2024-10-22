@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.forge.mixins;
+package com.github.exopandora.shouldersurfing.neoforge.mixins;
 
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
@@ -25,17 +25,18 @@ public abstract class MixinGui implements GuiDuck
 	private @Final Minecraft minecraft;
 	
 	/**
-	 * Targets `new LayeredDraw().add(this::renderCrosshair)`
+	 * Targets `new GuiLayerManager().add(CROSSHAIR, this::renderCrosshair)`
+	 * The target for Neoforge, is different than for Forge and Fabric !!
 	 */
 	@ModifyArg
 	(
 		method="<init>",
-		index = 0,
+		index = 1,
 		at = @At
 		(
 			value = "INVOKE",
-			ordinal = 1,
-			target = "net/minecraft/client/gui/LayeredDraw.add(Lnet/minecraft/client/gui/LayeredDraw$Layer;)Lnet/minecraft/client/gui/LayeredDraw;"
+			ordinal = 4,
+			target = "net/neoforged/neoforge/client/gui/GuiLayerManager.add(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/gui/LayeredDraw$Layer;)Lnet/neoforged/neoforge/client/gui/GuiLayerManager;"
 		)
 	)
 	private Layer WrapRenderCrosshair(Layer original)

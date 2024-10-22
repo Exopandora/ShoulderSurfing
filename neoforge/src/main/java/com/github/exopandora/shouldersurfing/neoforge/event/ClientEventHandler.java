@@ -22,26 +22,6 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event)
-	{
-		if(VanillaGuiLayers.CROSSHAIR.equals(event.getName()))
-		{
-			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-			crosshairRenderer.preRenderCrosshair(event.getGuiGraphics().pose(), Minecraft.getInstance().getWindow());
-			
-			if(!crosshairRenderer.doRenderCrosshair())
-			{
-				event.setCanceled(true);
-			}
-		}
-		// Using HOTBAR to pop matrix, because when CROSSHAIR is cancelled, it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
-		else if(VanillaGuiLayers.HOTBAR.equals(event.getName()))
-		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(event.getGuiGraphics().pose());
-		}
-	}
-	
-	@SubscribeEvent
 	public static void renderLevelStageEvent(RenderLevelStageEvent event)
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
