@@ -59,16 +59,15 @@ public class MixinGui implements GuiDuck
 	public void shouldersurfing$renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker)
 	{
 		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-		
-		// Draw primary crosshair
-		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
 		if(!crosshairRenderer.doRenderCrosshair())
 		{
 			return;
 		}
+		
+		// Draw primary crosshair
+		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
 		this.renderCrosshair(guiGraphics, deltaTracker);
 		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
-		
 		
 		// Draw obstruction crosshair
 		if (crosshairRenderer.doRenderObstructionCrosshair())
