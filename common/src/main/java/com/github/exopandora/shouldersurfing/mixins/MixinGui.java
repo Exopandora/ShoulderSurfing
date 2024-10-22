@@ -1,27 +1,43 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.mixinducks.GuiDuck;
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.HitResult;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Gui.class)
 public class MixinGui implements GuiDuck
 {
+	@Unique
+	private static final ResourceLocation OBSTRUCTION_SPRITE = ResourceLocation.fromNamespaceAndPath("shouldersurfing", "hud/obstruction_crosshair");
+	@Unique
+	private static final ResourceLocation OBSTRUCTED_SPRITE = ResourceLocation.fromNamespaceAndPath("shouldersurfing", "hud/obstructed_crosshair");
+	
 	@Shadow
 	private @Final Minecraft minecraft;
 	@Shadow
 	private void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker){ throw new AssertionError(); }
+	@Shadow
+	private boolean canRenderCrosshairForSpectator(HitResult $$0) { throw new AssertionError(); }
+	
 	
 	@Redirect
 	(
@@ -63,18 +79,52 @@ public class MixinGui implements GuiDuck
 		{
 			return;
 		}
+		boolean drawSecondary = crosshairRenderer.doRenderObstructionCrosshair();
+		boolean swapped = drawSecondary && ShoulderSurfing.getInstance().isAiming();
 		
 		// Draw primary crosshair
 		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
-		this.renderCrosshair(guiGraphics, deltaTracker);
+		if (swapped)
+		{
+			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_SPRITE);
+		}
+		else
+		{
+			this.renderCrosshair(guiGraphics, deltaTracker);
+		}
 		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
 		
 		// Draw obstruction crosshair
-		if (crosshairRenderer.doRenderObstructionCrosshair())
+		if (drawSecondary)
 		{
 			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
-			this.renderCrosshair(guiGraphics, deltaTracker);
+			if (swapped)
+			{
+				this.renderCrosshair(guiGraphics, deltaTracker);
+			}
+			else
+			{
+				this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_SPRITE);
+			}
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
+		}
+	}
+	
+	/**
+	 * A dumbed down version  of the vanilla method. Made to avoid  interference
+	 * with  other  mods, and  exclude  other  functionalities  of  the  vanilla
+	 * crosshair.
+	 */
+	@Unique
+	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite)
+	{
+		if (this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || this.canRenderCrosshairForSpectator(this.minecraft.hitResult))
+		{
+			RenderSystem.enableBlend();
+			RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
+			guiGraphics.blitSprite(sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.disableBlend();
 		}
 	}
 }
