@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.model.Couple;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import net.minecraft.client.multiplayer.PlayerController;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -59,7 +58,7 @@ public class ObjectPicker implements IObjectPicker
 			.expandTowards(viewVector)
 			.inflate(1.0D, 1.0D, 1.0D);
 		Couple<Vector3d> entityRay = context.entityTrace(interactionRange, partialTick);
-		double interactionRangeSq = interactionRange * interactionRange;
+		double interactionRangeSq = entityRay.left().distanceToSqr(entityRay.right());
 		return ProjectileHelper.getEntityHitResult(context.entity(), entityRay.left(), entityRay.right(), aabb, ENTITY_IS_PICKABLE, interactionRangeSq);
 	}
 	
