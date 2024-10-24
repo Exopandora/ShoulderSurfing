@@ -10,9 +10,14 @@ import net.minecraft.world.phys.Vec3;
 
 public final class OffsetPickContext extends PickContext
 {
-	public OffsetPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity)
+	private final PickOrigin blockPickOrigin;
+	private final PickOrigin entityPickOrigin;
+	
+	public OffsetPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, PickOrigin blockPickOrigin, PickOrigin entityPickOrigin)
 	{
 		super(camera, fluidContext, entity);
+		this.blockPickOrigin = blockPickOrigin;
+		this.entityPickOrigin = entityPickOrigin;
 	}
 	
 	@Override
@@ -31,13 +36,13 @@ public final class OffsetPickContext extends PickContext
 	@Override
 	public Couple<Vec3> entityTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, this.entityPickOrigin);
 	}
 	
 	@Override
 	public Couple<Vec3> blockTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, this.blockPickOrigin);
 	}
 	
 	private static Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickOrigin pickOrigin)
