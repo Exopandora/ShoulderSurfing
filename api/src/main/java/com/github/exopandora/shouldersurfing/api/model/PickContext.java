@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -102,8 +103,8 @@ public abstract class PickContext
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			RayTraceContext.FluidMode fluidContext = this.fluidContext == null ? RayTraceContext.FluidMode.NONE : this.fluidContext;
-			boolean offsetTrace = this.offsetTrace == null ?
-				!ShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(entity) : this.offsetTrace;
+			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+			boolean offsetTrace = this.offsetTrace == null ? crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
 			
 			if(offsetTrace)
 			{
