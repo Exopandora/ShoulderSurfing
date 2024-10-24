@@ -1129,6 +1129,7 @@ public class Config
 		if(value != null && !value.equals(configValue.get()))
 		{
 			configValue.set(value);
+			configValue.save();
 		}
 	}
 	
