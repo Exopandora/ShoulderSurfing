@@ -109,6 +109,17 @@
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z": "Elytra z-ofset çarpanı",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z.tooltip": "Elytra kullanırken z-ofset çarpanı.",
 
+  "climbing.button": "Düzenle",
+  "${modId}.configuration.climbing": "Tırmanmak",
+  "${modId}.configuration.climbing.tooltip": "Tırmanma ofsetleri.",
+
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_x": "Tırmanma x-ofset çarpanı",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_x.tooltip": "Oyuncu tırmanırken x-ofset çarpanı.",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_y": "Tırmanma y-ofset çarpanı",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_y.tooltip": "Oyuncu tırmanırken y-ofset çarpanı.",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z": "Tırmanma z-ofset çarpanı",
+  "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z.tooltip": "Oyuncu tırmanırken z-ofset çarpanı.",
+
   "modifiers.button": "Düzenle",
   "${modId}.configuration.modifiers": "Değiştiriciler",
   "${modId}.configuration.modifiers.tooltip": "Ofset değiştiricileri.",
@@ -141,6 +152,13 @@
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_z": "Elytra z-ofset değiştiricisi",
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_z.tooltip": "Elytra kullanırken z-ofset değiştiricisi.",
 
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_x": "Tırmanma x-ofset değiştiricisi",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_x.tooltip": "Oyuncu tırmanırken x-ofset değiştiricisi.",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_y": "Tırmanma y-ofset değiştiricisi",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_y.tooltip": "Oyuncu tırmanırken y-ofset değiştiricisi.",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_z": "Tırmanma z-ofset değiştiricisi",
+  "${modId}.configuration.offset.modifier.climbing.modifier_offset_z.tooltip": "Oyuncu tırmanırken z-ofset değiştiricisi.",
+  
   "perspective.button": "Düzenle",
   "${modId}.configuration.perspective": "Perspektif",
   "${modId}.configuration.perspective.tooltip": "Perspektif ayarları.",
