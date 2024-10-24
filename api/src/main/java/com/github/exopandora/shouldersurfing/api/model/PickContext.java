@@ -1,11 +1,14 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.function.Supplier;
 
 public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext
 {
@@ -53,6 +56,8 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private ClipContext.Fluid fluidContext;
 		private Entity entity;
 		private Boolean offsetTrace = null;
+		private PickOrigin entityPickOrigin;
+		private PickOrigin blockPickOrigin;
 		
 		public Builder(Camera camera)
 		{
@@ -68,6 +73,18 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		public Builder withEntity(Entity entity)
 		{
 			this.entity = entity;
+			return this;
+		}
+		
+		public Builder withEntityPickOrigin(PickOrigin entityPickOrigin)
+		{
+			this.entityPickOrigin = entityPickOrigin;
+			return this;
+		}
+		
+		public Builder withBlockPickOrigin(PickOrigin blockPickOrigin)
+		{
+			this.blockPickOrigin = blockPickOrigin;
 			return this;
 		}
 		
@@ -92,7 +109,10 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			
 			if(offsetTrace)
 			{
-				return new OffsetPickContext(this.camera, fluidContext, entity);
+				IClientConfig config = ShoulderSurfing.getInstance().getClientConfig();
+				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
+				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
+				return new OffsetPickContext(this.camera, fluidContext, entity, blockPickOrigin, entityPickOrigin);
 			}
 			
 			return new DynamicPickContext(this.camera, fluidContext, entity);
