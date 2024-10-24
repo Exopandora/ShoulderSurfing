@@ -1,7 +1,7 @@
 plugins {
 	id("java")
 	id("idea")
-	alias(libs.plugins.vanillagradle)
+	alias(libs.plugins.moddevgradle)
 }
 
 val jarName: String by project
@@ -27,6 +27,6 @@ dependencies {
 	implementation(libs.jsr305)
 }
 
-minecraft {
-	version(libs.versions.minecraft.get())
+neoForge {
+	neoFormVersion = libs.versions.neoform.get()
 }

@@ -389,7 +389,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)
 	{
 		Entity vehicle = player.getVehicle();
-		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+		float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 		
 		float playerXRot = player.getXRot();
 		float playerYRot = player.getYRot();

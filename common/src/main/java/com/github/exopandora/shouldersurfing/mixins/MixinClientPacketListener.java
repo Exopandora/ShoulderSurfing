@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
-import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -65,19 +65,19 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 		if(instance.isShoulderSurfing())
 		{
 			Player player = this.minecraft.player;
-			boolean isRelativeXRot = packet.getRelativeArguments().contains(RelativeMovement.X_ROT);
-			boolean isRelativeYRot = packet.getRelativeArguments().contains(RelativeMovement.Y_ROT);
+			boolean isRelativeXRot = packet.relatives().contains(Relative.X_ROT);
+			boolean isRelativeYRot = packet.relatives().contains(Relative.Y_ROT);
 			
-			if(isRelativeXRot && packet.getXRot() != 0.0F || !isRelativeXRot && player.getXRot() != packet.getXRot())
+			if(isRelativeXRot && packet.change().xRot() != 0.0F || !isRelativeXRot && player.getXRot() != packet.change().xRot())
 			{
 				ShoulderSurfingCamera camera = instance.getCamera();
-				camera.setXRot(isRelativeXRot ? camera.getXRot() + packet.getXRot() : packet.getXRot());
+				camera.setXRot(isRelativeXRot ? camera.getXRot() + packet.change().xRot() : packet.change().xRot());
 			}
 			
-			if(isRelativeYRot && packet.getYRot() != 0.0F || !isRelativeYRot && player.getYRot() != packet.getYRot())
+			if(isRelativeYRot && packet.change().yRot() != 0.0F || !isRelativeYRot && player.getYRot() != packet.change().yRot())
 			{
 				ShoulderSurfingCamera camera = instance.getCamera();
-				camera.setYRot(isRelativeYRot ? camera.getYRot() + packet.getYRot() : packet.getYRot());
+				camera.setYRot(isRelativeYRot ? camera.getYRot() + packet.change().yRot() : packet.change().yRot());
 			}
 		}
 	}

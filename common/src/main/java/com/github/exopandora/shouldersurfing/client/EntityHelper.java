@@ -16,7 +16,7 @@ public class EntityHelper
 		float xRotO = player.xRotO;
 		float yRotO = player.yRotO;
 		player.lookAt(EntityAnchorArgument.Anchor.EYES, target);
-		player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround()));
+		player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround(), player.horizontalCollision));
 		player.yHeadRot = yHeadRot;
 		player.yHeadRotO = yHeadRotO;
 		player.yBodyRot = yBodyRot;
