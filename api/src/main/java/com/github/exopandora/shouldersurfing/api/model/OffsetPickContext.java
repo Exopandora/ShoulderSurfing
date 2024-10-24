@@ -10,9 +10,14 @@ import net.minecraft.util.math.vector.Vector3d;
 
 public final class OffsetPickContext extends PickContext
 {
-	public OffsetPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity)
+	private final PickOrigin blockPickOrigin;
+	private final PickOrigin entityPickOrigin;
+	
+	public OffsetPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, PickOrigin blockPickOrigin, PickOrigin entityPickOrigin)
 	{
 		super(camera, fluidContext, entity);
+		this.blockPickOrigin = blockPickOrigin;
+		this.entityPickOrigin = entityPickOrigin;
 	}
 	
 	@Override
@@ -31,13 +36,13 @@ public final class OffsetPickContext extends PickContext
 	@Override
 	public Couple<Vector3d> entityTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getEntityPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, this.entityPickOrigin);
 	}
 	
 	@Override
 	public Couple<Vector3d> blockTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getBlockPickOrigin());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, this.blockPickOrigin);
 	}
 	
 	private Couple<Vector3d> calcRay(ActiveRenderInfo camera, Entity entity, double interactionRange, float partialTick, PickOrigin pickOrigin)

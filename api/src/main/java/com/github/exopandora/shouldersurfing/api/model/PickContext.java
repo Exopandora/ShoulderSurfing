@@ -1,8 +1,9 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
@@ -53,6 +54,8 @@ public abstract class PickContext
 		private RayTraceContext.FluidMode fluidContext;
 		private Entity entity;
 		private Boolean offsetTrace = null;
+		private PickOrigin entityPickOrigin;
+		private PickOrigin blockPickOrigin;
 		
 		public Builder(ActiveRenderInfo camera)
 		{
@@ -68,6 +71,18 @@ public abstract class PickContext
 		public Builder withEntity(Entity entity)
 		{
 			this.entity = entity;
+			return this;
+		}
+		
+		public Builder withEntityPickOrigin(PickOrigin entityPickOrigin)
+		{
+			this.entityPickOrigin = entityPickOrigin;
+			return this;
+		}
+		
+		public Builder withBlockPickOrigin(PickOrigin blockPickOrigin)
+		{
+			this.blockPickOrigin = blockPickOrigin;
 			return this;
 		}
 		
@@ -92,7 +107,10 @@ public abstract class PickContext
 			
 			if(offsetTrace)
 			{
-				return new OffsetPickContext(this.camera, fluidContext, entity);
+				IClientConfig config = ShoulderSurfing.getInstance().getClientConfig();
+				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
+				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
+				return new OffsetPickContext(this.camera, fluidContext, entity, blockPickOrigin, entityPickOrigin);
 			}
 			
 			return new DynamicPickContext(this.camera, fluidContext, entity);
