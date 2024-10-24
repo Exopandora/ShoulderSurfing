@@ -1,14 +1,13 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.function.Supplier;
 
 public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext
 {
@@ -104,8 +103,8 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
-			boolean offsetTrace = this.offsetTrace == null ?
-				!ShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(entity) : this.offsetTrace;
+			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
 			
 			if(offsetTrace)
 			{
