@@ -12,7 +12,7 @@ public abstract class MixinGui implements GuiDuck
 {
 	/**
 	 * Targets `new GuiLayerManager().add(CROSSHAIR, this::renderCrosshair)`
-	 * The target for Neoforge, is different than for Forge and Fabric !!
+	 * The target for Neoforge, is different from for Forge and Fabric
 	 */
 	@ModifyArg
 	(
