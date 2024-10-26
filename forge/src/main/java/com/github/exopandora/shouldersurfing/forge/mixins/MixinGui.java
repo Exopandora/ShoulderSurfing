@@ -30,15 +30,15 @@ public abstract class MixinGui implements GuiDuck
 	@ModifyArg
 	(
 		method="<init>",
-		index = 0,
 		at = @At
 		(
 			value = "INVOKE",
 			ordinal = 1,
 			target = "net/minecraft/client/gui/LayeredDraw.add(Lnet/minecraft/client/gui/LayeredDraw$Layer;)Lnet/minecraft/client/gui/LayeredDraw;"
-		)
+		),
+		index = 0
 	)
-	private Layer WrapRenderCrosshair(Layer original)
+	private Layer wrapRenderCrosshair(Layer original)
 	{
 		return this::shouldersurfing$renderCrosshair;
 	}

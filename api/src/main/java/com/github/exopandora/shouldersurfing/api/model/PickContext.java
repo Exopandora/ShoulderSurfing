@@ -55,7 +55,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private ClipContext.Fluid fluidContext;
 		private Entity entity;
 		private Boolean offsetTrace = null;
-		private Vec3 target = null;
+		private Vec3 endPos;
 		private PickOrigin entityPickOrigin;
 		private PickOrigin blockPickOrigin;
 		
@@ -102,7 +102,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		
 		public Builder obstructionTrace(Vec3 endPos)
 		{
-			this.target = endPos;
+			this.endPos = endPos;
 			return this;
 		}
 		
@@ -113,9 +113,9 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
 			
-			if (this.target != null)
+			if(this.endPos != null)
 			{
-				return new ObstructionPickContext(this.camera, fluidContext, entity, target);
+				return new ObstructionPickContext(this.camera, fluidContext, entity, endPos);
 			}
 			
 			if(offsetTrace)

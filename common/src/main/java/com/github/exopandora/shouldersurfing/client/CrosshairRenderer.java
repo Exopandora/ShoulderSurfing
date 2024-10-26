@@ -38,6 +38,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	{
 		this.preRenderCrosshair(poseStack, window, this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
+	
 	public void preRenderCrosshair(PoseStack poseStack, Window window, boolean isDynamic)
 	{
 		if(this.crosshairOffset != null && isDynamic)
@@ -51,6 +52,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	{
 		this.postRenderCrosshair(poseStack, this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
+	
 	public void postRenderCrosshair(PoseStack poseStack, boolean isDynamic)
 	{
 		if(this.crosshairOffset != null && isDynamic)
@@ -70,15 +72,11 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	{
 		double physDistMax = Config.CLIENT.getObstructionPhysicalDistanceMax();
 		int screenDistMin = Config.CLIENT.getObstructionCrosshairOverlapSize();
-		
-		return this.crosshairOffset != null
-			&& this.instance.isShoulderSurfing()
-			&& Config.CLIENT.getShowObstructionCrosshair()
-			&& (this.instance.isAiming() || !Config.CLIENT.getShowObstructionWhenAiming())
-			&& !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity())
-			&& this.crosshairOffset.lengthSquared() >= screenDistMin*screenDistMin
-			&& (physDistMax <= 0 || this.crosshairPosition.lengthSqr() <= physDistMax*physDistMax)
-			;
+		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getShowObstructionCrosshair() &&
+			(this.instance.isAiming() || !Config.CLIENT.getShowObstructionWhenAiming()) &&
+			!this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) &&
+			this.crosshairOffset.lengthSquared() >= screenDistMin * screenDistMin &&
+			(physDistMax <= 0 || this.crosshairPosition.lengthSqr() <= physDistMax * physDistMax);
 	}
 	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
@@ -90,16 +88,18 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			Player player = Minecraft.getInstance().player;
 			// Trace primary crosshair
 			PickContext.Builder pickContextBuilder = new PickContext.Builder(camera);
-			if (isDynamic)
+			
+			if(isDynamic)
 			{
 				pickContextBuilder.dynamicTrace();
 			}
+			
 			PickContext pickContext = pickContextBuilder.build();
 			HitResult hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 			Vec3 position = hitResult.getLocation();
 			
 			// Trace obstruction crosshair
-			if (!isDynamic)
+			if(!isDynamic)
 			{
 				pickContext = pickContextBuilder.obstructionTrace(position).build();
 				hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
@@ -107,7 +107,8 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			}
 			
 			Vec2f projected = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
-			if (projected != null)
+			
+			if(projected != null)
 			{
 				Window window = Minecraft.getInstance().getWindow();
 				Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());

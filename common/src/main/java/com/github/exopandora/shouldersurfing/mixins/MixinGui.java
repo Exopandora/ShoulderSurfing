@@ -24,21 +24,25 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
+
 @Mixin(Gui.class)
-public class MixinGui implements GuiDuck
+public abstract class MixinGui implements GuiDuck
 {
 	@Unique
-	private static final ResourceLocation OBSTRUCTION_SPRITE = ResourceLocation.fromNamespaceAndPath("shouldersurfing", "hud/obstruction_crosshair");
+	private static final ResourceLocation OBSTRUCTION_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstruction_crosshair");
+	
 	@Unique
-	private static final ResourceLocation OBSTRUCTED_SPRITE = ResourceLocation.fromNamespaceAndPath("shouldersurfing", "hud/obstructed_crosshair");
+	private static final ResourceLocation OBSTRUCTED_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
 	
 	@Shadow
 	private @Final Minecraft minecraft;
-	@Shadow
-	private void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker){ throw new AssertionError(); }
-	@Shadow
-	private boolean canRenderCrosshairForSpectator(HitResult $$0) { throw new AssertionError(); }
 	
+	@Shadow
+	protected abstract void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+	
+	@Shadow
+	protected abstract boolean canRenderCrosshairForSpectator(HitResult hitResult);
 	
 	@Redirect
 	(
@@ -69,23 +73,25 @@ public class MixinGui implements GuiDuck
 		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current() && this.minecraft.player.isScoping();
 	}
 	
-	
 	/**
 	 * Used in loader-specific mixins
 	 */
 	public void shouldersurfing$renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker)
 	{
 		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+		
 		if(!crosshairRenderer.doRenderCrosshair())
 		{
 			return;
 		}
+		
 		boolean drawSecondary = crosshairRenderer.doRenderObstructionCrosshair();
 		boolean swapped = drawSecondary && ShoulderSurfing.getInstance().isAiming();
 		
 		// Draw primary crosshair
 		crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
-		if (swapped)
+		
+		if(swapped)
 		{
 			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_SPRITE);
 		}
@@ -93,13 +99,15 @@ public class MixinGui implements GuiDuck
 		{
 			this.renderCrosshair(guiGraphics, deltaTracker);
 		}
+		
 		crosshairRenderer.postRenderCrosshair(guiGraphics.pose());
 		
 		// Draw obstruction crosshair
-		if (drawSecondary)
+		if(drawSecondary)
 		{
 			crosshairRenderer.preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow(), true);
-			if (swapped)
+			
+			if(swapped)
 			{
 				this.renderCrosshair(guiGraphics, deltaTracker);
 			}
@@ -107,19 +115,19 @@ public class MixinGui implements GuiDuck
 			{
 				this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_SPRITE);
 			}
+			
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
 		}
 	}
 	
 	/**
-	 * A dumbed down version  of the vanilla method. Made to avoid  interference
-	 * with  other  mods, and  exclude  other  functionalities  of  the  vanilla
-	 * crosshair.
+	 * A dumbed down version of the vanilla method. Made to avoid interference
+	 * with other mods, and exclude other functionalities of the vanilla crosshair.
 	 */
 	@Unique
 	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite)
 	{
-		if (this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || this.canRenderCrosshairForSpectator(this.minecraft.hitResult))
+		if(this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || this.canRenderCrosshairForSpectator(this.minecraft.hitResult))
 		{
 			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);

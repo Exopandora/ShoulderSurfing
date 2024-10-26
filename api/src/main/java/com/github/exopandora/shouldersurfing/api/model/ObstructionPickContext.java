@@ -8,12 +8,12 @@ import net.minecraft.world.phys.Vec3;
 
 public final class ObstructionPickContext extends PickContext
 {
-	private final Vec3 target;
+	private final Vec3 endPos;
 	
-	public ObstructionPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Vec3 target)
+	public ObstructionPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Vec3 endPos)
 	{
 		super(camera, fluidContext, entity);
-		this.target = target;
+		this.endPos = endPos;
 	}
 	
 	@Override
@@ -25,18 +25,18 @@ public final class ObstructionPickContext extends PickContext
 	@Override
 	public Couple<Vec3> entityTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(partialTick);
+		return this.calcRay(partialTick);
 	}
 	
 	@Override
 	public Couple<Vec3> blockTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(partialTick);
+		return this.calcRay(partialTick);
 	}
 	
 	private Couple<Vec3> calcRay(float partialTick)
 	{
 		Vec3 startPos = this.entity().getEyePosition(partialTick);
-		return new Couple<Vec3>(startPos, target);
+		return new Couple<Vec3>(startPos, this.endPos);
 	}
 }
