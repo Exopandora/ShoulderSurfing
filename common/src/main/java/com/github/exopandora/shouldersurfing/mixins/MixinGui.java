@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import java.util.function.Function;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
@@ -34,6 +35,9 @@ public abstract class MixinGui implements GuiDuck
 	
 	@Unique
 	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
+	
+	@Unique
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_opaque");
 	
 	@Shadow
 	private @Final Minecraft minecraft;
@@ -93,7 +97,8 @@ public abstract class MixinGui implements GuiDuck
 		
 		if(swapped)
 		{
-			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE);
+			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderType::crosshair);
+			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE, RenderType::guiTexturedOverlay);
 		}
 		else
 		{
@@ -113,7 +118,7 @@ public abstract class MixinGui implements GuiDuck
 			}
 			else
 			{
-				this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE);
+				this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderType::crosshair);
 			}
 			
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
@@ -125,15 +130,11 @@ public abstract class MixinGui implements GuiDuck
 	 * with other mods, and exclude other functionalities of the vanilla crosshair.
 	 */
 	@Unique
-	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite)
+	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, Function<ResourceLocation,RenderType> renderType)
 	{
 		if(this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || this.canRenderCrosshairForSpectator(this.minecraft.hitResult))
 		{
-			RenderSystem.enableBlend();
-			RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
-			guiGraphics.blitSprite(RenderType::crosshair, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
-			RenderSystem.defaultBlendFunc();
-			RenderSystem.disableBlend();
+			guiGraphics.blitSprite(renderType, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
 		}
 	}
 }
