@@ -30,10 +30,10 @@ import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID
 public abstract class MixinGui implements GuiDuck
 {
 	@Unique
-	private static final ResourceLocation OBSTRUCTION_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstruction_crosshair");
+	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstruction_indicator");
 	
 	@Unique
-	private static final ResourceLocation OBSTRUCTED_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
 	
 	@Shadow
 	private @Final Minecraft minecraft;
@@ -93,7 +93,7 @@ public abstract class MixinGui implements GuiDuck
 		
 		if(swapped)
 		{
-			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_SPRITE);
+			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE);
 		}
 		else
 		{
@@ -113,7 +113,7 @@ public abstract class MixinGui implements GuiDuck
 			}
 			else
 			{
-				this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_SPRITE);
+				this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE);
 			}
 			
 			crosshairRenderer.postRenderCrosshair(guiGraphics.pose(), true);
