@@ -30,7 +30,7 @@ public class MixinContraptionHandlerClient
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
-			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			double interactionRange = IObjectPicker.maxInteractionRange(player);
 			var blockTrace = new PickContext.Builder(camera)
 				.withEntity(player)

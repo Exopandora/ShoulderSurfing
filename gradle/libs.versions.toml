@@ -1,19 +1,20 @@
 [versions]
-minecraft = "1.21.1"
+minecraft = "1.21.3"
 forge = "1.21.1-52.0.1"
-neoforge = "21.1.1"
-fabric-loader = "0.16.0"
-fabric-api = "0.102.0+1.21.1"
+neoforge = "21.3.2-beta"
+neoform = "1.21.3-20241023.131943"
+fabric-loader = "0.16.7"
+fabric-api = "0.106.1+1.21.3"
 mixin = "0.8.5"
-forgeconfigapiport = "21.1.0"
-wthit-common = "mojmap-12.2.2"
+forgeconfigapiport = "21.3.0"
+wthit-common = "mojmap-13.1.0"
 wthit-forge = "forge-12.2.2"
-wthit-neoforge = "neo-12.2.2"
-wthit-fabric = "fabric-12.2.2"
-jade-common = "5427896" # 1.21-15.0.4-fabric-api
-jade-forge = "5427896" # temporarily use common artifact for compilation
-jade-neoforge = "5427817" # 1.21-15.0.4-neoforge
-jade-fabric = "5427840" # 1.21-15.0.4-fabric
+wthit-neoforge = "neo-13.1.0"
+wthit-fabric = "fabric-13.1.0"
+jade-common = "5835088" # 1.21.3-16.0.1-neoforge
+jade-forge = "5842011" # 1.21.3-16.0.0-neoforge, temporarily use common artifact for compilation
+jade-neoforge = "5835088" # 1.21.3-16.0.1-neoforge
+jade-fabric = "5835099" # 1.21.3-16.0.0-fabric
 badpackets-forge = "forge-0.8.1"
 badpackets-neoforge = "neo-0.8.1"
 badpackets-fabric = "fabric-0.8.1"
@@ -51,9 +52,8 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }
-vanillagradle = { id = "org.spongepowered.gradle.vanilla", version = "0.2.1-SNAPSHOT" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.7-SNAPSHOT" }
-moddevgradle = { id = "net.neoforged.moddev", version = "2.0.5-beta" }
+moddevgradle = { id = "net.neoforged.moddev", version = "2.0.42-beta" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.7" }

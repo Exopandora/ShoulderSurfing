@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import net.minecraft.client.player.Input;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinLocalPlayer
 {
 	@Shadow
-	public Input input;
+	public ClientInput input;
 	
 	@Inject
 	(
@@ -22,7 +22,7 @@ public class MixinLocalPlayer
 		at = @At
 		(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/player/Input;tick(ZF)V",
+			target = "Lnet/minecraft/client/player/ClientInput;tick(ZF)V",
 			shift = Shift.AFTER
 		)
 	)

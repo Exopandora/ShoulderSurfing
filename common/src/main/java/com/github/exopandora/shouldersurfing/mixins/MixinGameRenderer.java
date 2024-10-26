@@ -37,7 +37,7 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 				.withEntity(shooter)
 				.build();
 			double interactionRange = Math.sqrt(interactionRangeSq);
-			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
 		

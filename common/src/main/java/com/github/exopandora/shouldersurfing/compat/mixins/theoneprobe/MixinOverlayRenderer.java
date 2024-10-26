@@ -38,7 +38,7 @@ public class MixinOverlayRenderer
 				.withFluidContext(fluidContext)
 				.withEntity(entity)
 				.build();
-			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			return pickContext.toClipContext(start.distanceTo(end), partialTick);
 		}
 		

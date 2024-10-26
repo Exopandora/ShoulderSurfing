@@ -50,9 +50,9 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 			{
 				Player player = minecraft.player;
 				Camera camera = minecraft.gameRenderer.getMainCamera();
-				ClipContext.Fluid fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
-				double interactionRangeOverride = IObjectPicker.maxInteractionRange(player) + IWailaConfig.get().getGeneral().getExtendedReach();
-				float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+				ClipContext.Fluid fluidContext = IWailaConfig.get().general().getDisplayFluids().ctx;
+				double interactionRangeOverride = IObjectPicker.maxInteractionRange(player) + IWailaConfig.get().general().getExtendedReach();
+				float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 				PickContext pickContext = new PickContext.Builder(camera)
 					.withFluidContext(fluidContext)
 					.build();

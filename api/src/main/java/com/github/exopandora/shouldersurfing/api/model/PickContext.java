@@ -1,5 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -54,6 +56,8 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private Entity entity;
 		private Boolean offsetTrace = null;
 		private Vec3 target = null;
+		private PickOrigin entityPickOrigin;
+		private PickOrigin blockPickOrigin;
 		
 		public Builder(Camera camera)
 		{
@@ -69,6 +73,18 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		public Builder withEntity(Entity entity)
 		{
 			this.entity = entity;
+			return this;
+		}
+		
+		public Builder withEntityPickOrigin(PickOrigin entityPickOrigin)
+		{
+			this.entityPickOrigin = entityPickOrigin;
+			return this;
+		}
+		
+		public Builder withBlockPickOrigin(PickOrigin blockPickOrigin)
+		{
+			this.blockPickOrigin = blockPickOrigin;
 			return this;
 		}
 		
@@ -94,17 +110,20 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
+			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
+			
 			if (this.target != null)
 			{
 				return new ObstructionPickContext(this.camera, fluidContext, entity, target);
 			}
 			
-			boolean offsetTrace = this.offsetTrace == null ?
-				!ShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(entity) : this.offsetTrace;
-			
 			if(offsetTrace)
 			{
-				return new OffsetPickContext(this.camera, fluidContext, entity);
+				IClientConfig config = ShoulderSurfing.getInstance().getClientConfig();
+				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
+				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
+				return new OffsetPickContext(this.camera, fluidContext, entity, blockPickOrigin, entityPickOrigin);
 			}
 			
 			return new DynamicPickContext(this.camera, fluidContext, entity);
