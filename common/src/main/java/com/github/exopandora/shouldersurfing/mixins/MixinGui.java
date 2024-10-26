@@ -131,7 +131,7 @@ public abstract class MixinGui implements GuiDuck
 		{
 			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
-			guiGraphics.blitSprite(RenderType::guiTextured, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
+			guiGraphics.blitSprite(RenderType::crosshair, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.disableBlend();
 		}
