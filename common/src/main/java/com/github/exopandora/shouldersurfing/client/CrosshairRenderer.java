@@ -69,11 +69,11 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	public boolean doRenderObstructionCrosshair()
 	{
-		int screenDistMin = Config.CLIENT.getObstructionCrosshairOverlapSize();
+		int minDistanceToCrosshair = Config.CLIENT.getObstructionIndicatorMinDistanceToCrosshair();
 		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getShowObstructionCrosshair() &&
-			(this.instance.isAiming() || !Config.CLIENT.getShowObstructionWhenAiming()) &&
+			(this.instance.isAiming() || !Config.CLIENT.showObstructionIndicatorWhenAiming()) &&
 			!this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) &&
-			this.crosshairOffset.lengthSquared() >= screenDistMin * screenDistMin;
+			this.crosshairOffset.lengthSquared() >= minDistanceToCrosshair * minDistanceToCrosshair;
 	}
 	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
@@ -111,9 +111,9 @@ public class CrosshairRenderer implements ICrosshairRenderer
 				Window window = Minecraft.getInstance().getWindow();
 				Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 				Vec2f center = screenSize.divide(2);
-				double physDistMax = Config.CLIENT.getObstructionPhysicalDistanceMax();
+				double maxDistanceToObstruction = Config.CLIENT.getObstructionIndicatorMaxDistanceToObstruction();
 				
-				if(!Config.CLIENT.getShowObstructionCrosshair() || position.distanceToSqr(player.getEyePosition()) <= physDistMax * physDistMax)
+				if(!Config.CLIENT.getShowObstructionCrosshair() || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction)
 				{
 					crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
 				}

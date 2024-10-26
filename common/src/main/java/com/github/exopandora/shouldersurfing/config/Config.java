@@ -130,10 +130,10 @@ public class Config
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemProperties;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 
-		private final BooleanValue showObstructionCrosshair;
-		private final BooleanValue showObstructionWhenAiming;
-		private final IntValue obstructionCrosshairOverlapSize;
-		private final DoubleValue obstructionPhysicalDistanceMax;
+		private final BooleanValue showObstructionIndicator;
+		private final BooleanValue showObstructionIndicatorWhenAiming;
+		private final IntValue obstructionIndicatorMinDistanceToCrosshair;
+		private final DoubleValue obstructionIndicatorMaxDistanceToObstruction;
 		
 		private final BooleanValue centerPlayerSounds;
 		
@@ -593,21 +593,21 @@ public class Config
 				
 			builder.push("obstruction");
 				
-			this.showObstructionCrosshair = builder
-				.translation(MOD_ID + ".configuration.obstruction.show_obstruction")
-				.define("show_obstruction", true);
+			this.showObstructionIndicator = builder
+				.translation(MOD_ID + ".configuration.obstruction.show_obstruction_indicator")
+				.define("show_obstruction_indicator", true);
 			
-			this.showObstructionWhenAiming = builder
+			this.showObstructionIndicatorWhenAiming = builder
 				.translation(MOD_ID + ".configuration.obstruction.only_when_aiming")
 				.define("only_when_aiming", true);
 			
-			this.obstructionCrosshairOverlapSize = builder
-				.translation(MOD_ID + ".configuration.obstruction.crosshair_overlap_size")
-				.defineInRange("crosshair_overlap_size", 8, 0, Integer.MAX_VALUE);
+			this.obstructionIndicatorMinDistanceToCrosshair = builder
+				.translation(MOD_ID + ".configuration.obstruction.min_distance_to_crosshair")
+				.defineInRange("min_distance_to_crosshair", 8, 0, Integer.MAX_VALUE);
 			
-			this.obstructionPhysicalDistanceMax = builder
-				.translation(MOD_ID + ".configuration.obstruction.physical_distance_max")
-				.defineInRange("physical_distance_max", 20, 0, Double.MAX_VALUE);
+			this.obstructionIndicatorMaxDistanceToObstruction = builder
+				.translation(MOD_ID + ".configuration.obstruction.max_distance_to_obstruction")
+				.defineInRange("max_distance_to_obstruction", 20, 0, Double.MAX_VALUE);
 			
 			builder.pop();
 			builder.push("visibility");
@@ -1062,27 +1062,26 @@ public class Config
 		@Override
 		public boolean getShowObstructionCrosshair()
 		{
-			return this.showObstructionCrosshair.get();
+			return this.showObstructionIndicator.get();
 		}
 		
 		@Override
-		public boolean getShowObstructionWhenAiming()
+		public boolean showObstructionIndicatorWhenAiming()
 		{
-			return this.showObstructionWhenAiming.get();
+			return this.showObstructionIndicatorWhenAiming.get();
 		}
 		
 		@Override
-		public double getObstructionPhysicalDistanceMax()
+		public double getObstructionIndicatorMaxDistanceToObstruction()
 		{
-			return this.obstructionPhysicalDistanceMax.get();
+			return this.obstructionIndicatorMaxDistanceToObstruction.get();
 		}
 		
 		@Override
-		public int getObstructionCrosshairOverlapSize()
+		public int getObstructionIndicatorMinDistanceToCrosshair()
 		{
-			return this.obstructionCrosshairOverlapSize.get();
+			return this.obstructionIndicatorMinDistanceToCrosshair.get();
 		}
-		
 		
 		@Override
 		public boolean doCenterPlayerSounds()

@@ -180,9 +180,9 @@ public interface IClientConfig
 	List<? extends String> getAdaptiveCrosshairUseItemProperties();
 	
 	boolean getShowObstructionCrosshair();
-	boolean getShowObstructionWhenAiming();
-	int getObstructionCrosshairOverlapSize();
-	double getObstructionPhysicalDistanceMax();
+	boolean showObstructionIndicatorWhenAiming();
+	int getObstructionIndicatorMinDistanceToCrosshair();
+	double getObstructionIndicatorMaxDistanceToObstruction();
 	
 	boolean doCenterPlayerSounds();
 	
