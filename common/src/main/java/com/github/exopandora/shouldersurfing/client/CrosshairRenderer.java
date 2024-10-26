@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
-import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.mojang.blaze3d.platform.Window;
@@ -21,7 +21,6 @@ public class CrosshairRenderer implements ICrosshairRenderer
 {
 	private final ShoulderSurfingImpl instance;
 	private Vec2f crosshairOffset;
-	private Vec3 crosshairPosition;
 	
 	public CrosshairRenderer(ShoulderSurfingImpl instance)
 	{
@@ -70,13 +69,11 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	public boolean doRenderObstructionCrosshair()
 	{
-		double physDistMax = Config.CLIENT.getObstructionPhysicalDistanceMax();
 		int screenDistMin = Config.CLIENT.getObstructionCrosshairOverlapSize();
 		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getShowObstructionCrosshair() &&
 			(this.instance.isAiming() || !Config.CLIENT.getShowObstructionWhenAiming()) &&
 			!this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) &&
-			this.crosshairOffset.lengthSquared() >= screenDistMin * screenDistMin &&
-			(physDistMax <= 0 || this.crosshairPosition.lengthSqr() <= physDistMax * physDistMax);
+			this.crosshairOffset.lengthSquared() >= screenDistMin * screenDistMin;
 	}
 	
 	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
@@ -107,15 +104,22 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			}
 			
 			Vec2f projected = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
+			Vec2f crosshairOffset = null;
 			
 			if(projected != null)
 			{
 				Window window = Minecraft.getInstance().getWindow();
 				Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 				Vec2f center = screenSize.divide(2);
-				this.crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
-				this.crosshairPosition = position.subtract(player.getEyePosition());
+				double physDistMax = Config.CLIENT.getObstructionPhysicalDistanceMax();
+				
+				if(!Config.CLIENT.getShowObstructionCrosshair() || position.distanceToSqr(player.getEyePosition()) <= physDistMax * physDistMax)
+				{
+					crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
+				}
 			}
+			
+			this.crosshairOffset = crosshairOffset;
 		}
 	}
 	
