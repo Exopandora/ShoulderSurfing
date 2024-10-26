@@ -113,7 +113,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 				Vec2f center = screenSize.divide(2);
 				double maxDistanceToObstruction = Config.CLIENT.getObstructionIndicatorMaxDistanceToObstruction();
 				
-				if(!Config.CLIENT.getShowObstructionCrosshair() || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction)
+				if(!Config.CLIENT.getShowObstructionCrosshair() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction)
 				{
 					crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
 				}
