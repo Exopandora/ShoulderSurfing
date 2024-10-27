@@ -594,18 +594,22 @@ public class Config
 			builder.push("obstruction");
 				
 			this.showObstructionIndicator = builder
+				.comment("When the crosshair type is static, shows an additional indicator on obstacles that stand between you and your target.")
 				.translation(MOD_ID + ".configuration.obstruction.show_obstruction_indicator")
 				.define("show_obstruction_indicator", true);
 			
 			this.showObstructionIndicatorWhenAiming = builder
+				.comment("Only show the obstruction indicator when using items that would trigger the adaptive crosshair.")
 				.translation(MOD_ID + ".configuration.obstruction.only_when_aiming")
 				.define("only_when_aiming", true);
 			
 			this.obstructionIndicatorMinDistanceToCrosshair = builder
+				.comment("Hide the obstruction indicator when it is too close to the main crosshair. Distance measured in scaled pixels.")
 				.translation(MOD_ID + ".configuration.obstruction.min_distance_to_crosshair")
 				.defineInRange("min_distance_to_crosshair", 8, 0, Integer.MAX_VALUE);
 			
 			this.obstructionIndicatorMaxDistanceToObstruction = builder
+				.comment("Ignore obstructions that are too far away from the player. Distance measured in blocks. Set to 0 to disable.")
 				.translation(MOD_ID + ".configuration.obstruction.max_distance_to_obstruction")
 				.defineInRange("max_distance_to_obstruction", 20, 0, Double.MAX_VALUE);
 			
