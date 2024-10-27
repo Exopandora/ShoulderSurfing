@@ -55,6 +55,7 @@ public abstract class PickContext
 		private RayTraceContext.FluidMode fluidContext;
 		private Entity entity;
 		private Boolean offsetTrace = null;
+		private Vector3d endPos;
 		private PickOrigin entityPickOrigin;
 		private PickOrigin blockPickOrigin;
 		
@@ -99,12 +100,23 @@ public abstract class PickContext
 			return this;
 		}
 		
+		public Builder obstructionTrace(Vector3d endPos)
+		{
+			this.endPos = endPos;
+			return this;
+		}
+		
 		public PickContext build()
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			RayTraceContext.FluidMode fluidContext = this.fluidContext == null ? RayTraceContext.FluidMode.NONE : this.fluidContext;
 			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 			boolean offsetTrace = this.offsetTrace == null ? crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
+			
+			if(this.endPos != null)
+			{
+				return new ObstructionPickContext(this.camera, fluidContext, entity, this.endPos);
+			}
 			
 			if(offsetTrace)
 			{

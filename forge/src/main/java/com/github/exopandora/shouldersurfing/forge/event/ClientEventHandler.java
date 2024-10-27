@@ -27,9 +27,12 @@ public class ClientEventHandler
 		if(event.getType().equals(RenderGameOverlayEvent.ElementType.CROSSHAIRS))
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-			crosshairRenderer.preRenderCrosshair(event.getMatrixStack(), event.getWindow());
 			
-			if(!crosshairRenderer.doRenderCrosshair())
+			if(crosshairRenderer.doRenderCrosshair())
+			{
+				crosshairRenderer.preRenderCrosshair(event.getMatrixStack());
+			}
+			else
 			{
 				event.setCanceled(true);
 			}
