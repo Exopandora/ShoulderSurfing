@@ -1,8 +1,5 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
-displayURL = "${modUrl}"
-logoFile = "logo.png"
-authors = "${modAuthor}"
 license = "MIT"
 
 [[mixins]]
@@ -19,9 +16,13 @@ config = "shouldersurfing.compat.oculus.mixins.json"
 
 [[mods]]
 modId = "${modId}"
-displayName = "${modName}"
 version = "${minecraftVersion}-${modVersion}"
+displayName = "${modName}"
+authors = "${modAuthor}"
+credits = "${modContributors}"
 description = "${modDescription}"
+logoFile = "logo.png"
+displayURL = "${modUrl}"
 displayTest = "NONE"
 
 [[dependencies.${modId}]]
