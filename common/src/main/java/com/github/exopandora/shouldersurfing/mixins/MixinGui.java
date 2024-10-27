@@ -130,7 +130,7 @@ public abstract class MixinGui implements GuiDuck
 	 * with other mods, and exclude other functionalities of the vanilla crosshair.
 	 */
 	@Unique
-	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, Function<ResourceLocation,RenderType> renderType)
+	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, Function<ResourceLocation, RenderType> renderType)
 	{
 		if(this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || this.canRenderCrosshairForSpectator(this.minecraft.hitResult))
 		{
