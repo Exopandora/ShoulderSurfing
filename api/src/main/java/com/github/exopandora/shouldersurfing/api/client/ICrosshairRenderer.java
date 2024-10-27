@@ -6,5 +6,7 @@ public interface ICrosshairRenderer
 {
 	boolean doRenderCrosshair();
 	
+	boolean doRenderObstructionIndicator();
+	
 	boolean isCrosshairDynamic(Entity entity);
 }

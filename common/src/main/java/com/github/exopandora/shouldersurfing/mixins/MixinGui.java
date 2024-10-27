@@ -6,9 +6,6 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.mixinducks.GuiDuck;
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -89,7 +86,7 @@ public abstract class MixinGui implements GuiDuck
 			return;
 		}
 		
-		boolean drawSecondary = crosshairRenderer.doRenderObstructionCrosshair();
+		boolean drawSecondary = crosshairRenderer.doRenderObstructionIndicator();
 		boolean swapped = drawSecondary && ShoulderSurfing.getInstance().isAiming();
 		
 		// Draw primary crosshair

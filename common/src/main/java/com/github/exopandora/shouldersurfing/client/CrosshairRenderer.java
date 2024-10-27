@@ -67,7 +67,8 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			(this.crosshairOffset != null || !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
 	
-	public boolean doRenderObstructionCrosshair()
+	@Override
+	public boolean doRenderObstructionIndicator()
 	{
 		int minDistanceToCrosshair = Config.CLIENT.getObstructionIndicatorMinDistanceToCrosshair();
 		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getShowObstructionCrosshair() &&
