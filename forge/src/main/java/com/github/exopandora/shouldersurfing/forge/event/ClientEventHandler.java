@@ -29,9 +29,12 @@ public class ClientEventHandler
 		if(ForgeIngameGui.CROSSHAIR_ELEMENT.equals(event.getOverlay()))
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-			crosshairRenderer.preRenderCrosshair(event.getMatrixStack(), Minecraft.getInstance().getWindow());
 			
-			if(!crosshairRenderer.doRenderCrosshair())
+			if(crosshairRenderer.doRenderCrosshair())
+			{
+				crosshairRenderer.preRenderCrosshair(event.getMatrixStack());
+			}
+			else
 			{
 				event.setCanceled(true);
 			}
