@@ -28,17 +28,20 @@ public class ClientEventHandler
 		if(VanillaGuiOverlay.CROSSHAIR.id().equals(event.getOverlay().id()))
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-			crosshairRenderer.preRenderCrosshair(event.getGuiGraphics().pose(), Minecraft.getInstance().getWindow());
 			
 			if(!crosshairRenderer.doRenderCrosshair())
 			{
 				event.setCanceled(true);
 			}
+			else
+			{
+				crosshairRenderer.preRenderCrosshair(event.getGuiGraphics());
+			}
 		}
 		// Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id().equals(event.getOverlay().id()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(event.getGuiGraphics().pose());
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(event.getGuiGraphics());
 		}
 	}
 	

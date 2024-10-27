@@ -34,7 +34,7 @@ public abstract class MixinGui
 	)
 	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(guiGraphics.pose(), this.minecraft.getWindow());
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(guiGraphics);
 	}
 	
 	@Inject
@@ -49,7 +49,7 @@ public abstract class MixinGui
 	)
 	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics.pose());
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
 	}
 	
 	@Redirect
