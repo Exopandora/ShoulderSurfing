@@ -23,6 +23,7 @@ repositories {
 val modId: String by project
 val modName: String by project
 val modAuthor: String by project
+val modContributors: String by project
 val modVersion: String by project
 val modDescription: String by project
 val modUrl: String by project
@@ -108,6 +109,7 @@ tasks.named<ProcessResources>("processResources") {
 		"modId" to modId,
 		"modName" to modName,
 		"modAuthor" to modAuthor,
+		"modContributors" to modContributors,
 		"modDescription" to modDescription,
 		"modUrl" to modUrl,
 		"minecraftVersion" to libs.versions.minecraft.get()
