@@ -1,15 +1,16 @@
 modLoader = "javafml"
 loaderVersion = "[51,)"
-displayURL = "${modUrl}"
-logoFile = "logo.png"
-authors = "${modAuthor}"
 license = "MIT"
 
 [[mods]]
 modId = "${modId}"
-displayName = "${modName}"
 version = "${minecraftVersion}-${modVersion}"
+displayName = "${modName}"
+authors = "${modAuthor}"
+credits = "${modContributors}"
 description = "${modDescription}"
+logoFile = "logo.png"
+displayURL = "${modUrl}"
 
 [modproperties.${modId}]
 incompatibleMods = ["betterthirdperson", "customcameraview", "nimble", "valkyrienskies"]
