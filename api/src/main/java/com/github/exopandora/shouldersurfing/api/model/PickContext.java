@@ -115,7 +115,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			
 			if(this.endPos != null)
 			{
-				return new ObstructionPickContext(this.camera, fluidContext, entity, endPos);
+				return new ObstructionPickContext(this.camera, fluidContext, entity, this.endPos);
 			}
 			
 			if(offsetTrace)
