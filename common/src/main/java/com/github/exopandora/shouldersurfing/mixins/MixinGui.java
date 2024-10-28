@@ -34,7 +34,7 @@ public abstract class MixinGui implements GuiDuck
 	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
 	
 	@Unique
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_opaque");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_cross");
 	
 	@Shadow
 	private @Final Minecraft minecraft;
@@ -95,7 +95,7 @@ public abstract class MixinGui implements GuiDuck
 		if(swapped)
 		{
 			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderType::crosshair);
-			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE, RenderType::guiTexturedOverlay);
+			this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE, RenderType::guiTexturedOverlay);
 		}
 		else
 		{
