@@ -30,7 +30,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 {
 	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/sprites/hud/obstruction_indicator.png");
 	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair.png");
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair_opaque.png");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair_cross.png");
 	
 	private final ShoulderSurfingImpl instance;
 	private Vec2f crosshairOffset;
@@ -178,7 +178,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE);
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.disableBlend();
-		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE);
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE);
 	}
 	
 	private void renderObstructionIndicator(GuiGraphics guiGraphics)
