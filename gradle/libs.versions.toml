@@ -1,18 +1,18 @@
 [versions]
 minecraft = "1.21.3"
-forge = "1.21.1-52.0.1"
+forge = "1.21.3-53.0.5"
 neoforge = "21.3.2-beta"
 neoform = "1.21.3-20241023.131943"
 fabric-loader = "0.16.7"
 fabric-api = "0.106.1+1.21.3"
 mixin = "0.8.5"
-forgeconfigapiport = "21.3.0"
+forgeconfigapiport = "21.3.1"
 wthit-common = "mojmap-13.1.0"
-wthit-forge = "forge-12.2.2"
+wthit-forge = "neo-13.1.0" # temporarily use neoforge artifact for compilation
 wthit-neoforge = "neo-13.1.0"
 wthit-fabric = "fabric-13.1.0"
 jade-common = "5835088" # 1.21.3-16.0.1-neoforge
-jade-forge = "5842011" # 1.21.3-16.0.0-neoforge, temporarily use common artifact for compilation
+jade-forge = "5835088" # 1.21.3-16.0.1-neoforge, temporarily use common artifact for compilation
 jade-neoforge = "5835088" # 1.21.3-16.0.1-neoforge
 jade-fabric = "5835099" # 1.21.3-16.0.0-fabric
 badpackets-forge = "forge-0.8.1"
@@ -52,7 +52,7 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }
-forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.16,6.2)" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.24,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.7-SNAPSHOT" }
 moddevgradle = { id = "net.neoforged.moddev", version = "2.0.42-beta" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }

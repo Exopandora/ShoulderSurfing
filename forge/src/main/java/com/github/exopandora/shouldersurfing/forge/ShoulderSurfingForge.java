@@ -35,10 +35,12 @@ import java.util.Map;
 @Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingForge
 {
-	public ShoulderSurfingForge()
+	private final FMLJavaModLoadingContext modLoadingContext;
+	
+	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext)
 	{
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModLoadingContext modLoadingContext = ModLoadingContext.get();
+		this.modLoadingContext = modLoadingContext;
+		IEventBus modEventBus = modLoadingContext.getModEventBus();
 		modEventBus.addListener(this::clientSetup);
 		modEventBus.addListener(this::loadComplete);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
@@ -56,10 +58,9 @@ public class ShoulderSurfingForge
 	public void clientSetup(FMLClientSetupEvent event)
 	{
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		
-		Map<String, Object> modProperties = ModLoadingContext.get().getActiveContainer().getModInfo().getModProperties();
+		Map<String, Object> modProperties = this.modLoadingContext.getContainer().getModInfo().getModProperties();
 		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
 		FMLLoader.getLoadingModList().getMods().stream()
 			.filter(info -> incompatibleModIds.contains(info.getModId()))
