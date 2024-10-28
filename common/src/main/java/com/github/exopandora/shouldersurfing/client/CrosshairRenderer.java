@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixins.GuiAccessor;
@@ -32,7 +31,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 {
 	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstruction_indicator.png");
 	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair.png");
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair_opaque.png");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair_cross.png");
 	
 	private final ShoulderSurfingImpl instance;
 	private Vec2f crosshairOffset;
@@ -179,7 +178,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE);
 		RenderSystem.defaultBlendFunc();
-		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_OPAQUE_SPRITE);
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE);
 	}
 	
 	private void renderObstructionIndicator(GuiGraphics guiGraphics)
