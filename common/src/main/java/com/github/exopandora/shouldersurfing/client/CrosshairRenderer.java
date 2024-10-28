@@ -5,20 +5,33 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
+import com.github.exopandora.shouldersurfing.mixins.GuiAccessor;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
+import java.util.function.Function;
+
+import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
+
 public class CrosshairRenderer implements ICrosshairRenderer
 {
+	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstruction_indicator");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_cross");
+	
 	private final ShoulderSurfingImpl instance;
 	private Vec2f crosshairOffset;
 	
@@ -33,28 +46,50 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.crosshairOffset = null;
 	}
 	
-	public void preRenderCrosshair(PoseStack poseStack, Window window)
+	public void preRenderCrosshair(GuiGraphics guiGraphics)
 	{
-		this.preRenderCrosshair(poseStack, window, this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
+		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
+		
+		if(isDynamic || this.doRenderObstructionCrosshair())
+		{
+			this.setupPoseStack(guiGraphics.pose());
+		}
 	}
 	
-	public void preRenderCrosshair(PoseStack poseStack, Window window, boolean isDynamic)
+	public void postRenderCrosshair(GuiGraphics guiGraphics)
 	{
-		if(this.crosshairOffset != null && isDynamic)
+		boolean doRenderObstructionCrosshair = this.doRenderObstructionCrosshair();
+		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
+		
+		if(isDynamic || doRenderObstructionCrosshair)
+		{
+			this.resetPoseStack(guiGraphics.pose());
+		}
+		
+		if(doRenderObstructionCrosshair)
+		{
+			this.renderObstructionCrosshair(guiGraphics);
+		}
+		else if(this.doRenderObstructionIndicator())
+		{
+			this.setupPoseStack(guiGraphics.pose());
+			this.renderObstructionIndicator(guiGraphics);
+			this.resetPoseStack(guiGraphics.pose());
+		}
+	}
+	
+	private void setupPoseStack(PoseStack poseStack)
+	{
+		if(this.crosshairOffset != null)
 		{
 			poseStack.pushPose();
 			poseStack.last().pose().translate(this.crosshairOffset.x(), -this.crosshairOffset.y(), 0F);
 		}
 	}
 	
-	public void postRenderCrosshair(PoseStack poseStack)
+	private void resetPoseStack(PoseStack poseStack)
 	{
-		this.postRenderCrosshair(poseStack, this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
-	}
-	
-	public void postRenderCrosshair(PoseStack poseStack, boolean isDynamic)
-	{
-		if(this.crosshairOffset != null && isDynamic)
+		if(this.crosshairOffset != null)
 		{
 			poseStack.popPose();
 		}
@@ -64,7 +99,13 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	public boolean doRenderCrosshair()
 	{
 		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, this.instance.isAiming()) &&
-			(this.crosshairOffset != null || !this.isCrosshairDynamic(Minecraft.getInstance().cameraEntity));
+			(this.crosshairOffset != null || !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
+	}
+	
+	@Override
+	public boolean doRenderObstructionCrosshair()
+	{
+		return this.doRenderObstructionIndicator() && this.instance.isAiming();
 	}
 	
 	@Override
@@ -128,6 +169,27 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	public boolean isCrosshairDynamic(Entity entity)
 	{
 		return this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairType().isDynamic(entity, this.instance.isAiming());
+	}
+	
+	private void renderObstructionCrosshair(GuiGraphics guiGraphics)
+	{
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderType::crosshair);
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE, RenderType::guiTextured);
+	}
+	
+	private void renderObstructionIndicator(GuiGraphics guiGraphics)
+	{
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderType::crosshair);
+	}
+	
+	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, Function<ResourceLocation, RenderType> renderType)
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		
+		if(minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult))
+		{
+			guiGraphics.blitSprite(renderType, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
+		}
 	}
 	
 	public void resetState()
