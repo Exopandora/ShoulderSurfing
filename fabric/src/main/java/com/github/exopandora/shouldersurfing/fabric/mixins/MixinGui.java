@@ -32,7 +32,7 @@ public abstract class MixinGui
 			shift = Shift.BEFORE
 		)
 	)
-	private void offsetCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
+	private void preRenderCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(guiGraphics);
 	}
@@ -47,7 +47,7 @@ public abstract class MixinGui
 			shift = Shift.AFTER
 		)
 	)
-	private void clearCrosshairOffset(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
+	private void postRenderCrosshair(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
 	}
