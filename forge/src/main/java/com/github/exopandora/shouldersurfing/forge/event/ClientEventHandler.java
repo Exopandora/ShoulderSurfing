@@ -29,13 +29,13 @@ public class ClientEventHandler
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
 			
-			if(!crosshairRenderer.doRenderCrosshair())
+			if(crosshairRenderer.doRenderCrosshair())
 			{
-				event.setCanceled(true);
+				crosshairRenderer.preRenderCrosshair(event.getPoseStack());
 			}
 			else
 			{
-				crosshairRenderer.preRenderCrosshair(event.getPoseStack());
+				event.setCanceled(true);
 			}
 		}
 		// Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
