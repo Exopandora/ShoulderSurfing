@@ -22,9 +22,12 @@ public class MixinGui
 	private void preRenderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
 		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-		crosshairRenderer.preRenderCrosshair(guiGraphics);
 		
-		if(!crosshairRenderer.doRenderCrosshair())
+		if(crosshairRenderer.doRenderCrosshair())
+		{
+			crosshairRenderer.preRenderCrosshair(guiGraphics);
+		}
+		else
 		{
 			ci.cancel();
 		}
