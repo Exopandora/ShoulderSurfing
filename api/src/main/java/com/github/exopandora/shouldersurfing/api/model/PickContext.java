@@ -111,7 +111,7 @@ public abstract class PickContext
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			RayTraceContext.FluidMode fluidContext = this.fluidContext == null ? RayTraceContext.FluidMode.NONE : this.fluidContext;
 			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
-			boolean offsetTrace = this.offsetTrace == null ? crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
+			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
 			
 			if(this.endPos != null)
 			{
