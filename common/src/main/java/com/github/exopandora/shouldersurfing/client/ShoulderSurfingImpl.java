@@ -44,6 +44,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	public void tick()
 	{
+		if(Config.CLIENT.requiresSaving())
+		{
+			Config.CLIENT.save();
+		}
+		
 		Minecraft minecraft = Minecraft.getInstance();
 		
 		if(minecraft.screen == null)
