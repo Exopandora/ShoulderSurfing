@@ -137,6 +137,8 @@ public class Config
 		
 		private final BooleanValue centerPlayerSounds;
 		
+		private boolean requiresSaving = false;
+		
 		public ClientConfig(ModConfigSpec.Builder builder)
 		{
 			builder.push("camera");
@@ -928,7 +930,7 @@ public class Config
 		
 		public void setDefaultPerspective(Perspective perspective)
 		{
-			Config.set(this.defaultPerspective, perspective);
+			this.set(this.defaultPerspective, perspective);
 		}
 		
 		@Override
@@ -1113,32 +1115,32 @@ public class Config
 		
 		public void adjustCameraLeft()
 		{
-			Config.set(this.offsetX, this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
+			this.set(this.offsetX, this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
 		}
 		
 		public void adjustCameraRight()
 		{
-			Config.set(this.offsetX, this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isUnlimitedOffsetX()));
+			this.set(this.offsetX, this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isUnlimitedOffsetX()));
 		}
 		
 		public void adjustCameraUp()
 		{
-			Config.set(this.offsetY, this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isUnlimitedOffsetY()));
+			this.set(this.offsetY, this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isUnlimitedOffsetY()));
 		}
 		
 		public void adjustCameraDown()
 		{
-			Config.set(this.offsetY, this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isUnlimitedOffsetY()));
+			this.set(this.offsetY, this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isUnlimitedOffsetY()));
 		}
 		
 		public void adjustCameraIn()
 		{
-			Config.set(this.offsetZ, this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isUnlimitedOffsetZ()));
+			this.set(this.offsetZ, this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
 		public void adjustCameraOut()
 		{
-			Config.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
+			this.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
 		private double addStep(double value, double max, boolean unlimited)
@@ -1167,21 +1169,39 @@ public class Config
 		
 		public void swapShoulder()
 		{
-			Config.set(this.offsetX, -this.getOffsetX());
+			this.set(this.offsetX, -this.getOffsetX());
 		}
 		
 		public void toggleCameraCoupling()
 		{
-			Config.set(this.isCameraDecoupled, !this.isCameraDecoupled());
+			this.set(this.isCameraDecoupled, !this.isCameraDecoupled());
 		}
-	}
-	
-	protected static <T> void set(ModConfigSpec.ConfigValue<T> configValue, T value)
-	{
-		if(value != null && !value.equals(configValue.get()))
+		
+		public boolean requiresSaving()
 		{
-			configValue.set(value);
-			configValue.save();
+			return this.requiresSaving;
+		}
+		
+		public void save()
+		{
+			try
+			{
+				Config.CLIENT_SPEC.save();
+				this.requiresSaving = false;
+			}
+			catch(Exception e)
+			{
+				// ignore
+			}
+		}
+		
+		private <T> void set(ModConfigSpec.ConfigValue<T> configValue, T value)
+		{
+			if(value != null && !value.equals(configValue.get()))
+			{
+				configValue.set(value);
+				this.requiresSaving = true;
+			}
 		}
 	}
 	
