@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.client;
+package com.github.exopandora.shouldersurfing.api.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
