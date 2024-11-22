@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.network.play.client.CPlayerPacket;
@@ -23,5 +24,12 @@ public class EntityHelper
 		player.yBodyRotO = yBodyRotO;
 		player.xRotO = xRotO;
 		player.yRotO = yRotO;
+	}
+	
+	public static boolean isPlayerSpectatingEntity()
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		ClientPlayerEntity player = minecraft.player;
+		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
 	}
 }
