@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
+import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.GameSettingsDuck;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
