@@ -63,14 +63,19 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.maxCameraDistanceO = this.maxCameraDistance;
 		this.maxCameraDistance = this.maxCameraDistance + (this.offset.length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
 		
-		if(!Config.CLIENT.isCameraDecoupled())
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		
+		if(Config.CLIENT.isCameraDecoupled())
 		{
-			Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-			
-			if(cameraEntity != null && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
+			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 			{
-				this.yRot += boat.getYRot() - boat.yRotO;
+				this.xRot += living.getXRot() - living.xRotO;
+				this.yRot += living.getYHeadRot() - living.yHeadRotO;
 			}
+		}
+		else if(cameraEntity != null && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
+		{
+			this.yRot += boat.getYRot() - boat.yRotO;
 		}
 		
 		if(!this.instance.isFreeLooking())
@@ -112,10 +117,23 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	public Vec2f calcRotations(Entity cameraEntity, float partialTick)
 	{
+		if(!Config.CLIENT.isCameraDecoupled() && EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
+		{
+			return new Vec2f(living.getViewXRot(partialTick), living.getViewYRot(partialTick));
+		}
+		
 		float cameraXRotWithOffset = Mth.clamp(Mth.rotLerp(partialTick, this.xRotOffsetO, this.xRotOffset) + this.xRot, -90F, 90F);
 		float cameraYRotWithOffset = Mth.rotLerp(partialTick, this.yRotOffsetO, this.yRotOffset) + this.yRot;
 		
-		if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled() && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
+		if(Config.CLIENT.isCameraDecoupled())
+		{
+			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
+			{
+				cameraXRotWithOffset += (living.getXRot() - living.xRotO) * partialTick;
+				cameraYRotWithOffset += (living.getYHeadRot() - living.yHeadRotO) * partialTick;
+			}
+		}
+		else if(cameraEntity != null && !Config.CLIENT.isCameraDecoupled() && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
 		{
 			cameraYRotWithOffset += (boat.getYRot() - boat.yRotO) * partialTick;
 		}
