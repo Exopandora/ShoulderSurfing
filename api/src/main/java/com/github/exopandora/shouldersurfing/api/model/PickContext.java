@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.api.model;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -118,7 +119,11 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
 			
-			if(this.endPos != null)
+			if(EntityHelper.isPlayerSpectatingEntity())
+			{
+				return new DynamicPickContext(this.camera, fluidContext, Minecraft.getInstance().getCameraEntity(), PickVector.PLAYER);
+			}
+			else if(this.endPos != null)
 			{
 				return new ObstructionPickContext(this.camera, fluidContext, entity, this.endPos);
 			}
