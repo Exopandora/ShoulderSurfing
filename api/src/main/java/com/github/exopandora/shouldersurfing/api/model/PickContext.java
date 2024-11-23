@@ -58,6 +58,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private Vec3 endPos;
 		private PickOrigin entityPickOrigin;
 		private PickOrigin blockPickOrigin;
+		private PickVector pickVector;
 		
 		public Builder(Camera camera)
 		{
@@ -88,6 +89,12 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			return this;
 		}
 		
+		public Builder withPickVector(PickVector pickVector)
+		{
+			this.pickVector = pickVector;
+			return this;
+		}
+		
 		public Builder dynamicTrace()
 		{
 			this.offsetTrace = false;
@@ -110,23 +117,25 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
-			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
-			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
 			
 			if(this.endPos != null)
 			{
 				return new ObstructionPickContext(this.camera, fluidContext, entity, this.endPos);
 			}
 			
+			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
+			IClientConfig config = ShoulderSurfing.getInstance().getClientConfig();
+			
 			if(offsetTrace)
 			{
-				IClientConfig config = ShoulderSurfing.getInstance().getClientConfig();
 				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
 				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
 				return new OffsetPickContext(this.camera, fluidContext, entity, blockPickOrigin, entityPickOrigin);
 			}
 			
-			return new DynamicPickContext(this.camera, fluidContext, entity);
+			PickVector pickVector = this.pickVector == null ? config.getPickVector() : this.pickVector;
+			return new DynamicPickContext(this.camera, fluidContext, entity, pickVector);
 		}
 	}
 }

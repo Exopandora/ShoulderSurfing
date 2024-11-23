@@ -8,9 +8,12 @@ import net.minecraft.world.phys.Vec3;
 
 public final class DynamicPickContext extends PickContext
 {
-	public DynamicPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity)
+	private final PickVector pickVector;
+	
+	public DynamicPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, PickVector pickVector)
 	{
 		super(camera, fluidContext, entity);
+		this.pickVector = pickVector;
 	}
 	
 	@Override
@@ -22,13 +25,13 @@ public final class DynamicPickContext extends PickContext
 	@Override
 	public Couple<Vec3> entityTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getPickVector());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, this.pickVector);
 	}
 	
 	@Override
 	public Couple<Vec3> blockTrace(double interactionRange, float partialTick)
 	{
-		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, ShoulderSurfing.getInstance().getClientConfig().getPickVector());
+		return calcRay(this.camera(), this.entity(), interactionRange, partialTick, this.pickVector);
 	}
 	
 	private static Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickVector pickVector)
