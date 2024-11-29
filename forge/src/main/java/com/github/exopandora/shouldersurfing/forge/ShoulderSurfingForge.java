@@ -46,6 +46,7 @@ public class ShoulderSurfingForge
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
+			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
 		});
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
