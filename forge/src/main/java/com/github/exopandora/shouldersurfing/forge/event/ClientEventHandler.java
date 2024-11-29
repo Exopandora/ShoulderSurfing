@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -25,24 +26,28 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void preRenderGuiOverlayEvent(RenderGuiOverlayEvent.Pre event)
 	{
-		if(VanillaGuiOverlay.CROSSHAIR.id().equals(event.getOverlay().id()))
+		if(VanillaGuiOverlay.CROSSHAIR.id().equals(event.getOverlay().id()) && !ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair())
+		{
+			event.setCanceled(true);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void registerGuiOverlaysEvent(RegisterGuiOverlaysEvent event)
+	{
+		event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), "pre_crosshair", (gui, guiGraphics, partialTick, screenWith, screenHeight) ->
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
 			
-			if(!crosshairRenderer.doRenderCrosshair())
+			if(crosshairRenderer.doRenderCrosshair())
 			{
-				event.setCanceled(true);
+				crosshairRenderer.preRenderCrosshair(guiGraphics);
 			}
-			else
-			{
-				crosshairRenderer.preRenderCrosshair(event.getGuiGraphics());
-			}
-		}
-		// Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
-		else if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id().equals(event.getOverlay().id()))
+		});
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "post_crosshair", (gui, guiGraphics, partialTick, screenWith, screenHeight) ->
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(event.getGuiGraphics());
-		}
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
+		});
 	}
 	
 	@SubscribeEvent
