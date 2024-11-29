@@ -36,6 +36,7 @@ public class ShoulderSurfingNeoForge
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
+			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
 		}
 	}
 	
