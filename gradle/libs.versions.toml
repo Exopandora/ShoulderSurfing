@@ -51,7 +51,7 @@ create-neoforge = { module = "maven.modrinth:create", version.ref = "create-neof
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]
-modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.8.0" }
+modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.8.1" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.24,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.9-SNAPSHOT" }
 moddevgradle = { id = "net.neoforged.moddev", version = "2.0.52-beta" }
