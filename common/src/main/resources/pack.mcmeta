@@ -1,6 +1,6 @@
 {
     "pack": {
         "description": "${modName}",
-        "pack_format": 42
+        "pack_format": 46
     }
 }

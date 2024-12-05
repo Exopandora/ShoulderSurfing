@@ -75,9 +75,9 @@ dependencies {
 	compileOnly(project(":common"))
 	compileOnly(project(":compat"))
 	
-	implementation(libs.wthit.neoforge)
-	implementation(libs.badpackets.neoforge)
-	implementation(libs.jade.neoforge)
+	compileOnly(libs.wthit.neoforge)
+	compileOnly(libs.badpackets.neoforge)
+	compileOnly(libs.jade.neoforge)
 	compileOnly(libs.create.neoforge)
 }
 
@@ -124,7 +124,7 @@ publishMods {
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
 	modLoaders.add("neoforge")
-	type = STABLE
+	type = BETA
 	
 	val compatibleVersions = neoForgeCompatibleMinecraftVersions.split(",")
 	

@@ -176,8 +176,10 @@ public interface IClientConfig
 	
 	List<? extends String> getAdaptiveCrosshairHoldItems();
 	List<? extends String> getAdaptiveCrosshairUseItems();
-	List<? extends String> getAdaptiveCrosshairHoldItemProperties();
-	List<? extends String> getAdaptiveCrosshairUseItemProperties();
+	List<? extends String> getAdaptiveCrosshairHoldItemAnimations();
+	List<? extends String> getAdaptiveCrosshairUseItemAnimations();
+	List<? extends String> getAdaptiveCrosshairHoldItemComponents();
+	List<? extends String> getAdaptiveCrosshairUseItemComponents();
 	
 	boolean getShowObstructionCrosshair();
 	boolean showObstructionIndicatorWhenAiming();

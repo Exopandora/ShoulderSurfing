@@ -7,13 +7,15 @@ import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -42,7 +44,6 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	{
 		ItemStack useStack = entity.getUseItem();
 		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
 		String useItemId = BuiltInRegistries.ITEM.getKey(useStack.getItem()).toString();
 		
 		if(useItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(useItemId)))
@@ -50,16 +51,40 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			return true;
 		}
 		
-		for(String useItemProperty : useItemProperties)
+		if(!useStack.getComponentsPatch().isEmpty())
 		{
-			if(ItemProperties.getProperty(useStack, ResourceLocation.parse(useItemProperty)) != null)
+			DataComponentPatch patch = useStack.getComponentsPatch();
+			
+			for(String componentId : Config.CLIENT.getAdaptiveCrosshairUseItemComponents())
+			{
+				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(ResourceLocation.tryParse(componentId));
+				
+				if(type.isEmpty())
+				{
+					continue;
+				}
+				
+				Optional<?> component = patch.get(type.get());
+				
+				if(component != null && component.isPresent())
+				{
+					return true;
+				}
+			}
+		}
+		
+		String useAnimation = useStack.getUseAnimation().getSerializedName();
+		
+		for(String useItemAnimation : Config.CLIENT.getAdaptiveCrosshairUseItemAnimations())
+		{
+			if(useItemAnimation.equals(useAnimation))
 			{
 				return true;
 			}
 		}
 		
 		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
+		List<? extends String> holdItemAnimations = Config.CLIENT.getAdaptiveCrosshairHoldItemAnimations();
 		
 		for(ItemStack handStack : entity.getHandSlots())
 		{
@@ -70,9 +95,33 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 				return true;
 			}
 			
-			for(String holdItemProperty : holdItemProperties)
+			if(!handStack.getComponentsPatch().isEmpty())
 			{
-				if(ItemProperties.getProperty(handStack, ResourceLocation.parse(holdItemProperty)) != null)
+				DataComponentPatch patch = handStack.getComponentsPatch();
+				
+				for(String componentId : Config.CLIENT.getAdaptiveCrosshairHoldItemComponents())
+				{
+					Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(ResourceLocation.tryParse(componentId));
+					
+					if(type.isEmpty())
+					{
+						continue;
+					}
+					
+					Optional<?> component = patch.get(type.get());
+					
+					if(component != null && component.isPresent())
+					{
+						return true;
+					}
+				}
+			}
+			
+			String handItemUseAnimation = handStack.getUseAnimation().getSerializedName();
+			
+			for(String holdItemAnimation : holdItemAnimations)
+			{
+				if(handItemUseAnimation.equals(holdItemAnimation))
 				{
 					return true;
 				}

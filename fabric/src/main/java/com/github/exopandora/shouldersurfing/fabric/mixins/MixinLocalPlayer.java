@@ -22,7 +22,7 @@ public class MixinLocalPlayer
 		at = @At
 		(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/player/ClientInput;tick(ZF)V",
+			target = "Lnet/minecraft/client/player/ClientInput;tick()V",
 			shift = Shift.AFTER
 		)
 	)

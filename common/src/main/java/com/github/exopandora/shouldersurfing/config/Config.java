@@ -7,8 +7,10 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
@@ -126,8 +128,10 @@ public class Config
 		private final BooleanValue useCustomRaytraceDistance;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItems;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItems;
-		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemProperties;
-		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemProperties;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemAnimations;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemAnimations;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemComponents;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemComponents;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 
 		private final BooleanValue showObstructionIndicator;
@@ -572,29 +576,39 @@ public class Config
 				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_items")
 				.defineList("adaptive_crosshair_use_items", ArrayList::new, String::new, Objects::nonNull);
 			
-			this.adaptiveCrosshairHoldItemProperties = builder
-				.comment("Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.")
-				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_item_properties")
-				.defineList("adaptive_crosshair_hold_item_properties", () ->
-				{
-					List<String> items = new ArrayList<String>();
-					items.add(ResourceLocation.withDefaultNamespace("charged").toString());
-					return items;
-				}, String::new, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
+			this.adaptiveCrosshairHoldItemAnimations = builder
+				.comment("Item use-animations of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_item_animations")
+				.defineList("adaptive_crosshair_hold_item_animations", ArrayList::new, String::new, ClientConfig::isValidItemUseAnimation);
 			
-			this.adaptiveCrosshairUseItemProperties = builder
-				.comment("Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.")
-				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_properties")
-				.defineList("adaptive_crosshair_use_item_properties", () ->
+			this.adaptiveCrosshairUseItemAnimations = builder
+				.comment("Item use-animations of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_animations")
+				.defineList("adaptive_crosshair_use_item_animations", () ->
 				{
 					List<String> items = new ArrayList<String>();
-					items.add(ResourceLocation.withDefaultNamespace("pull").toString());
-					items.add(ResourceLocation.withDefaultNamespace("throwing").toString());
+					items.add(ItemUseAnimation.BOW.getSerializedName());
+					items.add(ItemUseAnimation.SPEAR.getSerializedName());
 					return items;
-				}, String::new, item -> item != null && ResourceLocation.tryParse(item.toString()) != null);
-				
+				}, String::new, ClientConfig::isValidItemUseAnimation);
+			
+			this.adaptiveCrosshairHoldItemComponents = builder
+				.comment("Item components (modified only) of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_item_components")
+				.defineList("adaptive_crosshair_hold_item_components", () ->
+				{
+					List<String> components = new ArrayList<String>();
+					components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.CHARGED_PROJECTILES)).toString());
+					return components;
+				}, String::new, ClientConfig::isValidDataComponentId);
+			
+			this.adaptiveCrosshairUseItemComponents = builder
+				.comment("Item components (modified only) of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_components")
+				.defineList("adaptive_crosshair_use_item_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentId);
+			
 			builder.push("obstruction");
-				
+			
 			this.showObstructionIndicator = builder
 				.comment("When the crosshair type is static, shows an additional indicator on obstacles that stand between you and your target.")
 				.translation(MOD_ID + ".configuration.obstruction.show_obstruction_indicator")
@@ -1054,15 +1068,27 @@ public class Config
 		}
 		
 		@Override
-		public List<? extends String> getAdaptiveCrosshairHoldItemProperties()
+		public List<? extends String> getAdaptiveCrosshairHoldItemAnimations()
 		{
-			return this.adaptiveCrosshairHoldItemProperties.get();
+			return this.adaptiveCrosshairHoldItemAnimations.get();
 		}
 		
 		@Override
-		public List<? extends String> getAdaptiveCrosshairUseItemProperties()
+		public List<? extends String> getAdaptiveCrosshairUseItemAnimations()
 		{
-			return this.adaptiveCrosshairUseItemProperties.get();
+			return this.adaptiveCrosshairUseItemAnimations.get();
+		}
+		
+		@Override
+		public List<? extends String> getAdaptiveCrosshairHoldItemComponents()
+		{
+			return this.adaptiveCrosshairHoldItemComponents.get();
+		}
+		
+		@Override
+		public List<? extends String> getAdaptiveCrosshairUseItemComponents()
+		{
+			return this.adaptiveCrosshairUseItemComponents.get();
 		}
 		
 		@Override
@@ -1202,6 +1228,41 @@ public class Config
 				configValue.set(value);
 				this.requiresSaving = true;
 			}
+		}
+		
+		private static boolean isValidItemUseAnimation(Object id)
+		{
+			if(id == null)
+			{
+				return false;
+			}
+			
+			for(ItemUseAnimation itemUseAnimation : ItemUseAnimation.values())
+			{
+				if(itemUseAnimation.getSerializedName().equals(id))
+				{
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		private static boolean isValidDataComponentId(Object id)
+		{
+			if(id == null)
+			{
+				return false;
+			}
+			
+			ResourceLocation location = ResourceLocation.tryParse(id.toString());
+			
+			if(location == null)
+			{
+				return false;
+			}
+			
+			return BuiltInRegistries.DATA_COMPONENT_TYPE.containsKey(location);
 		}
 	}
 	

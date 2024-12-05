@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[51,)"
+loaderVersion = "[54,)"
 license = "MIT"
 
 [[mods]]
@@ -18,6 +18,6 @@ incompatibleMods = ["betterthirdperson", "customcameraview", "nimble", "valkyrie
 [[dependencies.${modId}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.21.2,)"
+versionRange = "[1.21.4,)"
 ordering = "NONE"
 side = "CLIENT"

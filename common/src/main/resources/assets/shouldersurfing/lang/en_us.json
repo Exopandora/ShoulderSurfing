@@ -242,13 +242,21 @@
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "Adaptive crosshair items (use)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.",
 
-  "adaptive_crosshair_hold_item_properties.button": "Edit",
-  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties": "Adaptive crosshair item properties (hold)",
-  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties.tooltip": "Item properties of an item, that when held, trigger the dynamic crosshair in adaptive mode.",
+  "adaptive_crosshair_hold_item_animations.button": "Edit",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_animations": "Adaptive crosshair item animations (hold)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_animations.tooltip": "Item use-animations of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.",
 
-  "adaptive_crosshair_use_item_properties.button": "Edit",
-  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties": "Adaptive crosshair item properties (use)",
-  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties.tooltip": "Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.",
+  "adaptive_crosshair_use_item_animations.button": "Edit",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_animations": "Adaptive crosshair item animations (use)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_animations.tooltip": "Item use-animations of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.",
+
+  "adaptive_crosshair_hold_item_components.button": "Edit",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components": "Adaptive crosshair item components (hold)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components.tooltip": "Item components (modified only) of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.",
+
+  "adaptive_crosshair_use_item_components.button": "Edit",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_components": "Adaptive crosshair item components (use)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_components.tooltip": "Item components (modified only) of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.",
 
   "obstruction.button": "Edit",
   "${modId}.configuration.obstruction": "Obstruction Indicator",
