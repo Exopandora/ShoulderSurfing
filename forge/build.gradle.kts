@@ -153,7 +153,7 @@ publishMods {
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
 	modLoaders.add("forge")
-	type = BETA
+	type = STABLE
 	
 	val compatibleVersions = forgeCompatibleMinecraftVersions.split(",")
 	

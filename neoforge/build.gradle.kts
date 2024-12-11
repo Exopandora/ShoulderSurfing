@@ -124,7 +124,7 @@ publishMods {
 	additionalFiles.from(tasks.named("apiJar").get())
 	changelog = provider { file("../changelog.txt").readText() }
 	modLoaders.add("neoforge")
-	type = BETA
+	type = STABLE
 	
 	val compatibleVersions = neoForgeCompatibleMinecraftVersions.split(",")
 	
