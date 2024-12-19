@@ -6,6 +6,7 @@ import net.minecraft.client.Camera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -44,8 +45,9 @@ public class MixinRenderEngine
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/client/CameraType.isFirstPerson()Z",
-			remap = true
+			target = "net/minecraft/client/Camera.setRotation(FF)V",
+			remap = true,
+			shift = Shift.AFTER
 		),
 		cancellable = true,
 		remap = false
