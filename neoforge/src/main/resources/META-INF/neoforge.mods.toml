@@ -9,7 +9,7 @@ config = "shouldersurfing.common.mixins.json"
 config = "shouldersurfing.common.compat.mixins.json"
 
 [[mixins]]
-config = "shouldersurfing.compat.oculus.mixins.json"
+config = "shouldersurfing.compat.shaders.mixins.json"
 
 [[mods]]
 modId = "${modId}"
