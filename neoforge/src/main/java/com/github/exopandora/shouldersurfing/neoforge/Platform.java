@@ -13,7 +13,7 @@ public class Platform implements IPlatform
 		return switch(mod)
 		{
 			case CREATE -> findModVersionForId("create");
-			case IRIS -> null;
+			case IRIS -> findModVersionForId("iris");
 			case OCULUS -> findModVersionForId("oculus");
 		};
 	}

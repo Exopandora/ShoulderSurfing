@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"minVersion": "0.8.5",
-	"plugin": "com.github.exopandora.shouldersurfing.neoforge.compat.ShoulderOculusCompatMixinPlugin",
+	"plugin": "com.github.exopandora.shouldersurfing.neoforge.compat.ShoulderShadersCompatMixinPlugin",
 	"package": "com.github.exopandora.shouldersurfing.compat.mixins.iris",
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_21",

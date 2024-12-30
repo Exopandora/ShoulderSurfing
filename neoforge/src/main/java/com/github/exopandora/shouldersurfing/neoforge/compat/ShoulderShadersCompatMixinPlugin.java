@@ -1,22 +1,24 @@
 package com.github.exopandora.shouldersurfing.neoforge.compat;
 
 import com.github.exopandora.shouldersurfing.compat.Mods;
-import net.neoforged.fml.loading.FMLLoader;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
+public class ShoulderShadersCompatMixinPlugin implements IMixinConfigPlugin
 {
 	private final Map<String, Supplier<Predicate<ArtifactVersion>>> rules = new HashMap<String, Supplier<Predicate<ArtifactVersion>>>();
 	
@@ -38,12 +40,11 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	{
 		if(this.rules.containsKey(mixinClassName))
 		{
-			String oculusVersion = Mods.OCULUS.getModVersion();
+			ArtifactVersion shaderVersion = highestShaderVersion();
 			
-			if(oculusVersion != null)
+			if(shaderVersion != null)
 			{
-				Predicate<ArtifactVersion> versionPredicate = this.rules.get(mixinClassName).get();
-				return versionPredicate.test(new DefaultArtifactVersion(oculusVersion));
+				return this.rules.get(mixinClassName).get().test(shaderVersion);
 			}
 		}
 		
@@ -84,5 +85,23 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 		{
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private static @Nullable ArtifactVersion highestShaderVersion()
+	{
+		List<String> shaderVersions = new ArrayList<String>();
+		shaderVersions.add(Mods.OCULUS.getModVersion());
+		shaderVersions.add(Mods.IRIS.getModVersion());
+		shaderVersions.removeIf(Objects::isNull);
+		return switch(shaderVersions.size())
+		{
+			case 0 -> null;
+			case 1 -> new DefaultArtifactVersion(shaderVersions.getFirst());
+			default -> shaderVersions.stream()
+				.map(DefaultArtifactVersion::new)
+				.sorted()
+				.findFirst()
+				.orElse(null);
+		};
 	}
 }
