@@ -8,7 +8,6 @@ import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovementInput;
@@ -27,7 +26,9 @@ public class InputHandler
 	public static final KeyBinding CAMERA_UP = createKeyMapping("adjust_camera_up", GLFW.GLFW_KEY_PAGE_UP);
 	public static final KeyBinding CAMERA_DOWN = createKeyMapping("adjust_camera_down", GLFW.GLFW_KEY_PAGE_DOWN);
 	public static final KeyBinding SWAP_SHOULDER = createKeyMapping("swap_shoulder", GLFW.GLFW_KEY_O);
-	public static final KeyBinding TOGGLE_SHOULDER_SURFING = createKeyMapping("toggle_perspective", InputMappings.UNKNOWN.getValue());
+	public static final KeyBinding TOGGLE_FIRST_PERSON = createKeyMapping("toggle_first_person", InputMappings.UNKNOWN.getValue());
+	public static final KeyBinding TOGGLE_THIRD_PERSON_FRONT = createKeyMapping("toggle_third_person_front", InputMappings.UNKNOWN.getValue());
+	public static final KeyBinding TOGGLE_THIRD_PERSON_BACK = createKeyMapping("toggle_third_person_back", InputMappings.UNKNOWN.getValue());
 	public static final KeyBinding FREE_LOOK = createKeyMapping("free_look", GLFW.GLFW_KEY_LEFT_ALT);
 	public static final KeyBinding TOGGLE_CAMERA_COUPLING = createKeyMapping("toggle_camera_coupling", InputMappings.UNKNOWN.getValue());
 	
@@ -42,13 +43,37 @@ public class InputHandler
 	{
 		GameSettings options = Minecraft.getInstance().options;
 		
-		while(TOGGLE_SHOULDER_SURFING.consumeClick())
+		while(TOGGLE_FIRST_PERSON.consumeClick())
 		{
 			if(this.instance.isShoulderSurfing())
 			{
 				this.instance.changePerspective(Perspective.FIRST_PERSON);
 			}
-			else if(options.getCameraType() == PointOfView.FIRST_PERSON)
+			else
+			{
+				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
+			}
+		}
+		
+		while(TOGGLE_THIRD_PERSON_FRONT.consumeClick())
+		{
+			if(this.instance.isShoulderSurfing())
+			{
+				this.instance.changePerspective(Perspective.THIRD_PERSON_FRONT);
+			}
+			else
+			{
+				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
+			}
+		}
+		
+		while(TOGGLE_THIRD_PERSON_BACK.consumeClick())
+		{
+			if(this.instance.isShoulderSurfing())
+			{
+				this.instance.changePerspective(Perspective.THIRD_PERSON_BACK);
+			}
+			else
 			{
 				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 			}

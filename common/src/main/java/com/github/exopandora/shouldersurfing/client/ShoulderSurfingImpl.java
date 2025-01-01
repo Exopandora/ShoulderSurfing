@@ -230,6 +230,14 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	public void setShoulderSurfing(boolean isShoulderSurfing)
 	{
+		ClientPlayerEntity player = Minecraft.getInstance().player;
+		
+		if(!isShoulderSurfing && player != null)
+		{
+			player.xRot = this.camera.getXRot();
+			player.yRot = this.camera.getYRot();
+		}
+		
 		if(!this.isShoulderSurfing && isShoulderSurfing)
 		{
 			this.resetState();
