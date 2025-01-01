@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -26,7 +25,9 @@ public class InputHandler
 	public static final KeyMapping CAMERA_UP = createKeyMapping("adjust_camera_up", GLFW.GLFW_KEY_PAGE_UP);
 	public static final KeyMapping CAMERA_DOWN = createKeyMapping("adjust_camera_down", GLFW.GLFW_KEY_PAGE_DOWN);
 	public static final KeyMapping SWAP_SHOULDER = createKeyMapping("swap_shoulder", GLFW.GLFW_KEY_O);
-	public static final KeyMapping TOGGLE_SHOULDER_SURFING = createKeyMapping("toggle_perspective", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping TOGGLE_FIRST_PERSON = createKeyMapping("toggle_first_person", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping TOGGLE_THIRD_PERSON_FRONT = createKeyMapping("toggle_third_person_front", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping TOGGLE_THIRD_PERSON_BACK = createKeyMapping("toggle_third_person_back", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping FREE_LOOK = createKeyMapping("free_look", GLFW.GLFW_KEY_LEFT_ALT);
 	public static final KeyMapping TOGGLE_CAMERA_COUPLING = createKeyMapping("toggle_camera_coupling", InputConstants.UNKNOWN.getValue());
 	
@@ -41,13 +42,37 @@ public class InputHandler
 	{
 		Options options = Minecraft.getInstance().options;
 		
-		while(TOGGLE_SHOULDER_SURFING.consumeClick())
+		while(TOGGLE_FIRST_PERSON.consumeClick())
 		{
 			if(this.instance.isShoulderSurfing())
 			{
 				this.instance.changePerspective(Perspective.FIRST_PERSON);
 			}
-			else if(options.getCameraType() == CameraType.FIRST_PERSON)
+			else
+			{
+				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
+			}
+		}
+		
+		while(TOGGLE_THIRD_PERSON_FRONT.consumeClick())
+		{
+			if(this.instance.isShoulderSurfing())
+			{
+				this.instance.changePerspective(Perspective.THIRD_PERSON_FRONT);
+			}
+			else
+			{
+				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
+			}
+		}
+		
+		while(TOGGLE_THIRD_PERSON_BACK.consumeClick())
+		{
+			if(this.instance.isShoulderSurfing())
+			{
+				this.instance.changePerspective(Perspective.THIRD_PERSON_BACK);
+			}
+			else
 			{
 				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 			}
