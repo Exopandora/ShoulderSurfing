@@ -279,7 +279,6 @@
   "key.${modId}.adjust_camera_up": "Kamerayı Yukarı Ayarla",
   "key.${modId}.adjust_camera_down": "Kamerayı Aşağı Ayarla",
   "key.${modId}.swap_shoulder": "Omuz Değiştir",
-  "key.${modId}.toggle_perspective": "Perspektifi Değiştir",
   "key.${modId}.free_look": "Serbest Bakış",
   "key.${modId}.toggle_camera_coupling": "Kamera Bağlantısını Değiştir"
 }

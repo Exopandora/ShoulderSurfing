@@ -64,7 +64,9 @@ public class ShoulderSurfingForge
 		ClientRegistry.registerKeyBinding(InputHandler.CAMERA_UP);
 		ClientRegistry.registerKeyBinding(InputHandler.CAMERA_DOWN);
 		ClientRegistry.registerKeyBinding(InputHandler.SWAP_SHOULDER);
-		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_SHOULDER_SURFING);
+		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_FIRST_PERSON);
+		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_THIRD_PERSON_FRONT);
+		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_THIRD_PERSON_BACK);
 		ClientRegistry.registerKeyBinding(InputHandler.FREE_LOOK);
 		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_CAMERA_COUPLING);
 		
