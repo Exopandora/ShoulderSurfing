@@ -151,8 +151,6 @@
   "${modId}.configuration.perspective.remember_last_perspective.tooltip": "是否記住上一次使用的視角。",
   "${modId}.configuration.perspective.replace_default_perspective": "替換預設視角",
   "${modId}.configuration.perspective.replace_default_perspective.tooltip": "是否替換預設的第三人稱視角。",
-  "${modId}.configuration.perspective.skip_third_person_front_perspective": "跳過第三人稱正面視角",
-  "${modId}.configuration.perspective.skip_third_person_front_perspective.tooltip": "是否跳過第三人稱正面視角。",
 
   "player.button": "編輯",
   "${modId}.configuration.player": "玩家",

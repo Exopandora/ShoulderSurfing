@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -103,7 +104,9 @@ public class Config
 		private final BooleanValue isCameraDecoupled;
 		
 		private final BooleanValue replaceDefaultPerspective;
-		private final BooleanValue skipThirdPersonFront;
+		private final BooleanValue isFirstPersonEnabled;
+		private final BooleanValue isThirdPersonFrontEnabled;
+		private final BooleanValue isThirdPersonBackEnabled;
 		private final ConfigValue<Perspective> defaultPerspective;
 		private final BooleanValue rememberLastPerspective;
 		
@@ -445,10 +448,20 @@ public class Config
 				.translation(MOD_ID + ".configuration.perspective.replace_default_perspective")
 				.define("replace_default_perspective", false);
 			
-			this.skipThirdPersonFront = builder
-				.comment("Whether or not to skip the third person front perspective.")
-				.translation(MOD_ID + ".configuration.perspective.skip_third_person_front_perspective")
-				.define("skip_third_person_front_perspective", false);
+			this.isFirstPersonEnabled = builder
+				.comment("Whether or not the first person perspective is enabled.")
+				.translation(MOD_ID + ".configuration.perspective.first_person_enabled")
+				.define("first_person_enabled", true);
+			
+			this.isThirdPersonFrontEnabled = builder
+				.comment("Whether or not the third person front perspective is enabled.")
+				.translation(MOD_ID + ".configuration.perspective.third_person_front_enabled")
+				.define("third_person_front_enabled", true);
+			
+			this.isThirdPersonBackEnabled = builder
+				.comment("Whether or not the third person back perspective is enabled.")
+				.translation(MOD_ID + ".configuration.perspective.third_person_back_enabled")
+				.define("third_person_back_enabled", true);
 			
 			builder.pop();
 			builder.push("player");
@@ -914,9 +927,21 @@ public class Config
 		}
 		
 		@Override
-		public boolean skipThirdPersonFront()
+		public boolean isFirstPersonEnabled()
 		{
-			return this.skipThirdPersonFront.get();
+			return this.isFirstPersonEnabled.get();
+		}
+		
+		@Override
+		public boolean isThirdPersonFrontEnabled()
+		{
+			return this.isThirdPersonFrontEnabled.get();
+		}
+		
+		@Override
+		public boolean isThirdPersonBackEnabled()
+		{
+			return this.isThirdPersonBackEnabled.get();
 		}
 		
 		@Override
@@ -1185,6 +1210,13 @@ public class Config
 	
 	public static void onConfigReload()
 	{
+		Perspective currentPerspective = Perspective.current();
+		
+		if(!currentPerspective.isEnabled(Config.CLIENT))
+		{
+			ShoulderSurfingImpl.getInstance().changePerspective(currentPerspective.next(Config.CLIENT));
+		}
+		
 		if(Config.CLIENT.doRememberLastPerspective())
 		{
 			Config.CLIENT.setDefaultPerspective(Perspective.current());
