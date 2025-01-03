@@ -3,7 +3,7 @@
   "${modId}.configuration.section.${modId}.client.toml": "用戶端設定",
   "${modId}.configuration.section.${modId}.client.toml.title": "用戶端設定",
 
-  "camera.button": "編輯",
+  "${modId}.configuration.camera.button": "編輯",
   "${modId}.configuration.camera": "相機",
   "${modId}.configuration.camera.tooltip": "相機設定。",
 
@@ -20,7 +20,7 @@
   "${modId}.configuration.camera.decoupled_camera": "分離相機",
   "${modId}.configuration.camera.decoupled_camera.tooltip": "是否將相機旋轉與玩家旋轉分離。",
 
-  "offset.button": "編輯",
+  "${modId}.configuration.offset.button": "編輯",
   "${modId}.configuration.offset": "偏移",
   "${modId}.configuration.offset.tooltip": "相機偏移設定。",
 
@@ -31,7 +31,7 @@
   "${modId}.configuration.camera.offset.offset_z": "Z 偏移",
   "${modId}.configuration.camera.offset.offset_z.tooltip": "第三人稱相機 Z 偏移。",
 
-  "min.button": "編輯",
+  "${modId}.configuration.min.button": "編輯",
   "${modId}.configuration.min": "最小值",
   "${modId}.configuration.min.tooltip": "最小偏移量。",
   "${modId}.configuration.offset.min.min_offset_x": "最小 X 偏移",
@@ -41,7 +41,7 @@
   "${modId}.configuration.offset.min.min_offset_z": "最小 Z 偏移",
   "${modId}.configuration.offset.min.min_offset_z.tooltip": "當 Z 偏移受限時，這是最小值。",
 
-  "max.button": "編輯",
+  "${modId}.configuration.max.button": "編輯",
   "${modId}.configuration.max": "最大值",
   "${modId}.configuration.max.tooltip": "最大偏移量。",
   "${modId}.configuration.offset.max.max_offset_x": "最大 X 偏移",
@@ -51,7 +51,7 @@
   "${modId}.configuration.offset.max.max_offset_z": "最大 Z 偏移",
   "${modId}.configuration.offset.max.max_offset_z.tooltip": "當 Z 偏移受限時，這是最大值。",
 
-  "limits.button": "編輯",
+  "${modId}.configuration.limits.button": "編輯",
   "${modId}.configuration.limits": "限制",
   "${modId}.configuration.limits.tooltip": "偏移限制。",
   "${modId}.configuration.offset.limits.unlimited_offset_x": "無限制 X 偏移",
@@ -61,11 +61,11 @@
   "${modId}.configuration.offset.limits.unlimited_offset_z": "無限制 Z 偏移",
   "${modId}.configuration.offset.limits.unlimited_offset_z.tooltip": "Z 偏移調整是否有限制。",
 
-  "multiplier.button": "編輯",
+  "${modId}.configuration.multiplier.button": "編輯",
   "${modId}.configuration.multiplier": "倍率",
   "${modId}.configuration.multiplier.tooltip": "偏移倍率。",
 
-  "passenger.button": "編輯",
+  "${modId}.configuration.passenger.button": "編輯",
   "${modId}.configuration.passenger": "乘客",
   "${modId}.configuration.passenger.tooltip": "乘客偏移。",
   
@@ -76,7 +76,7 @@
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z": "乘客 Z 偏移倍率",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z.tooltip": "玩家為乘客時的 Z 偏移倍率。",
 
-  "sprint.button": "編輯",
+  "${modId}.configuration.sprint.button": "編輯",
   "${modId}.configuration.sprint": "衝刺",
   "${modId}.configuration.sprint.tooltip": "衝刺偏移。",
 
@@ -87,7 +87,7 @@
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z": "衝刺 Z 偏移倍率",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z.tooltip": "玩家衝刺時的 Z 偏移倍率。",
 
-  "aiming.button": "編輯",
+  "${modId}.configuration.aiming.button": "編輯",
   "${modId}.configuration.aiming": "瞄準",
   "${modId}.configuration.aiming.tooltip": "瞄準偏移。",
 
@@ -98,7 +98,7 @@
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z": "瞄準 Z 偏移倍率",
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z.tooltip": "玩家瞄準時的 Z 偏移倍率。",
 
-  "fall_flying.button": "編輯",
+  "${modId}.configuration.fall_flying.button": "編輯",
   "${modId}.configuration.fall_flying": "滑翔",
   "${modId}.configuration.fall_flying.tooltip": "滑翔偏移。",
 
@@ -109,7 +109,7 @@
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z": "鞘翅 Z 偏移倍率",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z.tooltip": "使用鞘翅時的 Z 偏移倍率。",
 
-  "modifiers.button": "編輯",
+  "${modId}.configuration.modifiers.button": "編輯",
   "${modId}.configuration.modifiers": "修改器",
   "${modId}.configuration.modifiers.tooltip": "偏移修改器。",
 
@@ -141,7 +141,7 @@
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_z": "鞘翅 Z 偏移修改器",
   "${modId}.configuration.offset.modifier.fall_flying.modifier_offset_z.tooltip": "使用鞘翅時的 Z 偏移修改器。",
 
-  "perspective.button": "編輯",
+  "${modId}.configuration.perspective.button": "編輯",
   "${modId}.configuration.perspective": "視角",
   "${modId}.configuration.perspective.tooltip": "視角設定。",
 
@@ -152,7 +152,7 @@
   "${modId}.configuration.perspective.replace_default_perspective": "替換預設視角",
   "${modId}.configuration.perspective.replace_default_perspective.tooltip": "是否替換預設的第三人稱視角。",
 
-  "player.button": "編輯",
+  "${modId}.configuration.player.button": "編輯",
   "${modId}.configuration.player": "玩家",
   "${modId}.configuration.player.tooltip": "玩家設定。",
 
@@ -167,7 +167,7 @@
   "${modId}.configuration.player.player_y_rot_follow_angle_limit": "玩家 Y 軸旋轉跟隨角度限制",
   "${modId}.configuration.player.player_y_rot_follow_angle_limit.tooltip": "玩家 Y 軸旋轉跟隨相機 Y 軸旋轉的最大角度。此設定選項僅在啟用「玩家 Y 軸旋轉跟隨相機」選項時適用。",
 
-  "turning.button": "編輯",
+  "${modId}.configuration.turning.button": "編輯",
   "${modId}.configuration.turning": "轉向",
   "${modId}.configuration.turning.tooltip": "轉向設定。",
 
@@ -182,7 +182,7 @@
   "${modId}.configuration.player.turning.turning_lock_time": "轉向鎖定時間（刻）",
   "${modId}.configuration.player.turning.turning_lock_time.tooltip": "互動結束後玩家保持轉向的時間，以刻為單位。設為 0 以停用。此設定選項僅在相機分離時適用。",
 
-  "object_picker.button": "編輯",
+  "${modId}.configuration.object_picker.button": "編輯",
   "${modId}.configuration.object_picker": "物件選擇器",
   "${modId}.configuration.object_picker.tooltip": "物件選擇器設定。",
 
@@ -191,7 +191,7 @@
   "${modId}.configuration.object_picker.use_custom_raytrace_distance": "使用自訂光線追蹤距離",
   "${modId}.configuration.object_picker.use_custom_raytrace_distance.tooltip": "是否使用為動態準心設定的自訂光線追蹤距離。",
 
-  "pick_origin.button": "編輯",
+  "${modId}.configuration.pick_origin.button": "編輯",
   "${modId}.configuration.pick_origin": "選擇起點",
   "${modId}.configuration.pick_origin.tooltip": "選擇起點設定。",
 
@@ -200,37 +200,37 @@
   "${modId}.configuration.object_picker.pick_origin.block_pick_origin": "方塊選擇起點（靜態準心）",
   "${modId}.configuration.object_picker.pick_origin.block_pick_origin.tooltip": "使用靜態準心時方塊選擇開始的起點。",
 
-  "pick_vector.button": "編輯",
+  "${modId}.configuration.pick_vector.button": "編輯",
   "${modId}.configuration.pick_vector": "選擇向量",
   "${modId}.configuration.pick_vector.tooltip": "選擇向量設定。",
 
   "${modId}.configuration.object_picker.pick_vector.pick_vector": "選擇向量（動態準心）",
   "${modId}.configuration.object_picker.pick_vector.pick_vector.tooltip": "選擇物件時光線追蹤的向量方向。此設定選項僅在使用動態準心時適用。",
 
-  "crosshair.button": "編輯",
+  "${modId}.configuration.crosshair.button": "編輯",
   "${modId}.configuration.crosshair": "準心",
   "${modId}.configuration.crosshair.tooltip": "準心設定。",
 
   "${modId}.configuration.crosshair.crosshair_type": "準心類型",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "騎乘視角使用的準心類型。",
 
-  "adaptive_crosshair_hold_items.button": "編輯",
+  "${modId}.configuration.adaptive_crosshair_hold_items.button": "編輯",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items": "自適應準心物品（持有）",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "在自適應模式下，持有時會觸發動態準心的物品。此設定選項支援正規表示式。範例：'minecraft:.*sword' 匹配 'minecraft:wooden_sword' 和 'minecraft:netherite_sword'。",
 
-  "adaptive_crosshair_use_items.button": "編輯",
+  "${modId}.configuration.adaptive_crosshair_use_items.button": "編輯",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "自適應準心物品（使用）",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "在自適應模式下，使用時會觸發動態準心的物品。此設定選項支援正規表示式。範例：'minecraft:.*sword' 匹配 'minecraft:wooden_sword' 和 'minecraft:netherite_sword'。",
 
-  "adaptive_crosshair_hold_item_properties.button": "編輯",
+  "${modId}.configuration.adaptive_crosshair_hold_item_properties.button": "編輯",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties": "自適應準心物品屬性（持有）",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties.tooltip": "在自適應模式下，持有時會觸發動態準心的物品屬性。",
 
-  "adaptive_crosshair_use_item_properties.button": "編輯",
+  "${modId}.configuration.adaptive_crosshair_use_item_properties.button": "編輯",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties": "自適應準心物品屬性（使用）",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties.tooltip": "在自適應模式下，使用時會觸發動態準心的物品屬性。",
 
-  "visibility.button": "編輯",
+  "${modId}.configuration.visibility.button": "編輯",
   "${modId}.configuration.visibility": "可見度",
   "${modId}.configuration.visibility.tooltip": "可見度設定。",
 
@@ -243,7 +243,7 @@
   "${modId}.configuration.crosshair.visibility.shoulder_surfing": "騎乘視角準心可見度",
   "${modId}.configuration.crosshair.visibility.shoulder_surfing.tooltip": "騎乘視角的準心可見度。",
 
-  "audio.button": "編輯",
+  "${modId}.configuration.audio.button": "編輯",
   "${modId}.configuration.audio": "音訊",
   "${modId}.configuration.audio.tooltip": "音訊設定。",
 
