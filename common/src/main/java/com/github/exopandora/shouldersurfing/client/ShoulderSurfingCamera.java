@@ -113,6 +113,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.yRotOffset = 0.0F;
 		this.xRotOffsetO = 0.0F;
 		this.yRotOffsetO = 0.0F;
+		this.lastMovedYRot = this.yRot;
 		this.initialized = true;
 	}
 	

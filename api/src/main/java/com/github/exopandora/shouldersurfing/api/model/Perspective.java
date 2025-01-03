@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -30,32 +31,60 @@ public enum Perspective
 		return this.defaultCrosshairVisibility;
 	}
 	
-	public Perspective next(boolean replaceDefaultPerspective, boolean skipThirdPersonFront)
+	public Perspective next(IClientConfig config)
 	{
-		Perspective next = Perspective.values()[(this.ordinal() + 1) % Perspective.values().length];
+		Perspective next;
 		
-		if(replaceDefaultPerspective)
+		if(config.replaceDefaultPerspective())
 		{
-			if(this == Perspective.FIRST_PERSON)
+			next = switch(this)
 			{
-				next = Perspective.SHOULDER_SURFING;
-			}
-			else if(this == Perspective.SHOULDER_SURFING)
-			{
-				next = Perspective.THIRD_PERSON_FRONT;
-			}
-			else if(this == Perspective.THIRD_PERSON_FRONT)
-			{
-				next = Perspective.FIRST_PERSON;
-			}
+				case FIRST_PERSON, THIRD_PERSON_BACK -> SHOULDER_SURFING;
+				case THIRD_PERSON_FRONT -> FIRST_PERSON;
+				case SHOULDER_SURFING -> THIRD_PERSON_FRONT;
+			};
+		}
+		else
+		{
+			next = Perspective.values()[(this.ordinal() + 1) % Perspective.values().length];
 		}
 		
-		if(skipThirdPersonFront && next == Perspective.THIRD_PERSON_FRONT)
+		switch(next)
 		{
-			return next.next(replaceDefaultPerspective, true);
+			case FIRST_PERSON:
+				if(config.isFirstPersonEnabled())
+				{
+					return FIRST_PERSON;
+				}
+				break;
+			case THIRD_PERSON_BACK:
+				if(config.isThirdPersonBackEnabled())
+				{
+					return THIRD_PERSON_BACK;
+				}
+				break;
+			case THIRD_PERSON_FRONT:
+				if(config.isThirdPersonFrontEnabled())
+				{
+					return THIRD_PERSON_FRONT;
+				}
+				break;
+			case SHOULDER_SURFING:
+				return SHOULDER_SURFING;
 		}
 		
-		return next;
+		return next.next(config);
+	}
+	
+	public boolean isEnabled(IClientConfig config)
+	{
+		return switch(this)
+		{
+			case FIRST_PERSON -> config.isFirstPersonEnabled();
+			case THIRD_PERSON_BACK -> config.isThirdPersonBackEnabled() && !config.replaceDefaultPerspective();
+			case THIRD_PERSON_FRONT -> config.isThirdPersonFrontEnabled();
+			case SHOULDER_SURFING -> true;
+		};
 	}
 	
 	public static Perspective of(CameraType cameraType, boolean shoulderSurfing)

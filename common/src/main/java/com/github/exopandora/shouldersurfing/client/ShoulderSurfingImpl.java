@@ -36,9 +36,17 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	public void init()
 	{
-		if(Config.CLIENT.doRememberLastPerspective())
+		Perspective currentPerspective = Perspective.current();
+		Perspective targetPerspective = Config.CLIENT.doRememberLastPerspective() ? Config.CLIENT.getDefaultPerspective() : currentPerspective;
+		
+		if(!targetPerspective.isEnabled(Config.CLIENT))
 		{
-			this.changePerspective(Config.CLIENT.getDefaultPerspective());
+			targetPerspective = targetPerspective.next(Config.CLIENT);
+		}
+		
+		if(currentPerspective != targetPerspective)
+		{
+			this.changePerspective(targetPerspective);
 		}
 	}
 	
@@ -195,7 +203,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		Perspective perspective = Perspective.current();
-		Perspective next = perspective.next(Config.CLIENT.replaceDefaultPerspective(), Config.CLIENT.skipThirdPersonFront());
+		Perspective next = perspective.next(Config.CLIENT);
 		boolean isFirstPerson = next.getCameraType().isFirstPerson();
 		this.changePerspective(next);
 		minecraft.levelRenderer.needsUpdate();
