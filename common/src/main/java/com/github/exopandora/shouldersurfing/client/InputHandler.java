@@ -130,7 +130,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.swapShoulder();
+				this.instance.swapShoulder();
 			}
 		}
 		
