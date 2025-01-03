@@ -3,7 +3,7 @@
   "${modId}.configuration.section.${modId}.client.toml": "Client Yapılandırması",
   "${modId}.configuration.section.${modId}.client.toml.title": "Client Yapılandırması",
 
-  "camera.button": "Düzenle",
+  "${modId}.configuration.camera.button": "Düzenle",
   "${modId}.configuration.camera": "Kamera",
   "${modId}.configuration.camera.tooltip": "Kamera ayarları.",
 
@@ -20,7 +20,7 @@
   "${modId}.configuration.camera.decoupled_camera": "Bağımsız Kamera",
   "${modId}.configuration.camera.decoupled_camera.tooltip": "Kamera dönüşünün oyuncu dönüşünden bağımsız olarak ayrılıp ayrılmayacağı.",
 
-  "offset.button": "Düzenle",
+  "${modId}.configuration.offset.button": "Düzenle",
   "${modId}.configuration.offset": "Ofset",
   "${modId}.configuration.offset.tooltip": "Kamera ofset ayarları.",
 
@@ -31,7 +31,7 @@
   "${modId}.configuration.camera.offset.offset_z": "z-ofseti",
   "${modId}.configuration.camera.offset.offset_z.tooltip": "Üçüncü şahıs kamera z-ofseti.",
 
-  "min.button": "Düzenle",
+  "${modId}.configuration.min.button": "Düzenle",
   "${modId}.configuration.min": "Min",
   "${modId}.configuration.min.tooltip": "Minimum ofsetler.",
   "${modId}.configuration.offset.min.min_offset_x": "Minimum x-ofseti",
@@ -41,7 +41,7 @@
   "${modId}.configuration.offset.min.min_offset_z": "Minimum z-ofseti",
   "${modId}.configuration.offset.min.min_offset_z.tooltip": "z-ofseti sınırlandığında bu minimum miktardır.",
 
-  "max.button": "Düzenle",
+  "${modId}.configuration.max.button": "Düzenle",
   "${modId}.configuration.max": "Maks",
   "${modId}.configuration.max.tooltip": "Maksimum ofsetler.",
   "${modId}.configuration.offset.max.max_offset_x": "Maksimum x-ofseti",
@@ -51,7 +51,7 @@
   "${modId}.configuration.offset.max.max_offset_z": "Maksimum z-ofseti",
   "${modId}.configuration.offset.max.max_offset_z.tooltip": "z-ofseti sınırlandığında bu maksimum miktardır.",
 
-  "limits.button": "Düzenle",
+  "${modId}.configuration.limits.button": "Düzenle",
   "${modId}.configuration.limits": "Limit",
   "${modId}.configuration.limits.tooltip": "Ofset limitleri.",
   "${modId}.configuration.offset.limits.unlimited_offset_x": "Limitsiz x-ofseti",
@@ -61,11 +61,11 @@
   "${modId}.configuration.offset.limits.unlimited_offset_z": "Limitsiz z-ofseti",
   "${modId}.configuration.offset.limits.unlimited_offset_z.tooltip": "z-ofsetinin limitlerinin olup olmadığı.",
 
-  "multiplier.button": "Düzenle",
+  "${modId}.configuration.multiplier.button": "Düzenle",
   "${modId}.configuration.multiplier": "Çarpanlar",
   "${modId}.configuration.multiplier.tooltip": "Ofset çarpanları.",
 
-  "passenger.button": "Düzenle",
+  "${modId}.configuration.passenger.button": "Düzenle",
   "${modId}.configuration.passenger": "Yolcu",
   "${modId}.configuration.passenger.tooltip": "Yolcu ofsetleri.",
   
@@ -76,7 +76,7 @@
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z": "Yolcu z-ofset çarpanı",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z.tooltip": "Oyuncu yolcuyken z-ofseti çarpanı.",
 
-  "sprint.button": "Düzenle",
+  "${modId}.configuration.sprint.button": "Düzenle",
   "${modId}.configuration.sprint": "Koşmak",
   "${modId}.configuration.sprint.tooltip": "Koşma ofsetleri.",
 
@@ -87,7 +87,7 @@
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z": "Koşu z-ofset çarpanı",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z.tooltip": "Oyuncu koşarken z-ofset çarpanı.",
 
-  "aiming.button": "Düzenle",
+  "${modId}.configuration.aiming.button": "Düzenle",
   "${modId}.configuration.aiming": "Nişan alma",
   "${modId}.configuration.aiming.tooltip": "Nişan alma ofsetleri.",
 
@@ -98,7 +98,7 @@
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z": "Nişan z-ofset çarpanı",
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z.tooltip": "Oyuncu nişan alırken z-ofset çarpanı.",
 
-  "fall_flying.button": "Düzenle",
+  "${modId}.configuration.fall_flying.button": "Düzenle",
   "${modId}.configuration.fall_flying": "Uçmak",
   "${modId}.configuration.fall_flying.tooltip": "Uçuş ofsetleri.",
 
@@ -109,7 +109,7 @@
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z": "Elytra z-ofset çarpanı",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z.tooltip": "Elytra kullanırken z-ofset çarpanı.",
 
-  "climbing.button": "Düzenle",
+  "${modId}.configuration.climbing.button": "Düzenle",
   "${modId}.configuration.climbing": "Tırmanmak",
   "${modId}.configuration.climbing.tooltip": "Tırmanma ofsetleri.",
 
@@ -120,7 +120,7 @@
   "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z": "Tırmanma z-ofset çarpanı",
   "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z.tooltip": "Oyuncu tırmanırken z-ofset çarpanı.",
 
-  "modifiers.button": "Düzenle",
+  "${modId}.configuration.modifiers.button": "Düzenle",
   "${modId}.configuration.modifiers": "Değiştiriciler",
   "${modId}.configuration.modifiers.tooltip": "Ofset değiştiricileri.",
 
@@ -159,7 +159,7 @@
   "${modId}.configuration.offset.modifier.climbing.modifier_offset_z": "Tırmanma z-ofset değiştiricisi",
   "${modId}.configuration.offset.modifier.climbing.modifier_offset_z.tooltip": "Oyuncu tırmanırken z-ofset değiştiricisi.",
   
-  "perspective.button": "Düzenle",
+  "${modId}.configuration.perspective.button": "Düzenle",
   "${modId}.configuration.perspective": "Perspektif",
   "${modId}.configuration.perspective.tooltip": "Perspektif ayarları.",
 
@@ -170,7 +170,7 @@
   "${modId}.configuration.perspective.replace_default_perspective": "Varsayılan perspektifi değiştir",
   "${modId}.configuration.perspective.replace_default_perspective.tooltip": "Varsayılan üçüncü şahıs bakış açısının değiştirilip değiştirilmeyeceği.",
 
-  "player.button": "Düzenle",
+  "${modId}.configuration.player.button": "Düzenle",
   "${modId}.configuration.player": "Oyuncu",
   "${modId}.configuration.player.tooltip": "Oyuncu ayarları.",
 
@@ -185,7 +185,7 @@
   "${modId}.configuration.player.player_y_rot_follow_angle_limit": "Oyuncu z-rotu kamerayı takip ediyor",
   "${modId}.configuration.player.player_y_rot_follow_angle_limit.tooltip": "Oyuncunun z-rot'unun kamera x-rot'unu takip edip etmemesi. Bu seçenek yalnızca kamera ayrılmış olarak seçilirse geçerlidir.",
 
-  "turning.button": "Düzenle",
+  "${modId}.configuration.turning.button": "Düzenle",
   "${modId}.configuration.turning": "Dönüş",
   "${modId}.configuration.turning.tooltip": "Dönüş ayarları.",
 
@@ -200,7 +200,7 @@
   "${modId}.configuration.player.turning.turning_lock_time": "Dönüş kilitleme süresi (ticks)",
   "${modId}.configuration.player.turning.turning_lock_time.tooltip": "Oyuncunun etkileşimi sona erdikten sonra dönük kalacağı süre (ticks). Devre dışı bırakmak için 0 yapın. Bu seçenek yalnızca kamera ayrılmış olarak seçilirse geçerlidir.",
 
-  "object_picker.button": "Düzenle",
+  "${modId}.configuration.object_picker.button": "Düzenle",
   "${modId}.configuration.object_picker": "Nesne Seçici",
   "${modId}.configuration.object_picker.tooltip": "Nesne Seçici ayarları.",
 
@@ -209,7 +209,7 @@
   "${modId}.configuration.object_picker.use_custom_raytrace_distance": "Özel ışın izleme mesafesini kullan",
   "${modId}.configuration.object_picker.use_custom_raytrace_distance.tooltip": "Dinamik nişangah için özel ışın izleme mesafesinin kullanılıp kullanılmayacağı.",
 
-  "pick_origin.button": "Düzenle",
+  "${modId}.configuration.pick_origin.button": "Düzenle",
   "${modId}.configuration.pick_origin": "Origin Seç",
   "${modId}.configuration.pick_origin.tooltip": "Origin seçme ayarları.",
 
@@ -218,37 +218,37 @@
   "${modId}.configuration.object_picker.pick_origin.block_pick_origin": "Blok origin seç (sabit nişangah)",
   "${modId}.configuration.object_picker.pick_origin.block_pick_origin.tooltip": "Statik nişangah kullanıldığında blok seçiminin başlayacağı origin.",
 
-  "pick_vector.button": "Düzenle",
+  "${modId}.configuration.pick_vector.button": "Düzenle",
   "${modId}.configuration.pick_vector": "Vektor Seç",
   "${modId}.configuration.pick_vector.tooltip": "Vektor Seçim ayarları.",
 
   "${modId}.configuration.object_picker.pick_vector.pick_vector": "Vektor seçimi (dinamik nişangah)",
   "${modId}.configuration.object_picker.pick_vector.pick_vector.tooltip": "Nesneleri seçerken ışın izinin vektör yönü. Bu seçenek yalnızca dinamik nişangahda geçerlidir.",
 
-  "crosshair.button": "Düzenle",
+  "${modId}.configuration.crosshair.button": "Düzenle",
   "${modId}.configuration.crosshair": "Nişangah",
   "${modId}.configuration.crosshair.tooltip": "Nişangah ayarları.",
 
   "${modId}.configuration.crosshair.crosshair_type": "Nişangah türü",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "Shoulder surfing için nişangah tipi.",
 
-  "adaptive_crosshair_hold_items.button": "Düzenle",
+  "${modId}.configuration.adaptive_crosshair_hold_items.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items": "Uyarlanabilir nişangah itemleri (tutuş)",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "Tutulduğu zaman uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' aynı zamanda 'minecraft:wooden_sword'u ve 'minecraft:netherite_sword'u da etkiler.",
 
-  "adaptive_crosshair_use_items.button": "Düzenle",
+  "${modId}.configuration.adaptive_crosshair_use_items.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "Uyarlanabilir nişangah itemleri (kullan)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Kullanıldığında uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' aynı zamanda 'minecraft:wooden_sword'u ve 'minecraft:netherite_sword'u da etkiler.",
 
-  "adaptive_crosshair_hold_item_properties.button": "Düzenle",
+  "${modId}.configuration.adaptive_crosshair_hold_item_properties.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties": "Uyarlanabilir nişangah item özellikleri (tutuş)",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties.tooltip": "Bir öğenin, tutulduğunda uyarlanabilir modda dinamik nişangahı tetikleyen öğe özellikleri.",
 
-  "adaptive_crosshair_use_item_properties.button": "Düzenle",
+  "${modId}.configuration.adaptive_crosshair_use_item_properties.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties": "Uyarlanabilir nişangah item özellikleri (kullan)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties.tooltip": "Bir öğenin, kullanıldığında uyarlanabilir modda dinamik nişangahı tetikleyen öğe özellikleri.",
 
-  "visibility.button": "Düzenle",
+  "${modId}.configuration.visibility.button": "Düzenle",
   "${modId}.configuration.visibility": "Görünüm",
   "${modId}.configuration.visibility.tooltip": "Görünüm ayarları.",
 
@@ -261,7 +261,7 @@
   "${modId}.configuration.crosshair.visibility.shoulder_surfing": "Shoulder Surfing nişangah görünürlüğü",
   "${modId}.configuration.crosshair.visibility.shoulder_surfing.tooltip": "Shoulder Surfing için nişangah görünürlüğü.",
 
-  "audio.button": "Düzenle",
+  "${modId}.configuration.audio.button": "Düzenle",
   "${modId}.configuration.audio": "Ses",
   "${modId}.configuration.audio.tooltip": "Ses ayarları.",
 

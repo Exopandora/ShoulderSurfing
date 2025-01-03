@@ -3,7 +3,7 @@
   "${modId}.configuration.section.${modId}.client.toml": "Client Configuration",
   "${modId}.configuration.section.${modId}.client.toml.title": "Client Configuration",
 
-  "camera.button": "Edit",
+  "${modId}.configuration.camera.button": "Edit",
   "${modId}.configuration.camera": "Camera",
   "${modId}.configuration.camera.tooltip": "Camera settings.",
 
@@ -20,7 +20,7 @@
   "${modId}.configuration.camera.decoupled_camera": "Decoupled camera",
   "${modId}.configuration.camera.decoupled_camera.tooltip": "Whether or not to decouple the camera rotation from the player rotation.",
 
-  "offset.button": "Edit",
+  "${modId}.configuration.offset.button": "Edit",
   "${modId}.configuration.offset": "Offset",
   "${modId}.configuration.offset.tooltip": "Camera offset settings.",
 
@@ -31,7 +31,7 @@
   "${modId}.configuration.camera.offset.offset_z": "z-offset",
   "${modId}.configuration.camera.offset.offset_z.tooltip": "Third person camera z-offset.",
 
-  "min.button": "Edit",
+  "${modId}.configuration.min.button": "Edit",
   "${modId}.configuration.min": "Min",
   "${modId}.configuration.min.tooltip": "Minimum offsets.",
   "${modId}.configuration.offset.min.min_offset_x": "Minimum x-offset",
@@ -41,7 +41,7 @@
   "${modId}.configuration.offset.min.min_offset_z": "Minimum z-offset",
   "${modId}.configuration.offset.min.min_offset_z.tooltip": "When z-offset is limited this is the minimum amount.",
 
-  "max.button": "Edit",
+  "${modId}.configuration.max.button": "Edit",
   "${modId}.configuration.max": "Max",
   "${modId}.configuration.max.tooltip": "Maximum offsets.",
   "${modId}.configuration.offset.max.max_offset_x": "Maximum x-offset",
@@ -51,7 +51,7 @@
   "${modId}.configuration.offset.max.max_offset_z": "Maximum z-offset",
   "${modId}.configuration.offset.max.max_offset_z.tooltip": "When z-offset is limited this is the maximum amount.",
 
-  "limits.button": "Edit",
+  "${modId}.configuration.limits.button": "Edit",
   "${modId}.configuration.limits": "Limit",
   "${modId}.configuration.limits.tooltip": "Offset limits.",
   "${modId}.configuration.offset.limits.unlimited_offset_x": "Unlimited x-offset",
@@ -61,11 +61,11 @@
   "${modId}.configuration.offset.limits.unlimited_offset_z": "Unlimited z-offset",
   "${modId}.configuration.offset.limits.unlimited_offset_z.tooltip": "Whether or not z-offset adjustment has limits.",
 
-  "multiplier.button": "Edit",
+  "${modId}.configuration.multiplier.button": "Edit",
   "${modId}.configuration.multiplier": "Multipliers",
   "${modId}.configuration.multiplier.tooltip": "Offset multipliers.",
 
-  "passenger.button": "Edit",
+  "${modId}.configuration.passenger.button": "Edit",
   "${modId}.configuration.passenger": "Passenger",
   "${modId}.configuration.passenger.tooltip": "Passenger offsets.",
   
@@ -76,7 +76,7 @@
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z": "Passenger z-offset multiplier",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is a passenger.",
 
-  "sprint.button": "Edit",
+  "${modId}.configuration.sprint.button": "Edit",
   "${modId}.configuration.sprint": "Sprinting",
   "${modId}.configuration.sprint.tooltip": "Sprinting offsets.",
 
@@ -87,7 +87,7 @@
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z": "Sprint z-offset multiplier",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is sprinting.",
 
-  "aiming.button": "Edit",
+  "${modId}.configuration.aiming.button": "Edit",
   "${modId}.configuration.aiming": "Aiming",
   "${modId}.configuration.aiming.tooltip": "Aiming offsets.",
 
@@ -98,7 +98,7 @@
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z": "Aiming z-offset multiplier",
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is aiming.",
 
-  "fall_flying.button": "Edit",
+  "${modId}.configuration.fall_flying.button": "Edit",
   "${modId}.configuration.fall_flying": "Fall Flying",
   "${modId}.configuration.fall_flying.tooltip": "Fall Flying offsets.",
 
@@ -109,7 +109,7 @@
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z": "Elytra z-offset multiplier",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z.tooltip": "z-offset multiplier for when using Elytra.",
 
-  "climbing.button": "Edit",
+  "${modId}.configuration.climbing.button": "Edit",
   "${modId}.configuration.climbing": "Climbing",
   "${modId}.configuration.climbing.tooltip": "Climbing offsets.",
 
@@ -120,7 +120,7 @@
   "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z": "Climbing z-offset multiplier",
   "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is climbing.",
 
-  "modifiers.button": "Edit",
+  "${modId}.configuration.modifiers.button": "Edit",
   "${modId}.configuration.modifiers": "Modifiers",
   "${modId}.configuration.modifiers.tooltip": "Offset modifiers.",
 
@@ -159,7 +159,7 @@
   "${modId}.configuration.offset.modifier.climbing.modifier_offset_z": "Climbing z-offset modifier",
   "${modId}.configuration.offset.modifier.climbing.modifier_offset_z.tooltip": "z-offset modifier for when the player is climbing.",
 
-  "perspective.button": "Edit",
+  "${modId}.configuration.perspective.button": "Edit",
   "${modId}.configuration.perspective": "Perspective",
   "${modId}.configuration.perspective.tooltip": "Perspective settings.",
 
@@ -176,7 +176,7 @@
   "${modId}.configuration.perspective.third_person_back_enabled": "Third person back enabled",
   "${modId}.configuration.perspective.third_person_back_enabled.tooltip": "Whether or not the third person back perspective is enabled.",
 
-  "player.button": "Edit",
+  "${modId}.configuration.player.button": "Edit",
   "${modId}.configuration.player": "Player",
   "${modId}.configuration.player.tooltip": "Player settings.",
 
@@ -191,7 +191,7 @@
   "${modId}.configuration.player.player_y_rot_follow_angle_limit": "Player y-rot follow angle limit",
   "${modId}.configuration.player.player_y_rot_follow_angle_limit.tooltip": "The maximum angle to which the player y-rot follows the camera y-rot. This config option only applies when player y-rot follows camera option is enabled.",
 
-  "turning.button": "Edit",
+  "${modId}.configuration.turning.button": "Edit",
   "${modId}.configuration.turning": "Turning",
   "${modId}.configuration.turning.tooltip": "Turning settings.",
 
@@ -206,7 +206,7 @@
   "${modId}.configuration.player.turning.turning_lock_time": "Turning lock time (ticks)",
   "${modId}.configuration.player.turning.turning_lock_time.tooltip": "The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.",
 
-  "object_picker.button": "Edit",
+  "${modId}.configuration.object_picker.button": "Edit",
   "${modId}.configuration.object_picker": "Object Picker",
   "${modId}.configuration.object_picker.tooltip": "Object Picker settings.",
 
@@ -215,7 +215,7 @@
   "${modId}.configuration.object_picker.use_custom_raytrace_distance": "Use custom raytrace distance",
   "${modId}.configuration.object_picker.use_custom_raytrace_distance.tooltip": "Whether or not to use the custom raytrace distance used for the dynamic crosshair.",
 
-  "pick_origin.button": "Edit",
+  "${modId}.configuration.pick_origin.button": "Edit",
   "${modId}.configuration.pick_origin": "Pick Origin",
   "${modId}.configuration.pick_origin.tooltip": "Pick Origin settings.",
 
@@ -224,25 +224,25 @@
   "${modId}.configuration.object_picker.pick_origin.block_pick_origin": "Block pick origin (static crosshair)",
   "${modId}.configuration.object_picker.pick_origin.block_pick_origin.tooltip": "The origin where the block pick starts when using the static crosshair.",
 
-  "pick_vector.button": "Edit",
+  "${modId}.configuration.pick_vector.button": "Edit",
   "${modId}.configuration.pick_vector": "Pick Vector",
   "${modId}.configuration.pick_vector.tooltip": "Pick Vector settings.",
 
   "${modId}.configuration.object_picker.pick_vector.pick_vector": "Pick vector (dynamic crosshair)",
   "${modId}.configuration.object_picker.pick_vector.pick_vector.tooltip": "The vector direction of the raytrace when picking objects. This config option only applies when using the dynamic crosshair.",
 
-  "crosshair.button": "Edit",
+  "${modId}.configuration.crosshair.button": "Edit",
   "${modId}.configuration.crosshair": "Crosshair",
   "${modId}.configuration.crosshair.tooltip": "Crosshair settings.",
 
   "${modId}.configuration.crosshair.crosshair_type": "Crosshair type",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "Crosshair type to use for shoulder surfing.",
 
-  "adaptive_crosshair_hold_items.button": "Edit",
+  "${modId}.configuration.adaptive_crosshair_hold_items.button": "Edit",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items": "Adaptive crosshair items (hold)",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.",
 
-  "adaptive_crosshair_use_items.button": "Edit",
+  "${modId}.configuration.adaptive_crosshair_use_items.button": "Edit",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "Adaptive crosshair items (use)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Items that when used, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.",
 
@@ -254,7 +254,7 @@
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties": "Adaptive crosshair item properties (use)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties.tooltip": "Item properties of an item, that when used, trigger the dynamic crosshair in adaptive mode.",
 
-  "obstruction.button": "Edit",
+  "${modId}.configuration.obstruction.button": "Edit",
   "${modId}.configuration.obstruction": "Obstruction Indicator",
   "${modId}.configuration.obstruction.show_obstruction_indicator": "Show obstruction indicator",
   "${modId}.configuration.obstruction.show_obstruction_indicator.tooltip": "When the crosshair type is static, shows an additional indicator on obstacles that stand between you and your target.",
@@ -265,7 +265,7 @@
   "${modId}.configuration.obstruction.max_distance_to_obstruction": "Max distance to obstruction",
   "${modId}.configuration.obstruction.max_distance_to_obstruction.tooltip": "Ignore obstructions that are too far away from the player. Distance measured in blocks. Set to 0 to disable.",
 
-  "visibility.button": "Edit",
+  "${modId}.configuration.visibility.button": "Edit",
   "${modId}.configuration.visibility": "Visibility",
   "${modId}.configuration.visibility.tooltip": "Visibility settings.",
 
@@ -278,7 +278,7 @@
   "${modId}.configuration.crosshair.visibility.shoulder_surfing": "Shoulder surfing crosshair visibility",
   "${modId}.configuration.crosshair.visibility.shoulder_surfing.tooltip": "Crosshair visibility for shoulder surfing.",
 
-  "audio.button": "Edit",
+  "${modId}.configuration.audio.button": "Edit",
   "${modId}.configuration.audio": "Audio",
   "${modId}.configuration.audio.tooltip": "Audio settings.",
 
