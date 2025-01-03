@@ -169,8 +169,6 @@
   "${modId}.configuration.perspective.remember_last_perspective.tooltip": "Son kullanılan perspektifin hatırlanıp hatırlanmayacağı.",
   "${modId}.configuration.perspective.replace_default_perspective": "Varsayılan perspektifi değiştir",
   "${modId}.configuration.perspective.replace_default_perspective.tooltip": "Varsayılan üçüncü şahıs bakış açısının değiştirilip değiştirilmeyeceği.",
-  "${modId}.configuration.perspective.skip_third_person_front_perspective": "Üçüncü şahıs ön perspektifi atla",
-  "${modId}.configuration.perspective.skip_third_person_front_perspective.tooltip": "Üçüncü şahıs ön perspektifi atlayıp atlamamak.",
 
   "player.button": "Düzenle",
   "${modId}.configuration.player": "Oyuncu",
