@@ -195,6 +195,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	public void changePerspective(Perspective perspective)
 	{
 		((GameSettingsDuck) Minecraft.getInstance().options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
+		Minecraft.getInstance().levelRenderer.needsUpdate();
 		this.setShoulderSurfing(Perspective.SHOULDER_SURFING.equals(perspective));
 	}
 	
@@ -204,9 +205,16 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		Minecraft minecraft = Minecraft.getInstance();
 		Perspective perspective = Perspective.current();
 		Perspective next = perspective.next(Config.CLIENT);
-		boolean isFirstPerson = next.getCameraType().isFirstPerson();
+		ClientPlayerEntity player = minecraft.player;
+		
+		if(player != null && minecraft.getCameraEntity() == player && next != Perspective.SHOULDER_SURFING)
+		{
+			player.xRot = this.camera.getXRot();
+			player.yRot = this.camera.getYRot();
+		}
+		
 		this.changePerspective(next);
-		minecraft.levelRenderer.needsUpdate();
+		boolean isFirstPerson = next.getCameraType().isFirstPerson();
 		
 		if(perspective.getCameraType().isFirstPerson() != isFirstPerson)
 		{
@@ -238,14 +246,6 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	public void setShoulderSurfing(boolean isShoulderSurfing)
 	{
-		ClientPlayerEntity player = Minecraft.getInstance().player;
-		
-		if(!isShoulderSurfing && player != null)
-		{
-			player.xRot = this.camera.getXRot();
-			player.yRot = this.camera.getYRot();
-		}
-		
 		if(!this.isShoulderSurfing && isShoulderSurfing)
 		{
 			this.resetState();
