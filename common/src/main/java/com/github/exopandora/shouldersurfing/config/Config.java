@@ -1211,10 +1211,11 @@ public class Config
 	public static void onConfigReload()
 	{
 		Perspective currentPerspective = Perspective.current();
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(!currentPerspective.isEnabled(Config.CLIENT))
+		if(!currentPerspective.isEnabled(Config.CLIENT) && (currentPerspective != Perspective.FIRST_PERSON || !instance.isTemporaryFirstPerson()))
 		{
-			ShoulderSurfingImpl.getInstance().changePerspective(currentPerspective.next(Config.CLIENT));
+			instance.changePerspective(currentPerspective.next(Config.CLIENT));
 		}
 		
 		if(Config.CLIENT.doRememberLastPerspective())
