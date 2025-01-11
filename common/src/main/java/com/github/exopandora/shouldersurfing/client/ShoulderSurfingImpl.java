@@ -238,6 +238,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		Config.CLIENT.toggleCameraCoupling();
 	}
 	
+	public boolean isTemporaryFirstPerson()
+	{
+		return this.isTemporaryFirstPerson;
+	}
+	
 	@Override
 	public void swapShoulder()
 	{
