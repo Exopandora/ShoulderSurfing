@@ -78,7 +78,6 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		
 		if(this.isShoulderSurfing && Config.CLIENT.getCrosshairType().doSwitchPerspective(this.isAiming))
 		{
-			this.lookAtTarget(player, minecraft);
 			this.changePerspective(Perspective.FIRST_PERSON);
 			this.isTemporaryFirstPerson = true;
 		}
@@ -200,29 +199,44 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	@Override
 	public void changePerspective(Perspective perspective)
 	{
-		((OptionsDuck) Minecraft.getInstance().options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
-		Minecraft.getInstance().levelRenderer.needsUpdate();
-		this.setShoulderSurfing(Perspective.SHOULDER_SURFING.equals(perspective));
+		Minecraft minecraft = Minecraft.getInstance();
+		LocalPlayer player = minecraft.player;
+		boolean wasShoulderSurfing = this.isShoulderSurfing;
+		boolean isShoulderSurfing = perspective == Perspective.SHOULDER_SURFING;
+		boolean isEnteringShoulderSurfing = !wasShoulderSurfing && isShoulderSurfing;
+		boolean isExitingShoulderSurfing = wasShoulderSurfing && !isShoulderSurfing;
+		Entity cameraEntity = minecraft.getCameraEntity();
+		
+		if(isExitingShoulderSurfing && player != null && cameraEntity == player)
+		{
+			this.lookAtTarget(player, minecraft);
+		}
+		
+		((OptionsDuck) minecraft.options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
+		this.isShoulderSurfing = isShoulderSurfing;
+		
+		if(minecraft.level != null)
+		{
+			minecraft.levelRenderer.needsUpdate();
+		}
+		
+		if(isEnteringShoulderSurfing)
+		{
+			this.resetState();
+		}
 	}
 	
 	@Override
 	public void togglePerspective()
 	{
 		Minecraft minecraft = Minecraft.getInstance();
-		Perspective perspective = Perspective.current();
-		Perspective next = perspective.next(Config.CLIENT);
-		LocalPlayer player = minecraft.player;
-		
-		if(player != null && minecraft.getCameraEntity() == player && next != Perspective.SHOULDER_SURFING)
-		{
-			player.setXRot(this.camera.getXRot());
-			player.setYRot(this.camera.getYRot());
-		}
+		Perspective current = Perspective.current();
+		Perspective next = current.next(Config.CLIENT);
 		
 		this.changePerspective(next);
 		boolean isFirstPerson = next.getCameraType().isFirstPerson();
 		
-		if(perspective.getCameraType().isFirstPerson() != isFirstPerson)
+		if(current.getCameraType().isFirstPerson() != isFirstPerson)
 		{
 			minecraft.gameRenderer.checkEntityPostEffect(isFirstPerson ? minecraft.getCameraEntity() : null);
 		}
@@ -253,16 +267,6 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	public boolean isShoulderSurfing()
 	{
 		return this.isShoulderSurfing;
-	}
-	
-	public void setShoulderSurfing(boolean isShoulderSurfing)
-	{
-		if(!this.isShoulderSurfing && isShoulderSurfing)
-		{
-			this.resetState();
-		}
-		
-		this.isShoulderSurfing = isShoulderSurfing;
 	}
 	
 	@Override
