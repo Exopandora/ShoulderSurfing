@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
@@ -21,13 +22,16 @@ public abstract class MixinOptions implements OptionsDuck
 	@Inject
 	(
 		at = @At("HEAD"),
-		method = "setCameraType"
+		method = "setCameraType",
+		cancellable = true
 	)
 	public void setCameraType(CameraType cameraType, CallbackInfo ci)
 	{
 		if(cameraType != this.cameraType)
 		{
-			ShoulderSurfingImpl.getInstance().setShoulderSurfing(Config.CLIENT.replaceDefaultPerspective() && cameraType.equals(CameraType.THIRD_PERSON_BACK));
+			Perspective newPerspective = Perspective.of(cameraType, Config.CLIENT.replaceDefaultPerspective() && cameraType == CameraType.THIRD_PERSON_BACK);
+			ShoulderSurfingImpl.getInstance().changePerspective(newPerspective);
+			ci.cancel();
 		}
 	}
 	
