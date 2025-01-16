@@ -246,13 +246,21 @@
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "Предметы адаптивного перекрестия (использование)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Предметы, которые при использовании активируют динамическое перекрестие в адаптивном режиме. Этот параметр конфигурации поддерживает регулярные выражения. Пример: 'minecraft:.*sword' соответствует 'minecraft:wooden_sword' и 'minecraft:netherite_sword'.",
 
-  "adaptive_crosshair_hold_item_properties.button": "Редактировать",
-  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties": "Свойства предмета адаптивного перекрестия (удержание)",
-  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_properties.tooltip": "Свойства предмета, которые при удержании активируют динамическое перекрестие в адаптивном режиме.",
+  "${modId}.configuration.adaptive_crosshair_hold_item_animations.button": "Редактировать",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_animations": "Свойства предмета адаптивного перекрестия (удержание)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_animations.tooltip": "Свойства предмета, которые при удержании активируют динамическое перекрестие в адаптивном режиме.",
 
-  "adaptive_crosshair_use_item_properties.button": "Редактировать",
-  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties": "Свойства предмета адаптивного перекрестия (использование)",
-  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_properties.tooltip": "Свойства предмета, которые при использовании активируют динамическое перекрестие в адаптивном режиме.",
+  "${modId}.configuration.adaptive_crosshair_use_item_animations.button": "Редактировать",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_animations": "Свойства предмета адаптивного перекрестия (использование)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_animations.tooltip": "Свойства предмета, которые при использовании активируют динамическое перекрестие в адаптивном режиме.",
+
+  "${modId}.configuration.adaptive_crosshair_hold_item_components.button": "Редактировать",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components": "Компоненты предмета адаптивного перекрестия (удержание)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components.tooltip": "Компоненты предмета (только изменённые), которые при удержании предмета активируют динамическое перекрестие в адаптивном режиме.",
+
+  "${modId}.configuration.adaptive_crosshair_use_item_components.button": "Редактировать",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_components": "Компоненты предмета адаптивного перекрестия(использование)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_item_components.tooltip": "Компоненты предмета (только изменённые), которые при использовании предмета активируют динамическое перекрестие в адаптивном режиме.",
 
   "${modId}.configuration.obstruction.button": "Редактировать",
   "${modId}.configuration.obstruction": "Индикатор препятствия",
