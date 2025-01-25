@@ -17,6 +17,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.HitResult;
 
 public class ShoulderSurfingImpl implements IShoulderSurfing
@@ -105,7 +106,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 				if(shouldAimAtTarget || isTurningLockActive)
 				{
 					this.turningLockTime = shouldAimAtTarget ? Config.CLIENT.getTurningLockTime() : (this.turningLockTime - 1);
-					this.lookAtTarget(player, minecraft);
+					this.lookAtCrosshairTargetInternal();
 				}
 				else if(this.shouldEntityFollowCamera(player))
 				{
@@ -116,8 +117,17 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 	}
 	
-	private void lookAtTarget(LocalPlayer player, Minecraft minecraft)
+	public void lookAtCrosshairTarget()
 	{
+		this.turningLockTime = Config.CLIENT.getTurningLockTime();
+		this.lookAtCrosshairTargetInternal();
+	}
+	
+	private void lookAtCrosshairTargetInternal()
+	{
+		Minecraft minecraft = Minecraft.getInstance();
+		LocalPlayer player = minecraft.player;
+		assert player != null;
 		Camera camera = minecraft.gameRenderer.getMainCamera();
 		double interactionRange = Config.CLIENT.getCrosshairType().isAimingDecoupled() ? 400 : Config.CLIENT.getCustomRaytraceDistance();
 		PickContext pickContext = new PickContext.Builder(camera).build();
@@ -209,7 +219,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		
 		if(isExitingShoulderSurfing && player != null && cameraEntity == player)
 		{
-			this.lookAtTarget(player, minecraft);
+			this.lookAtCrosshairTargetInternal();
 		}
 		
 		((OptionsDuck) minecraft.options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
