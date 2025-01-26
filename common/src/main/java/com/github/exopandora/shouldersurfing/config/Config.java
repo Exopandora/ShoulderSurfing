@@ -104,6 +104,7 @@ public class Config
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
 		private final BooleanValue isCameraDecoupled;
+		private final BooleanValue orientCameraOnTeleport;
 		
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue isFirstPersonEnabled;
@@ -435,6 +436,11 @@ public class Config
 				.comment("Whether or not to decouple the camera rotation from the player rotation.")
 				.translation(MOD_ID + ".configuration.camera.decoupled_camera")
 				.define("decoupled_camera", true);
+			
+			this.orientCameraOnTeleport = builder
+				.comment("Whether or not to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.")
+				.translation(MOD_ID + ".configuration.camera.orient_camera_on_teleport")
+				.define("orient_camera_on_teleport", true);
 			
 			builder.pop();
 			builder.push("perspective");
@@ -1072,6 +1078,12 @@ public class Config
 		public boolean isCameraDecoupled()
 		{
 			return this.isCameraDecoupled.get();
+		}
+		
+		@Override
+		public boolean doOrientCameraOnTeleport()
+		{
+			return this.orientCameraOnTeleport.get();
 		}
 		
 		@Override
