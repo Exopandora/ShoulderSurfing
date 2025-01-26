@@ -168,6 +168,8 @@ public interface IClientConfig
 	
 	boolean isCameraDecoupled();
 	
+	boolean doOrientCameraOnTeleport();
+	
 	double getCustomRaytraceDistance();
 	
 	List<? extends String> getAdaptiveCrosshairHoldItems();
