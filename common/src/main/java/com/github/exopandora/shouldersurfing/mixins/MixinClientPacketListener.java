@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
@@ -59,7 +60,7 @@ public abstract class MixinClientPacketListener
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(instance.isShoulderSurfing())
+		if(instance.isShoulderSurfing() && Config.CLIENT.doOrientCameraOnTeleport())
 		{
 			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.getRelativeArguments().contains(RelativeArgument.X_ROT);
