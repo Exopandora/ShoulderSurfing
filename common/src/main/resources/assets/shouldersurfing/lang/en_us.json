@@ -19,6 +19,8 @@
   "${modId}.configuration.camera.dynamically_adjust_offsets.tooltip": "Whether or not to dynamically adjust camera offsets depending on space constraints.",
   "${modId}.configuration.camera.decoupled_camera": "Decoupled camera",
   "${modId}.configuration.camera.decoupled_camera.tooltip": "Whether or not to decouple the camera rotation from the player rotation.",
+  "${modId}.configuration.camera.orient_camera_on_teleport": "Orient camera on teleport",
+  "${modId}.configuration.camera.orient_camera_on_teleport.tooltip": "Whether or not to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.",
 
   "${modId}.configuration.offset.button": "Edit",
   "${modId}.configuration.offset": "Offset",
