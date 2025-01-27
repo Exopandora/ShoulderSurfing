@@ -22,7 +22,7 @@ public class MixinPokemonRenderer
 		),
 		remap = false
 	)
-	private static boolean isLookingAt$default(Entity entity, Entity other, float maxDistance, float stepDistance, int flags, Object object)
+	private boolean isLookingAt$default(Entity entity, Entity other, float maxDistance, float stepDistance, int flags, Object object)
 	{
 		return other == Minecraft.getInstance().crosshairPickEntity;
 	}
