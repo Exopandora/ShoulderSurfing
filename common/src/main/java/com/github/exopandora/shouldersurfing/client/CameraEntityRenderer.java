@@ -11,6 +11,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 {
 	private final ShoulderSurfingImpl instance;
 	private float cameraEntityAlpha = 1.0F;
+	private boolean isRenderingCameraEntity;
 	
 	public CameraEntityRenderer(ShoulderSurfingImpl instance)
 	{
@@ -23,6 +24,8 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 		{
 			return true;
 		}
+		
+		this.isRenderingCameraEntity = true;
 		
 		if(this.shouldRenderCameraEntityTransparent(entity))
 		{
@@ -41,13 +44,17 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 			
 			this.cameraEntityAlpha = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), 0.15F, 1.0F);
 		}
+		else
+		{
+			this.cameraEntityAlpha = 1.0F;
+		}
 		
 		return false;
 	}
 	
 	public void postRenderCameraEntity(Entity entity, float partialTick)
 	{
-		this.cameraEntityAlpha = 1.0F;
+		this.isRenderingCameraEntity = true;
 	}
 	
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
@@ -69,8 +76,20 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	}
 	
 	@Override
+	public boolean isRenderingCameraEntity()
+	{
+		return this.isRenderingCameraEntity;
+	}
+	
+	@Override
 	public float getCameraEntityAlpha()
 	{
 		return this.cameraEntityAlpha;
+	}
+	
+	@Override
+	public int getCameraEntityAlphaAsInt()
+	{
+		return Mth.floor(this.cameraEntityAlpha * 255.0F);
 	}
 }
