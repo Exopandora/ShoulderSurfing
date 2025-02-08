@@ -20,6 +20,6 @@ public class MixinCustomizableModelPart
 	)
 	private int compile(int color)
 	{
-		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlpha(color);
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(color);
 	}
 }

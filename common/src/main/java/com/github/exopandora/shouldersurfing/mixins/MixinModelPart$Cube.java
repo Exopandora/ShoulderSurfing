@@ -18,6 +18,6 @@ public class MixinModelPart$Cube
 	)
 	public int compile(int color)
 	{
-		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlpha(color);
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(color);
 	}
 }
