@@ -12,6 +12,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 {
 	private final ShoulderSurfingImpl instance;
 	private float cameraEntityAlpha = 1.0F;
+	private boolean isRenderingCameraEntity;
 	
 	public CameraEntityRenderer(ShoulderSurfingImpl instance)
 	{
@@ -24,6 +25,8 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 		{
 			return true;
 		}
+		
+		this.isRenderingCameraEntity = true;
 		
 		if(this.shouldRenderCameraEntityTransparent(entity))
 		{
@@ -42,13 +45,17 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 			
 			this.cameraEntityAlpha = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), 0.15F, 1.0F);
 		}
+		else
+		{
+			this.cameraEntityAlpha = 1.0F;
+		}
 		
 		return false;
 	}
 	
 	public void postRenderCameraEntity(Entity entity, float partialTick)
 	{
-		this.cameraEntityAlpha = 1.0F;
+		this.isRenderingCameraEntity = true;
 	}
 	
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
@@ -69,9 +76,14 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 				renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight()));
 	}
 	
+	public int applyCameraEntityAlphaContextAware(int color)
+	{
+		return this.isRenderingCameraEntity ? this.applyCameraEntityAlpha(color) : color;
+	}
+	
 	public int applyCameraEntityAlpha(int color)
 	{
-		int cameraEntityAlpha = ARGB.as8BitChannel(this.cameraEntityAlpha);
+		int cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
 		int alpha = ARGB.alpha(color);
 		
 		if(cameraEntityAlpha < alpha)
@@ -83,8 +95,20 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	}
 	
 	@Override
+	public boolean isRenderingCameraEntity()
+	{
+		return this.isRenderingCameraEntity;
+	}
+	
+	@Override
 	public float getCameraEntityAlpha()
 	{
 		return this.cameraEntityAlpha;
+	}
+	
+	@Override
+	public int getCameraEntityAlphaAsInt()
+	{
+		return ARGB.as8BitChannel(this.cameraEntityAlpha);
 	}
 }
