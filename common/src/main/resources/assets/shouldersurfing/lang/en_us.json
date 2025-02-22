@@ -258,6 +258,7 @@
 
   "${modId}.configuration.obstruction.button": "Edit",
   "${modId}.configuration.obstruction": "Obstruction Indicator",
+  "${modId}.configuration.obstruction.tooltip": "Obstruction Indicator settings",
   "${modId}.configuration.obstruction.show_obstruction_indicator": "Show obstruction indicator",
   "${modId}.configuration.obstruction.show_obstruction_indicator.tooltip": "When the crosshair type is static, shows an additional indicator on obstacles that stand between you and your target.",
   "${modId}.configuration.obstruction.only_when_aiming": "Only when aiming",
