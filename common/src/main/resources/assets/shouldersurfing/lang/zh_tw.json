@@ -214,11 +214,11 @@
   "${modId}.configuration.crosshair.crosshair_type": "準心類型",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "騎乘視角使用的準心類型。",
 
-  "${modId}.configuration.adaptive_crosshair_hold_items.button": "編輯",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.button": "編輯",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items": "自適應準心物品（持有）",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "在自適應模式下，持有時會觸發動態準心的物品。此設定選項支援正規表示式。範例：'minecraft:.*sword' 匹配 'minecraft:wooden_sword' 和 'minecraft:netherite_sword'。",
 
-  "${modId}.configuration.adaptive_crosshair_use_items.button": "編輯",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_items.button": "編輯",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "自適應準心物品（使用）",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "在自適應模式下，使用時會觸發動態準心的物品。此設定選項支援正規表示式。範例：'minecraft:.*sword' 匹配 'minecraft:wooden_sword' 和 'minecraft:netherite_sword'。",
 

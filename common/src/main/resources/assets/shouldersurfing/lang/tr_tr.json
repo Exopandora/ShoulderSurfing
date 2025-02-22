@@ -232,11 +232,11 @@
   "${modId}.configuration.crosshair.crosshair_type": "Nişangah türü",
   "${modId}.configuration.crosshair.crosshair_type.tooltip": "Shoulder surfing için nişangah tipi.",
 
-  "${modId}.configuration.adaptive_crosshair_hold_items.button": "Düzenle",
+  "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items": "Uyarlanabilir nişangah itemleri (tutuş)",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_items.tooltip": "Tutulduğu zaman uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' aynı zamanda 'minecraft:wooden_sword'u ve 'minecraft:netherite_sword'u da etkiler.",
 
-  "${modId}.configuration.adaptive_crosshair_use_items.button": "Düzenle",
+  "${modId}.configuration.crosshair.adaptive_crosshair_use_items.button": "Düzenle",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items": "Uyarlanabilir nişangah itemleri (kullan)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_items.tooltip": "Kullanıldığında uyarlanabilir modda dinamik nişangahı tetikleyen öğeler. Bu yapılandırma seçeneği düzenli ifadeleri destekler. Örnek: 'minecraft:.*sword' aynı zamanda 'minecraft:wooden_sword'u ve 'minecraft:netherite_sword'u da etkiler.",
 
