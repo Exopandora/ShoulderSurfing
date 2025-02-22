@@ -256,6 +256,7 @@
 
   "${modId}.configuration.obstruction.button": "Редактировать",
   "${modId}.configuration.obstruction": "Индикатор препятствия",
+  "${modId}.configuration.obstruction.tooltip": "Настройки индикатор препятствия",
   "${modId}.configuration.obstruction.show_obstruction_indicator": "Показывать индикатор препятствия",
   "${modId}.configuration.obstruction.show_obstruction_indicator.tooltip": "Если тип перекрестия статичен, отображается дополнительный индикатор препятствий, которые находятся между вами и вашей целью.",
   "${modId}.configuration.obstruction.only_when_aiming": "Только при прицеливании",
