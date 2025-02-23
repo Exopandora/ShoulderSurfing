@@ -19,6 +19,8 @@
   "${modId}.configuration.camera.dynamically_adjust_offsets.tooltip": "Следует ли динамически регулировать смещение камеры в зависимости от ограниченности пространства.",
   "${modId}.configuration.camera.decoupled_camera": "Несвязанная камера",
   "${modId}.configuration.camera.decoupled_camera.tooltip": "Следует ли отделять вращение камеры от вращения игрока или нет.",
+  "${modId}.configuration.camera.orient_camera_on_teleport": "Направлять камеру при телепортации",
+  "${modId}.configuration.camera.orient_camera_on_teleport.tooltip": "Следует ли направлять вращение камеры при телепортации игрока. Это включает в себя спешивание и посадку пассажира, а также перемещение через порталы.",
 
   "${modId}.configuration.offset.button": "Редактировать",
   "${modId}.configuration.offset": "Смещение",
