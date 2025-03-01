@@ -3,7 +3,7 @@ package com.github.exopandora.shouldersurfing.compat.mixins.create;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.simibubi.create.content.contraptions.ContraptionHandlerClient;
-import net.createmod.catnip.data.Couple;
+import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ContraptionHandlerClient.class)
-public class MixinContraptionHandlerClient
+public class MixinContraptionHandlerClientLegacy
 {
 	@Inject
 	(

@@ -42,7 +42,6 @@ dependencies {
 	compileOnly(libs.forgeconfigapiport.common)
 	compileOnly(libs.wthit.common)
 	compileOnly(libs.jade.common)
-	compileOnly(libs.create.common)
 	
 	implementation(libs.jsr305)
 }

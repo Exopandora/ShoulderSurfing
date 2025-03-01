@@ -55,7 +55,7 @@ mixin {
 	config("$modId.common.mixins.json")
 	config("$modId.common.compat.mixins.json")
 	config("$modId.forge.mixins.json")
-	config("$modId.compat.oculus.mixins.json")
+	config("$modId.forge.compat.mixins.json")
 }
 
 minecraft {
@@ -96,7 +96,6 @@ dependencies {
 	implementation(fg.deobf(libs.wthit.forge.get()))
 	implementation(fg.deobf(libs.badpackets.forge.get()))
 	implementation(fg.deobf(libs.jade.forge.get()))
-	compileOnly(fg.deobf(libs.create.common.get()))
 }
 
 tasks.named<JavaCompile>("compileJava") {
