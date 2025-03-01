@@ -18,10 +18,6 @@ jade-fabric = "5976523" # 1.21.4-17.0.2-fabric
 badpackets-forge = "forge-0.8.1"
 badpackets-neoforge = "neo-0.8.1"
 badpackets-fabric = "fabric-0.8.1"
-create-common = "1.20.1-0.5.1.f"
-create-fabric = "0.5.1-f-build.1417+mc1.20.1"
-create-forge = "1.20.1-0.5.1.f"
-create-neoforge = "1.20.1-0.5.1.f"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -44,10 +40,6 @@ jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" 
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
-create-common = { module = "maven.modrinth:create", version.ref = "create-common" }
-create-fabric = { module = "maven.modrinth:create-fabric", version.ref = "create-fabric" }
-create-forge = { module = "maven.modrinth:create", version.ref = "create-forge" }
-create-neoforge = { module = "maven.modrinth:create", version.ref = "create-neoforge" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]

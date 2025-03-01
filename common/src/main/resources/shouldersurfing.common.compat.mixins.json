@@ -8,7 +8,6 @@
 		"cgm.MixinRecoilHandler",
 		"cobblemon.MixinPlayerExtensionsKt",
 		"cobblemon.MixinPokemonRenderer",
-		"create.MixinContraptionHandlerClient",
 		"emf.MixinEMFModelPartCustom$EMFCube",
 		"epicfight.AccessorCamera",
 		"epicfight.MixinRenderEngine",
