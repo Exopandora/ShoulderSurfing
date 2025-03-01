@@ -8,22 +8,16 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
+public class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPlugin
 {
-	private final Map<String, Supplier<Predicate<ArtifactVersion>>> rules = new HashMap<String, Supplier<Predicate<ArtifactVersion>>>();
-	
 	@Override
 	public void onLoad(String mixinPackage)
 	{
-		this.rules.put(mixinPackage + ".MixinSheets", () -> parseVersionRangeSilent("[1.7.0-snapshot,)")::containsVersion);
-		this.rules.put(mixinPackage + ".MixinSheetsLegacy", () -> parseVersionRangeSilent("[1.6.15,1.7.0)")::containsVersion);
+	
 	}
 	
 	@Override
@@ -35,18 +29,7 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
 	{
-		if(this.rules.containsKey(mixinClassName))
-		{
-			String oculusVersion = Mods.OCULUS.getModVersion();
-			
-			if(oculusVersion != null)
-			{
-				Predicate<ArtifactVersion> versionPredicate = this.rules.get(mixinClassName).get();
-				return versionPredicate.test(new DefaultArtifactVersion(oculusVersion));
-			}
-		}
-		
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -58,7 +41,48 @@ public class ShoulderOculusCompatMixinPlugin implements IMixinConfigPlugin
 	@Override
 	public List<String> getMixins()
 	{
-		return null;
+		List<String> mixins = new ArrayList<String>();
+		addCreateModMixins(mixins);
+		addOculusMixins(mixins);
+		return mixins.isEmpty() ? null : mixins;
+	}
+	
+	private static void addOculusMixins(List<String> mixins)
+	{
+		String oculusModVersion = Mods.OCULUS.getModVersion();
+		
+		if(oculusModVersion != null)
+		{
+			ArtifactVersion version = new DefaultArtifactVersion(oculusModVersion);
+			
+			if(parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version))
+			{
+				mixins.add("iris.MixinSheets");
+			}
+			else if(parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version))
+			{
+				mixins.add("iris.MixinSheetsLegacy");
+			}
+		}
+	}
+	
+	private static void addCreateModMixins(List<String> mixins)
+	{
+		String createModVersion = Mods.CREATE.getModVersion();
+		
+		if(createModVersion != null)
+		{
+			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
+			
+			if(parseVersionRangeSilent("[6.0.0,)").containsVersion(version))
+			{
+				mixins.add("create.MixinContraptionHandlerClient");
+			}
+			else if(parseVersionRangeSilent("(,6.0.0)").containsVersion(version))
+			{
+				mixins.add("create.MixinContraptionHandlerClientLegacy");
+			}
+		}
 	}
 	
 	@Override

@@ -10,23 +10,16 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public class ShoulderShadersCompatMixinPlugin implements IMixinConfigPlugin
+public class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPlugin
 {
-	private final Map<String, Supplier<Predicate<ArtifactVersion>>> rules = new HashMap<String, Supplier<Predicate<ArtifactVersion>>>();
-	
 	@Override
 	public void onLoad(String mixinPackage)
 	{
-		this.rules.put(mixinPackage + ".MixinSheets", () -> parseVersionRangeSilent("[1.7.0-snapshot,)")::containsVersion);
-		this.rules.put(mixinPackage + ".MixinSheetsLegacy", () -> parseVersionRangeSilent("[1.6.15,1.7.0)")::containsVersion);
+	
 	}
 	
 	@Override
@@ -38,17 +31,7 @@ public class ShoulderShadersCompatMixinPlugin implements IMixinConfigPlugin
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
 	{
-		if(this.rules.containsKey(mixinClassName))
-		{
-			ArtifactVersion shaderVersion = highestShaderVersion();
-			
-			if(shaderVersion != null)
-			{
-				return this.rules.get(mixinClassName).get().test(shaderVersion);
-			}
-		}
-		
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -60,7 +43,46 @@ public class ShoulderShadersCompatMixinPlugin implements IMixinConfigPlugin
 	@Override
 	public List<String> getMixins()
 	{
-		return null;
+		List<String> mixins = new ArrayList<String>();
+		addCreateModMixins(mixins);
+		addShaderMixins(mixins);
+		return mixins.isEmpty() ? null : mixins;
+	}
+	
+	private static void addShaderMixins(List<String> mixins)
+	{
+		ArtifactVersion version = highestShaderVersion();
+		
+		if(version != null)
+		{
+			if(parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version))
+			{
+				mixins.add("iris.MixinSheets");
+			}
+			else if(parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version))
+			{
+				mixins.add("iris.MixinSheetsLegacy");
+			}
+		}
+	}
+	
+	private static void addCreateModMixins(List<String> mixins)
+	{
+		String createModVersion = Mods.CREATE.getModVersion();
+		
+		if(createModVersion != null)
+		{
+			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
+			
+			if(parseVersionRangeSilent("[6.0.0,)").containsVersion(version))
+			{
+				mixins.add("create.MixinContraptionHandlerClient");
+			}
+			else if(parseVersionRangeSilent("(,6.0.0)").containsVersion(version))
+			{
+				mixins.add("create.MixinContraptionHandlerClientLegacy");
+			}
+		}
 	}
 	
 	@Override
