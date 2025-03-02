@@ -114,6 +114,7 @@ Shoulder Surfing Reloaded is designed to work with the following mods (a-z):
 - Oculus
 - OptiFine
 - Sodium
+- TslatEntityStatus
 
 Shoulder Surfing Reloaded is known to be incompatible with the following mods (a-z):
 - Better Third Person
