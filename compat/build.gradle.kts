@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.accessors.runtime.extensionOf
+
 plugins {
 	id("java")
 	id("idea")
@@ -20,6 +22,20 @@ idea {
 	module {
 		isDownloadSources = true
 		isDownloadJavadoc = true
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs(
+				"src/createCommon/java",
+				"src/create-6.0.0/java",
+				"src/create-0.5.0/java",
+				"src/iris-1.7.0/java",
+				"src/iris-1.6.15/java"
+			)
+		}
 	}
 }
 
