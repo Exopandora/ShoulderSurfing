@@ -37,15 +37,14 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	public void init()
 	{
-		Perspective currentPerspective = Perspective.current();
-		Perspective targetPerspective = Config.CLIENT.doRememberLastPerspective() ? Config.CLIENT.getDefaultPerspective() : currentPerspective;
+		Perspective targetPerspective = Config.CLIENT.getDefaultPerspective();
 		
 		if(!targetPerspective.isEnabled(Config.CLIENT))
 		{
 			targetPerspective = targetPerspective.next(Config.CLIENT);
 		}
 		
-		if(currentPerspective != targetPerspective)
+		if(Perspective.current() != targetPerspective)
 		{
 			this.changePerspective(targetPerspective);
 		}
