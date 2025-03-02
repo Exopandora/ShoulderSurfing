@@ -11,7 +11,8 @@
 		"epicfight.AccessorCamera",
 		"epicfight.MixinRenderEngine",
 		"skinlayers.MixinCustomizableModelPart",
-		"theoneprobe.MixinOverlayRenderer"
+		"theoneprobe.MixinOverlayRenderer",
+		"tslatentitystatus.MixinTESHud"
 	],
 	"injectors": {
 		"defaultRequire": 0
