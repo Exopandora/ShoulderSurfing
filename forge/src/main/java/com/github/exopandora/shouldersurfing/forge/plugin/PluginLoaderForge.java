@@ -1,12 +1,12 @@
 package com.github.exopandora.shouldersurfing.forge.plugin;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class PluginLoaderForge extends PluginLoader
 {

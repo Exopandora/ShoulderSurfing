@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.model.Couple;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;

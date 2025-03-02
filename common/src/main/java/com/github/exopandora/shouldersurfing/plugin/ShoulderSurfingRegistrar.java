@@ -1,12 +1,12 @@
 package com.github.exopandora.shouldersurfing.plugin;
 
+import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
-import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
-import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 
 public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 {

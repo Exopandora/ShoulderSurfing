@@ -1,8 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 
 public enum CrosshairVisibility
 {
