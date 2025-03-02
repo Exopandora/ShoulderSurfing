@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.accessors.runtime.extensionOf
-
 plugins {
 	id("java")
 	id("idea")
