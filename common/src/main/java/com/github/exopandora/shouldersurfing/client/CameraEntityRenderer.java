@@ -55,7 +55,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	
 	public void postRenderCameraEntity(Entity entity, float partialTick)
 	{
-		this.isRenderingCameraEntity = true;
+		this.isRenderingCameraEntity = false;
 	}
 	
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
@@ -84,7 +84,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	public int applyCameraEntityAlpha(int color)
 	{
 		int cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
-		int alpha = FastColor.as8BitChannel(color);
+		int alpha = FastColor.ABGR32.alpha(color);
 		
 		if(cameraEntityAlpha < alpha)
 		{
