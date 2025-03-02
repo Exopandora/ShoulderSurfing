@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Sheets.class, priority = 1001 /* apply after iris */)
-public class MixinSheetsLegacy
+public class MixinSheets_1_6_15
 {
 	@Shadow
 	private static @Final RenderType ARMOR_TRIMS_SHEET_TYPE;

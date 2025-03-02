@@ -56,11 +56,11 @@ public class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPlugin
 			
 			if(parseVersionPredicateSilent(">=1.7.0-snapshot").test(version))
 			{
-				mixins.add("iris.MixinSheets");
+				mixins.add("iris.MixinSheets_1_7_0");
 			}
 			else if(parseVersionPredicateSilent("<1.7.0-snapshot >=1.6.17").test(version))
 			{
-				mixins.add("iris.MixinSheetsLegacy");
+				mixins.add("iris.MixinSheets_1_6_15");
 			}
 		}
 	}
@@ -75,11 +75,11 @@ public class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPlugin
 			
 			if(parseVersionPredicateSilent(">=6.0.0").test(version))
 			{
-				mixins.add("create.MixinContraptionHandlerClient");
+				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
 			}
 			else if(parseVersionPredicateSilent("<6.0.0)").test(version))
 			{
-				mixins.add("create.MixinContraptionHandlerClientLegacy");
+				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
 			}
 		}
 	}
