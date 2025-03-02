@@ -53,7 +53,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	
 	public void postRenderCameraEntity(Entity entity, float partialTick)
 	{
-		this.isRenderingCameraEntity = true;
+		this.isRenderingCameraEntity = false;
 	}
 	
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
