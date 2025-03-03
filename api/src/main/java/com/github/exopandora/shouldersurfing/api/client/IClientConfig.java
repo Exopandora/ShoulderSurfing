@@ -170,6 +170,10 @@ public interface IClientConfig
 	
 	boolean doOrientCameraOnTeleport();
 	
+	boolean isFovOverrideEnabled();
+	
+	float getFovOverride();
+	
 	double getCustomRaytraceDistance();
 	
 	List<? extends String> getAdaptiveCrosshairHoldItems();

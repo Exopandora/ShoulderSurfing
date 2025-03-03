@@ -103,6 +103,8 @@ public class Config
 		private final BooleanValue dynamicallyAdjustOffsets;
 		private final BooleanValue isCameraDecoupled;
 		private final BooleanValue orientCameraOnTeleport;
+		private final BooleanValue isFovOverrideEnabled;
+		private final DoubleValue fovOverride;
 		
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue isFirstPersonEnabled;
@@ -437,6 +439,16 @@ public class Config
 				.comment("Whether or not to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.")
 				.translation(MOD_ID + ".configuration.camera.orient_camera_on_teleport")
 				.define("orient_camera_on_teleport", true);
+			
+			this.isFovOverrideEnabled = builder
+				.comment("Whether or not to apply the FOV override when in shoulder surfing perspective.")
+				.translation(MOD_ID + ".configuration.camera.fov_override_enabled")
+				.define("fov_override_enabled", false);
+			
+			this.fovOverride = builder
+				.comment("The camera FOV when in shoulder surfing perspective. Depends on config option 'fov_override_enabled'.")
+				.translation(MOD_ID + ".configuration.camera.fov_override")
+				.defineInRange("fov_override", 70.0D, 30.0D, 110.0D);
 			
 			builder.pop();
 			builder.push("perspective");
@@ -1070,6 +1082,18 @@ public class Config
 		public boolean doOrientCameraOnTeleport()
 		{
 			return this.orientCameraOnTeleport.get();
+		}
+		
+		@Override
+		public boolean isFovOverrideEnabled()
+		{
+			return this.isFovOverrideEnabled.get();
+		}
+		
+		@Override
+		public float getFovOverride()
+		{
+			return this.fovOverride.get().floatValue();
 		}
 		
 		@Override
