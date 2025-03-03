@@ -5,7 +5,6 @@ import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
@@ -18,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.function.Predicate;
 
-import static org.spongepowered.asm.mixin.injection.At.*;
+import static org.spongepowered.asm.mixin.injection.At.Shift;
 
 @Mixin(GameRenderer.class)
 public abstract class MixinGameRenderer implements GameRendererAccessor
