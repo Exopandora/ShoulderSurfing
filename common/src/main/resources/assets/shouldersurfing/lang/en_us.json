@@ -21,6 +21,10 @@
   "${modId}.configuration.camera.decoupled_camera.tooltip": "Whether or not to decouple the camera rotation from the player rotation.",
   "${modId}.configuration.camera.orient_camera_on_teleport": "Orient camera on teleport",
   "${modId}.configuration.camera.orient_camera_on_teleport.tooltip": "Whether or not to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.",
+  "${modId}.configuration.camera.fov_override_enabled": "FOV override enabled",
+  "${modId}.configuration.camera.fov_override_enabled.tooltip": "Whether or not to apply the FOV override when in shoulder surfing perspective.",
+  "${modId}.configuration.camera.fov_override": "FOV override",
+  "${modId}.configuration.camera.fov_override.tooltip": "The camera FOV when in shoulder surfing perspective. Depends on config option 'FOV override enabled'.",
 
   "${modId}.configuration.offset.button": "Edit",
   "${modId}.configuration.offset": "Offset",
