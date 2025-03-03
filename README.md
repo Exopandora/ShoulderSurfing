@@ -107,7 +107,7 @@ The binaries for each platform can be found in the following directories:
 **A:** Yes.
 
 # Compatibility #
-Shoulder Surfing Reloaded is designed to work with the following mods (a-z):
+Shoulder Surfing Reloaded has builtin compatibility for the following mods (a-z):
 - 3D Skin Layers
 - Create
 - Iris
