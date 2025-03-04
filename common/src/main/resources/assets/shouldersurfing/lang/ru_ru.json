@@ -21,6 +21,10 @@
   "${modId}.configuration.camera.decoupled_camera.tooltip": "Следует ли отделять вращение камеры от вращения игрока или нет.",
   "${modId}.configuration.camera.orient_camera_on_teleport": "Направлять камеру при телепортации",
   "${modId}.configuration.camera.orient_camera_on_teleport.tooltip": "Следует ли направлять вращение камеры при телепортации игрока. Это включает в себя спешивание и посадку пассажира, а также перемещение через порталы.",
+  "${modId}.configuration.camera.fov_override_enabled": "Включено переопределение поля зрения",
+  "${modId}.configuration.camera.fov_override_enabled.tooltip": "Следует ли применять переопределение поля зрения при виде от плеча или нет.",
+  "${modId}.configuration.camera.fov_override": "Переопредление поля зрения",
+  "${modId}.configuration.camera.fov_override.tooltip": "Угол обзора камеры при виде от плеча. Зависит от параметра конфигурации 'Включено переопределение поля зрения'",
 
   "${modId}.configuration.offset.button": "Редактировать",
   "${modId}.configuration.offset": "Смещение",
