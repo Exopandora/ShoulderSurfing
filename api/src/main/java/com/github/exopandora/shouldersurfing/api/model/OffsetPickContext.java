@@ -8,14 +8,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.function.Predicate;
+
 public final class OffsetPickContext extends PickContext
 {
 	private final PickOrigin blockPickOrigin;
 	private final PickOrigin entityPickOrigin;
 	
-	public OffsetPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, PickOrigin blockPickOrigin, PickOrigin entityPickOrigin)
+	public OffsetPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Predicate<Entity> entityFilter, PickOrigin blockPickOrigin, PickOrigin entityPickOrigin)
 	{
-		super(camera, fluidContext, entity);
+		super(camera, fluidContext, entity, entityFilter);
 		this.blockPickOrigin = blockPickOrigin;
 		this.entityPickOrigin = entityPickOrigin;
 	}

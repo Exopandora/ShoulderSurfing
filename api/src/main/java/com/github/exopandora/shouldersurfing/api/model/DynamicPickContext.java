@@ -6,13 +6,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.function.Predicate;
+
 public final class DynamicPickContext extends PickContext
 {
 	private final PickVector pickVector;
 	
-	public DynamicPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, PickVector pickVector)
+	public DynamicPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Predicate<Entity> entityFilter, PickVector pickVector)
 	{
-		super(camera, fluidContext, entity);
+		super(camera, fluidContext, entity, entityFilter);
 		this.pickVector = pickVector;
 	}
 	
