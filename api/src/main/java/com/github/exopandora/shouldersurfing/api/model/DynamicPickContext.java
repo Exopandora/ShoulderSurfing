@@ -6,13 +6,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 
+import java.util.function.Predicate;
+
 public final class DynamicPickContext extends PickContext
 {
 	private final PickVector pickVector;
 	
-	public DynamicPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, PickVector pickVector)
+	public DynamicPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, Predicate<Entity> entityFilter, PickVector pickVector)
 	{
-		super(camera, fluidContext, entity);
+		super(camera, fluidContext, entity, entityFilter);
 		this.pickVector = pickVector;
 	}
 	

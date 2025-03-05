@@ -8,14 +8,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 
+import java.util.function.Predicate;
+
 public final class OffsetPickContext extends PickContext
 {
 	private final PickOrigin blockPickOrigin;
 	private final PickOrigin entityPickOrigin;
 	
-	public OffsetPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, PickOrigin blockPickOrigin, PickOrigin entityPickOrigin)
+	public OffsetPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, Predicate<Entity> entityFilter, PickOrigin blockPickOrigin, PickOrigin entityPickOrigin)
 	{
-		super(camera, fluidContext, entity);
+		super(camera, fluidContext, entity, entityFilter);
 		this.blockPickOrigin = blockPickOrigin;
 		this.entityPickOrigin = entityPickOrigin;
 	}

@@ -6,13 +6,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 
+import java.util.function.Predicate;
+
 public final class ObstructionPickContext extends PickContext
 {
 	private final Vector3d endPos;
 	
-	public ObstructionPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, Vector3d endPos)
+	public ObstructionPickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, Predicate<Entity> entityFilter, Vector3d endPos)
 	{
-		super(camera, fluidContext, entity);
+		super(camera, fluidContext, entity, entityFilter);
 		this.endPos = endPos;
 	}
 	

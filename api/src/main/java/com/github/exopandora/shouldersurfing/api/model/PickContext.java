@@ -10,17 +10,23 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 
+import java.util.function.Predicate;
+
 public abstract class PickContext
 {
+	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
+	
 	private final ActiveRenderInfo camera;
 	private final RayTraceContext.FluidMode fluidContext;
 	private final Entity entity;
+	private final Predicate<Entity> entityFilter;
 	
-	protected PickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity)
+	protected PickContext(ActiveRenderInfo camera, RayTraceContext.FluidMode fluidContext, Entity entity, Predicate<Entity> entityFilter)
 	{
 		this.camera = camera;
 		this.fluidContext = fluidContext;
 		this.entity = entity;
+		this.entityFilter = entityFilter;
 	}
 	
 	public abstract RayTraceContext.BlockMode blockContext();
@@ -50,6 +56,11 @@ public abstract class PickContext
 		return this.entity;
 	}
 	
+	public Predicate<Entity> entityFilter()
+	{
+		return this.entityFilter;
+	}
+	
 	public static class Builder
 	{
 		private final ActiveRenderInfo camera;
@@ -60,6 +71,7 @@ public abstract class PickContext
 		private PickOrigin entityPickOrigin;
 		private PickOrigin blockPickOrigin;
 		private PickVector pickVector;
+		private Predicate<Entity> entityFilter;
 		
 		public Builder(ActiveRenderInfo camera)
 		{
@@ -96,6 +108,12 @@ public abstract class PickContext
 			return this;
 		}
 		
+		public Builder withEntityFilter(Predicate<Entity> entityFilter)
+		{
+			this.entityFilter = entityFilter;
+			return this;
+		}
+		
 		public Builder dynamicTrace()
 		{
 			this.offsetTrace = false;
@@ -118,14 +136,15 @@ public abstract class PickContext
 		{
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			RayTraceContext.FluidMode fluidContext = this.fluidContext == null ? RayTraceContext.FluidMode.NONE : this.fluidContext;
+			Predicate<Entity> entityFilter = this.entityFilter == null ? ENTITY_IS_PICKABLE : this.entityFilter;
 			
 			if(EntityHelper.isPlayerSpectatingEntity())
 			{
-				return new DynamicPickContext(this.camera, fluidContext, Minecraft.getInstance().getCameraEntity(), PickVector.PLAYER);
+				return new DynamicPickContext(this.camera, fluidContext, Minecraft.getInstance().getCameraEntity(), entityFilter, PickVector.PLAYER);
 			}
 			else if(this.endPos != null)
 			{
-				return new ObstructionPickContext(this.camera, fluidContext, entity, this.endPos);
+				return new ObstructionPickContext(this.camera, fluidContext, entity, entityFilter, this.endPos);
 			}
 			
 			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
@@ -136,11 +155,11 @@ public abstract class PickContext
 			{
 				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
 				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
-				return new OffsetPickContext(this.camera, fluidContext, entity, blockPickOrigin, entityPickOrigin);
+				return new OffsetPickContext(this.camera, fluidContext, entity, entityFilter, blockPickOrigin, entityPickOrigin);
 			}
 			
 			PickVector pickVector = this.pickVector == null ? config.getPickVector() : this.pickVector;
-			return new DynamicPickContext(this.camera, fluidContext, entity, pickVector);
+			return new DynamicPickContext(this.camera, fluidContext, entity, entityFilter, pickVector);
 		}
 	}
 }

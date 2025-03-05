@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.model.Couple;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import net.minecraft.client.multiplayer.PlayerController;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -12,12 +11,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 
-import java.util.function.Predicate;
-
 public class ObjectPicker implements IObjectPicker
 {
-	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
-	
 	@Override
 	public RayTraceResult pick(PickContext context, double interactionRangeOverride, float partialTick, PlayerController gameMode)
 	{
@@ -59,7 +54,7 @@ public class ObjectPicker implements IObjectPicker
 			.inflate(1.0D, 1.0D, 1.0D);
 		Couple<Vector3d> entityRay = context.entityTrace(interactionRange, partialTick);
 		double interactionRangeSq = entityRay.left().distanceToSqr(entityRay.right());
-		return ProjectileHelper.getEntityHitResult(context.entity(), entityRay.left(), entityRay.right(), aabb, ENTITY_IS_PICKABLE, interactionRangeSq);
+		return ProjectileHelper.getEntityHitResult(context.entity(), entityRay.left(), entityRay.right(), aabb, context.entityFilter(), interactionRangeSq);
 	}
 	
 	@Override
