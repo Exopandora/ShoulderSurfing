@@ -6,13 +6,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.function.Predicate;
+
 public final class ObstructionPickContext extends PickContext
 {
 	private final Vec3 endPos;
 	
-	public ObstructionPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Vec3 endPos)
+	public ObstructionPickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Predicate<Entity> entityFilter, Vec3 endPos)
 	{
-		super(camera, fluidContext, entity);
+		super(camera, fluidContext, entity, entityFilter);
 		this.endPos = endPos;
 	}
 	
