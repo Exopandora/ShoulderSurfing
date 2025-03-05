@@ -77,7 +77,7 @@ public class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPlugin
 			{
 				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
 			}
-			else if(parseVersionPredicateSilent("<6.0.0)").test(version))
+			else if(parseVersionPredicateSilent("<6.0.0").test(version))
 			{
 				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
 			}
