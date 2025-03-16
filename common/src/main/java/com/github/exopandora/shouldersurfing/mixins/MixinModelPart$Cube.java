@@ -18,6 +18,6 @@ public class MixinModelPart$Cube
 	)
 	public float compile(float alpha)
 	{
-		return Math.min(alpha, ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().getCameraEntityAlpha());
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(alpha);
 	}
 }

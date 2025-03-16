@@ -75,6 +75,11 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 				renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight()));
 	}
 	
+	public float applyCameraEntityAlphaContextAware(float alpha)
+	{
+		return this.isRenderingCameraEntity ? Math.min(alpha, this.cameraEntityAlpha) : alpha;
+	}
+	
 	@Override
 	public boolean isRenderingCameraEntity()
 	{
