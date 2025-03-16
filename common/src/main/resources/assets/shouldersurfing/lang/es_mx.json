@@ -170,7 +170,7 @@
   "${modId}.configuration.perspective.tooltip": "Configuración de perspectiva.",
 
   "${modId}.configuration.perspective.default_perspective": "Perspectiva predeterminada",
-  "${modId}.configuration.pperspective.default_perspective.tooltip": "La perspectiva predeterminada cuando cargas el juego.",
+  "${modId}.configuration.perspective.default_perspective.tooltip": "La perspectiva predeterminada cuando cargas el juego.",
   "${modId}.configuration.perspective.remember_last_perspective": "Recordar última perspectiva",
   "${modId}.configuration.perspective.remember_last_perspective.tooltip": "Si se debe recordar la última perspectiva utilizada.",
   "${modId}.configuration.perspective.replace_default_perspective": "Reemplazar perspectiva predeterminada",
