@@ -18,6 +18,6 @@ public class MixinModelRenderer
 	)
 	public float render(float alpha)
 	{
-		return Math.min(alpha, ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().getCameraEntityAlpha());
+		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(alpha);
 	}
 }
