@@ -1,9 +1,9 @@
 {
 	"required": true,
-	"minVersion": "0.8.5",
+	"minVersion": "0.8.7",
 	"package": "com.github.exopandora.shouldersurfing.compat.mixins",
 	"refmap": "shouldersurfing.refmap.json",
-	"compatibilityLevel": "JAVA_17",
+	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"cgm.MixinRecoilHandler",
 		"cobblemon.MixinPlayerExtensionsKt",

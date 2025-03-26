@@ -9,6 +9,9 @@ config = "shouldersurfing.common.mixins.json"
 config = "shouldersurfing.common.compat.mixins.json"
 
 [[mixins]]
+config = "shouldersurfing.neoforge.mixins.json"
+
+[[mixins]]
 config = "shouldersurfing.neoforge.compat.mixins.json"
 
 [[mods]]
@@ -25,14 +28,14 @@ displayTest = "NONE"
 [[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.4,)"
+versionRange = "[1.21.5,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.4.0-beta,)"
+versionRange = "[21.5.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 

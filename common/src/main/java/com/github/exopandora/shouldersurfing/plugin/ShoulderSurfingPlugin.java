@@ -85,8 +85,9 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		
 		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
 		List<? extends String> holdItemAnimations = Config.CLIENT.getAdaptiveCrosshairHoldItemAnimations();
+		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
 		
-		for(ItemStack handStack : entity.getHandSlots())
+		for(ItemStack handStack : handItems)
 		{
 			String handItemId = BuiltInRegistries.ITEM.getKey(handStack.getItem()).toString();
 			

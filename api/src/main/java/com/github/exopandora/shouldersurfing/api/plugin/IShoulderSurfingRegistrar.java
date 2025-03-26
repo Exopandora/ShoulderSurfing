@@ -5,7 +5,6 @@ import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCal
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Predicate;
-import java.util.stream.StreamSupport;
 
 public interface IShoulderSurfingRegistrar
 {
@@ -13,7 +12,7 @@ public interface IShoulderSurfingRegistrar
 	
 	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate)
 	{
-		return this.registerAdaptiveItemCallback((minecraft, entity) -> StreamSupport.stream(entity.getHandSlots().spliterator(), false).anyMatch(predicate));
+		return this.registerAdaptiveItemCallback((minecraft, entity) -> predicate.test(entity.getMainHandItem()) || predicate.test(entity.getOffhandItem()));
 	}
 	
 	IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback targetCameraOffsetCallback);

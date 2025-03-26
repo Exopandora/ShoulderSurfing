@@ -365,7 +365,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			
 			if(Config.CLIENT.isCameraDecoupled())
 			{
-				boolean isMoving = player.input.leftImpulse != 0.0F || player.input.forwardImpulse != 0.0F || player.isFallFlying();
+				boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
 				
 				if(this.instance.shouldEntityFollowCamera(player))
 				{

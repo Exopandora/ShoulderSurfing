@@ -17,6 +17,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.lifecycle.ClientStartedEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -34,7 +35,6 @@ public class ShoulderSurfingNeoForge
 			modContainer.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
 			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
-			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
 		}
@@ -56,7 +56,7 @@ public class ShoulderSurfingNeoForge
 	}
 	
 	@SubscribeEvent
-	public void modConfigLoadingEvent(ModConfigEvent.Loading event)
+	public void clientStartedEvent(ClientStartedEvent event)
 	{
 		ShoulderSurfingImpl.getInstance().init();
 	}

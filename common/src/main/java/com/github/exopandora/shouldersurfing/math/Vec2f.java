@@ -1,10 +1,16 @@
 package com.github.exopandora.shouldersurfing.math;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 
 public record Vec2f(float x, float y)
 {
 	public static final Vec2f ZERO = new Vec2f(0, 0);
+	
+	public Vec2f(Vec2 vec2)
+	{
+		this(vec2.x, vec2.y);
+	}
 	
 	public Vec2f negate()
 	{
@@ -59,6 +65,11 @@ public record Vec2f(float x, float y)
 	public Vec2f lerp(Vec2f vec, float f)
 	{
 		return new Vec2f(Mth.lerp(f, this.x, vec.x), Mth.lerp(f, this.y, vec.y));
+	}
+	
+	public Vec2 toVec2()
+	{
+		return new Vec2(this.x, this.y);
 	}
 	
 	@Override

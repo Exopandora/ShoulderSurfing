@@ -38,7 +38,7 @@ public abstract class MixinClientLevel extends Level
 	
 	@Inject
 	(
-		method = "playSeededSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/core/Holder;Lnet/minecraft/sounds/SoundSource;FFJ)V",
+		method = "playSeededSound(Lnet/minecraft/world/entity/Entity;DDDLnet/minecraft/core/Holder;Lnet/minecraft/sounds/SoundSource;FFJ)V",
 		at = @At
 		(
 			value = "INVOKE",
@@ -47,11 +47,11 @@ public abstract class MixinClientLevel extends Level
 		),
 		cancellable = true
 	)
-	private void playSeededSound(@Nullable Player player, double x, double y, double z, Holder<SoundEvent> soundEvent, SoundSource soundSource, float volume, float pitch, long seed, CallbackInfo ci)
+	private void playSeededSound(@Nullable Entity entity, double x, double y, double z, Holder<SoundEvent> soundEvent, SoundSource soundSource, float volume, float pitch, long seed, CallbackInfo ci)
 	{
-		if(player != null && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.doCenterPlayerSounds() && round(player.xo) == x && round(player.yo) == y && round(player.zo) == z)
+		if(entity != null && entity == Minecraft.getInstance().player && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.doCenterPlayerSounds() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z)
 		{
-			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(player);
+			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(entity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent.value(), soundSource, volume, pitch, false, seed);
 			ci.cancel();
 		}

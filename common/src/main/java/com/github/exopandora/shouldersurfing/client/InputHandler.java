@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
+import com.github.exopandora.shouldersurfing.mixins.ClientInputAccessor;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -151,13 +152,12 @@ public class InputHandler
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
-		Vec2f moveVector = new Vec2f(input.leftImpulse, input.forwardImpulse);
+		Vec2f moveVector = new Vec2f(input.getMoveVector());
 		
 		if(this.instance.isShoulderSurfing() && this.instance.isFreeLooking())
 		{
 			moveVector.rotateDegrees(Mth.degreesDifference(cameraEntity.getYRot(), this.instance.getCamera().getFreeLookYRot()));
-			input.leftImpulse = moveVector.x();
-			input.forwardImpulse = moveVector.y();
+			((ClientInputAccessor) input).setMoveVector(moveVector.toVec2());
 		}
 		else if(this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player)
 		{
@@ -185,8 +185,7 @@ public class InputHandler
 				moveVector = moveVector.rotateDegrees(Mth.degreesDifference(yRot, camera.getYRot()));
 			}
 			
-			input.leftImpulse = moveVector.x();
-			input.forwardImpulse = moveVector.y();
+			((ClientInputAccessor) input).setMoveVector(moveVector.toVec2());
 		}
 	}
 	

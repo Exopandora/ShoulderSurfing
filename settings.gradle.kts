@@ -49,7 +49,7 @@ include(
 	":api",
 	":common",
 	":compat",
-	":forge",
+	// ":forge",
 	":neoforge",
 	":fabric"
 )

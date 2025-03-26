@@ -1,31 +1,27 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.config.Config;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderType.class)
-public abstract class MixinRenderType extends RenderStateShard
+public class MixinRenderType
 {
-	public MixinRenderType(String name, Runnable setupState, Runnable clearState)
-	{
-		super(name, setupState, clearState);
-	}
-	
-	@ModifyArg
+	@Inject
 	(
-		method = "createArmorCutoutNoCull",
-		at = @At
-		(
-			value = "INVOKE",
-			target = "net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder.setTransparencyState(Lnet/minecraft/client/renderer/RenderStateShard$TransparencyStateShard;)Lnet/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder;"
-		)
+		at = @At("HEAD"),
+		method = "armorCutoutNoCull",
+		cancellable = true
 	)
-	private static RenderStateShard.TransparencyStateShard setTransparencyState(RenderStateShard.TransparencyStateShard transparencyStateShard)
+	private static void armorCutoutNoCull(ResourceLocation resourceLocation, CallbackInfoReturnable<RenderType> cir)
 	{
-		return Config.CLIENT.isPlayerTransparencyEnabled() ? TRANSLUCENT_TRANSPARENCY : transparencyStateShard;
+		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		{
+			cir.setReturnValue(RenderType.armorTranslucent(resourceLocation));
+		}
 	}
 }

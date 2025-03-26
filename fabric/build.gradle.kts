@@ -54,8 +54,8 @@ dependencies {
 		exclude(group = libs.fabric.loader.get().group)
 		exclude(group = libs.fabric.api.get().group)
 	}
-	modImplementation(libs.wthit.fabric)
-	modImplementation(libs.badpackets.fabric)
+	modCompileOnly(libs.wthit.fabric)
+	modCompileOnly(libs.badpackets.fabric)
 	modImplementation(libs.jade.fabric)
 }
 

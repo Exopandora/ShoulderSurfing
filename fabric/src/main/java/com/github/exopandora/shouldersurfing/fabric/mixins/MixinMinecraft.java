@@ -3,7 +3,7 @@ package com.github.exopandora.shouldersurfing.fabric.mixins;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeModConfigEvents;
+import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 import net.neoforged.fml.config.ModConfig;
@@ -23,7 +23,7 @@ public class MixinMinecraft
 	private void init(GameConfig gameConfig, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().init();
-		NeoForgeModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config ->
+		ModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config ->
 		{
 			if(ModConfig.Type.CLIENT == config.getType())
 			{
