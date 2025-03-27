@@ -100,10 +100,10 @@ tasks.withType<Jar> {
 	manifest {
 		attributes(mapOf(
 			"MixinConfigs" to listOf(
-				"$modId.common.compat.mixins.json",
 				"$modId.common.mixins.json",
-				"$modId.compat.oculus.mixins.json",
-				"$modId.forge.mixins.json"
+				"$modId.common.compat.mixins.json",
+				"$modId.forge.mixins.json",
+				"$modId.forge.compat.mixins.json"
 			).joinToString(",")
 		))
 	}
