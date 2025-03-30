@@ -47,7 +47,12 @@ public class ClientEventHandler
 		});
 		event.registerAbove(VanillaGuiLayers.CROSSHAIR, ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"), (guiGraphics, deltaTracker) ->
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
+			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+			
+			if(crosshairRenderer.doRenderCrosshair())
+			{
+				crosshairRenderer.postRenderCrosshair(guiGraphics);
+			}
 		});
 	}
 	
