@@ -19,7 +19,7 @@ public class MixinGui
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void offsetCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
+	private void preRenderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
 		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
 		
@@ -38,7 +38,7 @@ public class MixinGui
 		method = "renderCrosshair",
 		at = @At("RETURN")
 	)
-	private void clearCrosshairOffset(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
+	private void postRenderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
 	}
