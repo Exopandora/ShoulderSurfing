@@ -40,7 +40,12 @@ public class ClientEventHandler
 		// Using BOSSHEALTH to pop matrix because when CROSSHAIRS is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(event.getType().equals(RenderGameOverlayEvent.ElementType.BOSSHEALTH))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(event.getMatrixStack());
+			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+			
+			if(crosshairRenderer.doRenderCrosshair())
+			{
+				crosshairRenderer.postRenderCrosshair(event.getMatrixStack());
+			}
 		}
 	}
 	
