@@ -42,7 +42,12 @@ public class ClientEventHandler
 		// Using BOSS_EVENT_PROGRESS to pop matrix because when CROSSHAIR is cancelled it will not fire RenderGuiOverlayEvent.Post and cause a stack overflow
 		else if(ForgeIngameGui.BOSS_HEALTH_ELEMENT.equals(event.getOverlay()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(event.getMatrixStack());
+			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+			
+			if(crosshairRenderer.doRenderCrosshair())
+			{
+				crosshairRenderer.postRenderCrosshair(event.getMatrixStack());
+			}
 		}
 	}
 	

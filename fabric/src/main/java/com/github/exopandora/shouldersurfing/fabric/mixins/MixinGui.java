@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric.mixins;
 
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.CameraType;
@@ -14,8 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.spongepowered.asm.mixin.injection.At.Shift;
-
 @Mixin(Gui.class)
 public abstract class MixinGui
 {
@@ -24,30 +23,30 @@ public abstract class MixinGui
 	
 	@Inject
 	(
-		method = "render",
-		at = @At
-		(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/Gui;renderCrosshair(Lcom/mojang/blaze3d/vertex/PoseStack;)V",
-			shift = Shift.BEFORE
-		)
+		method = "renderCrosshair",
+		at = @At("HEAD"),
+		cancellable = true
 	)
-	private void preRenderCrosshair(PoseStack poseStack, float partialTick, CallbackInfo ci)
+	private void preRenderCrosshair(PoseStack poseStack, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().preRenderCrosshair(poseStack);
+		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+		
+		if(crosshairRenderer.doRenderCrosshair())
+		{
+			crosshairRenderer.preRenderCrosshair(poseStack);
+		}
+		else
+		{
+			ci.cancel();
+		}
 	}
 	
 	@Inject
 	(
-		method = "render",
-		at = @At
-		(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/Gui;renderCrosshair(Lcom/mojang/blaze3d/vertex/PoseStack;)V",
-			shift = Shift.AFTER
-		)
+		method = "renderCrosshair",
+		at = @At("RETURN")
 	)
-	private void postRenderCrosshair(PoseStack poseStack, float partialTick, CallbackInfo ci)
+	private void postRenderCrosshair(PoseStack poseStack, CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(poseStack);
 	}
