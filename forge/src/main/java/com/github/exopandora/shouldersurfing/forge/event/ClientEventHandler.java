@@ -46,7 +46,12 @@ public class ClientEventHandler
 		});
 		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "post_crosshair", (gui, guiGraphics, partialTick, screenWith, screenHeight) ->
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
+			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+			
+			if(crosshairRenderer.doRenderCrosshair())
+			{
+				crosshairRenderer.postRenderCrosshair(guiGraphics);
+			}
 		});
 	}
 	
