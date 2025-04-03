@@ -13,6 +13,9 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 * Highly configurable - customize your 3rd person experience with many configuration options
 * Client side only - no server mods required
 
+Please note that this mod modifies the camera position and player movement, which can be an issue for servers with strict anti-cheat.
+Use at your own risk!
+
 # Installation #
 Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/) or [Modrinth](https://modrinth.com/mod/shoulder-surfing-reloaded) or [build from source](#building-from-source).
 
