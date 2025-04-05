@@ -315,11 +315,15 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
-				.subtract(1, 1, 1)
-				.scale(0.15)
+				.subtract(1, 1, 1);
+			Vec3 fromOffset = offset.scale(Mth.clamp(camera.getEntity().getBbWidth() / 2.0F / Mth.sqrt(2), 0.0F, 0.15F))
+				.xRot(-camera.getXRot() * Mth.DEG_TO_RAD)
 				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
-			Vec3 from = eyePosition.add(offset);
-			Vec3 to = from.add(worldOffset);
+			Vec3 from = eyePosition.add(fromOffset);
+			Vec3 toOffset = offset.scale(0.15)
+				.xRot(-camera.getXRot() * Mth.DEG_TO_RAD)
+				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
+			Vec3 to = eyePosition.add(toOffset).add(worldOffset);
 			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
 			HitResult hitResult = level.clip(context);
 			
