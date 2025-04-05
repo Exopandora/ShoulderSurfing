@@ -322,11 +322,15 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			Vector3d offset = new Vector3d(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
-				.subtract(1, 1, 1)
-				.scale(0.15)
+				.subtract(1, 1, 1);
+			Vector3d fromOffset = offset.scale(MathHelper.clamp(camera.getEntity().getBbWidth() / 2.0F / MathHelper.sqrt(2), 0.0F, 0.15F))
+				.xRot(-camera.getXRot() * MathUtil.DEG_TO_RAD)
 				.yRot(-camera.getYRot() * MathUtil.DEG_TO_RAD);
-			Vector3d from = eyePosition.add(offset);
-			Vector3d to = from.add(worldOffset);
+			Vector3d from = eyePosition.add(fromOffset);
+			Vector3d toOffset = offset.scale(0.15)
+				.xRot(-camera.getXRot() * MathUtil.DEG_TO_RAD)
+				.yRot(-camera.getYRot() * MathUtil.DEG_TO_RAD);
+			Vector3d to = eyePosition.add(toOffset).add(worldOffset);
 			RayTraceContext context = new RayTraceContext(from, to, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, camera.getEntity());
 			RayTraceResult hitResult = level.clip(context);
 			
