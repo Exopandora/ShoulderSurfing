@@ -55,6 +55,7 @@ mixin {
 	config("$modId.common.mixins.json")
 	config("$modId.common.compat.mixins.json")
 	config("$modId.forge.mixins.json")
+	config("$modId.forge.compat.mixins.json")
 }
 
 minecraft {
