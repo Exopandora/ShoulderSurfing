@@ -8,9 +8,16 @@ import java.util.Map;
 
 public enum Mods
 {
+	CGM,
+	COBBLEMON,
 	CREATE,
+	EMF,
+	EPIC_FIGHT,
 	IRIS,
-	OCULUS;
+	OCULUS,
+	SKIN_LAYERS,
+	THE_ONE_PROBE,
+	TSLAT_ENTITY_STATUS;
 	
 	private static final Map<Mods, @Nullable String> MODS_TO_VERSION = new HashMap<Mods, String>();
 	
