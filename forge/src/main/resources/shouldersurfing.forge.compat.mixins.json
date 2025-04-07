@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"minVersion": "0.8.5",
-	"plugin": "com.github.exopandora.shouldersurfing.forge.compat.ShoulderSurfingCompatMixinPlugin",
+	"plugin": "com.github.exopandora.shouldersurfing.forge.compat.ShoulderSurfingCompatMixinPluginForge",
 	"package": "com.github.exopandora.shouldersurfing.compat.mixins",
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_17",

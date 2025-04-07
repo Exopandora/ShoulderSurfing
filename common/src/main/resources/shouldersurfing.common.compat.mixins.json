@@ -4,17 +4,6 @@
 	"package": "com.github.exopandora.shouldersurfing.compat.mixins",
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"cgm.MixinRecoilHandler",
-		"cobblemon.MixinPlayerExtensionsKt",
-		"cobblemon.MixinPokemonRenderer",
-		"emf.MixinEMFModelPartCustom$EMFCube",
-		"epicfight.AccessorCamera",
-		"epicfight.MixinRenderEngine",
-		"skinlayers.MixinCustomizableModelPart",
-		"theoneprobe.MixinOverlayRenderer",
-		"tslatentitystatus.MixinTESHud"
-	],
 	"injectors": {
 		"defaultRequire": 0
 	}
