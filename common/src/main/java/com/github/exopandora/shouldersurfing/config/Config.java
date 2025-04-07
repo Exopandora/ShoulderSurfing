@@ -143,6 +143,8 @@ public class Config
 		
 		private final BooleanValue centerPlayerSounds;
 		
+		private final BooleanValue epicFightDecoupledCameraLockOn;
+		
 		private boolean requiresSaving = false;
 		
 		public ClientConfig(ModConfigSpec.Builder builder)
@@ -669,6 +671,16 @@ public class Config
 				.define("center_player_sounds", false);
 			
 			builder.pop();
+			builder.push("integrations");
+			builder.push("epicfight");
+			
+			this.epicFightDecoupledCameraLockOn = builder
+				.comment("Whether to allow target lock-on when camera is decoupled.")
+				.translation(MOD_ID + ".configuration.integrations.epicfight.decoupled_camera_lock_on")
+				.define("decoupled_camera_lock_on", false);
+			
+			builder.pop();
+			builder.pop();
 		}
 		
 		@Override
@@ -1172,6 +1184,12 @@ public class Config
 		public double getPlayerYRotFollowAngleLimit()
 		{
 			return this.playerYRotFollowAngleLimit.get();
+		}
+		
+		@Override
+		public boolean getEpicFightDecoupledCameraLockOn()
+		{
+			return this.epicFightDecoupledCameraLockOn.get();
 		}
 		
 		public void adjustCameraLeft()
