@@ -289,8 +289,19 @@
   "${modId}.configuration.audio": "Audio",
   "${modId}.configuration.audio.tooltip": "Audio settings.",
 
-  "${modId}.configuration.audio.center_player_sounds": "Center player sounds.",
+  "${modId}.configuration.audio.center_player_sounds": "Center player sounds",
   "${modId}.configuration.audio.center_player_sounds.tooltip": "Whether to center sounds made by the player.",
+
+  "${modId}.configuration.integrations.button": "Edit",
+  "${modId}.configuration.integrations": "Integrations",
+  "${modId}.configuration.integrations.tooltip": "Integration settings.",
+
+  "${modId}.configuration.epicfight.button": "Edit",
+  "${modId}.configuration.epicfight": "Epic Fight",
+  "${modId}.configuration.epicfight.tooltip": "Settings for Epic Fight.",
+
+  "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on": "Decoupled camera lock-on",
+  "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on.tooltip": "Whether to allow target lock-on when camera is decoupled.",
 
   "${modId}.modloadingissue.incompatiblemod": "Mod §e{2}§r is §cincompatible§r with §3{3}§r.\n§7Currently, §3{3}§r§7 is §o{4}§r",
 
