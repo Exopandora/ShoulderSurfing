@@ -194,4 +194,6 @@ public interface IClientConfig
 	boolean shouldPlayerYRotFollowCamera();
 	
 	double getPlayerYRotFollowAngleLimit();
+	
+	boolean getEpicFightDecoupledCameraLockOn();
 }
