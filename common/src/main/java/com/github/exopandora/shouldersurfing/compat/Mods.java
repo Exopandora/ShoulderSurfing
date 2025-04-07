@@ -8,7 +8,13 @@ import java.util.Map;
 
 public enum Mods
 {
-	CREATE;
+	CGM,
+	CREATE,
+	EMF,
+	EPIC_FIGHT,
+	SKIN_LAYERS,
+	THE_ONE_PROBE,
+	TSLAT_ENTITY_STATUS;
 	
 	private static final Map<Mods, @Nullable String> MODS_TO_VERSION = new HashMap<Mods, String>();
 	

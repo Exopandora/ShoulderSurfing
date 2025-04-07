@@ -12,7 +12,12 @@ public class Platform implements IPlatform
 	{
 		return switch(mod)
 		{
+			case CGM, EPIC_FIGHT -> null;
 			case CREATE -> findModVersionForId("create");
+			case EMF -> findModVersionForId("entity_model_features");
+			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
+			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
+			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");
 		};
 	}
 	
