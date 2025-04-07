@@ -32,7 +32,7 @@ public class MixinRenderEngine
 		{
 			((AccessorCamera) camera).invokeSetRotation(yRot, xRot);
 		}
-		else if(!Config.CLIENT.isCameraDecoupled())
+		else if(!Config.CLIENT.isCameraDecoupled() || Config.CLIENT.getEpicFightDecoupledCameraLockOn())
 		{
 			ShoulderSurfingImpl.getInstance().getCamera().setXRot(xRot);
 			ShoulderSurfingImpl.getInstance().getCamera().setYRot(yRot);
