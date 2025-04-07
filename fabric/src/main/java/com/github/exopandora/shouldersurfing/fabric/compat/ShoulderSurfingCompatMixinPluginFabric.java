@@ -1,46 +1,22 @@
 package com.github.exopandora.shouldersurfing.fabric.compat;
 
 import com.github.exopandora.shouldersurfing.compat.Mods;
+import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPlugin
+public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin
 {
-	@Override
-	public void onLoad(String mixinPackage)
-	{
-	
-	}
-	
-	@Override
-	public String getRefMapperConfig()
-	{
-		return null;
-	}
-	
-	@Override
-	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
-	{
-		return true;
-	}
-	
-	@Override
-	public void acceptTargets(Set<String> myTargets, Set<String> otherTargets)
-	{
-		
-	}
-	
 	@Override
 	public List<String> getMixins()
 	{
 		List<String> mixins = new ArrayList<String>();
+		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
 		addIrisMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
