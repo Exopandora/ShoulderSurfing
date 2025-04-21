@@ -17,6 +17,8 @@ public interface IShoulderSurfing
 	boolean isShoulderSurfing();
 	
 	boolean isAiming();
+
+	boolean isCameraDecoupled();
 	
 	boolean isFreeLooking();
 	

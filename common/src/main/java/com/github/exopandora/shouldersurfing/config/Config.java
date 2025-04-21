@@ -19,7 +19,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import org.apache.commons.lang3.tuple.Pair;
-import com.github.exopandora.shouldersurfing.ShoulderSurfingAPI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1102,7 +1101,7 @@ public class Config
 		@Override
 		public boolean isCameraDecoupled()
 		{
-			return !ShoulderSurfingAPI.getForcedCoupledCamera() && this.isCameraDecoupled.get();
+			return this.isCameraDecoupled.get();
 		}
 		
 		@Override
