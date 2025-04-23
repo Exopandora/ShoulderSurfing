@@ -119,7 +119,8 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 	}
 
-	private void changeCameraDecoupling(Boolean allowDecoupling, Minecraft minecraft) {
+	private void changeCameraDecoupling(Boolean allowDecoupling, Minecraft minecraft)
+	{
 		this.isCameraDecoupled = allowDecoupling
 			&& Config.CLIENT.isCameraDecoupled()
 			&& !isForcingCoupledCamera(minecraft);
@@ -299,7 +300,8 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	}
 
 	@Override
-	public boolean isCameraDecoupled() {
+	public boolean isCameraDecoupled()
+	{
 		return this.isCameraDecoupled;
 	}
 	

@@ -30,7 +30,8 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	}
 
 	@Override
-	public IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback cameraCouplingCallback) {
+	public IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback cameraCouplingCallback)
+	{
 		this.cameraCouplingCallbacks.add(cameraCouplingCallback);
 		return this;
 	}
