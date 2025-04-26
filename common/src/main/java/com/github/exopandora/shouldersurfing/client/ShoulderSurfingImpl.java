@@ -74,20 +74,18 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		
 		this.isAiming = isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
 		this.updatePlayerRotations = false;
-		Boolean allowCameraDecoupling = !isFirstPerson && this.isShoulderSurfing;
 		LocalPlayer player = minecraft.player;
 		
 		if(this.isShoulderSurfing && Config.CLIENT.getCrosshairType().doSwitchPerspective(this.isAiming))
 		{
 			this.changePerspective(Perspective.FIRST_PERSON);
 			this.isTemporaryFirstPerson = true;
-			allowCameraDecoupling = false;
 		}
 		else if(this.isTemporaryFirstPerson && isFirstPerson && !Config.CLIENT.getCrosshairType().doSwitchPerspective(this.isAiming))
 		{
 			this.changePerspective(Perspective.SHOULDER_SURFING);
 		}
-		this.changeCameraDecoupling(allowCameraDecoupling, minecraft);
+		this.isCameraDecoupled = this.isShoulderSurfing && Config.CLIENT.isCameraDecoupled() && !isForcingCoupledCamera(minecraft);
 		
 		if(this.isShoulderSurfing && player != null)
 		{
@@ -117,13 +115,6 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 				}
 			}
 		}
-	}
-
-	private void changeCameraDecoupling(Boolean allowDecoupling, Minecraft minecraft)
-	{
-		this.isCameraDecoupled = allowDecoupling
-			&& Config.CLIENT.isCameraDecoupled()
-			&& !isForcingCoupledCamera(minecraft);
 	}
 	
 	public void lookAtCrosshairTarget()
