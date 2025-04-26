@@ -66,7 +66,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
-		if(instance.isCameraDecoupled())
+		if(this.instance.isCameraDecoupled())
 		{
 			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 			{
@@ -119,7 +119,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	public Vec2f calcRotations(Entity cameraEntity, float partialTick)
 	{
-		if(!instance.isCameraDecoupled() && EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
+		if(!this.instance.isCameraDecoupled() && EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 		{
 			return new Vec2f(living.getViewXRot(partialTick), living.getViewYRot(partialTick));
 		}
@@ -127,7 +127,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		float cameraXRotWithOffset = Mth.clamp(Mth.rotLerp(partialTick, this.xRotOffsetO, this.xRotOffset) + this.xRot, -90F, 90F);
 		float cameraYRotWithOffset = Mth.rotLerp(partialTick, this.yRotOffsetO, this.yRotOffset) + this.yRot;
 		
-		if(instance.isCameraDecoupled())
+		if(this.instance.isCameraDecoupled())
 		{
 			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 			{
@@ -135,7 +135,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				cameraYRotWithOffset += (living.getYHeadRot() - living.yHeadRotO) * partialTick;
 			}
 		}
-		else if(cameraEntity != null && !instance.isCameraDecoupled() && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
+		else if(cameraEntity != null && !this.instance.isCameraDecoupled() && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
 		{
 			cameraYRotWithOffset += (boat.getYRot() - boat.yRotO) * partialTick;
 		}
@@ -367,7 +367,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				cameraYRot = constraintRotations.y();
 			}
 			
-			if(instance.isCameraDecoupled())
+			if(this.instance.isCameraDecoupled())
 			{
 				boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
 				
@@ -404,7 +404,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.xRot = cameraXRot;
 			this.yRot = cameraYRot;
 			
-			return instance.isCameraDecoupled();
+			return this.instance.isCameraDecoupled();
 		}
 		
 		return false;
