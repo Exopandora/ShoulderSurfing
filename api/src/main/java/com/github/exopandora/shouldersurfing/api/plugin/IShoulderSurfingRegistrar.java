@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 public interface IShoulderSurfingRegistrar
 {
 	IShoulderSurfingRegistrar registerAdaptiveItemCallback(IAdaptiveItemCallback adaptiveItemCallback);
+	
 	IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback cameraCouplingCallback);
 	
 	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate)
