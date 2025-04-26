@@ -9,6 +9,7 @@
 		"GuiAccessor",
 		"GameRendererAccessor",
 		"MixinAbstractClientPlayer",
+		"MixinBeeStingerModel",
 		"MixinCamera",
 		"MixinCapeLayer",
 		"MixinClientLevel",
