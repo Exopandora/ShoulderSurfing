@@ -28,6 +28,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	private boolean isShoulderSurfing;
 	private boolean isTemporaryFirstPerson;
 	private boolean isAiming;
+	private boolean isCameraDecoupled;
 	private boolean isFreeLooking;
 	private int turningLockTime;
 	private boolean updatePlayerRotations;
@@ -78,12 +79,13 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		{
 			this.changePerspective(Perspective.SHOULDER_SURFING);
 		}
+		this.isCameraDecoupled = this.isShoulderSurfing && Config.CLIENT.isCameraDecoupled() && !isForcingCoupledCamera(minecraft);
 		
 		if(this.isShoulderSurfing && player != null)
 		{
 			boolean isTurningLockActive = this.turningLockTime > 0;
 			
-			if(isTurningLockActive && !Config.CLIENT.isCameraDecoupled())
+			if(isTurningLockActive && !this.isCameraDecoupled())
 			{
 				this.turningLockTime = 0;
 			}
@@ -135,7 +137,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	private boolean shouldEntityAimAtTargetInternal(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && Config.CLIENT.isCameraDecoupled() &&
+		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && this.isCameraDecoupled() &&
 			(isUsingItem(cameraEntity, minecraft) || !cameraEntity.isFallFlying() && (isInteracting(cameraEntity, minecraft) &&
 				!(Config.CLIENT.getPickVector() == PickVector.PLAYER && Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC) ||
 				isAttacking(minecraft) || isPicking(minecraft)));
@@ -176,7 +178,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	public boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
 	{
 		return (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) ||
-			!Config.CLIENT.isCameraDecoupled();
+			!this.isCameraDecoupled();
 	}
 	
 	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
@@ -187,6 +189,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 		
 		return false;
+	}
+	
+	private static boolean isForcingCoupledCamera(Minecraft minecraft)
+	{
+		return ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks().stream().anyMatch(callback -> callback.isForcingCameraCoupling(minecraft));
 	}
 	
 	@Override
@@ -266,6 +273,12 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	public boolean isAiming()
 	{
 		return this.isAiming;
+	}
+
+	@Override
+	public boolean isCameraDecoupled()
+	{
+		return this.isCameraDecoupled;
 	}
 	
 	@Override
