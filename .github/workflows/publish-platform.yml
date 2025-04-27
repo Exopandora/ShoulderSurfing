@@ -1,0 +1,73 @@
+name: Publish to Platform
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        required: true
+        type: string
+        description: "Java version to use for publishing"
+      platform:
+        required: true
+        type: string
+        description: "Platform to publish to (curseforge, modrinth)"
+      publish-task:
+        required: true
+        type: string
+        description: "Gradle task to run for publishing"
+      param-prefix:
+        required: true
+        type: string
+        description: "Parameter prefix for the platform (curse, modrinth)"
+      artifact-name:
+        required: false
+        type: string
+        default: "mod-jars"
+        description: "Name of the artifact to download"
+      extra-params:
+        required: false
+        type: string
+        default: ""
+        description: "Extra parameters for the Gradle task"
+    secrets:
+      PLATFORM_TOKEN:
+        required: true
+        description: "API token for the platform"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ inputs.java-version }}
+          distribution: 'temurin'
+      
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+        
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: artifacts
+          
+      - name: Display structure of downloaded files
+        run: ls -la artifacts/
+      
+      - name: Publish to ${{ inputs.platform }}
+        env:
+          PLATFORM_TOKEN: ${{ secrets.PLATFORM_TOKEN }}
+        run: |
+          ./gradlew ${{ inputs.publish-task }} \
+            -P${{ inputs.param-prefix }}ApiKey=$PLATFORM_TOKEN \
+            -P${{ inputs.param-prefix }}FileType=release \
+            -P${{ inputs.param-prefix }}Changelog="See GitHub releases for changelog: https://github.com/${{ github.repository }}/releases" \
+            ${{ inputs.extra-params }}
