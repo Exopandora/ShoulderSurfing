@@ -28,14 +28,15 @@ public class MixinRenderEngine
 	)
 	private void correctCamera(Camera camera, float yRot, float xRot)
 	{
-		if(!ShoulderSurfingImpl.getInstance().isShoulderSurfing())
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		if(!instance.isShoulderSurfing())
 		{
 			((AccessorCamera) camera).invokeSetRotation(yRot, xRot);
 		}
-		else if(!Config.CLIENT.isCameraDecoupled() || Config.CLIENT.getEpicFightDecoupledCameraLockOn())
+		else if(!instance.isCameraDecoupled() || Config.CLIENT.getEpicFightDecoupledCameraLockOn())
 		{
-			ShoulderSurfingImpl.getInstance().getCamera().setXRot(xRot);
-			ShoulderSurfingImpl.getInstance().getCamera().setYRot(yRot);
+			instance.getCamera().setXRot(xRot);
+			instance.getCamera().setYRot(yRot);
 		}
 	}
 	
