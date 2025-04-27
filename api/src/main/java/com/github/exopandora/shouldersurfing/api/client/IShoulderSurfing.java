@@ -18,6 +18,8 @@ public interface IShoulderSurfing
 	
 	boolean isAiming();
 	
+	boolean isCameraDecoupled();
+	
 	boolean isFreeLooking();
 	
 	void changePerspective(Perspective perspective);

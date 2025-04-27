@@ -14,7 +14,7 @@ public class DebugScreenOverlayHandler
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(instance.isShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && Config.CLIENT.isCameraDecoupled())
+		if(instance.isShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && instance.isCameraDecoupled())
 		{
 			int index = findFacingDebugTextIndex(left);
 			
