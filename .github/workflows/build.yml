@@ -22,7 +22,7 @@ jobs:
           
           # If no version found, default to Java 8
           if [ -z "$JAVA_VERSION" ]; then
-            JAVA_VERSION=8
+            JAVA_VERSION=21
           fi
           
           echo "java-version=$JAVA_VERSION" >> $GITHUB_OUTPUT
