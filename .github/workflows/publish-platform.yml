@@ -67,7 +67,7 @@ jobs:
           PLATFORM_TOKEN: ${{ secrets.PLATFORM_TOKEN }}
         run: |
           ./gradlew ${{ inputs.publish-task }} \
-            -P${{ inputs.param-prefix }}ApiKey=$PLATFORM_TOKEN \
+            -P${{ inputs.param-prefix }}_api_key=$PLATFORM_TOKEN \
             -P${{ inputs.param-prefix }}FileType=release \
             -P${{ inputs.param-prefix }}Changelog="See GitHub releases for changelog: https://github.com/${{ github.repository }}/releases" \
             ${{ inputs.extra-params }}

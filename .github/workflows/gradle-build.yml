@@ -31,9 +31,6 @@ jobs:
           java-version: ${{ inputs.java-version }}
           distribution: 'temurin'
           cache: gradle
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
       
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
