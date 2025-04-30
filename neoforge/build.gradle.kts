@@ -129,7 +129,7 @@ publishMods {
 	
 	curseforge {
 		projectId = curseProjectId
-		accessToken = findProperty("curse_api_key").toString()
+		accessToken = System.getenv("CURSE_API_KEY")
 		minecraftVersions.set(compatibleVersions)
 		javaVersions.add(JavaVersion.toVersion(javaVersion))
 		clientRequired = true
@@ -139,7 +139,7 @@ publishMods {
 	
 	modrinth {
 		projectId = modrinthProjectId
-		accessToken = findProperty("modrinth_api_key").toString()
+		accessToken = System.getenv("MODRINTH_API_KEY")
 		minecraftVersions.set(compatibleVersions)
 		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
 	}
