@@ -1,0 +1,59 @@
+name: Publish Mod
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+        default: ''
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup-java.yml
+    
+  build:
+    needs: setup
+    uses: ./.github/workflows/gradle-build.yml
+    with:
+      java-version: ${{ needs.setup.outputs.java-version }}
+      upload-artifacts: true
+      artifact-name: mod-jars
+
+  approval:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [forge, neoforge, fabric]
+    environment: publish-${{ matrix.platform }}
+    steps:
+      - name: Waiting for approval
+        run: echo "Approved for publishing ${{ matrix.platform }} version"
+
+  publish-curseforge:
+    needs: [setup, build, approval]
+    uses: ./.github/workflows/publish-platform.yml
+    with:
+      java-version: ${{ needs.setup.outputs.java-version }}
+      platform: curseforge
+      publish-task: publishCurseForge
+      artifact-name: mod-jars
+    secrets:
+      CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
+      MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
+
+  publish-modrinth:
+    needs: [setup, build, approval]
+    uses: ./.github/workflows/publish-platform.yml
+    with:
+      java-version: ${{ needs.setup.outputs.java-version }}
+      platform: modrinth
+      publish-task: publishModrinth
+      artifact-name: mod-jars
+    secrets:
+      CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
+      MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
