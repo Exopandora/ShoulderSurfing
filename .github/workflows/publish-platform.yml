@@ -15,10 +15,6 @@ on:
         required: true
         type: string
         description: "Gradle task to run for publishing"
-      param-prefix:
-        required: true
-        type: string
-        description: "Parameter prefix for the platform (curse, modrinth)"
       artifact-name:
         required: false
         type: string
