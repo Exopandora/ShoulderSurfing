@@ -1,0 +1,61 @@
+name: Setup Java Environment
+
+on:
+  workflow_call:
+    outputs:
+      java-version:
+        description: "The detected Java version from gradle.properties"
+        value: ${{ jobs.setup.outputs.java-version }}
+      mod-version:
+        description: "The mod version detected from gradle.properties"
+        value: ${{ jobs.setup.outputs.mod-version }}
+      mc-versions:
+        description: "The compatible Minecraft versions"
+        value: ${{ jobs.setup.outputs.mc-versions }}
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      java-version: ${{ steps.get-java-version.outputs.java-version }}
+      mod-version: ${{ steps.mod-info.outputs.mod-version }}
+      mc-versions: ${{ steps.mod-info.outputs.mc-versions }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Determine Java version from gradle.properties
+        id: get-java-version
+        run: |
+          # Load Java version directly from properties file using a more reliable method
+          JAVA_VERSION=$(awk -F= '/^javaVersion[[:space:]]*=/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2}' gradle.properties)
+          
+          # If no version found, default to Java 8
+          if [ -z "$JAVA_VERSION" ]; then
+            JAVA_VERSION=8
+          fi
+          
+          echo "java-version=$JAVA_VERSION" >> $GITHUB_OUTPUT
+          echo "Detected Java Version: $JAVA_VERSION"
+      
+      - name: Get mod information
+        id: mod-info
+        run: |
+          # Extract mod version
+          MOD_VERSION=$(grep "modVersion" gradle.properties | cut -d '=' -f 2 | tr -d ' ')
+          echo "mod-version=$MOD_VERSION" >> $GITHUB_OUTPUT
+          
+          # Extract game versions
+          FORGE_VERSIONS=$(grep "forgeCompatibleMinecraftVersions" gradle.properties | cut -d '=' -f 2 | tr -d ' ')
+          NEOFORGE_VERSIONS=$(grep "neoForgeCompatibleMinecraftVersions" gradle.properties | cut -d '=' -f 2 | tr -d ' ')
+          FABRIC_VERSIONS=$(grep "fabricCompatibleMinecraftVersions" gradle.properties | cut -d '=' -f 2 | tr -d ' ')
+          
+          # Combine all versions
+          ALL_VERSIONS="$FORGE_VERSIONS,$NEOFORGE_VERSIONS,$FABRIC_VERSIONS"
+          
+          # Remove duplicates by converting to array and back
+          UNIQUE_VERSIONS=$(echo "$ALL_VERSIONS" | tr ',' '\n' | sort | uniq | tr '\n' ',' | sed 's/,$//')
+          
+          echo "mc-versions=$UNIQUE_VERSIONS" >> $GITHUB_OUTPUT
+          echo "Mod version: $MOD_VERSION"
+          echo "Minecraft versions: $UNIQUE_VERSIONS"
