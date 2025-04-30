@@ -79,6 +79,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		{
 			this.changePerspective(Perspective.SHOULDER_SURFING);
 		}
+		
 		this.isCameraDecoupled = this.isShoulderSurfing && Config.CLIENT.isCameraDecoupled() && !isForcingCoupledCamera(minecraft);
 		
 		if(this.isShoulderSurfing && player != null)
