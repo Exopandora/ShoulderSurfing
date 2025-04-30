@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '*'
-  pull_request:
-    # Run on all pull requests regardless of target branch
   workflow_dispatch:
     inputs:
       version:
