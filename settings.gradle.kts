@@ -53,10 +53,3 @@ include(
 	":neoforge",
 	":fabric"
 )
-
-// Explicitly configure the build cache
-buildCache {
-    local {
-        directory = rootDir.resolve(".build-cache")
-    }
-}

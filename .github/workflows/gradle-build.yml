@@ -42,7 +42,7 @@ jobs:
         id: cache-gradle-build
         uses: actions/cache@v4
         with:
-          path: .build-cache
+          path: ~/.gradle
           key: ${{ runner.os }}-gradle-${{ github.ref_name }}-mc${{ steps.minecraft-version.outputs.minecraft_version }}
           restore-keys: |
             ${{ runner.os }}-gradle-${{ github.ref_name }}
@@ -51,7 +51,7 @@ jobs:
         run: chmod +x ./gradlew
       
       - name: Build with Gradle
-        run: ./gradlew build --build-cache
+        run: ./gradlew --build-cache build
       
       - name: Upload build artifacts
         if: ${{ inputs.upload-artifacts }}
