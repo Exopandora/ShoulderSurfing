@@ -54,8 +54,9 @@ include(
 	":fabric"
 )
 
+// Explicitly configure the build cache
 buildCache {
     local {
-        directory = File(".build-cache")
+        directory = rootDir.resolve(".build-cache")
     }
 }

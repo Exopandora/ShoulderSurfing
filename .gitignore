@@ -170,3 +170,5 @@ neoforge/runs
 
 ### Wiki ###
 wiki/
+
+.build-cache

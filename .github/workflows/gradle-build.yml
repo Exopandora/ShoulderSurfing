@@ -51,7 +51,7 @@ jobs:
         run: chmod +x ./gradlew
       
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --build-cache
       
       - name: Upload build artifacts
         if: ${{ inputs.upload-artifacts }}
