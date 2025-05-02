@@ -30,7 +30,6 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
           distribution: 'temurin'
-          cache: gradle
       
       - name: Extract Minecraft version
         id: minecraft-version
@@ -38,14 +37,26 @@ jobs:
           MC_VERSION=$(grep "minecraft =" gradle/libs.versions.toml | cut -d '=' -f2 | xargs)
           echo "minecraft_version=$MC_VERSION" >> $GITHUB_OUTPUT
       
-      - name: Cache Gradle Build
-        id: cache-gradle-build
+      - name: Gradle Cache Restore
+        id: gradle-cache-restore
         uses: actions/cache@v4
         with:
-          path: ~/.gradle
+          path: |
+            .build-cache
+            **/.gradle
+            api/build/moddev
+            api/tmp
+            common/build/moddev
+            common/tmp
+            compat/build/moddev
+            compat/tmp
+            fabric/.gradle/loom-cache
+            fabric/build/loom-cache
+            forge/build/downloadMCMeta
+            forge/build/tmp
+            neoforge/build/moddev
+            neoforge/tmp
           key: ${{ runner.os }}-gradle-${{ github.ref_name }}-mc${{ steps.minecraft-version.outputs.minecraft_version }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-${{ github.ref_name }}
       
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
@@ -59,6 +70,7 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: |
-            build/libs/*.jar
-            */build/libs/*.jar
+            fabric/build/libs/*.jar
+            forge/build/libs/*.jar
+            neoforge/build/libs/*.jar
           if-no-files-found: error
