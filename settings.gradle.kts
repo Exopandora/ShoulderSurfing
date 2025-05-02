@@ -53,3 +53,9 @@ include(
 	":neoforge",
 	":fabric"
 )
+
+buildCache {
+    local {
+        directory = File(".build-cache")
+    }
+}
