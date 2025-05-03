@@ -42,13 +42,13 @@ jobs:
             **/loom-cache
             **/moddev
             **/downloadMCMeta
-          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle*', '*.properties', '*/*/*.properties', '**/gradlew', 'gradle/libs.versions.toml', '**/src/**/*.toml') }}
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/libs.versions.toml', '**/src/**/*.toml') }}
       
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
       
       - name: Build with Gradle
-        run: ./gradlew --build-cache build
+        run: ./gradlew --build-cache clean build
       
       - name: Upload build artifacts
         if: ${{ inputs.upload-artifacts }}
