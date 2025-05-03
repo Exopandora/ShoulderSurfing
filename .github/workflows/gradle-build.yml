@@ -38,19 +38,11 @@ jobs:
         with:
           path: |
             **/.gradle
-            api/build/moddev
-            api/tmp
-            common/build/moddev
-            common/tmp
-            compat/build/moddev
-            compat/tmp
-            fabric/.gradle/loom-cache
-            fabric/build/loom-cache
-            forge/build/downloadMCMeta
-            forge/build/tmp
-            neoforge/build/moddev
-            neoforge/tmp
-          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle*', '**/*.properties', '**/*.kts', '**/gradle-wrapper.properties', '**/gradlew') }}
+            **/tmp
+            **/loom-cache
+            **/moddev
+            **/downloadMCMeta
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle*', '*.properties', '*/*/*.properties', '**/gradlew', 'gradle/libs.versions.toml', '**/src/**/*.toml') }}
       
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
