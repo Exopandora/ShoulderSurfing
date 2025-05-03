@@ -38,10 +38,10 @@ jobs:
         with:
           path: |
             **/.gradle
-            **/tmp
+            **/build/downloadMCMeta
+            **/build/moddev
+            **/build/tmp
             **/loom-cache
-            **/moddev
-            **/downloadMCMeta
           key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/libs.versions.toml', '**/src/**/*.toml') }}
       
       - name: Make Gradle wrapper executable
