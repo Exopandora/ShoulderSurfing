@@ -37,6 +37,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            **/.gradle
             api/build/moddev
             api/tmp
             common/build/moddev
@@ -49,7 +50,7 @@ jobs:
             forge/build/tmp
             neoforge/build/moddev
             neoforge/tmp
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/*.properties', '**/*.kts', '**/gradle-wrapper.properties', '**/gradlew') }}
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle*', '**/*.properties', '**/*.kts', '**/gradle-wrapper.properties', '**/gradlew') }}
       
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
