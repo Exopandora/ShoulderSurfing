@@ -32,6 +32,12 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Extract Minecraft version
+        id: minecraft-version
+        run: |
+          MC_VERSION=$(grep "minecraft =" gradle/libs.versions.toml | cut -d '=' -f2 | xargs)
+          echo "minecraft_version=$MC_VERSION" >> $GITHUB_OUTPUT
+
       - name: Gradle Cache
         id: gradle-cache
         uses: actions/cache@v4
@@ -42,8 +48,8 @@ jobs:
             **/build/moddev
             **/build/tmp
             **/loom-cache
-          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/libs.versions.toml', '**/src/**/*.toml') }}
-      
+          key: ${{ runner.os }}-gradle-cache-${{ steps.minecraft-version.outputs.minecraft_version }}
+
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
       
