@@ -31,12 +31,24 @@ jobs:
           java-version: ${{ inputs.java-version }}
           distribution: 'temurin'
           cache: gradle
+
+      - name: Gradle Cache
+        id: gradle-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/.gradle
+            **/build/downloadMCMeta
+            **/build/moddev
+            **/build/tmp
+            **/loom-cache
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/libs.versions.toml', '**/accesstransformer.cfg', '**/*.accesswidener') }}
       
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
       
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew --build-cache clean build
       
       - name: Upload build artifacts
         if: ${{ inputs.upload-artifacts }}
@@ -44,6 +56,7 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: |
-            build/libs/*.jar
-            */build/libs/*.jar
+            fabric/build/libs/*.jar
+            forge/build/libs/*.jar
+            neoforge/build/libs/*.jar
           if-no-files-found: error
