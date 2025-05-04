@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [forge, neoforge, fabric]
+        platform: [forge, fabric]
     environment: publish-${{ matrix.platform }}
     steps:
       - name: Waiting for approval
