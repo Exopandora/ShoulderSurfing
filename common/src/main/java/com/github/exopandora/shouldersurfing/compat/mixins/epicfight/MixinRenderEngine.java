@@ -29,6 +29,7 @@ public class MixinRenderEngine
 	private void correctCamera(Camera camera, float yRot, float xRot)
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		
 		if(!instance.isShoulderSurfing())
 		{
 			((AccessorCamera) camera).invokeSetRotation(yRot, xRot);
