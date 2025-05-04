@@ -1,8 +1,7 @@
 name: Build Mod
 
 on:
-  pull_request:
-    # Run on all pull requests regardless of target branch
+  pull_request: # Run on all pull requests regardless of target branch
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
