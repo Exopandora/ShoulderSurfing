@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -78,6 +79,24 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	public float applyCameraEntityAlphaContextAware(float alpha)
 	{
 		return this.isRenderingCameraEntity ? Math.min(alpha, this.cameraEntityAlpha) : alpha;
+	}
+	
+	public int applyCameraEntityAlphaContextAware(int color)
+	{
+		return this.isRenderingCameraEntity ? this.applyCameraEntityAlpha(color) : color;
+	}
+	
+	public int applyCameraEntityAlpha(int color)
+	{
+		int cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
+		int alpha = FastColor.ARGB32.alpha(color);
+		
+		if(cameraEntityAlpha < alpha)
+		{
+			return (color & 0xFFFFFF) + (cameraEntityAlpha << 24);
+		}
+		
+		return color;
 	}
 	
 	@Override
