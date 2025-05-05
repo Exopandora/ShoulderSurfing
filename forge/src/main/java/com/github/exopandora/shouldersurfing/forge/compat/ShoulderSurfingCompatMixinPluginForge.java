@@ -20,6 +20,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
 		addOculusMixins(mixins);
+		addSkinLayersMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
@@ -57,6 +58,25 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 			else if(parseVersionRangeSilent("(,6.0.0)").containsVersion(version))
 			{
 				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
+			}
+		}
+	}
+	
+	private static void addSkinLayersMixins(List<String> mixins)
+	{
+		String skinLayersModVersion = Mods.SKIN_LAYERS.getModVersion();
+		
+		if(skinLayersModVersion != null)
+		{
+			ArtifactVersion version = new DefaultArtifactVersion(skinLayersModVersion);
+			
+			if(parseVersionRangeSilent("[1_6_6,)").containsVersion(version))
+			{
+				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_6");
+			}
+			else if(parseVersionRangeSilent("(,1.6.6)").containsVersion(version))
+			{
+				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_5");
 			}
 		}
 	}

@@ -19,6 +19,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
 		addIrisMixins(mixins);
+		addSkinLayersMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
@@ -56,6 +57,25 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 			else if(parseVersionPredicateSilent("<6.0.0").test(version))
 			{
 				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
+			}
+		}
+	}
+	
+	private static void addSkinLayersMixins(List<String> mixins)
+	{
+		String skinLayersModVersion = Mods.SKIN_LAYERS.getModVersion();
+		
+		if(skinLayersModVersion != null)
+		{
+			Version version = parseVersionSilent(skinLayersModVersion);
+			
+			if(parseVersionPredicateSilent(">=1.6.6").test(version))
+			{
+				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_6");
+			}
+			else if(parseVersionPredicateSilent("<1.6.6").test(version))
+			{
+				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_5");
 			}
 		}
 	}
