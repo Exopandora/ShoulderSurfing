@@ -36,7 +36,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		addCGMMixins(mixins);
 		addEMFMixins(mixins);
 		addEpicFightMixins(mixins);
-		addSkinLayersMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
 	}
@@ -63,14 +62,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		{
 			mixins.add("epicfight.AccessorCamera");
 			mixins.add("epicfight.MixinRenderEngine");
-		}
-	}
-	
-	private static void addSkinLayersMixins(List<String> mixins)
-	{
-		if(Mods.SKIN_LAYERS.isLoaded())
-		{
-			mixins.add("skinlayers.MixinCustomizableModelPart");
 		}
 	}
 	
