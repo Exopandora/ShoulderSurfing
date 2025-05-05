@@ -34,6 +34,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	protected static void addCommonCompatMixins(List<String> mixins)
 	{
 		addCGMMixins(mixins);
+		addCreateModMixins(mixins);
 		addEMFMixins(mixins);
 		addEpicFightMixins(mixins);
 		addTheOneProbeMixins(mixins);
@@ -45,6 +46,14 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		if(Mods.CGM.isLoaded())
 		{
 			mixins.add("cgm.MixinRecoilHandler");
+		}
+	}
+	
+	private static void addCreateModMixins(List<String> mixins)
+	{
+		if(Mods.CREATE.isLoaded())
+		{
+			mixins.add("create.MixinContraptionHandlerClient");
 		}
 	}
 	
