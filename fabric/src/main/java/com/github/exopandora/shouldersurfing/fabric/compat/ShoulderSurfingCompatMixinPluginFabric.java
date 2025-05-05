@@ -17,17 +17,8 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 	{
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
-		addCreateModMixins(mixins);
 		addSkinLayersMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
-	}
-	
-	private static void addCreateModMixins(List<String> mixins)
-	{
-		if(Mods.CREATE.isLoaded())
-		{
-			mixins.add("create.MixinContraptionHandlerClient");
-		}
 	}
 	
 	private static void addSkinLayersMixins(List<String> mixins)
