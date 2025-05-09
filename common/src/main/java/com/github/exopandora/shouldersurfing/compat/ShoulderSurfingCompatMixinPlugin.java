@@ -39,6 +39,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		addEpicFightMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
+		addWildfireGenderMixins(mixins);
 	}
 	
 	private static void addCGMMixins(List<String> mixins)
@@ -88,6 +89,14 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		if(Mods.TSLAT_ENTITY_STATUS.isLoaded())
 		{
 			mixins.add("tslatentitystatus.MixinTESHud");
+		}
+	}
+	
+	private static void addWildfireGenderMixins(List<String> mixins)
+	{
+		if(Mods.WILDFIRE_GENDER.isLoaded())
+		{
+			mixins.add("wildfiregender.MixinGenderLayer");
 		}
 	}
 }
