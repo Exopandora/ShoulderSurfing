@@ -22,6 +22,7 @@ public class Platform implements IPlatform
 			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
 			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");
+			case WILDFIRE_GENDER -> findModVersionForId("wildfire_gender");
 		};
 	}
 	
