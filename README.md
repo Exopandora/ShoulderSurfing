@@ -117,6 +117,7 @@ Shoulder Surfing Reloaded has builtin compatibility for the following mods (a-z)
 - OptiFine
 - Sodium
 - TslatEntityStatus
+- Wildfire Gender
 
 Shoulder Surfing Reloaded is known to be incompatible with the following mods (a-z):
 - Better Third Person
