@@ -8,6 +8,7 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
@@ -209,8 +210,21 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	private static boolean isForcingCoupledCamera(Minecraft minecraft)
 	{
-		return ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks().stream().anyMatch(callback -> callback.isForcingCameraCoupling(minecraft));
+		return ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks().stream().anyMatch(callback -> ShoulderSurfingImpl.checkThirdPartyCameraCoupling(minecraft, callback));
 	}
+
+	private static boolean checkThirdPartyCameraCoupling(Minecraft minecraft, ICameraCouplingCallback callback)
+	{
+		try
+		{
+			return callback.isForcingCameraCoupling(minecraft);
+		} catch (Exception e) {
+			// Protecting against potential bugs in third-party mods
+			// Not logging to prevent spam
+			return false;
+		}
+	}
+
 	
 	@Override
 	public void changePerspective(Perspective perspective)
