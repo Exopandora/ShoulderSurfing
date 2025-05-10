@@ -108,6 +108,10 @@ public class Config
 		private final BooleanValue isFovOverrideEnabled;
 		private final DoubleValue fovOverride;
 		
+		private final DoubleValue cameraDragXMultiplier;
+		private final DoubleValue cameraDragYMultiplier;
+		private final DoubleValue cameraDragZMultiplier;
+		
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue isFirstPersonEnabled;
 		private final BooleanValue isThirdPersonFrontEnabled;
@@ -456,6 +460,24 @@ public class Config
 				.translation(MOD_ID + ".configuration.camera.fov_override")
 				.defineInRange("fov_override", 70.0D, 30.0D, 110.0D);
 			
+			builder.push("camera_drag");
+			
+			this.cameraDragXMultiplier = builder
+				.comment("x-axis multiplier for camera drag.")
+				.translation(MOD_ID + ".configuration.camera.camera_drag.multiplier_axis_x")
+				.defineInRange("multiplier_axis_x", 0.0D, 0, 5);
+			
+			this.cameraDragYMultiplier = builder
+				.comment("y-axis multiplier for camera drag.")
+				.translation(MOD_ID + ".configuration.camera.camera_drag.multiplier_axis_y")
+				.defineInRange("multiplier_axis_y", 0.0D, 0, 5);
+			
+			this.cameraDragZMultiplier = builder
+				.comment("z-axis multiplier for camera drag.")
+				.translation(MOD_ID + ".configuration.camera.camera_drag.multiplier_axis_z")
+				.defineInRange("multiplier_axis_z", 0.0D, 0, 5);
+			
+			builder.pop();
 			builder.pop();
 			builder.push("perspective");
 			
@@ -1120,6 +1142,24 @@ public class Config
 		public float getFovOverride()
 		{
 			return this.fovOverride.get().floatValue();
+		}
+		
+		@Override
+		public double getCameraDragXMultiplier()
+		{
+			return this.cameraDragXMultiplier.get();
+		}
+		
+		@Override
+		public double getCameraDragYMultiplier()
+		{
+			return this.cameraDragYMultiplier.get();
+		}
+		
+		@Override
+		public double getCameraDragZMultiplier()
+		{
+			return this.cameraDragZMultiplier.get();
 		}
 		
 		@Override
