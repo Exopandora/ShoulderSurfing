@@ -26,6 +26,17 @@
   "${modId}.configuration.camera.fov_override": "FOV override",
   "${modId}.configuration.camera.fov_override.tooltip": "The camera FOV when in shoulder surfing perspective. Depends on config option 'FOV override enabled'.",
 
+  "${modId}.configuration.camera_drag.button": "Edit",
+  "${modId}.configuration.camera_drag": "Camera drag",
+  "${modId}.configuration.camera_drag.tooltip": "Camera drag settings.",
+
+  "${modId}.configuration.camera.camera_drag.multiplier_axis_x": "Camera drag x-axis multiplier",
+  "${modId}.configuration.camera.camera_drag.multiplier_axis_x.tooltip": "x-axis multiplier for camera drag. Set to 0 to disable.",
+  "${modId}.configuration.camera.camera_drag.multiplier_axis_y": "Camera drag y-axis multiplier",
+  "${modId}.configuration.camera.camera_drag.multiplier_axis_y.tooltip": "y-axis multiplier for camera drag. Set to 0 to disable.",
+  "${modId}.configuration.camera.camera_drag.multiplier_axis_z": "Camera drag z-axis multiplier",
+  "${modId}.configuration.camera.camera_drag.multiplier_axis_z.tooltip": "z-axis multiplier for camera drag. Set to 0 to disable.",
+
   "${modId}.configuration.offset.button": "Edit",
   "${modId}.configuration.offset": "Offset",
   "${modId}.configuration.offset.tooltip": "Camera offset settings.",
