@@ -46,6 +46,6 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.8.1" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.24,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.10-SNAPSHOT" }
-moddevgradle = { id = "net.neoforged.moddev", version = "2.0.80" }
+moddevgradle = { id = "net.neoforged.moddev", version = "2.0.88" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.9" }
