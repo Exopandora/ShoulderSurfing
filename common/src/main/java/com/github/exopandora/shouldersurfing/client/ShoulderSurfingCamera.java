@@ -11,6 +11,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +31,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private Vec3 offsetO;
 	private Vec3 renderOffset;
 	private Vec3 targetOffset;
+	private Vec3 deltaMovementO;
 	private double cameraDistance;
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
@@ -79,6 +81,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.yRot += boat.getYRot() - boat.yRotO;
 		}
 		
+		if(cameraEntity != null)
+		{
+			this.deltaMovementO = getDeltaMovementWithoutGravity(cameraEntity);
+		}
+		
 		if(!this.instance.isFreeLooking())
 		{
 			this.freeLookYRot = this.yRot;
@@ -102,11 +109,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			this.xRot = cameraEntity.getXRot();
 			this.yRot = cameraEntity.getYRot();
+			this.deltaMovementO = getDeltaMovementWithoutGravity(cameraEntity);
 		}
 		else
 		{
 			this.xRot = 0.0F;
 			this.yRot = -180.0F;
+			this.deltaMovementO = Vec3.ZERO;
 		}
 		
 		this.xRotOffset = 0.0F;
@@ -228,7 +237,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		this.targetOffset = targetOffset;
-		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick);
+		Vec3 drag = this.calcCameraDrag(camera, cameraEntity, partialTick);
+		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick).add(drag);
 		
 		if(cameraEntity.isSpectator())
 		{
@@ -339,6 +349,16 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return distance;
+	}
+	
+	private Vec3 calcCameraDrag(Camera cameraIn, Entity cameraEntity, float partialTick)
+	{
+		Vec3 deltaMovement = getDeltaMovementWithoutGravity(cameraEntity);
+		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
+			.multiply(Config.CLIENT.getCameraDragMultipliers())
+			.yRot(cameraIn.getYRot() * Mth.DEG_TO_RAD)
+			.xRot(cameraIn.getXRot() * Mth.DEG_TO_RAD);
+		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
 	}
 	
 	public boolean turn(LocalPlayer player, double yRot, double xRot)
@@ -533,6 +553,20 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	public void setLastMovedYRot(float lastMovedYRot)
 	{
 		this.lastMovedYRot = lastMovedYRot;
+	}
+	
+	private static Vec3 getDeltaMovementWithoutGravity(Entity entity)
+	{
+		Vec3 deltaMovement = entity.getDeltaMovement();
+		final double friction = 0.98D;
+		double gravity = 0.08D;
+		
+		if(deltaMovement.y <= 0.0 && entity instanceof LivingEntity living && living.hasEffect(MobEffects.SLOW_FALLING))
+		{
+			gravity = 0.01D;
+		}
+		
+		return deltaMovement.add(0, gravity * friction, 0);
 	}
 	
 	public static double length(Vector3f vec)
