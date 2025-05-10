@@ -208,6 +208,17 @@ public interface IClientConfig
 	
 	float getFovOverride();
 	
+	double getCameraDragXMultiplier();
+	
+	double getCameraDragYMultiplier();
+	
+	double getCameraDragZMultiplier();
+	
+	default Vec3 getCameraDragMultipliers()
+	{
+		return new Vec3(this.getCameraDragXMultiplier(), this.getCameraDragYMultiplier(), this.getCameraDragZMultiplier());
+	}
+	
 	double getCustomRaytraceDistance();
 	
 	List<? extends String> getAdaptiveCrosshairHoldItems();
