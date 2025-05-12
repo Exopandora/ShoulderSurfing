@@ -2,7 +2,9 @@ package com.github.exopandora.shouldersurfing.forge.event;
 
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
@@ -62,5 +64,11 @@ public class ClientEventHandler
 	{
 		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getInput());
 		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
+	}
+	
+	@SubscribeEvent
+	public static void computeCameraAnglesEvent(EntityViewRenderEvent.CameraSetup event)
+	{
+		event.setRoll(event.getRoll() + ((CameraDuck) event.getCamera()).shouldersurfing$getZRot());
 	}
 }

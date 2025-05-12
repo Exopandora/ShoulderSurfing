@@ -219,6 +219,14 @@ public interface IClientConfig
 		return new Vec3(this.getCameraDragXMultiplier(), this.getCameraDragYMultiplier(), this.getCameraDragZMultiplier());
 	}
 	
+	double getCameraSwayXMaxAngle();
+	
+	double getCameraSwayZMaxAngle();
+	
+	double getCameraSwayXMaxVelocity();
+	
+	double getCameraSwayZMaxVelocity();
+	
 	double getCustomRaytraceDistance();
 	
 	List<? extends String> getAdaptiveCrosshairHoldItems();
