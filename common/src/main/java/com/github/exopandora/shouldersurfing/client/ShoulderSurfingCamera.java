@@ -360,6 +360,21 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
 	}
 	
+	public Vec2f calcSway(ShoulderSurfingCamera camera, Entity cameraEntity, float partialTick)
+	{
+		Vec3 deltaMovement = getDeltaMovementWithoutGravity(cameraEntity);
+		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
+			.yRot(camera.getYRot() * Mth.DEG_TO_RAD)
+			.xRot(camera.getXRot() * Mth.DEG_TO_RAD);
+		double maxVelocityX = Config.CLIENT.getCameraSwayXMaxVelocity() / 20;
+		double maxVelocityZ = Config.CLIENT.getCameraSwayZMaxVelocity() / 20;
+		double maxAngleX = Config.CLIENT.getCameraSwayXMaxAngle();
+		double maxAngleZ = Config.CLIENT.getCameraSwayZMaxAngle();
+		double swayX = Math.min(Math.abs(deltaMovementLerped.y), maxVelocityX) / maxVelocityX * maxAngleX * Math.signum(deltaMovementLerped.y);
+		double swayZ = Math.min(Math.abs(deltaMovementLerped.x), maxVelocityZ) / maxVelocityZ * maxAngleZ * Math.signum(deltaMovementLerped.x);
+		return new Vec2f((float) swayX, (float) swayZ);
+	}
+	
 	public boolean turn(LocalPlayer player, double yRot, double xRot)
 	{
 		if(this.instance.isShoulderSurfing())

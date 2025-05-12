@@ -110,6 +110,11 @@ public class Config
 		private final DoubleValue cameraDragYMultiplier;
 		private final DoubleValue cameraDragZMultiplier;
 		
+		private final DoubleValue cameraSwayXMaxAngle;
+		private final DoubleValue cameraSwayZMaxAngle;
+		private final DoubleValue cameraSwayXMaxVelocity;
+		private final DoubleValue cameraSwayZMaxVelocity;
+		
 		private final BooleanValue replaceDefaultPerspective;
 		private final BooleanValue isFirstPersonEnabled;
 		private final BooleanValue isThirdPersonFrontEnabled;
@@ -472,6 +477,29 @@ public class Config
 				.comment("z-axis multiplier for camera drag.")
 				.translation(MOD_ID + ".configuration.camera.camera_drag.multiplier_axis_z")
 				.defineInRange("multiplier_axis_z", 0.0D, 0, 5);
+			
+			builder.pop();
+			builder.push("camera_sway");
+			
+			this.cameraSwayXMaxAngle = builder
+				.comment("The maximum x-axis angle in degrees. Set to 0 to disable.")
+				.translation(MOD_ID + ".configuration.camera.camera_sway.max_angle_axis_x")
+				.defineInRange("max_angle_axis_x", 0.0D, -30, 30);
+			
+			this.cameraSwayZMaxAngle = builder
+				.comment("The maximum x-axis angle in degrees. Set to 0 to disable.")
+				.translation(MOD_ID + ".configuration.camera.camera_sway.max_angle_axis_z")
+				.defineInRange("max_angle_axis_z", 0.0D, -30, 30);
+			
+			this.cameraSwayXMaxVelocity = builder
+				.comment("The velocity of the player in blocks per second, where the maximum camera x-axis sway is applied.")
+				.translation(MOD_ID + ".configuration.camera.camera_sway.max_velocity_axis_x")
+				.defineInRange("max_velocity_axis_x", 5, 0.05, 1000);
+			
+			this.cameraSwayZMaxVelocity = builder
+				.comment("The velocity of the player in blocks per second, where the maximum camera z-axis sway is applied.")
+				.translation(MOD_ID + ".configuration.camera.camera_sway.max_velocity_axis_z")
+				.defineInRange("max_velocity_axis_z", 5, 0.05, 1000);
 			
 			builder.pop();
 			builder.pop();
@@ -1146,6 +1174,30 @@ public class Config
 		public double getCameraDragZMultiplier()
 		{
 			return this.cameraDragZMultiplier.get();
+		}
+		
+		@Override
+		public double getCameraSwayXMaxAngle()
+		{
+			return this.cameraSwayXMaxAngle.get();
+		}
+		
+		@Override
+		public double getCameraSwayZMaxAngle()
+		{
+			return this.cameraSwayZMaxAngle.get();
+		}
+		
+		@Override
+		public double getCameraSwayXMaxVelocity()
+		{
+			return this.cameraSwayXMaxVelocity.get();
+		}
+		
+		@Override
+		public double getCameraSwayZMaxVelocity()
+		{
+			return this.cameraSwayZMaxVelocity.get();
 		}
 		
 		@Override
