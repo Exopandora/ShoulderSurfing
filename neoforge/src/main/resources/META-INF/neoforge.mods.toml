@@ -9,6 +9,9 @@ config = "shouldersurfing.common.mixins.json"
 config = "shouldersurfing.common.compat.mixins.json"
 
 [[mixins]]
+config = "shouldersurfing.neoforge.mixins.json"
+
+[[mixins]]
 config = "shouldersurfing.neoforge.compat.mixins.json"
 
 [[mods]]

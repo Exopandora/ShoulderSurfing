@@ -1,15 +1,11 @@
 {
 	"required": true,
 	"minVersion": "0.8.5",
-	"package": "com.github.exopandora.shouldersurfing.fabric.mixins",
+	"package": "com.github.exopandora.shouldersurfing.neoforge.mixins",
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"MixinCamera",
-		"MixinGui",
-		"MixinLevelRenderer",
-		"MixinLocalPlayer",
-		"MixinMinecraft"
+		"MixinCamera"
 	],
 	"injectors": {
 		"defaultRequire": 1
