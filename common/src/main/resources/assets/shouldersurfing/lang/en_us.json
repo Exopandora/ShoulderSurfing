@@ -37,6 +37,19 @@
   "${modId}.configuration.camera.camera_drag.multiplier_axis_z": "Camera drag z-axis multiplier",
   "${modId}.configuration.camera.camera_drag.multiplier_axis_z.tooltip": "z-axis multiplier for camera drag. Set to 0 to disable.",
 
+  "${modId}.configuration.camera_sway.button": "Edit",
+  "${modId}.configuration.camera_sway": "Camera sway",
+  "${modId}.configuration.camera_sway.tooltip": "Camera sway settings.",
+
+  "${modId}.configuration.camera.camera_sway.max_angle_axis_x": "Maximum x-axis angle",
+  "${modId}.configuration.camera.camera_sway.max_angle_axis_x.tooltip": "The maximum x-axis angle in degrees. Set to 0 to disable.",
+  "${modId}.configuration.camera.camera_sway.max_angle_axis_z": "Maximum z-axis angle",
+  "${modId}.configuration.camera.camera_sway.max_angle_axis_z.tooltip": "The maximum z-axis angle in degrees. Set to 0 to disable.",
+  "${modId}.configuration.camera.camera_sway.max_velocity_axis_x": "Maximum x-axis velocity",
+  "${modId}.configuration.camera.camera_sway.max_velocity_axis_x.tooltip": "The velocity of the player in blocks per second, where the maximum camera x-axis sway is applied.",
+  "${modId}.configuration.camera.camera_sway.max_velocity_axis_z": "Maximum z-axis velocity",
+  "${modId}.configuration.camera.camera_sway.max_velocity_axis_z.tooltip": "The velocity of the player in blocks per second, where the maximum camera z-axis sway is applied.",
+
   "${modId}.configuration.offset.button": "Edit",
   "${modId}.configuration.offset": "Offset",
   "${modId}.configuration.offset.tooltip": "Camera offset settings.",
