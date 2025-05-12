@@ -1,4 +1,4 @@
-- Added config option for camera lock-on for epic fight integration in decoupled mode
-- Added api callback to force camera coupling (thanks to Farenheith)
-- Fixed compatibility mixins being loaded even when third party mod was is not installed
-- Fixed bee stingers not rendering as transparent when attached to player model
+- Added configurable camera drag (default: off)
+- Added configurable camera sway (default: off)
+- Improved error message when an exception is thrown by a third party plugin
+- Fixed compatibility with Wildfire Gender
