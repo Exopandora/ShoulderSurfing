@@ -1,1 +1,4 @@
-- Fixed compatibility with 3D Skin Layers 1.6.6+
+- Added configurable camera drag (default: off)
+- Added configurable camera sway (default: off)
+- Improved error message when an exception is thrown by a third party plugin
+- Fixed compatibility with Wildfire Gender
