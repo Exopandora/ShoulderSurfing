@@ -20,9 +20,14 @@ public abstract class PluginLoader
 	
 	protected void loadPlugin(String modName, String modId, Path path)
 	{
-		ShoulderSurfingCommon.LOGGER.info("Registering plugin for {} ({})", modName, modId);
+		this.loadPlugin(new PluginContext(modName, modId, path));
+	}
+	
+	private void loadPlugin(PluginContext context)
+	{
+		ShoulderSurfingCommon.LOGGER.info("Registering plugin for {}", context.formattedModName());
 		
-		try(Reader reader = Files.newBufferedReader(path))
+		try(Reader reader = Files.newBufferedReader(context.path()))
 		{
 			JsonObject configuration = JsonParser.parseReader(reader).getAsJsonObject();
 			
@@ -30,17 +35,25 @@ public abstract class PluginLoader
 			{
 				String entrypoint = configuration.get(ENTRYPOINT_KEY).getAsString();
 				IShoulderSurfingPlugin plugin = (IShoulderSurfingPlugin) Class.forName(entrypoint).getConstructor().newInstance();
-				plugin.register(ShoulderSurfingRegistrar.getInstance());
+				ShoulderSurfingRegistrar registrar = ShoulderSurfingRegistrar.getInstance();
+				registrar.setPluginContext(context);
+				plugin.register(registrar);
 			}
 			else
 			{
-				ShoulderSurfingCommon.LOGGER.error("Plugin for {} ({}) does not contain an entrypoint", modName, modId);
+				ShoulderSurfingCommon.LOGGER.error("Plugin for {} does not contain an entrypoint", context.formattedModName());
 			}
 		}
 		catch(Throwable e)
 		{
-			ShoulderSurfingCommon.LOGGER.error("Failed to load plugin for {} ({})", modName, modId, e);
+			ShoulderSurfingCommon.LOGGER.error("Failed to load plugin for {}", context.formattedModName(), e);
 		}
+	}
+	
+	protected void freeze()
+	{
+		ShoulderSurfingCommon.LOGGER.info("Freezing plugin registrar");
+		ShoulderSurfingRegistrar.getInstance().freeze();
 	}
 	
 	public static PluginLoader getInstance()
