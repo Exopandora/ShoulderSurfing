@@ -23,5 +23,7 @@ public class PluginLoaderNeoForge extends PluginLoader
 				this.loadPlugin(modInfo.getDisplayName(), modInfo.getModId(), path);
 			}
 		}
+		
+		this.freeze();
 	}
 }

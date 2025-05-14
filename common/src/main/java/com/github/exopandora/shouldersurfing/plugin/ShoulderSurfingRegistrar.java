@@ -3,11 +3,16 @@ package com.github.exopandora.shouldersurfing.plugin;
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 {
@@ -17,6 +22,9 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ICameraCouplingCallback> cameraCouplingCallbacks = new ArrayList<ICameraCouplingCallback>();
 	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new ArrayList<ITargetCameraOffsetCallback>();
 	
+	private boolean isFrozen;
+	private PluginContext activePluginContext;
+	
 	private ShoulderSurfingRegistrar()
 	{
 		super();
@@ -25,22 +33,52 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	@Override
 	public IShoulderSurfingRegistrar registerAdaptiveItemCallback(IAdaptiveItemCallback adaptiveItemCallback)
 	{
-		this.adaptiveItemCallbacks.add(adaptiveItemCallback);
+		this.checkState();
+		IAdaptiveItemCallback wrapper = new AdaptiveItemCallbackWrapper(this.activePluginContext, adaptiveItemCallback);
+		this.adaptiveItemCallbacks.add(wrapper);
 		return this;
 	}
-
+	
 	@Override
 	public IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback cameraCouplingCallback)
 	{
-		this.cameraCouplingCallbacks.add(cameraCouplingCallback);
+		this.checkState();
+		ICameraCouplingCallback wrapper = new CameraCouplingCallbackWrapper(this.activePluginContext, cameraCouplingCallback);
+		this.cameraCouplingCallbacks.add(wrapper);
 		return this;
 	}
 	
 	@Override
 	public IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback targetCameraOffsetCallback)
 	{
-		this.targetCameraOffsetCallbacks.add(targetCameraOffsetCallback);
+		this.checkState();
+		ITargetCameraOffsetCallback wrapper = new TargetCameraOffsetCallbackWrapper(this.activePluginContext, targetCameraOffsetCallback);
+		this.targetCameraOffsetCallbacks.add(wrapper);
 		return this;
+	}
+	
+	private void checkState()
+	{
+		if(this.isFrozen)
+		{
+			throw new IllegalStateException("Unable to register plugins outside plugin loading stage");
+		}
+		
+		if(this.activePluginContext == null)
+		{
+			throw new IllegalStateException("No active plugin context");
+		}
+	}
+	
+	void setPluginContext(PluginContext context)
+	{
+		this.activePluginContext = context;
+	}
+	
+	protected void freeze()
+	{
+		this.isFrozen = true;
+		this.activePluginContext = null;
 	}
 	
 	public List<IAdaptiveItemCallback> getAdaptiveItemCallbacks()
@@ -56,6 +94,56 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public List<ITargetCameraOffsetCallback> getTargetCameraOffsetCallbacks()
 	{
 		return Collections.unmodifiableList(this.targetCameraOffsetCallbacks);
+	}
+	
+	private record AdaptiveItemCallbackWrapper(PluginContext context, IAdaptiveItemCallback delegate) implements IAdaptiveItemCallback
+	{
+		@Override
+		public boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity)
+		{
+			return wrapCallback(this.context, () -> this.delegate.isHoldingAdaptiveItem(minecraft, entity));
+		}
+	}
+	
+	private record CameraCouplingCallbackWrapper(PluginContext context, ICameraCouplingCallback delegate) implements ICameraCouplingCallback
+	{
+		@Override
+		public boolean isForcingCameraCoupling(Minecraft minecraft)
+		{
+			return wrapCallback(this.context, () -> this.delegate.isForcingCameraCoupling(minecraft));
+		}
+	}
+	
+	private record TargetCameraOffsetCallbackWrapper(PluginContext context, ITargetCameraOffsetCallback delegate) implements ITargetCameraOffsetCallback
+	{
+		@Override
+		public Vec3 pre(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset)
+		{
+			return wrapCallback(this.context, () -> this.delegate.pre(instance, targetOffset, defaultOffset));
+		}
+		
+		@Override
+		public Vec3 post(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset)
+		{
+			return wrapCallback(this.context, () -> this.delegate.post(instance, targetOffset, defaultOffset));
+		}
+	}
+	
+	private static <T> T wrapCallback(PluginContext context, Callable<T> callback)
+	{
+		try
+		{
+			return callback.call();
+		}
+		catch(Throwable t)
+		{
+			throw createExceptionWithContext(context, t);
+		}
+	}
+	
+	private static RuntimeException createExceptionWithContext(PluginContext context, Throwable t)
+	{
+		return new RuntimeException("Shoulder Surfing Reloaded encountered an unexpected error while trying to execute a callback for the plugin provided by " + context.formattedModName() + ". Please report this crash to " + context.formattedModName() + ".", t);
 	}
 	
 	public static ShoulderSurfingRegistrar getInstance()
