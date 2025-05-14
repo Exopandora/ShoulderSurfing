@@ -16,5 +16,7 @@ public class PluginLoaderFabric extends PluginLoader
 				this.loadPlugin(mod.getMetadata().getName(), mod.getMetadata().getId(), path);
 			});
 		}
+		
+		this.freeze();
 	}
 }
