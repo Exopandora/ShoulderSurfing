@@ -21,3 +21,10 @@ mandatory = true
 versionRange = "[1.21,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "forge"
+mandatory = true
+versionRange = "[52.0.23,)"
+ordering = "NONE"
+side = "CLIENT"
