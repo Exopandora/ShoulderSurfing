@@ -15,10 +15,12 @@ Please note that this mod modifies the camera position and player movement, whic
 Use at your own risk!
 
 # Installation #
-## Forge ##
+<details>
+  <summary>Forge</summary>
+
 ### Prerequisites ###
 1. Make sure [Minecraft Forge](http://files.minecraftforge.net/) is installed
-2. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed [≥ 1.21]
+2. Make sure Forge Config API Port ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric), [Modrinth](https://modrinth.com/mod/forge-config-api-port)) is installed
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -31,11 +33,15 @@ Use at your own risk!
 3. Join a world or server
 4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `o` to switch shoulders
 
-## Fabric ##
+</details>
+
+<details>
+  <summary>Fabric</summary>
+
 ### Prerequisites ###
 1. Make sure [Fabric](https://fabricmc.net/) is installed
-2. Make sure [Fabric API](https://modrinth.com/mod/fabric-api) is installed
-3. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed
+2. Make sure Fabric API ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api), [Modrinth](https://modrinth.com/mod/fabric-api)) is installed
+3. Make sure Forge Config API Port ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric), [Modrinth](https://modrinth.com/mod/forge-config-api-port)) is installed
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -48,10 +54,13 @@ Use at your own risk!
 3. Join a world or server
 4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `o` to switch shoulders
 
-## NeoForge ##
+</details>
+
+<details>
+  <summary>NeoForge</summary>
+
 ### Prerequisites ###
 1. Make sure [NeoForge](https://neoforged.net/) is installed
-2. Make sure [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) is installed [≤1.20.6]
 
 ### Manual ###
 1. Navigate to `.minecraft/mods`
@@ -63,6 +72,8 @@ Use at your own risk!
 2. Launch Minecraft
 3. Join a world or server
 4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `o` to switch shoulders
+
+</details>
 
 # Configuration #
 ≥ 1.21: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing-client.cfg`)  
