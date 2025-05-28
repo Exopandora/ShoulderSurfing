@@ -110,7 +110,9 @@ The binaries for each platform can be found in the following directories:
 **A:** Yes.
 
 # Compatibility #
-Shoulder Surfing Reloaded has builtin compatibility for the following mods (a-z):
+<details>
+  <summary>Builtin compatibility (a-z)</summary>
+
 - 3D Skin Layers
 - Cobblemon
 - Create
@@ -121,15 +123,22 @@ Shoulder Surfing Reloaded has builtin compatibility for the following mods (a-z)
 - Sodium
 - TslatEntityStatus
 - Wildfire Gender
+</details>
 
-Shoulder Surfing Reloaded is known to be incompatible with the following mods (a-z):
+<details>
+  <summary>Incompatible mods (a-z)</summary>
+
 - Better Third Person
 - Camera Utils
 - Nimble
 - Valkyrien Skies
 - YDM's Custom Camera View
 
-Shoulder Surfing Reloaded is known to have minor incompatibility issues with the following mods (a-z):
+</details>
+
+<details>
+  <summary>Minor incompatibility issues (a-z)</summary>
+
 - Clutter (hats do not render transparent)
 - Epic Fight (player does not render transparent in battle mode, player keeps punching in the same direction)
 - EssentialClient (player look script hooks do not work)
@@ -139,6 +148,8 @@ Shoulder Surfing Reloaded is known to have minor incompatibility issues with the
 - MrCrayfish's Gun Mod (crosshair does not render when using ads, fov does not update when using ads)
 - Tweakeroo (freecam movement)
 - YDM's Weapon Master (weapons do not render transparent)
+
+</details>
 
 # License #
 MIT License, Original project by Sabar: [Minecraft Forum](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1287308-shoulder-surfing-modded-third-person-camera), [GitHub](https://github.com/sabarjp/ShoulderSurfing)
