@@ -123,7 +123,7 @@ The binaries for each platform can be found in the following directories:
 
 # Compatibility #
 <details>
-  <summary>Builtin compatibility (a-z)</summary>
+  <summary>Builtin compatibility*</summary>
 
 - 3D Skin Layers
 - Create
@@ -137,7 +137,7 @@ The binaries for each platform can be found in the following directories:
 </details>
 
 <details>
-  <summary>Incompatible mods (a-z)</summary>
+  <summary>Incompatible mods*</summary>
 
 - Better Third Person
 - Camera Utils
@@ -148,7 +148,7 @@ The binaries for each platform can be found in the following directories:
 </details>
 
 <details>
-  <summary>Minor incompatibility issues (a-z)</summary>
+  <summary>Minor incompatibility issues*</summary>
 
 - Clutter (hats do not render transparent)
 - Epic Fight (player does not render transparent in battle mode, player keeps punching in the same direction)
@@ -161,6 +161,8 @@ The binaries for each platform can be found in the following directories:
 - YDM's Weapon Master (weapons do not render transparent)
 
 </details>
+
+*Mods are listed from a-z.
 
 # License #
 MIT License, Original project by Sabar: [Minecraft Forum](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1287308-shoulder-surfing-modded-third-person-camera), [GitHub](https://github.com/sabarjp/ShoulderSurfing)
