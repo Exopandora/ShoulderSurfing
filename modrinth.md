@@ -65,13 +65,16 @@ Use at your own risk!
 4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `o` to switch shoulders
 
 # Configuration #
-### Version 3.0.0 and later ###
-Manual: `.minecraft/config/shouldersurfing-client.toml`  
-Ingame: Install [Forge Config Screens](https://www.curseforge.com/minecraft/mc-mods/config-menus-forge)
+≥ 1.21: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing-client.cfg`)  
+≤ 1.20: Install Forge Config Screens ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/config-menus-forge), [Modrinth](https://modrinth.com/mod/forge-config-screens)) (Manual: `.minecraft/config/shouldersurfing-client.cfg`)
 
-### Version 2.9.7 and older ###
+<details>
+  <summary>Version 2.9.7 and older</summary>
+
 ≥ 1.13: Manual: `.minecraft/config/shouldersurfing.toml`  
 ≤ 1.12: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing.cfg`)
+
+</details>
 
 # FAQ #
 **Q:** Why is the player not looking at the position of the crosshair when holding item x?  
