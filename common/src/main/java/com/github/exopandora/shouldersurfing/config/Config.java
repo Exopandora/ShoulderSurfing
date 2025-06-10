@@ -647,6 +647,7 @@ public class Config
 					items.add(BuiltInRegistries.ITEM.getKey(Items.SPLASH_POTION).toString());
 					items.add(BuiltInRegistries.ITEM.getKey(Items.FISHING_ROD).toString());
 					items.add(BuiltInRegistries.ITEM.getKey(Items.LINGERING_POTION).toString());
+					items.add(BuiltInRegistries.ITEM.getKey(Items.WIND_CHARGE).toString());
 					return items;
 				}, String::new, Objects::nonNull);
 			
