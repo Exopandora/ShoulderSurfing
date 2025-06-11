@@ -18,6 +18,7 @@
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
+		"MixinItemProperties$2",
 		"MixinLevelRenderer",
 		"MixinLocalPlayer",
 		"MixinModelPart",
