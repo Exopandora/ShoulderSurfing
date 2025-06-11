@@ -13,6 +13,7 @@
 		"MixinCapeLayer",
 		"MixinClientLevel",
 		"MixinClientPacketListener",
+		"MixinCompassItemPropertyFunction",
 		"MixinDebugScreenOverlay",
 		"MixinEntityBoundSoundInstance",
 		"MixinGameRenderer",
