@@ -51,7 +51,7 @@
   "${modId}.configuration.camera.camera_sway.max_velocity_axis_z.tooltip": "The velocity of the player in blocks per second, where the maximum camera z-axis sway is applied.",
 
   "${modId}.configuration.offset.button": "Edit",
-  "${modId}.configuration.offset": "Offset",
+  "${modId}.configuration.offset": "Camera offsets",
   "${modId}.configuration.offset.tooltip": "Camera offset settings.",
 
   "${modId}.configuration.camera.offset.offset_x": "x-offset",
@@ -62,7 +62,7 @@
   "${modId}.configuration.camera.offset.offset_z.tooltip": "Third person camera z-offset.",
 
   "${modId}.configuration.min.button": "Edit",
-  "${modId}.configuration.min": "Min",
+  "${modId}.configuration.min": "Minimum offsets",
   "${modId}.configuration.min.tooltip": "Minimum offsets.",
   "${modId}.configuration.offset.min.min_offset_x": "Minimum x-offset",
   "${modId}.configuration.offset.min.min_offset_x.tooltip": "When x-offset is limited this is the minimum amount.",
@@ -72,7 +72,7 @@
   "${modId}.configuration.offset.min.min_offset_z.tooltip": "When z-offset is limited this is the minimum amount.",
 
   "${modId}.configuration.max.button": "Edit",
-  "${modId}.configuration.max": "Max",
+  "${modId}.configuration.max": "Maximum offsets",
   "${modId}.configuration.max.tooltip": "Maximum offsets.",
   "${modId}.configuration.offset.max.max_offset_x": "Maximum x-offset",
   "${modId}.configuration.offset.max.max_offset_x.tooltip": "When x-offset is limited this is the maximum amount.",
@@ -82,7 +82,7 @@
   "${modId}.configuration.offset.max.max_offset_z.tooltip": "When z-offset is limited this is the maximum amount.",
 
   "${modId}.configuration.limits.button": "Edit",
-  "${modId}.configuration.limits": "Limit",
+  "${modId}.configuration.limits": "Offset limits",
   "${modId}.configuration.limits.tooltip": "Offset limits.",
   "${modId}.configuration.offset.limits.unlimited_offset_x": "Unlimited x-offset",
   "${modId}.configuration.offset.limits.unlimited_offset_x.tooltip": "Whether or not x-offset adjustment has limits.",
@@ -92,11 +92,11 @@
   "${modId}.configuration.offset.limits.unlimited_offset_z.tooltip": "Whether or not z-offset adjustment has limits.",
 
   "${modId}.configuration.multiplier.button": "Edit",
-  "${modId}.configuration.multiplier": "Multipliers",
+  "${modId}.configuration.multiplier": "Offset multipliers",
   "${modId}.configuration.multiplier.tooltip": "Offset multipliers.",
 
   "${modId}.configuration.passenger.button": "Edit",
-  "${modId}.configuration.passenger": "Passenger",
+  "${modId}.configuration.passenger": "Passenger offsets",
   "${modId}.configuration.passenger.tooltip": "Passenger offsets.",
   
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x": "Passenger x-offset multiplier",
@@ -107,18 +107,18 @@
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is a passenger.",
 
   "${modId}.configuration.sprint.button": "Edit",
-  "${modId}.configuration.sprint": "Sprinting",
+  "${modId}.configuration.sprint": "Sprinting offsets",
   "${modId}.configuration.sprint.tooltip": "Sprinting offsets.",
 
-  "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x": "Sprint x-offset multiplier",
+  "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x": "Sprinting x-offset multiplier",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_x.tooltip": "x-offset multiplier for when the player is sprinting.",
-  "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_y": "Sprint y-offset multiplier",
+  "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_y": "Sprinting y-offset multiplier",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_y.tooltip": "y-offset multiplier for when the player is sprinting.",
-  "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z": "Sprint z-offset multiplier",
+  "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z": "Sprinting z-offset multiplier",
   "${modId}.configuration.offset.multiplier.sprint.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is sprinting.",
 
   "${modId}.configuration.aiming.button": "Edit",
-  "${modId}.configuration.aiming": "Aiming",
+  "${modId}.configuration.aiming": "Aiming offsets",
   "${modId}.configuration.aiming.tooltip": "Aiming offsets.",
 
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_x": "Aiming x-offset multiplier",
@@ -129,8 +129,8 @@
   "${modId}.configuration.offset.multiplier.aiming.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is aiming.",
 
   "${modId}.configuration.fall_flying.button": "Edit",
-  "${modId}.configuration.fall_flying": "Fall Flying",
-  "${modId}.configuration.fall_flying.tooltip": "Fall Flying offsets.",
+  "${modId}.configuration.fall_flying": "Fall flying offsets",
+  "${modId}.configuration.fall_flying.tooltip": "Fall flying offsets.",
 
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_x": "Elytra x-offset multiplier",
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_x.tooltip": "x-offset multiplier for when using Elytra.",
@@ -140,7 +140,7 @@
   "${modId}.configuration.offset.multiplier.fall_flying.multiplier_offset_z.tooltip": "z-offset multiplier for when using Elytra.",
 
   "${modId}.configuration.climbing.button": "Edit",
-  "${modId}.configuration.climbing": "Climbing",
+  "${modId}.configuration.climbing": "Climbing offsets",
   "${modId}.configuration.climbing.tooltip": "Climbing offsets.",
 
   "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_x": "Climbing x-offset multiplier",
@@ -151,7 +151,7 @@
   "${modId}.configuration.offset.multiplier.climbing.multiplier_offset_z.tooltip": "z-offset multiplier for when the player is climbing.",
 
   "${modId}.configuration.modifiers.button": "Edit",
-  "${modId}.configuration.modifiers": "Modifiers",
+  "${modId}.configuration.modifiers": "Offset modifiers",
   "${modId}.configuration.modifiers.tooltip": "Offset modifiers.",
 
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_x": "Passenger x-offset modifier",
@@ -161,11 +161,11 @@
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_z": "Passenger z-offset modifier",
   "${modId}.configuration.offset.modifier.passenger.modifier_offset_z.tooltip": "z-offset modifier for when the player is a passenger.",
 
-  "${modId}.configuration.offset.modifier.sprint.modifier_offset_x": "Sprint x-offset modifier",
+  "${modId}.configuration.offset.modifier.sprint.modifier_offset_x": "Sprinting x-offset modifier",
   "${modId}.configuration.offset.modifier.sprint.modifier_offset_x.tooltip": "x-offset modifier for when the player is sprinting.",
-  "${modId}.configuration.offset.modifier.sprint.modifier_offset_y": "Sprint y-offset modifier",
+  "${modId}.configuration.offset.modifier.sprint.modifier_offset_y": "Sprinting y-offset modifier",
   "${modId}.configuration.offset.modifier.sprint.modifier_offset_y.tooltip": "y-offset modifier for when the player is sprinting.",
-  "${modId}.configuration.offset.modifier.sprint.modifier_offset_z": "Sprint z-offset modifier",
+  "${modId}.configuration.offset.modifier.sprint.modifier_offset_z": "Sprinting z-offset modifier",
   "${modId}.configuration.offset.modifier.sprint.modifier_offset_z.tooltip": "z-offset modifier for when the player is sprinting.",
 
   "${modId}.configuration.offset.modifier.aiming.modifier_offset_x": "Aiming x-offset modifier",
