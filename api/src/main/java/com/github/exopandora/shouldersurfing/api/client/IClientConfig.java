@@ -154,12 +154,6 @@ public interface IClientConfig
 	
 	boolean replaceDefaultPerspective();
 	
-	@Deprecated(forRemoval = true)
-	default boolean skipThirdPersonFront()
-	{
-		return this.isThirdPersonFrontEnabled();
-	}
-	
 	boolean isFirstPersonEnabled();
 	
 	boolean isThirdPersonFrontEnabled();
