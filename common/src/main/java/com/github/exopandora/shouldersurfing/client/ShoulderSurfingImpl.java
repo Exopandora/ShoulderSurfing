@@ -263,6 +263,21 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		Config.CLIENT.toggleCameraCoupling();
 	}
 	
+	public void toggleOffsetXPreset()
+	{
+		Config.CLIENT.toggleOffsetXPreset();
+	}
+	
+	public void toggleOffsetYPreset()
+	{
+		Config.CLIENT.toggleOffsetYPreset();
+	}
+	
+	public void toggleOffsetZPreset()
+	{
+		Config.CLIENT.toggleOffsetZPreset();
+	}
+	
 	public boolean isTemporaryFirstPerson()
 	{
 		return this.isTemporaryFirstPerson;
