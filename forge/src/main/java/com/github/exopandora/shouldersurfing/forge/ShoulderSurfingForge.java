@@ -70,6 +70,9 @@ public class ShoulderSurfingForge
 		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_THIRD_PERSON_BACK);
 		ClientRegistry.registerKeyBinding(InputHandler.FREE_LOOK);
 		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_CAMERA_COUPLING);
+		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_X_OFFSET_PRESETS);
+		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_Y_OFFSET_PRESETS);
+		ClientRegistry.registerKeyBinding(InputHandler.TOGGLE_Z_OFFSET_PRESETS);
 		
 		Map<String, Object> modProperties = ModLoadingContext.get().getActiveContainer().getModInfo().getModProperties();
 		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
