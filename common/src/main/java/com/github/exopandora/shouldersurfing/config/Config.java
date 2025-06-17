@@ -44,6 +44,10 @@ public class Config
 		private final DoubleValue offsetY;
 		private final DoubleValue offsetZ;
 		
+		private final ConfigValue<List<? extends String>> offsetXPresets;
+		private final ConfigValue<List<? extends String>> offsetYPresets;
+		private final ConfigValue<List<? extends String>> offsetZPresets;
+		
 		private final DoubleValue minOffsetX;
 		private final DoubleValue minOffsetY;
 		private final DoubleValue minOffsetZ;
@@ -174,6 +178,24 @@ public class Config
 				.translation(MOD_ID + ".configuration.camera.offset.offset_z")
 				.defineInRange("offset_z", 4.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 			
+			builder.push("presets");
+			
+			this.offsetXPresets = builder
+				.comment("A list of x-offset presets that can be toggled via the 'Toggle X-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
+				.translation(MOD_ID + ".configuration.offset.presets.offset_x_presets")
+				.defineList("presets_offset_x", ArrayList::new, ClientConfig::isValidDouble);
+			
+			this.offsetYPresets = builder
+				.comment("A list of y-offset presets that can be toggled via the 'Toggle Y-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
+				.translation(MOD_ID + ".configuration.offset.presets.offset_y_presets")
+				.defineList("presets_offset_y", ArrayList::new, ClientConfig::isValidDouble);
+			
+			this.offsetZPresets = builder
+				.comment("A list of z-offset presets that can be toggled via the 'Toggle Z-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
+				.translation(MOD_ID + ".configuration.offset.presets.offset_z_presets")
+				.defineList("presets_offset_z", ArrayList::new, ClientConfig::isValidDouble);
+			
+			builder.pop();
 			builder.push("min");
 			
 			this.minOffsetX = builder
@@ -749,6 +771,24 @@ public class Config
 		}
 		
 		@Override
+		public List<Double> getOffsetXPresets()
+		{
+			return this.offsetXPresets.get().stream().map(Double::parseDouble).toList();
+		}
+		
+		@Override
+		public List<Double> getOffsetYPresets()
+		{
+			return this.offsetYPresets.get().stream().map(Double::parseDouble).toList();
+		}
+		
+		@Override
+		public List<Double> getOffsetZPresets()
+		{
+			return this.offsetZPresets.get().stream().map(Double::parseDouble).toList();
+		}
+		
+		@Override
 		public double getMinOffsetX()
 		{
 			return this.minOffsetX.get();
@@ -1311,6 +1351,58 @@ public class Config
 			Config.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
 		}
 		
+		public void toggleOffsetXPreset()
+		{
+			this.toggleOffsetPreset(this.offsetX, this.getOffsetXPresets());
+		}
+		
+		public void toggleOffsetYPreset()
+		{
+			this.toggleOffsetPreset(this.offsetY, this.getOffsetYPresets());
+		}
+		
+		public void toggleOffsetZPreset()
+		{
+			this.toggleOffsetPreset(this.offsetZ, this.getOffsetZPresets());
+		}
+		
+		private void toggleOffsetPreset(DoubleValue offset, List<Double> presets)
+		{
+			if(presets.isEmpty())
+			{
+				return;
+			}
+			
+			int closestIndex = 0;
+			double currentOffset = offset.get();
+			double distance = Math.abs(currentOffset - presets.get(0));
+			
+			for(int x = 1; x < presets.size(); x++)
+			{
+				double preset = presets.get(x);
+				double newDistance = Math.abs(currentOffset - preset);
+				
+				if(newDistance <= distance)
+				{
+					closestIndex = x;
+					distance = newDistance;
+				}
+			}
+			
+			double newOffset;
+			
+			if(closestIndex == presets.size() - 1)
+			{
+				newOffset = presets.get(0);
+			}
+			else
+			{
+				newOffset = presets.get(closestIndex + 1);
+			}
+			
+			Config.set(offset, newOffset);
+		}
+		
 		private double addStep(double value, double max, boolean unlimited)
 		{
 			double next = value + this.getCameraStepSize();
@@ -1343,6 +1435,23 @@ public class Config
 		public void toggleCameraCoupling()
 		{
 			Config.set(this.isCameraDecoupled, !this.isCameraDecoupled());
+		}
+		
+		private static boolean isValidDouble(Object number)
+		{
+			if(number != null)
+			{
+				try
+				{
+					Double.parseDouble(number.toString());
+				}
+				catch(NumberFormatException e)
+				{
+					return false;
+				}
+			}
+			
+			return true;
 		}
 	}
 	

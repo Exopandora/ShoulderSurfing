@@ -18,6 +18,12 @@ public interface IClientConfig
 	
 	double getOffsetZ();
 	
+	List<Double> getOffsetXPresets();
+	
+	List<Double> getOffsetYPresets();
+	
+	List<Double> getOffsetZPresets();
+	
 	double getMinOffsetX();
 	
 	double getMinOffsetY();
