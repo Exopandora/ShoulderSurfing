@@ -85,5 +85,8 @@ public class ShoulderSurfingNeoForge
 		event.register(InputHandler.TOGGLE_THIRD_PERSON_BACK);
 		event.register(InputHandler.FREE_LOOK);
 		event.register(InputHandler.TOGGLE_CAMERA_COUPLING);
+		event.register(InputHandler.TOGGLE_X_OFFSET_PRESETS);
+		event.register(InputHandler.TOGGLE_Y_OFFSET_PRESETS);
+		event.register(InputHandler.TOGGLE_Z_OFFSET_PRESETS);
 	}
 }
