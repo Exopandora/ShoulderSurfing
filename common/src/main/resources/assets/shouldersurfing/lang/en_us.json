@@ -61,6 +61,19 @@
   "${modId}.configuration.camera.offset.offset_z": "z-offset",
   "${modId}.configuration.camera.offset.offset_z.tooltip": "Third person camera z-offset.",
 
+  "${modId}.configuration.presets.button": "Edit",
+  "${modId}.configuration.presets": "Offset presets",
+  "${modId}.configuration.presets.tooltip": "Offset presets.",
+  "${modId}.configuration.offset.presets.offset_x_presets": "x-offset presets",
+  "${modId}.configuration.offset.presets.offset_x_presets.button": "Edit...",
+  "${modId}.configuration.offset.presets.offset_x_presets.tooltip": "A list of x-offset presets that can be toggled via the 'Toggle X-Offset Presets' keybind. §cWARNING: Duplicate entries can result in undefined behavior!§r",
+  "${modId}.configuration.offset.presets.offset_y_presets": "y-offset presets",
+  "${modId}.configuration.offset.presets.offset_y_presets.button": "Edit...",
+  "${modId}.configuration.offset.presets.offset_y_presets.tooltip": "A list of y-offset presets that can be toggled via the 'Toggle Y-Offset Presets' keybind. §cWARNING: Duplicate entries can result in undefined behavior!§r",
+  "${modId}.configuration.offset.presets.offset_z_presets": "z-offset presets",
+  "${modId}.configuration.offset.presets.offset_z_presets.button": "Edit...",
+  "${modId}.configuration.offset.presets.offset_z_presets.tooltip": "A list of z-offset presets that can be toggled via the 'Toggle Z-Offset Presets' keybind. §cWARNING: Duplicate entries can result in undefined behavior!§r",
+
   "${modId}.configuration.min.button": "Edit",
   "${modId}.configuration.min": "Minimum offsets",
   "${modId}.configuration.min.tooltip": "Minimum offsets.",
@@ -348,5 +361,8 @@
   "key.${modId}.toggle_third_person_front": "Toggle Third Person (Front)",
   "key.${modId}.toggle_third_person_back": "Toggle Third Person (Back)",
   "key.${modId}.free_look": "Free Look",
-  "key.${modId}.toggle_camera_coupling": "Toggle Camera Coupling"
+  "key.${modId}.toggle_camera_coupling": "Toggle Camera Coupling",
+  "key.${modId}.toggle_x_offset_presets": "Toggle X-Offset Presets",
+  "key.${modId}.toggle_y_offset_presets": "Toggle Y-Offset Presets",
+  "key.${modId}.toggle_z_offset_presets": "Toggle Z-Offset Presets"
 }
