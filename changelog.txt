@@ -1,4 +1,5 @@
-- Added configurable camera drag (default: off)
-- Added configurable camera sway (default: off)
-- Improved error message when an exception is thrown by a third party plugin
-- Fixed compatibility with Wildfire Gender
+- Added configurable offset presets (toggleable via keybinds)
+- Updated english translations
+- Fixed compass needle following player rotations instead of camera rotations
+- Fixed player not always rotating when using spyglasses
+- Removed deprecated plugin api methods
