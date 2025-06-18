@@ -6,12 +6,12 @@ import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixins.GuiAccessor;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -19,10 +19,9 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
-
-import java.util.function.Function;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
@@ -78,20 +77,20 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		}
 	}
 	
-	private void setupPoseStack(PoseStack poseStack)
+	private void setupPoseStack(Matrix3x2fStack poseStack)
 	{
 		if(this.crosshairOffset != null)
 		{
-			poseStack.pushPose();
-			poseStack.last().pose().translate(this.crosshairOffset.x(), -this.crosshairOffset.y(), 0F);
+			poseStack.pushMatrix();
+			poseStack.translate(this.crosshairOffset.x(), -this.crosshairOffset.y());
 		}
 	}
 	
-	private void resetPoseStack(PoseStack poseStack)
+	private void resetPoseStack(Matrix3x2fStack poseStack)
 	{
 		if(this.crosshairOffset != null)
 		{
-			poseStack.popPose();
+			poseStack.popMatrix();
 		}
 	}
 	
@@ -173,22 +172,22 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	
 	private void renderObstructionCrosshair(GuiGraphics guiGraphics)
 	{
-		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderType::crosshair);
-		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE, RenderType::guiTextured);
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderPipelines.CROSSHAIR);
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE, RenderPipelines.GUI_TEXTURED);
 	}
 	
 	private void renderObstructionIndicator(GuiGraphics guiGraphics)
 	{
-		this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderType::crosshair);
+		this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderPipelines.CROSSHAIR);
 	}
 	
-	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, Function<ResourceLocation, RenderType> renderType)
+	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, RenderPipeline renderPipeline)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		
 		if(minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult))
 		{
-			guiGraphics.blitSprite(renderType, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
+			guiGraphics.blitSprite(renderPipeline, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
 		}
 	}
 	

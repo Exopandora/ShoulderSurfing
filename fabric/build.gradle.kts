@@ -56,7 +56,7 @@ dependencies {
 	}
 	modCompileOnly(libs.wthit.fabric)
 	modCompileOnly(libs.badpackets.fabric)
-	modImplementation(libs.jade.fabric)
+	modCompileOnly(libs.jade.fabric)
 }
 
 loom {

@@ -7,13 +7,13 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
+import net.minecraftforge.eventbus.api.listener.Priority;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingStage;
@@ -39,26 +39,22 @@ public class ShoulderSurfingForge
 	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext)
 	{
 		this.modLoadingContext = modLoadingContext;
-		IEventBus modEventBus = modLoadingContext.getModEventBus();
-		modEventBus.addListener(this::clientSetup);
-		modEventBus.addListener(this::loadComplete);
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-		{
-			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
-			modEventBus.addListener(this::registerKeyMappingsEvent);
-			modEventBus.addListener(this::modConfigLoadingEvent);
-			modEventBus.addListener(this::modConfigReloadingEvent);
-		});
+		BusGroup modBusGroup = modLoadingContext.getModBusGroup();
+		FMLClientSetupEvent.getBus(modBusGroup).addListener(this::clientSetup);
+		FMLLoadCompleteEvent.getBus(modBusGroup).addListener(this::loadComplete);
+		RegisterKeyMappingsEvent.getBus(modBusGroup).addListener(this::registerKeyMappingsEvent);
+		ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
+		ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
+		NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
 	
-	@SubscribeEvent
 	@SuppressWarnings("UnstableApiUsage")
 	public void clientSetup(FMLClientSetupEvent event)
 	{
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
-		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
-		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
+		TickEvent.ClientTickEvent.Pre.BUS.addListener(ClientEventHandler::clientTickEvent);
+		MovementInputUpdateEvent.BUS.addListener(Priority.LOW, ClientEventHandler::movementInputUpdateEvent);
+		ViewportEvent.ComputeCameraAngles.BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		
 		Map<String, Object> modProperties = this.modLoadingContext.getContainer().getModInfo().getModProperties();
 		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());

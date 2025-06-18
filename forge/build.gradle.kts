@@ -68,6 +68,7 @@ minecraft {
 		configureEach {
 			workingDirectory(file("../run"))
 			ideaModule("${rootProject.name}.${project.name}.main")
+			property("eventbus.api.strictRuntimeChecks", "true")
 		}
 		
 		create("client")
@@ -89,6 +90,7 @@ dependencies {
 	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+	annotationProcessor(libs.eventbus.validator)
 	implementation(libs.forgeconfigapiport.forge) {
 		exclude(group = "io.github.llamalad7")
 	}

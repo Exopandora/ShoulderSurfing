@@ -7,10 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.FrameGraphSetupEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 public class ClientEventHandler
@@ -57,12 +57,9 @@ public class ClientEventHandler
 	}
 	
 	@SubscribeEvent
-	public static void renderLevelStageEvent(RenderLevelStageEvent event)
+	public static void frameGraphSetupEvent(FrameGraphSetupEvent event)
 	{
-		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
-		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getPartialTick().getGameTimeDeltaPartialTick(true));
-		}
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getDeltaTracker().getGameTimeDeltaPartialTick(true));
 	}
 	
 	@SubscribeEvent

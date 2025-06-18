@@ -45,7 +45,7 @@ public class ShoulderSurfingNeoForge
 	{
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
-		NeoForge.EVENT_BUS.addListener(ClientEventHandler::renderLevelStageEvent);
+		NeoForge.EVENT_BUS.addListener(ClientEventHandler::frameGraphSetupEvent);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
 	}
 	
