@@ -1,5 +1,2 @@
-- Added configurable offset presets (toggleable via keybinds)
-- Updated english translations
-- Fixed compass needle following player rotations instead of camera rotations
-- Fixed player not always rotating when using spyglasses
-- Removed deprecated plugin api methods
+- Updated russian translations (thanks to mpustovoi)
+- Fixed potential class loading issues when installed on a dedicated server
