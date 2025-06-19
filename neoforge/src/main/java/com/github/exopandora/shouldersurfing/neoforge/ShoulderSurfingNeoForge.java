@@ -26,11 +26,10 @@ public class ShoulderSurfingNeoForge
 {
 	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus)
 	{
-		modEventBus.addListener(this::clientSetup);
-		modEventBus.addListener(this::loadComplete);
-		
 		if(FMLEnvironment.dist.isClient())
 		{
+			modEventBus.addListener(this::clientSetup);
+			modEventBus.addListener(this::loadComplete);
 			modContainer.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
 			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
