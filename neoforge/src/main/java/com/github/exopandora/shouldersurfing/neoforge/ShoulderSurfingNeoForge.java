@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.neoforge;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
@@ -17,7 +16,6 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.event.lifecycle.ClientStartedEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -52,12 +50,6 @@ public class ShoulderSurfingNeoForge
 	public void loadComplete(FMLLoadCompleteEvent event)
 	{
 		PluginLoader.getInstance().loadPlugins();
-	}
-	
-	@SubscribeEvent
-	public void clientStartedEvent(ClientStartedEvent event)
-	{
-		ShoulderSurfingImpl.getInstance().init();
 	}
 	
 	@SubscribeEvent
