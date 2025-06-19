@@ -38,16 +38,18 @@ public class ShoulderSurfingForge
 	{
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		modEventBus.addListener(this::clientSetup);
-		modEventBus.addListener(this::loadComplete);
+		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
-			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
+			modEventBus.addListener(this::clientSetup);
+			modEventBus.addListener(this::loadComplete);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
+			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
 		});
+		
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
 	
