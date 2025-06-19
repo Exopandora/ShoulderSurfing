@@ -39,16 +39,18 @@ public class ShoulderSurfingForge
 	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext)
 	{
 		this.modLoadingContext = modLoadingContext;
-		IEventBus modEventBus = modLoadingContext.getModEventBus();
-		modEventBus.addListener(this::clientSetup);
-		modEventBus.addListener(this::loadComplete);
+		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
+			IEventBus modEventBus = modLoadingContext.getModEventBus();
+			modEventBus.addListener(this::clientSetup);
+			modEventBus.addListener(this::loadComplete);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 		});
+		
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
 	
