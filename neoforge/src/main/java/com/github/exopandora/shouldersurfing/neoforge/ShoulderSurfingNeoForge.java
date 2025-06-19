@@ -29,11 +29,11 @@ public class ShoulderSurfingNeoForge
 		{
 			modEventBus.addListener(this::clientSetup);
 			modEventBus.addListener(this::loadComplete);
-			modContainer.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
-			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
+			modContainer.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
+			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		}
 	}
 	
