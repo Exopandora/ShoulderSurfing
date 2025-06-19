@@ -24,6 +24,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.forgespi.language.IModInfo;
 
@@ -39,13 +40,18 @@ public class ShoulderSurfingForge
 	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext)
 	{
 		this.modLoadingContext = modLoadingContext;
-		BusGroup modBusGroup = modLoadingContext.getModBusGroup();
-		FMLClientSetupEvent.getBus(modBusGroup).addListener(this::clientSetup);
-		FMLLoadCompleteEvent.getBus(modBusGroup).addListener(this::loadComplete);
-		RegisterKeyMappingsEvent.getBus(modBusGroup).addListener(this::registerKeyMappingsEvent);
-		ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
-		ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
-		NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
+		
+		if(FMLEnvironment.dist.isClient())
+		{
+			BusGroup modBusGroup = modLoadingContext.getModBusGroup();
+			FMLClientSetupEvent.getBus(modBusGroup).addListener(this::clientSetup);
+			FMLLoadCompleteEvent.getBus(modBusGroup).addListener(this::loadComplete);
+			RegisterKeyMappingsEvent.getBus(modBusGroup).addListener(this::registerKeyMappingsEvent);
+			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
+			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
+			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
+		}
+		
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
 	
