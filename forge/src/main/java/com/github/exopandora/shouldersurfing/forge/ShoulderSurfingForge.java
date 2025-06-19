@@ -38,7 +38,6 @@ public class ShoulderSurfingForge
 	{
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
 		{
 			modEventBus.addListener(this::clientSetup);
@@ -49,7 +48,6 @@ public class ShoulderSurfingForge
 			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
 			modLoadingContext.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
 		});
-		
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
 	
