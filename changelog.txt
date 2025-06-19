@@ -1,6 +1,2 @@
-- Added configurable offset presets (toggleable via keybinds)
-- Added wind charge to adaptive crosshair hold items list
-- Updated english translations
-- Fixed compass needle following player rotations instead of camera rotations
-- Fixed player not always rotating when using spyglasses
-- Removed deprecated plugin api methods
+- Updated russian translations (thanks to mpustovoi)
+- Fixed potential class loading issues when installed on a dedicated server
