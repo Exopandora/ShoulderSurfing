@@ -144,7 +144,7 @@
     "shouldersurfing.configuration.offset.multiplier.aiming.multiplier_offset_z.tooltip": "玩家瞄准时的Z轴偏移乘数。",
 
     "shouldersurfing.configuration.fall_flying.button": "编辑",
-    "shoulderssurfing.configuration.fall_flying": "滑翔偏移",
+    "shouldersurfing.configuration.fall_flying": "滑翔偏移",
     "shouldersurfing.configuration.fall_flying.tooltip": "滑翔偏移。",
 
     "shouldersurfing.configuration.offset.multiplier.fall_flying.multiplier_offset_x": "滑翔X轴偏移乘数",
