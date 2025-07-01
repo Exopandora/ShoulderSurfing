@@ -1,23 +1,23 @@
 [versions]
-minecraft = "1.21.6"
-forge = "1.21.6-56.0.3"
-neoforge = "21.6.0-beta"
-neoform = "1.21.6-20250617.151856"
+minecraft = "1.21.7"
+forge = "1.21.7-57.0.0"
+neoforge = "21.7.1-beta"
+neoform = "1.21.7-20250630.141722"
 fabric-loader = "0.16.14"
-fabric-api = "0.127.0+1.21.6"
+fabric-api = "0.128.1+1.21.7"
 mixin = "0.8.7"
-forgeconfigapiport = "21.6.2"
-wthit-common = "mojmap-15.0.2"
-wthit-forge = "forge-15.0.2"
-wthit-neoforge = "neo-15.0.2"
-wthit-fabric = "fabric-15.0.2"
-jade-common = "6662664" # 1.21.6-19.0.1-neoforge
-jade-forge = "6662664" # 1.21.6-19.0.1-neoforge, temporarily use common artifact for compilation
-jade-neoforge = "6662664" # 1.21.6-19.0.1-neoforge
-jade-fabric = "6662653" # 1.21.6-19.0.1-fabric
-badpackets-forge = "forge-0.8.2"
-badpackets-neoforge = "neo-0.8.2"
-badpackets-fabric = "fabric-0.8.2"
+forgeconfigapiport = "21.7.0"
+wthit-common = "mojmap-16.0.1"
+wthit-forge = "forge-16.0.1"
+wthit-neoforge = "neo-16.0.1"
+wthit-fabric = "fabric-16.0.1"
+jade-common = "6713216" # 1.21.6/7-19.0.4-neoforge
+jade-forge = "6713216" # 1.21.6/7-19.0.4-neoforge, temporarily use common artifact for compilation
+jade-neoforge = "6713216" # 1.21.6/7-19.0.4-neoforge
+jade-fabric = "6713304" # 1.21.6/7-19.0.4-fabric
+badpackets-forge = "forge-0.9.0"
+badpackets-neoforge = "neo-0.9.0"
+badpackets-fabric = "fabric-0.9.0"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -41,12 +41,12 @@ badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-fo
 badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
-eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0-beta.7" }
+eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0-beta.10" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.8.4" }
 forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0.24,6.2)" }
 fabricloom = { id = "fabric-loom", version = "1.10-SNAPSHOT" }
-moddevgradle = { id = "net.neoforged.moddev", version = "2.0.95" }
+moddevgradle = { id = "net.neoforged.moddev", version = "2.0.96" }
 mixingradle = { id = "org.spongepowered.mixin", version = "0.7.+" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1.9" }
