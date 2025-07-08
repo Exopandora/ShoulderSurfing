@@ -1,2 +1,1 @@
-- Updated russian translations (thanks to mpustovoi)
-- Fixed potential class loading issues when installed on a dedicated server
+- Added simplified chinese translations (thanks to Celestia)
