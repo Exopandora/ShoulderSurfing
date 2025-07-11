@@ -1,21 +1,9 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-	id("java")
-	id("idea")
+	id("multiloader-modloader")
 	alias(libs.plugins.fabricloom)
 	alias(libs.plugins.modpublishplugin)
-}
-
-repositories {
-	exclusiveContent {
-		forRepository {
-			maven("https://api.modrinth.com/maven")
-		}
-		filter {
-			includeGroup("maven.modrinth")
-		}
-	}
 }
 
 val modId: String by project
@@ -35,16 +23,7 @@ base {
 	archivesName.set("$jarName-Fabric")
 }
 
-java {
-	sourceCompatibility = JavaVersion.toVersion(javaVersion)
-	targetCompatibility = JavaVersion.toVersion(javaVersion)
-}
-
 dependencies {
-	compileOnly(project(":api"))
-	compileOnly(project(":common"))
-	compileOnly(project(":compat"))
-	
 	minecraft(libs.minecraft.fabric)
 	mappings(loom.officialMojangMappings())
 	
@@ -82,14 +61,7 @@ loom {
 	}
 }
 
-tasks.named<JavaCompile>("compileJava") {
-	source(project(":api").sourceSets.main.get().allSource)
-	source(project(":common").sourceSets.main.get().allSource)
-}
-
 tasks.withType<ProcessResources> {
-	from(project(":common").sourceSets.main.get().resources)
-	
 	val contributors = modContributors.replace(", ", """", """")
 	val properties = mapOf(
 		"modVersion" to modVersion,
@@ -107,16 +79,6 @@ tasks.withType<ProcessResources> {
 	filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "**/lang/*.json")) {
 		expand(properties)
 	}
-}
-
-tasks.register<Jar>("apiJar") {
-	from(project(":api").sourceSets.main.get().output)
-	from(project(":api").sourceSets.main.get().allSource)
-	archiveClassifier = "API"
-}
-
-tasks.build {
-	finalizedBy("apiJar")
 }
 
 publishMods {
