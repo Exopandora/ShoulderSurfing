@@ -1,19 +1,7 @@
 plugins {
-	id("idea")
-	id("java")
+	id("multiloader-modloader")
 	alias(libs.plugins.moddevgradle)
 	alias(libs.plugins.modpublishplugin)
-}
-
-repositories {
-	exclusiveContent {
-		forRepository {
-			maven("https://api.modrinth.com/maven")
-		}
-		filter {
-			includeGroup("maven.modrinth")
-		}
-	}
 }
 
 val modId: String by project
@@ -30,18 +18,6 @@ val modrinthProjectId: String by project
 
 base {
 	archivesName.set("$jarName-NeoForge")
-}
-
-java {
-	sourceCompatibility = JavaVersion.toVersion(javaVersion)
-	targetCompatibility = JavaVersion.toVersion(javaVersion)
-}
-
-idea {
-	module {
-		isDownloadSources = true
-		isDownloadJavadoc = true
-	}
 }
 
 neoForge {
@@ -70,23 +46,12 @@ neoForge {
 }
 
 dependencies {
-	compileOnly(project(":api"))
-	compileOnly(project(":common"))
-	compileOnly(project(":compat"))
-	
-	implementation(libs.wthit.neoforge)
-	implementation(libs.badpackets.neoforge)
-	implementation(libs.jade.neoforge)
-}
-
-tasks.named<JavaCompile>("compileJava") {
-	source(project(":api").sourceSets.main.get().allSource)
-	source(project(":common").sourceSets.main.get().allSource)
+	compileOnly(libs.wthit.neoforge)
+	compileOnly(libs.badpackets.neoforge)
+	compileOnly(libs.jade.neoforge)
 }
 
 tasks.withType<ProcessResources> {
-	from(project(":common").sourceSets.main.get().resources)
-	
 	val properties = mapOf(
 		"modVersion" to modVersion,
 		"modId" to modId,
@@ -102,16 +67,6 @@ tasks.withType<ProcessResources> {
 	filesMatching(listOf("pack.mcmeta", "META-INF/neoforge.mods.toml", "**/lang/*.json")) {
 		expand(properties)
 	}
-}
-
-tasks.register<Jar>("apiJar") {
-	from(project(":api").sourceSets.main.get().output)
-	from(project(":api").sourceSets.main.get().allSource)
-	archiveClassifier = "API"
-}
-
-tasks.build {
-	finalizedBy("apiJar")
 }
 
 publishMods {

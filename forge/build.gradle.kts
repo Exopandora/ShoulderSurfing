@@ -1,23 +1,8 @@
 plugins {
-	id("java")
-	id("idea")
+	id("multiloader-modloader")
 	alias(libs.plugins.forgegradle)
 	alias(libs.plugins.mixingradle)
 	alias(libs.plugins.modpublishplugin)
-}
-
-repositories {
-	maven("https://maven.minecraftforge.net/")
-	
-	exclusiveContent {
-		forRepository {
-			maven("https://api.modrinth.com/maven")
-		}
-		forRepositories(fg.repository)
-		filter {
-			includeGroup("maven.modrinth")
-		}
-	}
 }
 
 val modId: String by project
@@ -35,18 +20,6 @@ val modrinthProjectId: String by project
 
 base {
 	archivesName.set("$jarName-Forge")
-}
-
-java {
-	sourceCompatibility = JavaVersion.toVersion(javaVersion)
-	targetCompatibility = JavaVersion.toVersion(javaVersion)
-}
-
-idea {
-	module {
-		isDownloadSources = true
-		isDownloadJavadoc = true
-	}
 }
 
 mixin {
@@ -79,14 +52,6 @@ minecraft {
 }
 
 dependencies {
-	compileOnly(project(":api"))
-	compileOnly(project(":common"))
-	compileOnly(project(":compat"))
-	
-	implementation("net.sf.jopt-simple:jopt-simple:5.0.4") {
-		version { strictly("5.0.4") }
-	}
-	
 	minecraft(libs.minecraft.forge)
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
 	implementation(libs.forgeconfigapiport.forge) {
@@ -109,14 +74,7 @@ tasks.withType<Jar> {
 	}
 }
 
-tasks.named<JavaCompile>("compileJava") {
-	source(project(":api").sourceSets.main.get().allSource)
-	source(project(":common").sourceSets.main.get().allSource)
-}
-
 tasks.named<ProcessResources>("processResources") {
-	from(project(":common").sourceSets.main.get().resources)
-	
 	val properties = mapOf(
 		"modVersion" to modVersion,
 		"modId" to modId,
@@ -133,16 +91,6 @@ tasks.named<ProcessResources>("processResources") {
 	filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml", "**/lang/*.json")) {
 		expand(properties)
 	}
-}
-
-tasks.register<Jar>("apiJar") {
-	from(project(":api").sourceSets.main.get().output)
-	from(project(":api").sourceSets.main.get().allSource)
-	archiveClassifier = "API"
-}
-
-tasks.build {
-	finalizedBy("apiJar")
 }
 
 publishMods {
