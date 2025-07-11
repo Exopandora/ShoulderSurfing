@@ -30,7 +30,6 @@ jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
 jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
-jsr305 = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }
