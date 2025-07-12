@@ -99,7 +99,11 @@ publishMods {
 	displayName = "$jarName-Forge-${libs.versions.minecraft.get()}-$modVersion"
 	version = "${rootProject.version}+forge"
 	file = tasks.named<Jar>("jar").get().archiveFile
-	additionalFiles.from(tasks.named("apiJar").get())
+	additionalFiles.from(
+		tasks.named("sourcesJar").get(),
+		tasks.named("apiJar").get(),
+		tasks.named("apiSourcesJar").get()
+	)
 	changelog = provider { file("../changelog.txt").readText() }
 	modLoaders.add("forge")
 	type = STABLE
@@ -124,6 +128,10 @@ publishMods {
 		requires("forge-config-api-port")
 		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
 	}
+}
+
+tasks.build {
+	finalizedBy("sourcesJar")
 }
 
 sourceSets.forEach {
