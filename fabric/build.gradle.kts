@@ -99,7 +99,11 @@ publishMods {
 	displayName = "$jarName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
 	version = "${rootProject.version}+fabric"
 	file = tasks.named<RemapJarTask>("remapJar").get().archiveFile
-	additionalFiles.from(tasks.named("apiJar").get())
+	additionalFiles.from(
+		tasks.named("sourcesJar").get(),
+		tasks.named("apiJar").get(),
+		tasks.named("apiSourcesJar").get()
+	)
 	changelog = provider { file("../changelog.txt").readText() }
 	modLoaders.add("fabric")
 	type = STABLE
