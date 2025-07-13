@@ -1,12 +1,13 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.api.client.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 
 public class CameraEntityRenderer implements ICameraEntityRenderer
 {
@@ -26,29 +27,17 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 			return true;
 		}
 		
-		this.isRenderingCameraEntity = true;
+		this.cameraEntityAlpha = 1.0F;
 		
-		if(this.shouldRenderCameraEntityTransparent(entity))
+		if(this.instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled())
 		{
-			Vec3 renderOffset = this.instance.getCamera().getRenderOffset();
-			float xAlpha = (float) Mth.clamp(Math.abs(renderOffset.x()) / (entity.getBbWidth() / 2.0D), 0, 1.0F);
-			float yAlpha = 0;
-			
-			if(renderOffset.y() > 0)
+			for(ICameraEntityTransparencyCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraEntityTransparencyCallbacks())
 			{
-				yAlpha = (float) Mth.clamp(renderOffset.y() / (entity.getBbHeight() - entity.getEyeHeight()), 0, 1.0F);
+				this.cameraEntityAlpha = Math.min(Mth.clamp(callback.getCameraEntityAlpha(this.instance, entity, partialTick), 0.0F, 1.0F), this.cameraEntityAlpha);
 			}
-			else if(renderOffset.y() < 0)
-			{
-				yAlpha = (float) Mth.clamp(-renderOffset.y() / -entity.getEyeHeight(), 0, 1.0F);
-			}
-			
-			this.cameraEntityAlpha = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), 0.15F, 1.0F);
 		}
-		else
-		{
-			this.cameraEntityAlpha = 1.0F;
-		}
+		
+		this.isRenderingCameraEntity = true;
 		
 		return false;
 	}
@@ -65,15 +54,6 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 			(camera.getCameraDistance() < cameraEntity.getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
 				camera.getXRot() < Config.CLIENT.getHidePlayerWhenLookingUpAngle() - 90 ||
 				cameraEntity instanceof Player player && player.isScoping());
-	}
-	
-	private boolean shouldRenderCameraEntityTransparent(Entity entity)
-	{
-		Vec3 renderOffset = this.instance.getCamera().getRenderOffset();
-		return this.instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() &&
-			!entity.isSpectator() && (Math.abs(renderOffset.x()) < (entity.getBbWidth() / 2.0D) &&
-			(renderOffset.y() >= 0 && renderOffset.y() < entity.getBbHeight() - entity.getEyeHeight() ||
-				renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight()));
 	}
 	
 	public int applyCameraEntityAlphaContextAware(int color)
