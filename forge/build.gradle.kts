@@ -97,7 +97,7 @@ tasks.named<ProcessResources>("processResources") {
 
 publishMods {
 	displayName = "$jarName-Forge-${libs.versions.minecraft.get()}-$modVersion"
-	version = "${rootProject.version}+forge"
+	version = "${project.version}+forge"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(
 		tasks.named("sourcesJar").get(),
