@@ -184,6 +184,8 @@ public interface IClientConfig
 	
 	boolean isPlayerTransparencyEnabled();
 	
+	boolean turnPlayerTransparentWhenAiming();
+	
 	TurningMode getTurningModeWhenUsingItem();
 	
 	TurningMode getTurningModeWhenAttacking();
