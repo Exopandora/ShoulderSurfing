@@ -71,7 +71,7 @@ tasks.withType<ProcessResources> {
 
 publishMods {
 	displayName = "$jarName-NeoForge-${libs.versions.minecraft.get()}-$modVersion"
-	version = "${rootProject.version}+neoforge"
+	version = "${project.version}+neoforge"
 	file = tasks.named<Jar>("jar").get().archiveFile
 	additionalFiles.from(
 		tasks.named("sourcesJar").get(),
