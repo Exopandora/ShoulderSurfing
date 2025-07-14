@@ -127,6 +127,7 @@ public class Config
 		private final BooleanValue rememberLastPerspective;
 		
 		private final BooleanValue playerTransparency;
+		private final BooleanValue turnPlayerTransparentWhenAiming;
 		private final DoubleValue hidePlayerWhenLookingUpAngle;
 		private final ConfigValue<TurningMode> turningModeWhenUsingItem;
 		private final ConfigValue<TurningMode> turningModeWhenAttacking;
@@ -562,6 +563,11 @@ public class Config
 				.comment("Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
 				.translation(MOD_ID + ".configuration.player.adjust_player_transparency")
 				.define("adjust_player_transparency", true);
+			
+			this.turnPlayerTransparentWhenAiming = builder
+				.comment("Whether or not to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.")
+				.translation(MOD_ID + ".configuration.player.turn_player_transparent_when_aiming")
+				.define("turn_player_transparent_when_aiming", false);
 			
 			this.hidePlayerWhenLookingUpAngle = builder
 				.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
@@ -1121,6 +1127,12 @@ public class Config
 		public boolean isPlayerTransparencyEnabled()
 		{
 			return Config.CLIENT_SPEC.isLoaded() ? this.playerTransparency.get() : this.playerTransparency.getDefault();
+		}
+		
+		@Override
+		public boolean turnPlayerTransparentWhenAiming()
+		{
+			return this.turnPlayerTransparentWhenAiming.get();
 		}
 		
 		@Override
