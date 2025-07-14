@@ -8,9 +8,9 @@ import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
 
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,11 +18,11 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 {
 	private static final ShoulderSurfingRegistrar INSTANCE = new ShoulderSurfingRegistrar();
 	
-	private final List<IAdaptiveItemCallback> adaptiveItemCallbacks = new ArrayList<IAdaptiveItemCallback>();
-	private final List<ICameraCouplingCallback> cameraCouplingCallbacks = new ArrayList<ICameraCouplingCallback>();
-	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new ArrayList<ITargetCameraOffsetCallback>();
-	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new ArrayList<ICameraEntityTransparencyCallback>();
-	private final List<ITickableCallback> tickableCallbacks = new ArrayList<ITickableCallback>();
+	private final List<IAdaptiveItemCallback> adaptiveItemCallbacks = new LinkedList<IAdaptiveItemCallback>();
+	private final List<ICameraCouplingCallback> cameraCouplingCallbacks = new LinkedList<ICameraCouplingCallback>();
+	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new LinkedList<ITargetCameraOffsetCallback>();
+	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new LinkedList<ICameraEntityTransparencyCallback>();
+	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
 	
 	private boolean isFrozen;
 	private PluginContext activePluginContext;
