@@ -105,7 +105,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		}
 	}
 	
-	protected static final float MIN_CAMERA_ENTITY_ALPHA = 0.15F;
+	private static final float MIN_CAMERA_ENTITY_ALPHA = 0.15F;
 	
 	private static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float partialTick)
 	{
