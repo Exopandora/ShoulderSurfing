@@ -225,6 +225,8 @@
 
   "${modId}.configuration.player.adjust_player_transparency": "Adjust player transparency",
   "${modId}.configuration.player.adjust_player_transparency.tooltip": "Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.",
+  "${modId}.configuration.player.turn_player_transparent_when_aiming": "Turn player transparent when aiming",
+  "${modId}.configuration.player.turn_player_transparent_when_aiming.tooltip": "Whether or not to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.",
   "${modId}.configuration.player.hide_player_when_looking_up_angle": "Center camera when looking up angle",
   "${modId}.configuration.player.hide_player_when_looking_up_angle.tooltip": "The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.",
   "${modId}.configuration.player.player_x_rot_follows_camera": "Player x-rot follows camera",
