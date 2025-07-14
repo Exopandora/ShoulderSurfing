@@ -96,7 +96,7 @@ tasks.withType<ProcessResources> {
 
 publishMods {
 	displayName = "$jarName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
-	version = "${rootProject.version}+fabric"
+	version = "${project.version}+fabric"
 	file = tasks.named<RemapJarTask>("remapJar").get().archiveFile
 	additionalFiles.from(
 		tasks.named("sourcesJar").get(),
