@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
@@ -111,6 +112,8 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 				}
 			}
 		}
+		
+		ShoulderSurfingRegistrar.getInstance().getTickableCallbacks().forEach(ITickableCallback::tick);
 	}
 	
 	public void lookAtCrosshairTarget()
