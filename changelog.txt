@@ -1,1 +1,4 @@
-- Added simplified chinese translations (thanks to Celestia)
+- Added option to turn player transparent when aiming
+- Added camera entity transparency callback api
+- Added tickable callback api
+- Refactored plugin callback wrapping
