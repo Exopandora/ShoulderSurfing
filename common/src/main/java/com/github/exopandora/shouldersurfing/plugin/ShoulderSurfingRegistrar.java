@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
 
 import java.lang.reflect.Proxy;
@@ -21,6 +22,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ICameraCouplingCallback> cameraCouplingCallbacks = new ArrayList<ICameraCouplingCallback>();
 	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new ArrayList<ITargetCameraOffsetCallback>();
 	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new ArrayList<ICameraEntityTransparencyCallback>();
+	private final List<ITickableCallback> tickableCallbacks = new ArrayList<ITickableCallback>();
 	
 	private boolean isFrozen;
 	private PluginContext activePluginContext;
@@ -59,6 +61,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		this.checkState();
 		T proxy = createProxy(this.activePluginContext, callback, klass);
 		registry.add(proxy);
+		this.registerTickableCallback(proxy);
 		return this;
 	}
 	
@@ -72,6 +75,14 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		if(this.activePluginContext == null)
 		{
 			throw new IllegalStateException("No active plugin context");
+		}
+	}
+	
+	private <T> void registerTickableCallback(T callback)
+	{
+		if(callback instanceof ITickableCallback tickableCallback)
+		{
+			this.tickableCallbacks.add(tickableCallback);
 		}
 	}
 	
@@ -106,12 +117,23 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		return Collections.unmodifiableList(this.cameraEntityTransparencyCallbacks);
 	}
 	
+	public List<ITickableCallback> getTickableCallbacks()
+	{
+		return Collections.unmodifiableList(this.tickableCallbacks);
+	}
+	
 	@SuppressWarnings("unchecked")
 	private static <T> T createProxy(PluginContext context, T callback, Class<T> klass)
 	{
+		ClassLoader classLoader = ShoulderSurfingRegistrar.class.getClassLoader();
 		Set<Class<?>> interfaces = new LinkedHashSet<Class<?>>(1);
 		interfaces.add(klass);
-		ClassLoader classLoader = ShoulderSurfingRegistrar.class.getClassLoader();
+		
+		if(callback instanceof ITickableCallback)
+		{
+			interfaces.add(ITickableCallback.class);
+		}
+		
 		CallbackInvocationHandler<T> invocationHandler = new CallbackInvocationHandler<T>(context, callback, interfaces);
 		return (T) Proxy.newProxyInstance(classLoader, interfaces.toArray(Class<?>[]::new), invocationHandler);
 	}
