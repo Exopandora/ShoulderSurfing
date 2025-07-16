@@ -11,9 +11,9 @@ import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallback;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.StringUtils;
 
 public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
@@ -22,7 +22,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	public void register(IShoulderSurfingRegistrar registrar)
 	{
 		registrar.registerAdaptiveItemCallback(new AdaptiveItemCallback());
-		registrar.registerCameraEntityTransparencyCallback(ShoulderSurfingPlugin::getCameraEntityAlpha);
+		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallback());
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
 	}
@@ -43,39 +43,6 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 				ShoulderSurfingCommon.LOGGER.error("Failed to load compatibility callback for {}", modName, t);
 			}
 		}
-	}
-	
-	private static final float MIN_CAMERA_ENTITY_ALPHA = 0.15F;
-	
-	private static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float partialTick)
-	{
-		if(shouldRenderCameraEntityTransparent(instance, entity))
-		{
-			Vec3 renderOffset = instance.getCamera().getRenderOffset();
-			float xAlpha = (float) Mth.clamp(Math.abs(renderOffset.x()) / (entity.getBbWidth() / 2.0D), 0, 1.0F);
-			float yAlpha = 0;
-			
-			if(renderOffset.y() > 0)
-			{
-				yAlpha = (float) Mth.clamp(renderOffset.y() / (entity.getBbHeight() - entity.getEyeHeight()), 0, 1.0F);
-			}
-			else if(renderOffset.y() < 0)
-			{
-				yAlpha = (float) Mth.clamp(-renderOffset.y() / -entity.getEyeHeight(), 0, 1.0F);
-			}
-			
-			return Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), MIN_CAMERA_ENTITY_ALPHA, 1.0F);
-		}
-		
-		return 1.0F;
-	}
-	
-	private static boolean shouldRenderCameraEntityTransparent(IShoulderSurfing instance, Entity entity)
-	{
-		Vec3 renderOffset = instance.getCamera().getRenderOffset();
-		return !entity.isSpectator() && (Math.abs(renderOffset.x()) < (entity.getBbWidth() / 2.0D) &&
-			(renderOffset.y() >= 0 && renderOffset.y() < entity.getBbHeight() - entity.getEyeHeight() ||
-				renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight()));
 	}
 	
 	private static class CameraEntityTransparencyCallbackWhenAiming implements ICameraEntityTransparencyCallback, ITickableCallback
@@ -111,7 +78,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			if(Config.CLIENT.turnPlayerTransparentWhenAiming())
 			{
 				float f = (TRANSITION_TICK_COUNT - Mth.lerp(partialTick, this.aimingTicksO, this.aimingTicks)) / TRANSITION_TICK_COUNT;
-				return MIN_CAMERA_ENTITY_ALPHA + (1F - MIN_CAMERA_ENTITY_ALPHA) * f;
+				return CameraEntityTransparencyCallback.MIN_CAMERA_ENTITY_ALPHA + (1F - CameraEntityTransparencyCallback.MIN_CAMERA_ENTITY_ALPHA) * f;
 			}
 			
 			return 1.0F;
