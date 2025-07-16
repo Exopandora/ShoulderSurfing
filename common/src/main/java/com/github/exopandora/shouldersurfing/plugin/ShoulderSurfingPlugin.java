@@ -10,28 +10,18 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallback;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 {
 	@Override
 	public void register(IShoulderSurfingRegistrar registrar)
 	{
-		registrar.registerAdaptiveItemCallback(ShoulderSurfingPlugin::isHoldingAdaptiveItem);
+		registrar.registerAdaptiveItemCallback(new AdaptiveItemCallback());
 		registrar.registerCameraEntityTransparencyCallback(ShoulderSurfingPlugin::getCameraEntityAlpha);
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
@@ -52,64 +42,6 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			{
 				ShoulderSurfingCommon.LOGGER.error("Failed to load compatibility callback for {}", modName, t);
 			}
-		}
-	}
-	
-	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity)
-	{
-		Item useItem = entity.getUseItem().getItem();
-		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
-		
-		if(isAdaptiveItemStack(useItem, useItems, useItemProperties))
-		{
-			return true;
-		}
-		
-		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
-		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
-		
-		for(ItemStack handStack : handItems)
-		{
-			if(isAdaptiveItemStack(handStack.getItem(), holdItems, holdItemProperties))
-			{
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	private static boolean isAdaptiveItemStack(Item item, List<? extends String> expressions, List<? extends String> itemProperties)
-	{
-		String itemId = Registry.ITEM.getKey(item).toString();
-		
-		if(expressions.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId)))
-		{
-			return true;
-		}
-		
-		for(String itemProperty : itemProperties)
-		{
-			if(ItemProperties.getProperty(item, new ResourceLocation(itemProperty)) != null)
-			{
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	private static Predicate<String> expressionToMatchPredicate(String expression)
-	{
-		try
-		{
-			return Pattern.compile(expression).asMatchPredicate();
-		}
-		catch(Exception e)
-		{
-			return expression::equals;
 		}
 	}
 	
