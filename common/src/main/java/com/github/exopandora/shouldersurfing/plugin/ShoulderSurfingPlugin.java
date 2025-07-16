@@ -20,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,17 +35,23 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerAdaptiveItemCallback(ShoulderSurfingPlugin::isHoldingAdaptiveItem);
 		registrar.registerCameraEntityTransparencyCallback(ShoulderSurfingPlugin::getCameraEntityAlpha);
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
-		
-		if(Mods.CREATE.isLoaded())
+		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
+	}
+	
+	private static void registerCompatibilityCallback(Mods mod, Runnable runnable)
+	{
+		if(mod.isLoaded())
 		{
+			String modName = StringUtils.capitalize(mod.name());
+			
 			try
 			{
-				ShoulderSurfingCommon.LOGGER.info("Registering compatibility callback for create mod");
-				registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback());
+				ShoulderSurfingCommon.LOGGER.info("Registering compatibility callback for {}", modName);
+				runnable.run();
 			}
 			catch(Throwable t)
 			{
-				ShoulderSurfingCommon.LOGGER.error("Failed to load compatibility callback for create mod", t);
+				ShoulderSurfingCommon.LOGGER.error("Failed to load compatibility callback for {}", modName, t);
 			}
 		}
 	}
