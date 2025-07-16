@@ -53,18 +53,44 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	{
 		ItemStack useStack = entity.getUseItem();
 		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
-		String useItemId = BuiltInRegistries.ITEM.getKey(useStack.getItem()).toString();
+		List<? extends String> useItemComponents = Config.CLIENT.getAdaptiveCrosshairUseItemComponents();
+		List<? extends String> adaptiveCrosshairUseItemAnimations = Config.CLIENT.getAdaptiveCrosshairUseItemAnimations();
 		
-		if(useItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(useItemId)))
+		if(isAdaptiveItemStack(useStack, useItems, useItemComponents, adaptiveCrosshairUseItemAnimations))
 		{
 			return true;
 		}
 		
-		if(!useStack.getComponentsPatch().isEmpty())
+		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
+		List<? extends String> holdItemComponents = Config.CLIENT.getAdaptiveCrosshairHoldItemComponents();
+		List<? extends String> holdItemAnimations = Config.CLIENT.getAdaptiveCrosshairHoldItemAnimations();
+		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
+		
+		for(ItemStack handStack : handItems)
 		{
-			DataComponentPatch patch = useStack.getComponentsPatch();
+			if(isAdaptiveItemStack(handStack, holdItems, holdItemComponents, holdItemAnimations))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private static boolean isAdaptiveItemStack(ItemStack stack, List<? extends String> expressions, List<? extends String> componentIds, List<? extends String> itemAnimations)
+	{
+		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+		
+		if(expressions.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId)))
+		{
+			return true;
+		}
+		
+		if(!stack.getComponentsPatch().isEmpty())
+		{
+			DataComponentPatch patch = stack.getComponentsPatch();
 			
-			for(String componentId : Config.CLIENT.getAdaptiveCrosshairUseItemComponents())
+			for(String componentId : componentIds)
 			{
 				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(ResourceLocation.tryParse(componentId));
 				
@@ -82,59 +108,13 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 			}
 		}
 		
-		String useAnimation = useStack.getUseAnimation().getSerializedName();
+		String useAnimation = stack.getUseAnimation().getSerializedName();
 		
-		for(String useItemAnimation : Config.CLIENT.getAdaptiveCrosshairUseItemAnimations())
+		for(String itemAnimation : itemAnimations)
 		{
-			if(useItemAnimation.equals(useAnimation))
+			if(itemAnimation.equals(useAnimation))
 			{
 				return true;
-			}
-		}
-		
-		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemAnimations = Config.CLIENT.getAdaptiveCrosshairHoldItemAnimations();
-		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
-		
-		for(ItemStack handStack : handItems)
-		{
-			String handItemId = BuiltInRegistries.ITEM.getKey(handStack.getItem()).toString();
-			
-			if(holdItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(handItemId)))
-			{
-				return true;
-			}
-			
-			if(!handStack.getComponentsPatch().isEmpty())
-			{
-				DataComponentPatch patch = handStack.getComponentsPatch();
-				
-				for(String componentId : Config.CLIENT.getAdaptiveCrosshairHoldItemComponents())
-				{
-					Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(ResourceLocation.tryParse(componentId));
-					
-					if(type.isEmpty())
-					{
-						continue;
-					}
-					
-					Optional<?> component = patch.get(type.get());
-					
-					if(component != null && component.isPresent())
-					{
-						return true;
-					}
-				}
-			}
-			
-			String handItemUseAnimation = handStack.getUseAnimation().getSerializedName();
-			
-			for(String holdItemAnimation : holdItemAnimations)
-			{
-				if(handItemUseAnimation.equals(holdItemAnimation))
-				{
-					return true;
-				}
 			}
 		}
 		
