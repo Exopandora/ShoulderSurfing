@@ -52,39 +52,41 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		ItemStack useStack = entity.getUseItem();
 		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
 		List<? extends String> useItemProperties = Config.CLIENT.getAdaptiveCrosshairUseItemProperties();
-		String useItemId = BuiltInRegistries.ITEM.getKey(useStack.getItem()).toString();
 		
-		if(useItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(useItemId)))
+		if(isAdaptiveItemStack(useStack, useItems, useItemProperties))
 		{
 			return true;
 		}
 		
-		for(String useItemProperty : useItemProperties)
+		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
+		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
+		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
+		
+		for(ItemStack handStack : handItems)
 		{
-			if(ItemProperties.getProperty(useStack, ResourceLocation.parse(useItemProperty)) != null)
+			if(isAdaptiveItemStack(handStack, holdItems, holdItemProperties))
 			{
 				return true;
 			}
 		}
 		
-		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemProperties = Config.CLIENT.getAdaptiveCrosshairHoldItemProperties();
+		return false;
+	}
+	
+	private static boolean isAdaptiveItemStack(ItemStack stack, List<? extends String> expressions, List<? extends String> itemProperties)
+	{
+		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		
-		for(ItemStack handStack : entity.getHandSlots())
+		if(expressions.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId)))
 		{
-			String handItemId = BuiltInRegistries.ITEM.getKey(handStack.getItem()).toString();
-			
-			if(holdItems.stream().map(ShoulderSurfingPlugin::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(handItemId)))
+			return true;
+		}
+		
+		for(String itemProperty : itemProperties)
+		{
+			if(ItemProperties.getProperty(stack, ResourceLocation.parse(itemProperty)) != null)
 			{
 				return true;
-			}
-			
-			for(String holdItemProperty : holdItemProperties)
-			{
-				if(ItemProperties.getProperty(handStack, ResourceLocation.parse(holdItemProperty)) != null)
-				{
-					return true;
-				}
 			}
 		}
 		
