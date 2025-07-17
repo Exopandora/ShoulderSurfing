@@ -11,6 +11,7 @@ public enum Mods
 	CGM,
 	COBBLEMON,
 	CREATE,
+	CURIOS,
 	EMF,
 	EPIC_FIGHT,
 	IRIS,

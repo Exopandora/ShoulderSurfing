@@ -1,7 +1,7 @@
 [versions]
 minecraft = "1.21.7"
 forge = "1.21.7-57.0.0"
-neoforge = "21.7.1-beta"
+neoforge = "21.7.24-beta"
 neoform = "1.21.7-20250630.141722"
 fabric-loader = "0.16.14"
 fabric-api = "0.128.1+1.21.7"
@@ -18,6 +18,7 @@ jade-fabric = "6713304" # 1.21.6/7-19.0.4-fabric
 badpackets-forge = "forge-0.9.0"
 badpackets-neoforge = "neo-0.9.0"
 badpackets-fabric = "fabric-0.9.0"
+curios = "11.0.1+1.21.5"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -40,6 +41,7 @@ jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" 
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
+curios-neoforge = { module = "top.theillusivec4.curios:curios-neoforge", version.ref = "curios" }
 eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0-beta.10" }
 
 [plugins]

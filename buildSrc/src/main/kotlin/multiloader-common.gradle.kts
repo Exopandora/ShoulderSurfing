@@ -58,6 +58,11 @@ repositories {
             includeGroup("curse.maven")
         }
     }
+    maven("https://maven.theillusivec4.top/") {
+        content {
+            includeGroup("top.theillusivec4.curios")
+        }
+    }
 }
 
 tasks.withType<Jar>().configureEach {

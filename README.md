@@ -131,6 +131,7 @@ The binaries for each platform can be found in the following directories:
 - 3D Skin Layers
 - Cobblemon
 - Create
+- Curios
 - Entity Model Features
 - Iris
 - Oculus
