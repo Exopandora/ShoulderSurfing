@@ -12,6 +12,7 @@ badpackets-forge = "forge-0.1.2"
 badpackets-fabric = "fabric-0.1.2"
 night-config = "3.6.3"
 create-common = "1.18.2-0.5.1.f" # forge artifact
+curios = "1.18.2-5.0.9.2"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -29,6 +30,7 @@ badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-f
 create-common = { module = "maven.modrinth:create", version.ref = "create-common" }
 nightconfig-core = { module = "com.electronwill.night-config:core", version.ref = "night-config" }
 nightconfig-toml = { module = "com.electronwill.night-config:toml", version.ref = "night-config" }
+curios-forge = { module = "top.theillusivec4.curios:curios-forge", version.ref = "curios" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }

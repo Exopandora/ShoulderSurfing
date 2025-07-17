@@ -10,6 +10,7 @@ public enum Mods
 {
 	CGM,
 	CREATE,
+	CURIOS,
 	EMF,
 	EPIC_FIGHT,
 	SKIN_LAYERS,

@@ -14,6 +14,7 @@ public class Platform implements IPlatform
 		{
 			case CGM -> findModVersionForId("cgm");
 			case CREATE -> findModVersionForId("create");
+			case CURIOS -> findModVersionForId("curios");
 			case EMF -> findModVersionForId("entity_model_features");
 			case EPIC_FIGHT -> findModVersionForId("epicfight");
 			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
