@@ -12,7 +12,7 @@ public class Platform implements IPlatform
 	{
 		return switch(mod)
 		{
-			case CGM, EPIC_FIGHT, OCULUS -> null;
+			case CGM, CURIOS, EPIC_FIGHT, OCULUS -> null;
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");
 			case EMF -> findModVersionForId("entity_model_features");
