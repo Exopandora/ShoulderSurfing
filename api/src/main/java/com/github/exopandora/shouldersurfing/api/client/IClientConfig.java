@@ -255,5 +255,9 @@ public interface IClientConfig
 	
 	double getPlayerYRotFollowAngleLimit();
 	
+	List<? extends String> getCuriosAdaptiveCrosshairItems();
+	
+	List<? extends String> getCuriosAdaptiveCrosshairItemProperties();
+	
 	boolean getEpicFightDecoupledCameraLockOn();
 }

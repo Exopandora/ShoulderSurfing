@@ -13,6 +13,7 @@ jade-forge = "4573193"
 jade-fabric = "4573047"
 badpackets-forge = "forge-0.4.1"
 badpackets-fabric = "fabric-0.4.1"
+curios = "5.14.1+1.20.1"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -30,6 +31,7 @@ jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
 jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
+curios-forge = { module = "top.theillusivec4.curios:curios-forge", version.ref = "curios" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }
