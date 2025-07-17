@@ -7,6 +7,7 @@
 	"client": [
 		"GuiAccessor",
 		"GameRendererAccessor",
+		"ResourceLocationAccessor",
 		"MixinAbstractClientPlayer",
 		"MixinBeeStingerLayer",
 		"MixinCamera",

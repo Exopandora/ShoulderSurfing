@@ -79,6 +79,7 @@ dependencies {
 	implementation(fg.deobf(libs.badpackets.forge.get()))
 	implementation(fg.deobf(libs.jade.forge.get()))
 	compileOnly(fg.deobf(libs.create.common.get()))
+	compileOnly(fg.deobf(libs.curios.forge.get()))
 }
 
 tasks.named<ProcessResources>("processResources") {
