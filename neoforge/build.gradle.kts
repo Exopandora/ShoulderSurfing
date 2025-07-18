@@ -102,7 +102,3 @@ publishMods {
 		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
 	}
 }
-
-tasks.build {
-	finalizedBy("sourcesJar")
-}
