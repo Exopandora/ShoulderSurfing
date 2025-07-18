@@ -1,4 +1,1 @@
-- Added option to turn player transparent when aiming
-- Added camera entity transparency callback api
-- Added tickable callback api
-- Refactored plugin callback wrapping
+- Added compatibility options for curios slots
