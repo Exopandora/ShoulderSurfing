@@ -20,7 +20,6 @@ tasks.named<ProcessResources>("processResources") {
 tasks.register<Jar>("apiJar") {
     from(project(":api").sourceSets.main.get().output)
     archiveClassifier = "api"
-    finalizedBy("apiSourcesJar")
 }
 
 tasks.register<Jar>("apiSourcesJar") {
@@ -28,13 +27,12 @@ tasks.register<Jar>("apiSourcesJar") {
     archiveClassifier = "api-sources"
 }
 
-tasks.register<Jar>("sourcesJar") {
-    from(sourceSets.main.get().allSource)
+tasks.named<Jar>("sourcesJar") {
     from(project(":api").sourceSets.main.get().allSource)
     from(project(":common").sourceSets.main.get().allSource)
-    archiveClassifier = "sources"
 }
 
 tasks.build {
     finalizedBy("apiJar")
+    finalizedBy("apiSourcesJar")
 }
