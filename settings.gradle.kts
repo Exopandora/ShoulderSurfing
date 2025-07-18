@@ -5,7 +5,7 @@ pluginManagement {
 				maven("https://maven.fabricmc.net/")
 			}
 			filter {
-				includeGroup("net.fabricmc")
+				includeGroupAndSubgroups("net.fabricmc")
 				includeGroup("fabric-loom")
 			}
 		}
@@ -14,7 +14,7 @@ pluginManagement {
 				maven("https://repo.spongepowered.org/repository/maven-public/")
 			}
 			filter {
-				includeGroupByRegex("org\\.spongepowered.*")
+				includeGroupAndSubgroups("org.spongepowered")
 			}
 		}
 		exclusiveContent {
@@ -22,7 +22,7 @@ pluginManagement {
 				maven("https://maven.minecraftforge.net/")
 			}
 			filter {
-				includeGroupByRegex("net\\.minecraftforge.*")
+				includeGroupAndSubgroups("net.minecraftforge")
 			}
 		}
 		exclusiveContent {
@@ -30,7 +30,7 @@ pluginManagement {
 				maven("https://maven.neoforged.net/releases/")
 			}
 			filter {
-				includeGroupByRegex("net\\.neoforged.*")
+				includeGroupAndSubgroups("net.neoforged")
 				includeGroup("codechicken")
 				includeGroup("net.covers1624")
 			}
