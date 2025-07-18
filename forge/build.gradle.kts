@@ -144,10 +144,6 @@ publishMods {
 	}
 }
 
-tasks.build {
-	finalizedBy("sourcesJar")
-}
-
 sourceSets.forEach {
 	val dir = layout.buildDirectory.dir("sourcesSets/${it.name}")
 	it.output.setResourcesDir(dir)

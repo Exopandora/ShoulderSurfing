@@ -19,6 +19,7 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(javaToolchainVersion)
     sourceCompatibility = JavaVersion.toVersion(javaVersion)
     targetCompatibility = JavaVersion.toVersion(javaVersion)
+    withSourcesJar()
 }
 
 idea {
