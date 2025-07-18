@@ -3,7 +3,6 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
 	id("multiloader-modloader")
 	alias(libs.plugins.fabricloom)
-	alias(libs.plugins.modpublishplugin)
 }
 
 val modId: String by project
@@ -13,11 +12,8 @@ val modContributors: String by project
 val modVersion: String by project
 val modDescription: String by project
 val modUrl: String by project
-val javaVersion: String by project
 val jarName: String by project
 val fabricCompatibleMinecraftVersions: String by project
-val curseProjectId: String by project
-val modrinthProjectId: String by project
 
 base {
 	archivesName.set("$jarName-Fabric")
@@ -85,31 +81,17 @@ publishMods {
 	displayName = "$jarName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
 	version = "${project.version}+fabric"
 	file = tasks.named<RemapJarTask>("remapJar").get().archiveFile
-	additionalFiles.from(
-		tasks.named("sourcesJar").get(),
-		tasks.named("apiJar").get(),
-		tasks.named("apiSourcesJar").get()
-	)
-	changelog = provider { file("../changelog.txt").readText() }
 	modLoaders.add("fabric")
-	type = STABLE
 	
 	val compatibleVersions = fabricCompatibleMinecraftVersions.split(",")
 	
 	curseforge {
-		projectId = curseProjectId
-		accessToken = System.getenv("CURSE_API_KEY")
 		minecraftVersions.set(compatibleVersions)
-		javaVersions.add(JavaVersion.toVersion(javaVersion))
-		clientRequired = true
-		serverRequired = false
 		requires("fabric-api", "forge-config-api-port-fabric")
 		incompatible("better-third-person", "nimble-fabric", "valkyrien-skies")
 	}
 	
 	modrinth {
-		projectId = modrinthProjectId
-		accessToken = System.getenv("MODRINTH_API_KEY")
 		minecraftVersions.set(compatibleVersions)
 		requires("fabric-api", "forge-config-api-port")
 		incompatible("better-third-person", "nimble", "valkyrien-skies")
