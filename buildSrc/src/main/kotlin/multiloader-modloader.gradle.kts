@@ -1,6 +1,11 @@
 plugins {
     id("multiloader-common")
+    id("me.modmuss50.mod-publish-plugin")
 }
+
+val javaVersion: String by project
+val curseProjectId: String by project
+val modrinthProjectId: String by project
 
 dependencies {
     compileOnly(project(":api"))
@@ -34,4 +39,27 @@ tasks.named<Jar>("sourcesJar") {
 tasks.build {
     finalizedBy("apiJar")
     finalizedBy("apiSourcesJar")
+}
+
+publishMods {
+    additionalFiles.from(
+        tasks.named("sourcesJar").get(),
+        tasks.named("apiJar").get(),
+        tasks.named("apiSourcesJar").get()
+    )
+    changelog = provider { file("../changelog.txt").readText() }
+    type = STABLE
+    
+    curseforge {
+        projectId = curseProjectId
+        accessToken = System.getenv("CURSE_API_KEY")
+        javaVersions.add(JavaVersion.toVersion(javaVersion))
+        clientRequired = true
+        serverRequired = false
+    }
+    
+    modrinth {
+        projectId = modrinthProjectId
+        accessToken = System.getenv("MODRINTH_API_KEY")
+    }
 }
