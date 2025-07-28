@@ -146,6 +146,7 @@ The binaries for each platform can be found in the following directories:
 
 - Better Third Person
 - Camera Utils
+- Feather Client
 - Nimble
 - Valkyrien Skies
 - YDM's Custom Camera View
