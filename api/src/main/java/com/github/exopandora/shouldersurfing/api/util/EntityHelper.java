@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,5 +34,10 @@ public class EntityHelper
 		Minecraft minecraft = Minecraft.getInstance();
 		Player player = minecraft.player;
 		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
+	}
+	
+	public static float getScale(Entity entity)
+	{
+		return entity instanceof LivingEntity living ? living.getScale() : 1.0F;
 	}
 }
