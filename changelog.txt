@@ -1,1 +1,1 @@
-- Added compatibility options for curios slots
+- The camera distance now scales with the entity's scale attribute
