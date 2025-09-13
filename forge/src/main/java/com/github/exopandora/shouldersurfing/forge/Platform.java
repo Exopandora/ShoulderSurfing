@@ -17,6 +17,7 @@ public class Platform implements IPlatform
 			case CURIOS -> findModVersionForId("curios");
 			case EMF -> findModVersionForId("entity_model_features");
 			case EPIC_FIGHT -> findModVersionForId("epicfight");
+			case MTS -> findModVersionForId("mts");
 			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
 			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");
