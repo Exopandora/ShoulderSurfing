@@ -1,1 +1,1 @@
-- The camera distance now scales with the entity's scale attribute
+- Improve compatibility with Immersive Vehicles
