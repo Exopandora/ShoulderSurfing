@@ -15,6 +15,7 @@ public enum Mods
 	EMF,
 	EPIC_FIGHT,
 	IRIS,
+	MTS,
 	OCULUS,
 	SKIN_LAYERS,
 	THE_ONE_PROBE,

@@ -19,6 +19,7 @@ public class Platform implements IPlatform
 			case EMF -> findModVersionForId("entity_model_features");
 			case EPIC_FIGHT -> findModVersionForId("epicfight");
 			case IRIS -> null;
+			case MTS -> findModVersionForId("mts");
 			case OCULUS -> findModVersionForId("oculus");
 			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
