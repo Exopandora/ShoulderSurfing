@@ -19,8 +19,17 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
+		addMtsMixins(mixins);
 		addOculusMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
+	}
+	
+	private static void addMtsMixins(List<String> mixins)
+	{
+		if(Mods.MTS.isLoaded())
+		{
+			mixins.add("mts.MixinCameraSystem");
+		}
 	}
 	
 	private static void addOculusMixins(List<String> mixins)
