@@ -28,7 +28,7 @@ public abstract class MixinPlayer extends Entity
 		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(instance.isShoulderSurfing() && this.level().isClientSide)
+		if(instance.isShoulderSurfing() && this.level().isClientSide())
 		{
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withFluidContext(stopOnFluid ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE)

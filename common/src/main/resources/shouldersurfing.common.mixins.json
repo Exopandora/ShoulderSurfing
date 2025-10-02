@@ -17,17 +17,17 @@
 		"MixinCompassAngleState",
 		"MixinDebugScreenOverlay",
 		"MixinEntityBoundSoundInstance",
+        "MixinEntityRenderDispatcher",
+        "MixinEntityRenderer",
 		"MixinGameRenderer",
 		"MixinGui",
 		"MixinItem",
-		"MixinLevelRenderer",
 		"MixinLocalPlayer",
-		"MixinModelPart",
-		"MixinModelPart$Cube",
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
-		"MixinRenderType"
+		"MixinRenderType",
+        "MixinSubmitNodeCollection"
 	],
 	"injectors": {
 		"defaultRequire": 1

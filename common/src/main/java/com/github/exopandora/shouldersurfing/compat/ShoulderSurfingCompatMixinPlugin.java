@@ -35,12 +35,9 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	{
 		addCGMMixins(mixins);
 		addCobblemonMixins(mixins);
-		addEMFMixins(mixins);
 		addEpicFightMixins(mixins);
-		addSkinLayersMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
-		addWildfireGenderMixins(mixins);
 	}
 	
 	private static void addCGMMixins(List<String> mixins)
@@ -60,28 +57,12 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		}
 	}
 	
-	private static void addEMFMixins(List<String> mixins)
-	{
-		if(Mods.EMF.isLoaded())
-		{
-			mixins.add("emf.MixinEMFModelPartCustom$EMFCube");
-		}
-	}
-	
 	private static void addEpicFightMixins(List<String> mixins)
 	{
 		if(Mods.EPIC_FIGHT.isLoaded())
 		{
 			mixins.add("epicfight.AccessorCamera");
 			mixins.add("epicfight.MixinRenderEngine");
-		}
-	}
-	
-	private static void addSkinLayersMixins(List<String> mixins)
-	{
-		if(Mods.SKIN_LAYERS.isLoaded())
-		{
-			mixins.add("skinlayers.MixinCustomizableModelPart");
 		}
 	}
 	
@@ -98,14 +79,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		if(Mods.TSLAT_ENTITY_STATUS.isLoaded())
 		{
 			mixins.add("tslatentitystatus.MixinTESHud");
-		}
-	}
-	
-	private static void addWildfireGenderMixins(List<String> mixins)
-	{
-		if(Mods.WILDFIRE_GENDER.isLoaded())
-		{
-			mixins.add("wildfiregender.MixinGenderLayer");
 		}
 	}
 }

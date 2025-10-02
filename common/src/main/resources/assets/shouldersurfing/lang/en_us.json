@@ -362,6 +362,8 @@
 
   "${modId}.modloadingissue.incompatiblemod": "Mod §e{2}§r is §cincompatible§r with §3{3}§r.\n§7Currently, §3{3}§r§7 is §o{4}§r",
 
+  "key.category.${modId}.general": "Shoulder Surfing",
+
   "key.${modId}.adjust_camera_left": "Adjust Camera Left",
   "key.${modId}.adjust_camera_right": "Adjust Camera Right",
   "key.${modId}.adjust_camera_in": "Adjust Camera In",

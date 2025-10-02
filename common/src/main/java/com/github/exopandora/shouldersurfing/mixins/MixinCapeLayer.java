@@ -13,7 +13,7 @@ public class MixinCapeLayer
 {
 	@Redirect
 	(
-		method = "render",
+		method = "submit",
 		at = @At
 		(
 			value = "INVOKE",

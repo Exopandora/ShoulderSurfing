@@ -76,7 +76,7 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 						.serverData(this.registration.getServerData())
 						.serverConnected(this.registration.isServerConnected())
 						.hit(blockTarget)
-						.fakeBlock(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
+						.serversideRep(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
 						.build();
 				}
 				else if(target instanceof EntityHitResult entityTarget)

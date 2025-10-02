@@ -30,7 +30,7 @@ public class Platform implements IPlatform
 	
 	private static String findModVersionForId(String modId)
 	{
-		return FMLLoader.getLoadingModList().getMods().stream()
+		return FMLLoader.getCurrent().getLoadingModList().getMods().stream()
 			.filter(info -> info.getModId().equals(modId))
 			.findFirst()
 			.map(info -> info.getVersion().toString())

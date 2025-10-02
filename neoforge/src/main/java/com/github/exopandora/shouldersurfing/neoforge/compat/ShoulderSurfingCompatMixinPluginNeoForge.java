@@ -21,25 +21,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
-		addShaderMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
-	}
-	
-	private static void addShaderMixins(List<String> mixins)
-	{
-		ArtifactVersion version = highestShaderVersion();
-		
-		if(version != null)
-		{
-			if(parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version))
-			{
-				mixins.add("iris.MixinSheets_1_7_0");
-			}
-			else if(parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version))
-			{
-				mixins.add("iris.MixinSheets_1_6_15");
-			}
-		}
 	}
 	
 	private static void addCreateModMixins(List<String> mixins)

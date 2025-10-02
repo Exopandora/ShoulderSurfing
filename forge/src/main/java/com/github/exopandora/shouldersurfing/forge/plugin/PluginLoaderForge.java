@@ -5,10 +5,12 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class PluginLoaderForge extends PluginLoader
+public class PluginLoaderForge extends PluginLoader<Path>
 {
 	@Override
 	public void loadPlugins()
@@ -25,5 +27,11 @@ public class PluginLoaderForge extends PluginLoader
 		}
 		
 		this.freeze();
+	}
+	
+	@Override
+	protected Reader readConfiguration(Path source) throws IOException
+	{
+		return Files.newBufferedReader(source);
 	}
 }

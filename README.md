@@ -126,23 +126,16 @@ The binaries for each platform can be found in the following directories:
 
 # Compatibility #
 <details>
-  <summary>Builtin compatibility (*)</summary>
+  <summary>Builtin compatibility*</summary>
 
-- 3D Skin Layers
 - Cobblemon
 - Create
 - Curios
-- Entity Model Features
-- Iris
-- Oculus
-- OptiFine
-- Sodium
 - TslatEntityStatus
-- Wildfire Gender
 </details>
 
 <details>
-  <summary>Incompatible mods (*)</summary>
+  <summary>Incompatible mods*</summary>
 
 - Better Third Person
 - Camera Utils
@@ -154,14 +147,12 @@ The binaries for each platform can be found in the following directories:
 </details>
 
 <details>
-  <summary>Minor incompatibility issues (*)</summary>
+  <summary>Minor incompatibility issues*</summary>
 
 - Clutter (hats do not render transparent)
 - Epic Fight (player does not render transparent in battle mode, player keeps punching in the same direction)
 - EssentialClient (player look script hooks do not work)
 - Inmis (backpack does not render transparent)
-- MedievalWeapons (player is permanently in aiming mode)
-  - Workaround: Remove `minecraft:throwing` from `adaptive_crosshair_use_item_properties` in the config
 - MrCrayfish's Gun Mod (crosshair does not render when using ads, fov does not update when using ads)
 - Tweakeroo (freecam movement)
 - YDM's Weapon Master (weapons do not render transparent)

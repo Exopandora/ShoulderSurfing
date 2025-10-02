@@ -5,6 +5,7 @@ import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -20,12 +21,12 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 
-@Mod(ShoulderSurfingCommon.MOD_ID)
+@Mod(value = ShoulderSurfingCommon.MOD_ID, dist = Dist.CLIENT)
 public class ShoulderSurfingNeoForge
 {
 	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus)
 	{
-		if(FMLEnvironment.dist.isClient())
+		if(FMLEnvironment.getDist().isClient())
 		{
 			modEventBus.addListener(this::clientSetup);
 			modEventBus.addListener(this::loadComplete);

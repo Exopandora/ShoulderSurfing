@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTranspare
 import com.github.exopandora.shouldersurfing.api.client.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +15,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	private final ShoulderSurfingImpl instance;
 	private float cameraEntityAlpha = 1.0F;
 	private boolean isRenderingCameraEntity;
+	private EntityRenderState cameraEntityRenderState;
 	
 	public CameraEntityRenderer(ShoulderSurfingImpl instance)
 	{
@@ -72,6 +74,16 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 		}
 		
 		return color;
+	}
+	
+	public EntityRenderState getCameraEntityRenderState()
+	{
+		return this.cameraEntityRenderState;
+	}
+	
+	public void setCameraEntityRenderState(EntityRenderState cameraEntityRenderState)
+	{
+		this.cameraEntityRenderState = cameraEntityRenderState;
 	}
 	
 	@Override

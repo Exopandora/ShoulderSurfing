@@ -20,7 +20,6 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
 		addMtsMixins(mixins);
-		addOculusMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
@@ -29,25 +28,6 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 		if(Mods.MTS.isLoaded())
 		{
 			mixins.add("mts.MixinCameraSystem");
-		}
-	}
-	
-	private static void addOculusMixins(List<String> mixins)
-	{
-		String oculusModVersion = Mods.OCULUS.getModVersion();
-		
-		if(oculusModVersion != null)
-		{
-			ArtifactVersion version = new DefaultArtifactVersion(oculusModVersion);
-			
-			if(parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version))
-			{
-				mixins.add("iris.MixinSheets_1_7_0");
-			}
-			else if(parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version))
-			{
-				mixins.add("iris.MixinSheets_1_6_15");
-			}
 		}
 	}
 	

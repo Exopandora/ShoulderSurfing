@@ -18,27 +18,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
-		addIrisMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
-	}
-	
-	private static void addIrisMixins(List<String> mixins)
-	{
-		String irisModVersion = Mods.IRIS.getModVersion();
-		
-		if(irisModVersion != null)
-		{
-			Version version = parseVersionSilent(irisModVersion);
-			
-			if(parseVersionPredicateSilent(">=1.7.0-snapshot").test(version))
-			{
-				mixins.add("iris.MixinSheets_1_7_0");
-			}
-			else if(parseVersionPredicateSilent("<1.7.0-snapshot >=1.6.17").test(version))
-			{
-				mixins.add("iris.MixinSheets_1_6_15");
-			}
-		}
 	}
 	
 	private static void addCreateModMixins(List<String> mixins)

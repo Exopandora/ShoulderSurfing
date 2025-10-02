@@ -30,10 +30,10 @@
 		"shouldersurfing.fabric.compat.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"fabric": ">=0.127.0",
+		"fabricloader": ">=0.17.2",
+		"fabric": ">=0.133.14",
 		"minecraft": ">=1.21.6",
-		"forgeconfigapiport": ">=21.6.1",
+		"forgeconfigapiport": ">=21.9.0",
 		"java": ">=21"
 	},
 	"breaks": {

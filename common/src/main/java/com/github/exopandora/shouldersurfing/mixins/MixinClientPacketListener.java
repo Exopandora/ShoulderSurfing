@@ -55,7 +55,7 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/network/protocol/PacketUtils.ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/util/thread/BlockableEventLoop;)V",
+			target = "net/minecraft/network/protocol/PacketUtils.ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/network/PacketProcessor;)V",
 			shift = Shift.AFTER
 		)
 	)

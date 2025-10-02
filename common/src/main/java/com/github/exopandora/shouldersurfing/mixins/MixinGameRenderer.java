@@ -12,8 +12,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
 
@@ -71,5 +73,15 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		}
 		
 		return fov;
+	}
+	
+	@Inject
+	(
+		method = "render",
+		at = @At("HEAD")
+	)
+	public void render(CallbackInfo ci)
+	{
+		ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(null);
 	}
 }

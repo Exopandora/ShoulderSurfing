@@ -5,29 +5,28 @@ import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ServiceLoader;
 
-public abstract class PluginLoader
+public abstract class PluginLoader<T>
 {
-	private static final PluginLoader INSTANCE = ServiceLoader.load(PluginLoader.class).findFirst().orElseThrow();
+	private static final PluginLoader<?> INSTANCE = ServiceLoader.load(PluginLoader.class).findFirst().orElseThrow();
 	private static final String ENTRYPOINT_KEY = "entrypoint";
 	protected static final String PLUGIN_JSON_PATH = "shouldersurfing_plugin.json";
 	
 	public abstract void loadPlugins();
 	
-	protected void loadPlugin(String modName, String modId, Path path)
+	protected void loadPlugin(String modName, String modId, T source)
 	{
-		this.loadPlugin(new PluginContext(modName, modId, path));
+		this.loadPlugin(new PluginContext<T>(modName, modId, source));
 	}
 	
-	private void loadPlugin(PluginContext context)
+	private void loadPlugin(PluginContext<T> context)
 	{
 		ShoulderSurfingCommon.LOGGER.info("Registering plugin for {}", context.formattedModName());
 		
-		try(Reader reader = Files.newBufferedReader(context.path()))
+		try(Reader reader = this.readConfiguration(context.source()))
 		{
 			JsonObject configuration = JsonParser.parseReader(reader).getAsJsonObject();
 			
@@ -56,7 +55,9 @@ public abstract class PluginLoader
 		ShoulderSurfingRegistrar.getInstance().freeze();
 	}
 	
-	public static PluginLoader getInstance()
+	protected abstract Reader readConfiguration(T source) throws IOException;
+	
+	public static PluginLoader<?> getInstance()
 	{
 		return INSTANCE;
 	}
