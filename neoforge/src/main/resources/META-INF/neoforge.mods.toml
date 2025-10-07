@@ -35,7 +35,7 @@ side = "CLIENT"
 [[dependencies.${modId}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.9.0-beta,)"
+versionRange = "[21.9.14-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 
