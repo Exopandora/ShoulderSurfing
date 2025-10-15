@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.IAttackStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
@@ -8,6 +9,7 @@ import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
+import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
@@ -187,7 +189,20 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	private static boolean isAttacking(Minecraft minecraft)
 	{
-		return minecraft.options.keyAttack.isDown() && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult);
+		final TurningMode turningMode = Config.CLIENT.getTurningModeWhenAttacking();
+		final boolean defaultIsAttacking = minecraft.options.keyAttack.isDown() && turningMode.shouldTurn(minecraft.hitResult);
+		
+		for(IAttackStateCallback callback : ShoulderSurfingRegistrar.getInstance().getAttackStateCallbacks())
+		{
+			IAttackStateCallback.Result result = callback.isAttacking(new IAttackStateCallback.Context(minecraft, turningMode, defaultIsAttacking));
+			switch (result)
+			{
+				case TRUE -> { return true; }
+				case FALSE -> { return false; }
+				case PASS -> { /* Continue to next callback */ }
+			}
+		}
+		return defaultIsAttacking;
 	}
 	
 	private static boolean isPicking(Minecraft minecraft)

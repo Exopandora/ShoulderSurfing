@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.plugin;
 
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IAttackStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
@@ -23,6 +24,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new LinkedList<ITargetCameraOffsetCallback>();
 	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new LinkedList<ICameraEntityTransparencyCallback>();
 	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
+	private final List<IAttackStateCallback> attackStateCallbacks = new LinkedList<IAttackStateCallback>();
 	
 	private boolean isFrozen;
 	private PluginContext activePluginContext;
@@ -54,6 +56,12 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(ICameraEntityTransparencyCallback cameraEntityTransparencyCallback)
 	{
 		return this.registerCallback(this.cameraEntityTransparencyCallbacks, cameraEntityTransparencyCallback, ICameraEntityTransparencyCallback.class);
+	}
+	
+	@Override
+	public IShoulderSurfingRegistrar registerAttackStateCallback(IAttackStateCallback callback)
+	{
+		return this.registerCallback(this.attackStateCallbacks, callback, IAttackStateCallback.class);
 	}
 	
 	private <T> IShoulderSurfingRegistrar registerCallback(List<T> registry, T callback, Class<T> klass)
@@ -120,6 +128,11 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public List<ITickableCallback> getTickableCallbacks()
 	{
 		return Collections.unmodifiableList(this.tickableCallbacks);
+	}
+	
+	public List<IAttackStateCallback> getAttackStateCallbacks()
+	{
+		return Collections.unmodifiableList(this.attackStateCallbacks);
 	}
 	
 	@SuppressWarnings("unchecked")
