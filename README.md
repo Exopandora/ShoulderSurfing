@@ -159,6 +159,16 @@ The binaries for each platform can be found in the following directories:
 
 </details>
 
+<details>
+  <summary>Third-party integrations*</summary>
+
+These are community-made mods that add optional support for this mod. They are **not officially supported** and may not be compatible with all versions.
+
+- [Shoulder Surfing: Iron's Spells Integration](https://modrinth.com/mod/shoulder-surfing-iron-spells-integration)
+- [Shoulder Surfing - Pehkui Compat](https://modrinth.com/mod/shoulder-surfing-pehkui-compat)
+
+</details>
+
 \* Mods are listed A-Z.
 
 # License #
