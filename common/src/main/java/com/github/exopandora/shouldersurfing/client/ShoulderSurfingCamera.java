@@ -96,16 +96,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private void init()
 	{
 		this.offset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
-		this.offsetO = this.offset;
-		this.renderOffset = this.offset;
-		this.targetOffset = this.offset;
-		this.maxCameraDistance = this.offset.length();
-		this.maxCameraDistanceO = this.maxCameraDistance;
-		
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
 		if(cameraEntity != null)
 		{
+			this.offset = this.offset.scale(EntityHelper.getScale(cameraEntity));
 			this.xRot = cameraEntity.getXRot();
 			this.yRot = cameraEntity.getYRot();
 			this.deltaMovementO = getDeltaMovementWithoutGravity(cameraEntity);
@@ -117,6 +112,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.deltaMovementO = Vec3.ZERO;
 		}
 		
+		this.offsetO = this.offset;
+		this.renderOffset = this.offset;
+		this.targetOffset = this.offset;
+		this.maxCameraDistance = this.offset.length();
+		this.maxCameraDistanceO = this.maxCameraDistance;
 		this.xRotOffset = 0.0F;
 		this.yRotOffset = 0.0F;
 		this.xRotOffsetO = 0.0F;
