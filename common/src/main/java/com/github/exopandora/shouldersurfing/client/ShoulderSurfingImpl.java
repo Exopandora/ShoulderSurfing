@@ -74,7 +74,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 			this.isTemporaryFirstPerson = false;
 		}
 		
-		this.isAiming = isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
+		this.isAiming = computeIsAiming(minecraft);
 		this.updatePlayerRotations = false;
 		LocalPlayer player = minecraft.player;
 		
@@ -158,9 +158,9 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	private boolean shouldEntityAimAtTargetInternal(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && this.isCameraDecoupled() &&
-			(isUsingItem(cameraEntity, minecraft) || !cameraEntity.isFallFlying() && (isInteracting(cameraEntity, minecraft) &&
+			(shouldTurnWhenUsingItem(cameraEntity, minecraft) || !cameraEntity.isFallFlying() && (shouldTurnWhenInteracting(cameraEntity, minecraft) &&
 				!(Config.CLIENT.getPickVector() == PickVector.PLAYER && Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC) ||
-				isAttacking(minecraft) || isPicking(minecraft) || cameraEntity instanceof Player player && player.isScoping()));
+				shouldTurnWhenAttacking(minecraft) || shouldTurnWhenPicking(minecraft) || cameraEntity instanceof Player player && player.isScoping()));
 	}
 	
 	public boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
@@ -173,26 +173,44 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		return !this.shouldEntityAimAtTarget(cameraEntity, minecraft) && !this.shouldEntityFollowCamera(cameraEntity);
 	}
 	
-	private static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
+	private static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return cameraEntity.isUsingItem() && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult) &&
-			!cameraEntity.getUseItem().has(DataComponents.FOOD);
+		return isUsingItem(cameraEntity) && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult);
+	}
+	
+	private static boolean isUsingItem(LivingEntity cameraEntity)
+	{
+		return cameraEntity.isUsingItem() && !cameraEntity.getUseItem().has(DataComponents.FOOD);
 	}
 	
 	private static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem() &&
-			Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult);
+		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem();
+	}
+	
+	private static boolean shouldTurnWhenInteracting(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return isInteracting(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult);
 	}
 	
 	private static boolean isAttacking(Minecraft minecraft)
 	{
-		return minecraft.options.keyAttack.isDown() && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult);
+		return minecraft.options.keyAttack.isDown();
+	}
+	
+	private static boolean shouldTurnWhenAttacking(Minecraft minecraft)
+	{
+		return isAttacking(minecraft) && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult);
 	}
 	
 	private static boolean isPicking(Minecraft minecraft)
 	{
-		return minecraft.options.keyPickItem.isDown() && Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult);
+		return minecraft.options.keyPickItem.isDown();
+	}
+	
+	private static boolean shouldTurnWhenPicking(Minecraft minecraft)
+	{
+		return isPicking(minecraft) && Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult);
 	}
 	
 	public boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
@@ -209,6 +227,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 		
 		return false;
+	}
+	
+	private static boolean computeIsAiming(Minecraft minecraft)
+	{
+		return isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
 	}
 	
 	private static boolean isForcingCoupledCamera(Minecraft minecraft)
