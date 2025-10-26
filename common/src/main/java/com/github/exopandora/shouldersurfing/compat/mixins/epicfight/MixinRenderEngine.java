@@ -34,7 +34,7 @@ public class MixinRenderEngine
 		{
 			((AccessorCamera) camera).invokeSetRotation(yRot, xRot);
 		}
-		else if(!instance.isCameraDecoupled() || Config.CLIENT.getEpicFightDecoupledCameraLockOn())
+		else
 		{
 			instance.getCamera().setXRot(xRot);
 			instance.getCamera().setYRot(yRot);
