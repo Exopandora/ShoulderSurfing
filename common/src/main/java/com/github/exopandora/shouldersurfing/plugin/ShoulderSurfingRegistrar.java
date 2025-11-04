@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.plugin;
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
@@ -23,6 +24,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new LinkedList<ITargetCameraOffsetCallback>();
 	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new LinkedList<ICameraEntityTransparencyCallback>();
 	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
+	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<>();
 	
 	private boolean isFrozen;
 	private PluginContext activePluginContext;
@@ -54,6 +56,12 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(ICameraEntityTransparencyCallback cameraEntityTransparencyCallback)
 	{
 		return this.registerCallback(this.cameraEntityTransparencyCallbacks, cameraEntityTransparencyCallback, ICameraEntityTransparencyCallback.class);
+	}
+	
+	@Override
+	public IShoulderSurfingRegistrar registerPlayerStateCallback(IPlayerStateCallback callback)
+	{
+		return this.registerCallback(this.playerStateCallbacks, callback, IPlayerStateCallback.class);
 	}
 	
 	private <T> IShoulderSurfingRegistrar registerCallback(List<T> registry, T callback, Class<T> klass)
@@ -120,6 +128,11 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public List<ITickableCallback> getTickableCallbacks()
 	{
 		return Collections.unmodifiableList(this.tickableCallbacks);
+	}
+	
+	public List<IPlayerStateCallback> getPlayerStateCallbacks()
+	{
+		return Collections.unmodifiableList(this.playerStateCallbacks);
 	}
 	
 	@SuppressWarnings("unchecked")
