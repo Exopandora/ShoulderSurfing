@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
@@ -20,6 +21,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.HitResult;
+
+import java.util.List;
 
 public class ShoulderSurfingImpl implements IShoulderSurfing
 {
@@ -175,16 +178,36 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	private static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return isUsingItem(cameraEntity) && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult);
+		return isUsingItem(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult);
 	}
 	
-	private static boolean isUsingItem(LivingEntity cameraEntity)
+	private static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
+		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
+		{
+			IPlayerStateCallback.Result result = callback.isUsingItem(new IPlayerStateCallback.IsUsingContext(minecraft, cameraEntity));
+			switch (result)
+			{
+				case TRUE -> { return true; }
+				case FALSE -> { return false; }
+				case PASS -> { /* Continue to next callback */ }
+			}
+		}
 		return cameraEntity.isUsingItem() && !cameraEntity.getUseItem().has(DataComponents.FOOD);
 	}
 	
 	private static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
 	{
+		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
+		{
+			IPlayerStateCallback.Result result = callback.isInteracting(new IPlayerStateCallback.IsInteractingContext(minecraft, cameraEntity));
+			switch (result)
+			{
+				case TRUE -> { return true; }
+				case FALSE -> { return false; }
+				case PASS -> { /* Continue to next callback */ }
+			}
+		}
 		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem();
 	}
 	
@@ -195,6 +218,16 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	private static boolean isAttacking(Minecraft minecraft)
 	{
+		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
+		{
+			IPlayerStateCallback.Result result = callback.isAttacking(new IPlayerStateCallback.IsAttackingContext(minecraft));
+			switch (result)
+			{
+				case TRUE -> { return true; }
+				case FALSE -> { return false; }
+				case PASS -> { /* Continue to next callback */ }
+			}
+		}
 		return minecraft.options.keyAttack.isDown();
 	}
 	
@@ -203,8 +236,23 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		return isAttacking(minecraft) && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult);
 	}
 	
+	private static List<IPlayerStateCallback> getPlayerStateCallbacks()
+	{
+		return ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks();
+	}
+	
 	private static boolean isPicking(Minecraft minecraft)
 	{
+		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
+		{
+			IPlayerStateCallback.Result result = callback.isPicking(new IPlayerStateCallback.IsPickingContext(minecraft));
+			switch (result)
+			{
+				case TRUE -> { return true; }
+				case FALSE -> { return false; }
+				case PASS -> { /* Continue to next callback */ }
+			}
+		}
 		return minecraft.options.keyPickItem.isDown();
 	}
 	
