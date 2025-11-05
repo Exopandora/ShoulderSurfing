@@ -12,7 +12,7 @@ public class Platform implements IPlatform
 	{
 		return switch(mod)
 		{
-			case CURIOS, IRIS, WILDFIRE_GENDER -> null;
+			case CREATE_FLY, CURIOS, IRIS, WILDFIRE_GENDER -> null;
 			case CGM -> findModVersionForId("cgm");
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");

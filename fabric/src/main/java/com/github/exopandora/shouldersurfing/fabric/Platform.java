@@ -14,7 +14,7 @@ public class Platform implements IPlatform
 		{
 			case CGM, CURIOS, EPIC_FIGHT, MTS, OCULUS -> null;
 			case COBBLEMON -> findModVersionForId("cobblemon");
-			case CREATE -> findModVersionForId("create");
+			case CREATE, CREATE_FLY -> findModVersionForId("create");
 			case EMF -> findModVersionForId("entity_model_features");
 			case IRIS -> findModVersionForId("iris");
 			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");

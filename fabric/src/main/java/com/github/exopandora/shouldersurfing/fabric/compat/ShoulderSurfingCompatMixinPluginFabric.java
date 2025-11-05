@@ -18,16 +18,15 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
+		addCreateFlyMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
 	private static void addCreateModMixins(List<String> mixins)
 	{
-		String createModVersion = Mods.CREATE.getModVersion();
-		
-		if(createModVersion != null)
+		if(Mods.CREATE.isLoaded())
 		{
-			Version version = parseVersionSilent(createModVersion);
+			Version version = parseVersionSilent(Mods.CREATE.getModVersion());
 			
 			if(parseVersionPredicateSilent(">=6.0.0").test(version))
 			{
@@ -37,6 +36,14 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 			{
 				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
 			}
+		}
+	}
+	
+	private static void addCreateFlyMixins(List<String> mixins)
+	{
+		if(Mods.CREATE_FLY.isLoaded())
+		{
+			mixins.add("createfly.MixinContraptionHandlerClient");
 		}
 	}
 	

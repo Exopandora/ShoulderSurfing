@@ -10,7 +10,22 @@ public enum Mods
 {
 	CGM,
 	COBBLEMON,
-	CREATE,
+	CREATE
+	{
+		@Override
+		public boolean isLoaded()
+		{
+			return super.isLoaded() && existsClass("com.simibubi.create.Create");
+		}
+	},
+	CREATE_FLY
+	{
+		@Override
+		public boolean isLoaded()
+		{
+			return super.isLoaded() && existsClass("com.zurrtum.create.Create");
+		}
+	},
 	CURIOS,
 	EMF,
 	EPIC_FIGHT,
@@ -33,5 +48,19 @@ public enum Mods
 	public boolean isLoaded()
 	{
 		return this.getModVersion() != null;
+	}
+	
+	private static boolean existsClass(String className)
+	{
+		try
+		{
+			Class.forName(className);
+		}
+		catch(Throwable t)
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }

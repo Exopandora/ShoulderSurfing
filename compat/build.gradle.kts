@@ -16,6 +16,7 @@ sourceSets {
 				"src/createCommon/java",
 				"src/create-6.0.0/java",
 				"src/create-0.5.0/java",
+                "src/createFly/java",
 			)
 		}
 	}
