@@ -29,6 +29,9 @@
 		<li>
 			Client side only - no server mods required
 		</li>
+		<li>
+            Plugin API - implement custom camera behaviours and compatibility features with ease
+		</li>
 	</ul>
 	<h2><strong>Installation</strong></h2>
 	<h3><strong>Forge</strong></h3>
@@ -173,6 +176,13 @@
 			&le; 1.12: Ingame: Mods -> ShoulderSurfing -> Config (Manual: Edit "..\.minecraft\config\shouldersurfing.cfg")
 		</li>
 	</ul>
+	<h2><strong>Plugin API</strong></h2>
+    <p>
+        Shoulder Surfing Reloaded features a plugin API for third party mod developers.
+        This allows for implementing custom camera behaviours and compatibility features without the use of invasive mixins.
+        The documentation can be found in the <a href="https://github.com/Exopandora/ShoulderSurfing/wiki">wiki</a> on GitHub.
+        It explains step by step on how to create and register your own plugin, and how you can implement and register custom callbacks.
+    </p>
 	<h2><strong>FAQ</strong></h2>
 	<span><strong>Q:</strong> Why is the player not looking at the position of the crosshair when holding item x?</span><br/>
 	<span><strong>A:</strong> This needs to be configured using the config options "adaptive_crosshair_hold_items" or "adaptive_crosshair_use_items".</span><br/>
