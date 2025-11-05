@@ -12,6 +12,7 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 * Adaptive player transparency - fades the player model to transparent when view is obstructed
 * Highly configurable - customize your 3rd person experience with many configuration options
 * Client side only - no server mods required
+* Plugin API - implement custom camera behaviours and compatibility features with ease
 
 # Installation #
 Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/shoulder-surfing-reloaded/files/) or [Modrinth](https://modrinth.com/mod/shoulder-surfing-reloaded) or [build from source](#building-from-source).
@@ -88,9 +89,11 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 
 </details>
 
-# API Documentation #
-The API Documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
-It currently allows other mod developers to define custom rules for when and what items should have adaptive crosshair functionality.
+# Plugin API #
+Shoulder Surfing Reloaded features a plugin API for third party mod developers.
+This allows for implementing custom camera behaviours and compatibility features without the use of invasive mixins.
+The documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
+It explains step by step on how to create and register your own plugin, and how you can implement and register custom callbacks.
 
 # Building From Source #
 Clone the repository and run the following command in the root directory of this repository:
