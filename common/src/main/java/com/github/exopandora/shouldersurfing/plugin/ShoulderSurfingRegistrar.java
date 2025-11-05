@@ -24,7 +24,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new LinkedList<ITargetCameraOffsetCallback>();
 	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new LinkedList<ICameraEntityTransparencyCallback>();
 	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
-	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<>();
+	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<IPlayerStateCallback>();
 	
 	private boolean isFrozen;
 	private PluginContext activePluginContext;
