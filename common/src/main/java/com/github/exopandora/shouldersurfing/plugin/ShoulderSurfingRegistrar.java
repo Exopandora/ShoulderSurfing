@@ -24,10 +24,10 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new LinkedList<ITargetCameraOffsetCallback>();
 	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new LinkedList<ICameraEntityTransparencyCallback>();
 	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
-	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<>();
+	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<IPlayerStateCallback>();
 	
 	private boolean isFrozen;
-	private PluginContext activePluginContext;
+	private PluginContext<?> activePluginContext;
 	
 	private ShoulderSurfingRegistrar()
 	{
@@ -94,7 +94,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		}
 	}
 	
-	void setPluginContext(PluginContext context)
+	void setPluginContext(PluginContext<?> context)
 	{
 		this.activePluginContext = context;
 	}
@@ -136,7 +136,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static <T> T createProxy(PluginContext context, T callback, Class<T> klass)
+	private static <T> T createProxy(PluginContext<?> context, T callback, Class<T> klass)
 	{
 		ClassLoader classLoader = ShoulderSurfingRegistrar.class.getClassLoader();
 		Set<Class<?>> interfaces = new LinkedHashSet<Class<?>>(1);
