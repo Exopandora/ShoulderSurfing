@@ -1,1 +1,1 @@
-- Improve compatibility with Immersive Vehicles
+- Added IPlayerStateCallback (thanks to EchoEllet)
