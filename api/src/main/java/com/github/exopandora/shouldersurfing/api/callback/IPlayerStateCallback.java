@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.api.callback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This callback allows providing the raw input state that Shoulder Surfing uses to determine whether the player is attacking, interacting with an item, or picking (mouse middle click).
@@ -37,7 +38,10 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
 	 */
-	Result isAttacking(@NotNull IsAttackingContext context);
+	default @NotNull Result isAttacking(@NotNull IsAttackingContext context)
+	{
+		return Result.PASS;
+	}
 	
 	record IsAttackingContext(@NotNull Minecraft minecraft)
 	{
@@ -61,7 +65,10 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
 	 */
-	Result isInteracting(@NotNull IsInteractingContext context);
+	default @NotNull Result isInteracting(@NotNull IsInteractingContext context)
+	{
+		return Result.PASS;
+	}
 	
 	record IsInteractingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
 	{
@@ -85,7 +92,10 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
 	 */
-	Result isPicking(@NotNull IsPickingContext context);
+	default @NotNull Result isPicking(@NotNull IsPickingContext context)
+	{
+		return Result.PASS;
+	}
 	
 	record IsPickingContext(@NotNull Minecraft minecraft)
 	{
@@ -107,7 +117,10 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
 	 */
-	Result isUsingItem(@NotNull IsUsingContext context);
+	default @NotNull Result isUsingItem(@NotNull IsUsingContext context)
+	{
+		return Result.PASS;
+	}
 	
 	record IsUsingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
 	{
@@ -121,6 +134,25 @@ public interface IPlayerStateCallback
 		TRUE,
 		FALSE,
 		/** Defers to other callbacks or the default logic. */
-		PASS
+		PASS;
+		
+		/**
+		 * Converts a {@link Boolean} value to a {@link Result}.
+		 *
+		 * @param b the Boolean to convert; may be null
+		 * @return {@link #TRUE} if {@code b} is {@code true}, {@link #FALSE} if {@code b} is {@code false}, {@link #PASS} if {@code b} is {@code null}
+		 */
+		static @NotNull Result of(@Nullable Boolean b)
+		{
+			if(b == null)
+			{
+				return PASS;
+			}
+			if(b)
+			{
+				return TRUE;
+			}
+			return FALSE;
+		}
 	}
 }
