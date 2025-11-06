@@ -144,15 +144,7 @@ public interface IPlayerStateCallback
 		 */
 		static @NotNull Result of(@Nullable Boolean b)
 		{
-			if(b == null)
-			{
-				return PASS;
-			}
-			if(b)
-			{
-				return TRUE;
-			}
-			return FALSE;
+			return b == null ? PASS : b ? TRUE : FALSE;
 		}
 	}
 }
