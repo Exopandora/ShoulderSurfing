@@ -1,1 +1,3 @@
-- Update to 1.21.10
+- Added IPlayerStateCallback (thanks to EchoEllet)
+- Fixed initial camera offsets not accounting for entity scale
+- Fixed Create-Fly compatibility
