@@ -6,6 +6,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
+import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -51,7 +52,9 @@ public class ShoulderSurfingNeoForge
 	@SubscribeEvent
 	public void loadComplete(FMLLoadCompleteEvent event)
 	{
-		PluginLoader.getInstance().loadPlugins();
+		// Workaround to force TransformerClassLoader to load the PluginLoader, which in turn finds and loads the service implementation.
+		// Otherwise, there is a chance that the current class loader ends up being AppClassLoader, which cannot find our service implementation.
+		Minecraft.getInstance().execute(() -> PluginLoader.getInstance().loadPlugins());
 	}
 	
 	@SubscribeEvent
