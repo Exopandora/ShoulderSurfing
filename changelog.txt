@@ -1,2 +1,1 @@
-- Added IPlayerStateCallback (thanks to EchoEllet)
-- Fixed initial camera offsets not accounting for entity scale
+- Fixed random crash on boot for NeoForge builds
