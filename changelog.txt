@@ -1,1 +1,2 @@
-- Fixed random crash on boot for NeoForge builds
+- The debug crosshair now displays again in other perspectives
+- The dynamic crosshair now renders alongside the debug crosshair (if necessary) when in shoulder surfing perspective
