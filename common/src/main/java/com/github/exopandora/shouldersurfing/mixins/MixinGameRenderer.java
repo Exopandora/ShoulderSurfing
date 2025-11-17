@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.mixins;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
@@ -10,11 +11,13 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
@@ -83,5 +86,28 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 	public void render(CallbackInfo ci)
 	{
 		ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(null);
+	}
+	
+	@Redirect
+	(
+		method = "renderLevel",
+		at = @At
+		(
+			value = "INVOKE",
+			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
+		),
+		slice = @Slice
+		(
+			from = @At
+			(
+				value = "FIELD",
+				target = "net/minecraft/client/gui/components/debug/DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR:Lnet/minecraft/resources/ResourceLocation;",
+				opcode = Opcodes.GETSTATIC
+			)
+		)
+	)
+	private boolean doRenderCrosshair(CameraType cameraType)
+	{
+		return ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 }

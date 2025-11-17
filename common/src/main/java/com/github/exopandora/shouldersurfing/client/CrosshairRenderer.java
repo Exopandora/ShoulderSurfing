@@ -11,6 +11,7 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -104,7 +105,8 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	@Override
 	public boolean doRenderObstructionCrosshair()
 	{
-		return this.doRenderObstructionIndicator() && this.instance.isAiming();
+		return this.doRenderObstructionIndicator() && this.instance.isAiming() &&
+			!Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR);
 	}
 	
 	@Override
