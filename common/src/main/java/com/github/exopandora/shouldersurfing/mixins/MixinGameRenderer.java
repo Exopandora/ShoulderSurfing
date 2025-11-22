@@ -3,7 +3,9 @@ package com.github.exopandora.shouldersurfing.mixins;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 
 import java.util.function.Predicate;
 
@@ -71,5 +74,42 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		}
 		
 		return fov;
+	}
+	
+	@Redirect
+	(
+		method = "renderLevel",
+		at = @At
+		(
+			value = "INVOKE",
+			target = "net/minecraft/client/OptionInstance.get()Ljava/lang/Object;"
+		),
+		slice = @Slice
+		(
+			from = @At
+			(
+				value = "INVOKE",
+				target = "net/minecraft/client/Options.bobView()Lnet/minecraft/client/OptionInstance;"
+			),
+			to = @At
+			(
+				value = "INVOKE",
+				target = "net/minecraft/client/renderer/GameRenderer.bobView(Lcom/mojang/blaze3d/vertex/PoseStack;F)V"
+			)
+		)
+	)
+	public Object bobView(OptionInstance<Boolean> instance)
+	{
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
+		{
+			return switch(Config.CLIENT.getViewBobbingMode())
+			{
+				case INHERIT -> instance.get();
+				case ON -> true;
+				case OFF -> false;
+			};
+		}
+		
+		return instance.get();
 	}
 }

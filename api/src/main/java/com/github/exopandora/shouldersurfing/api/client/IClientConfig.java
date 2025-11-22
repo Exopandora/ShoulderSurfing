@@ -6,6 +6,7 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
+import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -209,6 +210,8 @@ public interface IClientConfig
 	boolean isFovOverrideEnabled();
 	
 	float getFovOverride();
+	
+	ViewBobbingMode getViewBobbingMode();
 	
 	double getCameraDragXMultiplier();
 	
