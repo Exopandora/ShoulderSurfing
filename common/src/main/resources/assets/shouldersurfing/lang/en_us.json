@@ -25,6 +25,8 @@
   "${modId}.configuration.camera.fov_override_enabled.tooltip": "Whether or not to apply the FOV override when in shoulder surfing perspective.",
   "${modId}.configuration.camera.fov_override": "FOV override",
   "${modId}.configuration.camera.fov_override.tooltip": "The camera FOV when in shoulder surfing perspective. Depends on config option 'FOV override enabled'.",
+  "${modId}.configuration.camera.view_bobbing_mode": "View bobbing",
+  "${modId}.configuration.camera.view_bobbing_mode.tooltip": "Whether to apply view bobbing in shoulder surfing perspective. Set to INHERIT to inherit vanilla setting.",
 
   "${modId}.configuration.camera_drag.button": "Edit",
   "${modId}.configuration.camera_drag": "Camera drag",

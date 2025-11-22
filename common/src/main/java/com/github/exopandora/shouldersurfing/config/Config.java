@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
+import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -109,6 +110,7 @@ public class Config
 		private final BooleanValue orientCameraOnTeleport;
 		private final BooleanValue isFovOverrideEnabled;
 		private final DoubleValue fovOverride;
+		private final ConfigValue<ViewBobbingMode> viewBobbingMode;
 		
 		private final DoubleValue cameraDragXMultiplier;
 		private final DoubleValue cameraDragYMultiplier;
@@ -485,6 +487,11 @@ public class Config
 				.comment("The camera FOV when in shoulder surfing perspective. Depends on config option 'fov_override_enabled'.")
 				.translation(MOD_ID + ".configuration.camera.fov_override")
 				.defineInRange("fov_override", 70.0D, 30.0D, 110.0D);
+			
+			this.viewBobbingMode = builder
+				.comment("Whether to apply view bobbing in shoulder surfing perspective. Set to INHERIT to inherit vanilla setting.")
+				.translation(MOD_ID + ".configuration.camera.view_bobbing_mode")
+				.defineEnum("view_bobbing_mode", ViewBobbingMode.INHERIT, ViewBobbingMode.values());
 			
 			builder.push("camera_drag");
 			
@@ -1224,6 +1231,12 @@ public class Config
 		public float getFovOverride()
 		{
 			return this.fovOverride.get().floatValue();
+		}
+		
+		@Override
+		public ViewBobbingMode getViewBobbingMode()
+		{
+			return this.viewBobbingMode.get();
 		}
 		
 		@Override
