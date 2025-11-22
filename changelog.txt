@@ -1,1 +1,1 @@
-- Fixed random crash on boot for NeoForge builds
+- Added option to control view bobbing for shoulder surfing perspective.
