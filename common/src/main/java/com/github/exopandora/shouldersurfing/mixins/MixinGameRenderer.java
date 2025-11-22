@@ -3,7 +3,9 @@ package com.github.exopandora.shouldersurfing.mixins;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -71,5 +73,29 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		}
 		
 		return fov;
+	}
+	
+	@Redirect
+	(
+		method = "renderLevel",
+		at = @At
+		(
+			value = "FIELD",
+			target = "net/minecraft/client/Options.bobView:Z"
+		)
+	)
+	public boolean bobView(Options options)
+	{
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
+		{
+			return switch(Config.CLIENT.getViewBobbingMode())
+			{
+				case INHERIT -> options.bobView;
+				case ON -> true;
+				case OFF -> false;
+			};
+		}
+		
+		return options.bobView;
 	}
 }
