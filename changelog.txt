@@ -1,2 +1,1 @@
-- The debug crosshair now displays again in other perspectives
-- The dynamic crosshair now renders alongside the debug crosshair (if necessary) when in shoulder surfing perspective
+- Added option to control view bobbing for shoulder surfing perspective.
