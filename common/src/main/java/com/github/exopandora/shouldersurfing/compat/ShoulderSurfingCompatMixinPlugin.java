@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat;
 
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 
 import java.util.List;
@@ -72,8 +73,16 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	{
 		if(Mods.EPIC_FIGHT.isLoaded())
 		{
-			mixins.add("epicfight.AccessorCamera");
-			mixins.add("epicfight.MixinRenderEngine");
+			final boolean supportsNewerCameraApi = Mods.existsClass("yesman.epicfight.api.client.camera.EpicFightCameraAPI");
+			if(supportsNewerCameraApi)
+			{
+				ShoulderSurfingCommon.LOGGER.debug("Epic Fight integration has been disabled due to the recent updates and breakage.");
+			}
+			else
+			{
+				mixins.add("epicfight.AccessorCamera");
+				mixins.add("epicfight.MixinRenderEngine");
+			}
 		}
 	}
 	

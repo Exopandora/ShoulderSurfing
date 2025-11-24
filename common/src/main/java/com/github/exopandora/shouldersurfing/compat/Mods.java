@@ -34,4 +34,18 @@ public enum Mods
 	{
 		return this.getModVersion() != null;
 	}
+	
+	public static boolean existsClass(String className)
+	{
+		try
+		{
+			Class.forName(className);
+		}
+		catch(Throwable t)
+		{
+			return false;
+		}
+		
+		return true;
+	}
 }
