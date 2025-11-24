@@ -50,7 +50,7 @@ public enum Mods
 		return this.getModVersion() != null;
 	}
 	
-	private static boolean existsClass(String className)
+	public static boolean existsClass(String className)
 	{
 		try
 		{
