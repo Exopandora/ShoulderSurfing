@@ -1,1 +1,2 @@
 - Added option to control view bobbing for shoulder surfing perspective.
+- Fixed outdated mixins with Epic Fight versions 20.14.x, 21.14.x, and newer to prevent future crashes
