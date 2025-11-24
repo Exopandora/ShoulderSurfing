@@ -27,15 +27,11 @@ public enum Mods
 		}
 	},
 	CURIOS,
-	EMF,
 	EPIC_FIGHT,
-	IRIS,
 	MTS,
-	OCULUS,
-	SKIN_LAYERS,
 	THE_ONE_PROBE,
 	TSLAT_ENTITY_STATUS,
-	WILDFIRE_GENDER;
+	;
 	
 	private static final Map<Mods, @Nullable String> MODS_TO_VERSION = new HashMap<Mods, String>();
 	

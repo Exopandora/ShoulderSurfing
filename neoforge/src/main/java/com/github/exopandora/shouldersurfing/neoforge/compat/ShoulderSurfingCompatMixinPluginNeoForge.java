@@ -5,13 +5,11 @@ import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPl
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCompatMixinPlugin
 {
@@ -87,23 +85,5 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 		{
 			throw new RuntimeException(e);
 		}
-	}
-	
-	private static @Nullable ArtifactVersion highestShaderVersion()
-	{
-		List<String> shaderVersions = new ArrayList<String>();
-		shaderVersions.add(Mods.OCULUS.getModVersion());
-		shaderVersions.add(Mods.IRIS.getModVersion());
-		shaderVersions.removeIf(Objects::isNull);
-		return switch(shaderVersions.size())
-		{
-			case 0 -> null;
-			case 1 -> new DefaultArtifactVersion(shaderVersions.getFirst());
-			default -> shaderVersions.stream()
-				.map(DefaultArtifactVersion::new)
-				.sorted()
-				.findFirst()
-				.orElse(null);
-		};
 	}
 }

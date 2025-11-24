@@ -12,15 +12,11 @@ public class Platform implements IPlatform
 	{
 		return switch(mod)
 		{
-			case CGM, CURIOS, EPIC_FIGHT, MTS, OCULUS -> null;
+			case CGM, CURIOS, EPIC_FIGHT, MTS -> null;
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE, CREATE_FLY -> findModVersionForId("create");
-			case EMF -> findModVersionForId("entity_model_features");
-			case IRIS -> findModVersionForId("iris");
-			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
 			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");
-			case WILDFIRE_GENDER -> findModVersionForId("wildfire_gender");
 		};
 	}
 	
