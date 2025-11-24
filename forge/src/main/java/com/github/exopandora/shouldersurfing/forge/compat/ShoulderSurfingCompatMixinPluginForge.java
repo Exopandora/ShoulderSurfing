@@ -17,6 +17,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	public List<String> getMixins()
 	{
 		List<String> mixins = new ArrayList<String>();
+		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
 		addMtsMixins(mixins);
@@ -67,6 +68,27 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 			{
 				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
 			}
+		}
+	}
+	
+	private static void addCobblemonMixins(List<String> mixins)
+	{
+		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
+		
+		if(cobblemonVersion != null)
+		{
+			ArtifactVersion version = new DefaultArtifactVersion(cobblemonVersion);
+			
+			if(parseVersionRangeSilent("[1.7.0,)").containsVersion(version))
+			{
+				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_7");
+			}
+			else if(parseVersionRangeSilent("(,1.7.0)").containsVersion(version))
+			{
+				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_6");
+			}
+			
+			mixins.add("cobblemon.MixinPokemonRenderer");
 		}
 	}
 	
