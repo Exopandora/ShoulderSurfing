@@ -34,7 +34,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	protected static void addCommonCompatMixins(List<String> mixins)
 	{
 		addCGMMixins(mixins);
-		addCobblemonMixins(mixins);
 		addEpicFightMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
@@ -45,15 +44,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		if(Mods.CGM.isLoaded())
 		{
 			mixins.add("cgm.MixinRecoilHandler");
-		}
-	}
-	
-	private static void addCobblemonMixins(List<String> mixins)
-	{
-		if(Mods.COBBLEMON.isLoaded())
-		{
-			mixins.add("cobblemon.MixinPlayerExtensionsKt");
-			mixins.add("cobblemon.MixinPokemonRenderer");
 		}
 	}
 	
