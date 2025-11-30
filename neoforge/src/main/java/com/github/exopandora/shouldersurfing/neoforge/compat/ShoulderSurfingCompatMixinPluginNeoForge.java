@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -12,6 +11,8 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.github.exopandora.shouldersurfing.neoforge.Platform.parseVersionRangeSilent;
 
 public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCompatMixinPlugin
 {
@@ -93,18 +94,6 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
 	{
 		
-	}
-	
-	private static VersionRange parseVersionRangeSilent(String predicate)
-	{
-		try
-		{
-			return VersionRange.createFromVersionSpec(predicate);
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(e);
-		}
 	}
 	
 	private static @Nullable ArtifactVersion highestShaderVersion()

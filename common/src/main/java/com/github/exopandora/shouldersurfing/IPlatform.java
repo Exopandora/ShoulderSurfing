@@ -11,4 +11,6 @@ public interface IPlatform
 	
 	@Nullable
 	String getModVersion(Mods mod);
+	
+	boolean isSameOrLaterVersion(String version, String baseVersion);
 }
