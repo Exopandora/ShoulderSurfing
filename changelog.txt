@@ -1,1 +1,2 @@
 - Fix compatibility with Cobblemon 1.7+
+- Disable outdated Epic Fight mixins for versions `21.14.0`, and newer to prevent future crashes

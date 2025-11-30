@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat;
 
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 
 import java.util.List;
@@ -58,12 +59,41 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		}
 	}
 	
+	private static boolean shouldApplyEpicFightMixins()
+	{
+		final String version = Mods.EPIC_FIGHT.getModVersion();
+		if(version == null)
+		{
+			return false;
+		}
+		try
+		{
+			final String[] parts = version.split("\\.");
+			final int major = Integer.parseInt(parts[0]);
+			final int minor = Integer.parseInt(parts[1]);
+			
+			return major == 21 && minor < 14;
+		}
+		catch(Exception e)
+		{
+			ShoulderSurfingCommon.LOGGER.error("Failed to parse the Epic Fight mod version '{}': {}", version, e.toString());
+			return false;
+		}
+	}
+	
 	private static void addEpicFightMixins(List<String> mixins)
 	{
 		if(Mods.EPIC_FIGHT.isLoaded())
 		{
-			mixins.add("epicfight.AccessorCamera");
-			mixins.add("epicfight.MixinRenderEngine");
+			if(shouldApplyEpicFightMixins())
+			{
+				mixins.add("epicfight.AccessorCamera");
+				mixins.add("epicfight.MixinRenderEngine");
+			}
+			else
+			{
+				ShoulderSurfingCommon.LOGGER.info("Epic Fight lock-on support provided by Shoulder Surfing has been disabled due to breaking changes in '21.14.0'. For more details: https://github.com/Epic-Fight/epicfight/issues/2258");
+			}
 		}
 	}
 	
