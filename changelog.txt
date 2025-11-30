@@ -1,1 +1,2 @@
 - Added option to control view bobbing for shoulder surfing perspective.
+- Disable outdated Epic Fight mixins for versions `20.14.0`, and newer to prevent future crashes
