@@ -62,6 +62,7 @@ dependencies {
 	implementation(fg.deobf(libs.badpackets.forge.get()))
 	implementation(fg.deobf(libs.jade.forge.get()))
 	compileOnly(fg.deobf(libs.curios.forge.get()))
+    compileOnly(fg.deobf(libs.cobblemon.forge.get()))
 }
 
 tasks.named<ProcessResources>("processResources") {

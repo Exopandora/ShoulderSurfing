@@ -14,6 +14,9 @@ jade-fabric = "4573047"
 badpackets-forge = "forge-0.4.1"
 badpackets-fabric = "fabric-0.4.1"
 curios = "5.14.1+1.20.1"
+cobblemon-common = "vm5zUZAg" # forge-1.5.2+1.20.1
+cobblemon-forge = "vm5zUZAg" # forge-1.5.2+1.20.1
+cobblemon-fabric = "EVozVxCq" # fabric-1.5.2+1.20.1
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -32,6 +35,9 @@ jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" 
 badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
 curios-forge = { module = "top.theillusivec4.curios:curios-forge", version.ref = "curios" }
+cobblemon-common = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-common" }
+cobblemon-forge = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-forge" }
+cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-fabric" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }
