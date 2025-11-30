@@ -62,16 +62,17 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	private static boolean shouldApplyEpicFightMixins()
 	{
 		final String version = Mods.EPIC_FIGHT.getModVersion();
+		
 		if(version == null)
 		{
 			return false;
 		}
+		
 		try
 		{
 			final String[] parts = version.split("\\.");
 			final int major = Integer.parseInt(parts[0]);
 			final int minor = Integer.parseInt(parts[1]);
-			
 			return major == 21 && minor < 14;
 		}
 		catch(Exception e)
