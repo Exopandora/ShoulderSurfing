@@ -29,7 +29,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	{
 		if(mod.isLoaded())
 		{
-			String modName = StringUtils.capitalize(mod.name());
+			String modName = StringUtils.capitalize(mod.name().toLowerCase());
 			
 			try
 			{
