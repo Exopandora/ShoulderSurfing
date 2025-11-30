@@ -3,12 +3,14 @@ package com.github.exopandora.shouldersurfing.fabric.compat;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
 import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersionPredicateSilent;
+import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersionSilent;
 
 public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin
 {
@@ -79,29 +81,5 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
 	{
 		
-	}
-	
-	private static Version parseVersionSilent(String version)
-	{
-		try
-		{
-			return Version.parse(version);
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private static VersionPredicate parseVersionPredicateSilent(String predicate)
-	{
-		try
-		{
-			return VersionPredicate.parse(predicate);
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(e);
-		}
 	}
 }

@@ -3,6 +3,8 @@ package com.github.exopandora.shouldersurfing.forge;
 import com.github.exopandora.shouldersurfing.IPlatform;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import net.minecraftforge.fml.loading.FMLLoader;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.jetbrains.annotations.Nullable;
 
 public class Platform implements IPlatform
@@ -22,6 +24,12 @@ public class Platform implements IPlatform
 		};
 	}
 	
+	@Override
+	public boolean isSameOrLaterVersion(String version, String baseVersion)
+	{
+		return parseVersionRangeSilent("[" + baseVersion + ",)").containsVersion(new DefaultArtifactVersion(version));
+	}
+	
 	@SuppressWarnings("UnstableApiUsage")
 	private static String findModVersionForId(String modId)
 	{
@@ -30,5 +38,17 @@ public class Platform implements IPlatform
 			.findFirst()
 			.map(info -> info.getVersion().toString())
 			.orElse(null);
+	}
+	
+	public static VersionRange parseVersionRangeSilent(String predicate)
+	{
+		try
+		{
+			return VersionRange.createFromVersionSpec(predicate);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

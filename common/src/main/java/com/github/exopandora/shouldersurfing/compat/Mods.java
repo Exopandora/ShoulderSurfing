@@ -40,6 +40,18 @@ public enum Mods
 		return MODS_TO_VERSION.computeIfAbsent(this, IPlatform.INSTANCE::getModVersion);
 	}
 	
+	public boolean isSameOrLaterVersion(String version)
+	{
+		String modVersion = this.getModVersion();
+		
+		if(modVersion == null)
+		{
+			return false;
+		}
+		
+		return IPlatform.INSTANCE.isSameOrLaterVersion(modVersion, version);
+	}
+	
 	public boolean isLoaded()
 	{
 		return this.getModVersion() != null;
