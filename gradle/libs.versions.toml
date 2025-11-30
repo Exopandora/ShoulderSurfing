@@ -16,6 +16,9 @@ badpackets-fabric = "fabric-0.2.0"
 night-config = "3.6.5"
 create-common = "1.19.2-0.5.1.f" # forge artifact
 curios = "1.19.2-5.1.6.4"
+cobblemon-common = "2FDom3sg" # forge-1.3.2+1.19.2
+cobblemon-forge = "2FDom3sg" # forge-1.3.2+1.19.2
+cobblemon-fabric = "ZuhveJd6" # fabric-1.3.2+1.19.2
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -37,6 +40,9 @@ create-common = { module = "maven.modrinth:create", version.ref = "create-common
 nightconfig-core = { module = "com.electronwill.night-config:core", version.ref = "night-config" }
 nightconfig-toml = { module = "com.electronwill.night-config:toml", version.ref = "night-config" }
 curios-forge = { module = "top.theillusivec4.curios:curios-forge", version.ref = "curios" }
+cobblemon-common = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-common" }
+cobblemon-forge = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-forge" }
+cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-fabric" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }

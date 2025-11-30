@@ -76,6 +76,7 @@ dependencies {
 	implementation(fg.deobf(libs.jade.forge.get()))
 	compileOnly(fg.deobf(libs.create.common.get()))
 	compileOnly(fg.deobf(libs.curios.forge.get()))
+    compileOnly(fg.deobf(libs.cobblemon.forge.get()))
 }
 
 tasks.named<ProcessResources>("processResources") {

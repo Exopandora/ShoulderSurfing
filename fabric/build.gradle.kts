@@ -46,6 +46,7 @@ dependencies {
 	implementation(libs.nightconfig.core)
 	implementation(libs.nightconfig.toml)
 	modCompileOnly(libs.create.common)
+    modCompileOnly(libs.cobblemon.fabric)
 }
 
 loom {

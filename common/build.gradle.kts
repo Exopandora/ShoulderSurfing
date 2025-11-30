@@ -28,6 +28,7 @@ dependencies {
 	compileOnly(libs.wthit.common)
 	compileOnly(libs.jade.common)
 	compileOnly(libs.create.common)
+    compileOnly(libs.cobblemon.common)
 	
 	implementation(libs.nightconfig.core)
 	implementation(libs.nightconfig.toml)
