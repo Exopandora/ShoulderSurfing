@@ -1,1 +1,1 @@
-- Added option to control view bobbing for shoulder surfing perspective.
+- Fixed mod name formatting for compatibility plugin registration log messages
