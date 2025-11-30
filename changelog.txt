@@ -1,1 +1,2 @@
-- Added option to control view bobbing for shoulder surfing perspective.
+- Fixed throwable items of cobblemon not being marked as adaptive
+- Fixed mod name formatting for compatibility plugin registration log messages
