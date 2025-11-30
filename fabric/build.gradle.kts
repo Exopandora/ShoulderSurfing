@@ -32,6 +32,7 @@ dependencies {
 	modCompileOnly(libs.wthit.fabric)
 	modCompileOnly(libs.badpackets.fabric)
 	modCompileOnly(libs.jade.fabric)
+	modCompileOnly(libs.cobblemon.fabric)
 }
 
 loom {

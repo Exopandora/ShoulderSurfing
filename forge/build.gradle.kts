@@ -57,6 +57,7 @@ dependencies {
 	}
 	compileOnly(libs.wthit.forge)
 	compileOnly(libs.jade.common)
+	compileOnly(libs.cobblemon.common)
 }
 
 tasks.withType<Jar> {
