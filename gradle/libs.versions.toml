@@ -18,6 +18,9 @@ badpackets-forge = "forge-0.8.1"
 badpackets-neoforge = "neo-0.8.1"
 badpackets-fabric = "fabric-0.8.1"
 curios = "9.5.1+1.21.1"
+cobblemon-common = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
+cobblemon-neoforge = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
+cobblemon-fabric = "s64m1opn" # fabric-1.7.1+1.21.1
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -41,6 +44,9 @@ badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-fo
 badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
 curios-neoforge = { module = "top.theillusivec4.curios:curios-neoforge", version.ref = "curios" }
+cobblemon-common = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-common" }
+cobblemon-neoforge = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-neoforge" }
+cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-fabric" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "0.6.3" }

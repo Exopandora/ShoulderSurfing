@@ -64,6 +64,14 @@ repositories {
             includeGroup("top.theillusivec4.curios")
         }
     }
+    exclusiveContent {
+        forRepository {
+            maven("https://api.modrinth.com/maven")
+        }
+        filter {
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 tasks.withType<Jar>().configureEach {
