@@ -1,14 +1,13 @@
 package com.github.exopandora.shouldersurfing.compat.mixins.cobblemon;
 
+import com.cobblemon.mod.common.client.render.pokemon.PokemonRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Pseudo
-@Mixin(targets = "com.cobblemon.mod.common.client.render.pokemon.PokemonRenderer")
+@Mixin(PokemonRenderer.class)
 public class MixinPokemonRenderer
 {
 	@Redirect
