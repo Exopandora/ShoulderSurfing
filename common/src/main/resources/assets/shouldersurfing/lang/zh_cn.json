@@ -343,13 +343,6 @@
     "${modId}.configuration.integrations": "集成",
     "${modId}.configuration.integrations.tooltip": "集成设置。",
 
-    "${modId}.configuration.epicfight.button": "编辑",
-    "${modId}.configuration.epicfight": "史诗战斗",
-    "${modId}.configuration.epicfight.tooltip": "史诗战斗的设置。",
-
-    "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on": "解耦摄像机锁定",
-    "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on.tooltip": "摄像机解耦时是否允许目标锁定。",
-
     "${modId}.modloadingissue.incompatiblemod": "不兼容的模组",
 
     "key.${modId}.adjust_camera_left": "调整摄像机左移",

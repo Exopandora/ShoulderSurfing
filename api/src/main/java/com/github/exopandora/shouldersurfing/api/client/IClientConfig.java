@@ -265,6 +265,4 @@ public interface IClientConfig
 	List<? extends String> getCuriosAdaptiveCrosshairItems();
 	
 	List<? extends String> getCuriosAdaptiveCrosshairItemComponents();
-	
-	boolean getEpicFightDecoupledCameraLockOn();
 }

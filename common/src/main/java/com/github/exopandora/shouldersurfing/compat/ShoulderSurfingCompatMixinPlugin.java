@@ -34,7 +34,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	protected static void addCommonCompatMixins(List<String> mixins)
 	{
 		addCGMMixins(mixins);
-		addEpicFightMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
 	}
@@ -44,15 +43,6 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		if(Mods.CGM.isLoaded())
 		{
 			mixins.add("cgm.MixinRecoilHandler");
-		}
-	}
-	
-	private static void addEpicFightMixins(List<String> mixins)
-	{
-		if(Mods.EPIC_FIGHT.isLoaded())
-		{
-			mixins.add("epicfight.AccessorCamera");
-			mixins.add("epicfight.MixinRenderEngine");
 		}
 	}
 	

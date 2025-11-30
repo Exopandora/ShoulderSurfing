@@ -341,13 +341,6 @@
   "${modId}.configuration.integrations": "Интеграции",
   "${modId}.configuration.integrations.tooltip": "Настройки интеграции.",
 
-  "${modId}.configuration.epicfight.button": "Изменить",
-  "${modId}.configuration.epicfight": "Epic Fight",
-  "${modId}.configuration.epicfight.tooltip": "Настройки для Epic Fight.",
-
-  "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on": "Блокировка несвязанной камеры",
-  "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on.tooltip": "Следует ли разрешать фиксацию цели, когда камера не связана.",
-
   "${modId}.modloadingissue.incompatiblemod": "Мод §e{2}§r §cнесовместим§r с §3{3}§r.§7В настоящий момент, §3{3}§r§7 §o{4}§r",
 
   "key.${modId}.adjust_camera_left": "Отрегулировать камеру влево",

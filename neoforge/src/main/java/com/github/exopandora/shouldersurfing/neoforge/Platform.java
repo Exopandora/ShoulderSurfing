@@ -17,7 +17,6 @@ public class Platform implements IPlatform
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");
 			case CURIOS -> findModVersionForId("curios");
-			case EPIC_FIGHT -> findModVersionForId("epicfight");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
 			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");
 		};

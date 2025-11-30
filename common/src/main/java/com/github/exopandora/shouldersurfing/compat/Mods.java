@@ -27,7 +27,6 @@ public enum Mods
 		}
 	},
 	CURIOS,
-	EPIC_FIGHT,
 	MTS,
 	THE_ONE_PROBE,
 	TSLAT_ENTITY_STATUS,
