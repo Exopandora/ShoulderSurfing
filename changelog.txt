@@ -1,1 +1,4 @@
-- Fix compatibility with Cobblemon 1.7+
+- Removed obsolete Epic Fight compatibility code
+- Fixed camera rotation desync when riding cobblemons with decoupled camera
+- Fixed throwable items and pokerods of cobblemon not being marked as adaptive
+- Fixed mod name formatting for compatibility plugin registration log messages
