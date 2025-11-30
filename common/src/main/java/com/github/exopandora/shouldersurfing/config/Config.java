@@ -165,7 +165,6 @@ public class Config
 		
 		private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairItems;
 		private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairItemComponents;
-		private final BooleanValue epicFightDecoupledCameraLockOn;
 		
 		private boolean requiresSaving = false;
 		
@@ -787,14 +786,6 @@ public class Config
 				.defineList("adaptive_crosshair_item_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentIdWithSlot);
 			
 			builder.pop();
-			builder.push("epicfight");
-			
-			this.epicFightDecoupledCameraLockOn = builder
-				.comment("Whether to allow target lock-on when camera is decoupled.")
-				.translation(MOD_ID + ".configuration.integrations.epicfight.decoupled_camera_lock_on")
-				.define("decoupled_camera_lock_on", false);
-			
-			builder.pop();
 			builder.pop();
 		}
 		
@@ -1395,12 +1386,6 @@ public class Config
 		public List<? extends String> getCuriosAdaptiveCrosshairItemComponents()
 		{
 			return this.curiosAdaptiveCrosshairItemComponents.get();
-		}
-		
-		@Override
-		public boolean getEpicFightDecoupledCameraLockOn()
-		{
-			return this.epicFightDecoupledCameraLockOn.get();
 		}
 		
 		public void adjustCameraLeft()

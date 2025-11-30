@@ -355,13 +355,6 @@
   "${modId}.configuration.integrations.curios.adaptive_crosshair_item_components": "Adaptive crosshair item components",
   "${modId}.configuration.integrations.curios.adaptive_crosshair_item_components.tooltip": "Item components (modified only) of an item, that when equipped in a curios slot, trigger the dynamic crosshair in adaptive mode. Example: 'necklace@consumable'",
 
-  "${modId}.configuration.epicfight.button": "Edit",
-  "${modId}.configuration.epicfight": "Epic Fight",
-  "${modId}.configuration.epicfight.tooltip": "Settings for Epic Fight.",
-
-  "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on": "Decoupled camera lock-on",
-  "${modId}.configuration.integrations.epicfight.decoupled_camera_lock_on.tooltip": "Whether to allow target lock-on when camera is decoupled.",
-
   "${modId}.modloadingissue.incompatiblemod": "Mod §e{2}§r is §cincompatible§r with §3{3}§r.\n§7Currently, §3{3}§r§7 is §o{4}§r",
 
   "key.category.${modId}.general": "Shoulder Surfing",
