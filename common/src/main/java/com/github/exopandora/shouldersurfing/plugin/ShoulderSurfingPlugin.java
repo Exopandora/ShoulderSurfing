@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
 import com.github.exopandora.shouldersurfing.compat.Mods;
+import com.github.exopandora.shouldersurfing.compat.plugin.CobblemonAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.compat.plugin.ICuriosAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallback;
@@ -23,6 +24,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
 		registerCompatibilityCallback(Mods.CURIOS, () -> ServiceLoader.load(ICuriosAdaptiveItemCallback.class).findFirst().ifPresent(registrar::registerAdaptiveItemCallback));
+		registerCompatibilityCallback(Mods.COBBLEMON, () -> registrar.registerAdaptiveItemCallback(new CobblemonAdaptiveItemCallback()));
 	}
 	
 	private static void registerCompatibilityCallback(Mods mod, Runnable runnable)
