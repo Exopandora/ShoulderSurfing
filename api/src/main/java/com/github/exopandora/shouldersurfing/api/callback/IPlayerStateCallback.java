@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
  * The final result is calculated from all partial results using a logical OR.
  * <p>
  * If no callback provides a definitive result, the default logic is used.
+ * @since 4.15.0
  */
 public interface IPlayerStateCallback
 {
@@ -37,6 +38,7 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#FALSE} – forces the attack state to <code>false</code></li>
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
+	 * @since 4.15.0
 	 */
 	default @NotNull Result isAttacking(@NotNull IsAttackingContext context)
 	{
@@ -64,6 +66,7 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#FALSE} – forces the interacting state to <code>false</code></li>
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
+	 * @since 4.15.0
 	 */
 	default @NotNull Result isInteracting(@NotNull IsInteractingContext context)
 	{
@@ -91,6 +94,7 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#FALSE} – forces the picking state to <code>false</code></li>
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
+	 * @since 4.15.0
 	 */
 	default @NotNull Result isPicking(@NotNull IsPickingContext context)
 	{
@@ -116,6 +120,7 @@ public interface IPlayerStateCallback
 	 *                  <li>{@link Result#FALSE} – forces the using state to <code>false</code></li>
 	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
 	 *                </ul>
+	 * @since 4.15.0
 	 */
 	default @NotNull Result isUsingItem(@NotNull IsUsingContext context)
 	{
