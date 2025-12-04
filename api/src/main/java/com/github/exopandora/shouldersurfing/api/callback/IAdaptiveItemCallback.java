@@ -17,6 +17,7 @@ public interface IAdaptiveItemCallback
 	 * @param minecraft The Minecraft instance
 	 * @param entity The current camera entity
 	 * @return <code>true</code> if the dynamic crosshair should be displayed, <code>false</code> if the static crosshair should be displayed
+	 * @since 2.3.0
 	 */
 	boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity);
 	
