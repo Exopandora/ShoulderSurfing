@@ -1,4 +1,5 @@
-- Disabled outdated Epic Fight mixins for versions `21.14.0`, and newer to prevent future crashes
-- Fixed camera rotation desync when riding cobblemons with decoupled camera
-- Fixed throwable items and pokerods of cobblemon not being marked as adaptive
-- Fixed mod name formatting for compatibility plugin registration log messages
+- Added isRidingBoat method to IPlayerStateCallback
+- Added ICameraRotationSetupCallback
+- Added IPlayerInputCallback
+- Fixed cobblemon riding controls for all riding types
+- Fixed camera rotation clamping for cobblemon mounts
