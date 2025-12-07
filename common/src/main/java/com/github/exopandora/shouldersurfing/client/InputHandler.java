@@ -1,9 +1,12 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback.IsForcingVanillaMovementInputContext;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixins.ClientInputAccessor;
+import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -173,6 +176,15 @@ public class InputHandler
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
+		
+		for(IPlayerInputCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerInputCallbacks())
+		{
+			if(callback.isForcingVanillaMovementInput(new IsForcingVanillaMovementInputContext(minecraft, cameraEntity)))
+			{
+				return;
+			}
+		}
+		
 		Vec2f moveVector = new Vec2f(input.getMoveVector());
 		
 		if(this.instance.isShoulderSurfing() && this.instance.isFreeLooking())

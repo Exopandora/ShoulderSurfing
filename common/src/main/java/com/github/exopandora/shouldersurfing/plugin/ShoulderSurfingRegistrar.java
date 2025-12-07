@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
@@ -27,6 +28,7 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
 	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<IPlayerStateCallback>();
 	private final List<ICameraRotationSetupCallback> cameraRotationSetupCallbacks = new LinkedList<ICameraRotationSetupCallback>();
+	private final List<IPlayerInputCallback> playerInputCallbacks = new LinkedList<IPlayerInputCallback>();
 	
 	private boolean isFrozen;
 	private PluginContext<?> activePluginContext;
@@ -70,6 +72,12 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public IShoulderSurfingRegistrar registerCameraRotationSetupCallback(ICameraRotationSetupCallback callback)
 	{
 		return this.registerCallback(this.cameraRotationSetupCallbacks, callback, ICameraRotationSetupCallback.class);
+	}
+	
+	@Override
+	public IShoulderSurfingRegistrar registerPlayerInputCallback(IPlayerInputCallback callback)
+	{
+		return this.registerCallback(this.playerInputCallbacks, callback, IPlayerInputCallback.class);
 	}
 	
 	private <T> IShoulderSurfingRegistrar registerCallback(List<T> registry, T callback, Class<T> klass)
@@ -146,6 +154,11 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	public List<ICameraRotationSetupCallback> getSetupCameraRotationCallbacks()
 	{
 		return Collections.unmodifiableList(this.cameraRotationSetupCallbacks);
+	}
+	
+	public List<IPlayerInputCallback> getPlayerInputCallbacks()
+	{
+		return Collections.unmodifiableList(this.playerInputCallbacks);
 	}
 	
 	@SuppressWarnings("unchecked")
