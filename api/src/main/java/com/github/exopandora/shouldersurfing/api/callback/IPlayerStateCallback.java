@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.callback;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -123,6 +124,26 @@ public interface IPlayerStateCallback
 	}
 	
 	record IsUsingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
+	{
+	}
+	
+	/**
+	 * Determines whether the player is currently riding a boat.
+	 *
+	 * @param context The arguments of this callback.
+	 *                <ul>
+	 *                  <li>{@link Result#TRUE} – forces the riding boat state to <code>true</code></li>
+	 *                  <li>{@link Result#FALSE} – forces the riding boat state to <code>false</code></li>
+	 *                  <li>{@link Result#PASS} – ignores this callback and lets others or the default logic decide</li>
+	 *                </ul>
+	 * @since 4.17.0
+	 */
+	default @NotNull Result isRidingBoat(@NotNull IsRidingBoatContext context)
+	{
+		return Result.PASS;
+	}
+	
+	record IsRidingBoatContext(@NotNull Minecraft minecraft, @NotNull Entity cameraEntity, @NotNull Entity vehicle)
 	{
 	}
 	
