@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.api.plugin;
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import net.minecraft.world.item.ItemStack;
@@ -26,4 +27,6 @@ public interface IShoulderSurfingRegistrar
 	IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(ICameraEntityTransparencyCallback cameraEntityTransparencyCallback);
 	
 	IShoulderSurfingRegistrar registerPlayerStateCallback(IPlayerStateCallback callback);
+	
+	IShoulderSurfingRegistrar registerCameraRotationSetupCallback(ICameraRotationSetupCallback callback);
 }
