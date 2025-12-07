@@ -53,6 +53,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 			
 			if(parseVersionRangeSilent("[1.7.0,)").containsVersion(version))
 			{
+				mixins.add("cobblemon.MixinLocalPlayer");
 				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_7");
 			}
 			else if(parseVersionRangeSilent("(,1.7.0)").containsVersion(version))
