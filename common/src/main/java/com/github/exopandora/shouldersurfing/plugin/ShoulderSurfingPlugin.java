@@ -3,8 +3,12 @@ package com.github.exopandora.shouldersurfing.plugin;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
+import com.github.exopandora.shouldersurfing.compat.CobblemonCompat;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.plugin.CobblemonAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.compat.plugin.CobblemonCameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.compat.plugin.CobblemonPlayerInputCallback;
+import com.github.exopandora.shouldersurfing.compat.plugin.CobblemonPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.compat.plugin.ICuriosAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallback;
@@ -24,7 +28,17 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
 		registerCompatibilityCallback(Mods.CURIOS, () -> ServiceLoader.load(ICuriosAdaptiveItemCallback.class).findFirst().ifPresent(registrar::registerAdaptiveItemCallback));
-		registerCompatibilityCallback(Mods.COBBLEMON, () -> registrar.registerAdaptiveItemCallback(new CobblemonAdaptiveItemCallback()));
+		registerCompatibilityCallback(Mods.COBBLEMON, () ->
+		{
+			registrar.registerAdaptiveItemCallback(new CobblemonAdaptiveItemCallback());
+			
+			if(CobblemonCompat.supportsRiding())
+			{
+				registrar.registerCameraRotationSetupCallback(new CobblemonCameraRotationSetupCallback());
+				registrar.registerPlayerInputCallback(new CobblemonPlayerInputCallback());
+				registrar.registerPlayerStateCallback(new CobblemonPlayerStateCallback());
+			}
+		});
 	}
 	
 	private static void registerCompatibilityCallback(Mods mod, Runnable runnable)
