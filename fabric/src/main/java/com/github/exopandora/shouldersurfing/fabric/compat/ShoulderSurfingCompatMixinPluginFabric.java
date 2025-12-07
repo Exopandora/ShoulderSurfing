@@ -73,6 +73,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 			
 			if(parseVersionPredicateSilent(">=1.7.0").test(version))
 			{
+				mixins.add("cobblemon.MixinLocalPlayer");
 				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_7");
 			}
 			else if(parseVersionPredicateSilent("<1.7.0").test(version))
