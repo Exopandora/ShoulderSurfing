@@ -1,1 +1,3 @@
-- Fixed mod name formatting for compatibility plugin registration log messages
+- Added isRidingBoat method to IPlayerStateCallback
+- Added ICameraRotationSetupCallback
+- Added IPlayerInputCallback
