@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.client;
 
 import com.cobblemon.mod.common.OrientationControllable;
 import com.cobblemon.mod.common.api.orientation.OrientationController;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
@@ -69,7 +70,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.maxCameraDistanceO = this.maxCameraDistance;
 		this.maxCameraDistance = this.maxCameraDistance + (this.offset.length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
 		
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		Minecraft minecraft = Minecraft.getInstance();
+		Entity cameraEntity = minecraft.getCameraEntity();
 		
 		if(this.instance.isCameraDecoupled())
 		{
@@ -79,9 +81,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				this.yRot += living.getYHeadRot() - living.yHeadRotO;
 			}
 		}
-		else if(cameraEntity != null && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
+		else if(shouldSyncCameraRotationsWithVehicleRotations(minecraft, cameraEntity))
 		{
-			this.yRot += boat.getYRot() - boat.yRotO;
+			Entity vehicle = cameraEntity.getVehicle();
+			
+			if(vehicle != null)
+			{
+				this.yRot += vehicle.getYRot() - vehicle.yRotO;
+			}
 		}
 		
 		if(cameraEntity != null)
@@ -147,9 +154,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				cameraYRotWithOffset += (living.getYHeadRot() - living.yHeadRotO) * partialTick;
 			}
 		}
-		else if(cameraEntity != null && !this.instance.isCameraDecoupled() && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Boat boat)
+		else if(shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity))
 		{
-			cameraYRotWithOffset += (boat.getYRot() - boat.yRotO) * partialTick;
+			Entity vehicle = cameraEntity.getVehicle();
+			
+			if(vehicle != null)
+			{
+				cameraYRotWithOffset += (vehicle.getYRot() - vehicle.yRotO) * partialTick;
+			}
 		}
 		
 		return new Vec2f(cameraXRotWithOffset, cameraYRotWithOffset);
@@ -473,6 +485,35 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return scale;
+	}
+	
+	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)
+	{
+		if(!(entity instanceof LivingEntity))
+		{
+			return false;
+		}
+		
+		Entity vehicle = entity.getVehicle();
+		
+		if(vehicle == null)
+		{
+			return false;
+		}
+		
+		for(final IPlayerStateCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks())
+		{
+			IPlayerStateCallback.Result result = callback.isRidingBoat(new IPlayerStateCallback.IsRidingBoatContext(minecraft, entity, vehicle));
+			
+			switch(result)
+			{
+				case TRUE -> { return true; }
+				case FALSE -> { return false; }
+				case PASS -> { /* Continue to next callback */ }
+			}
+		}
+		
+		return vehicle instanceof Boat;
 	}
 	
 	private static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)
