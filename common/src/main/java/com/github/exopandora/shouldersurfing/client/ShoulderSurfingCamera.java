@@ -1,13 +1,12 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.cobblemon.mod.common.OrientationControllable;
-import com.cobblemon.mod.common.api.orientation.OrientationController;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
-import com.github.exopandora.shouldersurfing.compat.CobblemonCompat;
-import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
@@ -397,16 +396,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	{
 		if(this.instance.isShoulderSurfing())
 		{
-			if(Mods.COBBLEMON.isLoaded() && CobblemonCompat.supportsRiding() && player.getVehicle() instanceof OrientationControllable controllableVehicle)
-			{
-				OrientationController vehicleController = controllableVehicle.getOrientationController();
-				
-				if(vehicleController.isActive())
-				{
-					this.xRot = vehicleController.getPitch();
-					this.yRot = vehicleController.getYaw();
-				}
-			}
+			CameraRotationSetupResult preResult = fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.yRot, this.xRot);
+			this.xRot = preResult.getXRot();
+			this.yRot = preResult.getYRot();
 			
 			float scaledXRot = (float) (xRot * 0.15F);
 			float scaledYRot = (float) (yRot * 0.15F);
@@ -464,8 +456,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				}
 			}
 			
-			this.xRot = cameraXRot;
-			this.yRot = cameraYRot;
+			CameraRotationSetupResult postResult = fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraYRot, cameraXRot);
+			this.xRot = postResult.getXRot();
+			this.yRot = postResult.getYRot();
 			
 			return this.instance.isCameraDecoupled();
 		}
@@ -514,6 +507,32 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return vehicle instanceof Boat;
+	}
+	
+	private static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
+	{
+		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
+		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
+		
+		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
+		{
+			callback.pre(context, result);
+		}
+		
+		return result;
+	}
+	
+	private static CameraRotationSetupResult fireCameraRotationSetupCallbackPost(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
+	{
+		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
+		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
+		
+		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
+		{
+			callback.post(context, result);
+		}
+		
+		return result;
 	}
 	
 	private static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)
