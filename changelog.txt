@@ -1,5 +1,1 @@
-- Added isRidingBoat method to IPlayerStateCallback
-- Added ICameraRotationSetupCallback
-- Added IPlayerInputCallback
-- Fixed cobblemon riding controls for all riding types
-- Fixed camera rotation clamping for cobblemon mounts
+- Fixed client crash caused by a remapping issue with a cobblemon compat mixin on fabric builds
