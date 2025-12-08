@@ -21,7 +21,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	
 	@Inject
 	(
-		method = "pick",
+		method = {"pick", "method_5745"},
 		at = @At("HEAD"),
 		cancellable = true
 	)
