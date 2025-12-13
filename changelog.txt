@@ -1,1 +1,6 @@
-- Fixed client crash caused by a remapping issue with a cobblemon compat mixin on fabric builds
+- Updated to 1.21.11
+  - IMPORTANT:
+    The trident use animation was renamed from 'spear' to 'trident'.
+    Users must manually update their existing configs to reflect that change.
+    Affected config options are: `adaptive_crosshair_use_item_animations` and `adaptive_crosshair_hold_item_animations`.
+- Added config option for defining adaptive crosshair item components which are present by default for when using or holding items
