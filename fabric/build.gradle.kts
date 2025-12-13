@@ -100,7 +100,7 @@ publishMods {
 	
 	curseforge {
 		minecraftVersions.set(compatibleVersions)
-		requires("fabric-api", "forge-config-api-port-fabric")
+		requires("fabric-api", "forge-config-api-port")
 		incompatible("better-third-person", "nimble-fabric", "valkyrien-skies")
 	}
 	
