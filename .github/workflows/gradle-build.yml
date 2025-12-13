@@ -47,8 +47,11 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
       
+      - name: Sync Mavenizer
+        run: ./gradlew --build-cache clean syncMavenizer
+      
       - name: Build with Gradle
-        run: ./gradlew --build-cache clean build
+        run: ./gradlew --build-cache build
       
       - name: Upload build artifacts
         if: ${{ inputs.upload-artifacts }}
