@@ -102,7 +102,7 @@ publishMods {
 	
 	curseforge {
 		minecraftVersions.set(compatibleVersions)
-		requires("forge-config-api-port-fabric")
+		requires("forge-config-api-port")
 		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
 	}
 	
