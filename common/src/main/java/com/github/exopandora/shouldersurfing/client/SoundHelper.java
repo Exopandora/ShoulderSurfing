@@ -11,7 +11,7 @@ public class SoundHelper
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-		Vec3 leftVector = new Vec3(camera.getLeftVector());
+		Vec3 leftVector = new Vec3(camera.leftVector());
 		Vec3 effectiveOffset = instance.getCamera().getOffset().normalize().scale(instance.getCamera().getCameraDistance());
 		return entity.position().add(leftVector.scale(effectiveOffset.x()));
 	}

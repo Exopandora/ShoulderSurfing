@@ -11,7 +11,7 @@ import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -152,6 +152,8 @@ public class Config
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItems;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemAnimations;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemAnimations;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemDefaultComponents;
+		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemDefaultComponents;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItemComponents;
 		private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemComponents;
 		private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
@@ -164,6 +166,7 @@ public class Config
 		private final BooleanValue centerPlayerSounds;
 		
 		private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairItems;
+		private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairDefaultItemComponents;
 		private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairItemComponents;
 		
 		private boolean requiresSaving = false;
@@ -708,7 +711,7 @@ public class Config
 				{
 					List<String> items = new ArrayList<String>();
 					items.add(ItemUseAnimation.BOW.getSerializedName());
-					items.add(ItemUseAnimation.SPEAR.getSerializedName());
+					items.add(ItemUseAnimation.TRIDENT.getSerializedName());
 					return items;
 				}, String::new, ClientConfig::isValidItemUseAnimation);
 			
@@ -719,6 +722,7 @@ public class Config
 				{
 					List<String> components = new ArrayList<String>();
 					components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.CHARGED_PROJECTILES)).toString());
+					components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.PIERCING_WEAPON)).toString());
 					return components;
 				}, String::new, ClientConfig::isValidDataComponentId);
 			
@@ -726,6 +730,21 @@ public class Config
 				.comment("Item components (modified only) of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
 				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_components")
 				.defineList("adaptive_crosshair_use_item_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentId);
+			
+			this.adaptiveCrosshairHoldItemDefaultComponents = builder
+				.comment("Default components of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_item_hold_default_components")
+				.defineList("adaptive_crosshair_item_hold_default_components", () ->
+				{
+					List<String> components = new ArrayList<String>();
+					components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.PIERCING_WEAPON)).toString());
+					return components;
+				}, String::new, ClientConfig::isValidDataComponentId);
+			
+			this.adaptiveCrosshairUseItemDefaultComponents = builder
+				.comment("Default components of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
+				.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_item_use_default_components")
+				.defineList("adaptive_crosshair_item_use_default_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentId);
 			
 			builder.push("obstruction");
 			
@@ -784,6 +803,11 @@ public class Config
 				.comment("Item components (modified only) of an item, that when equipped in a curios slot, trigger the dynamic crosshair in adaptive mode. Example: 'necklace@consumable'")
 				.translation(MOD_ID + ".configuration.integrations.curios.adaptive_crosshair_item_components")
 				.defineList("adaptive_crosshair_item_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentIdWithSlot);
+			
+			this.curiosAdaptiveCrosshairDefaultItemComponents = builder
+				.comment("Default components of an item, that when equipped in a curios slot, trigger the dynamic crosshair in adaptive mode. Example: 'necklace@consumable'")
+				.translation(MOD_ID + ".configuration.integrations.curios.adaptive_crosshair_default_item_components")
+				.defineList("adaptive_crosshair_item_default_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentIdWithSlot);
 			
 			builder.pop();
 			builder.pop();
@@ -1317,6 +1341,18 @@ public class Config
 		}
 		
 		@Override
+		public List<? extends String> getAdaptiveCrosshairHoldItemDefaultComponents()
+		{
+			return this.adaptiveCrosshairHoldItemDefaultComponents.get();
+		}
+		
+		@Override
+		public List<? extends String> getAdaptiveCrosshairUseItemDefaultComponents()
+		{
+			return this.adaptiveCrosshairUseItemDefaultComponents.get();
+		}
+		
+		@Override
 		public List<? extends String> getAdaptiveCrosshairHoldItemComponents()
 		{
 			return this.adaptiveCrosshairHoldItemComponents.get();
@@ -1380,6 +1416,12 @@ public class Config
 		public List<? extends String> getCuriosAdaptiveCrosshairItems()
 		{
 			return this.curiosAdaptiveCrosshairItems.get();
+		}
+		
+		@Override
+		public List<? extends String> getCuriosAdaptiveCrosshairDefaultItemComponents()
+		{
+			return this.curiosAdaptiveCrosshairDefaultItemComponents.get();
 		}
 		
 		@Override
@@ -1556,7 +1598,7 @@ public class Config
 				return false;
 			}
 			
-			ResourceLocation location = ResourceLocation.tryParse(id.toString());
+			Identifier location = Identifier.tryParse(id.toString());
 			
 			if(location == null)
 			{
@@ -1597,7 +1639,7 @@ public class Config
 				return false;
 			}
 			
-			return ResourceLocation.isValidNamespace(split[0]) && split[1] != null;
+			return Identifier.isValidNamespace(split[0]) && split[1] != null;
 		}
 		
 		private static boolean isValidDataComponentIdWithSlot(Object id)
@@ -1614,7 +1656,7 @@ public class Config
 				return false;
 			}
 			
-			return ResourceLocation.isValidNamespace(split[0]) && isValidDataComponentId(split[1]);
+			return Identifier.isValidNamespace(split[0]) && isValidDataComponentId(split[1]);
 		}
 	}
 	

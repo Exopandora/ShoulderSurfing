@@ -1,9 +1,10 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.config.Config;
-import net.minecraft.client.model.BeeStingerModel;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.model.animal.bee.BeeStingerModel;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -23,8 +24,8 @@ public class MixinBeeStingerModel
 		),
 		index = 1
 	)
-	private static Function<ResourceLocation, RenderType> init(Function<ResourceLocation, RenderType> renderType)
+	private static Function<Identifier, RenderType> init(Function<Identifier, RenderType> renderType)
 	{
-		return Config.CLIENT.isPlayerTransparencyEnabled() ? RenderType::armorTranslucent : renderType;
+		return Config.CLIENT.isPlayerTransparencyEnabled() ? RenderTypes::armorTranslucent : renderType;
 	}
 }

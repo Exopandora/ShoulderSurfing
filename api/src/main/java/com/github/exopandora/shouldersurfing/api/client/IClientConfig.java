@@ -242,6 +242,10 @@ public interface IClientConfig
 	
 	List<? extends String> getAdaptiveCrosshairUseItemAnimations();
 	
+	List<? extends String> getAdaptiveCrosshairHoldItemDefaultComponents();
+	
+	List<? extends String> getAdaptiveCrosshairUseItemDefaultComponents();
+	
 	List<? extends String> getAdaptiveCrosshairHoldItemComponents();
 	
 	List<? extends String> getAdaptiveCrosshairUseItemComponents();
@@ -263,6 +267,8 @@ public interface IClientConfig
 	double getPlayerYRotFollowAngleLimit();
 	
 	List<? extends String> getCuriosAdaptiveCrosshairItems();
+	
+	List<? extends String> getCuriosAdaptiveCrosshairDefaultItemComponents();
 	
 	List<? extends String> getCuriosAdaptiveCrosshairItemComponents();
 }

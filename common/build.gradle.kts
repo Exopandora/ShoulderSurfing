@@ -14,6 +14,7 @@ dependencies {
 	compileOnly(project(":compat"))
 	
 	compileOnly(libs.mixin)
+	compileOnly(libs.asm)
 	compileOnly(libs.forgeconfigapiport.common)
 	compileOnly(libs.wthit.common)
 	compileOnly(libs.jade.common)

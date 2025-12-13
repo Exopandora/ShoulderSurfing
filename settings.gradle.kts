@@ -21,14 +21,6 @@ pluginManagement {
 		}
 		exclusiveContent {
 			forRepository {
-				maven("https://maven.minecraftforge.net/")
-			}
-			filter {
-				includeGroupAndSubgroups("net.minecraftforge")
-			}
-		}
-		exclusiveContent {
-			forRepository {
 				maven("https://maven.neoforged.net/releases/")
 			}
 			filter {
@@ -37,12 +29,13 @@ pluginManagement {
 				includeGroup("net.covers1624")
 			}
 		}
+        maven("https://maven.minecraftforge.net/")
 		gradlePluginPortal()
 	}
 }
 
 plugins {
-	id("org.gradle.toolchains.foojay-resolver-convention") version("0.8.0")
+	id("org.gradle.toolchains.foojay-resolver-convention") version("1.0.0")
 }
 
 rootProject.name = "ShoulderSurfing"

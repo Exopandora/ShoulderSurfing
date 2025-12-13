@@ -1,11 +1,5 @@
 package com.github.exopandora.shouldersurfing.compat;
 
-import com.cobblemon.mod.common.api.riding.behaviour.ActiveRidingContext;
-import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.BoatBehaviour;
-import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.DolphinBehaviour;
-import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.SubmarineBehaviour;
-import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,27 +14,30 @@ public class CobblemonCompat
 	
 	public static boolean hasActiveBoatBehaviour(@Nullable Entity vehicle)
 	{
-		return hasActiveBehaviour(vehicle, BoatBehaviour.Companion.getKEY());
+//		return hasActiveBehaviour(vehicle, BoatBehaviour.Companion.getKEY());
+		return false;
 	}
 	
 	public static boolean hasActiveSubmarineBehaviour(@Nullable Entity vehicle)
 	{
-		return hasActiveBehaviour(vehicle, SubmarineBehaviour.Companion.getKEY());
+//		return hasActiveBehaviour(vehicle, SubmarineBehaviour.Companion.getKEY());
+		return false;
 	}
 	
 	public static boolean hasActiveDolphinBehaviour(@Nullable Entity vehicle)
 	{
-		return hasActiveBehaviour(vehicle, DolphinBehaviour.Companion.getKEY());
-	}
-	
-	private static boolean hasActiveBehaviour(@Nullable Entity entity, ResourceLocation behaviour)
-	{
-		if(entity instanceof PokemonEntity pokemon && pokemon.getRidingController() != null)
-		{
-			ActiveRidingContext ridingContext = pokemon.getRidingController().getContext();
-			return ridingContext != null && ridingContext.getSettings().getKey().equals(behaviour);
-		}
-		
+//		return hasActiveBehaviour(vehicle, DolphinBehaviour.Companion.getKEY());
 		return false;
 	}
+	
+//	private static boolean hasActiveBehaviour(@Nullable Entity entity, Identifier behaviour)
+//	{
+//		if(entity instanceof PokemonEntity pokemon && pokemon.getRidingController() != null)
+//		{
+//			ActiveRidingContext ridingContext = pokemon.getRidingController().getContext();
+//			return ridingContext != null && ridingContext.getSettings().getKey().equals(behaviour);
+//		}
+//
+//		return false;
+//	}
 }

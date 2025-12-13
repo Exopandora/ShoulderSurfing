@@ -301,6 +301,14 @@
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_animations": "Adaptive crosshair item animations (use)",
   "${modId}.configuration.crosshair.adaptive_crosshair_use_item_animations.tooltip": "Item use-animations of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.",
 
+  "${modId}.configuration.crosshair.adaptive_crosshair_item_use_default_components.button": "Edit",
+  "${modId}.configuration.crosshair.adaptive_crosshair_item_use_default_components": "Adaptive crosshair item default components (use)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_item_use_default_components.tooltip": "Default components of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.",
+
+  "${modId}.configuration.crosshair.adaptive_crosshair_item_hold_default_components.button": "Edit",
+  "${modId}.configuration.crosshair.adaptive_crosshair_item_hold_default_components": "Adaptive crosshair item default components (hold)",
+  "${modId}.configuration.crosshair.adaptive_crosshair_item_hold_default_components.tooltip": "Default components of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.",
+
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components.button": "Edit",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components": "Adaptive crosshair item components (hold)",
   "${modId}.configuration.crosshair.adaptive_crosshair_hold_item_components.tooltip": "Item components (modified only) of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.",
@@ -349,9 +357,15 @@
   "${modId}.configuration.curios": "Curios API",
   "${modId}.configuration.curios.tooltip": "Settings for Curios API.",
 
+  "${modId}.configuration.integrations.curios.adaptive_crosshair_items.button": "Edit",
   "${modId}.configuration.integrations.curios.adaptive_crosshair_items": "Adaptive crosshair items",
   "${modId}.configuration.integrations.curios.adaptive_crosshair_items.tooltip": "Items that when equipped in a curios slot, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. The curios slot must be specified before the expression and is separated by an '@' character. Example: 'ring@angelring:.*_ring' matches 'angelring:diamond_ring' and 'angelring:angel_ring' when equipped in the 'ring' slot.",
 
+  "${modId}.configuration.integrations.curios.adaptive_crosshair_default_item_components.button": "Edit",
+  "${modId}.configuration.integrations.curios.adaptive_crosshair_default_item_components": "Adaptive crosshair default item components",
+  "${modId}.configuration.integrations.curios.adaptive_crosshair_default_item_components.tooltip": "Default components of an item, that when equipped in a curios slot, trigger the dynamic crosshair in adaptive mode. Example: 'necklace@consumable'",
+
+  "${modId}.configuration.integrations.curios.adaptive_crosshair_item_components.button": "Edit",
   "${modId}.configuration.integrations.curios.adaptive_crosshair_item_components": "Adaptive crosshair item components",
   "${modId}.configuration.integrations.curios.adaptive_crosshair_item_components.tooltip": "Item components (modified only) of an item, that when equipped in a curios slot, trigger the dynamic crosshair in adaptive mode. Example: 'necklace@consumable'",
 

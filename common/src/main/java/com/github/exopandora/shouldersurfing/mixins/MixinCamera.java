@@ -6,10 +6,9 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
 import net.minecraft.client.Camera;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -59,7 +58,7 @@ public abstract class MixinCamera implements CameraDuck
 			ordinal = 0
 		)
 	)
-	private void setupRotations(BlockGetter level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick, CallbackInfo ci)
+	private void setupRotations(Level level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick, CallbackInfo ci)
 	{
 		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{
@@ -79,7 +78,7 @@ public abstract class MixinCamera implements CameraDuck
 			ordinal = 0
 		)
 	)
-	private void setupPosition(Camera cameraIn, float x, float y, float z, BlockGetter level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick)
+	private void setupPosition(Camera cameraIn, float x, float y, float z, Level level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick)
 	{
 		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{

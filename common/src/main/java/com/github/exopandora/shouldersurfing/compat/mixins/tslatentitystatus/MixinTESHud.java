@@ -71,7 +71,7 @@ public class MixinTESHud
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			double interactionRange = camera.getPosition().distanceTo(clipContext.getTo());
+			double interactionRange = camera.position().distanceTo(clipContext.getTo());
 			PickContext pickContext = new PickContext.Builder(camera).build();
 			return instance.getObjectPicker().pickBlocks(pickContext, interactionRange, partialTick);
 		}

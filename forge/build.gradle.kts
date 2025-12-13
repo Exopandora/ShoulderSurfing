@@ -1,7 +1,8 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
 	id("multiloader-modloader")
 	alias(libs.plugins.forgegradle)
-	alias(libs.plugins.mixingradle)
 }
 
 val modId: String by project
@@ -18,39 +19,38 @@ base {
 	archivesName.set("$jarName-Forge")
 }
 
-mixin {
-	add(sourceSets.main.get(), "$modId.refmap.json")
-	
-	config("$modId.common.mixins.json")
-	config("$modId.common.compat.mixins.json")
-	config("$modId.forge.mixins.json")
-	config("$modId.forge.compat.mixins.json")
-}
-
 minecraft {
 	mappings("official", libs.versions.minecraft.get())
 	
-	copyIdeResources = true
-	reobf = false
-	
 	runs {
 		configureEach {
-			workingDirectory(file("../run"))
-			ideaModule("${rootProject.name}.${project.name}.main")
-			property("eventbus.api.strictRuntimeChecks", "true")
-		}
+            workingDir = file("../run")
+            systemProperty("eventbus.api.strictRuntimeChecks", "true")
+            args(
+                "-mixin.config=$modId.common.mixins.json",
+                "-mixin.config=$modId.common.compat.mixins.json",
+                "-mixin.config=$modId.forge.mixins.json",
+                "-mixin.config=$modId.forge.compat.mixins.json",
+            )
+        }
 		
-		create("client")
-		
-		create("server") {
+		register("client")
+        
+        register("server") {
 			args("--nogui")
 		}
 	}
 }
 
+repositories {
+    maven(minecraft.mavenizer)
+    maven(fg.forgeMaven)
+    maven(fg.minecraftLibsMaven)
+}
+
 dependencies {
-	minecraft(libs.minecraft.forge)
-	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+    // version catalog does not work with FG7
+    implementation(minecraft.dependency("net.minecraftforge:forge:${libs.versions.forge.get()}"))
 	annotationProcessor(libs.eventbus.validator)
 	implementation(libs.forgeconfigapiport.forge) {
 		exclude(group = "io.github.llamalad7")
@@ -111,10 +111,4 @@ publishMods {
 		requires("forge-config-api-port")
 		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
 	}
-}
-
-sourceSets.forEach {
-	val dir = layout.buildDirectory.dir("sourcesSets/${it.name}")
-	it.output.setResourcesDir(dir)
-	it.java.destinationDirectory.set(dir)
 }

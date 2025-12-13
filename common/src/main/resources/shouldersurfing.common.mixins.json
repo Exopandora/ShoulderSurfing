@@ -26,7 +26,8 @@
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
-		"MixinRenderType",
+		"MixinProjectileUtil",
+		"MixinRenderTypes",
         "MixinSubmitNodeCollection"
 	],
 	"injectors": {

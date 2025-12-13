@@ -28,14 +28,14 @@ displayTest = "NONE"
 [[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.9,)"
+versionRange = "[1.21.11,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.9.14-beta,)"
+versionRange = "[21.11.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 

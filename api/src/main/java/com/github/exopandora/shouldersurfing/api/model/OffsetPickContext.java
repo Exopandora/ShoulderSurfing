@@ -50,11 +50,11 @@ public final class OffsetPickContext extends PickContext
 	private static Couple<Vec3> calcRay(Camera camera, Entity entity, double interactionRange, float partialTick, PickOrigin pickOrigin)
 	{
 		Vec3 eyePosition = entity.getEyePosition(partialTick);
-		Vec3 cameraPos = camera.getPosition();
+		Vec3 cameraPos = camera.position();
 		Vec3 cameraOffset = cameraPos.subtract(eyePosition);
 		Vec3 renderOffset = ShoulderSurfing.getInstance().getCamera().getRenderOffset();
-		Vec3 rayTraceStartOffset = new Vec3(camera.getLeftVector()).scale(renderOffset.x()).add(new Vec3(camera.getUpVector()).scale(renderOffset.y()));
-		Vec3 viewVector = new Vec3(camera.getLookVector());
+		Vec3 rayTraceStartOffset = new Vec3(camera.leftVector()).scale(renderOffset.x()).add(new Vec3(camera.upVector()).scale(renderOffset.y()));
+		Vec3 viewVector = new Vec3(camera.forwardVector());
 		double interactionRangeSq = Mth.square(interactionRange);
 		
 		if(rayTraceStartOffset.lengthSqr() < interactionRangeSq)

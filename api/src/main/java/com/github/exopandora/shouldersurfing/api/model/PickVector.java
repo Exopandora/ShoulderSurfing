@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public enum PickVector
 {
 	PLAYER((camera, entity, partialTick) -> entityViewVector(entity, partialTick)),
-	CAMERA((camera, entity, partialTick) -> new Vec3(camera.getLookVector()));
+	CAMERA((camera, entity, partialTick) -> new Vec3(camera.forwardVector()));
 	
 	private final IPickVectorFunction pickVectorFunction;
 	

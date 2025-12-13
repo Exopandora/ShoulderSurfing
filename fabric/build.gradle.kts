@@ -36,11 +36,6 @@ dependencies {
 }
 
 loom {
-	@Suppress("UnstableApiUsage")
-	mixin {
-		defaultRefmapName.set("$modId.refmap.json")
-	}
-	
 	runs {
 		named("client") {
 			client()

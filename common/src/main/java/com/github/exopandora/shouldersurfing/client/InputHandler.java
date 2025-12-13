@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID
 
 public class InputHandler
 {
-	public static final KeyMapping.Category GENERAL = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath(MOD_ID, "general"));
+	public static final KeyMapping.Category GENERAL = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "general"));
 	
 	public static final KeyMapping CAMERA_LEFT = createKeyMapping("adjust_camera_left", GLFW.GLFW_KEY_LEFT);
 	public static final KeyMapping CAMERA_RIGHT = createKeyMapping("adjust_camera_right", GLFW.GLFW_KEY_RIGHT);

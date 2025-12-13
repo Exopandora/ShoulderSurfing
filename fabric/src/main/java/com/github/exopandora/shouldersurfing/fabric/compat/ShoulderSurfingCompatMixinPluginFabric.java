@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.compat;
 
+import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
 import net.fabricmc.loader.api.Version;
@@ -56,18 +57,10 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		
 		if(cobblemonVersion != null)
 		{
-			Version version = parseVersionSilent(cobblemonVersion);
+			ShoulderSurfingCommon.LOGGER.warn("Cobblemon integration is limited in this version!");
 			
-			if(parseVersionPredicateSilent(">=1.7.0").test(version))
-			{
-				mixins.add("cobblemon.MixinLocalPlayer");
-				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_7");
-			}
-			else if(parseVersionPredicateSilent("<1.7.0").test(version))
-			{
-				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_6");
-			}
-			
+			mixins.add("cobblemon.MixinLocalPlayer");
+			mixins.add("cobblemon.MixinPlayerExtensionsKt");
 			mixins.add("cobblemon.MixinPokemonRenderer");
 		}
 	}

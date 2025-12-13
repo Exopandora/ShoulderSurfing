@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
@@ -28,9 +28,9 @@ import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID
 
 public class CrosshairRenderer implements ICrosshairRenderer
 {
-	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstruction_indicator");
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_cross");
+	private static final Identifier OBSTRUCTION_INDICATOR_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstruction_indicator");
+	private static final Identifier OBSTRUCTED_CROSSHAIR_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
+	private static final Identifier OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_cross");
 	
 	private final ShoulderSurfingImpl instance;
 	private Vec2f crosshairOffset;
@@ -146,7 +146,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 				position = hitResult.getLocation();
 			}
 			
-			Vec2f projected = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
+			Vec2f projected = project2D(position.subtract(camera.position()), modelViewMatrix, projectionMatrix);
 			Vec2f crosshairOffset = null;
 			
 			if(projected != null)
@@ -183,7 +183,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderPipelines.CROSSHAIR);
 	}
 	
-	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite, RenderPipeline renderPipeline)
+	private void renderCustomCrosshair(GuiGraphics guiGraphics, Identifier sprite, RenderPipeline renderPipeline)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		

@@ -43,7 +43,7 @@ public class ObjectPicker implements IObjectPicker
 	@Override
 	public EntityHitResult pickEntities(PickContext context, double interactionRange, float partialTick)
 	{
-		Vec3 viewVector = new Vec3(context.camera().getLookVector()).scale(interactionRange);
+		Vec3 viewVector = new Vec3(context.camera().forwardVector()).scale(interactionRange);
 		AABB aabb = context.entity().getBoundingBox()
 			.expandTowards(viewVector)
 			.inflate(1.0D, 1.0D, 1.0D);

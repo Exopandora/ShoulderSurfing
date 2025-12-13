@@ -6,7 +6,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,12 +39,12 @@ public class MixinGui
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/client/gui/components/debug/DebugScreenEntryList.isCurrentlyEnabled(Lnet/minecraft/resources/ResourceLocation;)Z"
+			target = "net/minecraft/client/gui/components/debug/DebugScreenEntryList.isCurrentlyEnabled(Lnet/minecraft/resources/Identifier;)Z"
 		)
 	)
-	private boolean doRenderCrosshair(DebugScreenEntryList debugScreenEntryList, ResourceLocation resourceLocation)
+	private boolean doRenderCrosshair(DebugScreenEntryList debugScreenEntryList, Identifier identifier)
 	{
-		return debugScreenEntryList.isCurrentlyEnabled(resourceLocation) &&
+		return debugScreenEntryList.isCurrentlyEnabled(identifier) &&
 			!ShoulderSurfingImpl.getInstance().getCrosshairRenderer().isCrosshairDynamic(this.minecraft.getCameraEntity());
 	}
 	

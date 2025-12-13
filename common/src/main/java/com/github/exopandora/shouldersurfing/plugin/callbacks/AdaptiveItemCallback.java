@@ -3,10 +3,11 @@ package com.github.exopandora.shouldersurfing.plugin.callbacks;
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -23,21 +24,23 @@ public class AdaptiveItemCallback implements IAdaptiveItemCallback
 		ItemStack useStack = entity.getUseItem();
 		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
 		List<? extends String> useItemComponents = Config.CLIENT.getAdaptiveCrosshairUseItemComponents();
-		List<? extends String> adaptiveCrosshairUseItemAnimations = Config.CLIENT.getAdaptiveCrosshairUseItemAnimations();
+		List<? extends String> useItemDefaultComponents = Config.CLIENT.getAdaptiveCrosshairUseItemDefaultComponents();
+		List<? extends String> useItemAnimations = Config.CLIENT.getAdaptiveCrosshairUseItemAnimations();
 		
-		if(isAdaptiveItemStack(useStack, useItems, useItemComponents, adaptiveCrosshairUseItemAnimations))
+		if(isAdaptiveItemStack(useStack, useItems, useItemComponents, useItemDefaultComponents, useItemAnimations))
 		{
 			return true;
 		}
 		
 		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
 		List<? extends String> holdItemComponents = Config.CLIENT.getAdaptiveCrosshairHoldItemComponents();
+		List<? extends String> holdDefaultComponents = Config.CLIENT.getAdaptiveCrosshairHoldItemDefaultComponents();
 		List<? extends String> holdItemAnimations = Config.CLIENT.getAdaptiveCrosshairHoldItemAnimations();
 		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
 		
 		for(ItemStack handStack : handItems)
 		{
-			if(isAdaptiveItemStack(handStack, holdItems, holdItemComponents, holdItemAnimations))
+			if(isAdaptiveItemStack(handStack, holdItems, holdItemComponents, holdDefaultComponents, holdItemAnimations))
 			{
 				return true;
 			}
@@ -46,7 +49,7 @@ public class AdaptiveItemCallback implements IAdaptiveItemCallback
 		return false;
 	}
 	
-	public static boolean isAdaptiveItemStack(ItemStack stack, List<? extends String> expressions, List<? extends String> componentIds, List<? extends String> itemAnimations)
+	public static boolean isAdaptiveItemStack(ItemStack stack, List<? extends String> expressions, List<? extends String> componentIds, List<? extends String> defaultComponentIds, List<? extends String> itemAnimations)
 	{
 		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		
@@ -61,7 +64,7 @@ public class AdaptiveItemCallback implements IAdaptiveItemCallback
 			
 			for(String componentId : componentIds)
 			{
-				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(ResourceLocation.tryParse(componentId));
+				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(Identifier.tryParse(componentId));
 				
 				if(type.isEmpty())
 				{
@@ -71,6 +74,26 @@ public class AdaptiveItemCallback implements IAdaptiveItemCallback
 				Optional<?> component = patch.get(type.get());
 				
 				if(component != null && component.isPresent())
+				{
+					return true;
+				}
+			}
+		}
+		
+		if(!stack.getComponents().isEmpty())
+		{
+			DataComponentMap components = stack.getComponents();
+			
+			for(String defaultComponentId : defaultComponentIds)
+			{
+				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(Identifier.tryParse(defaultComponentId));
+				
+				if(type.isEmpty())
+				{
+					continue;
+				}
+				
+				if(components.get(type.get()) != null)
 				{
 					return true;
 				}

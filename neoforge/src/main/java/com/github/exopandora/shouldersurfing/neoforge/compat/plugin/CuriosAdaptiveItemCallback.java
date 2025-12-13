@@ -33,14 +33,16 @@ public class CuriosAdaptiveItemCallback implements ICuriosAdaptiveItemCallback
 		
 		ICuriosItemHandler inventory = optionalInventory.get();
 		Map<String, List<String>> slotToItems = parseSlots(Config.CLIENT.getCuriosAdaptiveCrosshairItems());
+		Map<String, List<String>> slotToDefaultItemComponents = parseSlots(Config.CLIENT.getCuriosAdaptiveCrosshairDefaultItemComponents());
 		Map<String, List<String>> slotToItemComponents = parseSlots(Config.CLIENT.getCuriosAdaptiveCrosshairItemComponents());
 		
 		for(Entry<String, ICurioStacksHandler> entry : inventory.getCurios().entrySet())
 		{
 			List<String> items = slotToItems.getOrDefault(entry.getKey(), Collections.emptyList());
+			List<String> defaultComponentIds = slotToDefaultItemComponents.getOrDefault(entry.getKey(), Collections.emptyList());
 			List<String> componentIds = slotToItemComponents.getOrDefault(entry.getKey(), Collections.emptyList());
 			
-			if(items.isEmpty() && componentIds.isEmpty())
+			if(items.isEmpty() && defaultComponentIds.isEmpty() && componentIds.isEmpty())
 			{
 				continue;
 			}
@@ -51,7 +53,7 @@ public class CuriosAdaptiveItemCallback implements ICuriosAdaptiveItemCallback
 			{
 				ItemStack stack = stackHandler.getStackInSlot(x);
 				
-				if(AdaptiveItemCallback.isAdaptiveItemStack(stack, items, componentIds, Collections.emptyList()))
+				if(AdaptiveItemCallback.isAdaptiveItemStack(stack, items, componentIds, defaultComponentIds, Collections.emptyList()))
 				{
 					return true;
 				}

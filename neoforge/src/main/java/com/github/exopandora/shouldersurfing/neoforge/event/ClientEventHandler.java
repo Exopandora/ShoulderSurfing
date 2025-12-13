@@ -4,7 +4,7 @@ import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.FrameGraphSetupEvent;
@@ -36,7 +36,7 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void registerGuiOverlaysEvent(RegisterGuiLayersEvent event)
 	{
-		event.registerBelow(VanillaGuiLayers.CROSSHAIR, ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"), (guiGraphics, deltaTracker) ->
+		event.registerBelow(VanillaGuiLayers.CROSSHAIR, Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"), (guiGraphics, deltaTracker) ->
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
 			
@@ -45,7 +45,7 @@ public class ClientEventHandler
 				crosshairRenderer.preRenderCrosshair(guiGraphics);
 			}
 		});
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"), (guiGraphics, deltaTracker) ->
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"), (guiGraphics, deltaTracker) ->
 		{
 			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
 			

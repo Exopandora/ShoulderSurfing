@@ -30,6 +30,7 @@ idea {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     exclusiveContent {
         forRepository {

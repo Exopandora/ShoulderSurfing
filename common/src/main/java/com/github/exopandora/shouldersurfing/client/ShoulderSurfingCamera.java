@@ -1,9 +1,9 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -229,7 +229,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				);
 			}
 			
-			if(camera.getLookVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
+			if(camera.forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
 			{
 				targetOffset = new Vec3(0, 0, targetOffset.z());
 			}
@@ -285,9 +285,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset)
 	{
-		Vec3 lookVector = new Vec3(camera.getLookVector());
-		Vec3 worldXYOffset = new Vec3(camera.getUpVector()).scale(targetOffset.y())
-			.add(new Vec3(camera.getLeftVector()).scale(targetOffset.x()));
+		Vec3 lookVector = new Vec3(camera.forwardVector());
+		Vec3 worldXYOffset = new Vec3(camera.upVector()).scale(targetOffset.y())
+			.add(new Vec3(camera.leftVector()).scale(targetOffset.x()));
 		Vec3 worldOffset = worldXYOffset.add(lookVector.scale(-targetOffset.z()));
 		double offsetXAbs = Math.abs(targetOffset.x());
 		double offsetYAbs = Math.abs(targetOffset.y());
@@ -295,7 +295,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		double targetX = offsetXAbs;
 		double targetY = offsetYAbs;
 		double clearance = cameraEntity.getBbWidth() / 3.0D;
-		Vec3 cameraPosition = camera.getPosition();
+		Vec3 cameraPosition = camera.position();
 		
 		for(double dz = 0; dz <= offsetZAbs; dz += 0.03125D)
 		{
@@ -332,25 +332,25 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private static double maxZoom(Camera camera, BlockGetter level, Vec3 cameraOffset, float partialTick)
 	{
 		double distance = cameraOffset.length();
-		Vec3 worldOffset = new Vec3(camera.getUpVector()).scale(cameraOffset.y())
-			.add(new Vec3(camera.getLeftVector()).scale(cameraOffset.x()))
-			.add(new Vec3(camera.getLookVector()).scale(-cameraOffset.z()));
-		Vec3 eyePosition = camera.getEntity().getEyePosition(partialTick);
+		Vec3 worldOffset = new Vec3(camera.upVector()).scale(cameraOffset.y())
+			.add(new Vec3(camera.leftVector()).scale(cameraOffset.x()))
+			.add(new Vec3(camera.forwardVector()).scale(-cameraOffset.z()));
+		Vec3 eyePosition = camera.entity().getEyePosition(partialTick);
 		
 		for(int i = 0; i < 8; i++)
 		{
 			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
 				.subtract(1, 1, 1);
-			Vec3 fromOffset = offset.scale(Math.clamp(camera.getEntity().getBbWidth() / 2.0F / Mth.sqrt(2), 0.0F, 0.15F))
-				.xRot(-camera.getXRot() * Mth.DEG_TO_RAD)
-				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
+			Vec3 fromOffset = offset.scale(Math.clamp(camera.entity().getBbWidth() / 2.0F / Mth.sqrt(2), 0.0F, 0.15F))
+				.xRot(-camera.xRot() * Mth.DEG_TO_RAD)
+				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			Vec3 from = eyePosition.add(fromOffset);
 			Vec3 toOffset = offset.scale(0.15)
-				.xRot(-camera.getXRot() * Mth.DEG_TO_RAD)
-				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
+				.xRot(-camera.xRot() * Mth.DEG_TO_RAD)
+				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			Vec3 to = eyePosition.add(toOffset).add(worldOffset);
-			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.getEntity());
+			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.entity());
 			HitResult hitResult = level.clip(context);
 			
 			if(hitResult.getType() != HitResult.Type.MISS)
@@ -372,8 +372,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		Vec3 deltaMovement = getDeltaMovementWithoutGravity(cameraEntity);
 		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
 			.multiply(Config.CLIENT.getCameraDragMultipliers())
-			.yRot(cameraIn.getYRot() * Mth.DEG_TO_RAD)
-			.xRot(cameraIn.getXRot() * Mth.DEG_TO_RAD);
+			.yRot(cameraIn.yRot() * Mth.DEG_TO_RAD)
+			.xRot(cameraIn.xRot() * Mth.DEG_TO_RAD);
 		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
 	}
 	
@@ -506,7 +506,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			}
 		}
 		
-		return vehicle instanceof Boat;
+		return vehicle instanceof AbstractBoat;
 	}
 	
 	private static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
