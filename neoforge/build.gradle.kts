@@ -22,15 +22,17 @@ neoForge {
 	
 	runs {
 		configureEach {
-			gameDirectory = file("../run")
+			gameDirectory = rootProject.layout.projectDirectory.dir("run")
 		}
 		
 		create("client") {
 			client()
+            ideName = "$modName NeoForge Client"
 		}
 		
 		create("server") {
 			server()
+            ideName = "$modName NeoForge Server"
 			programArgument("--nogui")
 		}
 	}

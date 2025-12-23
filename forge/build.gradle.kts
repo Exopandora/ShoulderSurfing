@@ -24,7 +24,7 @@ minecraft {
 	
 	runs {
 		configureEach {
-            workingDir = file("../run")
+            workingDir = rootProject.layout.projectDirectory.dir("run")
             systemProperty("eventbus.api.strictRuntimeChecks", "true")
             args(
                 "-mixin.config=$modId.common.mixins.json",
