@@ -1,6 +1,7 @@
 name: Build Mod
 
 on:
+  push: # Run on commit
   pull_request: # Run on all pull requests regardless of target branch
   workflow_dispatch:  # Allows manual triggering of the workflow
 
