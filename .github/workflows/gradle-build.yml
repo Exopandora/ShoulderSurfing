@@ -40,7 +40,7 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             **/.gradle
-            **/build/downloadMCMeta
+            **/build/minecraftforge
             **/build/moddev
             **/build/tmp
             **/loom-cache
