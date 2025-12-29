@@ -1,3 +1,1 @@
-- Added isRidingBoat method to IPlayerStateCallback
-- Added ICameraRotationSetupCallback
-- Added IPlayerInputCallback
+- Fixed an issue regarding view bobbing and iris shaders
