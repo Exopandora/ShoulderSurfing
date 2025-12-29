@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
@@ -14,8 +15,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
 
@@ -97,5 +100,19 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		}
 		
 		return options.bobView;
+	}
+	
+	@Inject
+	(
+		method = "bobView",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	public void bobView(CallbackInfo ci)
+	{
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getViewBobbingMode() == ViewBobbingMode.OFF)
+		{
+			ci.cancel();
+		}
 	}
 }
