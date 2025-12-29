@@ -54,7 +54,7 @@ cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblem
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "1.1.0" }
-forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.0-beta.51" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.0-rc.2" }
 fabricloom = { id = "fabric-loom", version = "1.14-SNAPSHOT" }
 moddevgradle = { id = "net.neoforged.moddev", version = "2.0.123" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.3" }
