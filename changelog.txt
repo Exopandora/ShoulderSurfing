@@ -1,1 +1,1 @@
-- Fixed client crash caused by a remapping issue with a cobblemon compat mixin on fabric builds
+- Fixed an issue regarding view bobbing and iris shaders
