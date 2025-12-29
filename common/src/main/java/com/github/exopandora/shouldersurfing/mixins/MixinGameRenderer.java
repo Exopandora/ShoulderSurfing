@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.CameraType;
@@ -113,5 +114,19 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		}
 		
 		return instance.get();
+	}
+	
+	@Inject
+	(
+		method = "bobView",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	public void bobView(CallbackInfo ci)
+	{
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getViewBobbingMode() == ViewBobbingMode.OFF)
+		{
+			ci.cancel();
+		}
 	}
 }
