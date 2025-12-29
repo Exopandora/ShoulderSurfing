@@ -160,6 +160,7 @@ The binaries for each platform can be found in the following directories:
 - Epic Fight (player does not render transparent in battle mode, player keeps punching in the same direction)
 - EssentialClient (player look script hooks do not work)
 - Inmis (backpack does not render transparent)
+- Iris (view bobbing cannot be forced on)
 - MedievalWeapons (player is permanently in aiming mode)
     - Workaround: Remove `minecraft:throwing` from `adaptive_crosshair_use_item_properties` in the config
 - MrCrayfish's Gun Mod (crosshair does not render when using ads, fov does not update when using ads)
