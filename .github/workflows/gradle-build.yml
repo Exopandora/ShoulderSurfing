@@ -51,6 +51,9 @@ jobs:
 
       - name: Clean Gradle output
         run: ./gradlew clean
+
+      - name: Sync Mavenizer
+        run: ./gradlew --build-cache syncMavenizer
       
       - name: Build with Gradle
         run: ./gradlew --build-cache clean build
