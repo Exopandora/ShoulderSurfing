@@ -49,6 +49,9 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Clean Gradle output
+        run: ./gradlew clean
+      
       - name: Build with Gradle
         run: ./gradlew --build-cache clean build
       
