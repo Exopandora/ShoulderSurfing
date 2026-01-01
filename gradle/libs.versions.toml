@@ -47,7 +47,7 @@ badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-fo
 badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
 badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
 curios-neoforge = { module = "top.theillusivec4.curios:curios-neoforge", version.ref = "curios" }
-eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0-beta.12" }
+eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0.0" }
 cobblemon-common = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-common" }
 cobblemon-neoforge = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-neoforge" }
 cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-fabric" }
