@@ -61,6 +61,9 @@ jobs:
           
       - name: Display structure of downloaded files
         run: ls -la artifacts/
+
+      - name: Sync Mavenizer
+        run: ./gradlew --build-cache syncMavenizer
       
       - name: Publish to ${{ inputs.platform }}
         env:
