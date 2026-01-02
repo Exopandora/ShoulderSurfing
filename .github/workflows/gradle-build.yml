@@ -56,7 +56,7 @@ jobs:
         run: ./gradlew --build-cache syncMavenizer
       
       - name: Build with Gradle
-        run: ./gradlew --build-cache clean build
+        run: ./gradlew --build-cache build
       
       - name: Upload build artifacts
         if: ${{ inputs.upload-artifacts }}
