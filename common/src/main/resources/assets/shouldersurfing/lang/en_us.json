@@ -13,6 +13,14 @@
   "${modId}.configuration.camera.camera_step_size.tooltip": "Size of the camera adjustment per step.",
   "${modId}.configuration.camera.camera_transition_speed_multiplier": "Camera transition speed multiplier",
   "${modId}.configuration.camera.camera_transition_speed_multiplier.tooltip": "The speed multiplier at which the camera transitions between positions.",
+  "${modId}.configuration.camera.camera_y_position_smoothing_enabled": "Camera Y position smoothing",
+  "${modId}.configuration.camera.camera_y_position_smoothing_enabled.tooltip": "Whether or not to enable smoothing for Y position changes.",
+  "${modId}.configuration.camera.camera_y_position_smoothing_multiplier": "Y position smoothing multiplier",
+  "${modId}.configuration.camera.camera_y_position_smoothing_multiplier.tooltip": "The speed multiplier for smoothing Y position changes. Higher = smoother.",
+  "${modId}.configuration.camera.mouse_rotation_smoothing_enabled": "Mouse rotation smoothing",
+  "${modId}.configuration.camera.mouse_rotation_smoothing_enabled.tooltip": "Whether or not to enable smoothing for mouse rotation.",
+  "${modId}.configuration.camera.mouse_rotation_smoothing_factor": "Mouse rotation smoothing factor",
+  "${modId}.configuration.camera.mouse_rotation_smoothing_factor.tooltip": "The smoothing factor for mouse rotation. Lower = smoother.",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle": "Center camera when looking down angle",
   "${modId}.configuration.camera.center_camera_when_looking_down_angle.tooltip": "The angle at which the camera will be centered when looking down. Set to 0 to disable.",
   "${modId}.configuration.camera.dynamically_adjust_offsets": "Dynamically adjust offsets",
@@ -113,7 +121,7 @@
   "${modId}.configuration.passenger.button": "Edit",
   "${modId}.configuration.passenger": "Passenger offsets",
   "${modId}.configuration.passenger.tooltip": "Passenger offsets.",
-  
+
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x": "Passenger x-offset multiplier",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_x.tooltip": "x-offset multiplier for when the player is a passenger.",
   "${modId}.configuration.offset.multiplier.passenger.multiplier_offset_y": "Passenger y-offset multiplier",
