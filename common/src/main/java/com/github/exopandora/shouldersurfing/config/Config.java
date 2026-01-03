@@ -106,6 +106,10 @@ public class Config
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
 		private final DoubleValue cameraTransitionSpeedMultiplier;
+		private final BooleanValue cameraYPositionSmoothingEnabled;
+		private final DoubleValue cameraYPositionSmoothingMultiplier;
+		private final BooleanValue mouseRotationSmoothingEnabled;
+		private final DoubleValue mouseRotationSmoothingFactor;
 		private final DoubleValue centerCameraWhenLookingDownAngle;
 		private final BooleanValue dynamicallyAdjustOffsets;
 		private final BooleanValue isCameraDecoupled;
@@ -463,6 +467,26 @@ public class Config
 				.comment("The speed multiplier at which the camera transitions between positions.")
 				.translation(MOD_ID + ".configuration.camera.camera_transition_speed_multiplier")
 				.defineInRange("camera_transition_speed_multiplier", 0.25D, 0.05D, 1.0D);
+			
+			this.cameraYPositionSmoothingEnabled = builder
+				.comment("Whether or not to enable smoothing for Y position changes.")
+				.translation(MOD_ID + ".configuration.camera.camera_y_position_smoothing_enabled")
+				.define("camera_y_position_smoothing_enabled", false);
+
+			this.cameraYPositionSmoothingMultiplier = builder
+				.comment("The speed multiplier for smoothing Y position changes. Higher = smoother.")
+				.translation(MOD_ID + ".configuration.camera.camera_y_position_smoothing_multiplier")
+				.defineInRange("camera_y_position_smoothing_multiplier", 0.5D, 0.05D, 1.0D);
+
+			this.mouseRotationSmoothingEnabled = builder
+				.comment("Whether or not to enable smoothing for mouse rotation.")
+				.translation(MOD_ID + ".configuration.camera.mouse_rotation_smoothing_enabled")
+				.define("mouse_rotation_smoothing_enabled", false);
+
+			this.mouseRotationSmoothingFactor = builder
+				.comment("The smoothing factor for mouse rotation. Lower = smoother.")
+				.translation(MOD_ID + ".configuration.camera.mouse_rotation_smoothing_factor")
+				.defineInRange("mouse_rotation_smoothing_factor", 0.3D, 0.05D, 1.0D);
 			
 			this.centerCameraWhenLookingDownAngle = builder
 				.comment("The angle at which the camera will be centered when looking down. Set to 0 to disable.")
@@ -1158,6 +1182,30 @@ public class Config
 		public double getCameraTransitionSpeedMultiplier()
 		{
 			return this.cameraTransitionSpeedMultiplier.get();
+		}
+		
+		@Override
+		public boolean getCameraYPositionSmoothingEnabled()
+		{
+			return this.cameraYPositionSmoothingEnabled.get();
+		}
+
+		@Override
+		public double getCameraYPositionSmoothingMultiplier()
+		{
+			return this.cameraYPositionSmoothingMultiplier.get();
+		}
+		
+		@Override
+		public boolean getMouseRotationSmoothingEnabled()
+		{
+			return this.mouseRotationSmoothingEnabled.get();
+		}
+
+		@Override
+		public double getMouseRotationSmoothingFactor()
+		{
+			return this.mouseRotationSmoothingFactor.get();
 		}
 		
 		@Override
