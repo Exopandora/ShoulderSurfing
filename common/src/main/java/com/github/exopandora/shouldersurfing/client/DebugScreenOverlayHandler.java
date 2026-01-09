@@ -9,15 +9,15 @@ import java.util.Locale;
 
 public class DebugScreenOverlayHandler
 {
-	public static void appendDebugText(List<String> left)
+	public static void appendDebugText(List<String> lines)
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
 		if(instance.isShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && instance.isCameraDecoupled())
 		{
-			int index = findFacingDebugTextIndex(left);
+			int index = findFacingDebugTextIndex(lines);
 			
-			if(index != -1)
+			if(index != -1 && (index + 1 == lines.size() || index + 1 < lines.size() && !lines.get(index + 1).startsWith("Camera: ")))
 			{
 				ShoulderSurfingCamera camera = instance.getCamera();
 				Direction direction = Direction.fromYRot(camera.getYRot());
@@ -31,16 +31,16 @@ public class DebugScreenOverlayHandler
 				};
 				float yRot = Mth.wrapDegrees(camera.getYRot());
 				float xRot = Mth.wrapDegrees(camera.getXRot());
-				left.add(index + 1, String.format(Locale.ROOT, "Camera: %s (%s) (%.1f / %.1f)", direction, axis, yRot, xRot));
+				lines.add(index + 1, String.format(Locale.ROOT, "Camera: %s (%s) (%.1f / %.1f)", direction, axis, yRot, xRot));
 			}
 		}
 	}
 	
-	private static int findFacingDebugTextIndex(List<String> left)
+	private static int findFacingDebugTextIndex(List<String> lines)
 	{
-		for(int x = 0; x < left.size(); x++)
+		for(int x = 0; x < lines.size(); x++)
 		{
-			if(left.get(x).startsWith("Facing: "))
+			if(lines.get(x).startsWith("Facing: "))
 			{
 				return x;
 			}
