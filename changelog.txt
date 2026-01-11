@@ -1,1 +1,2 @@
-- Fixed an issue regarding view bobbing and iris shaders
+- Updated russian translations (thanks to mpustovoi)
+- Fixed a compatibility issue with the debug screen overlay and sodium-extra
