@@ -46,22 +46,24 @@ jobs:
           java-version: ${{ inputs.java-version }}
           distribution: 'temurin'
           cache: gradle
-      
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-      
+
+      - name: Gradle Cache
+        id: gradle-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            **/.gradle
+            **/build/downloadMCMeta
+            **/build/moddev
+            **/build/tmp
+            **/loom-cache
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/libs.versions.toml', '**/accesstransformer.cfg', '**/*.accesswidener') }}
+
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
-        
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.artifact-name }}
-          path: artifacts
-          
-      - name: Display structure of downloaded files
-        run: ls -la artifacts/
-      
+
       - name: Publish to ${{ inputs.platform }}
         env:
           CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
