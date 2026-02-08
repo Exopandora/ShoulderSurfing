@@ -43,7 +43,7 @@ minecraft {
 }
 
 repositories {
-    maven(minecraft.mavenizer)
+    minecraft.mavenizer(this)
     maven(fg.forgeMaven)
     maven(fg.minecraftLibsMaven)
 }

@@ -64,9 +64,6 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Sync Mavenizer
-        run: ./gradlew --build-cache syncMavenizer
-      
       - name: Publish to ${{ inputs.platform }}
         env:
           CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
