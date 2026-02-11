@@ -387,5 +387,9 @@
   "key.${modId}.toggle_camera_coupling": "Toggle Camera Coupling",
   "key.${modId}.toggle_x_offset_presets": "Toggle X-Offset Presets",
   "key.${modId}.toggle_y_offset_presets": "Toggle Y-Offset Presets",
-  "key.${modId}.toggle_z_offset_presets": "Toggle Z-Offset Presets"
+  "key.${modId}.toggle_z_offset_presets": "Toggle Z-Offset Presets",
+  "key.${modId}.enter_first_person": "Enter First Person",
+  "key.${modId}.enter_third_person_front": "Enter Third Person (Front)",
+  "key.${modId}.enter_third_person_back": "Enter Third Person (Back)",
+  "key.${modId}.enter_shoulder_surfing": "Enter Shoulder Surfing"
 }

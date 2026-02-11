@@ -40,6 +40,10 @@ public class InputHandler
 	public static final KeyMapping TOGGLE_X_OFFSET_PRESETS = createKeyMapping("toggle_x_offset_presets", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping TOGGLE_Y_OFFSET_PRESETS = createKeyMapping("toggle_y_offset_presets", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping TOGGLE_Z_OFFSET_PRESETS = createKeyMapping("toggle_z_offset_presets", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping ENTER_FIRST_PERSON = createKeyMapping("enter_first_person", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping ENTER_THIRD_PERSON_FRONT = createKeyMapping("enter_third_person_front", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping ENTER_THIRD_PERSON_BACK = createKeyMapping("enter_third_person_back", InputConstants.UNKNOWN.getValue());
+	public static final KeyMapping ENTER_SHOULDER_SURFING = createKeyMapping("enter_shoulder_surfing", InputConstants.UNKNOWN.getValue());
 	
 	private final ShoulderSurfingImpl instance;
 	
@@ -86,6 +90,26 @@ public class InputHandler
 			{
 				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 			}
+		}
+		
+		while(ENTER_FIRST_PERSON.consumeClick())
+		{
+			this.instance.changePerspective(Perspective.FIRST_PERSON);
+		}
+		
+		while(ENTER_THIRD_PERSON_FRONT.consumeClick())
+		{
+			this.instance.changePerspective(Perspective.THIRD_PERSON_FRONT);
+		}
+		
+		while(ENTER_THIRD_PERSON_BACK.consumeClick())
+		{
+			this.instance.changePerspective(Perspective.THIRD_PERSON_BACK);
+		}
+		
+		while(ENTER_SHOULDER_SURFING.consumeClick())
+		{
+			this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 		}
 		
 		while(CAMERA_LEFT.consumeClick())
