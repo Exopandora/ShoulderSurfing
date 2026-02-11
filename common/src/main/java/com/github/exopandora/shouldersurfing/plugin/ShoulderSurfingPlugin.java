@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.plugin.CreateModTargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.compat.plugin.ICuriosAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallbackWhenAiming;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 	public void register(IShoulderSurfingRegistrar registrar)
 	{
 		registrar.registerAdaptiveItemCallback(new AdaptiveItemCallback());
+		registrar.registerCameraCouplingCallback(new CameraCouplingCallback());
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallback());
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
