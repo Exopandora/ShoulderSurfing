@@ -23,6 +23,7 @@
 		"MixinGui",
 		"MixinItem",
 		"MixinLocalPlayer",
+		"MixinMinecart",
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
