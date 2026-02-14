@@ -38,6 +38,7 @@ jobs:
         with:
           path: |
             ~/.gradle/caches
+            ~/.gradle/notifications
             ~/.gradle/wrapper
             **/.gradle
             **/build/minecraftforge
