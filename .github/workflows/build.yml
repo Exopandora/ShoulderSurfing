@@ -15,4 +15,4 @@ jobs:
     with:
       java-version: ${{ needs.setup.outputs.java-version }}
       upload-artifacts: true
-      artifact-name: mod-jars-pr
+      artifact-name: build
