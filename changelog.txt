@@ -1,1 +1,2 @@
-- Updated russian translations (thanks to mpustovoi)
+- Added dedicated keybinds to enter each perspective
+- Camera coupling is now forced when riding a Minecart
