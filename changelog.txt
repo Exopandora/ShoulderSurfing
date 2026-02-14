@@ -1,2 +1,2 @@
-- Updated russian translations (thanks to mpustovoi)
-- Fixed a compatibility issue with the debug screen overlay and sodium-extra
+- Added dedicated keybinds to enter each perspective
+- Fixed minecart controlling when 'Minecart improvements' experiment is enabled
