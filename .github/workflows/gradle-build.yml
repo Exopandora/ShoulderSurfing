@@ -45,9 +45,6 @@ jobs:
             **/build/tmp
             **/loom-cache
           key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/libs.versions.toml', '**/accesstransformer.cfg', '**/*.accesswidener') }}
-      
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
 
       - name: Clean Gradle output
         run: ./gradlew clean
