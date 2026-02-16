@@ -1,2 +1,1 @@
-- Added dedicated keybinds to enter each perspective
-- Camera coupling is now forced when riding a Minecart
+- Added config option to control player turning speed
