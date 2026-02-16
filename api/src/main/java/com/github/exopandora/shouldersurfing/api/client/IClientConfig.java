@@ -197,6 +197,8 @@ public interface IClientConfig
 	
 	int getTurningLockTime();
 	
+	double getTurningSpeedMultiplier();
+	
 	PickOrigin getEntityPickOrigin();
 	
 	PickOrigin getBlockPickOrigin();

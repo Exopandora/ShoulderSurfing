@@ -230,8 +230,9 @@ public class InputHandler
 					float xRotO = player.getXRot();
 					float yRotO = yRot;
 					yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
-					xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * 0.25F;
-					yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * 0.25F;
+					float turningSpeedMultiplier = (float) Config.CLIENT.getTurningSpeedMultiplier();
+					xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * turningSpeedMultiplier;
+					yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * turningSpeedMultiplier;
 					player.setXRot(xRot);
 					player.setYRot(yRot);
 				}
