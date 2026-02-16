@@ -18,7 +18,7 @@ public class MixinCapeLayer
 		at = @At
 		(
 			value = "INVOKE",
-			target = "net/minecraft/client/renderer/RenderType.entitySolid(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/client/renderer/RenderType;"
+			target = "net/minecraft/client/renderer/rendertype/RenderTypes.entitySolid(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/client/renderer/rendertype/RenderType;"
 		),
 		require = 0
 	)
