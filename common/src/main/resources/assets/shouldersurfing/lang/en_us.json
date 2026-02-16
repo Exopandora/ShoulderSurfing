@@ -255,6 +255,8 @@
   "${modId}.configuration.player.turning.when_picking.tooltip": "Whether to turn the player when picking blocks or entities. This config option only applies when camera is decoupled.",
   "${modId}.configuration.player.turning.turning_lock_time": "Turning lock time (ticks)",
   "${modId}.configuration.player.turning.turning_lock_time.tooltip": "The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.",
+  "${modId}.configuration.player.turning.turning_speed_multiplier": "Turning speed multiplier",
+  "${modId}.configuration.player.turning.turning_speed_multiplier.tooltip": "The speed multiplier at which the player rotation converges to the movement direction of the player.",
 
   "${modId}.configuration.object_picker.button": "Edit",
   "${modId}.configuration.object_picker": "Object Picker",
