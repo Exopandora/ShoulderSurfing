@@ -1,2 +1,1 @@
-- Added support for camera distance attribute handling
-- Fixed a regression that caused cape transparency to not work correctly
+- Added config option to control player turning speed
