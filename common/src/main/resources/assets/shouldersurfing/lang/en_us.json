@@ -204,6 +204,9 @@
   "${modId}.configuration.offset.modifier.climbing.modifier_offset_z": "Climbing z-offset modifier",
   "${modId}.configuration.offset.modifier.climbing.modifier_offset_z.tooltip": "z-offset modifier for when the player is climbing.",
 
+  "${modId}.configuration.offset.camera_distance_attribute_mode": "Camera distance attribute mode",
+  "${modId}.configuration.offset.camera_distance_attribute_mode.tooltip": "Defines how to handle the camera distance attribute.",
+
   "${modId}.configuration.perspective.button": "Edit",
   "${modId}.configuration.perspective": "Perspective",
   "${modId}.configuration.perspective.tooltip": "Perspective settings.",

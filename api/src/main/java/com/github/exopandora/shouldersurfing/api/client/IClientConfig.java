@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
+import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
@@ -152,6 +153,8 @@ public interface IClientConfig
 	{
 		return new Vec3(this.getClimbingOffsetXModifier(), this.getClimbingOffsetYModifier(), this.getClimbingOffsetZModifier());
 	}
+	
+	CameraDistanceAttributeMode getCameraDistanceAttributeMode();
 	
 	CrosshairVisibility getCrosshairVisibility(Perspective perspective);
 	

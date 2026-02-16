@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.config;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
@@ -102,6 +103,8 @@ public class Config
 		private final DoubleValue climbingOffsetXModifier;
 		private final DoubleValue climbingOffsetYModifier;
 		private final DoubleValue climbingOffsetZModifier;
+		
+		private final ConfigValue<CameraDistanceAttributeMode> cameraDistanceAttributeMode;
 		
 		private final DoubleValue keepCameraOutOfHeadMultiplier;
 		private final DoubleValue cameraStepSize;
@@ -447,6 +450,12 @@ public class Config
 			
 			builder.pop();
 			builder.pop();
+			
+			this.cameraDistanceAttributeMode = builder
+				.comment("Defines how to handle the camera distance attribute.")
+				.translation(MOD_ID + ".configuration.offset.camera_distance_attribute_mode")
+				.defineEnum("camera_distance_attribute_mode", CameraDistanceAttributeMode.RELATIVE, CameraDistanceAttributeMode.values());
+			
 			builder.pop();
 			
 			this.keepCameraOutOfHeadMultiplier = builder
@@ -1081,6 +1090,12 @@ public class Config
 		public double getClimbingOffsetZModifier()
 		{
 			return this.climbingOffsetZModifier.get();
+		}
+		
+		@Override
+		public CameraDistanceAttributeMode getCameraDistanceAttributeMode()
+		{
+			return this.cameraDistanceAttributeMode.get();
 		}
 		
 		@Override

@@ -6,6 +6,7 @@ import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCa
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
+import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
@@ -16,6 +17,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.level.BlockGetter;
@@ -177,8 +179,26 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			targetOffset = targetCameraOffsetCallback.pre(this.instance, targetOffset, defaultOffset);
 		}
 		
+		if(cameraEntity instanceof LivingEntity living)
+		{
+			targetOffset = applyCameraDistanceAttribute(
+				targetOffset,
+				living.getAttributeValue(Attributes.CAMERA_DISTANCE),
+				Config.CLIENT.getCameraDistanceAttributeMode()
+			);
+		}
+		
 		if(cameraEntity.isPassenger())
 		{
+			if(cameraEntity.getVehicle() instanceof LivingEntity living)
+			{
+				targetOffset = applyCameraDistanceAttribute(
+					targetOffset,
+					living.getAttributeValue(Attributes.CAMERA_DISTANCE),
+					Config.CLIENT.getCameraDistanceAttributeMode()
+				);
+			}
+			
 			targetOffset = applyModifiersAndMultipliers(
 				targetOffset,
 				defaultOffset,
@@ -281,6 +301,16 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private static Vec3 applyModifiersAndMultipliers(Vec3 targetVec, Vec3 originalVec, Vec3 modifiers, Vec3 multipliers)
 	{
 		return targetVec.add(originalVec.multiply(multipliers).subtract(originalVec)).add(modifiers);
+	}
+	
+	private static Vec3 applyCameraDistanceAttribute(Vec3 targetVec, double cameraDistance, CameraDistanceAttributeMode mode)
+	{
+		return switch(mode)
+		{
+			case RELATIVE -> targetVec.multiply(1.0D, 1.0D, cameraDistance / 4.0D);
+			case ABSOLUTE -> new Vec3(targetVec.x, targetVec.y, cameraDistance);
+			case IGNORE -> targetVec;
+		};
 	}
 	
 	private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset)
