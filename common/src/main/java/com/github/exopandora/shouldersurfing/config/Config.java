@@ -137,6 +137,7 @@ public class Config
 		private final ConfigValue<TurningMode> turningModeWhenInteraction;
 		private final ConfigValue<TurningMode> turningModeWhenPicking;
 		private final IntValue turningLockTime;
+		private final DoubleValue turningSpeedMultiplier;
 		private final BooleanValue playerXRotFollowsCamera;
 		private final BooleanValue playerYRotFollowsCamera;
 		private final DoubleValue playerYRotFollowAngleLimit;
@@ -625,6 +626,11 @@ public class Config
 				.comment("The time in ticks the player will remain turned after the interaction has ended. Set to 0 to disable. This config option only applies when camera is decoupled.")
 				.translation(MOD_ID + ".configuration.player.turning.turning_lock_time")
 				.defineInRange("turning_lock_time", 4, 0, Integer.MAX_VALUE);
+			
+			this.turningSpeedMultiplier = builder
+				.comment("The speed multiplier at which the player rotation converges to the movement direction of the player.")
+				.translation(MOD_ID + ".configuration.player.turning.turning_speed_multiplier")
+				.defineInRange("turning_speed_multiplier", 0.25F, 0.05F, 1.0F);
 			
 			builder.pop();
 			builder.pop();
@@ -1186,6 +1192,12 @@ public class Config
 		public int getTurningLockTime()
 		{
 			return this.turningLockTime.get();
+		}
+		
+		@Override
+		public double getTurningSpeedMultiplier()
+		{
+			return this.turningSpeedMultiplier.get();
 		}
 		
 		@Override
