@@ -1,2 +1,2 @@
-- Added dedicated keybinds to enter each perspective
-- Fixed minecart controlling when 'Minecart improvements' experiment is enabled
+- Added support for camera distance attribute handling
+- Fixed a regression that caused cape transparency to not work correctly
