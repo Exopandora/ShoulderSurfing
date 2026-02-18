@@ -180,6 +180,14 @@ public interface IClientConfig
 	
 	double getCameraTransitionSpeedMultiplier();
 	
+	boolean getCameraYPositionSmoothingEnabled();
+
+	double getCameraYPositionSmoothingMultiplier();
+	
+	boolean getMouseRotationSmoothingEnabled();
+
+	double getMouseRotationSmoothingFactor();
+	
 	double getCenterCameraWhenLookingDownAngle();
 	
 	double getHidePlayerWhenLookingUpAngle();

@@ -40,6 +40,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private double cameraDistance;
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
+	private double entityYPos;
+	private double smoothedEntityYPos;
+	private double smoothedEntityYPosO;
 	private float xRot;
 	private float yRot;
 	private float xRotOffset;
@@ -48,6 +51,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private float yRotOffsetO;
 	private float freeLookYRot;
 	private float lastMovedYRot;
+	private float smoothXRotVelocity;
+	private float smoothYRotVelocity;
 	private boolean initialized;
 	
 	public ShoulderSurfingCamera(ShoulderSurfingImpl instance)
@@ -73,6 +78,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
+		
+		if(cameraEntity != null)
+		{
+			this.entityYPos = cameraEntity.getY();
+			this.smoothedEntityYPosO = this.smoothedEntityYPos;
+			
+			this.smoothedEntityYPos = Mth.lerp(cameraTransitionSpeedMultiplier, this.smoothedEntityYPos, this.entityYPos);
+		}
 		
 		if(this.instance.isCameraDecoupled())
 		{
@@ -116,12 +129,18 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.xRot = cameraEntity.getXRot();
 			this.yRot = cameraEntity.getYRot();
 			this.deltaMovementO = getDeltaMovementWithoutGravity(cameraEntity);
+			this.entityYPos = cameraEntity.getY();
+			this.smoothedEntityYPos = this.entityYPos;
+			this.smoothedEntityYPosO = this.entityYPos;
 		}
 		else
 		{
 			this.xRot = 0.0F;
 			this.yRot = -180.0F;
 			this.deltaMovementO = Vec3.ZERO;
+			this.entityYPos = 0.0;
+			this.smoothedEntityYPos = 0.0;
+			this.smoothedEntityYPosO = 0.0;
 		}
 		
 		this.offsetO = this.offset;
@@ -134,6 +153,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.xRotOffsetO = 0.0F;
 		this.yRotOffsetO = 0.0F;
 		this.lastMovedYRot = this.yRot;
+		this.smoothXRotVelocity = 0.0F;
+		this.smoothYRotVelocity = 0.0F;
 		this.initialized = true;
 	}
 	
@@ -274,7 +295,19 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		this.targetOffset = targetOffset;
 		Vec3 drag = this.calcCameraDrag(camera, cameraEntity, partialTick);
-		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick).add(drag);
+		
+		double yDelta = 0.0;
+		boolean yPositionSmoothingEnabled = Config.CLIENT.getCameraYPositionSmoothingEnabled();
+		double yPositionSmoothingMultiplier = Config.CLIENT.getCameraYPositionSmoothingMultiplier();
+
+		if(cameraEntity != null && yPositionSmoothingEnabled)
+		{
+			double lerpedSmoothedYPos = Mth.lerp(partialTick, this.smoothedEntityYPosO, this.smoothedEntityYPos);
+			double lerpedActualYPos = Mth.lerp(partialTick, cameraEntity.yo, cameraEntity.getY());
+			yDelta = lerpedSmoothedYPos - lerpedActualYPos;
+		}
+		
+		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick).add(drag).add(0, yDelta * yPositionSmoothingMultiplier, 0);
 		
 		if(cameraEntity.isSpectator())
 		{
@@ -433,17 +466,31 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			float scaledXRot = (float) (xRot * 0.15F);
 			float scaledYRot = (float) (yRot * 0.15F);
 			
+			boolean smoothingFactorEnabled = Config.CLIENT.getMouseRotationSmoothingEnabled();
+
+			if (smoothingFactorEnabled)
+			{
+				float smoothingFactor = (float) Config.CLIENT.getMouseRotationSmoothingFactor();
+				this.smoothXRotVelocity = Mth.lerp(smoothingFactor, this.smoothXRotVelocity, scaledXRot);
+				this.smoothYRotVelocity = Mth.lerp(smoothingFactor, this.smoothYRotVelocity, scaledYRot);
+			}
+			else
+			{
+				this.smoothXRotVelocity = scaledXRot;
+				this.smoothYRotVelocity = scaledYRot;
+			}
+			
 			if(this.instance.isFreeLooking())
 			{
-				this.xRotOffset = Mth.clamp(this.xRotOffset + scaledXRot, -90.0F, 90.0F);
-				this.yRotOffset = Mth.wrapDegrees(this.yRotOffset + scaledYRot);
+				this.xRotOffset = Mth.clamp(this.xRotOffset + this.smoothXRotVelocity, -90.0F, 90.0F);
+				this.yRotOffset = Mth.wrapDegrees(this.yRotOffset + this.smoothYRotVelocity);
 				this.xRotOffsetO = this.xRotOffset;
 				this.yRotOffsetO = this.yRotOffset;
 				return true;
 			}
 			
-			float cameraXRot = Mth.clamp(this.xRot + scaledXRot, -90.0F, 90.0F);
-			float cameraYRot = this.yRot + scaledYRot;
+			float cameraXRot = Mth.clamp(this.xRot + this.smoothXRotVelocity, -90.0F, 90.0F);
+			float cameraYRot = this.yRot + this.smoothYRotVelocity;
 			
 			if(player.isPassenger())
 			{
