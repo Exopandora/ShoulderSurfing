@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.forge.event;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -56,7 +57,9 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void renderLevelStageEvent(RenderLevelLastEvent event)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(Minecraft.getInstance().gameRenderer.getMainCamera(), event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
+		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.getEntity(), event.getPartialTick());
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, event.getPoseStack().last().pose(), event.getProjectionMatrix(), event.getPartialTick());
 	}
 	
 	@SubscribeEvent

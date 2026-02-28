@@ -27,6 +27,10 @@
   "${modId}.configuration.camera.fov_override.tooltip": "The camera FOV when in shoulder surfing perspective. Depends on config option 'FOV override enabled'.",
   "${modId}.configuration.camera.view_bobbing_mode": "View bobbing",
   "${modId}.configuration.camera.view_bobbing_mode.tooltip": "Whether to apply view bobbing in shoulder surfing perspective. Set to INHERIT to inherit vanilla setting.",
+  "${modId}.configuration.camera.follow_player_rotations": "Follow player rotations",
+  "${modId}.configuration.camera.follow_player_rotations.tooltip": "Whether or not to follow the rotations of the player when camera is decoupled.",
+  "${modId}.configuration.camera.follow_player_rotations_delay": "Follow player rotations delay",
+  "${modId}.configuration.camera.follow_player_rotations_delay.tooltip": "The delay in ticks after which the camera rotations will follow the rotations of the player.",
 
   "${modId}.configuration.camera_drag.button": "Edit",
   "${modId}.configuration.camera_drag": "Camera drag",
