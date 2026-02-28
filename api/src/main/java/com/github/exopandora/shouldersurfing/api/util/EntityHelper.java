@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,5 +34,15 @@ public class EntityHelper
 		Minecraft minecraft = Minecraft.getInstance();
 		Player player = minecraft.player;
 		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
+	}
+	
+	public static float getLerpedXRot(Entity entity, float partialTick)
+	{
+		return partialTick == 1.0F ? entity.getXRot() : Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+	}
+	
+	public static float getLerpedYRot(Entity entity, float partialTick)
+	{
+		return partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
 	}
 }

@@ -22,6 +22,7 @@ public class MixinLevelRenderer
 	)
 	private void renderLevel(PoseStack poseStack, float partialTick, long nanos, boolean shouldRenderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci)
 	{
+		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.getEntity(), partialTick);
 		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, poseStack.last().pose(), projectionMatrix, partialTick);
 	}
 }
