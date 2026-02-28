@@ -27,7 +27,9 @@ public class ClientEventHandler
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), RenderSystem.getProjectionMatrix(), Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));
+			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+			ShoulderSurfingImpl.getInstance().getCamera().renderTick(event.getCamera().getEntity(), partialTick);
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), RenderSystem.getProjectionMatrix(), partialTick);
 		}
 	}
 	

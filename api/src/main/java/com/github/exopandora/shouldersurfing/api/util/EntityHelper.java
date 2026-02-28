@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -39,5 +40,15 @@ public class EntityHelper
 	public static float getScale(Entity entity)
 	{
 		return entity instanceof LivingEntity living ? living.getScale() : 1.0F;
+	}
+	
+	public static float getLerpedXRot(Entity entity, float partialTick)
+	{
+		return partialTick == 1.0F ? entity.getXRot() : Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+	}
+	
+	public static float getLerpedYRot(Entity entity, float partialTick)
+	{
+		return partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
 	}
 }

@@ -61,7 +61,9 @@ public class ClientEventHandler
 	{
 		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
 		{
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getPartialTick().getGameTimeDeltaPartialTick(true));
+			float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
+			ShoulderSurfingImpl.getInstance().getCamera().renderTick(event.getCamera().getEntity(), partialTick);
+			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), partialTick);
 		}
 	}
 	

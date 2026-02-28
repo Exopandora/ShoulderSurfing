@@ -22,6 +22,8 @@ public class MixinLevelRenderer
 	)
 	private void renderLevel(DeltaTracker deltaTracker, boolean shouldRenderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, deltaTracker.getGameTimeDeltaPartialTick(true));
+		float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
+		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.getEntity(), partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}
 }
