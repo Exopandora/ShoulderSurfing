@@ -23,6 +23,8 @@ public class MixinLevelRenderer
 	)
 	private void renderLevel(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean shouldRenderBlockOutline, Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, Matrix4f projectionMatrixForCulling, GpuBufferSlice fogBufferSlice, Vector4f fogColor, boolean skipFogRendering, CallbackInfo ci)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, deltaTracker.getGameTimeDeltaPartialTick(true));
+		float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
+		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.entity(), partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}
 }

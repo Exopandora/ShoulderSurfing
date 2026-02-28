@@ -218,6 +218,10 @@ public interface IClientConfig
 	
 	ViewBobbingMode getViewBobbingMode();
 	
+	boolean getFollowPlayerRotations();
+	
+	int getFollowPlayerRotationsDelay();
+	
 	double getCameraDragXMultiplier();
 	
 	double getCameraDragYMultiplier();

@@ -116,6 +116,8 @@ public class Config
 		private final BooleanValue isFovOverrideEnabled;
 		private final DoubleValue fovOverride;
 		private final ConfigValue<ViewBobbingMode> viewBobbingMode;
+		private final BooleanValue followPlayerRotations;
+		private final IntValue followPlayerRotationsDelay;
 		
 		private final DoubleValue cameraDragXMultiplier;
 		private final DoubleValue cameraDragYMultiplier;
@@ -508,6 +510,16 @@ public class Config
 				.comment("Whether to apply view bobbing in shoulder surfing perspective. Set to INHERIT to inherit vanilla setting.")
 				.translation(MOD_ID + ".configuration.camera.view_bobbing_mode")
 				.defineEnum("view_bobbing_mode", ViewBobbingMode.INHERIT, ViewBobbingMode.values());
+			
+			this.followPlayerRotations = builder
+				.comment("Whether or not to follow the rotations of the player when camera is decoupled.")
+				.translation(MOD_ID + ".configuration.camera.follow_player_rotations")
+				.define("follow_player_rotations", true);
+			
+			this.followPlayerRotationsDelay = builder
+				.comment("The delay in ticks after which the camera rotations will follow rotations of the player.")
+				.translation(MOD_ID + ".configuration.camera.follow_player_rotations_delay")
+				.defineInRange("follow_player_rotations_delay", 40, 1, Integer.MAX_VALUE);
 			
 			builder.push("camera_drag");
 			
@@ -1293,6 +1305,18 @@ public class Config
 		public ViewBobbingMode getViewBobbingMode()
 		{
 			return this.viewBobbingMode.get();
+		}
+		
+		@Override
+		public boolean getFollowPlayerRotations()
+		{
+			return this.followPlayerRotations.get();
+		}
+		
+		@Override
+		public int getFollowPlayerRotationsDelay()
+		{
+			return this.followPlayerRotationsDelay.get();
 		}
 		
 		@Override

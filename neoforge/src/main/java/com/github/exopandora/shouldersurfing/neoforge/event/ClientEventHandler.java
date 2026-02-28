@@ -59,7 +59,9 @@ public class ClientEventHandler
 	@SubscribeEvent
 	public static void frameGraphSetupEvent(FrameGraphSetupEvent event)
 	{
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), event.getDeltaTracker().getGameTimeDeltaPartialTick(true));
+		float partialTick = event.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+		ShoulderSurfingImpl.getInstance().getCamera().renderTick(event.getCamera().entity(), partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), partialTick);
 	}
 	
 	@SubscribeEvent
