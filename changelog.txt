@@ -1,1 +1,3 @@
-- Added config option to control player turning speed
+- Added config option "Follow player rotations" (default: true)
+- Added config option "Follow player rotations delay" (default: 40)
+- Fixed a crash when setting min offset limits higher than max offset limits
