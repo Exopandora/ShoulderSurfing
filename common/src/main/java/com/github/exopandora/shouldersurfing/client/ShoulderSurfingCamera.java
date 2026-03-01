@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
@@ -18,7 +17,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -513,31 +511,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)
 	{
-		if(!(entity instanceof LivingEntity))
-		{
-			return false;
-		}
-		
-		Entity vehicle = entity.getVehicle();
-		
-		if(vehicle == null)
-		{
-			return false;
-		}
-		
-		for(final IPlayerStateCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isRidingBoat(new IPlayerStateCallback.IsRidingBoatContext(minecraft, entity, vehicle));
-			
-			switch(result)
-			{
-				case TRUE -> { return true; }
-				case FALSE -> { return false; }
-				case PASS -> { /* Continue to next callback */ }
-			}
-		}
-		
-		return vehicle instanceof Boat;
+		return PlayerStateHelper.isRidingBoat(minecraft, entity);
 	}
 	
 	private static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)

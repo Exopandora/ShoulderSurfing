@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
@@ -18,10 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.HitResult;
-
-import java.util.List;
 
 public class ShoulderSurfingImpl implements IShoulderSurfing
 {
@@ -155,9 +151,8 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	private boolean shouldEntityAimAtTargetInternal(LivingEntity cameraEntity, Minecraft minecraft)
 	{
 		return this.isAiming && Config.CLIENT.getCrosshairType().isAimingDecoupled() || !this.isAiming && this.isCameraDecoupled() &&
-			(shouldTurnWhenUsingItem(cameraEntity, minecraft) || !cameraEntity.isFallFlying() && (shouldTurnWhenInteracting(cameraEntity, minecraft) &&
-				!(Config.CLIENT.getPickVector() == PickVector.PLAYER && Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC) ||
-				shouldTurnWhenAttacking(minecraft) || shouldTurnWhenPicking(minecraft) || cameraEntity instanceof Player player && player.isScoping()));
+			(shouldTurnWhenUsingItem(cameraEntity, minecraft) || shouldTurnWhenInteracting(cameraEntity, minecraft) ||
+				shouldTurnWhenAttacking(cameraEntity, minecraft) || shouldTurnWhenPicking(cameraEntity, minecraft));
 	}
 	
 	public boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
@@ -170,110 +165,36 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		return !this.shouldEntityAimAtTarget(cameraEntity, minecraft) && !this.shouldEntityFollowCamera(cameraEntity);
 	}
 	
-	private static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		return isUsingItem(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult);
-	}
-	
-	private static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isUsingItem(new IPlayerStateCallback.IsUsingContext(minecraft, cameraEntity));
-			switch (result)
-			{
-				case TRUE -> { return true; }
-				case FALSE -> { return false; }
-				case PASS -> { /* Continue to next callback */ }
-			}
-		}
-		return cameraEntity.isUsingItem() && !cameraEntity.getUseItem().isEdible();
-	}
-	
-	private static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isInteracting(new IPlayerStateCallback.IsInteractingContext(minecraft, cameraEntity));
-			switch (result)
-			{
-				case TRUE -> { return true; }
-				case FALSE -> { return false; }
-				case PASS -> { /* Continue to next callback */ }
-			}
-		}
-		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem();
-	}
-	
-	private static boolean shouldTurnWhenInteracting(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		return isInteracting(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult);
-	}
-	
-	private static boolean isAttacking(Minecraft minecraft)
-	{
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isAttacking(new IPlayerStateCallback.IsAttackingContext(minecraft));
-			switch (result)
-			{
-				case TRUE -> { return true; }
-				case FALSE -> { return false; }
-				case PASS -> { /* Continue to next callback */ }
-			}
-		}
-		return minecraft.options.keyAttack.isDown();
-	}
-	
-	private static boolean shouldTurnWhenAttacking(Minecraft minecraft)
-	{
-		return isAttacking(minecraft) && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult);
-	}
-	
-	private static List<IPlayerStateCallback> getPlayerStateCallbacks()
-	{
-		return ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks();
-	}
-	
-	private static boolean isPicking(Minecraft minecraft)
-	{
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isPicking(new IPlayerStateCallback.IsPickingContext(minecraft));
-			switch (result)
-			{
-				case TRUE -> { return true; }
-				case FALSE -> { return false; }
-				case PASS -> { /* Continue to next callback */ }
-			}
-		}
-		return minecraft.options.keyPickItem.isDown();
-	}
-	
-	private static boolean shouldTurnWhenPicking(Minecraft minecraft)
-	{
-		return isPicking(minecraft) && Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult);
-	}
-	
 	public boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
 	{
 		return (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) ||
 			!this.isCameraDecoupled();
 	}
 	
-	private static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
+	protected static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		if(entity instanceof LivingEntity living)
-		{
-			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, living));
-		}
-		
-		return false;
+		return PlayerStateHelper.isUsingItem(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult);
+	}
+	
+	protected static boolean shouldTurnWhenInteracting(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return PlayerStateHelper.isInteracting(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult) &&
+			!cameraEntity.isFallFlying() && (Config.CLIENT.getPickVector() != PickVector.PLAYER || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC);
+	}
+	
+	protected static boolean shouldTurnWhenAttacking(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return PlayerStateHelper.isAttacking(minecraft) && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult) && !cameraEntity.isFallFlying();
+	}
+	
+	protected static boolean shouldTurnWhenPicking(LivingEntity cameraEntity, Minecraft minecraft)
+	{
+		return PlayerStateHelper.isPicking(minecraft) && Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult) && !cameraEntity.isFallFlying();
 	}
 	
 	private static boolean computeIsAiming(Minecraft minecraft)
 	{
-		return isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
+		return PlayerStateHelper.isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
 	}
 	
 	private static boolean isForcingCoupledCamera(Minecraft minecraft)
