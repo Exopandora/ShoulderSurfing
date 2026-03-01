@@ -223,6 +223,7 @@ public class InputHandler
 				
 				if(this.instance.isEntityRotationDecoupled(player, minecraft))
 				{
+					// Update player rotations according to keyboard inputs and camera rotation
 					float cameraXRot = camera.getXRot();
 					float cameraYRot = camera.getYRot();
 					Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
