@@ -302,7 +302,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		double targetOffsetZ = Config.CLIENT.isUnlimitedOffsetZ() ? targetOffset.z() : Mth.clamp(targetOffset.z(), Config.CLIENT.getMinOffsetZ(), Config.CLIENT.getMaxOffsetZ());
 		targetOffset = new Vec3(targetOffsetX, targetOffsetY, targetOffsetZ);
 		
-		targetOffset = targetOffset.scale(getScale(cameraEntity));
+		targetOffset = targetOffset.scale(EntityHelper.getMaxScale(cameraEntity));
 		
 		for(ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks)
 		{
@@ -538,20 +538,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return false;
-	}
-	
-	private static float getScale(Entity cameraEntity)
-	{
-		Entity entity = cameraEntity;
-		float scale = EntityHelper.getScale(entity);
-		
-		while(entity.getVehicle() != null)
-		{
-			entity = entity.getVehicle();
-			scale = Math.max(scale, EntityHelper.getScale(entity));
-		}
-		
-		return scale;
 	}
 	
 	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)

@@ -40,4 +40,18 @@ public class EntityHelper
 	{
 		return entity instanceof LivingEntity living ? living.getScale() : 1.0F;
 	}
+	
+	public static float getMaxScale(Entity cameraEntity)
+	{
+		Entity entity = cameraEntity;
+		float scale = getScale(entity);
+		
+		while(entity.getVehicle() != null)
+		{
+			entity = entity.getVehicle();
+			scale = Math.max(scale, getScale(entity));
+		}
+		
+		return scale;
+	}
 }
