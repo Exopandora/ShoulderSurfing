@@ -51,4 +51,18 @@ public class EntityHelper
 	{
 		return partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
 	}
+	
+	public static float getMaxScale(Entity cameraEntity)
+	{
+		Entity entity = cameraEntity;
+		float scale = EntityHelper.getScale(entity);
+		
+		while(entity.getVehicle() != null)
+		{
+			entity = entity.getVehicle();
+			scale = Math.max(scale, EntityHelper.getScale(entity));
+		}
+		
+		return scale;
+	}
 }
