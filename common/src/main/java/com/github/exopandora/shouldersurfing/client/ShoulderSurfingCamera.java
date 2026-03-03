@@ -81,9 +81,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(this.instance.isCameraDecoupled())
 		{
-			if(cameraEntity != null && cameraEntity == minecraft.player && minecraft.player.input.getMoveVector().lengthSquared() == 0)
+			if(this.instance.shouldEntityAimAtTarget(minecraft.player, minecraft))
 			{
-				this.followPlayerRotationsDelay = 1;
+				this.followPlayerRotationsDelay = Config.CLIENT.getFollowPlayerRotationsDelay();
 				this.followPlayerRotationsEaseIn = 1.0F;
 				this.followPlayerRotationsEaseInO = 1.0F;
 			}
