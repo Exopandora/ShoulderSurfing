@@ -1,3 +1,2 @@
-- Added config option "Follow player rotations" (default: true)
-- Added config option "Follow player rotations delay" (default: 40)
-- Fixed a crash when setting min offset limits higher than max offset limits
+- The "follow player rotations delay" now resets on block placement and interaction
+- Fixed an issue that caused misalignment between crosshair and actual placement location when using coupled camera mode
