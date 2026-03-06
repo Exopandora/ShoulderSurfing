@@ -1,2 +1,2 @@
-- Added config option "Follow player rotations" (default: true)
-- Added config option "Follow player rotations delay" (default: 40)
+- The "follow player rotations delay" now resets on block placement and interaction
+- Fixed an issue that caused misalignment between crosshair and actual placement location when using coupled camera mode
