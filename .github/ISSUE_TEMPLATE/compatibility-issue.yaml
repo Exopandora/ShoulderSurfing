@@ -1,27 +1,43 @@
 name: Compatibility issue
 description: Report an incompatibility with another mod
-title: "Incompatible with MOD"
+title: "Incompatible with MOD NAME HERE"
 labels: ["compatibility"]
 body:
-  - type: markdown
+  - type: checkboxes
+    id: checklist
     attributes:
-      value: |
-        Please make sure you have read the [compatibility](https://github.com/Exopandora/ShoulderSurfing?tab=readme-ov-file#compatibility) section before submitting a new issue.
-        In order to isolate a conflicting mod, you can use the method described [here](https://gist.github.com/TomeWyrm/a8cff19ce112edbc3c8a).
+      label: Checklist
+      description: |
+        Please take following steps seriously before reporting a compatibility issue.
+        They ensure that your issue can be resolved quickly and reduce overhead for maintainers.
+        Conflicting mods can be isolated using the method described [here](https://gist.github.com/TomeWyrm/a8cff19ce112edbc3c8a).
+      options:
+        - label: I have read the text above
+          required: true
+        - label: I have read the [compatibility](https://github.com/Exopandora/ShoulderSurfing?tab=readme-ov-file#compatibility) section before submitting a new issue
+          required: true
+        - label: I have isolated the conflicting mod (using the method described above)
+          required: true
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Describe the incompatibility
-      placeholder: |
+      description: |
         A clear and concise description of how the incompatibility presents itself.
         If applicable, add screenshots to help explain the issue.
     validations:
       required: true
-  - type: input
+  - type: dropdown
     id: minecraft-version
     attributes:
       label: Minecraft version
+      multiple: true
+      options:
+        - 1.21.11
+        - 1.21.1
+        - 1.20.1
+        - 1.19.2
+        - 1.18.2
     validations:
       required: true
   - type: input
