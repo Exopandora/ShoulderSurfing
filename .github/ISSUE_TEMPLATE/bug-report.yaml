@@ -1,20 +1,26 @@
-name: Bug Report
+name: Bug report
 description: Create a bug report to help improve Shoulder Surfing
-title: "Short description of the bug"
+title: "Short description of the bug here"
 labels: ["bug"]
 body:
-  - type: markdown
+  - type: checkboxes
+    id: checklist
     attributes:
-      value: |
-        Please make sure you have read the [FAQ](https://github.com/Exopandora/ShoulderSurfing#faq) section before submitting a new issue.
-        Please open an incompatibility issue when the bug is not present without any other mods installed.
-        In order to find the conflicting mod, you can use the method described [here](https://gist.github.com/TomeWyrm/a8cff19ce112edbc3c8a).
+      label: Checklist
+      description: |
+        Please take following steps seriously before reporting a bug.
+        They ensure that your issue can be resolved quickly and reduce overhead for maintainers.
+        If your issue is caused by another mod, please open a compatibility issue instead.
+      options:
+        - label: I have read the text above
+          required: true
+        - label: The issue occurs when **only** Shoulder Surfing Reloaded and it's required dependencies are installed
+          required: true
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Describe the bug
-      placeholder: |
+      description: |
         A clear and concise description of what the bug is.
         If applicable, add screenshots to help explain your problem.
     validations:
@@ -22,25 +28,31 @@ body:
   - type: textarea
     id: steps-to-reproduce
     attributes:
-      label: Steps to Reproduce
+      label: Steps to reproduce
       description: Steps to reproduce the behavior.
       placeholder: |
-        1. Go to '...'
-        2. Click on '....'
-        3. Scroll down to '....'
-        4. See error
+        1. Look at '...'
+        2. Press '....'
+        3. See error
     validations:
       required: true
-  - type: input
+  - type: dropdown
     id: minecraft-version
     attributes:
       label: Minecraft version
+      multiple: true
+      options:
+        - 1.21.11
+        - 1.21.1
+        - 1.20.1
+        - 1.19.2
+        - 1.18.2
     validations:
       required: true
   - type: input
     id: logs
     attributes:
-      label: Game Logs
+      label: Game logs
       description: |
         Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
     validations:
@@ -48,7 +60,7 @@ body:
   - type: textarea
     id: additional-information
     attributes:
-      label: Additional Information
+      label: Additional information
       description: Add any other information about the problem.
     validations:
       required: false
