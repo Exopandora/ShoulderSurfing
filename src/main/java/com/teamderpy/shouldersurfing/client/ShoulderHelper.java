@@ -261,7 +261,7 @@ public class ShoulderHelper
 			
 			if(item != null)
 			{
-				Item current = stack.getItem();
+				Item current = item.getItem();
 				
 				if(current instanceof ItemBow)
 				{
