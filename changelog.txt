@@ -1,1 +1,1 @@
-- Fixed keybinds not registering for Forge build
+- Camera rotations no longer follow player rotations when scoping or inside GUIs
