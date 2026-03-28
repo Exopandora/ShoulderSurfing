@@ -56,6 +56,9 @@ dependencies {
 	implementation(libs.wthit.forge)
 	compileOnly(libs.jade.common)
 	compileOnly(libs.cobblemon.common)
+    implementation("net.sf.jopt-simple:jopt-simple:5.0.4") {
+        version { strictly("5.0.4") }
+    }
 }
 
 tasks.withType<Jar> {
