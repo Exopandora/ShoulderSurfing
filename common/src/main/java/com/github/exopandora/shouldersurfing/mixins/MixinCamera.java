@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -109,24 +110,23 @@ public abstract class MixinCamera implements CameraDuck
 		method = "calculateFov",
 		at = @At
 		(
-			value = "INVOKE",
-			target = "net/minecraft/util/Mth.lerp(FFF)F",
+			value = "TAIL",
 			shift = Shift.BY,
-			by = 3
+			by = -2
 		),
 		ordinal = 1
 	)
-	private float calculateFov(float fov)
+	private float calculateFov(float lerpedFov)
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		IClientConfig config = instance.getClientConfig();
 		
 		if(instance.isShoulderSurfing() && config.isFovOverrideEnabled())
 		{
-			return config.getFovOverride();
+			return (config.getFovOverride() / (float) Minecraft.getInstance().options.fov().get()) * lerpedFov;
 		}
 		
-		return fov;
+		return lerpedFov;
 	}
 	
 	@Override
