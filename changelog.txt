@@ -1,2 +1,2 @@
-- Update to 26.1
-- Fixed keybinds not registering for Forge build
+- Camera rotations no longer follow player rotations when scoping or inside GUIs
+- Fixed FOV modifiers not being applied when using an FOV override
