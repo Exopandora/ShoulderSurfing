@@ -21,3 +21,10 @@ mandatory = true
 versionRange = "[1.21.11,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "forgeconfigapiport"
+mandatory = true
+versionRange = "[21.11,)"
+ordering = "NONE"
+side = "CLIENT"
