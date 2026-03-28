@@ -5,8 +5,7 @@ neoforge = "21.11.0-beta"
 neoform = "1.21.11-20251209.172050"
 fabric-loader = "0.18.2"
 fabric-api = "0.139.4+1.21.11"
-mixin = "0.8.7"
-asm = "9.9"
+mixin = "0.16.5+mixin.0.8.7"
 forgeconfigapiport = "21.11.1"
 wthit-common = "mojmap-18.0.4"
 wthit-forge = "forge-18.0.4"
@@ -30,8 +29,7 @@ minecraft-neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforg
 minecraft-fabric = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
-mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
-asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
 forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "forgeconfigapiport" }
 forgeconfigapiport-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
 forgeconfigapiport-forge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-forge", version.ref = "forgeconfigapiport" }
