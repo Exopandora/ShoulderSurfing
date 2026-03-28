@@ -26,6 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.forgespi.language.IModInfo;
 
 import java.util.Collections;
@@ -49,9 +50,10 @@ public class ShoulderSurfingForge
 			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
 			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
+			RegisterKeyMappingsEvent.BUS.addListener(this::registerKeyMappingsEvent);
 		}
 		
-		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
+		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (_, _) -> true));
 	}
 	
 	@SuppressWarnings("UnstableApiUsage")
@@ -60,14 +62,13 @@ public class ShoulderSurfingForge
 		TickEvent.ClientTickEvent.Pre.BUS.addListener(ClientEventHandler::clientTickEvent);
 		MovementInputUpdateEvent.BUS.addListener(Priority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		ViewportEvent.ComputeCameraAngles.BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
-		RegisterKeyMappingsEvent.BUS.addListener(this::registerKeyMappingsEvent);
 		
 		Map<String, Object> modProperties = this.modLoadingContext.getContainer().getModInfo().getModProperties();
 		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
-		FMLLoader.getLoadingModList().getMods().stream()
+		LoadingModList.getMods().stream()
 			.filter(info -> incompatibleModIds.contains(info.getModId()))
 			.map(ShoulderSurfingForge::createIncompatibleModWarning)
-			.forEach(ModLoader.get()::addWarning);
+			.forEach(ModLoader::addWarning);
 	}
 	
 	@SubscribeEvent

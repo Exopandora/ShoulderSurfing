@@ -1,24 +1,21 @@
 [versions]
-minecraft = "1.21.11"
-forge = "1.21.11-61.0.1"
-neoforge = "21.11.0-beta"
-neoform = "1.21.11-20251209.172050"
-fabric-loader = "0.18.2"
-fabric-api = "0.139.4+1.21.11"
+minecraft = "26.1"
+forge = "26.1-62.0.4"
+neoforge = "26.1.0.1-beta"
+neoform = "26.1-1"
+fabric-loader = "0.18.4"
+fabric-api = "0.144.0+26.1"
 mixin = "0.8.7"
-asm = "9.9"
-forgeconfigapiport = "21.11.0"
-wthit-common = "mojmap-18.0.4"
-wthit-forge = "forge-18.0.4"
-wthit-neoforge = "neo-18.0.4"
-wthit-fabric = "fabric-18.0.4"
-jade-common = "7313008" # 1.21.11-21.0.1-neoforge
-jade-forge = "7313008" # 1.21.11-21.0.1-neoforge, temporarily use common artifact for compilation
-jade-neoforge = "7313008" # 1.21.11-21.0.1-neoforge
-jade-fabric = "7312559" # 1.21.11-21.0.1-fabric
-badpackets-forge = "forge-0.11.1"
-badpackets-neoforge = "neo-0.11.1"
-badpackets-fabric = "fabric-0.11.1"
+asm = "9.9.1"
+forgeconfigapiport = "26.1.0.2"
+wthit-common = "mojmap-19.0.0"
+wthit-forge = "mojmap-19.0.0"
+wthit-neoforge = "mojmap-19.0.0"
+wthit-fabric = "fabric-19.0.0"
+jade-common = "7817285" # 26.1-26.0.6-neoforge
+jade-forge = "7817285" # 26.1-26.0.6-neoforge
+jade-neoforge = "7817285" # 26.1-26.0.6-neoforge
+jade-fabric = "7815591" # 26.1-26.0.5-fabric
 curios = "11.0.1+1.21.5"
 cobblemon-common = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
 cobblemon-neoforge = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
@@ -34,7 +31,7 @@ mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 forgeconfigapiport-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi", version.ref = "forgeconfigapiport" }
 forgeconfigapiport-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapiport" }
-forgeconfigapiport-forge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-forge", version = "21.10.0" }
+forgeconfigapiport-forge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-forge", version.ref = "forgeconfigapiport" }
 wthit-common = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-common" }
 wthit-forge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-forge" }
 wthit-neoforge = { module = "mcp.mobius.waila:wthit", version.ref = "wthit-neoforge" }
@@ -43,18 +40,15 @@ jade-common = { module = "curse.maven:jade-324717", version.ref = "jade-common" 
 jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
 jade-neoforge = { module = "curse.maven:jade-324717", version.ref = "jade-neoforge" }
 jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
-badpackets-forge = { module = "lol.bai:badpackets", version.ref = "badpackets-forge" }
-badpackets-neoforge = { module = "lol.bai:badpackets", version.ref = "badpackets-neoforge" }
-badpackets-fabric = { module = "lol.bai:badpackets", version.ref = "badpackets-fabric" }
 curios-neoforge = { module = "top.theillusivec4.curios:curios-neoforge", version.ref = "curios" }
-eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0.0" }
+eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0.1" }
 cobblemon-common = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-common" }
 cobblemon-neoforge = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-neoforge" }
 cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-fabric" }
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "1.1.0" }
-forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.3" }
-fabricloom = { id = "fabric-loom", version = "1.14-SNAPSHOT" }
-moddevgradle = { id = "net.neoforged.moddev", version = "2.0.123" }
-idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.3" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.17" }
+fabricloom = { id = "net.fabricmc.fabric-loom", version = "1.15-SNAPSHOT" }
+moddevgradle = { id = "net.neoforged.moddev", version = "2.0.141" }
+idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.4.1" }

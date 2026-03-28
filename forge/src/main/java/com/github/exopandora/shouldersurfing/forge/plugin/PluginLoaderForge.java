@@ -15,7 +15,7 @@ public class PluginLoaderForge extends PluginLoader<Path>
 	@Override
 	public void loadPlugins()
 	{
-		for(IModFileInfo modFileInfo : ModList.get().getModFiles())
+		for(IModFileInfo modFileInfo : ModList.getModFiles())
 		{
 			Path path = modFileInfo.getFile().findResource(PLUGIN_JSON_PATH);
 			

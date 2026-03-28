@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
+import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
@@ -10,18 +11,26 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
 public abstract class MixinCamera implements CameraDuck
 {
+	@Shadow
+	private @Nullable Level level;
+	
+	@Shadow
+	private @Nullable Entity entity;
+	
 	@Shadow
 	private float xRot;
 	
@@ -39,7 +48,7 @@ public abstract class MixinCamera implements CameraDuck
 	
 	@Inject
 	(
-		method = "setup",
+		method = "alignWithEntity",
 		at = @At("HEAD")
 	)
 	private void setupRotations(CallbackInfo ci)
@@ -49,7 +58,7 @@ public abstract class MixinCamera implements CameraDuck
 	
 	@Inject
 	(
-		method = "setup",
+		method = "alignWithEntity",
 		at = @At
 		(
 			value = "INVOKE",
@@ -58,19 +67,19 @@ public abstract class MixinCamera implements CameraDuck
 			ordinal = 0
 		)
 	)
-	private void setupRotations(Level level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick, CallbackInfo ci)
+	private void setupRotations(float partialTick, CallbackInfo ci)
 	{
-		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
+		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
-			Vec2f rotations = camera.calcRotations(cameraEntity, partialTick);
+			Vec2f rotations = camera.calcRotations(this.entity, partialTick);
 			this.setRotation(rotations.y(), rotations.x());
 		}
 	}
 	
 	@Redirect
 	(
-		method = "setup",
+		method = "alignWithEntity",
 		at = @At
 		(
 			value = "INVOKE",
@@ -78,14 +87,14 @@ public abstract class MixinCamera implements CameraDuck
 			ordinal = 0
 		)
 	)
-	private void setupPosition(Camera cameraIn, float x, float y, float z, Level level, Entity cameraEntity, boolean detached, boolean isMirrored, float partialTick)
+	private void setupPosition(Camera cameraIn, float x, float y, float z, float partialTick)
 	{
-		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
+		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
-			Vec3 cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity);
+			Vec3 cameraOffset = camera.calcOffset(cameraIn, this.level, partialTick, this.entity);
 			this.move((float) -cameraOffset.z(), (float) cameraOffset.y(), (float) -cameraOffset.x());
-			Vec2f sway = camera.calcSway(camera, cameraEntity, partialTick);
+			Vec2f sway = camera.calcSway(camera, this.entity, partialTick);
 			this.zRot = sway.y();
 			this.setRotation(this.yRot, this.xRot + sway.x());
 		}
@@ -93,6 +102,31 @@ public abstract class MixinCamera implements CameraDuck
 		{
 			this.move(x, y, z);
 		}
+	}
+	
+	@ModifyVariable
+	(
+		method = "calculateFov",
+		at = @At
+		(
+			value = "INVOKE",
+			target = "net/minecraft/util/Mth.lerp(FFF)F",
+			shift = Shift.BY,
+			by = 3
+		),
+		ordinal = 1
+	)
+	private float calculateFov(float fov)
+	{
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		IClientConfig config = instance.getClientConfig();
+		
+		if(instance.isShoulderSurfing() && config.isFovOverrideEnabled())
+		{
+			return config.getFovOverride();
+		}
+		
+		return fov;
 	}
 	
 	@Override

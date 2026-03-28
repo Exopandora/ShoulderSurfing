@@ -21,7 +21,7 @@ public class MixinGui
 	
 	@Redirect
 	(
-		method = "renderCrosshair",
+		method = "extractCrosshair",
 		at = @At
 		(
 			value = "INVOKE",
@@ -35,7 +35,7 @@ public class MixinGui
 	
 	@Redirect
 	(
-		method = "renderCrosshair",
+		method = "extractCrosshair",
 		at = @At
 		(
 			value = "INVOKE",
@@ -50,7 +50,7 @@ public class MixinGui
 	
 	@Redirect
 	(
-		method = "renderCameraOverlays",
+		method = "extractCameraOverlays",
 		at = @At
 		(
 			value = "INVOKE",

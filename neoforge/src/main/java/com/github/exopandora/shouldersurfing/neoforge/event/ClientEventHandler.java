@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.neoforge.event;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -60,8 +61,9 @@ public class ClientEventHandler
 	public static void frameGraphSetupEvent(FrameGraphSetupEvent event)
 	{
 		float partialTick = event.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-		ShoulderSurfingImpl.getInstance().getCamera().renderTick(event.getCamera().entity(), partialTick);
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), partialTick);
+		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.entity(), partialTick);
+		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, event.getCameraState().viewRotationMatrix, event.getCameraState().projectionMatrix, partialTick);
 	}
 	
 	@SubscribeEvent

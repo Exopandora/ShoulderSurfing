@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.compat.plugin;
 
-import com.cobblemon.mod.common.OrientationControllable;
-import com.cobblemon.mod.common.api.orientation.OrientationController;
+//import com.cobblemon.mod.common.OrientationControllable;
+//import com.cobblemon.mod.common.api.orientation.OrientationController;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
 import com.github.exopandora.shouldersurfing.compat.CobblemonCompat;
 import net.minecraft.client.Minecraft;
@@ -13,16 +13,16 @@ public class CobblemonCameraRotationSetupCallback implements ICameraRotationSetu
 	@Override
 	public void pre(CameraRotationSetupContext context, CameraRotationSetupResult result)
 	{
-		if(context.player().getVehicle() instanceof OrientationControllable controllableVehicle)
-		{
-			OrientationController vehicleController = controllableVehicle.getOrientationController();
-			
-			if(vehicleController.isActive())
-			{
-				result.setXRot(vehicleController.getPitch());
-				result.setYRot(vehicleController.getYaw());
-			}
-		}
+//		if(context.player().getVehicle() instanceof OrientationControllable controllableVehicle)
+//		{
+//			OrientationController vehicleController = controllableVehicle.getOrientationController();
+//
+//			if(vehicleController.isActive())
+//			{
+//				result.setXRot(vehicleController.getPitch());
+//				result.setYRot(vehicleController.getYaw());
+//			}
+//		}
 	}
 	
 	@Override

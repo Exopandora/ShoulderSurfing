@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.client.DebugScreenOverlayHandler;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,10 +15,10 @@ public class MixinDebugScreenOverlay
 {
 	@Inject
 	(
-		method = "renderLines",
+		method = "extractLines",
 		at = @At("HEAD")
 	)
-	private void render(GuiGraphics guiGraphics, List<String> lines, boolean leftAligned, CallbackInfo ci)
+	private void render(GuiGraphicsExtractor graphics, List<String> lines, boolean alignLeft, CallbackInfo ci)
 	{
 		DebugScreenOverlayHandler.appendDebugText(lines);
 	}

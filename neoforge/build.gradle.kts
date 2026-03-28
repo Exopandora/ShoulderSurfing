@@ -46,7 +46,6 @@ neoForge {
 
 dependencies {
     compileOnly(libs.wthit.neoforge)
-    compileOnly(libs.badpackets.neoforge)
     compileOnly(libs.jade.neoforge)
     compileOnly(variantOf(libs.curios.neoforge) { classifier("api") })
     compileOnly(libs.cobblemon.neoforge)

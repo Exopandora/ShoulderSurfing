@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public class MixinEntityRenderDispatcher
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public <S extends EntityRenderState> void preRender(S renderState, CameraRenderState cameraRenderState, double renderX, double renderY, double renderZ, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CallbackInfo ci)
+	public <S extends EntityRenderState> void preRender(S renderState, CameraRenderState camera, double x, double y, double z, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CallbackInfo ci)
 	{
 		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfingImpl.getInstance().getCameraEntityRenderer();
 		
@@ -49,7 +49,7 @@ public class MixinEntityRenderDispatcher
 		method = "submit",
 		at = @At("TAIL")
 	)
-	public <S extends EntityRenderState> void postRender(S renderState, CameraRenderState cameraRenderState, double renderX, double renderY, double renderZ, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CallbackInfo ci)
+	public <S extends EntityRenderState> void postRender(S renderState, CameraRenderState camera, double x, double y, double z, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CallbackInfo ci)
 	{
 		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfingImpl.getInstance().getCameraEntityRenderer();
 		

@@ -26,6 +26,7 @@ minecraft {
         configureEach {
             workingDir = rootProject.layout.projectDirectory.dir("run")
             systemProperty("eventbus.api.strictRuntimeChecks", "true")
+            
             args(
                 "-mixin.config=$modId.common.mixins.json",
                 "-mixin.config=$modId.common.compat.mixins.json",
@@ -56,7 +57,7 @@ dependencies {
         exclude(group = "io.github.llamalad7")
     }
     compileOnly(libs.wthit.forge)
-    compileOnly(libs.jade.common)
+    compileOnly(libs.jade.forge)
     compileOnly(libs.cobblemon.common)
 }
 

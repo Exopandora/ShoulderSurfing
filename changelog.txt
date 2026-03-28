@@ -1,2 +1,2 @@
-- The "follow player rotations delay" now resets on block placement and interaction
-- Fixed an issue that caused misalignment between crosshair and actual placement location when using coupled camera mode
+- Update to 26.1
+- Fixed keybinds not registering for Forge build

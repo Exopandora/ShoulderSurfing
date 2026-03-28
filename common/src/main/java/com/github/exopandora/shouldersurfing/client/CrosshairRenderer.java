@@ -10,7 +10,7 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector4f;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
@@ -46,7 +47,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.crosshairOffset = null;
 	}
 	
-	public void preRenderCrosshair(GuiGraphics guiGraphics)
+	public void preRenderCrosshair(GuiGraphicsExtractor guiGraphics)
 	{
 		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
 		
@@ -56,7 +57,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		}
 	}
 	
-	public void postRenderCrosshair(GuiGraphics guiGraphics)
+	public void postRenderCrosshair(GuiGraphicsExtractor guiGraphics)
 	{
 		boolean doRenderObstructionCrosshair = this.doRenderObstructionCrosshair();
 		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
@@ -119,7 +120,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 			this.crosshairOffset.lengthSquared() >= minDistanceToCrosshair * minDistanceToCrosshair;
 	}
 	
-	public void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
+	public void updateDynamicRaytrace(Camera camera, Matrix4fc modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
 	{
 		if(this.instance.isShoulderSurfing() && Minecraft.getInstance().player != null)
 		{
@@ -172,18 +173,18 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		return this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairType().isDynamic(entity, this.instance.isAiming());
 	}
 	
-	private void renderObstructionCrosshair(GuiGraphics guiGraphics)
+	private void renderObstructionCrosshair(GuiGraphicsExtractor guiGraphics)
 	{
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderPipelines.CROSSHAIR);
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE, RenderPipelines.GUI_TEXTURED);
 	}
 	
-	private void renderObstructionIndicator(GuiGraphics guiGraphics)
+	private void renderObstructionIndicator(GuiGraphicsExtractor guiGraphics)
 	{
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderPipelines.CROSSHAIR);
 	}
 	
-	private void renderCustomCrosshair(GuiGraphics guiGraphics, Identifier sprite, RenderPipeline renderPipeline)
+	private void renderCustomCrosshair(GuiGraphicsExtractor guiGraphics, Identifier sprite, RenderPipeline renderPipeline)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
 		
@@ -198,7 +199,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		this.init();
 	}
 	
-	private static @Nullable Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection)
+	private static @Nullable Vec2f project2D(Vec3 position, Matrix4fc modelView, Matrix4f projection)
 	{
 		Window window = Minecraft.getInstance().getWindow();
 		int screenWidth = window.getScreenWidth();

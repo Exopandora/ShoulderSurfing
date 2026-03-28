@@ -1,5 +1,3 @@
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
     id("multiloader-modloader")
     alias(libs.plugins.fabricloom)
@@ -21,18 +19,16 @@ base {
 
 dependencies {
     minecraft(libs.minecraft.fabric)
-    mappings(loom.officialMojangMappings())
     
-    modImplementation(libs.fabric.loader)
-    modImplementation(libs.fabric.api)
-    modImplementation(libs.forgeconfigapiport.fabric) {
+    implementation(libs.fabric.loader)
+    implementation(libs.fabric.api)
+    implementation(libs.forgeconfigapiport.fabric) {
         exclude(group = libs.fabric.loader.get().group)
         exclude(group = libs.fabric.api.get().group)
     }
-    modCompileOnly(libs.wthit.fabric)
-    modCompileOnly(libs.badpackets.fabric)
-    modCompileOnly(libs.jade.fabric)
-    modCompileOnly(libs.cobblemon.fabric)
+    compileOnly(libs.wthit.fabric)
+    compileOnly(libs.jade.fabric)
+    compileOnly(libs.cobblemon.fabric)
 }
 
 loom {
@@ -76,7 +72,7 @@ tasks.withType<ProcessResources> {
 publishMods {
     displayName = "$jarName-Fabric-${libs.versions.minecraft.get()}-$modVersion"
     version = "${project.version}+fabric"
-    file = tasks.named<RemapJarTask>("remapJar").get().archiveFile
+    file = tasks.named<Jar>("jar").get().archiveFile
     modLoaders.add("fabric")
     
     val compatibleVersions = fabricCompatibleMinecraftVersions.split(",")

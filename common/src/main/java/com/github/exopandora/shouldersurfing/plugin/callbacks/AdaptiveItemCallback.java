@@ -71,9 +71,9 @@ public class AdaptiveItemCallback implements IAdaptiveItemCallback
 					continue;
 				}
 				
-				Optional<?> component = patch.get(type.get());
+				Object component = patch.get(stack, type.get());
 				
-				if(component != null && component.isPresent())
+				if(component != null)
 				{
 					return true;
 				}

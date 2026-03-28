@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.compat.plugin;
 
-import com.cobblemon.mod.common.item.PokeBallItem;
-import com.cobblemon.mod.common.item.interactive.PokerodItem;
+//import com.cobblemon.mod.common.item.PokeBallItem;
+//import com.cobblemon.mod.common.item.interactive.PokerodItem;
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +17,7 @@ public class CobblemonAdaptiveItemCallback implements IAdaptiveItemCallback
 	
 	private boolean isAdaptiveItemStack(ItemStack stack)
 	{
-		return stack.getItem() instanceof PokeBallItem || stack.getItem() instanceof PokerodItem;
+//		return stack.getItem() instanceof PokeBallItem || stack.getItem() instanceof PokerodItem;
+		return false;
 	}
 }

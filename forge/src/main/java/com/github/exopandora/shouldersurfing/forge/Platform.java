@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.forge;
 import com.github.exopandora.shouldersurfing.IPlatform;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.LoadingModList;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +34,7 @@ public class Platform implements IPlatform
 	@SuppressWarnings("UnstableApiUsage")
 	private static String findModVersionForId(String modId)
 	{
-		return FMLLoader.getLoadingModList().getMods().stream()
+		return LoadingModList.getMods().stream()
 			.filter(info -> info.getModId().equals(modId))
 			.findFirst()
 			.map(info -> info.getVersion().toString())

@@ -1,55 +1,32 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.CameraType;
-import net.minecraft.client.OptionInstance;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.state.GameRenderState;
+import net.minecraft.client.renderer.state.OptionsRenderState;
 import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.spongepowered.asm.mixin.injection.At.Shift;
-
 @Mixin(GameRenderer.class)
 public abstract class MixinGameRenderer implements GameRendererAccessor
 {
-	@ModifyVariable
-	(
-		method = "getFov",
-		at = @At
-		(
-			value = "FIELD",
-			target = "net/minecraft/client/renderer/GameRenderer.oldFovModifier:F",
-			shift = Shift.BY,
-			by = -3
-		),
-		ordinal = 1
-	)
-	private float getFov(float fov)
-	{
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		IClientConfig config = instance.getClientConfig();
-		
-		if(instance.isShoulderSurfing() && config.isFovOverrideEnabled())
-		{
-			return config.getFovOverride();
-		}
-		
-		return fov;
-	}
+	@Shadow
+	private @Final GameRenderState gameRenderState;
 	
 	@Inject
 	(
 		method = "render",
-		at = @At("HEAD")
+		at = @At("TAIL")
 	)
 	public void render(CallbackInfo ci)
 	{
@@ -79,41 +56,23 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		return ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
-	@Redirect
+	@Inject
 	(
-		method = "renderLevel",
-		at = @At
-		(
-			value = "INVOKE",
-			target = "net/minecraft/client/OptionInstance.get()Ljava/lang/Object;"
-		),
-		slice = @Slice
-		(
-			from = @At
-			(
-				value = "INVOKE",
-				target = "net/minecraft/client/Options.bobView()Lnet/minecraft/client/OptionInstance;"
-			),
-			to = @At
-			(
-				value = "INVOKE",
-				target = "net/minecraft/client/renderer/GameRenderer.bobView(Lcom/mojang/blaze3d/vertex/PoseStack;F)V"
-			)
-		)
+		method = "extractOptions",
+		at = @At("TAIL")
 	)
-	public Object bobView(OptionInstance<Boolean> instance)
+	public void extractOptions(CallbackInfo ci)
 	{
 		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
 		{
-			return switch(Config.CLIENT.getViewBobbingMode())
+			OptionsRenderState optionsRenderState = this.gameRenderState.optionsRenderState;
+			optionsRenderState.bobView = switch(Config.CLIENT.getViewBobbingMode())
 			{
-				case INHERIT -> instance.get();
+				case INHERIT -> optionsRenderState.bobView;
 				case ON -> true;
 				case OFF -> false;
 			};
 		}
-		
-		return instance.get();
 	}
 	
 	@Inject
