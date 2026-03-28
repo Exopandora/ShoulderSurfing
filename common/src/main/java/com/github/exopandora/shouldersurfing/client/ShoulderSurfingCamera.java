@@ -79,7 +79,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(this.instance.isCameraDecoupled())
 		{
-			if(this.instance.shouldEntityAimAtTarget(minecraft.player, minecraft))
+			if(this.shouldResetFollowPlayerRotationsDelay(minecraft))
 			{
 				this.followPlayerRotationsDelay = Config.CLIENT.getFollowPlayerRotationsDelay();
 				this.followPlayerRotationsEaseIn = 1.0F;
@@ -508,6 +508,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return false;
+	}
+	
+	private boolean shouldResetFollowPlayerRotationsDelay(Minecraft minecraft)
+	{
+		return this.instance.shouldEntityAimAtTarget(minecraft.player, minecraft) || (minecraft.player != null && minecraft.player.isScoping()) || minecraft.screen != null;
 	}
 	
 	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)
