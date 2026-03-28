@@ -1,2 +1,1 @@
-- The "follow player rotations delay" now resets on block placement and interaction
-- Fixed an issue that caused misalignment between crosshair and actual placement location when using coupled camera mode
+- Camera rotations no longer follow player rotations when scoping or inside GUIs
