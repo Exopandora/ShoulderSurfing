@@ -1,1 +1,1 @@
-- Camera rotations no longer follow player rotations when scoping or inside GUIs
+- Fixed a mixin conflict when Cobblemon and Barched are installed at the same time
