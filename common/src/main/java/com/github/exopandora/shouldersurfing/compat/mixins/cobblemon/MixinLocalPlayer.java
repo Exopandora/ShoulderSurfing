@@ -21,8 +21,9 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 	
 	@Inject
 	(
-		method = {"pick", "method_5745"},
+		method = {"pick(DFZ)Lnet/minecraft/world/phys/HitResult;", "method_5745(DFZ)Lnet/minecraft/class_239;"},
 		at = @At("HEAD"),
+		remap = false,
 		cancellable = true
 	)
 	private void pick(double interactionRange, float partialTick, boolean stopOnFluid, CallbackInfoReturnable<HitResult> cir)
