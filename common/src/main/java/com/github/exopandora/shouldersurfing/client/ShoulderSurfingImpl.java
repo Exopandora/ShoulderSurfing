@@ -165,8 +165,8 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	
 	public boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
 	{
-		return (this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) ||
-			!this.isCameraDecoupled();
+		return ((this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) ||
+			!this.isCameraDecoupled()) && !cameraEntity.isSleeping();
 	}
 	
 	protected static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
