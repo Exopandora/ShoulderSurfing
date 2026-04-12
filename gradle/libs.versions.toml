@@ -1,21 +1,21 @@
 [versions]
-minecraft = "26.1.1"
-forge = "26.1.1-63.0.0"
-neoforge = "26.1.1.1-beta"
-neoform = "26.1.1-1"
+minecraft = "26.1.2"
+forge = "26.1.2-64.0.0"
+neoforge = "26.1.2.7-beta"
+neoform = "26.1.2-1"
 fabric-loader = "0.18.6"
-fabric-api = "0.145.2+26.1.1"
+fabric-api = "0.145.4+26.1.2"
 mixin = "0.17.0+mixin.0.8.7"
 forgeconfigapiport = "26.1.3"
-wthit-common = "mojmap-19.0.0"
-wthit-forge = "mojmap-19.0.0"
-wthit-neoforge = "mojmap-19.0.0"
-wthit-fabric = "fabric-19.0.0"
-jade-common = "7817285" # 26.1-26.0.6-neoforge
-jade-forge = "7817285" # 26.1-26.0.6-neoforge
-jade-neoforge = "7817285" # 26.1-26.0.6-neoforge
-jade-fabric = "7815591" # 26.1-26.0.5-fabric
-curios = "11.0.1+1.21.5"
+wthit-common = "mojmap-19.0.1"
+wthit-forge = "mojmap-19.0.1"
+wthit-neoforge = "mojmap-19.0.1"
+wthit-fabric = "fabric-19.0.1"
+jade-common = "7903350" # 26.1.x-26.0.9-neoforge
+jade-forge = "7903350" # 26.1.x-26.0.9-neoforge
+jade-neoforge = "7903350" # 26.1.x-26.0.9-neoforge
+jade-fabric = "7886518" # 26.1.x-26.0.8-fabric
+curios = "15.0.0-beta.1+26.1"
 cobblemon-common = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
 cobblemon-neoforge = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
 cobblemon-fabric = "s64m1opn" # fabric-1.7.1+1.21.1
@@ -46,7 +46,7 @@ cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblem
 
 [plugins]
 modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "1.1.0" }
-forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.17" }
-fabricloom = { id = "net.fabricmc.fabric-loom", version = "1.15-SNAPSHOT" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.20" }
+fabricloom = { id = "net.fabricmc.fabric-loom", version = "1.16-SNAPSHOT" }
 moddevgradle = { id = "net.neoforged.moddev", version = "2.0.141" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.4.1" }
