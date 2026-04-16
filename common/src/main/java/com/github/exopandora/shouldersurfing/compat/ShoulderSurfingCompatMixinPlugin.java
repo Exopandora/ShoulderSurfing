@@ -58,6 +58,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	{
 		if(Mods.TSLAT_ENTITY_STATUS.isLoaded())
 		{
+			mixins.add("tslatentitystatus.MixinTESClientUtil");
 			mixins.add("tslatentitystatus.MixinTESHud");
 		}
 	}
