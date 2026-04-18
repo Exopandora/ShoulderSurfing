@@ -1,1 +1,1 @@
-- Fixed a bug that caused player head rotations to visually glitch out when sleeping in bed with coupled camera
+- Improved compatibility with TES
