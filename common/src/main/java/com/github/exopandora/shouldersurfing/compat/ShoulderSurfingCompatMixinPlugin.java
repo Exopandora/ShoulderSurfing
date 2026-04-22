@@ -36,6 +36,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		addCGMMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
+		addWildfireGenderMixins(mixins);
 	}
 	
 	private static void addCGMMixins(List<String> mixins)
@@ -60,6 +61,14 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		{
 			mixins.add("tslatentitystatus.MixinTESClientUtil");
 			mixins.add("tslatentitystatus.MixinTESHud");
+		}
+	}
+	
+	private static void addWildfireGenderMixins(List<String> mixins)
+	{
+		if(Mods.WILDFIRE_GENDER.isLoaded())
+		{
+			mixins.add("wildfiregender.MixinBreastRenderCommand");
 		}
 	}
 }
