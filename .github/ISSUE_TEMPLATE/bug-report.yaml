@@ -14,7 +14,9 @@ body:
       options:
         - label: I have read the text above
           required: true
-        - label: The issue occurs when **only** Shoulder Surfing Reloaded and it's required dependencies are installed
+        - label: I have searched the [issue tracker](https://github.com/Exopandora/ShoulderSurfing/issues?q=is%3Aissue) for identical issues before submitting a new issue
+          required: true
+        - label: The issue occurs when **only** Shoulder Surfing Reloaded and it's required dependencies are installed, and my game logs and screenshots will reflect that
           required: true
   - type: textarea
     id: description

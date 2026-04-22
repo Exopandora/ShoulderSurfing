@@ -16,7 +16,9 @@ body:
           required: true
         - label: I have read the [compatibility](https://github.com/Exopandora/ShoulderSurfing?tab=readme-ov-file#compatibility) section before submitting a new issue
           required: true
-        - label: I have isolated the conflicting mod (using the method described above)
+        - label: I have searched the [issue tracker](https://github.com/Exopandora/ShoulderSurfing/issues?q=is%3Aissue) for identical issues before submitting a new issue
+          required: true
+        - label: I have isolated the conflicting mod (using the method described above), and my game logs and screenshots will reflect that
           required: true
   - type: textarea
     id: description
@@ -56,6 +58,6 @@ body:
     attributes:
       label: Game Logs
       description: |
-        Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
+        Navigate to `.minecraft/logs/` (the location might be different if you are using a custom launcher) and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
     validations:
       required: true
