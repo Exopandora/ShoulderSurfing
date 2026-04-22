@@ -40,7 +40,9 @@ loom {
 	mixin {
 		defaultRefmapName.set("$modId.refmap.json")
 	}
-	
+    
+    accessWidenerPath = project(":common").sourceSets.main.get().resources.single { it.name == "$modId.accesswidener" }
+    
 	runs {
 		named("client") {
 			client()
