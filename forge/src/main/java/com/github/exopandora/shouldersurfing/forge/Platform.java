@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.forge;
 
 import com.github.exopandora.shouldersurfing.IPlatform;
 import com.github.exopandora.shouldersurfing.compat.Mods;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.LoadingModList;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -15,7 +14,7 @@ public class Platform implements IPlatform
 	{
 		return switch(mod)
 		{
-			case CREATE_FLY, CURIOS -> null;
+			case CREATE_FLY, CURIOS, WILDFIRE_GENDER -> null;
 			case CGM -> findModVersionForId("cgm");
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");

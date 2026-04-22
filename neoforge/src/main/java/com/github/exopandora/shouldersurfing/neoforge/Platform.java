@@ -14,7 +14,7 @@ public class Platform implements IPlatform
 	{
 		return switch(mod)
 		{
-			case CREATE_FLY, MTS -> null;
+			case CREATE_FLY, MTS, WILDFIRE_GENDER -> null;
 			case CGM -> findModVersionForId("cgm");
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");
