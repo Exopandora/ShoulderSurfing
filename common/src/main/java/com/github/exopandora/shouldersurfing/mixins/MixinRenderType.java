@@ -1,11 +1,20 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.function.Function;
 
 @Mixin(RenderType.class)
 public abstract class MixinRenderType extends RenderStateShard
@@ -15,25 +24,69 @@ public abstract class MixinRenderType extends RenderStateShard
 		super(name, setupState, clearState);
 	}
 	
-	@ModifyArg
-	(
-		method =
+	@Unique
+	private static final RenderType ARMOR_ENTITY_GLINT_ITEM_ENTITY = RenderType.create(
+		"armor_entity_glint_item_entity",
+		DefaultVertexFormat.POSITION_TEX,
+		VertexFormat.Mode.QUADS,
+		256,
+		false,
+		false,
+		RenderType.CompositeState.builder()
+			.setShaderState(RENDERTYPE_ARMOR_ENTITY_GLINT_SHADER)
+			.setTextureState(new RenderStateShard.TextureStateShard(ItemRenderer.ENCHANTED_GLINT_ENTITY, true, false))
+			.setWriteMaskState(COLOR_WRITE)
+			.setCullState(NO_CULL)
+			.setDepthTestState(EQUAL_DEPTH_TEST)
+			.setTransparencyState(GLINT_TRANSPARENCY)
+			.setTexturingState(ENTITY_GLINT_TEXTURING)
+			.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+			.setOutputState(OutputStateShard.ITEM_ENTITY_TARGET)
+			.createCompositeState(false)
+	);
+	
+	@Unique
+	private static final Function<ResourceLocation, RenderType> ARMOR_ITEM_ENTITY = Util.memoize(texture ->
 		{
-			"method_34827", // fabric
-			"lambda$static$0(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;", // forge
-			"m_285682_(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;" // optifine
-		},
-		at = @At
-		(
-			value = "INVOKE",
-			target = "net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder.setTransparencyState(Lnet/minecraft/client/renderer/RenderStateShard$TransparencyStateShard;)Lnet/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder;",
-			remap = true
-		),
-		remap = false,
-		require = 1
+			RenderType.CompositeState state = RenderType.CompositeState.builder()
+				.setShaderState(RENDERTYPE_ARMOR_CUTOUT_NO_CULL_SHADER)
+				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+				.setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+				.setCullState(NO_CULL)
+				.setLightmapState(LIGHTMAP)
+				.setOverlayState(OVERLAY)
+				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+				.setOutputState(OutputStateShard.ITEM_ENTITY_TARGET)
+				.createCompositeState(true);
+			return RenderType.create("armor_item_entity", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, state);
+		}
+	);
+	
+	@Inject
+	(
+		at = @At("HEAD"),
+		method = "armorCutoutNoCull",
+		cancellable = true
 	)
-	private static RenderStateShard.TransparencyStateShard setTransparencyState(RenderStateShard.TransparencyStateShard transparencyStateShard)
+	private static void armorCutoutNoCull(ResourceLocation identifier, CallbackInfoReturnable<RenderType> cir)
 	{
-		return Config.CLIENT.isPlayerTransparencyEnabled() ? TRANSLUCENT_TRANSPARENCY : transparencyStateShard;
+		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		{
+			cir.setReturnValue(ARMOR_ITEM_ENTITY.apply(identifier));
+		}
+	}
+	
+	@Inject
+	(
+		at = @At("HEAD"),
+		method = "armorEntityGlint",
+		cancellable = true
+	)
+	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
+	{
+		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		{
+			cir.setReturnValue(ARMOR_ENTITY_GLINT_ITEM_ENTITY);
+		}
 	}
 }

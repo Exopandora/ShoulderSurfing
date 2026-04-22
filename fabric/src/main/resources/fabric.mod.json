@@ -29,6 +29,7 @@
 		"shouldersurfing.fabric.mixins.json",
 		"shouldersurfing.fabric.compat.mixins.json"
 	],
+    "accessWidener": "${modId}.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.14",
 		"fabric": ">=0.83.0",
