@@ -116,7 +116,13 @@ The binaries for each platform can be found in the following directories:
 **A:** This needs to be configured using the config options `adaptive_crosshair_hold_items` or `adaptive_crosshair_use_items`.
 
 **Q:** Why is the player not rendered correctly when using shader pack x?  
-**A:** This is caused by player transparency effects of Shoulder Surfing Reloaded. Either disable them in the config (`adjust_player_transparency`) and restart your game or report this to the authors of the shader pack.
+**A:** This is caused by the transparent player rendering of Shoulder Surfing Reloaded. Either disable them in the config (`adjust_player_transparency`) and restart your game or report this to the authors of the shader pack.
+
+**Q:** Why are parts of the player armor or clothing not fading to transparent when the player model does?  
+**A:** Transparent rendering needs to be supported by each individual model. Please report this to the author of the respective mod that adds the respective armor or clothing item.
+
+**Q:** Why does block x or entity y not render behind the transparent player model?  
+**A:** Make sure you have enabled "Improved Transparency" (or "Fabulous!" in older versions) in the graphics settings. Everything that is still not visible after enabling the setting is a limitation of vanilla Minecraft.
 
 **Q:** Can you port feature x to version y?  
 **A:** No.
