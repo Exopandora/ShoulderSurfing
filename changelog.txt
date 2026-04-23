@@ -1,1 +1,2 @@
-- Improved compatibility with TES
+- Improved transparent player rendering (requires "Improved Transparency" graphics settings to be enabled)
+- Fixed compatibility with Wildfire Gender
