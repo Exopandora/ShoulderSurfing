@@ -33,7 +33,10 @@ body:
     id: steps-to-reproduce
     attributes:
       label: Steps to reproduce
-      description: Steps to reproduce the behavior.
+      description: |
+        You have a new Minecraft installation with just your mod loader, Shoulder Surfing Reloaded and it's dependencies installed.
+        What steps are required to reproduce the issue?
+        If applicable, add screenshots to help explain the issue.
       placeholder: |
         1. Look at '...'
         2. Press '....'
@@ -58,6 +61,7 @@ body:
       label: Game logs
       description: |
         Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
+        The location of the logs might be different if you are using a custom launcher.
     validations:
       required: true
   - type: textarea

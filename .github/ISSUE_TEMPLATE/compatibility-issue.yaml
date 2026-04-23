@@ -27,7 +27,8 @@ body:
     attributes:
       label: Description
       description: |
-        A clear and concise description of how the incompatibility presents itself.
+        Imagine you have a new Minecraft installation with just your mod loader, Shoulder Surfing Reloaded, it's dependencies, and the conflicting mod installed.
+        What steps are required to trigger the incompatibility and how does it present itself?
         If applicable, add screenshots to help explain the issue.
     validations:
       required: true
@@ -60,6 +61,7 @@ body:
     attributes:
       label: Game Logs
       description: |
-        Navigate to `.minecraft/logs/` (the location might be different if you are using a custom launcher) and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
+        Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
+        The location of the logs might be different if you are using a custom launcher.
     validations:
       required: true
