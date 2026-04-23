@@ -1,1 +1,1 @@
-- Improved compatibility with TES
+- Improved player transparency rendering (requires "Fabulous!" graphics preset)
