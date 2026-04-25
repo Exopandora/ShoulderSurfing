@@ -4,6 +4,8 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
+import net.minecraft.client.GraphicsStatus;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -62,6 +64,22 @@ public abstract class MixinRenderType extends RenderStateShard
 		}
 	);
 	
+	@Unique
+	private static final Function<ResourceLocation, RenderType> ARMOR_TRANSLUCENT = Util.memoize(texture ->
+	{
+		RenderType.CompositeState state = RenderType.CompositeState.builder()
+			.setShaderState(RENDERTYPE_ARMOR_CUTOUT_NO_CULL_SHADER)
+			.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+			.setTransparencyState(NO_TRANSPARENCY)
+			.setCullState(NO_CULL)
+			.setLightmapState(LIGHTMAP)
+			.setOverlayState(OVERLAY)
+			.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+			.setDepthTestState(LEQUAL_DEPTH_TEST)
+			.createCompositeState(true);
+		return RenderType.create("armor_translucent", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false, state);
+	});
+	
 	@Inject
 	(
 		at = @At("HEAD"),
@@ -72,7 +90,14 @@ public abstract class MixinRenderType extends RenderStateShard
 	{
 		if(Config.CLIENT.isPlayerTransparencyEnabled())
 		{
-			cir.setReturnValue(ARMOR_ITEM_ENTITY.apply(identifier));
+			if(Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS)
+			{
+				cir.setReturnValue(ARMOR_ITEM_ENTITY.apply(identifier));
+			}
+			else
+			{
+				cir.setReturnValue(ARMOR_TRANSLUCENT.apply(identifier));
+			}
 		}
 	}
 	
@@ -84,7 +109,7 @@ public abstract class MixinRenderType extends RenderStateShard
 	)
 	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
 	{
-		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		if(Config.CLIENT.isPlayerTransparencyEnabled() && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS)
 		{
 			cir.setReturnValue(ARMOR_ENTITY_GLINT_ITEM_ENTITY);
 		}
