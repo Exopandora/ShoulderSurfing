@@ -23,12 +23,7 @@ public abstract class MixinPlayerRenderer extends LivingEntityRenderer<LivingEnt
 	protected RenderType getRenderType(LivingEntity entity, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing)
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing() && entity == Minecraft.getInstance().player)
-		{
-			return RenderType.itemEntityTranslucentCull(this.getTextureLocation(entity));
-		}
-		
-		return super.getRenderType(entity, isBodyVisible, forceTransparent, appearGlowing);
+		boolean forceTransparentOverride = instance.isShoulderSurfing() && entity == Minecraft.getInstance().player;
+		return super.getRenderType(entity, isBodyVisible, forceTransparentOverride, appearGlowing);
 	}
 }
