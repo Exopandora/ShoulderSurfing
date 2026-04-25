@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.config.Config;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.rendertype.LayeringTransform;
@@ -11,7 +12,9 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.rendertype.TextureTransform;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,6 +25,9 @@ import java.util.function.Function;
 @Mixin(RenderTypes.class)
 public class MixinRenderTypes
 {
+	@Shadow
+	private static @Final Function<Identifier, RenderType> ARMOR_TRANSLUCENT;
+	
 	@Unique
 	private static final RenderType ARMOR_ENTITY_GLINT_ITEM_ENTITY = RenderTypeAccessor.invokeCreate(
 		"armor_entity_glint_item_entity",
@@ -60,7 +66,14 @@ public class MixinRenderTypes
 	{
 		if(Config.CLIENT.isPlayerTransparencyEnabled())
 		{
-			cir.setReturnValue(ARMOR_ITEM_ENTITY.apply(identifier));
+			if(Minecraft.getInstance().options.improvedTransparency().get())
+			{
+				cir.setReturnValue(ARMOR_ITEM_ENTITY.apply(identifier));
+			}
+			else
+			{
+				cir.setReturnValue(ARMOR_TRANSLUCENT.apply(identifier));
+			}
 		}
 	}
 	
@@ -72,7 +85,7 @@ public class MixinRenderTypes
 	)
 	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
 	{
-		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		if(Config.CLIENT.isPlayerTransparencyEnabled() && Minecraft.getInstance().options.improvedTransparency().get())
 		{
 			cir.setReturnValue(ARMOR_ENTITY_GLINT_ITEM_ENTITY);
 		}
