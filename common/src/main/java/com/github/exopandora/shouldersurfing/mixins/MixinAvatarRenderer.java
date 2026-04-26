@@ -23,7 +23,7 @@ public abstract class MixinAvatarRenderer extends LivingEntityRenderer<LivingEnt
 	protected RenderType getRenderType(LivingEntityRenderState state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing)
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		boolean forceTransparentOverride = instance.isShoulderSurfing() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState();
+		boolean forceTransparentOverride = !state.isInvisibleToPlayer && instance.isShoulderSurfing() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState();
 		return super.getRenderType(state, isBodyVisible, forceTransparentOverride, appearGlowing);
 	}
 }
