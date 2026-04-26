@@ -37,7 +37,7 @@ public abstract class MixinRenderType extends RenderStateShard
 			false,
 			RenderType.CompositeState.builder()
 				.setShaderState(RENDERTYPE_ARMOR_ENTITY_GLINT_SHADER)
-				.setTextureState(new RenderStateShard.TextureStateShard(ItemRenderer.ENCHANTED_GLINT_ENTITY, true, false))
+				.setTextureState(new TextureStateShard(ItemRenderer.ENCHANTED_GLINT_ENTITY, true, false))
 				.setWriteMaskState(COLOR_WRITE)
 				.setCullState(NO_CULL)
 				.setDepthTestState(EQUAL_DEPTH_TEST)
@@ -51,12 +51,13 @@ public abstract class MixinRenderType extends RenderStateShard
 		{
 			RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setShaderState(RENDERTYPE_ARMOR_CUTOUT_NO_CULL_SHADER)
-				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+				.setTextureState(new TextureStateShard(texture, false, false))
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 				.setCullState(NO_CULL)
 				.setLightmapState(LIGHTMAP)
 				.setOverlayState(OVERLAY)
 				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
+				.setDepthTestState(LEQUAL_DEPTH_TEST)
 				.setOutputState(OutputStateShard.ITEM_ENTITY_TARGET)
 				.createCompositeState(true);
 			return RenderType.create("armor_translucent_item_target", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false, state);
@@ -65,8 +66,8 @@ public abstract class MixinRenderType extends RenderStateShard
 		{
 			RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setShaderState(RENDERTYPE_ARMOR_CUTOUT_NO_CULL_SHADER)
-				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
-				.setTransparencyState(NO_TRANSPARENCY)
+				.setTextureState(new TextureStateShard(texture, false, false))
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 				.setCullState(NO_CULL)
 				.setLightmapState(LIGHTMAP)
 				.setOverlayState(OVERLAY)
@@ -80,7 +81,7 @@ public abstract class MixinRenderType extends RenderStateShard
 		{
 			RenderType.CompositeState state = RenderType.CompositeState.builder()
 				.setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
-				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+				.setTextureState(new TextureStateShard(texture, false, false))
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 				.setCullState(NO_CULL)
 				.setLightmapState(LIGHTMAP)
