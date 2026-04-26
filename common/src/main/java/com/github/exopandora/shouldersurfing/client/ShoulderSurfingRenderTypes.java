@@ -27,8 +27,8 @@ public class ShoulderSurfingRenderTypes
 		return ARMOR_TRANSLUCENT.apply(texture);
 	}
 	
-	public static RenderType entityTranslucentItemTarget(ResourceLocation identifier)
+	public static RenderType entityTranslucentItemTarget(ResourceLocation texture)
 	{
-		return ENTITY_TRANSLUCENT_ITEM_TARGET.apply(identifier);
+		return ENTITY_TRANSLUCENT_ITEM_TARGET.apply(texture);
 	}
 }
