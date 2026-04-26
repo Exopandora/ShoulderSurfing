@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.LocalPlayer;
@@ -25,7 +26,12 @@ public abstract class MixinPlayerRenderer extends LivingEntityRenderer<LivingEnt
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		LocalPlayer player = Minecraft.getInstance().player;
-		boolean forceTransparentOverride = !entity.isInvisibleTo(player) && instance.isShoulderSurfing() && entity == player;
-		return super.getRenderType(entity, isBodyVisible, forceTransparentOverride, appearGlowing);
+		
+		if(!entity.isInvisibleTo(player) && instance.isShoulderSurfing() && entity == player)
+		{
+			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(entity));
+		}
+		
+		return super.getRenderType(entity, isBodyVisible, forceTransparent, appearGlowing);
 	}
 }

@@ -10,6 +10,7 @@ public class ShoulderSurfingRenderTypes
 	public static RenderType ARMOR_ENTITY_GLINT_ITEM_TARGET;
 	public static Function<ResourceLocation, RenderType> ARMOR_TRANSLUCENT_ITEM_TARGET;
 	public static Function<ResourceLocation, RenderType> ARMOR_TRANSLUCENT;
+	public static Function<ResourceLocation, RenderType> ENTITY_TRANSLUCENT_ITEM_TARGET;
 	
 	public static RenderType armorEntityGlintItemTarget()
 	{
@@ -24,5 +25,10 @@ public class ShoulderSurfingRenderTypes
 	public static RenderType armorTranslucent(ResourceLocation texture)
 	{
 		return ARMOR_TRANSLUCENT.apply(texture);
+	}
+	
+	public static RenderType entityTranslucentItemTarget(ResourceLocation identifier)
+	{
+		return ENTITY_TRANSLUCENT_ITEM_TARGET.apply(identifier);
 	}
 }
