@@ -72,8 +72,22 @@ public abstract class MixinRenderType extends RenderStateShard
 				.setOverlayState(OVERLAY)
 				.setLayeringState(VIEW_OFFSET_Z_LAYERING)
 				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setOutputState(OutputStateShard.ITEM_ENTITY_TARGET)
 				.createCompositeState(true);
 			return RenderType.create("armor_translucent", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false, state);
+		});
+		ShoulderSurfingRenderTypes.ENTITY_TRANSLUCENT_ITEM_TARGET = Util.memoize(texture ->
+		{
+			RenderType.CompositeState state = RenderType.CompositeState.builder()
+				.setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
+				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				.setCullState(NO_CULL)
+				.setLightmapState(LIGHTMAP)
+				.setOverlayState(OVERLAY)
+				.setOutputState(ITEM_ENTITY_TARGET)
+				.createCompositeState(true);
+			return RenderType.create("entity_translucent_item_target", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, true, state);
 		});
 	}
 	
