@@ -64,8 +64,8 @@ public class ShoulderSurfingRenderTypes
 		return ARMOR_TRANSLUCENT_ITEM_TARGET.apply(texture);
 	}
 	
-	public static RenderType entityTranslucentItemTarget(Identifier identifier)
+	public static RenderType entityTranslucentItemTarget(Identifier texture)
 	{
-		return ENTITY_TRANSLUCENT_ITEM_TARGET.apply(identifier);
+		return ENTITY_TRANSLUCENT_ITEM_TARGET.apply(texture);
 	}
 }
