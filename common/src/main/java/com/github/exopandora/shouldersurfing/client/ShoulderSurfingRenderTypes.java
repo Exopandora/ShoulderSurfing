@@ -40,6 +40,20 @@ public class ShoulderSurfingRenderTypes
 		return RenderTypeAccessor.invokeCreate("armor_translucent_item_target", state);
 	});
 	
+	private static final Function<Identifier, RenderType> ENTITY_TRANSLUCENT_ITEM_TARGET = Util.memoize(texture ->
+	{
+		RenderSetup state = RenderSetup.builder(RenderPipelines.ENTITY_TRANSLUCENT)
+			.withTexture("Sampler0", texture)
+			.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
+			.useLightmap()
+			.useOverlay()
+			.affectsCrumbling()
+			.sortOnUpload()
+			.setOutline(RenderSetup.OutlineProperty.AFFECTS_OUTLINE)
+			.createRenderSetup();
+		return RenderTypeAccessor.invokeCreate("entity_translucent_item_target", state);
+	});
+	
 	public static RenderType armorEntityGlintItemTarget()
 	{
 		return ARMOR_ENTITY_GLINT_ITEM_TARGET;
@@ -48,5 +62,10 @@ public class ShoulderSurfingRenderTypes
 	public static RenderType armorTranslucentItemTarget(Identifier texture)
 	{
 		return ARMOR_TRANSLUCENT_ITEM_TARGET.apply(texture);
+	}
+	
+	public static RenderType entityTranslucentItemTarget(Identifier identifier)
+	{
+		return ENTITY_TRANSLUCENT_ITEM_TARGET.apply(identifier);
 	}
 }
