@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.model.Couple;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.compat.Mods;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
@@ -10,6 +11,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.valkyrienskies.mod.common.world.RaycastUtilsKt;
 
 public class ObjectPicker implements IObjectPicker
 {
@@ -60,6 +62,9 @@ public class ObjectPicker implements IObjectPicker
 	@Override
 	public BlockHitResult pickBlocks(PickContext context, double interactionRange, float partialTick)
 	{
-		return context.entity().level().clip(context.toClipContext(interactionRange, partialTick));
+		if (Mods.VALKYRIEN_SKIES.isLoaded()) {
+			return RaycastUtilsKt.clipIncludeShips(context.entity().level(), context.toClipContext(interactionRange, partialTick), false);
+		}
+		return  context.entity().level().clip(context.toClipContext(interactionRange, partialTick));
 	}
 }

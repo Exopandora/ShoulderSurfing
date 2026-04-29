@@ -33,6 +33,8 @@ dependencies {
 	modImplementation(libs.badpackets.fabric)
 	modImplementation(libs.jade.fabric)
 	modCompileOnly(libs.cobblemon.fabric)
+    modApi(libs.valkyrienskies.fabric) { isTransitive = false }
+    modCompileOnly(libs.vscoreapi)
 }
 
 loom {
@@ -91,12 +93,12 @@ publishMods {
 	curseforge {
 		minecraftVersions.set(compatibleVersions)
 		requires("fabric-api", "forge-config-api-port")
-		incompatible("better-third-person", "nimble-fabric", "valkyrien-skies")
+		incompatible("better-third-person", "nimble-fabric")
 	}
 	
 	modrinth {
 		minecraftVersions.set(compatibleVersions)
 		requires("fabric-api", "forge-config-api-port")
-		incompatible("better-third-person", "nimble", "valkyrien-skies")
+		incompatible("better-third-person", "nimble")
 	}
 }

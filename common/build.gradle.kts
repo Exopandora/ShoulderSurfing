@@ -13,12 +13,14 @@ base {
 dependencies {
 	compileOnly(project(":api"))
 	compileOnly(project(":compat"))
-	
+
 	compileOnly(libs.mixin)
 	compileOnly(libs.forgeconfigapiport.common)
 	compileOnly(libs.wthit.common)
 	compileOnly(libs.jade.common)
 	compileOnly(libs.cobblemon.common)
+    api(libs.valkyrienskies.common) { isTransitive = false }
+    compileOnly(libs.vscoreapi)
 }
 
 minecraft {

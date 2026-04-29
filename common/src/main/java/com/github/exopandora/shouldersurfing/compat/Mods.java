@@ -20,6 +20,7 @@ public enum Mods
 	SKIN_LAYERS,
 	THE_ONE_PROBE,
 	TSLAT_ENTITY_STATUS,
+	VALKYRIEN_SKIES,
 	WILDFIRE_GENDER;
 	
 	private static final Map<Mods, @Nullable String> MODS_TO_VERSION = new HashMap<Mods, String>();
