@@ -63,8 +63,8 @@ dependencies {
 	implementation(fg.deobf(libs.jade.forge.get()))
 	compileOnly(fg.deobf(libs.curios.forge.get()))
     compileOnly(fg.deobf(libs.cobblemon.forge.get()))
-    api(fg.deobf(libs.valkyrienskies.forge.get()))
     compileOnly(libs.vscoreapi)
+    compileOnly(fg.deobf(libs.valkyrienskies.forge.get()))
 }
 
 tasks.named<ProcessResources>("processResources") {

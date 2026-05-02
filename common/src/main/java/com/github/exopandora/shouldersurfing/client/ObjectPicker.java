@@ -40,6 +40,7 @@ public class ObjectPicker implements IObjectPicker
 			
 			if(distance < interactionRange || blockHit.getType() != HitResult.Type.MISS)
 			{
+				
 				return entityHit;
 			}
 		}
@@ -62,9 +63,6 @@ public class ObjectPicker implements IObjectPicker
 	@Override
 	public BlockHitResult pickBlocks(PickContext context, double interactionRange, float partialTick)
 	{
-		if (Mods.VALKYRIEN_SKIES.isLoaded()) {
-			return RaycastUtilsKt.clipIncludeShips(context.entity().level(), context.toClipContext(interactionRange, partialTick), false);
-		}
-		return  context.entity().level().clip(context.toClipContext(interactionRange, partialTick));
+		return context.entity().level().clip(context.toClipContext(interactionRange, partialTick));
 	}
 }

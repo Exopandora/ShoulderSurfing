@@ -33,8 +33,8 @@ dependencies {
 	modImplementation(libs.badpackets.fabric)
 	modImplementation(libs.jade.fabric)
 	modCompileOnly(libs.cobblemon.fabric)
-    modApi(libs.valkyrienskies.fabric) { isTransitive = false }
     modCompileOnly(libs.vscoreapi)
+    modCompileOnly(libs.valkyrienskies.fabric) { isTransitive = false }
 }
 
 loom {

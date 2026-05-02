@@ -19,8 +19,8 @@ dependencies {
 	compileOnly(libs.wthit.common)
 	compileOnly(libs.jade.common)
 	compileOnly(libs.cobblemon.common)
-    api(libs.valkyrienskies.common) { isTransitive = false }
     compileOnly(libs.vscoreapi)
+    compileOnly(libs.valkyrienskies.common) { isTransitive = false }
 }
 
 minecraft {
