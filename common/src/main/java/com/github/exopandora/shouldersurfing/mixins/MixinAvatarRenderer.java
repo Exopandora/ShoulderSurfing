@@ -1,7 +1,8 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingRenderTypes;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingRenderTypes;
+import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -25,7 +26,7 @@ public abstract class MixinAvatarRenderer extends LivingEntityRenderer<LivingEnt
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState())
+		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState())
 		{
 			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));
 		}
