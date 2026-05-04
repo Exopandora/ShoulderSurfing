@@ -1,1 +1,3 @@
-- Improved player transparency rendering (requires "Fabulous!" graphics preset)
+- Fixed invisibility effect not working correctly when "Adjust player transparency" is enabled
+- Fixed "Adjust player transparency" causing rendering modifications even when disabled
+- Fixed culling issues when "Adjust player transparency" is enabled
