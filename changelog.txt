@@ -1,2 +1,3 @@
-- Improved transparent player rendering (requires "Improved Transparency" graphics settings to be enabled)
-- Fixed compatibility with Wildfire Gender
+- Fixed invisibility effect not working correctly when "Adjust player transparency" is enabled
+- Fixed "Adjust player transparency" causing rendering modifications even when disabled
+- Fixed culling issues when "Adjust player transparency" is enabled
