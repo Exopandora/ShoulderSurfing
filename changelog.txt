@@ -1,3 +1,1 @@
-- Fixed invisibility effect not working correctly when "Adjust player transparency" is enabled
-- Fixed "Adjust player transparency" causing rendering modifications even when disabled
-- Fixed culling issues when "Adjust player transparency" is enabled
+- Fixed a crash that could be caused by other mods that change class loading order
