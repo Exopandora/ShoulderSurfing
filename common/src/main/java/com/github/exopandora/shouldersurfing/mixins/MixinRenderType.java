@@ -103,7 +103,7 @@ public abstract class MixinRenderType extends RenderStateShard
 		if(Config.CLIENT.isPlayerTransparencyEnabled())
 		{
 			//noinspection ConstantValue
-			if(Minecraft.getInstance().options != null && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS)
+			if(Minecraft.getInstance() != null && Minecraft.getInstance().options != null && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS)
 			{
 				cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentItemTarget(identifier));
 			}
@@ -123,7 +123,7 @@ public abstract class MixinRenderType extends RenderStateShard
 	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
 	{
 		//noinspection ConstantValue
-		if(Config.CLIENT.isPlayerTransparencyEnabled() && Minecraft.getInstance().options != null && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS)
+		if(Config.CLIENT.isPlayerTransparencyEnabled() && Minecraft.getInstance() != null && Minecraft.getInstance().options != null && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS)
 		{
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
 		}
