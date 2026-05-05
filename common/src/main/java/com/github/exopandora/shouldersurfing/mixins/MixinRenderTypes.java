@@ -32,7 +32,7 @@ public class MixinRenderTypes
 		if(Config.CLIENT.isPlayerTransparencyEnabled())
 		{
 			//noinspection ConstantValue
-			if(Minecraft.getInstance().options != null && Minecraft.getInstance().options.improvedTransparency().get())
+			if(Minecraft.getInstance() != null && Minecraft.getInstance().options != null && Minecraft.getInstance().options.improvedTransparency().get())
 			{
 				cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentItemTarget(texture));
 			}
@@ -52,7 +52,7 @@ public class MixinRenderTypes
 	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
 	{
 		//noinspection ConstantValue
-		if(Config.CLIENT.isPlayerTransparencyEnabled() && Minecraft.getInstance().options != null && Minecraft.getInstance().options.improvedTransparency().get())
+		if(Config.CLIENT.isPlayerTransparencyEnabled() && Minecraft.getInstance() != null && Minecraft.getInstance().options != null && Minecraft.getInstance().options.improvedTransparency().get())
 		{
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
 		}
