@@ -63,6 +63,8 @@ dependencies {
 	implementation(fg.deobf(libs.jade.forge.get()))
 	compileOnly(fg.deobf(libs.curios.forge.get()))
     compileOnly(fg.deobf(libs.cobblemon.forge.get()))
+    compileOnly(libs.vscoreapi)
+    compileOnly(fg.deobf(libs.valkyrienskies.forge.get()))
 }
 
 tasks.named<ProcessResources>("processResources") {
@@ -107,12 +109,12 @@ publishMods {
 	
 	curseforge {
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
+		incompatible("better-third-person", "nimble", "ydms-custom-camera-view")
 	}
 	
 	modrinth {
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
+		incompatible("better-third-person", "nimble", "ydms-custom-camera-view")
 	}
 }
 

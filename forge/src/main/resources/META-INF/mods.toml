@@ -13,7 +13,7 @@ logoFile = "logo.png"
 displayURL = "${modUrl}"
 
 [modproperties.${modId}]
-incompatibleMods = ["betterthirdperson", "customcameraview", "nimble", "valkyrienskies"]
+incompatibleMods = ["betterthirdperson", "customcameraview", "nimble"]
 
 [[dependencies.${modId}]]
 modId = "minecraft"
