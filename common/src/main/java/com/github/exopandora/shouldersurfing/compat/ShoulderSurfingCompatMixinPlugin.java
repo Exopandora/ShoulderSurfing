@@ -34,6 +34,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	protected static void addCommonCompatMixins(List<String> mixins)
 	{
 		addCGMMixins(mixins);
+		addNeatMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
 		addWildfireGenderMixins(mixins);
@@ -44,6 +45,14 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		if(Mods.CGM.isLoaded())
 		{
 			mixins.add("cgm.MixinRecoilHandler");
+		}
+	}
+	
+	private static void addNeatMixins(List<String> mixins)
+	{
+		if(Mods.NEAT.isLoaded())
+		{
+			mixins.add("neat.MixinHealthBarRenderer");
 		}
 	}
 	

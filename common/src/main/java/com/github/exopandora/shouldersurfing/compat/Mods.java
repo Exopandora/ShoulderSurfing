@@ -28,6 +28,7 @@ public enum Mods
 	},
 	CURIOS,
 	MTS,
+	NEAT,
 	THE_ONE_PROBE,
 	TSLAT_ENTITY_STATUS,
 	WILDFIRE_GENDER,

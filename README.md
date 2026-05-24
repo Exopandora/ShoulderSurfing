@@ -135,6 +135,7 @@ The binaries for each platform can be found in the following directories:
 - Create
 - Create-Fly
 - Curios
+- Neat
 - TslatEntityStatus
 - Wildfire Gender
 </details>
