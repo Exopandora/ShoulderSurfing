@@ -134,6 +134,7 @@ The binaries for each platform can be found in the following directories:
 - Curios
 - Entity Model Features
 - Iris
+- Neat
 - Oculus
 - OptiFine
 - Sodium
