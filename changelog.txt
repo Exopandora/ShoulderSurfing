@@ -1,1 +1,1 @@
-- Fixed a crash that could be caused by other mods that change class loading order
+- Improved compatibility with Neat
