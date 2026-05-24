@@ -37,6 +37,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 		addCGMMixins(mixins);
 		addEMFMixins(mixins);
 		addEpicFightMixins(mixins);
+		addNeatMixins(mixins);
 		addSkinLayersMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
@@ -95,6 +96,14 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 			{
 				ShoulderSurfingCommon.LOGGER.info("Epic Fight lock-on support provided by Shoulder Surfing has been disabled due to breaking changes in '21.14.0'. For more details: https://github.com/Epic-Fight/epicfight/issues/2258");
 			}
+		}
+	}
+	
+	private static void addNeatMixins(List<String> mixins)
+	{
+		if(Mods.NEAT.isLoaded())
+		{
+			mixins.add("neat.MixinHealthBarRenderer");
 		}
 	}
 	

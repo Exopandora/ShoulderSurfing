@@ -16,6 +16,7 @@ public enum Mods
 	EPIC_FIGHT,
 	IRIS,
 	MTS,
+	NEAT,
 	OCULUS,
 	SKIN_LAYERS,
 	THE_ONE_PROBE,
