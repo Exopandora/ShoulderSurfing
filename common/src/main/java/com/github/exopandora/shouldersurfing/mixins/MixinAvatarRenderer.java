@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.mixins;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingRenderTypes;
 import com.github.exopandora.shouldersurfing.config.Config;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -26,7 +28,7 @@ public abstract class MixinAvatarRenderer extends LivingEntityRenderer<LivingEnt
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState())
+		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState() && (Minecraft.getInstance().getCameraEntity() == null || !(Minecraft.getInstance().getCameraEntity().getVehicle() instanceof AbstractBoat)))
 		{
 			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));
 		}
