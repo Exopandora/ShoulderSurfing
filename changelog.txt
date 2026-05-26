@@ -1,1 +1,1 @@
-- Improved compatibility with Neat
+- Revert improved player transparency rendering changes
