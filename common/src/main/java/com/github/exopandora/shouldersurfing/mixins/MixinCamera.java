@@ -95,7 +95,7 @@ public abstract class MixinCamera implements CameraDuck
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
 			Vec3 cameraOffset = camera.calcOffset(cameraIn, this.level, partialTick, this.entity);
 			this.move((float) -cameraOffset.z(), (float) cameraOffset.y(), (float) -cameraOffset.x());
-			Vec2f sway = camera.calcSway(camera, this.entity, partialTick);
+			Vec2f sway = camera.calcSway(this.entity, partialTick);
 			this.zRot = sway.y();
 			this.setRotation(this.yRot, this.xRot + sway.x());
 		}
