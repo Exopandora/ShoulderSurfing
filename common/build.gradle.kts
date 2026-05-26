@@ -23,5 +23,4 @@ dependencies {
 
 minecraft {
 	version(libs.versions.minecraft.get())
-    accessWideners(sourceSets.main.get().resources.single { it.name == "$modId.accesswidener" })
 }

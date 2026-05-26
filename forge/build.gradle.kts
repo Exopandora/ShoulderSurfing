@@ -78,8 +78,6 @@ tasks.named<ProcessResources>("processResources") {
 	)
 	
 	inputs.properties(properties)
-    
-    exclude("*.accesswidener")
 	
 	filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml", "**/lang/*.json")) {
 		expand(properties)
