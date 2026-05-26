@@ -6,7 +6,6 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
 import net.minecraft.client.Camera;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -86,7 +85,7 @@ public abstract class MixinCamera implements CameraDuck
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
 			Vec3 cameraOffset = camera.calcOffset(cameraIn, level, partialTick, cameraEntity);
 			this.move(-cameraOffset.z(), cameraOffset.y(), cameraOffset.x());
-			Vec2f sway = camera.calcSway(camera, cameraEntity, partialTick);
+			Vec2f sway = camera.calcSway(cameraEntity, partialTick);
 			this.zRot = sway.y();
 			this.setRotation(this.yRot, this.xRot + sway.x());
 		}
