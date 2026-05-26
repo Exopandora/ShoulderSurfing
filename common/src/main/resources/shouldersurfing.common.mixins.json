@@ -26,7 +26,6 @@
 		"MixinMouseHandler",
 		"MixinOptions",
 		"MixinPlayer",
-		"MixinPlayerRenderer",
 		"MixinRenderType"
 	],
 	"injectors": {
