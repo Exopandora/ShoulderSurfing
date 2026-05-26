@@ -414,12 +414,12 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
 	}
 	
-	public Vec2f calcSway(ShoulderSurfingCamera camera, Entity cameraEntity, float partialTick)
+	public Vec2f calcSway(Entity cameraEntity, float partialTick)
 	{
 		Vec3 deltaMovement = getDeltaMovementWithoutGravity(cameraEntity);
 		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
-			.yRot(camera.getYRot() * Mth.DEG_TO_RAD)
-			.xRot(camera.getXRot() * Mth.DEG_TO_RAD);
+			.yRot(this.getYRot() * Mth.DEG_TO_RAD)
+			.xRot(this.getXRot() * Mth.DEG_TO_RAD);
 		double maxVelocityX = Config.CLIENT.getCameraSwayXMaxVelocity() / 20;
 		double maxVelocityZ = Config.CLIENT.getCameraSwayZMaxVelocity() / 20;
 		double maxAngleX = Config.CLIENT.getCameraSwayXMaxAngle();
