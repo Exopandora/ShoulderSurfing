@@ -69,6 +69,12 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
+    maven("https://maven.valkyrienskies.org") {
+        content {
+            includeGroup("org.valkyrienskies")
+            includeGroup("org.valkyrienskies.core")
+        }
+    }
 }
 
 tasks.withType<Jar>().configureEach {

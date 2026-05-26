@@ -39,8 +39,7 @@
 	"breaks": {
 		"betterthirdperson": "*",
 		"camerautils": "*",
-		"nimble": "*",
-		"valkyrienskies": "*"
+		"nimble": "*"
 	},
 	"conflicts": {
 		"theoneprobe": "*"
