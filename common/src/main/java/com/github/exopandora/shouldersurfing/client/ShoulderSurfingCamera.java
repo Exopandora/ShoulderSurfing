@@ -532,7 +532,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private boolean shouldResetFollowPlayerRotationsDelay(Minecraft minecraft)
 	{
-		return this.instance.isLookFollowingCrosshairTarget() || (minecraft.player != null && minecraft.player.isScoping()) || minecraft.screen != null;
+		return this.instance.isLookFollowingCrosshairTarget() || (minecraft.player != null && minecraft.player.isScoping()) || minecraft.screen != null || this.instance.isFreeLooking();
 	}
 	
 	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)
