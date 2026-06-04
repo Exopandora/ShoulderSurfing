@@ -111,7 +111,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(cameraEntity != null)
 		{
-			this.deltaMovementO = getDeltaMovementWithoutGravity(cameraEntity);
+			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		}
 		
 		if(!this.instance.isFreeLooking())
@@ -142,7 +142,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.offset = this.offset.scale(EntityHelper.getScale(cameraEntity));
 			this.xRot = cameraEntity.getXRot();
 			this.yRot = cameraEntity.getYRot();
-			this.deltaMovementO = getDeltaMovementWithoutGravity(cameraEntity);
+			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		}
 		else
 		{
@@ -431,7 +431,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private Vec3 calcCameraDrag(Camera cameraIn, Entity cameraEntity, float partialTick)
 	{
-		Vec3 deltaMovement = getDeltaMovementWithoutGravity(cameraEntity);
+		Vec3 deltaMovement = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
 			.multiply(Config.CLIENT.getCameraDragMultipliers())
 			.yRot(cameraIn.yRot() * Mth.DEG_TO_RAD)
@@ -441,7 +441,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	public Vec2f calcSway(Entity cameraEntity, float partialTick)
 	{
-		Vec3 deltaMovement = getDeltaMovementWithoutGravity(cameraEntity);
+		Vec3 deltaMovement = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
 			.yRot(this.getYRot() * Mth.DEG_TO_RAD)
 			.xRot(this.getXRot() * Mth.DEG_TO_RAD);
@@ -598,10 +598,5 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	public void setLastMovedYRot(float lastMovedYRot)
 	{
 		this.lastMovedYRot = lastMovedYRot;
-	}
-	
-	private static Vec3 getDeltaMovementWithoutGravity(Entity entity)
-	{
-		return entity.getDeltaMovement().add(0, entity.getGravity(), 0);
 	}
 }

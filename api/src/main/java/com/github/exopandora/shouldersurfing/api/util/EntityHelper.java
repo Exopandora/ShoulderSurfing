@@ -118,4 +118,9 @@ public class EntityHelper
 		
 		return new Vec2f(cameraXRot, cameraYRot);
 	}
+	
+	public static Vec3 getDeltaMovementWithoutGravity(Entity entity)
+	{
+		return entity.getDeltaMovement().add(0, entity.getGravity(), 0);
+	}
 }
