@@ -46,7 +46,7 @@ public interface IPlayerStateCallback
 		return Result.PASS;
 	}
 	
-	record IsAttackingContext(@NotNull Minecraft minecraft)
+	record IsAttackingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
 	{
 	}
 	
@@ -102,7 +102,7 @@ public interface IPlayerStateCallback
 		return Result.PASS;
 	}
 	
-	record IsPickingContext(@NotNull Minecraft minecraft)
+	record IsPickingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
 	{
 	}
 	

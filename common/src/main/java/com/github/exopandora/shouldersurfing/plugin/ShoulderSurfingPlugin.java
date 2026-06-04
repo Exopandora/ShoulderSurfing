@@ -15,6 +15,7 @@ import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallba
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallbackWhenAiming;
+import com.github.exopandora.shouldersurfing.plugin.callbacks.PlayerStateCallback;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ServiceLoader;
@@ -28,6 +29,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerCameraCouplingCallback(new CameraCouplingCallback());
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallback());
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
+		registrar.registerPlayerStateCallback(new PlayerStateCallback());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
 		registerCompatibilityCallback(Mods.CURIOS, () -> ServiceLoader.load(ICuriosAdaptiveItemCallback.class).findFirst().ifPresent(registrar::registerAdaptiveItemCallback));
 		registerCompatibilityCallback(Mods.COBBLEMON, () ->

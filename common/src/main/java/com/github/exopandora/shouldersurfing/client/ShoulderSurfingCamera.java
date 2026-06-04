@@ -500,14 +500,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			{
 				boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
 				
-				if(this.instance.shouldEntityFollowCamera(player))
-				{
-					player.setXRot(cameraXRot);
-					player.setYRot(cameraYRot);
-					player.xRotO += Mth.degreesDifference(this.xRot, cameraXRot);
-					player.yRotO += Mth.degreesDifference(this.yRot, cameraYRot);
-				}
-				else if(!this.instance.shouldEntityAimAtTarget(player, Minecraft.getInstance()))
+				if(!this.instance.isLookFollowingCrosshairTarget())
 				{
 					if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
 					{
@@ -542,7 +535,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private boolean shouldResetFollowPlayerRotationsDelay(Minecraft minecraft)
 	{
-		return this.instance.shouldEntityAimAtTarget(minecraft.player, minecraft) || (minecraft.player != null && minecraft.player.isScoping()) || minecraft.screen != null;
+		return this.instance.isLookFollowingCrosshairTarget() || (minecraft.player != null && minecraft.player.isScoping()) || minecraft.screen != null;
 	}
 	
 	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)

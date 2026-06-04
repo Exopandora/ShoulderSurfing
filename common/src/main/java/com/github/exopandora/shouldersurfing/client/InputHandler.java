@@ -201,6 +201,11 @@ public class InputHandler
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
 		
+		if(this.instance.isFreeLooking() || cameraEntity == null)
+		{
+			return;
+		}
+		
 		for(IPlayerInputCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerInputCallbacks())
 		{
 			if(callback.isForcingVanillaMovementInput(new IsForcingVanillaMovementInputContext(minecraft, cameraEntity)))
@@ -211,40 +216,31 @@ public class InputHandler
 		
 		Vec2f moveVector = new Vec2f(input.getMoveVector());
 		
-		if(this.instance.isShoulderSurfing() && this.instance.isFreeLooking())
+		if(this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player && moveVector.lengthSquared() > 0)
 		{
-			moveVector.rotateDegrees(Mth.degreesDifference(cameraEntity.getYRot(), this.instance.getCamera().getFreeLookYRot()));
-			((ClientInputAccessor) input).setMoveVector(moveVector.toVec2());
-		}
-		else if(this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player)
-		{
-			if(moveVector.lengthSquared() > 0)
+			ShoulderSurfingCamera camera = this.instance.getCamera();
+			LocalPlayer player = minecraft.player;
+			float yRot = player.getYRot();
+			
+			if(this.instance.isCameraDecoupled() && !this.instance.isLookFollowingCrosshairTarget())
 			{
-				ShoulderSurfingCamera camera = this.instance.getCamera();
-				LocalPlayer player = minecraft.player;
-				float yRot = player.getYRot();
-				
-				if(this.instance.isEntityRotationDecoupled(player, minecraft))
-				{
-					// Update player rotations according to keyboard inputs and camera rotation
-					float cameraXRot = camera.getXRot();
-					float cameraYRot = camera.getYRot();
-					Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
-					float xRot = cameraXRot * 0.5F;
-					float xRotO = player.getXRot();
-					float yRotO = yRot;
-					yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
-					float turningSpeedMultiplier = (float) Config.CLIENT.getTurningSpeedMultiplier();
-					xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * turningSpeedMultiplier;
-					yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * turningSpeedMultiplier;
-					player.setXRot(xRot);
-					player.setYRot(yRot);
-				}
-				
-				moveVector = moveVector.rotateDegrees(Mth.degreesDifference(yRot, camera.getYRot()));
+				// Update player rotations according to keyboard inputs and camera rotation
+				float cameraXRot = camera.getXRot();
+				float cameraYRot = camera.getYRot();
+				Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
+				float xRot = cameraXRot * 0.5F;
+				float xRotO = player.getXRot();
+				float yRotO = yRot;
+				yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
+				float turningSpeedMultiplier = (float) Config.CLIENT.getTurningSpeedMultiplier();
+				xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * turningSpeedMultiplier;
+				yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * turningSpeedMultiplier;
+				player.setXRot(xRot);
+				player.setYRot(yRot);
 			}
 			
-			((ClientInputAccessor) input).setMoveVector(moveVector.toVec2());
+			Vec2f rotated = moveVector.rotateDegrees(Mth.degreesDifference(yRot, camera.getYRot()));
+			((ClientInputAccessor) input).setMoveVector(rotated.toVec2());
 		}
 	}
 	

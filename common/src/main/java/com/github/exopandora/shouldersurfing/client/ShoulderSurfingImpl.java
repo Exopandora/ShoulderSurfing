@@ -1,13 +1,12 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
@@ -18,6 +17,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 
 public class ShoulderSurfingImpl implements IShoulderSurfing
 {
@@ -35,6 +35,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 	private boolean updatePlayerRotations;
 	private float playerXRotO;
 	private float playerYRotO;
+	private boolean isLookFollowingCrosshairTarget;
 	
 	public void init()
 	{
@@ -72,7 +73,8 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 			this.isTemporaryFirstPerson = false;
 		}
 		
-		this.isAiming = computeIsAiming(minecraft);
+		Entity cameraEntity = minecraft.getCameraEntity();
+		this.isAiming = PlayerStateHelper.isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
 		this.updatePlayerRotations = false;
 		LocalPlayer player = minecraft.player;
 		
@@ -86,23 +88,22 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 			this.changePerspective(Perspective.SHOULDER_SURFING);
 		}
 		
-		this.isCameraDecoupled = this.isShoulderSurfing && Config.CLIENT.isCameraDecoupled() && !isForcingCoupledCamera(minecraft);
+		this.isCameraDecoupled = computeIsCameraDecoupled(cameraEntity, minecraft, this.isShoulderSurfing, this.isAiming);
 		
 		if(this.isShoulderSurfing && player != null)
 		{
+			this.isLookFollowingCrosshairTarget = computeIsLookFollowingCrosshairTarget(cameraEntity, minecraft, this.isAiming);
 			this.isFreeLooking = InputHandler.FREE_LOOK.isDown() && !this.isAiming;
 			this.camera.tick();
 			
-			if(!this.isFreeLooking && minecraft.getCameraEntity() == player)
+			if(!this.isFreeLooking && cameraEntity == player)
 			{
-				boolean shouldAimAtTarget = this.shouldEntityAimAtTargetInternal(player, minecraft);
-				
-				if(shouldAimAtTarget || this.turningLockTime > 0)
+				if(this.isLookFollowingCrosshairTarget())
 				{
-					this.turningLockTime = shouldAimAtTarget ? Config.CLIENT.getTurningLockTime() : (this.turningLockTime - 1);
+					this.turningLockTime = this.isLookFollowingCrosshairTarget ? Config.CLIENT.getTurningLockTime() : (this.turningLockTime - 1);
 					this.lookAtCrosshairTargetInternal();
 				}
-				else if(this.shouldEntityFollowCamera(player))
+				else if(!this.isCameraDecoupled)
 				{
 					player.setXRot(this.camera.getXRot());
 					player.setYRot(this.camera.getYRot());
@@ -146,58 +147,89 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		}
 	}
 	
-	private boolean shouldEntityAimAtTargetInternal(LivingEntity cameraEntity, Minecraft minecraft)
+	private static boolean computeIsCameraDecoupled(@Nullable Entity cameraEntity, Minecraft minecraft, boolean isShoulderSurfing, boolean isAiming)
 	{
-		return shouldTurnWhenInteracting(cameraEntity, minecraft) || Config.CLIENT.getCrosshairType().isAimingDecoupled() &&
-			(this.isAiming || shouldTurnWhenUsingItem(cameraEntity, minecraft) || shouldTurnWhenAttacking(cameraEntity, minecraft) ||
-				shouldTurnWhenPicking(cameraEntity, minecraft));
+		if(cameraEntity instanceof LivingEntity living)
+		{
+			if(living.isFallFlying())
+			{
+				return false;
+			}
+			else if(living.isSleeping())
+			{
+				return true;
+			}
+		}
+		
+		if(isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled())
+		{
+			return false;
+		}
+		
+		return isShoulderSurfing && Config.CLIENT.isCameraDecoupled() && !isForcingCoupledCamera(minecraft);
 	}
 	
-	public boolean shouldEntityAimAtTarget(LivingEntity cameraEntity, Minecraft minecraft)
+	private static boolean computeIsLookFollowingCrosshairTarget(@Nullable Entity cameraEntity, Minecraft minecraft, boolean isAiming)
 	{
-		return this.turningLockTime > 0 || this.shouldEntityAimAtTargetInternal(cameraEntity, minecraft);
-	}
-	
-	public boolean isEntityRotationDecoupled(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		return !this.shouldEntityAimAtTarget(cameraEntity, minecraft) && !this.shouldEntityFollowCamera(cameraEntity);
-	}
-	
-	public boolean shouldEntityFollowCamera(LivingEntity cameraEntity)
-	{
-		return ((this.isAiming && !Config.CLIENT.getCrosshairType().isAimingDecoupled() || cameraEntity.isFallFlying()) ||
-			!this.isCameraDecoupled()) && !cameraEntity.isSleeping();
+		if(cameraEntity instanceof LivingEntity living)
+		{
+			if(shouldTurnWhenInteracting(living, minecraft))
+			{
+				return true;
+			}
+			else if(Config.CLIENT.getCrosshairType().isAimingDecoupled())
+			{
+				if(isAiming)
+				{
+					return true;
+				}
+				else if(shouldTurnWhenUsingItem(living, minecraft))
+				{
+					return true;
+				}
+				else if(shouldTurnWhenAttacking(living, minecraft))
+				{
+					return true;
+				}
+				
+				return shouldTurnWhenPicking(living, minecraft);
+			}
+		}
+		
+		return false;
 	}
 	
 	protected static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return PlayerStateHelper.isUsingItem(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult);
+		return Config.CLIENT.getTurningModeWhenUsingItem().shouldTurn(minecraft.hitResult) && PlayerStateHelper.isUsingItem(cameraEntity, minecraft);
 	}
 	
 	protected static boolean shouldTurnWhenInteracting(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return PlayerStateHelper.isInteracting(cameraEntity, minecraft) && Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult) &&
-			!cameraEntity.isFallFlying() && (Config.CLIENT.getPickVector() != PickVector.PLAYER || Config.CLIENT.getCrosshairType() != CrosshairType.DYNAMIC);
+		return Config.CLIENT.getTurningModeWhenInteracting().shouldTurn(minecraft.hitResult) && PlayerStateHelper.isInteracting(cameraEntity, minecraft);
 	}
 	
 	protected static boolean shouldTurnWhenAttacking(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return PlayerStateHelper.isAttacking(minecraft) && Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult) && !cameraEntity.isFallFlying();
+		return Config.CLIENT.getTurningModeWhenAttacking().shouldTurn(minecraft.hitResult) && PlayerStateHelper.isAttacking(cameraEntity, minecraft);
 	}
 	
 	protected static boolean shouldTurnWhenPicking(LivingEntity cameraEntity, Minecraft minecraft)
 	{
-		return PlayerStateHelper.isPicking(minecraft) && Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult) && !cameraEntity.isFallFlying();
-	}
-	
-	private static boolean computeIsAiming(Minecraft minecraft)
-	{
-		return PlayerStateHelper.isHoldingAdaptiveItem(minecraft, minecraft.getCameraEntity());
+		return Config.CLIENT.getTurningModeWhenPicking().shouldTurn(minecraft.hitResult) && PlayerStateHelper.isPicking(cameraEntity, minecraft);
 	}
 	
 	private static boolean isForcingCoupledCamera(Minecraft minecraft)
 	{
-		return ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks().stream().anyMatch(callback -> callback.isForcingCameraCoupling(minecraft));
+		for(ICameraCouplingCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks())
+		{
+			if(callback.isForcingCameraCoupling(minecraft))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -249,6 +281,11 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 		{
 			Config.CLIENT.setDefaultPerspective(next);
 		}
+	}
+	
+	public boolean isLookFollowingCrosshairTarget()
+	{
+		return this.turningLockTime > 0 || this.isLookFollowingCrosshairTarget;
 	}
 	
 	public void toggleCameraCoupling()

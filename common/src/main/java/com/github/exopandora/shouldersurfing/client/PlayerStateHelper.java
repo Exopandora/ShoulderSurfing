@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Minecraft;
@@ -15,9 +16,11 @@ class PlayerStateHelper
 {
 	protected static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
+		final IPlayerStateCallback.IsUsingContext context = new IPlayerStateCallback.IsUsingContext(minecraft, cameraEntity);
+		
 		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
 		{
-			IPlayerStateCallback.Result result = callback.isUsingItem(new IPlayerStateCallback.IsUsingContext(minecraft, cameraEntity));
+			IPlayerStateCallback.Result result = callback.isUsingItem(context);
 			
 			if(result == IPlayerStateCallback.Result.TRUE)
 			{
@@ -34,9 +37,11 @@ class PlayerStateHelper
 	
 	protected static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
 	{
+		final IPlayerStateCallback.IsInteractingContext context = new IPlayerStateCallback.IsInteractingContext(minecraft, cameraEntity);
+		
 		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
 		{
-			IPlayerStateCallback.Result result = callback.isInteracting(new IPlayerStateCallback.IsInteractingContext(minecraft, cameraEntity));
+			IPlayerStateCallback.Result result = callback.isInteracting(context);
 			
 			if(result == IPlayerStateCallback.Result.TRUE)
 			{
@@ -51,11 +56,13 @@ class PlayerStateHelper
 		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem();
 	}
 	
-	protected static boolean isAttacking(Minecraft minecraft)
+	protected static boolean isAttacking(LivingEntity cameraEntity, Minecraft minecraft)
 	{
+		final IPlayerStateCallback.IsAttackingContext context = new IPlayerStateCallback.IsAttackingContext(minecraft, cameraEntity);
+		
 		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
 		{
-			IPlayerStateCallback.Result result = callback.isAttacking(new IPlayerStateCallback.IsAttackingContext(minecraft));
+			IPlayerStateCallback.Result result = callback.isAttacking(context);
 			
 			if(result == IPlayerStateCallback.Result.TRUE)
 			{
@@ -70,11 +77,13 @@ class PlayerStateHelper
 		return minecraft.options.keyAttack.isDown();
 	}
 	
-	protected static boolean isPicking(Minecraft minecraft)
+	protected static boolean isPicking(LivingEntity cameraEntity, Minecraft minecraft)
 	{
+		final IPlayerStateCallback.IsPickingContext context = new IPlayerStateCallback.IsPickingContext(minecraft, cameraEntity);
+		
 		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
 		{
-			IPlayerStateCallback.Result result = callback.isPicking(new IPlayerStateCallback.IsPickingContext(minecraft));
+			IPlayerStateCallback.Result result = callback.isPicking(context);
 			
 			if(result == IPlayerStateCallback.Result.TRUE)
 			{
@@ -103,9 +112,11 @@ class PlayerStateHelper
 			return false;
 		}
 		
+		final IPlayerStateCallback.IsRidingBoatContext context = new IPlayerStateCallback.IsRidingBoatContext(minecraft, entity, vehicle);
+		
 		for(final IPlayerStateCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks())
 		{
-			IPlayerStateCallback.Result result = callback.isRidingBoat(new IPlayerStateCallback.IsRidingBoatContext(minecraft, entity, vehicle));
+			IPlayerStateCallback.Result result = callback.isRidingBoat(context);
 			
 			if(result == IPlayerStateCallback.Result.TRUE)
 			{
@@ -124,7 +135,13 @@ class PlayerStateHelper
 	{
 		if(entity instanceof LivingEntity living)
 		{
-			return ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks().stream().anyMatch(callback -> callback.isHoldingAdaptiveItem(minecraft, living));
+			for(IAdaptiveItemCallback callback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
+			{
+				if(callback.isHoldingAdaptiveItem(minecraft, living))
+				{
+					return true;
+				}
+			}
 		}
 		
 		return false;

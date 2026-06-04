@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.api.callback;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This callback can be used to force vanilla movement inputs.
@@ -18,7 +19,7 @@ public interface IPlayerInputCallback
 	 */
 	boolean isForcingVanillaMovementInput(IsForcingVanillaMovementInputContext context);
 	
-	record IsForcingVanillaMovementInputContext(Minecraft minecraft, Entity cameraEntity)
+	record IsForcingVanillaMovementInputContext(@NotNull Minecraft minecraft, @NotNull Entity cameraEntity)
 	{
 	}
 }
