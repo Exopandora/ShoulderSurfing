@@ -168,7 +168,7 @@ public interface IPlayerStateCallback
 		 * @param b the Boolean to convert; may be null
 		 * @return {@link #TRUE} if {@code b} is {@code true}, {@link #FALSE} if {@code b} is {@code false}, {@link #PASS} if {@code b} is {@code null}
 		 */
-		static @NotNull Result of(@Nullable Boolean b)
+		public static @NotNull Result of(@Nullable Boolean b)
 		{
 			return b == null ? PASS : b ? TRUE : FALSE;
 		}
