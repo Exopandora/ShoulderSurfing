@@ -1,7 +1,5 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
@@ -470,7 +468,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				this.followPlayerRotationsEaseInO = 1.0F;
 			}
 			
-			CameraRotationSetupResult preResult = fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.yRot, this.xRot);
+			CameraRotationSetupResult preResult = CallbackHelper.fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.yRot, this.xRot);
 			this.xRot = preResult.getXRot();
 			this.yRot = preResult.getYRot();
 			
@@ -523,7 +521,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				}
 			}
 			
-			CameraRotationSetupResult postResult = fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraYRot, cameraXRot);
+			CameraRotationSetupResult postResult = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraYRot, cameraXRot);
 			this.xRot = postResult.getXRot();
 			this.yRot = postResult.getYRot();
 			
@@ -540,33 +538,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)
 	{
-		return PlayerStateHelper.isRidingBoat(minecraft, entity);
-	}
-	
-	private static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
-	{
-		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
-		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
-		
-		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
-		{
-			callback.pre(context, result);
-		}
-		
-		return result;
-	}
-	
-	private static CameraRotationSetupResult fireCameraRotationSetupCallbackPost(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
-	{
-		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
-		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
-		
-		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
-		{
-			callback.post(context, result);
-		}
-		
-		return result;
+		return CallbackHelper.isRidingBoat(minecraft, entity);
 	}
 	
 	private static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)

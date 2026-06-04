@@ -1,10 +1,19 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +21,7 @@ import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 
 import java.util.List;
 
-class PlayerStateHelper
+class CallbackHelper
 {
 	protected static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
 	{
@@ -145,6 +154,70 @@ class PlayerStateHelper
 		}
 		
 		return false;
+	}
+	
+	protected static boolean isForcingCoupledCamera(Minecraft minecraft)
+	{
+		for(ICameraCouplingCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks())
+		{
+			if(callback.isForcingCameraCoupling(minecraft))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	protected static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
+	{
+		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
+		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
+		
+		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
+		{
+			callback.pre(context, result);
+		}
+		
+		return result;
+	}
+	
+	protected static CameraRotationSetupResult fireCameraRotationSetupCallbackPost(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
+	{
+		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
+		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
+		
+		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
+		{
+			callback.post(context, result);
+		}
+		
+		return result;
+	}
+	
+	protected static boolean isForcingVanillaMovementInput(Minecraft minecraft, Entity cameraEntity)
+	{
+		for(IPlayerInputCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerInputCallbacks())
+		{
+			if(callback.isForcingVanillaMovementInput(new IPlayerInputCallback.IsForcingVanillaMovementInputContext(minecraft, cameraEntity)))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	protected static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float alpha, float partialTick)
+	{
+		float result = alpha;
+		
+		for(ICameraEntityTransparencyCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraEntityTransparencyCallbacks())
+		{
+			result = Math.min(Mth.clamp(callback.getCameraEntityAlpha(instance, entity, partialTick), 0.0F, 1.0F), result);
+		}
+		
+		return result;
 	}
 	
 	private static List<IPlayerStateCallback> getPlayerStateCallbacks()

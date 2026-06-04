@@ -1,12 +1,9 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.api.client.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
@@ -33,10 +30,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 		
 		if(this.instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled())
 		{
-			for(ICameraEntityTransparencyCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraEntityTransparencyCallbacks())
-			{
-				this.cameraEntityAlpha = Math.min(Mth.clamp(callback.getCameraEntityAlpha(this.instance, entity, partialTick), 0.0F, 1.0F), this.cameraEntityAlpha);
-			}
+			this.cameraEntityAlpha = CallbackHelper.getCameraEntityAlpha(this.instance, entity, this.cameraEntityAlpha, partialTick);
 		}
 		
 		this.isRenderingCameraEntity = true;
