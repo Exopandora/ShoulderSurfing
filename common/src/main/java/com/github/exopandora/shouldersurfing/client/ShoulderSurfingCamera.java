@@ -43,7 +43,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private float yRotOffset;
 	private float xRotOffsetO;
 	private float yRotOffsetO;
-	private float freeLookYRot;
 	private float lastMovedYRot;
 	private boolean initialized;
 	private int followPlayerRotationsDelay;
@@ -117,7 +116,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(!this.instance.isFreeLooking())
 		{
-			this.freeLookYRot = this.yRot;
 			this.xRotOffset *= 0.5F;
 			this.yRotOffset *= 0.5F;
 		}
@@ -595,11 +593,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.yRot = yRot;
 		this.yRotOffset = 0.0F;
 		this.yRotOffsetO = 0.0F;
-	}
-	
-	public float getFreeLookYRot()
-	{
-		return this.freeLookYRot;
 	}
 	
 	public void setLastMovedYRot(float lastMovedYRot)
