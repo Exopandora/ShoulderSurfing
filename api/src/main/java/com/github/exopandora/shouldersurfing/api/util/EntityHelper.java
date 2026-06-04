@@ -60,57 +60,61 @@ public class EntityHelper
 	public static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)
 	{
 		Entity vehicle = player.getVehicle();
-		float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 		
-		float playerXRot = player.getXRot();
-		float playerYRot = player.getYRot();
-		float playerXRotO = player.xRotO;
-		float playerYRotO = player.yRotO;
-		float playerYHeadRot = player.yHeadRot;
-		float playerYHeadRotO = player.yHeadRotO;
-		float playerYBodyRot = player.yBodyRot;
-		float playerYBodyRotO = player.yBodyRotO;
-		
-		float vehicleXRot = vehicle.getXRot();
-		float vehicleYRot = vehicle.getYRot();
-		float vehicleXRotO = vehicle.xRotO;
-		float vehicleYRotO = vehicle.yRotO;
-		
-		vehicle.setXRot(Mth.rotLerp(partialTick, vehicleXRotO, vehicleXRot));
-		vehicle.setYRot(Mth.rotLerp(partialTick, vehicleYRotO, vehicleYRot));
-		
-		player.setXRot(cameraXRot);
-		player.setYRot(cameraYRot);
-		player.xRotO = cameraXRotO;
-		player.yRotO = cameraYRotO;
-		player.yHeadRot = cameraYRot;
-		player.yHeadRotO = cameraYRotO;
-		player.yBodyRot = cameraYRot;
-		player.yBodyRotO = cameraYRotO;
-		
-		vehicle.onPassengerTurned(player);
-		
-		if(player.getXRot() != cameraXRot)
+		if(vehicle != null)
 		{
-			cameraXRot = player.getXRot();
+			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			
+			float playerXRot = player.getXRot();
+			float playerYRot = player.getYRot();
+			float playerXRotO = player.xRotO;
+			float playerYRotO = player.yRotO;
+			float playerYHeadRot = player.yHeadRot;
+			float playerYHeadRotO = player.yHeadRotO;
+			float playerYBodyRot = player.yBodyRot;
+			float playerYBodyRotO = player.yBodyRotO;
+			
+			float vehicleXRot = vehicle.getXRot();
+			float vehicleYRot = vehicle.getYRot();
+			float vehicleXRotO = vehicle.xRotO;
+			float vehicleYRotO = vehicle.yRotO;
+			
+			vehicle.setXRot(Mth.rotLerp(partialTick, vehicleXRotO, vehicleXRot));
+			vehicle.setYRot(Mth.rotLerp(partialTick, vehicleYRotO, vehicleYRot));
+			
+			player.setXRot(cameraXRot);
+			player.setYRot(cameraYRot);
+			player.xRotO = cameraXRotO;
+			player.yRotO = cameraYRotO;
+			player.yHeadRot = cameraYRot;
+			player.yHeadRotO = cameraYRotO;
+			player.yBodyRot = cameraYRot;
+			player.yBodyRotO = cameraYRotO;
+			
+			vehicle.onPassengerTurned(player);
+			
+			if(player.getXRot() != cameraXRot)
+			{
+				cameraXRot = player.getXRot();
+			}
+			
+			if(player.getYRot() != cameraYRot)
+			{
+				cameraYRot = player.getYRot();
+			}
+			
+			player.setXRot(playerXRot);
+			player.setYRot(playerYRot);
+			player.xRotO = playerXRotO;
+			player.yRotO = playerYRotO;
+			player.yHeadRot = playerYHeadRot;
+			player.yHeadRotO = playerYHeadRotO;
+			player.yBodyRot = playerYBodyRot;
+			player.yBodyRotO = playerYBodyRotO;
+			
+			vehicle.setXRot(vehicleXRot);
+			vehicle.setYRot(vehicleYRot);
 		}
-		
-		if(player.getYRot() != cameraYRot)
-		{
-			cameraYRot = player.getYRot();
-		}
-		
-		player.setXRot(playerXRot);
-		player.setYRot(playerYRot);
-		player.xRotO = playerXRotO;
-		player.yRotO = playerYRotO;
-		player.yHeadRot = playerYHeadRot;
-		player.yHeadRotO = playerYHeadRotO;
-		player.yBodyRot = playerYBodyRot;
-		player.yBodyRotO = playerYBodyRotO;
-		
-		vehicle.setXRot(vehicleXRot);
-		vehicle.setYRot(vehicleYRot);
 		
 		return new Vec2f(cameraXRot, cameraYRot);
 	}
