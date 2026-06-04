@@ -1,10 +1,10 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixins.GuiAccessor;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.Window;

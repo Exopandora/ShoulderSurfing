@@ -4,7 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.math.Vec2f;
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.math;
+package com.github.exopandora.shouldersurfing.api.math;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
