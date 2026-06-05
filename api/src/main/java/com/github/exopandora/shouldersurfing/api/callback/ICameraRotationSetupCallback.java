@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.callback;
 
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import net.minecraft.client.player.LocalPlayer;
 
 /**
@@ -59,6 +60,17 @@ public interface ICameraRotationSetupCallback
 		public void setYRot(float yRot)
 		{
 			this.yRot = yRot;
+		}
+		
+		public void setRotation(Vec2f rotation)
+		{
+			this.xRot = rotation.x();
+			this.yRot = rotation.y();
+		}
+		
+		public Vec2f getRotation()
+		{
+			return new Vec2f(this.xRot, this.yRot);
 		}
 	}
 }
