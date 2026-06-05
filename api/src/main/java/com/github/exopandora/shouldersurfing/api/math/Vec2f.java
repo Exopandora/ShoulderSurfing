@@ -17,6 +17,11 @@ public record Vec2f(float x, float y)
 		return new Vec2f(-this.x, -this.y);
 	}
 	
+	public Vec2f add(float x, float y)
+	{
+		return new Vec2f(this.x + x, this.y + y);
+	}
+	
 	public Vec2f add(Vec2f vec)
 	{
 		return new Vec2f(this.x + vec.x, this.y + vec.y);
@@ -65,6 +70,16 @@ public record Vec2f(float x, float y)
 	public Vec2f lerp(Vec2f vec, float f)
 	{
 		return new Vec2f(Mth.lerp(f, this.x, vec.x), Mth.lerp(f, this.y, vec.y));
+	}
+	
+	public Vec2f rotLerp(Vec2f vec, float f)
+	{
+		return new Vec2f(Mth.rotLerp(f, this.x, vec.x), Mth.rotLerp(f, this.y, vec.y));
+	}
+	
+	public Vec2f clampX(float min, float max)
+	{
+		return new Vec2f(Mth.clamp(this.x, min, max), this.y);
 	}
 	
 	public Vec2 toVec2()
