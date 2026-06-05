@@ -471,25 +471,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			cameraRot = EntityHelper.applyPassengerRotationConstraints(player, cameraRot.x(), cameraRot.y(), this.rotation.x(), this.rotation.y());
 		}
 		
+		this.rotation = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraRot.y(), cameraRot.x()).getRotation();
+		boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
+		
 		if(this.instance.isCameraDecoupled())
 		{
-			boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
-			
 			if(!this.instance.isLookFollowingCrosshairTarget())
 			{
-				if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
-				{
-					player.setXRot(this.rotation.x());
-					player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
-				}
-				
-				if((Config.CLIENT.shouldPlayerYRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations()) && !isMoving)
-				{
-					float maxFollowAngle = (float) Config.CLIENT.getPlayerYRotFollowAngleLimit();
-					float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
-					player.yRotO = player.getYRot();
-					player.setYRot(playerYRot);
-				}
+				this.turnPlayerWithCamera(player, scaledRot, isMoving);
 			}
 			
 			if(isMoving)
@@ -498,9 +487,24 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			}
 		}
 		
-		this.rotation = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraRot.y(), cameraRot.x()).getRotation();
-		
 		return this.instance.isCameraDecoupled();
+	}
+	
+	private void turnPlayerWithCamera(LocalPlayer player, Vec2f scaledRot, boolean isMoving)
+	{
+		if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
+		{
+			player.setXRot(this.rotation.x());
+			player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
+		}
+		
+		if((Config.CLIENT.shouldPlayerYRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations()) && !isMoving)
+		{
+			float maxFollowAngle = (float) Config.CLIENT.getPlayerYRotFollowAngleLimit();
+			float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
+			player.yRotO = player.getYRot();
+			player.setYRot(playerYRot);
+		}
 	}
 	
 	private boolean shouldResetFollowPlayerRotationsDelay(Minecraft minecraft)
