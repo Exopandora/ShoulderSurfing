@@ -456,76 +456,76 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	public boolean turn(LocalPlayer player, double yRot, double xRot)
 	{
-		if(this.instance.isShoulderSurfing())
+		if(!this.instance.isShoulderSurfing())
 		{
-			if(yRot != 0.0F || xRot != 0.0F || EntityHelper.isPlayerSpectatingEntity())
-			{
-				this.followPlayerRotationsDelay = Config.CLIENT.getFollowPlayerRotationsDelay();
-				this.followPlayerRotationsEaseIn = 1.0F;
-				this.followPlayerRotationsEaseInO = 1.0F;
-			}
-			
-			CameraRotationSetupResult preResult = CallbackHelper.fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.yRot, this.xRot);
-			this.xRot = preResult.getXRot();
-			this.yRot = preResult.getYRot();
-			
-			float scaledXRot = (float) (xRot * 0.15F);
-			float scaledYRot = (float) (yRot * 0.15F);
-			
-			if(this.instance.isFreeLooking())
-			{
-				this.xRotOffset = Mth.clamp(this.xRotOffset + scaledXRot, -90.0F, 90.0F);
-				this.yRotOffset = Mth.wrapDegrees(this.yRotOffset + scaledYRot);
-				this.xRotOffsetO = this.xRotOffset;
-				this.yRotOffsetO = this.yRotOffset;
-				return true;
-			}
-			
-			float cameraXRot = Mth.clamp(this.xRot + scaledXRot, -90.0F, 90.0F);
-			float cameraYRot = this.yRot + scaledYRot;
-			
-			if(player.isPassenger())
-			{
-				Vec2f constraintRotations = EntityHelper.applyPassengerRotationConstraints(player, cameraXRot, cameraYRot, this.xRot, this.yRot);
-				cameraXRot = constraintRotations.x();
-				cameraYRot = constraintRotations.y();
-			}
-			
-			if(this.instance.isCameraDecoupled())
-			{
-				boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
-				
-				if(!this.instance.isLookFollowingCrosshairTarget())
-				{
-					if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
-					{
-						player.setXRot(cameraXRot);
-						player.xRotO += Mth.degreesDifference(this.xRot, cameraXRot);
-					}
-					
-					if((Config.CLIENT.shouldPlayerYRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations()) && !isMoving)
-					{
-						float maxFollowAngle = (float) Config.CLIENT.getPlayerYRotFollowAngleLimit();
-						float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledYRot, maxFollowAngle);
-						player.yRotO = player.getYRot();
-						player.setYRot(playerYRot);
-					}
-				}
-				
-				if(isMoving)
-				{
-					this.lastMovedYRot = player.getYRot();
-				}
-			}
-			
-			CameraRotationSetupResult postResult = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraYRot, cameraXRot);
-			this.xRot = postResult.getXRot();
-			this.yRot = postResult.getYRot();
-			
-			return this.instance.isCameraDecoupled();
+			return false;
 		}
 		
-		return false;
+		if(yRot != 0.0F || xRot != 0.0F || EntityHelper.isPlayerSpectatingEntity())
+		{
+			this.followPlayerRotationsDelay = Config.CLIENT.getFollowPlayerRotationsDelay();
+			this.followPlayerRotationsEaseIn = 1.0F;
+			this.followPlayerRotationsEaseInO = 1.0F;
+		}
+		
+		CameraRotationSetupResult preResult = CallbackHelper.fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.yRot, this.xRot);
+		this.xRot = preResult.getXRot();
+		this.yRot = preResult.getYRot();
+		
+		float scaledXRot = (float) (xRot * 0.15F);
+		float scaledYRot = (float) (yRot * 0.15F);
+		
+		if(this.instance.isFreeLooking())
+		{
+			this.xRotOffset = Mth.clamp(this.xRotOffset + scaledXRot, -90.0F, 90.0F);
+			this.yRotOffset = Mth.wrapDegrees(this.yRotOffset + scaledYRot);
+			this.xRotOffsetO = this.xRotOffset;
+			this.yRotOffsetO = this.yRotOffset;
+			return true;
+		}
+		
+		float cameraXRot = Mth.clamp(this.xRot + scaledXRot, -90.0F, 90.0F);
+		float cameraYRot = this.yRot + scaledYRot;
+		
+		if(player.isPassenger())
+		{
+			Vec2f constraintRotations = EntityHelper.applyPassengerRotationConstraints(player, cameraXRot, cameraYRot, this.xRot, this.yRot);
+			cameraXRot = constraintRotations.x();
+			cameraYRot = constraintRotations.y();
+		}
+		
+		if(this.instance.isCameraDecoupled())
+		{
+			boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
+			
+			if(!this.instance.isLookFollowingCrosshairTarget())
+			{
+				if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
+				{
+					player.setXRot(cameraXRot);
+					player.xRotO += Mth.degreesDifference(this.xRot, cameraXRot);
+				}
+				
+				if((Config.CLIENT.shouldPlayerYRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations()) && !isMoving)
+				{
+					float maxFollowAngle = (float) Config.CLIENT.getPlayerYRotFollowAngleLimit();
+					float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledYRot, maxFollowAngle);
+					player.yRotO = player.getYRot();
+					player.setYRot(playerYRot);
+				}
+			}
+			
+			if(isMoving)
+			{
+				this.lastMovedYRot = player.getYRot();
+			}
+		}
+		
+		CameraRotationSetupResult postResult = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraYRot, cameraXRot);
+		this.xRot = postResult.getXRot();
+		this.yRot = postResult.getYRot();
+		
+		return this.instance.isCameraDecoupled();
 	}
 	
 	private boolean shouldResetFollowPlayerRotationsDelay(Minecraft minecraft)
