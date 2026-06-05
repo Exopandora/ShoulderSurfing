@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
@@ -35,14 +34,10 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private double cameraDistance;
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
-	private float xRot;
-	private float yRot;
-	private float xRotO;
-	private float yRotO;
-	private float xRotOffset;
-	private float yRotOffset;
-	private float xRotOffsetO;
-	private float yRotOffsetO;
+	private Vec2f rotation;
+	private Vec2f rotationO;
+	private Vec2f rotationOffset;
+	private Vec2f rotationOffsetO;
 	private float lastMovedYRot;
 	private boolean initialized;
 	private int followPlayerRotationsDelay;
@@ -63,10 +58,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		double cameraTransitionSpeedMultiplier = Config.CLIENT.getCameraTransitionSpeedMultiplier();
-		this.xRotO = this.xRot;
-		this.yRotO = this.yRot;
-		this.xRotOffsetO = this.xRotOffset;
-		this.yRotOffsetO = this.yRotOffset;
+		this.rotationO = this.rotation;
+		this.rotationOffsetO = this.rotationOffset;
 		this.offsetO = this.offset;
 		this.offset = this.offsetO.lerp(this.targetOffset, cameraTransitionSpeedMultiplier);
 		this.maxCameraDistanceO = this.maxCameraDistance;
@@ -95,8 +88,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			
 			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 			{
-				this.xRot += living.getXRot() - living.xRotO;
-				this.yRot += living.getYHeadRot() - living.yHeadRotO;
+				this.rotation = this.rotation.add(living.getXRot() - living.xRotO, living.getYHeadRot() - living.yHeadRotO);
 			}
 		}
 		else if(shouldSyncCameraRotationsWithVehicleRotations(minecraft, cameraEntity))
@@ -105,7 +97,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			
 			if(vehicle != null)
 			{
-				this.yRot += vehicle.getYRot() - vehicle.yRotO;
+				this.rotation = this.rotation.add(0, vehicle.getYRot() - vehicle.yRotO);
 			}
 		}
 		
@@ -116,8 +108,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(!this.instance.isFreeLooking())
 		{
-			this.xRotOffset *= 0.5F;
-			this.yRotOffset *= 0.5F;
+			this.rotationOffset = this.rotationOffset.scale(0.5F);
 		}
 	}
 	
@@ -127,8 +118,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			float easeIn = 1F - Mth.lerp(partialTick, this.followPlayerRotationsEaseInO, this.followPlayerRotationsEaseIn);
 			float f = partialTick * (float) Config.CLIENT.getCameraTransitionSpeedMultiplier() * easeIn;
-			this.xRot = this.xRotO + Mth.degreesDifference(this.xRot, cameraEntity.getXRot(partialTick)) * f;
-			this.yRot = this.yRotO + Mth.degreesDifference(this.yRot, cameraEntity.getYRot(partialTick)) * f;
+			float dx = Mth.degreesDifference(this.rotation.x(), cameraEntity.getXRot(partialTick));
+			float dy = Mth.degreesDifference(this.rotation.y(), cameraEntity.getXRot(partialTick));
+			this.rotation = this.rotationO.add(new Vec2f(dx, dy).scale(f));
 		}
 	}
 	
@@ -140,29 +132,24 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		if(cameraEntity != null)
 		{
 			this.offset = this.offset.scale(EntityHelper.getScale(cameraEntity));
-			this.xRot = cameraEntity.getXRot();
-			this.yRot = cameraEntity.getYRot();
+			this.rotation = new Vec2f(cameraEntity.getXRot(), cameraEntity.getYRot());
 			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		}
 		else
 		{
-			this.xRot = 0.0F;
-			this.yRot = -180.0F;
+			this.rotation = new Vec2f(0F, -180F);
 			this.deltaMovementO = Vec3.ZERO;
 		}
 		
-		this.xRotO = this.xRot;
-		this.yRotO = this.yRot;
+		this.rotationO = this.rotation;
 		this.offsetO = this.offset;
 		this.renderOffset = this.offset;
 		this.targetOffset = this.offset;
 		this.maxCameraDistance = this.offset.length();
 		this.maxCameraDistanceO = this.maxCameraDistance;
-		this.xRotOffset = 0.0F;
-		this.yRotOffset = 0.0F;
-		this.xRotOffsetO = 0.0F;
-		this.yRotOffsetO = 0.0F;
-		this.lastMovedYRot = this.yRot;
+		this.rotationOffset = Vec2f.ZERO;
+		this.rotationOffsetO = Vec2f.ZERO;
+		this.lastMovedYRot = this.rotation.y();
 		this.followPlayerRotationsDelay = 0;
 		this.followPlayerRotationsEaseIn = 1.0F;
 		this.followPlayerRotationsEaseInO = 1.0F;
@@ -176,15 +163,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			return new Vec2f(living.getViewXRot(partialTick), living.getViewYRot(partialTick));
 		}
 		
-		float cameraXRotWithOffset = Mth.clamp(Mth.rotLerp(partialTick, this.xRotOffsetO, this.xRotOffset) + this.xRot, -90F, 90F);
-		float cameraYRotWithOffset = Mth.rotLerp(partialTick, this.yRotOffsetO, this.yRotOffset) + this.yRot;
+		Vec2f cameraRotWithOffset = this.rotationOffsetO.rotLerp(this.rotationOffset, partialTick).add(this.rotation).clampX(-90F, 90F);
 		
 		if(this.instance.isCameraDecoupled())
 		{
 			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 			{
-				cameraXRotWithOffset += (living.getXRot() - living.xRotO) * partialTick;
-				cameraYRotWithOffset += (living.getYHeadRot() - living.yHeadRotO) * partialTick;
+				Vec2f livingRotDelta = new Vec2f(living.getXRot() - living.xRotO, living.getYHeadRot() - living.yHeadRotO).scale(partialTick);
+				return cameraRotWithOffset.add(livingRotDelta);
 			}
 		}
 		else if(shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity))
@@ -193,11 +179,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			
 			if(vehicle != null)
 			{
-				cameraYRotWithOffset += (vehicle.getYRot() - vehicle.yRotO) * partialTick;
+				return cameraRotWithOffset.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
 			}
 		}
 		
-		return new Vec2f(cameraXRotWithOffset, cameraYRotWithOffset);
+		return cameraRotWithOffset;
 	}
 	
 	public Vec3 calcOffset(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity)
@@ -468,30 +454,21 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.followPlayerRotationsEaseInO = 1.0F;
 		}
 		
-		CameraRotationSetupResult preResult = CallbackHelper.fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.yRot, this.xRot);
-		this.xRot = preResult.getXRot();
-		this.yRot = preResult.getYRot();
-		
-		float scaledXRot = (float) (xRot * 0.15F);
-		float scaledYRot = (float) (yRot * 0.15F);
+		Vec2f cameraRot = CallbackHelper.fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.rotation.y(), this.rotation.x()).getRotation();
+		Vec2f scaledRot = new Vec2f((float) (xRot * 0.15F), (float) (yRot * 0.15F));
 		
 		if(this.instance.isFreeLooking())
 		{
-			this.xRotOffset = Mth.clamp(this.xRotOffset + scaledXRot, -90.0F, 90.0F);
-			this.yRotOffset = Mth.wrapDegrees(this.yRotOffset + scaledYRot);
-			this.xRotOffsetO = this.xRotOffset;
-			this.yRotOffsetO = this.yRotOffset;
+			this.rotationOffset = this.rotationOffset.add(scaledRot).clampX(-90F, 90F);
+			this.rotationOffsetO = this.rotationOffset;
 			return true;
 		}
 		
-		float cameraXRot = Mth.clamp(this.xRot + scaledXRot, -90.0F, 90.0F);
-		float cameraYRot = this.yRot + scaledYRot;
+		cameraRot = cameraRot.add(scaledRot).clampX(-90F, 90F);
 		
 		if(player.isPassenger())
 		{
-			Vec2f constraintRotations = EntityHelper.applyPassengerRotationConstraints(player, cameraXRot, cameraYRot, this.xRot, this.yRot);
-			cameraXRot = constraintRotations.x();
-			cameraYRot = constraintRotations.y();
+			cameraRot = EntityHelper.applyPassengerRotationConstraints(player, cameraRot.x(), cameraRot.y(), this.rotation.x(), this.rotation.y());
 		}
 		
 		if(this.instance.isCameraDecoupled())
@@ -502,14 +479,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			{
 				if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
 				{
-					player.setXRot(cameraXRot);
-					player.xRotO += Mth.degreesDifference(this.xRot, cameraXRot);
+					player.setXRot(this.rotation.x());
+					player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
 				}
 				
 				if((Config.CLIENT.shouldPlayerYRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations()) && !isMoving)
 				{
 					float maxFollowAngle = (float) Config.CLIENT.getPlayerYRotFollowAngleLimit();
-					float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledYRot, maxFollowAngle);
+					float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
 					player.yRotO = player.getYRot();
 					player.setYRot(playerYRot);
 				}
@@ -521,9 +498,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			}
 		}
 		
-		CameraRotationSetupResult postResult = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraYRot, cameraXRot);
-		this.xRot = postResult.getXRot();
-		this.yRot = postResult.getYRot();
+		this.rotation = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraRot.y(), cameraRot.x()).getRotation();
 		
 		return this.instance.isCameraDecoupled();
 	}
@@ -570,29 +545,29 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	@Override
 	public float getXRot()
 	{
-		return this.xRot + this.xRotOffset;
+		return this.rotation.x() + this.rotationOffset.x();
 	}
 	
 	@Override
 	public void setXRot(float xRot)
 	{
-		this.xRot = xRot;
-		this.xRotOffset = 0.0F;
-		this.xRotOffsetO = 0.0F;
+		this.rotation = new Vec2f(0, this.rotation.y());
+		this.rotationOffset = new Vec2f(0, this.rotationOffset.y());
+		this.rotationOffsetO = new Vec2f(0, this.rotationOffsetO.y());
 	}
 	
 	@Override
 	public float getYRot()
 	{
-		return this.yRot + this.yRotOffset;
+		return this.rotation.y() + this.rotationOffset.y();
 	}
 	
 	@Override
 	public void setYRot(float yRot)
 	{
-		this.yRot = yRot;
-		this.yRotOffset = 0.0F;
-		this.yRotOffsetO = 0.0F;
+		this.rotation = new Vec2f(this.rotation.x(), 0);
+		this.rotationOffset = new Vec2f(this.rotationOffset.x(), 0);
+		this.rotationOffsetO = new Vec2f(this.rotationOffsetO.x(), 0);
 	}
 	
 	public void setLastMovedYRot(float lastMovedYRot)
