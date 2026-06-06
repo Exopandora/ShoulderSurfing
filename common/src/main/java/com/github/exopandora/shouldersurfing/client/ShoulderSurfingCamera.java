@@ -197,6 +197,12 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			targetOffset = targetCameraOffsetCallback.pre(this.instance, targetOffset, defaultOffset);
 		}
 		
+		for(ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks)
+		{
+			ITargetCameraOffsetCallback.Context context = new ITargetCameraOffsetCallback.Context(this.instance, targetOffset, defaultOffset, camera, cameraEntity, level);
+			targetOffset = targetCameraOffsetCallback.getTargetOffset(context);
+		}
+		
 		if(cameraEntity instanceof LivingEntity living)
 		{
 			targetOffset = applyCameraDistanceAttribute(
