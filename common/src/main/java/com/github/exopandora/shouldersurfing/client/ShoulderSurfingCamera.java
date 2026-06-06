@@ -35,9 +35,10 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
 	private Vec2f rotation;
-	private Vec2f rotationO;
+	private Vec2f rotationO; // only used for followPlayerRotations
 	private Vec2f rotationOffset;
 	private Vec2f rotationOffsetO;
+	private Vec2f renderRotation;
 	private float lastMovedYRot;
 	private boolean initialized;
 	private int followPlayerRotationsDelay;
@@ -114,13 +115,44 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	public void renderTick(Entity cameraEntity, float partialTick)
 	{
-		if(this.instance.isShoulderSurfing() && this.instance.isCameraDecoupled() && Config.CLIENT.getFollowPlayerRotations() && this.followPlayerRotationsDelay == 0 && !EntityHelper.isPlayerSpectatingEntity())
+		if(!this.instance.isShoulderSurfing())
+		{
+			return;
+		}
+		
+		if(this.instance.isCameraDecoupled() && Config.CLIENT.getFollowPlayerRotations() && this.followPlayerRotationsDelay == 0 && !EntityHelper.isPlayerSpectatingEntity())
 		{
 			float easeIn = 1F - Mth.lerp(partialTick, this.followPlayerRotationsEaseInO, this.followPlayerRotationsEaseIn);
 			float f = partialTick * (float) Config.CLIENT.getCameraTransitionSpeedMultiplier() * easeIn;
-			float dx = Mth.degreesDifference(this.rotation.x(), cameraEntity.getXRot(partialTick));
-			float dy = Mth.degreesDifference(this.rotation.y(), cameraEntity.getXRot(partialTick));
-			this.rotation = this.rotationO.add(new Vec2f(dx, dy).scale(f));
+			float dy = Mth.degreesDifference(this.rotation.y(), cameraEntity.getYRot(partialTick));
+			this.rotation = this.rotationO.add(new Vec2f(0, dy).scale(f));
+		}
+		
+		if(!this.instance.isCameraDecoupled() && EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
+		{
+			this.renderRotation = new Vec2f(living.getViewXRot(partialTick), living.getViewYRot(partialTick));
+		}
+		else
+		{
+			this.renderRotation = this.rotation.add(this.rotationOffsetO.rotLerp(this.rotationOffset, partialTick)).clampX(-90F, 90F);
+			
+			if(this.instance.isCameraDecoupled())
+			{
+				if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
+				{
+					Vec2f livingRotDelta = new Vec2f(living.getXRot() - living.xRotO, living.getYHeadRot() - living.yHeadRotO).scale(partialTick);
+					this.renderRotation = this.renderRotation.add(livingRotDelta);
+				}
+			}
+			else if(shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity))
+			{
+				Entity vehicle = cameraEntity.getVehicle();
+				
+				if(vehicle != null)
+				{
+					this.renderRotation = this.renderRotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
+				}
+			}
 		}
 	}
 	
@@ -147,6 +179,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.targetOffset = this.offset;
 		this.maxCameraDistance = this.offset.length();
 		this.maxCameraDistanceO = this.maxCameraDistance;
+		this.renderRotation = this.rotation;
 		this.rotationOffset = Vec2f.ZERO;
 		this.rotationOffsetO = Vec2f.ZERO;
 		this.lastMovedYRot = this.rotation.y();
@@ -154,36 +187,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.followPlayerRotationsEaseIn = 1.0F;
 		this.followPlayerRotationsEaseInO = 1.0F;
 		this.initialized = true;
-	}
-	
-	public Vec2f calcRotations(Entity cameraEntity, float partialTick)
-	{
-		if(!this.instance.isCameraDecoupled() && EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
-		{
-			return new Vec2f(living.getViewXRot(partialTick), living.getViewYRot(partialTick));
-		}
-		
-		Vec2f cameraRotWithOffset = this.rotationOffsetO.rotLerp(this.rotationOffset, partialTick).add(this.rotation).clampX(-90F, 90F);
-		
-		if(this.instance.isCameraDecoupled())
-		{
-			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
-			{
-				Vec2f livingRotDelta = new Vec2f(living.getXRot() - living.xRotO, living.getYHeadRot() - living.yHeadRotO).scale(partialTick);
-				return cameraRotWithOffset.add(livingRotDelta);
-			}
-		}
-		else if(shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity))
-		{
-			Entity vehicle = cameraEntity.getVehicle();
-			
-			if(vehicle != null)
-			{
-				return cameraRotWithOffset.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
-			}
-		}
-		
-		return cameraRotWithOffset;
 	}
 	
 	public Vec3 calcOffset(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity)
@@ -587,6 +590,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.rotation = new Vec2f(this.rotation.x(), 0);
 		this.rotationOffset = new Vec2f(this.rotationOffset.x(), 0);
 		this.rotationOffsetO = new Vec2f(this.rotationOffsetO.x(), 0);
+	}
+	
+	public Vec2f getRenderRotation()
+	{
+		return this.renderRotation;
 	}
 	
 	public void setLastMovedYRot(float lastMovedYRot)

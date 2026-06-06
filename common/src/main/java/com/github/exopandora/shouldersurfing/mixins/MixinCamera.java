@@ -72,9 +72,8 @@ public abstract class MixinCamera implements CameraDuck
 	{
 		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
 		{
-			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
-			Vec2f rotations = camera.calcRotations(this.entity, partialTick);
-			this.setRotation(rotations.y(), rotations.x());
+			Vec2f rotation = ShoulderSurfingImpl.getInstance().getCamera().getRenderRotation();
+			this.setRotation(rotation.y(), rotation.x());
 		}
 	}
 	
