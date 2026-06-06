@@ -31,7 +31,6 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallback());
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registrar.registerPlayerStateCallback(new PlayerStateCallback());
-		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
 		registrar.registerTargetCameraOffsetCallback(50, new TargetCameraOffsetCallback.CameraDistanceAttribute());
 		registrar.registerTargetCameraOffsetCallback(100, new TargetCameraOffsetCallback.CameraDistanceAttributePassenger());
 		registrar.registerTargetCameraOffsetCallback(150, new TargetCameraOffsetCallback.PassengerModifiersAndMultipliers());
@@ -43,6 +42,7 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerTargetCameraOffsetCallback(450, new TargetCameraOffsetCallback.DynamicOffsets());
 		registrar.registerTargetCameraOffsetCallback(500, new TargetCameraOffsetCallback.OffsetLimits());
 		registrar.registerTargetCameraOffsetCallback(550, new TargetCameraOffsetCallback.EntityScale());
+		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(2000, new CreateModTargetCameraOffsetCallback()));
 		registerCompatibilityCallback(Mods.CURIOS, () -> ServiceLoader.load(ICuriosAdaptiveItemCallback.class).findFirst().ifPresent(registrar::registerAdaptiveItemCallback));
 		registerCompatibilityCallback(Mods.COBBLEMON, () ->
 		{
