@@ -11,9 +11,7 @@ import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingRegistrar;
 
 import java.lang.reflect.Proxy;
-import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,14 +19,14 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 {
 	private static final ShoulderSurfingRegistrar INSTANCE = new ShoulderSurfingRegistrar();
 	
-	private final List<IAdaptiveItemCallback> adaptiveItemCallbacks = new LinkedList<IAdaptiveItemCallback>();
-	private final List<ICameraCouplingCallback> cameraCouplingCallbacks = new LinkedList<ICameraCouplingCallback>();
-	private final List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new LinkedList<ITargetCameraOffsetCallback>();
-	private final List<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new LinkedList<ICameraEntityTransparencyCallback>();
-	private final List<ITickableCallback> tickableCallbacks = new LinkedList<ITickableCallback>();
-	private final List<IPlayerStateCallback> playerStateCallbacks = new LinkedList<IPlayerStateCallback>();
-	private final List<ICameraRotationSetupCallback> cameraRotationSetupCallbacks = new LinkedList<ICameraRotationSetupCallback>();
-	private final List<IPlayerInputCallback> playerInputCallbacks = new LinkedList<IPlayerInputCallback>();
+	private final CallbackRegistry<IAdaptiveItemCallback> adaptiveItemCallbacks = new CallbackRegistry<IAdaptiveItemCallback>();
+	private final CallbackRegistry<ICameraCouplingCallback> cameraCouplingCallbacks = new CallbackRegistry<ICameraCouplingCallback>();
+	private final CallbackRegistry<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = new CallbackRegistry<ITargetCameraOffsetCallback>();
+	private final CallbackRegistry<ICameraEntityTransparencyCallback> cameraEntityTransparencyCallbacks = new CallbackRegistry<ICameraEntityTransparencyCallback>();
+	private final CallbackRegistry<ITickableCallback> tickableCallbacks = new CallbackRegistry<ITickableCallback>();
+	private final CallbackRegistry<IPlayerStateCallback> playerStateCallbacks = new CallbackRegistry<IPlayerStateCallback>();
+	private final CallbackRegistry<ICameraRotationSetupCallback> cameraRotationSetupCallbacks = new CallbackRegistry<ICameraRotationSetupCallback>();
+	private final CallbackRegistry<IPlayerInputCallback> playerInputCallbacks = new CallbackRegistry<IPlayerInputCallback>();
 	
 	private boolean isFrozen;
 	private PluginContext<?> activePluginContext;
@@ -39,53 +37,53 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerAdaptiveItemCallback(IAdaptiveItemCallback adaptiveItemCallback)
+	public IShoulderSurfingRegistrar registerAdaptiveItemCallback(int priority, IAdaptiveItemCallback callback)
 	{
-		return this.registerCallback(this.adaptiveItemCallbacks, adaptiveItemCallback, IAdaptiveItemCallback.class);
+		return this.registerCallback(this.adaptiveItemCallbacks, priority, callback, IAdaptiveItemCallback.class);
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback cameraCouplingCallback)
+	public IShoulderSurfingRegistrar registerCameraCouplingCallback(int priority, ICameraCouplingCallback callback)
 	{
-		return this.registerCallback(this.cameraCouplingCallbacks, cameraCouplingCallback, ICameraCouplingCallback.class);
+		return this.registerCallback(this.cameraCouplingCallbacks, priority, callback, ICameraCouplingCallback.class);
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback targetCameraOffsetCallback)
+	public IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(int priority, ITargetCameraOffsetCallback callback)
 	{
-		return this.registerCallback(this.targetCameraOffsetCallbacks, targetCameraOffsetCallback, ITargetCameraOffsetCallback.class);
+		return this.registerCallback(this.targetCameraOffsetCallbacks, priority, callback, ITargetCameraOffsetCallback.class);
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(ICameraEntityTransparencyCallback cameraEntityTransparencyCallback)
+	public IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(int priority, ICameraEntityTransparencyCallback callback)
 	{
-		return this.registerCallback(this.cameraEntityTransparencyCallbacks, cameraEntityTransparencyCallback, ICameraEntityTransparencyCallback.class);
+		return this.registerCallback(this.cameraEntityTransparencyCallbacks, priority, callback, ICameraEntityTransparencyCallback.class);
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerPlayerStateCallback(IPlayerStateCallback callback)
+	public IShoulderSurfingRegistrar registerPlayerStateCallback(int priority, IPlayerStateCallback callback)
 	{
-		return this.registerCallback(this.playerStateCallbacks, callback, IPlayerStateCallback.class);
+		return this.registerCallback(this.playerStateCallbacks, priority, callback, IPlayerStateCallback.class);
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerCameraRotationSetupCallback(ICameraRotationSetupCallback callback)
+	public IShoulderSurfingRegistrar registerCameraRotationSetupCallback(int priority, ICameraRotationSetupCallback callback)
 	{
-		return this.registerCallback(this.cameraRotationSetupCallbacks, callback, ICameraRotationSetupCallback.class);
+		return this.registerCallback(this.cameraRotationSetupCallbacks, priority, callback, ICameraRotationSetupCallback.class);
 	}
 	
 	@Override
-	public IShoulderSurfingRegistrar registerPlayerInputCallback(IPlayerInputCallback callback)
+	public IShoulderSurfingRegistrar registerPlayerInputCallback(int priority, IPlayerInputCallback callback)
 	{
-		return this.registerCallback(this.playerInputCallbacks, callback, IPlayerInputCallback.class);
+		return this.registerCallback(this.playerInputCallbacks, priority, callback, IPlayerInputCallback.class);
 	}
 	
-	private <T> IShoulderSurfingRegistrar registerCallback(List<T> registry, T callback, Class<T> klass)
+	private <T> IShoulderSurfingRegistrar registerCallback(CallbackRegistry<T> registry, int priority, T callback, Class<T> klass)
 	{
 		this.checkState();
 		T proxy = createProxy(this.activePluginContext, callback, klass);
-		registry.add(proxy);
-		this.registerTickableCallback(proxy);
+		registry.register(priority, proxy);
+		this.registerTickableCallback(priority, proxy);
 		return this;
 	}
 	
@@ -102,11 +100,11 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 		}
 	}
 	
-	private <T> void registerTickableCallback(T callback)
+	private <T> void registerTickableCallback(int priority, T callback)
 	{
 		if(callback instanceof ITickableCallback tickableCallback)
 		{
-			this.tickableCallbacks.add(tickableCallback);
+			this.tickableCallbacks.register(priority, tickableCallback);
 		}
 	}
 	
@@ -123,42 +121,42 @@ public class ShoulderSurfingRegistrar implements IShoulderSurfingRegistrar
 	
 	public List<IAdaptiveItemCallback> getAdaptiveItemCallbacks()
 	{
-		return Collections.unmodifiableList(this.adaptiveItemCallbacks);
+		return this.adaptiveItemCallbacks.getCallbacks();
 	}
 	
 	public List<ICameraCouplingCallback> getCameraCouplingCallbacks()
 	{
-		return Collections.unmodifiableList(this.cameraCouplingCallbacks);
+		return this.cameraCouplingCallbacks.getCallbacks();
 	}
 	
 	public List<ITargetCameraOffsetCallback> getTargetCameraOffsetCallbacks()
 	{
-		return Collections.unmodifiableList(this.targetCameraOffsetCallbacks);
+		return this.targetCameraOffsetCallbacks.getCallbacks();
 	}
 	
 	public List<ICameraEntityTransparencyCallback> getCameraEntityTransparencyCallbacks()
 	{
-		return Collections.unmodifiableList(this.cameraEntityTransparencyCallbacks);
+		return this.cameraEntityTransparencyCallbacks.getCallbacks();
 	}
 	
 	public List<ITickableCallback> getTickableCallbacks()
 	{
-		return Collections.unmodifiableList(this.tickableCallbacks);
+		return this.tickableCallbacks.getCallbacks();
 	}
 	
 	public List<IPlayerStateCallback> getPlayerStateCallbacks()
 	{
-		return Collections.unmodifiableList(this.playerStateCallbacks);
+		return this.playerStateCallbacks.getCallbacks();
 	}
 	
 	public List<ICameraRotationSetupCallback> getSetupCameraRotationCallbacks()
 	{
-		return Collections.unmodifiableList(this.cameraRotationSetupCallbacks);
+		return this.cameraRotationSetupCallbacks.getCallbacks();
 	}
 	
 	public List<IPlayerInputCallback> getPlayerInputCallbacks()
 	{
-		return Collections.unmodifiableList(this.playerInputCallbacks);
+		return this.playerInputCallbacks.getCallbacks();
 	}
 	
 	@SuppressWarnings("unchecked")
