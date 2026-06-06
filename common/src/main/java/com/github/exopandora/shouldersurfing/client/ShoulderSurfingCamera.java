@@ -216,7 +216,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		else
 		{
-			double targetCameraDistance = maxZoom(camera, level, lerpedOffset, partialTick);
+			double targetCameraDistance = maxZoom(camera, cameraEntity, level, lerpedOffset, partialTick);
 			
 			if(targetCameraDistance < this.maxCameraDistance)
 			{
@@ -229,20 +229,20 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 	}
 	
-	private static double maxZoom(Camera camera, BlockGetter level, Vec3 cameraOffset, float partialTick)
+	private static double maxZoom(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 cameraOffset, float partialTick)
 	{
 		double distance = cameraOffset.length();
 		Vec3 worldOffset = new Vec3(camera.upVector()).scale(cameraOffset.y())
 			.add(new Vec3(camera.leftVector()).scale(cameraOffset.x()))
 			.add(new Vec3(camera.forwardVector()).scale(-cameraOffset.z()));
-		Vec3 eyePosition = camera.entity().getEyePosition(partialTick);
+		Vec3 eyePosition = cameraEntity.getEyePosition(partialTick);
 		
 		for(int i = 0; i < 8; i++)
 		{
 			Vec3 offset = new Vec3(i & 1, i >> 1 & 1, i >> 2 & 1)
 				.scale(2)
 				.subtract(1, 1, 1);
-			Vec3 fromOffset = offset.scale(Math.clamp(camera.entity().getBbWidth() / 2.0F / Mth.sqrt(2), 0.0F, 0.15F))
+			Vec3 fromOffset = offset.scale(Math.clamp(cameraEntity.getBbWidth() / 2.0F / Mth.sqrt(2), 0.0F, 0.15F))
 				.xRot(-camera.xRot() * Mth.DEG_TO_RAD)
 				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			Vec3 from = eyePosition.add(fromOffset);
@@ -250,7 +250,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 				.xRot(-camera.xRot() * Mth.DEG_TO_RAD)
 				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			Vec3 to = eyePosition.add(toOffset).add(worldOffset);
-			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, camera.entity());
+			ClipContext context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
 			HitResult hitResult = level.clip(context);
 			
 			if(hitResult.getType() != HitResult.Type.MISS)
