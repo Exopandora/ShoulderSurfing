@@ -178,12 +178,17 @@ public class TargetCameraOffsetCallback
 		@Override
 		public Vec3 getTargetOffset(Context context)
 		{
-			if(!context.cameraEntity().isSpectator() && context.camera().forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
+			if(!context.cameraEntity().isSpectator() && isCameraLookingDown(context.camera()))
 			{
 				return new Vec3(0, 0, context.targetOffset().z());
 			}
 			
 			return context.targetOffset();
+		}
+		
+		private boolean isCameraLookingDown(Camera camera)
+		{
+			return camera.forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD;
 		}
 	}
 	
