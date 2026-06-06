@@ -18,6 +18,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -86,21 +87,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			{
 				this.followPlayerRotationsDelay--;
 			}
-			
-			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
-			{
-				this.rotation = this.rotation.add(living.getXRot() - living.xRotO, living.getYHeadRot() - living.yHeadRotO);
-			}
 		}
-		else if(shouldSyncCameraRotationsWithVehicleRotations(minecraft, cameraEntity))
-		{
-			Entity vehicle = cameraEntity.getVehicle();
-			
-			if(vehicle != null)
-			{
-				this.rotation = this.rotation.add(0, vehicle.getYRot() - vehicle.yRotO);
-			}
-		}
+		
+		this.rotation = this.applyPassengerRotations(this.rotation, cameraEntity, 1.0F);
 		
 		if(cameraEntity != null)
 		{
@@ -134,26 +123,34 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		else
 		{
-			this.renderRotation = this.rotation.add(this.rotationOffsetO.rotLerp(this.rotationOffset, partialTick)).clampX(-90F, 90F);
-			
-			if(this.instance.isCameraDecoupled())
+			Vec2f rotationOffset = this.rotationOffsetO.rotLerp(this.rotationOffset, partialTick);
+			Vec2f rotation = this.rotation.add(rotationOffset).clampX(-90F, 90F);
+			this.renderRotation = this.applyPassengerRotations(rotation, cameraEntity, partialTick);
+		}
+	}
+	
+	private Vec2f applyPassengerRotations(Vec2f rotation, @Nullable Entity cameraEntity, float partialTick)
+	{
+		if(this.instance.isCameraDecoupled())
+		{
+			if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
 			{
-				if(EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living)
-				{
-					Vec2f livingRotDelta = new Vec2f(living.getXRot() - living.xRotO, living.getYHeadRot() - living.yHeadRotO).scale(partialTick);
-					this.renderRotation = this.renderRotation.add(livingRotDelta);
-				}
-			}
-			else if(shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity))
-			{
-				Entity vehicle = cameraEntity.getVehicle();
-				
-				if(vehicle != null)
-				{
-					this.renderRotation = this.renderRotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
-				}
+				float dx = living.getXRot() - living.xRotO;
+				float dy = living.getYHeadRot() - living.yHeadRotO;
+				return rotation.add(new Vec2f(dx, dy).scale(partialTick));
 			}
 		}
+		else if(shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity))
+		{
+			Entity vehicle = cameraEntity.getVehicle();
+			
+			if(vehicle != null)
+			{
+				return rotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
+			}
+		}
+		
+		return rotation;
 	}
 	
 	private void init()
@@ -530,7 +527,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		return this.instance.isLookFollowingCrosshairTarget();
 	}
 	
-	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, Entity entity)
+	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, @Nullable Entity entity)
 	{
 		return CallbackHelper.isRidingBoat(minecraft, entity);
 	}

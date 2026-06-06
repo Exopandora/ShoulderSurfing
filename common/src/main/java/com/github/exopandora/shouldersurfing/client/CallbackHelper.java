@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -107,7 +108,7 @@ class CallbackHelper
 		return minecraft.options.keyPickItem.isDown();
 	}
 	
-	protected static boolean isRidingBoat(Minecraft minecraft, Entity entity)
+	protected static boolean isRidingBoat(Minecraft minecraft, @Nullable Entity entity)
 	{
 		if(!(entity instanceof LivingEntity))
 		{
