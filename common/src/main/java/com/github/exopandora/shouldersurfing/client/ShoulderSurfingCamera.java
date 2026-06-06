@@ -182,6 +182,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.initialized = true;
 	}
 	
+	@SuppressWarnings("removal")
 	public void setup(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity)
 	{
 		Vec3 defaultOffset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
