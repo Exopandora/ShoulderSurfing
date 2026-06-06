@@ -16,6 +16,7 @@ import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraCouplingCall
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallback;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.CameraEntityTransparencyCallbackWhenAiming;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.PlayerStateCallback;
+import com.github.exopandora.shouldersurfing.plugin.callbacks.TargetCameraOffsetCallback;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ServiceLoader;
@@ -31,6 +32,17 @@ public class ShoulderSurfingPlugin implements IShoulderSurfingPlugin
 		registrar.registerCameraEntityTransparencyCallback(new CameraEntityTransparencyCallbackWhenAiming());
 		registrar.registerPlayerStateCallback(new PlayerStateCallback());
 		registerCompatibilityCallback(Mods.CREATE, () -> registrar.registerTargetCameraOffsetCallback(new CreateModTargetCameraOffsetCallback()));
+		registrar.registerTargetCameraOffsetCallback(50, new TargetCameraOffsetCallback.CameraDistanceAttribute());
+		registrar.registerTargetCameraOffsetCallback(100, new TargetCameraOffsetCallback.CameraDistanceAttributePassenger());
+		registrar.registerTargetCameraOffsetCallback(150, new TargetCameraOffsetCallback.PassengerModifiersAndMultipliers());
+		registrar.registerTargetCameraOffsetCallback(200, new TargetCameraOffsetCallback.SprintingModifiersAndMultipliers());
+		registrar.registerTargetCameraOffsetCallback(250, new TargetCameraOffsetCallback.AimingModifiersAndMultipliers());
+		registrar.registerTargetCameraOffsetCallback(300, new TargetCameraOffsetCallback.FallFlyingModifiersAndMultipliers());
+		registrar.registerTargetCameraOffsetCallback(350, new TargetCameraOffsetCallback.ClimbingModifiersAndMultipliers());
+		registrar.registerTargetCameraOffsetCallback(400, new TargetCameraOffsetCallback.CenterWhenLookingDown());
+		registrar.registerTargetCameraOffsetCallback(450, new TargetCameraOffsetCallback.DynamicOffsets());
+		registrar.registerTargetCameraOffsetCallback(500, new TargetCameraOffsetCallback.OffsetLimits());
+		registrar.registerTargetCameraOffsetCallback(550, new TargetCameraOffsetCallback.EntityScale());
 		registerCompatibilityCallback(Mods.CURIOS, () -> ServiceLoader.load(ICuriosAdaptiveItemCallback.class).findFirst().ifPresent(registrar::registerAdaptiveItemCallback));
 		registerCompatibilityCallback(Mods.COBBLEMON, () ->
 		{

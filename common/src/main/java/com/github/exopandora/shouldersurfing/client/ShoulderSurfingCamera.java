@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
-import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
@@ -13,19 +12,16 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.List;
 
 public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 {
-	private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 	private final ShoulderSurfingImpl instance;
 	private Vec3 offset;
 	private Vec3 offsetO;
@@ -203,94 +199,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			targetOffset = targetCameraOffsetCallback.getTargetOffset(context);
 		}
 		
-		if(cameraEntity instanceof LivingEntity living)
-		{
-			targetOffset = applyCameraDistanceAttribute(
-				targetOffset,
-				living.getAttributeValue(Attributes.CAMERA_DISTANCE),
-				Config.CLIENT.getCameraDistanceAttributeMode()
-			);
-		}
-		
-		if(cameraEntity.isPassenger())
-		{
-			if(cameraEntity.getVehicle() instanceof LivingEntity living)
-			{
-				targetOffset = applyCameraDistanceAttribute(
-					targetOffset,
-					living.getAttributeValue(Attributes.CAMERA_DISTANCE),
-					Config.CLIENT.getCameraDistanceAttributeMode()
-				);
-			}
-			
-			targetOffset = applyModifiersAndMultipliers(
-				targetOffset,
-				defaultOffset,
-				Config.CLIENT.getPassengerOffsetModifiers(),
-				Config.CLIENT.getPassengerOffsetMultipliers()
-			);
-		}
-		
-		if(cameraEntity.isSprinting())
-		{
-			targetOffset = applyModifiersAndMultipliers(
-				targetOffset,
-				defaultOffset,
-				Config.CLIENT.getSprintOffsetModifiers(),
-				Config.CLIENT.getSprintOffsetMultipliers()
-			);
-		}
-		
-		if(this.instance.isAiming())
-		{
-			targetOffset = applyModifiersAndMultipliers(
-				targetOffset,
-				defaultOffset,
-				Config.CLIENT.getAimingOffsetModifiers(),
-				Config.CLIENT.getAimingOffsetMultipliers()
-			);
-		}
-		
-		if(cameraEntity instanceof LivingEntity living && living.isFallFlying())
-		{
-			targetOffset = applyModifiersAndMultipliers(
-				targetOffset,
-				defaultOffset,
-				Config.CLIENT.getFallFlyingOffsetModifiers(),
-				Config.CLIENT.getFallFlyingMultipliers()
-			);
-		}
-		
-		if(!cameraEntity.isSpectator())
-		{
-			if(cameraEntity instanceof LivingEntity living && living.onClimbable())
-			{
-				targetOffset = applyModifiersAndMultipliers(
-					targetOffset,
-					defaultOffset,
-					Config.CLIENT.getClimbingOffsetModifiers(),
-					Config.CLIENT.getClimbingMultipliers()
-				);
-			}
-			
-			if(camera.forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD)
-			{
-				targetOffset = new Vec3(0, 0, targetOffset.z());
-			}
-			
-			if(Config.CLIENT.doDynamicallyAdjustOffsets())
-			{
-				targetOffset = calcDynamicOffsets(camera, cameraEntity, level, targetOffset);
-			}
-		}
-		
-		double targetOffsetX = Config.CLIENT.isUnlimitedOffsetX() ? targetOffset.x() : Mth.clamp(targetOffset.x(), Config.CLIENT.getMinOffsetX(), Config.CLIENT.getMaxOffsetX());
-		double targetOffsetY = Config.CLIENT.isUnlimitedOffsetY() ? targetOffset.y() : Mth.clamp(targetOffset.y(), Config.CLIENT.getMinOffsetY(), Config.CLIENT.getMaxOffsetY());
-		double targetOffsetZ = Config.CLIENT.isUnlimitedOffsetZ() ? targetOffset.z() : Mth.clamp(targetOffset.z(), Config.CLIENT.getMinOffsetZ(), Config.CLIENT.getMaxOffsetZ());
-		targetOffset = new Vec3(targetOffsetX, targetOffsetY, targetOffsetZ);
-		
-		targetOffset = targetOffset.scale(EntityHelper.getMaxScale(cameraEntity));
-		
 		for(ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks)
 		{
 			targetOffset = targetCameraOffsetCallback.post(this.instance, targetOffset, defaultOffset);
@@ -320,67 +228,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		}
 		
 		return this.renderOffset;
-	}
-	
-	private static Vec3 applyModifiersAndMultipliers(Vec3 targetVec, Vec3 originalVec, Vec3 modifiers, Vec3 multipliers)
-	{
-		return targetVec.add(originalVec.multiply(multipliers).subtract(originalVec)).add(modifiers);
-	}
-	
-	private static Vec3 applyCameraDistanceAttribute(Vec3 targetVec, double cameraDistance, CameraDistanceAttributeMode mode)
-	{
-		return switch(mode)
-		{
-			case RELATIVE -> targetVec.multiply(1.0D, 1.0D, cameraDistance / 4.0D);
-			case ABSOLUTE -> new Vec3(targetVec.x, targetVec.y, cameraDistance);
-			case IGNORE -> targetVec;
-		};
-	}
-	
-	private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset)
-	{
-		Vec3 lookVector = new Vec3(camera.forwardVector());
-		Vec3 worldXYOffset = new Vec3(camera.upVector()).scale(targetOffset.y())
-			.add(new Vec3(camera.leftVector()).scale(targetOffset.x()));
-		Vec3 worldOffset = worldXYOffset.add(lookVector.scale(-targetOffset.z()));
-		double offsetXAbs = Math.abs(targetOffset.x());
-		double offsetYAbs = Math.abs(targetOffset.y());
-		double offsetZAbs = Math.abs(targetOffset.z());
-		double targetX = offsetXAbs;
-		double targetY = offsetYAbs;
-		double clearance = cameraEntity.getBbWidth() / 3.0D;
-		Vec3 cameraPosition = camera.position();
-		
-		for(double dz = 0; dz <= offsetZAbs; dz += 0.03125D)
-		{
-			double scale = dz / offsetZAbs;
-			Vec3 startPos = cameraPosition.add(worldOffset.scale(scale));
-			Vec3 endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
-			ClipContext context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
-			HitResult hitResult = level.clip(context);
-			
-			if(hitResult.getType() != HitResult.Type.MISS)
-			{
-				double distance = hitResult.getLocation().distanceTo(startPos);
-				double newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
-				
-				if(newTargetX < targetX)
-				{
-					targetX = newTargetX;
-				}
-				
-				double newTargetY = Math.max(distance + offsetYAbs * scale - clearance, 0);
-				
-				if(newTargetY < targetY)
-				{
-					targetY = newTargetY;
-				}
-			}
-		}
-		
-		double targetXOffset = Math.signum(targetOffset.x()) * targetX;
-		double targetYOffset = Math.signum(targetOffset.y()) * targetY;
-		return new Vec3(targetXOffset, targetYOffset, targetOffset.z());
 	}
 	
 	private static double maxZoom(Camera camera, BlockGetter level, Vec3 cameraOffset, float partialTick)
