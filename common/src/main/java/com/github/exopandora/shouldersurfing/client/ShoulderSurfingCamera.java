@@ -182,7 +182,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		this.initialized = true;
 	}
 	
-	public Vec3 calcOffset(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity)
+	public void setup(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity)
 	{
 		Vec3 defaultOffset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
 		Vec3 targetOffset = defaultOffset;
@@ -226,8 +226,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.cameraDistance = Math.min(targetCameraDistance, lerpedMaxDistance);
 			this.renderOffset = lerpedOffset.normalize().scale(this.cameraDistance);
 		}
-		
-		return this.renderOffset;
 	}
 	
 	private static double maxZoom(Camera camera, BlockGetter level, Vec3 cameraOffset, float partialTick)
