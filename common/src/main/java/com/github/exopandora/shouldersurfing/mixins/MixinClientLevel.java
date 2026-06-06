@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.client.SoundHelper;
+import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.WritableLevelData;

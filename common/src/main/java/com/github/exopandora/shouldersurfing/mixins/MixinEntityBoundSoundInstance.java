@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.client.SoundHelper;
+import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;

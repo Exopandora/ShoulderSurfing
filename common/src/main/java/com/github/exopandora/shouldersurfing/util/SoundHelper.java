@@ -1,5 +1,6 @@
-package com.github.exopandora.shouldersurfing.client;
+package com.github.exopandora.shouldersurfing.util;
 
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
