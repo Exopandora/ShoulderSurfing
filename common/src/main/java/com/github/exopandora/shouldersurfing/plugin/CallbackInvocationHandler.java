@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 
 class CallbackInvocationHandler<T> implements InvocationHandler
 {
-	private final PluginContext context;
+	private final PluginContext<?> context;
 	private final T delegate;
 	private final Set<Method> knownMethods;
 	
-	protected CallbackInvocationHandler(PluginContext context, T delegate, Set<Class<?>> knownInterfaces)
+	protected CallbackInvocationHandler(PluginContext<?> context, T delegate, Set<Class<?>> knownInterfaces)
 	{
 		this.context = context;
 		this.delegate = delegate;
@@ -37,7 +37,7 @@ class CallbackInvocationHandler<T> implements InvocationHandler
 		return method.invoke(this.delegate, args);
 	}
 	
-	private static RuntimeException createExceptionWithContext(PluginContext context, Throwable t)
+	private static RuntimeException createExceptionWithContext(PluginContext<?> context, Throwable t)
 	{
 		return new RuntimeException("Shoulder Surfing Reloaded encountered an unexpected error while trying to execute a callback for the plugin provided by " + context.formattedModName() + ". Please report this crash to " + context.formattedModName() + ".", t);
 	}
