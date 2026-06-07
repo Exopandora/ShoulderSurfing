@@ -36,7 +36,7 @@ public class CrosshairConfig implements ICrosshairConfig
 	private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 	
 	private final BooleanValue showObstructionIndicator;
-	private final BooleanValue isObstructionIndicatorShownWhenAiming;
+	private final BooleanValue isObstructionIndicatorOnlyShownWhenAiming;
 	private final IntValue obstructionIndicatorMinDistanceToCrosshair;
 	private final DoubleValue obstructionIndicatorMaxDistanceToObstruction;
 	
@@ -125,7 +125,7 @@ public class CrosshairConfig implements ICrosshairConfig
 			.translation(MOD_ID + ".configuration.obstruction.show_obstruction_indicator")
 			.define("show_obstruction_indicator", true);
 		
-		this.isObstructionIndicatorShownWhenAiming = builder
+		this.isObstructionIndicatorOnlyShownWhenAiming = builder
 			.comment("Only show the obstruction indicator when using items that would trigger the adaptive crosshair.")
 			.translation(MOD_ID + ".configuration.obstruction.only_when_aiming")
 			.define("only_when_aiming", true);
@@ -224,9 +224,9 @@ public class CrosshairConfig implements ICrosshairConfig
 	}
 	
 	@Override
-	public boolean isObstructionIndicatorShownWhenAiming()
+	public boolean isObstructionIndicatorOnlyShownWhenAiming()
 	{
-		return this.isObstructionIndicatorShownWhenAiming.get();
+		return this.isObstructionIndicatorOnlyShownWhenAiming.get();
 	}
 	
 	@Override
