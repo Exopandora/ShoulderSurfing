@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.integration;
 
-import com.github.exopandora.shouldersurfing.api.model.Couple;
-import com.github.exopandora.shouldersurfing.api.model.PickContext;
-import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickOrigin;
+import com.github.exopandora.shouldersurfing.api.util.Couple;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import mcp.mobius.waila.api.IClientRegistrar;
 import mcp.mobius.waila.api.IPluginConfig;

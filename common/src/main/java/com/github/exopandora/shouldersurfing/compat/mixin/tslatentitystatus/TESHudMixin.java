@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.tslatentitystatus;
 
-import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.api.client.config.IObjectPickerConfig;
-import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickOrigin;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
+import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;

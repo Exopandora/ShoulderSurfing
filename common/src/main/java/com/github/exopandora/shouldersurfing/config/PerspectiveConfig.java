@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.api.client.config.IPerspectiveConfig;
-import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.client.Perspective;
+import com.github.exopandora.shouldersurfing.api.config.IPerspectiveConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;

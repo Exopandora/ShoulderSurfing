@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
+import com.github.exopandora.shouldersurfing.api.client.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.CameraType;

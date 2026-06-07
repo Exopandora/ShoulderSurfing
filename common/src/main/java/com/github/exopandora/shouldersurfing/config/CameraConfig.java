@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
-import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
-import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
+import com.github.exopandora.shouldersurfing.api.client.CameraDistanceAttributeMode;
+import com.github.exopandora.shouldersurfing.api.client.ViewBobbingMode;
+import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;

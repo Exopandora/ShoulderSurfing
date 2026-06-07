@@ -1,12 +1,15 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.ITickableCallback;
+import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.client.config.IClientConfig;
-import com.github.exopandora.shouldersurfing.api.model.Perspective;
-import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.api.client.Perspective;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
+import com.github.exopandora.shouldersurfing.api.config.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ITickableCallback;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
+import com.github.exopandora.shouldersurfing.client.renderer.CameraEntityRenderer;
+import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
+import com.github.exopandora.shouldersurfing.client.world.phys.ObjectPicker;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.PerspectiveConfig;
 import com.github.exopandora.shouldersurfing.mixinduck.OptionsDuck;

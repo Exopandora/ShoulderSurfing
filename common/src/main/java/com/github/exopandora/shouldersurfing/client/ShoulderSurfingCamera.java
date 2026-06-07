@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
-import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
+import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;

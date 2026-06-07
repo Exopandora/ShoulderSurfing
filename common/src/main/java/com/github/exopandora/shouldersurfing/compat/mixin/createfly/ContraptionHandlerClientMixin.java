@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.createfly;
 
-import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
-import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.model.PickContext;
+import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.zurrtum.create.catnip.data.Couple;
 import com.zurrtum.create.content.contraptions.ContraptionHandlerClient;
 import net.minecraft.client.Camera;

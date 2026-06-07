@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
-import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixin.ClientInputAccessor;
 import com.mojang.blaze3d.platform.InputConstants;

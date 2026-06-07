@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.api.client.config.IIntegrationsConfig;
+import com.github.exopandora.shouldersurfing.api.config.IIntegrationsConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 

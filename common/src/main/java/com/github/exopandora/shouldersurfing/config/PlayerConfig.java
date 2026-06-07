@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.api.client.config.IPlayerConfig;
-import com.github.exopandora.shouldersurfing.api.model.TurningMode;
+import com.github.exopandora.shouldersurfing.api.client.TurningMode;
+import com.github.exopandora.shouldersurfing.api.config.IPlayerConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;

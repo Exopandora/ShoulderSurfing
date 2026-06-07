@@ -1,9 +1,9 @@
 package com.github.exopandora.shouldersurfing.config;
 
-import com.github.exopandora.shouldersurfing.api.client.config.ICrosshairConfig;
-import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
-import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
-import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
+import com.github.exopandora.shouldersurfing.api.client.CrosshairVisibility;
+import com.github.exopandora.shouldersurfing.api.client.Perspective;
+import com.github.exopandora.shouldersurfing.api.config.ICrosshairConfig;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -13,7 +13,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;

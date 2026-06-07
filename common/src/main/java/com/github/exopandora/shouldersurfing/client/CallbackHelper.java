@@ -1,22 +1,22 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback.IsForcingVanillaMovementInputContext;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsAttackingContext;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsInteractingContext;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsPickingContext;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsRidingBoatContext;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsUsingContext;
-import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback.GetTagetCameraOffsetContext;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ICameraCouplingCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ICameraEntityTransparencyCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ICameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerInputCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerInputCallback.IsForcingVanillaMovementInputContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerStateCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerStateCallback.IsAttackingContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerStateCallback.IsInteractingContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerStateCallback.IsPickingContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerStateCallback.IsRidingBoatContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.IPlayerStateCallback.IsUsingContext;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.plugin.callback.ITargetCameraOffsetCallback.GetTagetCameraOffsetContext;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -158,7 +158,7 @@ class CallbackHelper {
 		return false;
 	}
 	
-	protected static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float alpha, float partialTick) {
+	public static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float alpha, float partialTick) {
 		float result = alpha;
 		for (ICameraEntityTransparencyCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraEntityTransparencyCallbacks()) {
 			result = Math.min(Mth.clamp(callback.getCameraEntityAlpha(instance, entity, partialTick), 0.0F, 1.0F), result);

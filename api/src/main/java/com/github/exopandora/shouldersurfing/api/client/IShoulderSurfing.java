@@ -1,7 +1,9 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
-import com.github.exopandora.shouldersurfing.api.client.config.IClientConfig;
-import com.github.exopandora.shouldersurfing.api.model.Perspective;
+import com.github.exopandora.shouldersurfing.api.client.renderer.ICameraEntityRenderer;
+import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRenderer;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
+import com.github.exopandora.shouldersurfing.api.config.IClientConfig;
 
 public interface IShoulderSurfing {
 	IShoulderSurfingCamera getCamera();

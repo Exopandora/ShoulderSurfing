@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.cobblemon;
 
-import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
