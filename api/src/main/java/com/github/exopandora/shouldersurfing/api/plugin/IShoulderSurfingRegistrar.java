@@ -1,6 +1,12 @@
 package com.github.exopandora.shouldersurfing.api.plugin;
 
-import com.github.exopandora.shouldersurfing.api.callback.*;
+import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Predicate;

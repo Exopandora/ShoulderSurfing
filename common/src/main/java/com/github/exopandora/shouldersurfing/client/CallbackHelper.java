@@ -1,10 +1,20 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.*;
+import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
+import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback.IsForcingVanillaMovementInputContext;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.*;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsAttackingContext;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsInteractingContext;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsPickingContext;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsRidingBoatContext;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.IsUsingContext;
+import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback.GetTagetCameraOffsetContext;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
