@@ -24,6 +24,11 @@ public class MixinCapeLayer
 	)
 	private RenderType entitySolid(Identifier texture)
 	{
-		return Config.CLIENT.isPlayerTransparencyEnabled() ? RenderTypes.entityTranslucentCullItemTarget(texture) : RenderTypes.entitySolid(texture);
+		if(Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled())
+		{
+			return RenderTypes.entityTranslucentCullItemTarget(texture);
+		}
+		
+		return RenderTypes.entitySolid(texture);
 	}
 }

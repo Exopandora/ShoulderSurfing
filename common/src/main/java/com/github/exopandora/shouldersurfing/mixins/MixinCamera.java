@@ -1,10 +1,12 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
+import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.api.math.Vec2f;
+import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -118,10 +120,9 @@ public abstract class MixinCamera implements CameraDuck
 	)
 	private float calculateFov(float lerpedFov)
 	{
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		IClientConfig config = instance.getClientConfig();
+		ICameraConfig config = Config.CLIENT.getCameraConfig();
 		
-		if(instance.isShoulderSurfing() && config.isFovOverrideEnabled())
+		if(ShoulderSurfing.getInstance().isShoulderSurfing() && config.isFovOverrideEnabled())
 		{
 			return (config.getFovOverride() / (float) Minecraft.getInstance().options.fov().get()) * lerpedFov;
 		}

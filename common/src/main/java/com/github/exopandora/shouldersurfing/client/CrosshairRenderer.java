@@ -5,6 +5,7 @@ import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.config.ObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.mixins.GuiAccessor;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.Window;
@@ -99,7 +100,8 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	@Override
 	public boolean doRenderCrosshair()
 	{
-		return Config.CLIENT.getCrosshairVisibility(Perspective.current()).doRender(Minecraft.getInstance().hitResult, this.instance.isAiming()) &&
+		Perspective perspective = Perspective.current();
+		return Config.CLIENT.getCrosshairConfig().getCrosshairVisibility(perspective).doRender(Minecraft.getInstance().hitResult, this.instance.isAiming()) &&
 			(this.crosshairOffset != null || !this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()));
 	}
 	
@@ -113,9 +115,9 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	@Override
 	public boolean doRenderObstructionIndicator()
 	{
-		int minDistanceToCrosshair = Config.CLIENT.getObstructionIndicatorMinDistanceToCrosshair();
-		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getShowObstructionCrosshair() &&
-			(this.instance.isAiming() || !Config.CLIENT.showObstructionIndicatorWhenAiming()) &&
+		int minDistanceToCrosshair = Config.CLIENT.getCrosshairConfig().getObstructionIndicatorMinDistanceToCrosshair();
+		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairConfig().getShowObstructionCrosshair() &&
+			(this.instance.isAiming() || !Config.CLIENT.getCrosshairConfig().showObstructionIndicatorWhenAiming()) &&
 			!this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) &&
 			this.crosshairOffset.lengthSquared() >= minDistanceToCrosshair * minDistanceToCrosshair;
 	}
@@ -125,7 +127,8 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		if(this.instance.isShoulderSurfing() && Minecraft.getInstance().player != null)
 		{
 			boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
-			double interactionRangeOverride = Config.CLIENT.useCustomRaytraceDistance() ? Config.CLIENT.getCustomRaytraceDistance() : 0;
+			ObjectPickerConfig objectPickerConfig = Config.CLIENT.getObjectPickerConfig();
+			double interactionRangeOverride = objectPickerConfig.useCustomRaytraceDistance() ? objectPickerConfig.getCustomRaytraceDistance() : 0;
 			Player player = Minecraft.getInstance().player;
 			// Trace primary crosshair
 			PickContext.Builder pickContextBuilder = new PickContext.Builder(camera);
@@ -155,9 +158,9 @@ public class CrosshairRenderer implements ICrosshairRenderer
 				Window window = Minecraft.getInstance().getWindow();
 				Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 				Vec2f center = screenSize.divide(2);
-				double maxDistanceToObstruction = Config.CLIENT.getObstructionIndicatorMaxDistanceToObstruction();
+				double maxDistanceToObstruction = Config.CLIENT.getCrosshairConfig().getObstructionIndicatorMaxDistanceToObstruction();
 				
-				if(isDynamic || !Config.CLIENT.getShowObstructionCrosshair() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction)
+				if(isDynamic || !Config.CLIENT.getCrosshairConfig().getShowObstructionCrosshair() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction)
 				{
 					crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
 				}
@@ -170,7 +173,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	@Override
 	public boolean isCrosshairDynamic(Entity entity)
 	{
-		return this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairType().isDynamic(entity, this.instance.isAiming());
+		return this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairConfig().getCrosshairType().isDynamic(entity, this.instance.isAiming());
 	}
 	
 	private void renderObstructionCrosshair(GuiGraphicsExtractor guiGraphics)

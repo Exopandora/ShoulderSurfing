@@ -29,7 +29,7 @@ public class MixinRenderTypes
 	)
 	private static void armorCutoutNoCull(Identifier texture, CallbackInfoReturnable<RenderType> cir)
 	{
-		if(Config.CLIENT.isPlayerTransparencyEnabled())
+		if(Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled())
 		{
 			if(Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat())
 			{
@@ -50,7 +50,7 @@ public class MixinRenderTypes
 	)
 	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
 	{
-		if(Config.CLIENT.isPlayerTransparencyEnabled() && Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat())
+		if(Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat())
 		{
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
 		}

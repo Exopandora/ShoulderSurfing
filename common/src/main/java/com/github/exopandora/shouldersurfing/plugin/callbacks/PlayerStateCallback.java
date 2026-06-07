@@ -15,7 +15,7 @@ public class PlayerStateCallback implements IPlayerStateCallback
 		{
 			return Result.FALSE;
 		}
-		else if(Config.CLIENT.getPickVector() == PickVector.PLAYER && Config.CLIENT.getCrosshairType() == CrosshairType.DYNAMIC)
+		else if(Config.CLIENT.getObjectPickerConfig().getPickVector() == PickVector.PLAYER && Config.CLIENT.getCrosshairConfig().getCrosshairType() == CrosshairType.DYNAMIC)
 		{
 			return Result.FALSE;
 		}

@@ -26,6 +26,6 @@ public class MixinBeeStingerModel
 	)
 	private static Function<Identifier, RenderType> init(Function<Identifier, RenderType> renderType)
 	{
-		return Config.CLIENT.isPlayerTransparencyEnabled() ? RenderTypes::armorTranslucent : renderType;
+		return Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() ? RenderTypes::armorTranslucent : renderType;
 	}
 }

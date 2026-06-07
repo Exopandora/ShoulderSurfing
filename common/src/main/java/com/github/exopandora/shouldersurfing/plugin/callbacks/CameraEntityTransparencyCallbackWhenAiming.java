@@ -17,7 +17,7 @@ public class CameraEntityTransparencyCallbackWhenAiming implements ICameraEntity
 	@Override
 	public void tick()
 	{
-		if(Config.CLIENT.turnPlayerTransparentWhenAiming())
+		if(Config.CLIENT.getPlayerConfig().turnPlayerTransparentWhenAiming())
 		{
 			this.aimingTicksO = aimingTicks;
 			
@@ -38,7 +38,7 @@ public class CameraEntityTransparencyCallbackWhenAiming implements ICameraEntity
 	@Override
 	public float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float partialTick)
 	{
-		if(Config.CLIENT.turnPlayerTransparentWhenAiming())
+		if(Config.CLIENT.getPlayerConfig().turnPlayerTransparentWhenAiming())
 		{
 			float f = (TRANSITION_TICK_COUNT - Mth.lerp(partialTick, this.aimingTicksO, this.aimingTicks)) / TRANSITION_TICK_COUNT;
 			return CameraEntityTransparencyCallback.MIN_CAMERA_ENTITY_ALPHA + (1F - CameraEntityTransparencyCallback.MIN_CAMERA_ENTITY_ALPHA) * f;

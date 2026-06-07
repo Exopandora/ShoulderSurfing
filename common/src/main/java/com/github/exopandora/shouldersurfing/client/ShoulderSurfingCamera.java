@@ -1,10 +1,12 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.config.PlayerConfig;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -55,7 +57,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			this.init();
 		}
 		
-		double cameraTransitionSpeedMultiplier = Config.CLIENT.getCameraTransitionSpeedMultiplier();
+		ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
+		double cameraTransitionSpeedMultiplier = cameraConfig.getCameraTransitionSpeedMultiplier();
 		this.rotationO = this.rotation;
 		this.rotationOffsetO = this.rotationOffset;
 		this.offsetO = this.offset;
@@ -70,14 +73,14 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		{
 			if(this.shouldResetFollowPlayerRotationsDelay(minecraft))
 			{
-				this.followPlayerRotationsDelay = Config.CLIENT.getFollowPlayerRotationsDelay();
+				this.followPlayerRotationsDelay = cameraConfig.getFollowPlayerRotationsDelay();
 				this.followPlayerRotationsEaseIn = 1.0F;
 				this.followPlayerRotationsEaseInO = 1.0F;
 			}
 			else if(this.followPlayerRotationsDelay == 0)
 			{
 				this.followPlayerRotationsEaseInO = this.followPlayerRotationsEaseIn;
-				this.followPlayerRotationsEaseIn *= 1F - (float) Config.CLIENT.getCameraTransitionSpeedMultiplier();
+				this.followPlayerRotationsEaseIn *= 1F - (float) cameraConfig.getCameraTransitionSpeedMultiplier();
 			}
 			else if(this.followPlayerRotationsDelay > 0)
 			{
@@ -105,10 +108,10 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 			return;
 		}
 		
-		if(this.instance.isCameraDecoupled() && Config.CLIENT.getFollowPlayerRotations() && this.followPlayerRotationsDelay == 0 && !EntityHelper.isPlayerSpectatingEntity())
+		if(this.instance.isCameraDecoupled() && Config.CLIENT.getCameraConfig().getFollowPlayerRotations() && this.followPlayerRotationsDelay == 0 && !EntityHelper.isPlayerSpectatingEntity())
 		{
 			float easeIn = 1F - Mth.lerp(partialTick, this.followPlayerRotationsEaseInO, this.followPlayerRotationsEaseIn);
-			float f = partialTick * (float) Config.CLIENT.getCameraTransitionSpeedMultiplier() * easeIn;
+			float f = partialTick * (float) Config.CLIENT.getCameraConfig().getCameraTransitionSpeedMultiplier() * easeIn;
 			float dy = Mth.degreesDifference(this.rotation.y(), cameraEntity.getYRot(partialTick));
 			this.rotation = this.rotationO.add(new Vec2f(0, dy).scale(f));
 		}
@@ -151,7 +154,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private void init()
 	{
-		this.offset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
+		this.offset = Config.CLIENT.getCameraConfig().getOffset();
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
 		if(cameraEntity != null)
@@ -185,7 +188,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	@SuppressWarnings("removal")
 	public void setup(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity)
 	{
-		Vec3 defaultOffset = new Vec3(Config.CLIENT.getOffsetX(), Config.CLIENT.getOffsetY(), Config.CLIENT.getOffsetZ());
+		Vec3 defaultOffset = Config.CLIENT.getCameraConfig().getOffset();
 		Vec3 targetOffset = defaultOffset;
 		List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = ShoulderSurfingRegistrar.getInstance().getTargetCameraOffsetCallbacks();
 		
@@ -271,7 +274,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	{
 		Vec3 deltaMovement = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
-			.multiply(Config.CLIENT.getCameraDragMultipliers())
+			.multiply(Config.CLIENT.getCameraConfig().getCameraDragMultipliers())
 			.yRot(cameraIn.yRot() * Mth.DEG_TO_RAD)
 			.xRot(cameraIn.xRot() * Mth.DEG_TO_RAD);
 		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
@@ -283,10 +286,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		Vec3 deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
 			.yRot(this.getYRot() * Mth.DEG_TO_RAD)
 			.xRot(this.getXRot() * Mth.DEG_TO_RAD);
-		double maxVelocityX = Config.CLIENT.getCameraSwayXMaxVelocity() / 20;
-		double maxVelocityZ = Config.CLIENT.getCameraSwayZMaxVelocity() / 20;
-		double maxAngleX = Config.CLIENT.getCameraSwayXMaxAngle();
-		double maxAngleZ = Config.CLIENT.getCameraSwayZMaxAngle();
+		ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
+		double maxVelocityX = cameraConfig.getCameraSwayXMaxVelocity() / 20;
+		double maxVelocityZ = cameraConfig.getCameraSwayZMaxVelocity() / 20;
+		double maxAngleX = cameraConfig.getCameraSwayXMaxAngle();
+		double maxAngleZ = cameraConfig.getCameraSwayZMaxAngle();
 		double swayX = Math.min(Math.abs(deltaMovementLerped.y), maxVelocityX) / maxVelocityX * maxAngleX * Math.signum(deltaMovementLerped.y);
 		double swayZ = Math.min(Math.abs(deltaMovementLerped.x), maxVelocityZ) / maxVelocityZ * maxAngleZ * Math.signum(deltaMovementLerped.x);
 		return new Vec2f((float) swayX, (float) swayZ);
@@ -301,7 +305,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 		
 		if(yRot != 0.0F || xRot != 0.0F || EntityHelper.isPlayerSpectatingEntity())
 		{
-			this.followPlayerRotationsDelay = Config.CLIENT.getFollowPlayerRotationsDelay();
+			this.followPlayerRotationsDelay = Config.CLIENT.getCameraConfig().getFollowPlayerRotationsDelay();
 			this.followPlayerRotationsEaseIn = 1.0F;
 			this.followPlayerRotationsEaseInO = 1.0F;
 		}
@@ -344,15 +348,17 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	
 	private void turnPlayerWithCamera(LocalPlayer player, Vec2f scaledRot, boolean isMoving)
 	{
-		if(Config.CLIENT.shouldPlayerXRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations())
+		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
+		
+		if(playerConfig.shouldPlayerXRotFollowCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations())
 		{
 			player.setXRot(this.rotation.x());
 			player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
 		}
 		
-		if((Config.CLIENT.shouldPlayerYRotFollowCamera() || Config.CLIENT.getFollowPlayerRotations()) && !isMoving)
+		if((playerConfig.shouldPlayerYRotFollowCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations()) && !isMoving)
 		{
-			float maxFollowAngle = (float) Config.CLIENT.getPlayerYRotFollowAngleLimit();
+			float maxFollowAngle = (float) playerConfig.getPlayerYRotFollowAngleLimit();
 			float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
 			player.yRotO = player.getYRot();
 			player.setYRot(playerYRot);

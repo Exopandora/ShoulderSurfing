@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.neoforge.compat.plugin;
 
 import com.github.exopandora.shouldersurfing.compat.plugin.ICuriosAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.config.IntegrationsConfig;
 import com.github.exopandora.shouldersurfing.plugin.callbacks.AdaptiveItemCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,9 +33,10 @@ public class CuriosAdaptiveItemCallback implements ICuriosAdaptiveItemCallback
 		}
 		
 		ICuriosItemHandler inventory = optionalInventory.get();
-		Map<String, List<String>> slotToItems = parseSlots(Config.CLIENT.getCuriosAdaptiveCrosshairItems());
-		Map<String, List<String>> slotToDefaultItemComponents = parseSlots(Config.CLIENT.getCuriosAdaptiveCrosshairDefaultItemComponents());
-		Map<String, List<String>> slotToItemComponents = parseSlots(Config.CLIENT.getCuriosAdaptiveCrosshairItemComponents());
+		IntegrationsConfig integrationsConfig = Config.CLIENT.getIntegrationsConfig();
+		Map<String, List<String>> slotToItems = parseSlots(integrationsConfig.getCuriosAdaptiveCrosshairItems());
+		Map<String, List<String>> slotToDefaultItemComponents = parseSlots(integrationsConfig.getCuriosAdaptiveCrosshairDefaultItemComponents());
+		Map<String, List<String>> slotToItemComponents = parseSlots(integrationsConfig.getCuriosAdaptiveCrosshairItemComponents());
 		
 		for(Entry<String, ICurioStacksHandler> entry : inventory.getCurios().entrySet())
 		{

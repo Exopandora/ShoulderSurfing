@@ -59,7 +59,7 @@ public abstract class MixinEntityBoundSoundInstance extends AbstractTickableSoun
 	@Unique
 	private void correctSoundPositionIfNecessary()
 	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.doCenterPlayerSounds())
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().doCenterPlayerSounds())
 		{
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(this.entity);
 			this.x = pos.x();

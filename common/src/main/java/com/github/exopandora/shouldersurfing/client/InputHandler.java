@@ -113,7 +113,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.adjustCameraLeft();
+				Config.CLIENT.getCameraConfig().adjustCameraLeft();
 			}
 		}
 		
@@ -121,7 +121,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.adjustCameraRight();
+				Config.CLIENT.getCameraConfig().adjustCameraRight();
 			}
 		}
 		
@@ -129,7 +129,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.adjustCameraOut();
+				Config.CLIENT.getCameraConfig().adjustCameraOut();
 			}
 		}
 		
@@ -137,7 +137,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.adjustCameraIn();
+				Config.CLIENT.getCameraConfig().adjustCameraIn();
 			}
 		}
 		
@@ -145,7 +145,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.adjustCameraUp();
+				Config.CLIENT.getCameraConfig().adjustCameraUp();
 			}
 		}
 		
@@ -153,7 +153,7 @@ public class InputHandler
 		{
 			if(this.instance.isShoulderSurfing())
 			{
-				Config.CLIENT.adjustCameraDown();
+				Config.CLIENT.getCameraConfig().adjustCameraDown();
 			}
 		}
 		
@@ -221,7 +221,7 @@ public class InputHandler
 				float xRotO = player.getXRot();
 				float yRotO = yRot;
 				yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
-				float turningSpeedMultiplier = (float) Config.CLIENT.getTurningSpeedMultiplier();
+				float turningSpeedMultiplier = (float) Config.CLIENT.getPlayerConfig().getTurningSpeedMultiplier();
 				xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * turningSpeedMultiplier;
 				yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * turningSpeedMultiplier;
 				player.setXRot(xRot);

@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
-import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.config.IObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -149,7 +149,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			
 			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
-			IClientConfig config = ShoulderSurfing.getInstance().getClientConfig();
+			IObjectPickerConfig config = ShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
 			
 			if(offsetTrace)
 			{

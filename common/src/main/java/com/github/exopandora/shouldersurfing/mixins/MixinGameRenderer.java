@@ -66,7 +66,7 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
 		{
 			OptionsRenderState optionsRenderState = this.gameRenderState.optionsRenderState;
-			optionsRenderState.bobView = switch(Config.CLIENT.getViewBobbingMode())
+			optionsRenderState.bobView = switch(Config.CLIENT.getCameraConfig().getViewBobbingMode())
 			{
 				case INHERIT -> optionsRenderState.bobView;
 				case ON -> true;
@@ -83,7 +83,7 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 	)
 	public void bobView(CallbackInfo ci)
 	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getViewBobbingMode() == ViewBobbingMode.OFF)
+		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF)
 		{
 			ci.cancel();
 		}

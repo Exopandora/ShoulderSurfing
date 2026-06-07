@@ -28,7 +28,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 		
 		this.cameraEntityAlpha = 1.0F;
 		
-		if(this.instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled())
+		if(this.instance.isShoulderSurfing() && Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled())
 		{
 			this.cameraEntityAlpha = CallbackHelper.getCameraEntityAlpha(this.instance, entity, this.cameraEntityAlpha, partialTick);
 		}
@@ -46,10 +46,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer
 	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity)
 	{
 		ShoulderSurfingCamera camera = this.instance.getCamera();
-		return this.instance.isShoulderSurfing() && !cameraEntity.isSpectator() &&
-			(camera.getCameraDistance() < cameraEntity.getBbWidth() * Config.CLIENT.keepCameraOutOfHeadMultiplier() ||
-				camera.getXRot() < Config.CLIENT.getHidePlayerWhenLookingUpAngle() - 90 ||
-				cameraEntity instanceof Player player && player.isScoping());
+		return this.instance.isShoulderSurfing() && !cameraEntity.isSpectator() && (camera.getCameraDistance() < cameraEntity.getBbWidth() * Config.CLIENT.getCameraConfig().keepCameraOutOfHeadMultiplier() || camera.getXRot() < Config.CLIENT.getPlayerConfig().getHidePlayerWhenLookingUpAngle() - 90 || cameraEntity instanceof Player player && player.isScoping());
 	}
 	
 	public int applyCameraEntityAlphaContextAware(int color)

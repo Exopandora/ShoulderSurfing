@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
-import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.config.IPerspectiveConfig;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 
@@ -31,7 +31,7 @@ public enum Perspective
 		return this.defaultCrosshairVisibility;
 	}
 	
-	public Perspective next(IClientConfig config)
+	public Perspective next(IPerspectiveConfig config)
 	{
 		Perspective next;
 		
@@ -76,7 +76,7 @@ public enum Perspective
 		return next.next(config);
 	}
 	
-	public boolean isEnabled(IClientConfig config)
+	public boolean isEnabled(IPerspectiveConfig config)
 	{
 		return switch(this)
 		{

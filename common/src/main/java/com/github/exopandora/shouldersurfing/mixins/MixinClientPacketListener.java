@@ -63,7 +63,7 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(instance.isShoulderSurfing() && Config.CLIENT.doOrientCameraOnTeleport())
+		if(instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().doOrientCameraOnTeleport())
 		{
 			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.relatives().contains(Relative.X_ROT);

@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.plugin.callbacks;
 
 import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Camera;
@@ -77,13 +78,13 @@ public class TargetCameraOffsetCallback
 		@Override
 		protected Vec3 getModifiers()
 		{
-			return Config.CLIENT.getPassengerOffsetModifiers();
+			return Config.CLIENT.getCameraConfig().getPassengerOffsetModifiers();
 		}
 		
 		@Override
 		protected Vec3 getMultipliers()
 		{
-			return Config.CLIENT.getPassengerOffsetMultipliers();
+			return Config.CLIENT.getCameraConfig().getPassengerOffsetMultipliers();
 		}
 	}
 	
@@ -98,13 +99,13 @@ public class TargetCameraOffsetCallback
 		@Override
 		protected Vec3 getModifiers()
 		{
-			return Config.CLIENT.getSprintOffsetModifiers();
+			return Config.CLIENT.getCameraConfig().getSprintOffsetModifiers();
 		}
 		
 		@Override
 		protected Vec3 getMultipliers()
 		{
-			return Config.CLIENT.getSprintOffsetMultipliers();
+			return Config.CLIENT.getCameraConfig().getSprintOffsetMultipliers();
 		}
 	}
 	
@@ -119,13 +120,13 @@ public class TargetCameraOffsetCallback
 		@Override
 		protected Vec3 getModifiers()
 		{
-			return Config.CLIENT.getAimingOffsetModifiers();
+			return Config.CLIENT.getCameraConfig().getAimingOffsetModifiers();
 		}
 		
 		@Override
 		protected Vec3 getMultipliers()
 		{
-			return Config.CLIENT.getAimingOffsetMultipliers();
+			return Config.CLIENT.getCameraConfig().getAimingOffsetMultipliers();
 		}
 	}
 	
@@ -140,13 +141,13 @@ public class TargetCameraOffsetCallback
 		@Override
 		protected Vec3 getModifiers()
 		{
-			return Config.CLIENT.getFallFlyingOffsetModifiers();
+			return Config.CLIENT.getCameraConfig().getFallFlyingOffsetModifiers();
 		}
 		
 		@Override
 		protected Vec3 getMultipliers()
 		{
-			return Config.CLIENT.getFallFlyingMultipliers();
+			return Config.CLIENT.getCameraConfig().getFallFlyingMultipliers();
 		}
 	}
 	
@@ -161,13 +162,13 @@ public class TargetCameraOffsetCallback
 		@Override
 		protected Vec3 getModifiers()
 		{
-			return Config.CLIENT.getClimbingOffsetModifiers();
+			return Config.CLIENT.getCameraConfig().getClimbingOffsetModifiers();
 		}
 		
 		@Override
 		protected Vec3 getMultipliers()
 		{
-			return Config.CLIENT.getClimbingMultipliers();
+			return Config.CLIENT.getCameraConfig().getClimbingMultipliers();
 		}
 	}
 	
@@ -188,7 +189,7 @@ public class TargetCameraOffsetCallback
 		
 		private boolean isCameraLookingDown(Camera camera)
 		{
-			return camera.forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD;
+			return camera.forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCameraConfig().getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD;
 		}
 	}
 	
@@ -197,7 +198,7 @@ public class TargetCameraOffsetCallback
 		@Override
 		public Vec3 getTargetOffset(Context context)
 		{
-			if(!context.cameraEntity().isSpectator() && Config.CLIENT.doDynamicallyAdjustOffsets())
+			if(!context.cameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().doDynamicallyAdjustOffsets())
 			{
 				return calcDynamicOffsets(context.camera(), context.cameraEntity(), context.level(), context.targetOffset());
 			}
@@ -257,15 +258,16 @@ public class TargetCameraOffsetCallback
 		@Override
 		public Vec3 getTargetOffset(Context context)
 		{
-			double targetOffsetX = Config.CLIENT.isUnlimitedOffsetX()
+			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
+			double targetOffsetX = cameraConfig.isUnlimitedOffsetX()
 				? context.targetOffset().x()
-				: Mth.clamp(context.targetOffset().x(), Config.CLIENT.getMinOffsetX(), Config.CLIENT.getMaxOffsetX());
-			double targetOffsetY = Config.CLIENT.isUnlimitedOffsetY()
+				: Mth.clamp(context.targetOffset().x(), cameraConfig.getMinOffsetX(), cameraConfig.getMaxOffsetX());
+			double targetOffsetY = cameraConfig.isUnlimitedOffsetY()
 				? context.targetOffset().y()
-				: Mth.clamp(context.targetOffset().y(), Config.CLIENT.getMinOffsetY(), Config.CLIENT.getMaxOffsetY());
-			double targetOffsetZ = Config.CLIENT.isUnlimitedOffsetZ()
+				: Mth.clamp(context.targetOffset().y(), cameraConfig.getMinOffsetY(), cameraConfig.getMaxOffsetY());
+			double targetOffsetZ = cameraConfig.isUnlimitedOffsetZ()
 				? context.targetOffset().z()
-				: Mth.clamp(context.targetOffset().z(), Config.CLIENT.getMinOffsetZ(), Config.CLIENT.getMaxOffsetZ());
+				: Mth.clamp(context.targetOffset().z(), cameraConfig.getMinOffsetZ(), cameraConfig.getMaxOffsetZ());
 			return new Vec3(targetOffsetX, targetOffsetY, targetOffsetZ);
 		}
 	}
@@ -281,7 +283,7 @@ public class TargetCameraOffsetCallback
 	
 	private static Vec3 applyCameraDistanceAttribute(Vec3 targetVec, double cameraDistance)
 	{
-		return switch(Config.CLIENT.getCameraDistanceAttributeMode())
+		return switch(Config.CLIENT.getCameraConfig().getCameraDistanceAttributeMode())
 		{
 			case RELATIVE -> targetVec.multiply(1.0D, 1.0D, cameraDistance / 4.0D);
 			case ABSOLUTE -> new Vec3(targetVec.x, targetVec.y, cameraDistance);

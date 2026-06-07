@@ -1,24 +1,24 @@
-package com.github.exopandora.shouldersurfing.api.client;
+package com.github.exopandora.shouldersurfing.api.client.config;
 
 import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
-import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
-import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
-import com.github.exopandora.shouldersurfing.api.model.Perspective;
-import com.github.exopandora.shouldersurfing.api.model.PickOrigin;
-import com.github.exopandora.shouldersurfing.api.model.PickVector;
-import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 import com.github.exopandora.shouldersurfing.api.model.ViewBobbingMode;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface IClientConfig
+public interface ICameraConfig
 {
 	double getOffsetX();
 	
 	double getOffsetY();
 	
 	double getOffsetZ();
+	
+	default @NotNull Vec3 getOffset()
+	{
+		return new Vec3(this.getOffsetX(), this.getOffsetY(), this.getOffsetZ());
+	}
 	
 	List<Double> getOffsetXPresets();
 	
@@ -32,11 +32,21 @@ public interface IClientConfig
 	
 	double getMinOffsetZ();
 	
+	default @NotNull Vec3 getMinOffset()
+	{
+		return new Vec3(this.getMinOffsetX(), this.getMinOffsetY(), this.getMinOffsetZ());
+	}
+	
 	double getMaxOffsetX();
 	
 	double getMaxOffsetY();
 	
 	double getMaxOffsetZ();
+	
+	default @NotNull Vec3 getMaxOffset()
+	{
+		return new Vec3(this.getMaxOffsetX(), this.getMaxOffsetY(), this.getMaxOffsetZ());
+	}
 	
 	boolean isUnlimitedOffsetX();
 	
@@ -50,7 +60,7 @@ public interface IClientConfig
 	
 	double getPassengerOffsetZMultiplier();
 	
-	default Vec3 getPassengerOffsetMultipliers()
+	default @NotNull Vec3 getPassengerOffsetMultipliers()
 	{
 		return new Vec3(this.getPassengerOffsetXMultiplier(), this.getPassengerOffsetYMultiplier(), this.getPassengerOffsetZMultiplier());
 	}
@@ -61,7 +71,7 @@ public interface IClientConfig
 	
 	double getSprintOffsetZMultiplier();
 	
-	default Vec3 getSprintOffsetMultipliers()
+	default @NotNull Vec3 getSprintOffsetMultipliers()
 	{
 		return new Vec3(this.getSprintOffsetXMultiplier(), this.getSprintOffsetYMultiplier(), this.getSprintOffsetZMultiplier());
 	}
@@ -72,7 +82,7 @@ public interface IClientConfig
 	
 	double getAimingOffsetZMultiplier();
 	
-	default Vec3 getAimingOffsetMultipliers()
+	default @NotNull Vec3 getAimingOffsetMultipliers()
 	{
 		return new Vec3(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
 	}
@@ -83,7 +93,7 @@ public interface IClientConfig
 	
 	double getFallFlyingOffsetZMultiplier();
 	
-	default Vec3 getFallFlyingMultipliers()
+	default @NotNull Vec3 getFallFlyingMultipliers()
 	{
 		return new Vec3(this.getFallFlyingOffsetXMultiplier(), this.getFallFlyingOffsetYMultiplier(), this.getFallFlyingOffsetZMultiplier());
 	}
@@ -94,7 +104,7 @@ public interface IClientConfig
 	
 	double getClimbingOffsetZMultiplier();
 	
-	default Vec3 getClimbingMultipliers()
+	default @NotNull Vec3 getClimbingMultipliers()
 	{
 		return new Vec3(this.getClimbingOffsetXMultiplier(), this.getClimbingOffsetYMultiplier(), this.getClimbingOffsetZMultiplier());
 	}
@@ -105,7 +115,7 @@ public interface IClientConfig
 	
 	double getPassengerOffsetZModifier();
 	
-	default Vec3 getPassengerOffsetModifiers()
+	default @NotNull Vec3 getPassengerOffsetModifiers()
 	{
 		return new Vec3(this.getPassengerOffsetXModifier(), this.getPassengerOffsetYModifier(), this.getPassengerOffsetZModifier());
 	}
@@ -116,7 +126,7 @@ public interface IClientConfig
 	
 	double getSprintOffsetZModifier();
 	
-	default Vec3 getSprintOffsetModifiers()
+	default @NotNull Vec3 getSprintOffsetModifiers()
 	{
 		return new Vec3(this.getSprintOffsetXModifier(), this.getSprintOffsetYModifier(), this.getSprintOffsetZModifier());
 	}
@@ -127,7 +137,7 @@ public interface IClientConfig
 	
 	double getAimingOffsetZModifier();
 	
-	default Vec3 getAimingOffsetModifiers()
+	default @NotNull Vec3 getAimingOffsetModifiers()
 	{
 		return new Vec3(this.getAimingOffsetXModifier(), this.getAimingOffsetYModifier(), this.getAimingOffsetZModifier());
 	}
@@ -138,7 +148,7 @@ public interface IClientConfig
 	
 	double getFallFlyingOffsetZModifier();
 	
-	default Vec3 getFallFlyingOffsetModifiers()
+	default @NotNull Vec3 getFallFlyingOffsetModifiers()
 	{
 		return new Vec3(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
 	}
@@ -149,32 +159,14 @@ public interface IClientConfig
 	
 	double getClimbingOffsetZModifier();
 	
-	default Vec3 getClimbingOffsetModifiers()
+	default @NotNull Vec3 getClimbingOffsetModifiers()
 	{
 		return new Vec3(this.getClimbingOffsetXModifier(), this.getClimbingOffsetYModifier(), this.getClimbingOffsetZModifier());
 	}
 	
 	CameraDistanceAttributeMode getCameraDistanceAttributeMode();
 	
-	CrosshairVisibility getCrosshairVisibility(Perspective perspective);
-	
-	boolean useCustomRaytraceDistance();
-	
 	double keepCameraOutOfHeadMultiplier();
-	
-	boolean replaceDefaultPerspective();
-	
-	boolean isFirstPersonEnabled();
-	
-	boolean isThirdPersonFrontEnabled();
-	
-	boolean isThirdPersonBackEnabled();
-	
-	Perspective getDefaultPerspective();
-	
-	CrosshairType getCrosshairType();
-	
-	boolean doRememberLastPerspective();
 	
 	double getCameraStepSize();
 	
@@ -182,31 +174,7 @@ public interface IClientConfig
 	
 	double getCenterCameraWhenLookingDownAngle();
 	
-	double getHidePlayerWhenLookingUpAngle();
-	
 	boolean doDynamicallyAdjustOffsets();
-	
-	boolean isPlayerTransparencyEnabled();
-	
-	boolean turnPlayerTransparentWhenAiming();
-	
-	TurningMode getTurningModeWhenUsingItem();
-	
-	TurningMode getTurningModeWhenAttacking();
-	
-	TurningMode getTurningModeWhenInteracting();
-	
-	TurningMode getTurningModeWhenPicking();
-	
-	int getTurningLockTime();
-	
-	double getTurningSpeedMultiplier();
-	
-	PickOrigin getEntityPickOrigin();
-	
-	PickOrigin getBlockPickOrigin();
-	
-	PickVector getPickVector();
 	
 	boolean isCameraDecoupled();
 	
@@ -228,7 +196,7 @@ public interface IClientConfig
 	
 	double getCameraDragZMultiplier();
 	
-	default Vec3 getCameraDragMultipliers()
+	default @NotNull Vec3 getCameraDragMultipliers()
 	{
 		return new Vec3(this.getCameraDragXMultiplier(), this.getCameraDragYMultiplier(), this.getCameraDragZMultiplier());
 	}
@@ -240,44 +208,4 @@ public interface IClientConfig
 	double getCameraSwayXMaxVelocity();
 	
 	double getCameraSwayZMaxVelocity();
-	
-	double getCustomRaytraceDistance();
-	
-	List<? extends String> getAdaptiveCrosshairHoldItems();
-	
-	List<? extends String> getAdaptiveCrosshairUseItems();
-	
-	List<? extends String> getAdaptiveCrosshairHoldItemAnimations();
-	
-	List<? extends String> getAdaptiveCrosshairUseItemAnimations();
-	
-	List<? extends String> getAdaptiveCrosshairHoldItemDefaultComponents();
-	
-	List<? extends String> getAdaptiveCrosshairUseItemDefaultComponents();
-	
-	List<? extends String> getAdaptiveCrosshairHoldItemComponents();
-	
-	List<? extends String> getAdaptiveCrosshairUseItemComponents();
-	
-	boolean getShowObstructionCrosshair();
-	
-	boolean showObstructionIndicatorWhenAiming();
-	
-	int getObstructionIndicatorMinDistanceToCrosshair();
-	
-	double getObstructionIndicatorMaxDistanceToObstruction();
-	
-	boolean doCenterPlayerSounds();
-	
-	boolean shouldPlayerXRotFollowCamera();
-	
-	boolean shouldPlayerYRotFollowCamera();
-	
-	double getPlayerYRotFollowAngleLimit();
-	
-	List<? extends String> getCuriosAdaptiveCrosshairItems();
-	
-	List<? extends String> getCuriosAdaptiveCrosshairDefaultItemComponents();
-	
-	List<? extends String> getCuriosAdaptiveCrosshairItemComponents();
 }

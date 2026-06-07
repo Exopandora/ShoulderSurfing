@@ -27,7 +27,7 @@ public abstract class MixinAvatarRenderer extends LivingEntityRenderer<LivingEnt
 	{
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 		
-		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState() && !Util.isCameraEntityRidingBoat())
+		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState() && !Util.isCameraEntityRidingBoat())
 		{
 			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));
 		}

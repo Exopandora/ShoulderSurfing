@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
@@ -48,7 +48,7 @@ public abstract class MixinClientLevel extends Level
 	)
 	private void playSeededSound(@Nullable Entity entity, double x, double y, double z, Holder<SoundEvent> soundEvent, SoundSource soundSource, float volume, float pitch, long seed, CallbackInfo ci)
 	{
-		if(entity != null && entity == Minecraft.getInstance().player && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.doCenterPlayerSounds() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z)
+		if(entity != null && entity == Minecraft.getInstance().player && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().doCenterPlayerSounds() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z)
 		{
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(entity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent.value(), soundSource, volume, pitch, false, seed);
@@ -66,7 +66,7 @@ public abstract class MixinClientLevel extends Level
 	{
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		
-		if(cameraEntity != null && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.doCenterPlayerSounds() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z)
+		if(cameraEntity != null && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().doCenterPlayerSounds() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z)
 		{
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isDelayed, this.random.nextLong());

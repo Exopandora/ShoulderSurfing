@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.plugin.callbacks;
 
 import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
@@ -22,20 +23,21 @@ public class AdaptiveItemCallback implements IAdaptiveItemCallback
 	public boolean isHoldingAdaptiveItem(Minecraft minecraft, LivingEntity entity)
 	{
 		ItemStack useStack = entity.getUseItem();
-		List<? extends String> useItems = Config.CLIENT.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemComponents = Config.CLIENT.getAdaptiveCrosshairUseItemComponents();
-		List<? extends String> useItemDefaultComponents = Config.CLIENT.getAdaptiveCrosshairUseItemDefaultComponents();
-		List<? extends String> useItemAnimations = Config.CLIENT.getAdaptiveCrosshairUseItemAnimations();
+		CrosshairConfig crosshairConfig = Config.CLIENT.getCrosshairConfig();
+		List<? extends String> useItems = crosshairConfig.getAdaptiveCrosshairUseItems();
+		List<? extends String> useItemComponents = crosshairConfig.getAdaptiveCrosshairUseItemComponents();
+		List<? extends String> useItemDefaultComponents = crosshairConfig.getAdaptiveCrosshairUseItemDefaultComponents();
+		List<? extends String> useItemAnimations = crosshairConfig.getAdaptiveCrosshairUseItemAnimations();
 		
 		if(isAdaptiveItemStack(useStack, useItems, useItemComponents, useItemDefaultComponents, useItemAnimations))
 		{
 			return true;
 		}
 		
-		List<? extends String> holdItems = Config.CLIENT.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemComponents = Config.CLIENT.getAdaptiveCrosshairHoldItemComponents();
-		List<? extends String> holdDefaultComponents = Config.CLIENT.getAdaptiveCrosshairHoldItemDefaultComponents();
-		List<? extends String> holdItemAnimations = Config.CLIENT.getAdaptiveCrosshairHoldItemAnimations();
+		List<? extends String> holdItems = crosshairConfig.getAdaptiveCrosshairHoldItems();
+		List<? extends String> holdItemComponents = crosshairConfig.getAdaptiveCrosshairHoldItemComponents();
+		List<? extends String> holdDefaultComponents = crosshairConfig.getAdaptiveCrosshairHoldItemDefaultComponents();
+		List<? extends String> holdItemAnimations = crosshairConfig.getAdaptiveCrosshairHoldItemAnimations();
 		ItemStack[] handItems = {entity.getMainHandItem(), entity.getOffhandItem()};
 		
 		for(ItemStack handStack : handItems)

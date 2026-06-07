@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
+import com.github.exopandora.shouldersurfing.api.client.config.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 
 public interface IShoulderSurfing
