@@ -9,7 +9,7 @@ import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.PerspectiveConfig;
-import com.github.exopandora.shouldersurfing.mixinducks.OptionsDuck;
+import com.github.exopandora.shouldersurfing.mixinduck.OptionsDuck;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

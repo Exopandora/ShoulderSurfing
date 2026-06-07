@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.mixins.RenderTypeAccessor;
+import com.github.exopandora.shouldersurfing.mixin.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.feature.ItemFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.*;

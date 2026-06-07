@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.forge.event;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
+import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.ViewportEvent;

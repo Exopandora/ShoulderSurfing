@@ -8,7 +8,7 @@ import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
 import com.github.exopandora.shouldersurfing.config.ObjectPickerConfig;
-import com.github.exopandora.shouldersurfing.mixins.GuiAccessor;
+import com.github.exopandora.shouldersurfing.mixin.GuiAccessor;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Camera;
