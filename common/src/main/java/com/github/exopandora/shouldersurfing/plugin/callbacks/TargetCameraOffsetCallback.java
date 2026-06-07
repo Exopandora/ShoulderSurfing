@@ -18,7 +18,7 @@ import org.joml.Vector3f;
 public class TargetCameraOffsetCallback {
 	public static class CameraDistanceAttribute implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			if (context.cameraEntity() instanceof LivingEntity living) {
 				return applyCameraDistanceAttribute(context.targetOffset(), living.getAttributeValue(Attributes.CAMERA_DISTANCE));
 			}
@@ -28,7 +28,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class CameraDistanceAttributePassenger implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			if (context.cameraEntity().isPassenger() && context.cameraEntity().getVehicle() instanceof LivingEntity living) {
 				return applyCameraDistanceAttribute(context.targetOffset(), living.getAttributeValue(Attributes.CAMERA_DISTANCE));
 			}
@@ -38,7 +38,7 @@ public class TargetCameraOffsetCallback {
 	
 	private static abstract class AbstractModifiersAndMultipliers implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			if (this.shouldApply(context)) {
 				return context.targetOffset()
 					.add(context.defaultOffset().multiply(this.getMultipliers()).subtract(context.defaultOffset()))
@@ -47,7 +47,7 @@ public class TargetCameraOffsetCallback {
 			return context.targetOffset();
 		}
 		
-		protected abstract boolean shouldApply(Context context);
+		protected abstract boolean shouldApply(GetTagetCameraOffsetContext context);
 		
 		protected abstract Vec3 getModifiers();
 		
@@ -56,7 +56,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class PassengerModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context) {
+		protected boolean shouldApply(GetTagetCameraOffsetContext context) {
 			return context.cameraEntity().isPassenger();
 		}
 		
@@ -73,7 +73,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class SprintingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context) {
+		protected boolean shouldApply(GetTagetCameraOffsetContext context) {
 			return context.cameraEntity().isSprinting();
 		}
 		
@@ -90,7 +90,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class AimingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context) {
+		protected boolean shouldApply(GetTagetCameraOffsetContext context) {
 			return context.instance().isAiming();
 		}
 		
@@ -107,7 +107,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class FallFlyingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context) {
+		protected boolean shouldApply(GetTagetCameraOffsetContext context) {
 			return context.cameraEntity() instanceof LivingEntity living && living.isFallFlying();
 		}
 		
@@ -124,7 +124,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class ClimbingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context) {
+		protected boolean shouldApply(GetTagetCameraOffsetContext context) {
 			return !context.cameraEntity().isSpectator() && context.cameraEntity() instanceof LivingEntity living && living.onClimbable();
 		}
 		
@@ -143,7 +143,7 @@ public class TargetCameraOffsetCallback {
 		private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 		
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			if (!context.cameraEntity().isSpectator() && isCameraLookingDown(context.camera())) {
 				return new Vec3(0, 0, context.targetOffset().z());
 			}
@@ -157,7 +157,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class DynamicOffsets implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			if (!context.cameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().isOffsetDynamic()) {
 				return calcDynamicOffsets(context.camera(), context.cameraEntity(), context.level(), context.targetOffset());
 			}
@@ -202,7 +202,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class OffsetLimits implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
 			double targetOffsetX = cameraConfig.isOffsetXUnlimited()
 				? context.targetOffset().x()
@@ -219,7 +219,7 @@ public class TargetCameraOffsetCallback {
 	
 	public static class EntityScale implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context) {
+		public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 			return context.targetOffset().scale(EntityHelper.getMaxScale(context.cameraEntity()));
 		}
 	}

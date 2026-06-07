@@ -5,8 +5,10 @@ import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCa
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback.IsForcingVanillaMovementInputContext;
 import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.*;
+import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback.GetTagetCameraOffsetContext;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
@@ -15,6 +17,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -150,6 +154,19 @@ class CallbackHelper {
 			result = Math.min(Mth.clamp(callback.getCameraEntityAlpha(instance, entity, partialTick), 0.0F, 1.0F), result);
 		}
 		return result;
+	}
+	
+	protected static Vec3 getTargetOffset(
+		IShoulderSurfing instance, Vec3 defaultOffset, Camera camera, Entity cameraEntity, BlockGetter level
+	) {
+		Vec3 targetOffset = defaultOffset;
+		for (ITargetCameraOffsetCallback callback : ShoulderSurfingRegistrar.getInstance().getTargetCameraOffsetCallbacks()) {
+			GetTagetCameraOffsetContext context = new GetTagetCameraOffsetContext(
+				instance, targetOffset, defaultOffset, camera, cameraEntity, level
+			);
+			targetOffset = callback.getTargetOffset(context);
+		}
+		return targetOffset;
 	}
 	
 	private static List<IPlayerStateCallback> getPlayerStateCallbacks() {

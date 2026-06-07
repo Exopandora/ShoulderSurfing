@@ -6,7 +6,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class CreateModTargetCameraOffsetCallback implements ITargetCameraOffsetCallback {
 	@Override
-	public Vec3 getTargetOffset(Context context) {
+	public Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 		return context.targetOffset().multiply(1.0D, 1.0D, CameraDistanceModifier.getMultiplier());
 	}
 }

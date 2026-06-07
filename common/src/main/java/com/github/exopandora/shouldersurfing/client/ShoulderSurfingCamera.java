@@ -1,13 +1,11 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.PlayerConfig;
-import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -19,8 +17,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	private final ShoulderSurfingImpl instance;
@@ -146,22 +142,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		this.initialized = true;
 	}
 	
-	@SuppressWarnings("removal")
 	public void setup(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity) {
 		Vec3 defaultOffset = Config.CLIENT.getCameraConfig().getOffset();
-		Vec3 targetOffset = defaultOffset;
-		List<ITargetCameraOffsetCallback> targetCameraOffsetCallbacks = ShoulderSurfingRegistrar.getInstance().getTargetCameraOffsetCallbacks();
-		for (ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks) {
-			targetOffset = targetCameraOffsetCallback.pre(this.instance, targetOffset, defaultOffset);
-		}
-		for (ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks) {
-			ITargetCameraOffsetCallback.Context context = new ITargetCameraOffsetCallback.Context(this.instance, targetOffset, defaultOffset, camera, cameraEntity, level);
-			targetOffset = targetCameraOffsetCallback.getTargetOffset(context);
-		}
-		for (ITargetCameraOffsetCallback targetCameraOffsetCallback : targetCameraOffsetCallbacks) {
-			targetOffset = targetCameraOffsetCallback.post(this.instance, targetOffset, defaultOffset);
-		}
-		this.targetOffset = targetOffset;
+		this.targetOffset = CallbackHelper.getTargetOffset(this.instance, defaultOffset, camera, cameraEntity, level);
 		Vec3 drag = this.calcCameraDrag(camera, cameraEntity, partialTick);
 		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick).add(drag);
 		if (cameraEntity.isSpectator()) {

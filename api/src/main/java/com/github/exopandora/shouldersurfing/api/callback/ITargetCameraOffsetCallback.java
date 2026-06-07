@@ -16,45 +16,21 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface ITargetCameraOffsetCallback {
 	/**
-	 * @param instance      The IShoulderSurfing instance
-	 * @param targetOffset  The target offset for the camera
-	 * @param defaultOffset The default offset for the camera, without any prior modifications
-	 * @return The modified target offset for the camera
-	 * @since 4.1.0
-	 * @deprecated Planned to be removed in 26.3.
-	 * Use <code>ITargetCameraOffsetCallback.getTargetOffset</code> instead.
-	 * The order can be controlled by setting the event priority on callback registration.
-	 */
-	@Deprecated(since = "4.23", forRemoval = true)
-	default Vec3 pre(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset) {
-		return targetOffset;
-	}
-	
-	/**
-	 * @param instance      The IShoulderSurfing instance
-	 * @param targetOffset  The target offset for the camera, after offset multipliers have been applied
-	 * @param defaultOffset The default offset for the camera, without any prior modifications
-	 * @return The modified target offset for the camera
-	 * @since 4.1.0
-	 * @deprecated Planned to be removed in 26.3.
-	 * Use <code>ITargetCameraOffsetCallback.getTargetOffset</code> instead.
-	 * The order can be controlled by setting the event priority on callback registration.
-	 */
-	@Deprecated(since = "4.23", forRemoval = true)
-	default Vec3 post(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset) {
-		return targetOffset;
-	}
-	
-	/**
 	 * @param context The arguments of this callback.
 	 * @return The modified target offset for the camera
-	 * @since 4.1.0
+	 * @since 5.0.0
 	 */
-	default Vec3 getTargetOffset(Context context) {
+	default Vec3 getTargetOffset(GetTagetCameraOffsetContext context) {
 		return context.targetOffset();
 	}
 	
-	record Context(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset, Camera camera, @NotNull Entity cameraEntity,
-	               BlockGetter level) {
+	record GetTagetCameraOffsetContext(
+		IShoulderSurfing instance,
+		Vec3 targetOffset,
+		Vec3 defaultOffset,
+		Camera camera,
+		@NotNull Entity cameraEntity,
+		BlockGetter level
+	) {
 	}
 }
