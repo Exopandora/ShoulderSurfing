@@ -111,4 +111,8 @@ public class EntityHelper {
 	public static Vec3 getDeltaMovementWithoutGravity(Entity entity) {
 		return entity.getDeltaMovement().add(0, entity.getGravity(), 0);
 	}
+	
+	public static boolean isScoping(Entity entity) {
+		return entity instanceof Player player && player.isScoping();
+	}
 }

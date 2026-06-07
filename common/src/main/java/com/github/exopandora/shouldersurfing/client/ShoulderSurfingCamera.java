@@ -351,4 +351,12 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	public void setLastMovedYRot(float lastMovedYRot) {
 		this.lastMovedYRot = lastMovedYRot;
 	}
+	
+	public boolean isLookingUp() {
+		return this.getXRot() < Config.CLIENT.getPlayerConfig().getHidePlayerWhenLookingUpAngle() - 90;
+	}
+	
+	public boolean isInsideEntity(Entity cameraEntity) {
+		return this.getCameraDistance() < cameraEntity.getBbWidth() * Config.CLIENT.getCameraConfig().keepCameraOutOfHeadMultiplier();
+	}
 }

@@ -1,13 +1,13 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.ICameraEntityRenderer;
+import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.util.Util;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 public class CameraEntityRenderer implements ICameraEntityRenderer {
 	private final ShoulderSurfingImpl instance;
@@ -20,7 +20,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 	}
 	
 	public boolean preRenderCameraEntity(Entity entity, float partialTick) {
-		if (this.shouldSkipCameraEntityRendering(entity)) {
+		if (this.isCameraEntityRenderingSkipped(entity)) {
 			return true;
 		}
 		this.cameraEntityAlpha = 1.0F;
@@ -35,9 +35,17 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 		this.isRenderingCameraEntity = false;
 	}
 	
-	private boolean shouldSkipCameraEntityRendering(Entity cameraEntity) {
+	private boolean isCameraEntityRenderingSkipped(Entity cameraEntity) {
+		if (!this.instance.isShoulderSurfing() || cameraEntity.isSpectator()) {
+			return false;
+		}
 		ShoulderSurfingCamera camera = this.instance.getCamera();
-		return this.instance.isShoulderSurfing() && !cameraEntity.isSpectator() && (camera.getCameraDistance() < cameraEntity.getBbWidth() * Config.CLIENT.getCameraConfig().keepCameraOutOfHeadMultiplier() || camera.getXRot() < Config.CLIENT.getPlayerConfig().getHidePlayerWhenLookingUpAngle() - 90 || cameraEntity instanceof Player player && player.isScoping());
+		if (camera.isInsideEntity(cameraEntity)) {
+			return true;
+		} else if (camera.isLookingUp()) {
+			return true;
+		}
+		return EntityHelper.isScoping(cameraEntity);
 	}
 	
 	public int applyCameraEntityAlphaContextAware(int color) {
