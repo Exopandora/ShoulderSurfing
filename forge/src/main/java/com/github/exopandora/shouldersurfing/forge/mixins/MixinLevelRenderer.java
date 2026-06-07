@@ -36,7 +36,8 @@ public class MixinLevelRenderer {
 	) {
 		float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
 		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.entity(), partialTick);
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		instance.getCamera().renderTick(camera.entity(), partialTick);
+		instance.getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
 	}
 }

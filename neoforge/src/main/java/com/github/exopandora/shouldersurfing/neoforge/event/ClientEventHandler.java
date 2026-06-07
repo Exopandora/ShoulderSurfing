@@ -9,6 +9,7 @@ import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import org.joml.Matrix4f;
 
 public class ClientEventHandler {
 	@SubscribeEvent
@@ -53,8 +54,11 @@ public class ClientEventHandler {
 	public static void frameGraphSetupEvent(FrameGraphSetupEvent event) {
 		float partialTick = event.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-		ShoulderSurfingImpl.getInstance().getCamera().renderTick(camera.entity(), partialTick);
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(camera, event.getCameraState().viewRotationMatrix, event.getCameraState().projectionMatrix, partialTick);
+		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		Matrix4f modelViewMatrix = event.getCameraState().viewRotationMatrix;
+		Matrix4f projectionMatrix = event.getCameraState().projectionMatrix;
+		instance.getCamera().renderTick(camera.entity(), partialTick);
+		instance.getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}
 	
 	@SubscribeEvent
