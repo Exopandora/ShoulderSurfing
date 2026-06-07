@@ -7,16 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface ICameraConfig
-{
+public interface ICameraConfig {
 	double getOffsetX();
 	
 	double getOffsetY();
 	
 	double getOffsetZ();
 	
-	default @NotNull Vec3 getOffset()
-	{
+	default @NotNull Vec3 getOffset() {
 		return new Vec3(this.getOffsetX(), this.getOffsetY(), this.getOffsetZ());
 	}
 	
@@ -32,8 +30,7 @@ public interface ICameraConfig
 	
 	double getMinOffsetZ();
 	
-	default @NotNull Vec3 getMinOffset()
-	{
+	default @NotNull Vec3 getMinOffset() {
 		return new Vec3(this.getMinOffsetX(), this.getMinOffsetY(), this.getMinOffsetZ());
 	}
 	
@@ -43,8 +40,7 @@ public interface ICameraConfig
 	
 	double getMaxOffsetZ();
 	
-	default @NotNull Vec3 getMaxOffset()
-	{
+	default @NotNull Vec3 getMaxOffset() {
 		return new Vec3(this.getMaxOffsetX(), this.getMaxOffsetY(), this.getMaxOffsetZ());
 	}
 	
@@ -60,9 +56,12 @@ public interface ICameraConfig
 	
 	double getPassengerOffsetZMultiplier();
 	
-	default @NotNull Vec3 getPassengerOffsetMultipliers()
-	{
-		return new Vec3(this.getPassengerOffsetXMultiplier(), this.getPassengerOffsetYMultiplier(), this.getPassengerOffsetZMultiplier());
+	default @NotNull Vec3 getPassengerOffsetMultipliers() {
+		return new Vec3(
+			this.getPassengerOffsetXMultiplier(),
+			this.getPassengerOffsetYMultiplier(),
+			this.getPassengerOffsetZMultiplier()
+		);
 	}
 	
 	double getSprintOffsetXMultiplier();
@@ -71,9 +70,12 @@ public interface ICameraConfig
 	
 	double getSprintOffsetZMultiplier();
 	
-	default @NotNull Vec3 getSprintOffsetMultipliers()
-	{
-		return new Vec3(this.getSprintOffsetXMultiplier(), this.getSprintOffsetYMultiplier(), this.getSprintOffsetZMultiplier());
+	default @NotNull Vec3 getSprintOffsetMultipliers() {
+		return new Vec3(
+			this.getSprintOffsetXMultiplier(),
+			this.getSprintOffsetYMultiplier(),
+			this.getSprintOffsetZMultiplier()
+		);
 	}
 	
 	double getAimingOffsetXMultiplier();
@@ -82,9 +84,12 @@ public interface ICameraConfig
 	
 	double getAimingOffsetZMultiplier();
 	
-	default @NotNull Vec3 getAimingOffsetMultipliers()
-	{
-		return new Vec3(this.getAimingOffsetXMultiplier(), this.getAimingOffsetYMultiplier(), this.getAimingOffsetZMultiplier());
+	default @NotNull Vec3 getAimingOffsetMultipliers() {
+		return new Vec3(
+			this.getAimingOffsetXMultiplier(),
+			this.getAimingOffsetYMultiplier(),
+			this.getAimingOffsetZMultiplier()
+		);
 	}
 	
 	double getFallFlyingOffsetXMultiplier();
@@ -93,9 +98,12 @@ public interface ICameraConfig
 	
 	double getFallFlyingOffsetZMultiplier();
 	
-	default @NotNull Vec3 getFallFlyingMultipliers()
-	{
-		return new Vec3(this.getFallFlyingOffsetXMultiplier(), this.getFallFlyingOffsetYMultiplier(), this.getFallFlyingOffsetZMultiplier());
+	default @NotNull Vec3 getFallFlyingMultipliers() {
+		return new Vec3(
+			this.getFallFlyingOffsetXMultiplier(),
+			this.getFallFlyingOffsetYMultiplier(),
+			this.getFallFlyingOffsetZMultiplier()
+		);
 	}
 	
 	double getClimbingOffsetXMultiplier();
@@ -104,9 +112,12 @@ public interface ICameraConfig
 	
 	double getClimbingOffsetZMultiplier();
 	
-	default @NotNull Vec3 getClimbingMultipliers()
-	{
-		return new Vec3(this.getClimbingOffsetXMultiplier(), this.getClimbingOffsetYMultiplier(), this.getClimbingOffsetZMultiplier());
+	default @NotNull Vec3 getClimbingMultipliers() {
+		return new Vec3(
+			this.getClimbingOffsetXMultiplier(),
+			this.getClimbingOffsetYMultiplier(),
+			this.getClimbingOffsetZMultiplier()
+		);
 	}
 	
 	double getPassengerOffsetXModifier();
@@ -115,9 +126,12 @@ public interface ICameraConfig
 	
 	double getPassengerOffsetZModifier();
 	
-	default @NotNull Vec3 getPassengerOffsetModifiers()
-	{
-		return new Vec3(this.getPassengerOffsetXModifier(), this.getPassengerOffsetYModifier(), this.getPassengerOffsetZModifier());
+	default @NotNull Vec3 getPassengerOffsetModifiers() {
+		return new Vec3(
+			this.getPassengerOffsetXModifier(),
+			this.getPassengerOffsetYModifier(),
+			this.getPassengerOffsetZModifier()
+		);
 	}
 	
 	double getSprintOffsetXModifier();
@@ -126,9 +140,12 @@ public interface ICameraConfig
 	
 	double getSprintOffsetZModifier();
 	
-	default @NotNull Vec3 getSprintOffsetModifiers()
-	{
-		return new Vec3(this.getSprintOffsetXModifier(), this.getSprintOffsetYModifier(), this.getSprintOffsetZModifier());
+	default @NotNull Vec3 getSprintOffsetModifiers() {
+		return new Vec3(
+			this.getSprintOffsetXModifier(),
+			this.getSprintOffsetYModifier(),
+			this.getSprintOffsetZModifier()
+		);
 	}
 	
 	double getAimingOffsetXModifier();
@@ -137,9 +154,12 @@ public interface ICameraConfig
 	
 	double getAimingOffsetZModifier();
 	
-	default @NotNull Vec3 getAimingOffsetModifiers()
-	{
-		return new Vec3(this.getAimingOffsetXModifier(), this.getAimingOffsetYModifier(), this.getAimingOffsetZModifier());
+	default @NotNull Vec3 getAimingOffsetModifiers() {
+		return new Vec3(
+			this.getAimingOffsetXModifier(),
+			this.getAimingOffsetYModifier(),
+			this.getAimingOffsetZModifier()
+		);
 	}
 	
 	double getFallFlyingOffsetXModifier();
@@ -148,9 +168,12 @@ public interface ICameraConfig
 	
 	double getFallFlyingOffsetZModifier();
 	
-	default @NotNull Vec3 getFallFlyingOffsetModifiers()
-	{
-		return new Vec3(this.getFallFlyingOffsetXModifier(), this.getFallFlyingOffsetYModifier(), this.getFallFlyingOffsetZModifier());
+	default @NotNull Vec3 getFallFlyingOffsetModifiers() {
+		return new Vec3(
+			this.getFallFlyingOffsetXModifier(),
+			this.getFallFlyingOffsetYModifier(),
+			this.getFallFlyingOffsetZModifier()
+		);
 	}
 	
 	double getClimbingOffsetXModifier();
@@ -159,9 +182,12 @@ public interface ICameraConfig
 	
 	double getClimbingOffsetZModifier();
 	
-	default @NotNull Vec3 getClimbingOffsetModifiers()
-	{
-		return new Vec3(this.getClimbingOffsetXModifier(), this.getClimbingOffsetYModifier(), this.getClimbingOffsetZModifier());
+	default @NotNull Vec3 getClimbingOffsetModifiers() {
+		return new Vec3(
+			this.getClimbingOffsetXModifier(),
+			this.getClimbingOffsetYModifier(),
+			this.getClimbingOffsetZModifier()
+		);
 	}
 	
 	CameraDistanceAttributeMode getCameraDistanceAttributeMode();
@@ -196,9 +222,12 @@ public interface ICameraConfig
 	
 	double getCameraDragZMultiplier();
 	
-	default @NotNull Vec3 getCameraDragMultipliers()
-	{
-		return new Vec3(this.getCameraDragXMultiplier(), this.getCameraDragYMultiplier(), this.getCameraDragZMultiplier());
+	default @NotNull Vec3 getCameraDragMultipliers() {
+		return new Vec3(
+			this.getCameraDragXMultiplier(),
+			this.getCameraDragYMultiplier(),
+			this.getCameraDragZMultiplier()
+		);
 	}
 	
 	double getCameraSwayXMaxAngle();

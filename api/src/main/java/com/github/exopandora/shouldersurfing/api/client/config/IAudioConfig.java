@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.api.client.config;
 
-public interface IAudioConfig
-{
+public interface IAudioConfig {
 	boolean isPlayerSoundCentered();
 }

@@ -11,11 +11,9 @@ import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 
-public class ShoulderSurfingFabric implements ClientModInitializer
-{
+public class ShoulderSurfingFabric implements ClientModInitializer {
 	@Override
-	public void onInitializeClient()
-	{
+	public void onInitializeClient() {
 		ConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 		ConfigScreenFactoryRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, ConfigurationScreen::new);
 		KeyMappingHelper.registerKeyMapping(InputHandler.CAMERA_LEFT);

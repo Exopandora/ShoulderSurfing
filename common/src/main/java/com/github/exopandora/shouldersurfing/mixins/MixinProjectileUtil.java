@@ -22,26 +22,25 @@ import java.util.Collection;
 import java.util.function.Predicate;
 
 @Mixin(ProjectileUtil.class)
-public class MixinProjectileUtil
-{
-	@Inject
-	(
+public class MixinProjectileUtil {
+	@Inject(
 		method = "getHitEntitiesAlong",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private static void getHitEntitiesAlong(Entity entity, AttackRange attackRange, Predicate<Entity> filter, ClipContext.Block blockMode, CallbackInfoReturnable<Either<BlockHitResult, Collection<EntityHitResult>>> cir)
-	{
-		if(!entity.level().isClientSide())
-		{
+	private static void getHitEntitiesAlong(
+		Entity entity,
+		AttackRange attackRange,
+		Predicate<Entity> filter,
+		ClipContext.Block blockMode,
+		CallbackInfoReturnable<Either<BlockHitResult, Collection<EntityHitResult>>> cir
+	) {
+		if (!entity.level().isClientSide()) {
 			return;
 		}
-		
 		Minecraft minecraft = Minecraft.getInstance();
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(entity == minecraft.player && instance.isShoulderSurfing())
-		{
+		if (entity == minecraft.player && instance.isShoulderSurfing()) {
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withEntity(entity)
@@ -58,8 +57,15 @@ public class MixinProjectileUtil
 	}
 	
 	@Shadow
-	private static Either<BlockHitResult, Collection<EntityHitResult>> getHitEntitiesAlong(Entity entity, Vec3 from, Vec3 to, Predicate<Entity> filter, Vec3 rangeEnd, float hitboxMargin, ClipContext.Block blockMode)
-	{
+	private static Either<BlockHitResult, Collection<EntityHitResult>> getHitEntitiesAlong(
+		Entity entity,
+		Vec3 from,
+		Vec3 to,
+		Predicate<Entity> filter,
+		Vec3 rangeEnd,
+		float hitboxMargin,
+		ClipContext.Block blockMode
+	) {
 		throw new AssertionError();
 	}
 }

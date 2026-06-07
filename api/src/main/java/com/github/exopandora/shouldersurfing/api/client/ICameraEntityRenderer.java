@@ -1,7 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
-public interface ICameraEntityRenderer
-{
+public interface ICameraEntityRenderer {
 	boolean isRenderingCameraEntity();
 	
 	float getCameraEntityAlpha();

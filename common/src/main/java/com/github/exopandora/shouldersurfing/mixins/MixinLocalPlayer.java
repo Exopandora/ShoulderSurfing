@@ -19,28 +19,28 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.function.Predicate;
 
 @Mixin(value = LocalPlayer.class, priority = 1500 /* apply after essential client, so turn method gets overwritten */)
-public abstract class MixinLocalPlayer extends AbstractClientPlayer
-{
-	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile)
-	{
+public abstract class MixinLocalPlayer extends AbstractClientPlayer {
+	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile) {
 		super(level, gameProfile);
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/world/entity/projectile/ProjectileUtil.getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;"
 		)
 	)
-	private static EntityHitResult getEntityHitResult(Entity shooter, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq)
-	{
+	private static EntityHitResult getEntityHitResult(
+		Entity shooter,
+		Vec3 startPos,
+		Vec3 endPos,
+		AABB boundingBox,
+		Predicate<Entity> filter,
+		double interactionRangeSq
+	) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			PickContext pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.getMainCamera())
 				.withEntity(shooter)
 				.build();
@@ -48,15 +48,12 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer
 			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
-		
 		return ProjectileUtil.getEntityHitResult(shooter, startPos, endPos, boundingBox, filter, interactionRangeSq);
 	}
 	
 	@Override
-	public void turn(double yRot, double xRot)
-	{
-		if(!ShoulderSurfingImpl.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot))
-		{
+	public void turn(double yRot, double xRot) {
+		if (!ShoulderSurfingImpl.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot)) {
 			super.turn(yRot, xRot);
 		}
 	}

@@ -4,11 +4,9 @@ import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
 import com.github.exopandora.shouldersurfing.compat.CobblemonCompat;
 import org.jetbrains.annotations.NotNull;
 
-public class CobblemonPlayerStateCallback implements IPlayerStateCallback
-{
+public class CobblemonPlayerStateCallback implements IPlayerStateCallback {
 	@Override
-	public @NotNull Result isRidingBoat(@NotNull IsRidingBoatContext context)
-	{
+	public @NotNull Result isRidingBoat(@NotNull IsRidingBoatContext context) {
 		boolean useBoatControls = CobblemonCompat.hasActiveBoatBehaviour(context.vehicle()) ||
 			CobblemonCompat.hasActiveSubmarineBehaviour(context.cameraEntity().getVehicle()) ||
 			CobblemonCompat.hasActiveDolphinBehaviour(context.cameraEntity().getVehicle());

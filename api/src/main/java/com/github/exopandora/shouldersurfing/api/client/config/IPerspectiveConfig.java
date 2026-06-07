@@ -2,8 +2,7 @@ package com.github.exopandora.shouldersurfing.api.client.config;
 
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 
-public interface IPerspectiveConfig
-{
+public interface IPerspectiveConfig {
 	boolean isThirdPersonReplaced();
 	
 	boolean isFirstPersonEnabled();

@@ -10,20 +10,17 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class Config
-{
+public class Config {
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final ClientConfig CLIENT;
 	
-	static
-	{
+	static {
 		Pair<ClientConfig, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(ClientConfig::new);
 		CLIENT_SPEC = pair.getRight();
 		CLIENT = pair.getLeft();
 	}
 	
-	public static class ClientConfig implements IClientConfig
-	{
+	public static class ClientConfig implements IClientConfig {
 		private final CameraConfig cameraConfig;
 		private final PerspectiveConfig perspectiveConfig;
 		private final PlayerConfig playerConfig;
@@ -33,8 +30,7 @@ public class Config
 		private final IntegrationsConfig integrationsConfig;
 		private boolean requiresSaving = false;
 		
-		public ClientConfig(ModConfigSpec.Builder builder)
-		{
+		public ClientConfig(ModConfigSpec.Builder builder) {
 			this.audioConfig = new AudioConfig(builder);
 			this.cameraConfig = new CameraConfig(builder);
 			this.crosshairConfig = new CrosshairConfig(builder);
@@ -45,85 +41,67 @@ public class Config
 		}
 		
 		@Override
-		public CameraConfig getCameraConfig()
-		{
+		public CameraConfig getCameraConfig() {
 			return this.cameraConfig;
 		}
 		
 		@Override
-		public PerspectiveConfig getPerspectiveConfig()
-		{
+		public PerspectiveConfig getPerspectiveConfig() {
 			return this.perspectiveConfig;
 		}
 		
 		@Override
-		public PlayerConfig getPlayerConfig()
-		{
+		public PlayerConfig getPlayerConfig() {
 			return this.playerConfig;
 		}
 		
 		@Override
-		public ObjectPickerConfig getObjectPickerConfig()
-		{
+		public ObjectPickerConfig getObjectPickerConfig() {
 			return this.objectPickerConfig;
 		}
 		
 		@Override
-		public CrosshairConfig getCrosshairConfig()
-		{
+		public CrosshairConfig getCrosshairConfig() {
 			return this.crosshairConfig;
 		}
 		
 		@Override
-		public AudioConfig getAudioConfig()
-		{
+		public AudioConfig getAudioConfig() {
 			return this.audioConfig;
 		}
 		
 		@Override
-		public IntegrationsConfig getIntegrationsConfig()
-		{
+		public IntegrationsConfig getIntegrationsConfig() {
 			return this.integrationsConfig;
 		}
 		
-		public boolean requiresSaving()
-		{
+		public boolean requiresSaving() {
 			return this.requiresSaving;
 		}
 		
-		public void save()
-		{
-			try
-			{
+		public void save() {
+			try {
 				Config.CLIENT_SPEC.save();
 				this.requiresSaving = false;
-			}
-			catch(Exception e)
-			{
+			} catch (Exception e) {
 				// ignore
 			}
 		}
 		
-		protected <T> void set(ConfigValue<T> configValue, T value)
-		{
-			if(value != null && !value.equals(configValue.get()))
-			{
+		protected <T> void set(ConfigValue<T> configValue, T value) {
+			if (value != null && !value.equals(configValue.get())) {
 				configValue.set(value);
 				this.requiresSaving = true;
 			}
 		}
 		
-		protected static boolean isValidItemUseAnimation(Object id)
-		{
-			if(id == null)
-			{
+		protected static boolean isValidItemUseAnimation(Object id) {
+			if (id == null) {
 				return false;
 			}
 			
-			for(ItemUseAnimation itemUseAnimation : ItemUseAnimation.values())
-			{
-				if(itemUseAnimation.getSerializedName().equals(id))
-				{
+			for (ItemUseAnimation itemUseAnimation : ItemUseAnimation.values()) {
+				if (itemUseAnimation.getSerializedName().equals(id)) {
 					return true;
 				}
 			}
@@ -131,88 +109,59 @@ public class Config
 			return false;
 		}
 		
-		protected static boolean isValidDataComponentId(Object id)
-		{
-			if(id == null)
-			{
+		protected static boolean isValidDataComponentId(Object id) {
+			if (id == null) {
 				return false;
 			}
-			
 			Identifier location = Identifier.tryParse(id.toString());
-			
-			if(location == null)
-			{
+			if (location == null) {
 				return false;
 			}
-			
 			return BuiltInRegistries.DATA_COMPONENT_TYPE.containsKey(location);
 		}
 		
-		protected static boolean isValidDouble(Object number)
-		{
-			if(number != null)
-			{
-				try
-				{
+		protected static boolean isValidDouble(Object number) {
+			if (number != null) {
+				try {
 					Double.parseDouble(number.toString());
-				}
-				catch(NumberFormatException e)
-				{
+				} catch (NumberFormatException e) {
 					return false;
 				}
 			}
-			
 			return true;
 		}
 		
-		protected static boolean isValidItemWithSlot(Object id)
-		{
-			if(id == null)
-			{
+		protected static boolean isValidItemWithSlot(Object id) {
+			if (id == null) {
 				return false;
 			}
-			
 			String[] split = id.toString().split("@", 2);
-			
-			if(split.length < 2)
-			{
+			if (split.length < 2) {
 				return false;
 			}
-			
 			return Identifier.isValidNamespace(split[0]) && split[1] != null;
 		}
 		
-		protected static boolean isValidDataComponentIdWithSlot(Object id)
-		{
-			if(id == null)
-			{
+		protected static boolean isValidDataComponentIdWithSlot(Object id) {
+			if (id == null) {
 				return false;
 			}
-			
 			String[] split = id.toString().split("@", 2);
-			
-			if(split.length < 2)
-			{
+			if (split.length < 2) {
 				return false;
 			}
-			
 			return Identifier.isValidNamespace(split[0]) && isValidDataComponentId(split[1]);
 		}
 	}
 	
-	public static void onConfigReload()
-	{
+	public static void onConfigReload() {
 		Perspective currentPerspective = Perspective.current();
 		PerspectiveConfig perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(!currentPerspective.isEnabled(perspectiveConfig) && (currentPerspective != Perspective.FIRST_PERSON || !instance.isTemporaryFirstPerson()))
-		{
+		if (!currentPerspective.isEnabled(perspectiveConfig) && (currentPerspective != Perspective.FIRST_PERSON || !instance.isTemporaryFirstPerson())) {
 			instance.changePerspective(currentPerspective.next(perspectiveConfig));
 		}
-		
-		if(perspectiveConfig.isPerspectivePersistent())
-		{
+		if (perspectiveConfig.isPerspectivePersistent()) {
 			perspectiveConfig.setDefaultPerspective(Perspective.current());
 		}
 	}

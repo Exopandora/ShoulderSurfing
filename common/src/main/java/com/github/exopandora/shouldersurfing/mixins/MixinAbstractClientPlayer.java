@@ -7,17 +7,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(AbstractClientPlayer.class)
-public class MixinAbstractClientPlayer
-{
-	@ModifyVariable
-	(
+public class MixinAbstractClientPlayer {
+	@ModifyVariable(
 		method = "getFieldOfViewModifier",
 		at = @At("HEAD"),
 		index = 1,
 		argsOnly = true
 	)
-	private boolean isFirstPerson(boolean isFirstPerson)
-	{
+	private boolean isFirstPerson(boolean isFirstPerson) {
 		return isFirstPerson || Perspective.SHOULDER_SURFING == Perspective.current();
 	}
 }

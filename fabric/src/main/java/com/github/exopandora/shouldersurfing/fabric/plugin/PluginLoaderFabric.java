@@ -9,25 +9,18 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class PluginLoaderFabric extends PluginLoader<Path>
-{
+public class PluginLoaderFabric extends PluginLoader<Path> {
 	@Override
-	public void loadPlugins()
-	{
-		for(ModContainer mod : FabricLoader.getInstance().getAllMods())
-		{
-			mod.findPath(PLUGIN_JSON_PATH).ifPresent(path ->
-			{
-				this.loadPlugin(mod.getMetadata().getName(), mod.getMetadata().getId(), path);
-			});
+	public void loadPlugins() {
+		for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
+			mod.findPath(PLUGIN_JSON_PATH)
+				.ifPresent(path -> this.loadPlugin(mod.getMetadata().getName(), mod.getMetadata().getId(), path));
 		}
-		
 		this.freeze();
 	}
 	
 	@Override
-	protected Reader readConfiguration(Path source) throws IOException
-	{
+	protected Reader readConfiguration(Path source) throws IOException {
 		return Files.newBufferedReader(source);
 	}
 }

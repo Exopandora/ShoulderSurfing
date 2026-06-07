@@ -2,10 +2,10 @@ package com.github.exopandora.shouldersurfing.api.callback;
 
 /**
  * This interface can be used to extend any callback class to receive client ticks.
+ *
  * @since 4.14.0
  */
-public interface ITickableCallback
-{
+public interface ITickableCallback {
 	/**
 	 * Invoked every client tick <b>after</b> Shoulder Surfing Reloaded has ticked
 	 */

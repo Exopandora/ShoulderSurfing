@@ -14,8 +14,7 @@ import java.util.List;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class CameraConfig implements ICameraConfig
-{
+public class CameraConfig implements ICameraConfig {
 	private final DoubleValue offsetX;
 	private final DoubleValue offsetY;
 	private final DoubleValue offsetZ;
@@ -100,8 +99,7 @@ public class CameraConfig implements ICameraConfig
 	private final DoubleValue cameraSwayXMaxVelocity;
 	private final DoubleValue cameraSwayZMaxVelocity;
 	
-	protected CameraConfig(ModConfigSpec.Builder builder)
-	{
+	protected CameraConfig(ModConfigSpec.Builder builder) {
 		builder.push("camera");
 		builder.push("offset");
 		
@@ -493,508 +491,412 @@ public class CameraConfig implements ICameraConfig
 	}
 	
 	@Override
-	public double getOffsetX()
-	{
+	public double getOffsetX() {
 		return this.offsetX.get();
 	}
 	
 	@Override
-	public double getOffsetY()
-	{
+	public double getOffsetY() {
 		return this.offsetY.get();
 	}
 	
 	@Override
-	public double getOffsetZ()
-	{
+	public double getOffsetZ() {
 		return this.offsetZ.get();
 	}
 	
 	@Override
-	public List<Double> getOffsetXPresets()
-	{
+	public List<Double> getOffsetXPresets() {
 		return this.offsetXPresets.get().stream().map(Double::parseDouble).toList();
 	}
 	
 	@Override
-	public List<Double> getOffsetYPresets()
-	{
+	public List<Double> getOffsetYPresets() {
 		return this.offsetYPresets.get().stream().map(Double::parseDouble).toList();
 	}
 	
 	@Override
-	public List<Double> getOffsetZPresets()
-	{
+	public List<Double> getOffsetZPresets() {
 		return this.offsetZPresets.get().stream().map(Double::parseDouble).toList();
 	}
 	
 	@Override
-	public double getMinOffsetX()
-	{
+	public double getMinOffsetX() {
 		return this.minOffsetX.get();
 	}
 	
 	@Override
-	public double getMinOffsetY()
-	{
+	public double getMinOffsetY() {
 		return this.minOffsetY.get();
 	}
 	
 	@Override
-	public double getMinOffsetZ()
-	{
+	public double getMinOffsetZ() {
 		return this.minOffsetZ.get();
 	}
 	
 	@Override
-	public double getMaxOffsetX()
-	{
+	public double getMaxOffsetX() {
 		return this.maxOffsetX.get();
 	}
 	
 	@Override
-	public double getMaxOffsetY()
-	{
+	public double getMaxOffsetY() {
 		return this.maxOffsetY.get();
 	}
 	
 	@Override
-	public double getMaxOffsetZ()
-	{
+	public double getMaxOffsetZ() {
 		return this.maxOffsetZ.get();
 	}
 	
 	@Override
-	public boolean isOffsetXUnlimited()
-	{
+	public boolean isOffsetXUnlimited() {
 		return this.isOffsetXUnlimited.get();
 	}
 	
 	@Override
-	public boolean isOffsetYUnlimited()
-	{
+	public boolean isOffsetYUnlimited() {
 		return this.isOffsetYUnlimited.get();
 	}
 	
 	@Override
-	public boolean isOffsetZUnlimited()
-	{
+	public boolean isOffsetZUnlimited() {
 		return this.isOffsetZUnlimited.get();
 	}
 	
 	@Override
-	public double getPassengerOffsetXMultiplier()
-	{
+	public double getPassengerOffsetXMultiplier() {
 		return this.passengerOffsetXMultiplier.get();
 	}
 	
 	@Override
-	public double getPassengerOffsetYMultiplier()
-	{
+	public double getPassengerOffsetYMultiplier() {
 		return this.passengerOffsetYMultiplier.get();
 	}
 	
 	@Override
-	public double getPassengerOffsetZMultiplier()
-	{
+	public double getPassengerOffsetZMultiplier() {
 		return this.passengerOffsetZMultiplier.get();
 	}
 	
 	@Override
-	public double getSprintOffsetXMultiplier()
-	{
+	public double getSprintOffsetXMultiplier() {
 		return this.sprintOffsetXMultiplier.get();
 	}
 	
 	@Override
-	public double getSprintOffsetYMultiplier()
-	{
+	public double getSprintOffsetYMultiplier() {
 		return this.sprintOffsetYMultiplier.get();
 	}
 	
 	@Override
-	public double getSprintOffsetZMultiplier()
-	{
+	public double getSprintOffsetZMultiplier() {
 		return this.sprintOffsetZMultiplier.get();
 	}
 	
 	@Override
-	public double getAimingOffsetXMultiplier()
-	{
+	public double getAimingOffsetXMultiplier() {
 		return this.aimingOffsetXMultiplier.get();
 	}
 	
 	@Override
-	public double getAimingOffsetYMultiplier()
-	{
+	public double getAimingOffsetYMultiplier() {
 		return this.aimingOffsetYMultiplier.get();
 	}
 	
 	@Override
-	public double getAimingOffsetZMultiplier()
-	{
+	public double getAimingOffsetZMultiplier() {
 		return this.aimingOffsetZMultiplier.get();
 	}
 	
 	@Override
-	public double getFallFlyingOffsetXMultiplier()
-	{
+	public double getFallFlyingOffsetXMultiplier() {
 		return this.fallFlyingOffsetXMultiplier.get();
 	}
 	
 	@Override
-	public double getFallFlyingOffsetYMultiplier()
-	{
+	public double getFallFlyingOffsetYMultiplier() {
 		return this.fallFlyingOffsetYMultiplier.get();
 	}
 	
 	@Override
-	public double getFallFlyingOffsetZMultiplier()
-	{
+	public double getFallFlyingOffsetZMultiplier() {
 		return this.fallFlyingOffsetZMultiplier.get();
 	}
 	
 	@Override
-	public double getClimbingOffsetXMultiplier()
-	{
+	public double getClimbingOffsetXMultiplier() {
 		return this.climbingOffsetXMultiplier.get();
 	}
 	
 	@Override
-	public double getClimbingOffsetYMultiplier()
-	{
+	public double getClimbingOffsetYMultiplier() {
 		return this.climbingOffsetYMultiplier.get();
 	}
 	
 	@Override
-	public double getClimbingOffsetZMultiplier()
-	{
+	public double getClimbingOffsetZMultiplier() {
 		return this.climbingOffsetZMultiplier.get();
 	}
 	
 	@Override
-	public double getPassengerOffsetXModifier()
-	{
+	public double getPassengerOffsetXModifier() {
 		return this.passengerOffsetXModifier.get();
 	}
 	
 	@Override
-	public double getPassengerOffsetYModifier()
-	{
+	public double getPassengerOffsetYModifier() {
 		return this.passengerOffsetYModifier.get();
 	}
 	
 	@Override
-	public double getPassengerOffsetZModifier()
-	{
+	public double getPassengerOffsetZModifier() {
 		return this.passengerOffsetZModifier.get();
 	}
 	
 	@Override
-	public double getSprintOffsetXModifier()
-	{
+	public double getSprintOffsetXModifier() {
 		return this.sprintOffsetXModifier.get();
 	}
 	
 	@Override
-	public double getSprintOffsetYModifier()
-	{
+	public double getSprintOffsetYModifier() {
 		return this.sprintOffsetYModifier.get();
 	}
 	
 	@Override
-	public double getSprintOffsetZModifier()
-	{
+	public double getSprintOffsetZModifier() {
 		return this.sprintOffsetZModifier.get();
 	}
 	
 	@Override
-	public double getAimingOffsetXModifier()
-	{
+	public double getAimingOffsetXModifier() {
 		return this.aimingOffsetXModifier.get();
 	}
 	
 	@Override
-	public double getAimingOffsetYModifier()
-	{
+	public double getAimingOffsetYModifier() {
 		return this.aimingOffsetYModifier.get();
 	}
 	
 	@Override
-	public double getAimingOffsetZModifier()
-	{
+	public double getAimingOffsetZModifier() {
 		return this.aimingOffsetZModifier.get();
 	}
 	
 	@Override
-	public double getFallFlyingOffsetXModifier()
-	{
+	public double getFallFlyingOffsetXModifier() {
 		return this.fallFlyingOffsetXModifier.get();
 	}
 	
 	@Override
-	public double getFallFlyingOffsetYModifier()
-	{
+	public double getFallFlyingOffsetYModifier() {
 		return this.fallFlyingOffsetYModifier.get();
 	}
 	
 	@Override
-	public double getFallFlyingOffsetZModifier()
-	{
+	public double getFallFlyingOffsetZModifier() {
 		return this.fallFlyingOffsetZModifier.get();
 	}
 	
 	@Override
-	public double getClimbingOffsetXModifier()
-	{
+	public double getClimbingOffsetXModifier() {
 		return this.climbingOffsetXModifier.get();
 	}
 	
 	@Override
-	public double getClimbingOffsetYModifier()
-	{
+	public double getClimbingOffsetYModifier() {
 		return this.climbingOffsetYModifier.get();
 	}
 	
 	@Override
-	public double getClimbingOffsetZModifier()
-	{
+	public double getClimbingOffsetZModifier() {
 		return this.climbingOffsetZModifier.get();
 	}
 	
 	@Override
-	public CameraDistanceAttributeMode getCameraDistanceAttributeMode()
-	{
+	public CameraDistanceAttributeMode getCameraDistanceAttributeMode() {
 		return this.cameraDistanceAttributeMode.get();
 	}
 	
 	@Override
-	public double keepCameraOutOfHeadMultiplier()
-	{
+	public double keepCameraOutOfHeadMultiplier() {
 		return this.keepCameraOutOfHeadMultiplier.get();
 	}
 	
 	@Override
-	public double getCameraStepSize()
-	{
+	public double getCameraStepSize() {
 		return this.offsetStepSize.get();
 	}
 	
 	@Override
-	public double getCameraTransitionSpeedMultiplier()
-	{
+	public double getCameraTransitionSpeedMultiplier() {
 		return this.cameraTransitionSpeedMultiplier.get();
 	}
 	
 	@Override
-	public double getCenterCameraWhenLookingDownAngle()
-	{
+	public double getCenterCameraWhenLookingDownAngle() {
 		return this.centerCameraWhenLookingDownAngle.get();
 	}
 	
 	@Override
-	public boolean isOffsetDynamic()
-	{
+	public boolean isOffsetDynamic() {
 		return this.isOffsetDynamic.get();
 	}
 	
 	@Override
-	public boolean isCameraDecoupled()
-	{
+	public boolean isCameraDecoupled() {
 		return this.isCameraDecoupled.get();
 	}
 	
 	@Override
-	public boolean doOrientCameraOnTeleport()
-	{
+	public boolean doOrientCameraOnTeleport() {
 		return this.orientCameraOnTeleport.get();
 	}
 	
 	@Override
-	public boolean isFovOverrideEnabled()
-	{
+	public boolean isFovOverrideEnabled() {
 		return this.isFovOverrideEnabled.get();
 	}
 	
 	@Override
-	public float getFovOverride()
-	{
+	public float getFovOverride() {
 		return this.fovOverride.get().floatValue();
 	}
 	
 	@Override
-	public ViewBobbingMode getViewBobbingMode()
-	{
+	public ViewBobbingMode getViewBobbingMode() {
 		return this.viewBobbingMode.get();
 	}
 	
 	@Override
-	public boolean getFollowPlayerRotations()
-	{
+	public boolean getFollowPlayerRotations() {
 		return this.followPlayerRotations.get();
 	}
 	
 	@Override
-	public int getFollowPlayerRotationsDelay()
-	{
+	public int getFollowPlayerRotationsDelay() {
 		return this.followPlayerRotationsDelay.get();
 	}
 	
 	@Override
-	public double getCameraDragXMultiplier()
-	{
+	public double getCameraDragXMultiplier() {
 		return this.cameraDragXMultiplier.get();
 	}
 	
 	@Override
-	public double getCameraDragYMultiplier()
-	{
+	public double getCameraDragYMultiplier() {
 		return this.cameraDragYMultiplier.get();
 	}
 	
 	@Override
-	public double getCameraDragZMultiplier()
-	{
+	public double getCameraDragZMultiplier() {
 		return this.cameraDragZMultiplier.get();
 	}
 	
 	@Override
-	public double getCameraSwayXMaxAngle()
-	{
+	public double getCameraSwayXMaxAngle() {
 		return this.cameraSwayXMaxAngle.get();
 	}
 	
 	@Override
-	public double getCameraSwayZMaxAngle()
-	{
+	public double getCameraSwayZMaxAngle() {
 		return this.cameraSwayZMaxAngle.get();
 	}
 	
 	@Override
-	public double getCameraSwayXMaxVelocity()
-	{
+	public double getCameraSwayXMaxVelocity() {
 		return this.cameraSwayXMaxVelocity.get();
 	}
 	
 	@Override
-	public double getCameraSwayZMaxVelocity()
-	{
+	public double getCameraSwayZMaxVelocity() {
 		return this.cameraSwayZMaxVelocity.get();
 	}
 	
-	public void adjustCameraLeft()
-	{
+	public void adjustCameraLeft() {
 		Config.CLIENT.set(this.offsetX, this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isOffsetXUnlimited()));
 	}
 	
-	public void adjustCameraRight()
-	{
+	public void adjustCameraRight() {
 		Config.CLIENT.set(this.offsetX, this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isOffsetXUnlimited()));
 	}
 	
-	public void adjustCameraUp()
-	{
+	public void adjustCameraUp() {
 		Config.CLIENT.set(this.offsetY, this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isOffsetYUnlimited()));
 	}
 	
-	public void adjustCameraDown()
-	{
+	public void adjustCameraDown() {
 		Config.CLIENT.set(this.offsetY, this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isOffsetYUnlimited()));
 	}
 	
-	public void adjustCameraIn()
-	{
+	public void adjustCameraIn() {
 		Config.CLIENT.set(this.offsetZ, this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isOffsetZUnlimited()));
 	}
 	
-	public void adjustCameraOut()
-	{
+	public void adjustCameraOut() {
 		Config.CLIENT.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isOffsetZUnlimited()));
 	}
 	
-	public void toggleOffsetXPreset()
-	{
+	public void toggleOffsetXPreset() {
 		this.toggleOffsetPreset(this.offsetX, this.getOffsetXPresets());
 	}
 	
-	public void toggleOffsetYPreset()
-	{
+	public void toggleOffsetYPreset() {
 		this.toggleOffsetPreset(this.offsetY, this.getOffsetYPresets());
 	}
 	
-	public void toggleOffsetZPreset()
-	{
+	public void toggleOffsetZPreset() {
 		this.toggleOffsetPreset(this.offsetZ, this.getOffsetZPresets());
 	}
 	
-	private void toggleOffsetPreset(DoubleValue offset, List<Double> presets)
-	{
-		if(presets.isEmpty())
-		{
+	private void toggleOffsetPreset(DoubleValue offset, List<Double> presets) {
+		if (presets.isEmpty()) {
 			return;
 		}
-		
 		int closestIndex = 0;
 		double currentOffset = offset.get();
 		double distance = Math.abs(currentOffset - presets.getFirst());
-		
-		for(int x = 1; x < presets.size(); x++)
-		{
+		for (int x = 1; x < presets.size(); x++) {
 			double preset = presets.get(x);
 			double newDistance = Math.abs(currentOffset - preset);
 			
-			if(newDistance <= distance)
-			{
+			if (newDistance <= distance) {
 				closestIndex = x;
 				distance = newDistance;
 			}
 		}
-		
 		double newOffset;
-		
-		if(closestIndex == presets.size() - 1)
-		{
+		if (closestIndex == presets.size() - 1) {
 			newOffset = presets.getFirst();
-		}
-		else
-		{
+		} else {
 			newOffset = presets.get(closestIndex + 1);
 		}
-		
 		Config.CLIENT.set(offset, newOffset);
 	}
 	
-	private double addStep(double value, double max, boolean unlimited)
-	{
+	private double addStep(double value, double max, boolean unlimited) {
 		double next = value + this.getCameraStepSize();
-		
-		if(unlimited)
-		{
+		if (unlimited) {
 			return next;
 		}
-		
 		return Math.min(next, max);
 	}
 	
-	private double subStep(double value, double min, boolean unlimited)
-	{
+	private double subStep(double value, double min, boolean unlimited) {
 		double next = value - this.getCameraStepSize();
-		
-		if(unlimited)
-		{
+		if (unlimited) {
 			return next;
 		}
-		
 		return Math.max(next, min);
 	}
 	
-	public void swapShoulder()
-	{
+	public void swapShoulder() {
 		Config.CLIENT.set(this.offsetX, -this.getOffsetX());
 	}
 	
-	public void toggleCameraCoupling()
-	{
+	public void toggleCameraCoupling() {
 		Config.CLIENT.set(this.isCameraDecoupled, !this.isCameraDecoupled());
 	}
 }

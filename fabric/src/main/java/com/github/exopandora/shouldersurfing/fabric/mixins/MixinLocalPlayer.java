@@ -11,23 +11,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LocalPlayer.class, priority = 1500 /* apply after other mods */)
-public class MixinLocalPlayer
-{
+public class MixinLocalPlayer {
 	@Shadow
 	public ClientInput input;
 	
-	@Inject
-	(
+	@Inject(
 		method = "aiStep",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/player/ClientInput;tick()V",
 			shift = Shift.AFTER
 		)
 	)
-	private void aiStep(CallbackInfo ci)
-	{
+	private void aiStep(CallbackInfo ci) {
 		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(this.input);
 		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
 	}

@@ -2,8 +2,7 @@ package com.github.exopandora.shouldersurfing.api.client;
 
 import net.minecraft.world.phys.Vec3;
 
-public interface IShoulderSurfingCamera
-{
+public interface IShoulderSurfingCamera {
 	double getCameraDistance();
 	
 	Vec3 getOffset();

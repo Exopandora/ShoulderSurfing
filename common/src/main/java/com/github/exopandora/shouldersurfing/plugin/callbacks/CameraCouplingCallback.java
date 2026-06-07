@@ -4,11 +4,9 @@ import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallbac
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
-public class CameraCouplingCallback implements ICameraCouplingCallback
-{
+public class CameraCouplingCallback implements ICameraCouplingCallback {
 	@Override
-	public boolean isForcingCameraCoupling(Minecraft minecraft)
-	{
+	public boolean isForcingCameraCoupling(Minecraft minecraft) {
 		return minecraft.player != null && minecraft.player.isPassenger() && minecraft.player.getVehicle() instanceof AbstractMinecart;
 	}
 }

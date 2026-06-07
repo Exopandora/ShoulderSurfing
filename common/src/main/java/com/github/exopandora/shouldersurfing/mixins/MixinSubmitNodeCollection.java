@@ -7,29 +7,24 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(SubmitNodeCollection.class)
-public class MixinSubmitNodeCollection
-{
-	@ModifyVariable
-	(
+public class MixinSubmitNodeCollection {
+	@ModifyVariable(
 		at = @At("HEAD"),
 		method = "submitModel",
 		index = 7,
 		argsOnly = true
 	)
-	public int submitModel(int tintedColor)
-	{
+	public int submitModel(int tintedColor) {
 		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
 	}
 	
-	@ModifyVariable
-	(
+	@ModifyVariable(
 		at = @At("HEAD"),
 		method = "submitModelPart",
 		index = 9,
 		argsOnly = true
 	)
-	public int submitModelPart(int tintedColor)
-	{
+	public int submitModelPart(int tintedColor) {
 		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
 	}
 }

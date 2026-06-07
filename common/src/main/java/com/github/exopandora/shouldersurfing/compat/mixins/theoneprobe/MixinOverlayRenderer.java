@@ -15,23 +15,24 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
 @Mixin(targets = "mcjty.theoneprobe.rendering.OverlayRenderer")
-public class MixinOverlayRenderer
-{
-	@Redirect
-	(
+public class MixinOverlayRenderer {
+	@Redirect(
 		method = "renderHUD",
-		at = @At
-		(
+		at = @At(
 			value = "NEW",
 			target = "Lnet/minecraft/world/level/ClipContext;",
 			remap = true
 		),
 		remap = false
 	)
-	private static ClipContext initClipContext(Vec3 start, Vec3 end, ClipContext.Block blockContext, ClipContext.Fluid fluidContext, @NotNull Entity entity)
-	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
-		{
+	private static ClipContext initClipContext(
+		Vec3 start,
+		Vec3 end,
+		ClipContext.Block blockContext,
+		ClipContext.Fluid fluidContext,
+		@NotNull Entity entity
+	) {
+		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)
@@ -41,7 +42,6 @@ public class MixinOverlayRenderer
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			return pickContext.toClipContext(start.distanceTo(end), partialTick);
 		}
-		
 		return new ClipContext(start, end, blockContext, fluidContext, entity);
 	}
 }

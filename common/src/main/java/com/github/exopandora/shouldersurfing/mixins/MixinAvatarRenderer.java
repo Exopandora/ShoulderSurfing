@@ -15,23 +15,17 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(AvatarRenderer.class)
-public abstract class MixinAvatarRenderer extends LivingEntityRenderer<LivingEntity, LivingEntityRenderState, EntityModel<LivingEntityRenderState>>
-{
-	public MixinAvatarRenderer(EntityRendererProvider.Context context, EntityModel<LivingEntityRenderState> model, float shadow)
-	{
+public abstract class MixinAvatarRenderer extends LivingEntityRenderer<LivingEntity, LivingEntityRenderState, EntityModel<LivingEntityRenderState>> {
+	public MixinAvatarRenderer(EntityRendererProvider.Context context, EntityModel<LivingEntityRenderState> model, float shadow) {
 		super(context, model, shadow);
 	}
 	
 	@Nullable
-	protected RenderType getRenderType(LivingEntityRenderState state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing)
-	{
+	protected RenderType getRenderType(LivingEntityRenderState state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState() && !Util.isCameraEntityRidingBoat())
-		{
+		if (!state.isInvisibleToPlayer && instance.isShoulderSurfing() && Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && state == instance.getCameraEntityRenderer().getCameraEntityRenderState() && !Util.isCameraEntityRidingBoat()) {
 			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));
 		}
-		
 		return super.getRenderType(state, isBodyVisible, forceTransparent, appearGlowing);
 	}
 }

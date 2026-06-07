@@ -18,8 +18,7 @@ import org.lwjgl.glfw.GLFW;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class InputHandler
-{
+public class InputHandler {
 	public static final KeyMapping.Category GENERAL = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "general"));
 	
 	public static final KeyMapping CAMERA_LEFT = createKeyMapping("adjust_camera_left", GLFW.GLFW_KEY_LEFT);
@@ -44,175 +43,134 @@ public class InputHandler
 	
 	private final ShoulderSurfingImpl instance;
 	
-	public InputHandler(ShoulderSurfingImpl instance)
-	{
+	public InputHandler(ShoulderSurfingImpl instance) {
 		this.instance = instance;
 	}
 	
-	public void tick()
-	{
+	public void tick() {
 		Options options = Minecraft.getInstance().options;
 		
-		while(TOGGLE_FIRST_PERSON.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (TOGGLE_FIRST_PERSON.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				this.instance.changePerspective(Perspective.FIRST_PERSON);
-			}
-			else
-			{
+			} else {
 				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 			}
 		}
 		
-		while(TOGGLE_THIRD_PERSON_FRONT.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (TOGGLE_THIRD_PERSON_FRONT.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				this.instance.changePerspective(Perspective.THIRD_PERSON_FRONT);
-			}
-			else
-			{
+			} else {
 				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 			}
 		}
 		
-		while(TOGGLE_THIRD_PERSON_BACK.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (TOGGLE_THIRD_PERSON_BACK.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				this.instance.changePerspective(Perspective.THIRD_PERSON_BACK);
-			}
-			else
-			{
+			} else {
 				this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 			}
 		}
 		
-		while(ENTER_FIRST_PERSON.consumeClick())
-		{
+		while (ENTER_FIRST_PERSON.consumeClick()) {
 			this.instance.changePerspective(Perspective.FIRST_PERSON);
 		}
 		
-		while(ENTER_THIRD_PERSON_FRONT.consumeClick())
-		{
+		while (ENTER_THIRD_PERSON_FRONT.consumeClick()) {
 			this.instance.changePerspective(Perspective.THIRD_PERSON_FRONT);
 		}
 		
-		while(ENTER_THIRD_PERSON_BACK.consumeClick())
-		{
+		while (ENTER_THIRD_PERSON_BACK.consumeClick()) {
 			this.instance.changePerspective(Perspective.THIRD_PERSON_BACK);
 		}
 		
-		while(ENTER_SHOULDER_SURFING.consumeClick())
-		{
+		while (ENTER_SHOULDER_SURFING.consumeClick()) {
 			this.instance.changePerspective(Perspective.SHOULDER_SURFING);
 		}
 		
-		while(CAMERA_LEFT.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (CAMERA_LEFT.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				Config.CLIENT.getCameraConfig().adjustCameraLeft();
 			}
 		}
 		
-		while(CAMERA_RIGHT.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (CAMERA_RIGHT.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				Config.CLIENT.getCameraConfig().adjustCameraRight();
 			}
 		}
 		
-		while(CAMERA_OUT.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (CAMERA_OUT.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				Config.CLIENT.getCameraConfig().adjustCameraOut();
 			}
 		}
 		
-		while(CAMERA_IN.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (CAMERA_IN.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				Config.CLIENT.getCameraConfig().adjustCameraIn();
 			}
 		}
 		
-		while(CAMERA_UP.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (CAMERA_UP.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				Config.CLIENT.getCameraConfig().adjustCameraUp();
 			}
 		}
 		
-		while(CAMERA_DOWN.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (CAMERA_DOWN.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				Config.CLIENT.getCameraConfig().adjustCameraDown();
 			}
 		}
 		
-		while(SWAP_SHOULDER.consumeClick())
-		{
-			if(this.instance.isShoulderSurfing())
-			{
+		while (SWAP_SHOULDER.consumeClick()) {
+			if (this.instance.isShoulderSurfing()) {
 				this.instance.swapShoulder();
 			}
 		}
 		
-		while(options.keyTogglePerspective.consumeClick())
-		{
+		while (options.keyTogglePerspective.consumeClick()) {
 			this.instance.togglePerspective();
 		}
 		
-		while(FREE_LOOK.consumeClick());
+		while (FREE_LOOK.consumeClick()) ;
 		
-		while(TOGGLE_CAMERA_COUPLING.consumeClick())
-		{
+		while (TOGGLE_CAMERA_COUPLING.consumeClick()) {
 			this.instance.toggleCameraCoupling();
 		}
 		
-		while(TOGGLE_X_OFFSET_PRESETS.consumeClick())
-		{
+		while (TOGGLE_X_OFFSET_PRESETS.consumeClick()) {
 			this.instance.toggleOffsetXPreset();
 		}
 		
-		while(TOGGLE_Y_OFFSET_PRESETS.consumeClick())
-		{
+		while (TOGGLE_Y_OFFSET_PRESETS.consumeClick()) {
 			this.instance.toggleOffsetYPreset();
 		}
 		
-		while(TOGGLE_Z_OFFSET_PRESETS.consumeClick())
-		{
+		while (TOGGLE_Z_OFFSET_PRESETS.consumeClick()) {
 			this.instance.toggleOffsetZPreset();
 		}
 	}
 	
-	public void updateMovementInput(ClientInput input)
-	{
+	public void updateMovementInput(ClientInput input) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
 		
-		if(this.instance.isFreeLooking() || cameraEntity == null || CallbackHelper.isForcingVanillaMovementInput(minecraft, cameraEntity))
-		{
+		if (this.instance.isFreeLooking() || cameraEntity == null || CallbackHelper.isForcingVanillaMovementInput(minecraft, cameraEntity)) {
 			return;
 		}
 		
 		Vec2f moveVector = new Vec2f(input.getMoveVector());
 		
-		if(this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player && moveVector.lengthSquared() > 0)
-		{
+		if (this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player && moveVector.lengthSquared() > 0) {
 			ShoulderSurfingCamera camera = this.instance.getCamera();
 			LocalPlayer player = minecraft.player;
 			float yRot = player.getYRot();
 			
-			if(this.instance.isCameraDecoupled() && !this.instance.isLookFollowingCrosshairTarget())
-			{
+			if (this.instance.isCameraDecoupled() && !this.instance.isLookFollowingCrosshairTarget()) {
 				// Update player rotations according to keyboard inputs and camera rotation
 				float cameraXRot = camera.getXRot();
 				float cameraYRot = camera.getYRot();
@@ -233,8 +191,7 @@ public class InputHandler
 		}
 	}
 	
-	private static @NotNull KeyMapping createKeyMapping(String key, int keyCode)
-	{
+	private static @NotNull KeyMapping createKeyMapping(String key, int keyCode) {
 		return new KeyMapping("key." + MOD_ID + "." + key, keyCode, GENERAL);
 	}
 }

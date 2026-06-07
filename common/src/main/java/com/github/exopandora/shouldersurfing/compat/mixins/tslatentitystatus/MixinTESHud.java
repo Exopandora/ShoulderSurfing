@@ -21,25 +21,19 @@ import java.util.function.Predicate;
 
 @Pseudo
 @Mixin(targets = "net.tslat.tes.core.hud.TESHud")
-public class MixinTESHud
-{
-	@Redirect
-	(
+public class MixinTESHud {
+	@Redirect(
 		method = "pickNewEntity",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/world/entity/projectile/ProjectileUtil.getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;",
 			remap = true
 		),
 		remap = false
 	)
-	private static EntityHitResult getEntityHitResult(Entity player, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq)
-	{
+	private static EntityHitResult getEntityHitResult(Entity player, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
@@ -49,27 +43,21 @@ public class MixinTESHud
 				.build();
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
-		
 		return ProjectileUtil.getEntityHitResult(player, startPos, endPos, boundingBox, filter, interactionRangeSq);
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "pickNewEntity",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/world/level/Level.clip(Lnet/minecraft/world/level/ClipContext;)Lnet/minecraft/world/phys/BlockHitResult;",
 			remap = true
 		),
 		remap = false
 	)
-	private static BlockHitResult clip(Level level, ClipContext clipContext)
-	{
+	private static BlockHitResult clip(Level level, ClipContext clipContext) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
@@ -77,7 +65,6 @@ public class MixinTESHud
 			PickContext pickContext = new PickContext.Builder(camera).build();
 			return instance.getObjectPicker().pickBlocks(pickContext, interactionRange, partialTick);
 		}
-		
 		return level.clip(clipContext);
 	}
 }

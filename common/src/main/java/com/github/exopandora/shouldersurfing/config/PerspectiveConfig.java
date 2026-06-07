@@ -8,8 +8,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class PerspectiveConfig implements IPerspectiveConfig
-{
+public class PerspectiveConfig implements IPerspectiveConfig {
 	private final BooleanValue isThirdPersonReplaced;
 	private final BooleanValue isFirstPersonEnabled;
 	private final BooleanValue isThirdPersonFrontEnabled;
@@ -17,8 +16,7 @@ public class PerspectiveConfig implements IPerspectiveConfig
 	private final ConfigValue<Perspective> defaultPerspective;
 	private final BooleanValue isPerspectivePersistent;
 	
-	protected PerspectiveConfig(ModConfigSpec.Builder builder)
-	{
+	protected PerspectiveConfig(ModConfigSpec.Builder builder) {
 		builder.push("perspective");
 		
 		this.defaultPerspective = builder
@@ -55,43 +53,36 @@ public class PerspectiveConfig implements IPerspectiveConfig
 	}
 	
 	@Override
-	public boolean isThirdPersonReplaced()
-	{
+	public boolean isThirdPersonReplaced() {
 		return this.isThirdPersonReplaced.get();
 	}
 	
 	@Override
-	public boolean isFirstPersonEnabled()
-	{
+	public boolean isFirstPersonEnabled() {
 		return this.isFirstPersonEnabled.get();
 	}
 	
 	@Override
-	public boolean isThirdPersonFrontEnabled()
-	{
+	public boolean isThirdPersonFrontEnabled() {
 		return this.isThirdPersonFrontEnabled.get();
 	}
 	
 	@Override
-	public boolean isThirdPersonBackEnabled()
-	{
+	public boolean isThirdPersonBackEnabled() {
 		return this.isThirdPersonBackEnabled.get();
 	}
 	
 	@Override
-	public Perspective getDefaultPerspective()
-	{
+	public Perspective getDefaultPerspective() {
 		return this.defaultPerspective.get();
 	}
 	
-	public void setDefaultPerspective(Perspective perspective)
-	{
+	public void setDefaultPerspective(Perspective perspective) {
 		Config.CLIENT.set(this.defaultPerspective, perspective);
 	}
 	
 	@Override
-	public boolean isPerspectivePersistent()
-	{
+	public boolean isPerspectivePersistent() {
 		return this.isPerspectivePersistent.get();
 	}
 }

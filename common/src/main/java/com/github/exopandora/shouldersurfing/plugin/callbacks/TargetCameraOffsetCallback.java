@@ -15,48 +15,35 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public class TargetCameraOffsetCallback
-{
-	public static class CameraDistanceAttribute implements ITargetCameraOffsetCallback
-	{
+public class TargetCameraOffsetCallback {
+	public static class CameraDistanceAttribute implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
-			if(context.cameraEntity() instanceof LivingEntity living)
-			{
+		public Vec3 getTargetOffset(Context context) {
+			if (context.cameraEntity() instanceof LivingEntity living) {
 				return applyCameraDistanceAttribute(context.targetOffset(), living.getAttributeValue(Attributes.CAMERA_DISTANCE));
 			}
-			
 			return context.targetOffset();
 		}
 	}
 	
-	public static class CameraDistanceAttributePassenger implements ITargetCameraOffsetCallback
-	{
+	public static class CameraDistanceAttributePassenger implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
-			if(context.cameraEntity().isPassenger() && context.cameraEntity().getVehicle() instanceof LivingEntity living)
-			{
+		public Vec3 getTargetOffset(Context context) {
+			if (context.cameraEntity().isPassenger() && context.cameraEntity().getVehicle() instanceof LivingEntity living) {
 				return applyCameraDistanceAttribute(context.targetOffset(), living.getAttributeValue(Attributes.CAMERA_DISTANCE));
 			}
-			
 			return context.targetOffset();
 		}
 	}
 	
-	private static abstract class AbstractModifiersAndMultipliers implements ITargetCameraOffsetCallback
-	{
+	private static abstract class AbstractModifiersAndMultipliers implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
-			if(this.shouldApply(context))
-			{
+		public Vec3 getTargetOffset(Context context) {
+			if (this.shouldApply(context)) {
 				return context.targetOffset()
 					.add(context.defaultOffset().multiply(this.getMultipliers()).subtract(context.defaultOffset()))
 					.add(this.getModifiers());
 			}
-			
 			return context.targetOffset();
 		}
 		
@@ -67,147 +54,117 @@ public class TargetCameraOffsetCallback
 		protected abstract Vec3 getMultipliers();
 	}
 	
-	public static class PassengerModifiersAndMultipliers extends AbstractModifiersAndMultipliers
-	{
+	public static class PassengerModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context)
-		{
+		protected boolean shouldApply(Context context) {
 			return context.cameraEntity().isPassenger();
 		}
 		
 		@Override
-		protected Vec3 getModifiers()
-		{
+		protected Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getPassengerOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers()
-		{
+		protected Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getPassengerOffsetMultipliers();
 		}
 	}
 	
-	public static class SprintingModifiersAndMultipliers extends AbstractModifiersAndMultipliers
-	{
+	public static class SprintingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context)
-		{
+		protected boolean shouldApply(Context context) {
 			return context.cameraEntity().isSprinting();
 		}
 		
 		@Override
-		protected Vec3 getModifiers()
-		{
+		protected Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getSprintOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers()
-		{
+		protected Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getSprintOffsetMultipliers();
 		}
 	}
 	
-	public static class AimingModifiersAndMultipliers extends AbstractModifiersAndMultipliers
-	{
+	public static class AimingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context)
-		{
+		protected boolean shouldApply(Context context) {
 			return context.instance().isAiming();
 		}
 		
 		@Override
-		protected Vec3 getModifiers()
-		{
+		protected Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getAimingOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers()
-		{
+		protected Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getAimingOffsetMultipliers();
 		}
 	}
 	
-	public static class FallFlyingModifiersAndMultipliers extends AbstractModifiersAndMultipliers
-	{
+	public static class FallFlyingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context)
-		{
+		protected boolean shouldApply(Context context) {
 			return context.cameraEntity() instanceof LivingEntity living && living.isFallFlying();
 		}
 		
 		@Override
-		protected Vec3 getModifiers()
-		{
+		protected Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getFallFlyingOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers()
-		{
+		protected Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getFallFlyingMultipliers();
 		}
 	}
 	
-	public static class ClimbingModifiersAndMultipliers extends AbstractModifiersAndMultipliers
-	{
+	public static class ClimbingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
 		@Override
-		protected boolean shouldApply(Context context)
-		{
+		protected boolean shouldApply(Context context) {
 			return !context.cameraEntity().isSpectator() && context.cameraEntity() instanceof LivingEntity living && living.onClimbable();
 		}
 		
 		@Override
-		protected Vec3 getModifiers()
-		{
+		protected Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getClimbingOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers()
-		{
+		protected Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getClimbingMultipliers();
 		}
 	}
 	
-	public static class CenterWhenLookingDown implements ITargetCameraOffsetCallback
-	{
+	public static class CenterWhenLookingDown implements ITargetCameraOffsetCallback {
 		private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 		
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
-			if(!context.cameraEntity().isSpectator() && isCameraLookingDown(context.camera()))
-			{
+		public Vec3 getTargetOffset(Context context) {
+			if (!context.cameraEntity().isSpectator() && isCameraLookingDown(context.camera())) {
 				return new Vec3(0, 0, context.targetOffset().z());
 			}
-			
 			return context.targetOffset();
 		}
 		
-		private boolean isCameraLookingDown(Camera camera)
-		{
+		private boolean isCameraLookingDown(Camera camera) {
 			return camera.forwardVector().angle(VECTOR_NEGATIVE_Y) < Config.CLIENT.getCameraConfig().getCenterCameraWhenLookingDownAngle() * Mth.DEG_TO_RAD;
 		}
 	}
 	
-	public static class DynamicOffsets implements ITargetCameraOffsetCallback
-	{
+	public static class DynamicOffsets implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
-			if(!context.cameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().isOffsetDynamic())
-			{
+		public Vec3 getTargetOffset(Context context) {
+			if (!context.cameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().isOffsetDynamic()) {
 				return calcDynamicOffsets(context.camera(), context.cameraEntity(), context.level(), context.targetOffset());
 			}
-			
 			return context.targetOffset();
 		}
 		
-		private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset)
-		{
+		private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset) {
 			Vec3 lookVector = new Vec3(camera.forwardVector());
 			Vec3 worldXYOffset = new Vec3(camera.upVector()).scale(targetOffset.y())
 				.add(new Vec3(camera.leftVector()).scale(targetOffset.x()));
@@ -219,45 +176,33 @@ public class TargetCameraOffsetCallback
 			double targetY = offsetYAbs;
 			double clearance = cameraEntity.getBbWidth() / 3.0D;
 			Vec3 cameraPosition = camera.position();
-			
-			for(double dz = 0; dz <= offsetZAbs; dz += 0.03125D)
-			{
+			for (double dz = 0; dz <= offsetZAbs; dz += 0.03125D) {
 				double scale = dz / offsetZAbs;
 				Vec3 startPos = cameraPosition.add(worldOffset.scale(scale));
 				Vec3 endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
 				ClipContext context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
 				HitResult hitResult = level.clip(context);
-				
-				if(hitResult.getType() != HitResult.Type.MISS)
-				{
+				if (hitResult.getType() != HitResult.Type.MISS) {
 					double distance = hitResult.getLocation().distanceTo(startPos);
 					double newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
-					
-					if(newTargetX < targetX)
-					{
+					if (newTargetX < targetX) {
 						targetX = newTargetX;
 					}
-					
 					double newTargetY = Math.max(distance + offsetYAbs * scale - clearance, 0);
-					
-					if(newTargetY < targetY)
-					{
+					if (newTargetY < targetY) {
 						targetY = newTargetY;
 					}
 				}
 			}
-			
 			double targetXOffset = Math.signum(targetOffset.x()) * targetX;
 			double targetYOffset = Math.signum(targetOffset.y()) * targetY;
 			return new Vec3(targetXOffset, targetYOffset, targetOffset.z());
 		}
 	}
 	
-	public static class OffsetLimits implements ITargetCameraOffsetCallback
-	{
+	public static class OffsetLimits implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
+		public Vec3 getTargetOffset(Context context) {
 			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
 			double targetOffsetX = cameraConfig.isOffsetXUnlimited()
 				? context.targetOffset().x()
@@ -272,19 +217,15 @@ public class TargetCameraOffsetCallback
 		}
 	}
 	
-	public static class EntityScale implements ITargetCameraOffsetCallback
-	{
+	public static class EntityScale implements ITargetCameraOffsetCallback {
 		@Override
-		public Vec3 getTargetOffset(Context context)
-		{
+		public Vec3 getTargetOffset(Context context) {
 			return context.targetOffset().scale(EntityHelper.getMaxScale(context.cameraEntity()));
 		}
 	}
 	
-	private static Vec3 applyCameraDistanceAttribute(Vec3 targetVec, double cameraDistance)
-	{
-		return switch(Config.CLIENT.getCameraConfig().getCameraDistanceAttributeMode())
-		{
+	private static Vec3 applyCameraDistanceAttribute(Vec3 targetVec, double cameraDistance) {
+		return switch (Config.CLIENT.getCameraConfig().getCameraDistanceAttributeMode()) {
 			case RELATIVE -> targetVec.multiply(1.0D, 1.0D, cameraDistance / 4.0D);
 			case ABSOLUTE -> new Vec3(targetVec.x, targetVec.y, cameraDistance);
 			case IGNORE -> targetVec;

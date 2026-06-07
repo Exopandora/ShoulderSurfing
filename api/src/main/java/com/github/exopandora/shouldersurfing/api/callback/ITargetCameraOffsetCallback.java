@@ -11,39 +11,37 @@ import org.jetbrains.annotations.NotNull;
  * This callback can be used to implement custom target camera offsets.
  * There are two distinct methods, invoked at different time steps of the camera offset calculation.
  * Both methods provide a default NOP implementation.
+ *
  * @since 4.1.0
  */
-public interface ITargetCameraOffsetCallback
-{
+public interface ITargetCameraOffsetCallback {
 	/**
-	 * @deprecated Planned to be removed in 26.3.
-	 * Use <code>ITargetCameraOffsetCallback.getTargetOffset</code> instead.
-	 * The order can be controlled by setting the event priority on callback registration.
-	 * @param instance The IShoulderSurfing instance
-	 * @param targetOffset The target offset for the camera
+	 * @param instance      The IShoulderSurfing instance
+	 * @param targetOffset  The target offset for the camera
 	 * @param defaultOffset The default offset for the camera, without any prior modifications
 	 * @return The modified target offset for the camera
 	 * @since 4.1.0
+	 * @deprecated Planned to be removed in 26.3.
+	 * Use <code>ITargetCameraOffsetCallback.getTargetOffset</code> instead.
+	 * The order can be controlled by setting the event priority on callback registration.
 	 */
 	@Deprecated(since = "4.23", forRemoval = true)
-	default Vec3 pre(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset)
-	{
+	default Vec3 pre(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset) {
 		return targetOffset;
 	}
 	
 	/**
-	 * @deprecated Planned to be removed in 26.3.
-	 * Use <code>ITargetCameraOffsetCallback.getTargetOffset</code> instead.
-	 * The order can be controlled by setting the event priority on callback registration.
-	 * @param instance The IShoulderSurfing instance
-	 * @param targetOffset The target offset for the camera, after offset multipliers have been applied
+	 * @param instance      The IShoulderSurfing instance
+	 * @param targetOffset  The target offset for the camera, after offset multipliers have been applied
 	 * @param defaultOffset The default offset for the camera, without any prior modifications
 	 * @return The modified target offset for the camera
 	 * @since 4.1.0
+	 * @deprecated Planned to be removed in 26.3.
+	 * Use <code>ITargetCameraOffsetCallback.getTargetOffset</code> instead.
+	 * The order can be controlled by setting the event priority on callback registration.
 	 */
 	@Deprecated(since = "4.23", forRemoval = true)
-	default Vec3 post(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset)
-	{
+	default Vec3 post(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset) {
 		return targetOffset;
 	}
 	
@@ -52,12 +50,11 @@ public interface ITargetCameraOffsetCallback
 	 * @return The modified target offset for the camera
 	 * @since 4.1.0
 	 */
-	default Vec3 getTargetOffset(Context context)
-	{
+	default Vec3 getTargetOffset(Context context) {
 		return context.targetOffset();
 	}
 	
-	record Context(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset, Camera camera, @NotNull Entity cameraEntity, BlockGetter level)
-	{
+	record Context(IShoulderSurfing instance, Vec3 targetOffset, Vec3 defaultOffset, Camera camera, @NotNull Entity cameraEntity,
+	               BlockGetter level) {
 	}
 }

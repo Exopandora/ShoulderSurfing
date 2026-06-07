@@ -12,8 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext, ObstructionPickContext
-{
+public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext, ObstructionPickContext {
 	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
 	
 	private final Camera camera;
@@ -21,8 +20,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 	private final Entity entity;
 	private final Predicate<Entity> entityFilter;
 	
-	protected PickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Predicate<Entity> entityFilter)
-	{
+	protected PickContext(Camera camera, ClipContext.Fluid fluidContext, Entity entity, Predicate<Entity> entityFilter) {
 		this.camera = camera;
 		this.fluidContext = fluidContext;
 		this.entity = entity;
@@ -35,34 +33,28 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 	
 	public abstract Couple<Vec3> blockTrace(double interactionRange, float partialTick);
 	
-	public ClipContext toClipContext(double interactionRange, float partialTick)
-	{
+	public ClipContext toClipContext(double interactionRange, float partialTick) {
 		Couple<Vec3> blockTrace = this.blockTrace(interactionRange, partialTick);
 		return new ClipContext(blockTrace.left(), blockTrace.right(), this.blockContext(), this.fluidContext(), this.entity());
 	}
 	
-	public Camera camera()
-	{
+	public Camera camera() {
 		return this.camera;
 	}
 	
-	public ClipContext.Fluid fluidContext()
-	{
+	public ClipContext.Fluid fluidContext() {
 		return this.fluidContext;
 	}
 	
-	public Entity entity()
-	{
+	public Entity entity() {
 		return this.entity;
 	}
 	
-	public Predicate<Entity> entityFilter()
-	{
+	public Predicate<Entity> entityFilter() {
 		return this.entityFilter;
 	}
 	
-	public static class Builder
-	{
+	public static class Builder {
 		private final Camera camera;
 		private ClipContext.Fluid fluidContext;
 		private Entity entity;
@@ -73,77 +65,63 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		private PickVector pickVector;
 		private Predicate<Entity> entityFilter;
 		
-		public Builder(Camera camera)
-		{
+		public Builder(Camera camera) {
 			this.camera = camera;
 		}
 		
-		public Builder withFluidContext(ClipContext.Fluid fluidContext)
-		{
+		public Builder withFluidContext(ClipContext.Fluid fluidContext) {
 			this.fluidContext = fluidContext;
 			return this;
 		}
 		
-		public Builder withEntity(Entity entity)
-		{
+		public Builder withEntity(Entity entity) {
 			this.entity = entity;
 			return this;
 		}
 		
-		public Builder withEntityPickOrigin(PickOrigin entityPickOrigin)
-		{
+		public Builder withEntityPickOrigin(PickOrigin entityPickOrigin) {
 			this.entityPickOrigin = entityPickOrigin;
 			return this;
 		}
 		
-		public Builder withBlockPickOrigin(PickOrigin blockPickOrigin)
-		{
+		public Builder withBlockPickOrigin(PickOrigin blockPickOrigin) {
 			this.blockPickOrigin = blockPickOrigin;
 			return this;
 		}
 		
-		public Builder withPickVector(PickVector pickVector)
-		{
+		public Builder withPickVector(PickVector pickVector) {
 			this.pickVector = pickVector;
 			return this;
 		}
 		
-		public Builder withEntityFilter(Predicate<Entity> entityFilter)
-		{
+		public Builder withEntityFilter(Predicate<Entity> entityFilter) {
 			this.entityFilter = entityFilter;
 			return this;
 		}
 		
-		public Builder dynamicTrace()
-		{
+		public Builder dynamicTrace() {
 			this.offsetTrace = false;
 			return this;
 		}
 		
-		public Builder offsetTrace()
-		{
+		public Builder offsetTrace() {
 			this.offsetTrace = true;
 			return this;
 		}
 		
-		public Builder obstructionTrace(Vec3 endPos)
-		{
+		public Builder obstructionTrace(Vec3 endPos) {
 			this.endPos = endPos;
 			return this;
 		}
 		
-		public PickContext build()
-		{
+		public PickContext build() {
 			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
 			Predicate<Entity> entityFilter = this.entityFilter == null ? ENTITY_IS_PICKABLE : this.entityFilter;
 			
-			if(EntityHelper.isPlayerSpectatingEntity())
-			{
+			if (EntityHelper.isPlayerSpectatingEntity()) {
 				return new DynamicPickContext(this.camera, fluidContext, Minecraft.getInstance().getCameraEntity(), entityFilter, PickVector.PLAYER);
-			}
-			else if(this.endPos != null)
-			{
+			} else if (this.endPos != null) {
 				return new ObstructionPickContext(this.camera, fluidContext, entity, entityFilter, this.endPos);
 			}
 			
@@ -151,8 +129,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
 			IObjectPickerConfig config = ShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
 			
-			if(offsetTrace)
-			{
+			if (offsetTrace) {
 				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
 				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
 				return new OffsetPickContext(this.camera, fluidContext, entity, entityFilter, blockPickOrigin, entityPickOrigin);

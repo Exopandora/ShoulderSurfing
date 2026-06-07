@@ -12,23 +12,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LocalPlayer.class, priority = 1500 /* apply after cobblemon mixin */)
-public abstract class MixinLocalPlayer extends AbstractClientPlayer
-{
-	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile)
-	{
+public abstract class MixinLocalPlayer extends AbstractClientPlayer {
+	public MixinLocalPlayer(ClientLevel level, GameProfile gameProfile) {
 		super(level, gameProfile);
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = {"pick", "method_5745"},
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void pick(double interactionRange, float partialTick, boolean stopOnFluid, CallbackInfoReturnable<HitResult> cir)
-	{
-		if(ShoulderSurfing.getInstance().isShoulderSurfing())
-		{
+	private void pick(double interactionRange, float partialTick, boolean stopOnFluid, CallbackInfoReturnable<HitResult> cir) {
+		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
 			cir.setReturnValue(super.pick(interactionRange, partialTick, stopOnFluid));
 		}
 	}

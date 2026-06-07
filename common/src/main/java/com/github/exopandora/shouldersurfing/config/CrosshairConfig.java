@@ -14,16 +14,11 @@ import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class CrosshairConfig implements ICrosshairConfig
-{
+public class CrosshairConfig implements ICrosshairConfig {
 	private final ConfigValue<CrosshairType> crosshairType;
 	private final ConfigValue<List<? extends String>> adaptiveCrosshairHoldItems;
 	private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItems;
@@ -40,8 +35,7 @@ public class CrosshairConfig implements ICrosshairConfig
 	private final IntValue obstructionIndicatorMinDistanceToCrosshair;
 	private final DoubleValue obstructionIndicatorMaxDistanceToObstruction;
 	
-	public CrosshairConfig(ModConfigSpec.Builder builder)
-	{
+	public CrosshairConfig(ModConfigSpec.Builder builder) {
 		builder.push("crosshair");
 		
 		this.crosshairType = builder
@@ -52,8 +46,7 @@ public class CrosshairConfig implements ICrosshairConfig
 		this.adaptiveCrosshairHoldItems = builder
 			.comment("Items that when held, trigger the dynamic crosshair in adaptive mode. This config option supports regular expressions. Example: 'minecraft:.*sword' matches 'minecraft:wooden_sword' and 'minecraft:netherite_sword'.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_items")
-			.defineList("adaptive_crosshair_hold_items", () ->
-			{
+			.defineList("adaptive_crosshair_hold_items", () -> {
 				List<String> items = new ArrayList<String>();
 				items.add(BuiltInRegistries.ITEM.getKey(Items.SNOWBALL).toString());
 				items.add(BuiltInRegistries.ITEM.getKey(Items.EGG).toString());
@@ -79,8 +72,7 @@ public class CrosshairConfig implements ICrosshairConfig
 		this.adaptiveCrosshairUseItemAnimations = builder
 			.comment("Item use-animations of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_animations")
-			.defineList("adaptive_crosshair_use_item_animations", () ->
-			{
+			.defineList("adaptive_crosshair_use_item_animations", () -> {
 				List<String> items = new ArrayList<String>();
 				items.add(ItemUseAnimation.BOW.getSerializedName());
 				items.add(ItemUseAnimation.TRIDENT.getSerializedName());
@@ -90,8 +82,7 @@ public class CrosshairConfig implements ICrosshairConfig
 		this.adaptiveCrosshairHoldItemComponents = builder
 			.comment("Item components (modified only) of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_item_components")
-			.defineList("adaptive_crosshair_hold_item_components", () ->
-			{
+			.defineList("adaptive_crosshair_hold_item_components", () -> {
 				List<String> components = new ArrayList<String>();
 				components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.CHARGED_PROJECTILES)).toString());
 				components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.PIERCING_WEAPON)).toString());
@@ -106,8 +97,7 @@ public class CrosshairConfig implements ICrosshairConfig
 		this.adaptiveCrosshairHoldItemDefaultComponents = builder
 			.comment("Default components of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_item_hold_default_components")
-			.defineList("adaptive_crosshair_item_hold_default_components", () ->
-			{
+			.defineList("adaptive_crosshair_item_hold_default_components", () -> {
 				List<String> components = new ArrayList<String>();
 				components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.PIERCING_WEAPON)).toString());
 				return components;
@@ -143,8 +133,7 @@ public class CrosshairConfig implements ICrosshairConfig
 		builder.pop();
 		builder.push("visibility");
 		
-		for(Perspective entry : Perspective.values())
-		{
+		for (Perspective entry : Perspective.values()) {
 			String key = entry.toString().toLowerCase();
 			ConfigValue<CrosshairVisibility> crosshairVisibility = builder
 				.comment("Crosshair visibility for " + key.replace('_', ' ') + ".")
@@ -158,86 +147,72 @@ public class CrosshairConfig implements ICrosshairConfig
 	}
 	
 	@Override
-	public CrosshairVisibility getCrosshairVisibility(Perspective perspective)
-	{
+	public CrosshairVisibility getCrosshairVisibility(Perspective perspective) {
 		return this.crosshairVisibility.get(perspective).get();
 	}
 	
 	@Override
-	public CrosshairType getCrosshairType()
-	{
+	public CrosshairType getCrosshairType() {
 		return this.crosshairType.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairHoldItems()
-	{
+	public List<? extends String> getAdaptiveCrosshairHoldItems() {
 		return this.adaptiveCrosshairHoldItems.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairUseItems()
-	{
+	public List<? extends String> getAdaptiveCrosshairUseItems() {
 		return this.adaptiveCrosshairUseItems.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairHoldItemAnimations()
-	{
+	public List<? extends String> getAdaptiveCrosshairHoldItemAnimations() {
 		return this.adaptiveCrosshairHoldItemAnimations.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairUseItemAnimations()
-	{
+	public List<? extends String> getAdaptiveCrosshairUseItemAnimations() {
 		return this.adaptiveCrosshairUseItemAnimations.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairHoldItemDefaultComponents()
-	{
+	public List<? extends String> getAdaptiveCrosshairHoldItemDefaultComponents() {
 		return this.adaptiveCrosshairHoldItemDefaultComponents.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairUseItemDefaultComponents()
-	{
+	public List<? extends String> getAdaptiveCrosshairUseItemDefaultComponents() {
 		return this.adaptiveCrosshairUseItemDefaultComponents.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairHoldItemComponents()
-	{
+	public List<? extends String> getAdaptiveCrosshairHoldItemComponents() {
 		return this.adaptiveCrosshairHoldItemComponents.get();
 	}
 	
 	@Override
-	public List<? extends String> getAdaptiveCrosshairUseItemComponents()
-	{
+	public List<? extends String> getAdaptiveCrosshairUseItemComponents() {
 		return this.adaptiveCrosshairUseItemComponents.get();
 	}
 	
 	@Override
-	public boolean getShowObstructionCrosshair()
-	{
+	public boolean getShowObstructionCrosshair() {
 		return this.showObstructionIndicator.get();
 	}
 	
 	@Override
-	public boolean isObstructionIndicatorOnlyShownWhenAiming()
-	{
+	public boolean isObstructionIndicatorOnlyShownWhenAiming() {
 		return this.isObstructionIndicatorOnlyShownWhenAiming.get();
 	}
 	
 	@Override
-	public double getObstructionIndicatorMaxDistanceToObstruction()
-	{
+	public double getObstructionIndicatorMaxDistanceToObstruction() {
 		return this.obstructionIndicatorMaxDistanceToObstruction.get();
 	}
 	
 	@Override
-	public int getObstructionIndicatorMinDistanceToCrosshair()
-	{
+	public int getObstructionIndicatorMinDistanceToCrosshair() {
 		return this.obstructionIndicatorMinDistanceToCrosshair.get();
 	}
 }

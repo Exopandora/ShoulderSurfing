@@ -1,74 +1,58 @@
 package com.github.exopandora.shouldersurfing.api.plugin;
 
-import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ITargetCameraOffsetCallback;
+import com.github.exopandora.shouldersurfing.api.callback.*;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Predicate;
 
-public interface IShoulderSurfingRegistrar
-{
+public interface IShoulderSurfingRegistrar {
 	int DEFAULT_PRIORITY = 1000;
 	
-	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(IAdaptiveItemCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(IAdaptiveItemCallback callback) {
 		return this.registerAdaptiveItemCallback(DEFAULT_PRIORITY, callback);
 	}
 	
-	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate)
-	{
+	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate) {
 		return this.registerAdaptiveItemCallback(predicate, DEFAULT_PRIORITY);
 	}
 	
-	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate, int priority)
-	{
+	default IShoulderSurfingRegistrar registerAdaptiveItemCallback(Predicate<ItemStack> predicate, int priority) {
 		return this.registerAdaptiveItemCallback(priority, (minecraft, entity) -> predicate.test(entity.getMainHandItem()) || predicate.test(entity.getOffhandItem()));
 	}
 	
 	IShoulderSurfingRegistrar registerAdaptiveItemCallback(int priority, IAdaptiveItemCallback callback);
 	
-	default IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerCameraCouplingCallback(ICameraCouplingCallback callback) {
 		return this.registerCameraCouplingCallback(DEFAULT_PRIORITY, callback);
 	}
 	
 	IShoulderSurfingRegistrar registerCameraCouplingCallback(int priority, ICameraCouplingCallback callback);
 	
-	default IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(ITargetCameraOffsetCallback callback) {
 		return this.registerTargetCameraOffsetCallback(DEFAULT_PRIORITY, callback);
 	}
 	
 	IShoulderSurfingRegistrar registerTargetCameraOffsetCallback(int priority, ITargetCameraOffsetCallback callback);
 	
-	default IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(ICameraEntityTransparencyCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(ICameraEntityTransparencyCallback callback) {
 		return this.registerCameraEntityTransparencyCallback(DEFAULT_PRIORITY, callback);
 	}
 	
 	IShoulderSurfingRegistrar registerCameraEntityTransparencyCallback(int priority, ICameraEntityTransparencyCallback callback);
 	
-	default IShoulderSurfingRegistrar registerPlayerStateCallback(IPlayerStateCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerPlayerStateCallback(IPlayerStateCallback callback) {
 		return this.registerPlayerStateCallback(DEFAULT_PRIORITY, callback);
 	}
 	
 	IShoulderSurfingRegistrar registerPlayerStateCallback(int priority, IPlayerStateCallback callback);
 	
-	default IShoulderSurfingRegistrar registerCameraRotationSetupCallback(ICameraRotationSetupCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerCameraRotationSetupCallback(ICameraRotationSetupCallback callback) {
 		return this.registerCameraRotationSetupCallback(DEFAULT_PRIORITY, callback);
 	}
 	
 	IShoulderSurfingRegistrar registerCameraRotationSetupCallback(int priority, ICameraRotationSetupCallback callback);
 	
-	default IShoulderSurfingRegistrar registerPlayerInputCallback(IPlayerInputCallback callback)
-	{
+	default IShoulderSurfingRegistrar registerPlayerInputCallback(IPlayerInputCallback callback) {
 		return this.registerPlayerInputCallback(DEFAULT_PRIORITY, callback);
 	}
 	

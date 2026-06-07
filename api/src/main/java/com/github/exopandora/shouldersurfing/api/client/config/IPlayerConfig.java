@@ -2,8 +2,7 @@ package com.github.exopandora.shouldersurfing.api.client.config;
 
 import com.github.exopandora.shouldersurfing.api.model.TurningMode;
 
-public interface IPlayerConfig
-{
+public interface IPlayerConfig {
 	double getHidePlayerWhenLookingUpAngle();
 	
 	boolean isPlayerTransparencyEnabled();

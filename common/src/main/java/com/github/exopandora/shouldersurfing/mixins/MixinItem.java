@@ -14,21 +14,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Item.class)
-public class MixinItem
-{
-	@Redirect
-	(
+public class MixinItem {
+	@Redirect(
 		method = "getPlayerPOVHitResult",
-		at = @At
-		(
+		at = @At(
 			value = "NEW",
 			target = "Lnet/minecraft/world/level/ClipContext;"
 		)
 	)
-	private static ClipContext initClipContext(Vec3 start, Vec3 end, ClipContext.Block blockContext, ClipContext.Fluid fluidContext, @NotNull Entity entity)
-	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide())
-		{
+	private static ClipContext initClipContext(
+		Vec3 start,
+		Vec3 end,
+		ClipContext.Block blockContext,
+		ClipContext.Fluid fluidContext,
+		@NotNull Entity entity
+	) {
+		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)
@@ -38,7 +39,6 @@ public class MixinItem
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			return pickContext.toClipContext(start.distanceTo(end), partialTick);
 		}
-		
 		return new ClipContext(start, end, blockContext, fluidContext, entity);
 	}
 }

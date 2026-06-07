@@ -16,42 +16,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.Function;
 
 @Mixin(RenderTypes.class)
-public class MixinRenderTypes
-{
+public class MixinRenderTypes {
 	@Shadow
 	private static @Final Function<Identifier, RenderType> ARMOR_TRANSLUCENT;
 	
-	@Inject
-	(
+	@Inject(
 		at = @At("HEAD"),
 		method = "armorCutoutNoCull",
 		cancellable = true
 	)
-	private static void armorCutoutNoCull(Identifier texture, CallbackInfoReturnable<RenderType> cir)
-	{
-		if(Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled())
-		{
-			if(Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat())
-			{
+	private static void armorCutoutNoCull(Identifier texture, CallbackInfoReturnable<RenderType> cir) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+			if (Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat()) {
 				cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentItemTarget(texture));
-			}
-			else
-			{
+			} else {
 				cir.setReturnValue(ARMOR_TRANSLUCENT.apply(texture));
 			}
 		}
 	}
 	
-	@Inject
-	(
+	@Inject(
 		at = @At("HEAD"),
 		method = "armorEntityGlint",
 		cancellable = true
 	)
-	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir)
-	{
-		if(Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat())
-		{
+	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat()) {
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
 		}
 	}

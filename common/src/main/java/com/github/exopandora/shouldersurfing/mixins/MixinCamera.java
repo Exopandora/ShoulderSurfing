@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixins;
 
-import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
@@ -26,8 +26,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public abstract class MixinCamera implements CameraDuck
-{
+public abstract class MixinCamera implements CameraDuck {
 	@Shadow
 	private @Nullable Level level;
 	
@@ -49,50 +48,40 @@ public abstract class MixinCamera implements CameraDuck
 	@Shadow
 	protected abstract void setRotation(float yRot, float xRot);
 	
-	@Inject
-	(
+	@Inject(
 		method = "alignWithEntity",
 		at = @At("HEAD")
 	)
-	private void setupRotations(CallbackInfo ci)
-	{
+	private void setupRotations(CallbackInfo ci) {
 		this.shouldersurfing$setZRot(0.0F);
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "alignWithEntity",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/Camera;setPosition(DDD)V",
 			shift = Shift.AFTER,
 			ordinal = 0
 		)
 	)
-	private void setupRotations(float partialTick, CallbackInfo ci)
-	{
-		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
-		{
+	private void setupRotations(float partialTick, CallbackInfo ci) {
+		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
 			Vec2f rotation = ShoulderSurfingImpl.getInstance().getCamera().getRenderRotation();
 			this.setRotation(rotation.y(), rotation.x());
 		}
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "alignWithEntity",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/Camera;move(FFF)V",
 			ordinal = 0
 		)
 	)
-	private void setupPosition(Camera cameraIn, float x, float y, float z, float partialTick)
-	{
-		if(Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()))
-		{
+	private void setupPosition(Camera cameraIn, float x, float y, float z, float partialTick) {
+		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
 			ShoulderSurfingCamera camera = ShoulderSurfingImpl.getInstance().getCamera();
 			camera.setup(cameraIn, this.level, partialTick, this.entity);
 			Vec3 cameraOffset = camera.getRenderOffset();
@@ -100,45 +89,35 @@ public abstract class MixinCamera implements CameraDuck
 			Vec2f sway = camera.calcSway(this.entity, partialTick);
 			this.zRot = sway.y();
 			this.setRotation(this.yRot, this.xRot + sway.x());
-		}
-		else
-		{
+		} else {
 			this.move(x, y, z);
 		}
 	}
 	
-	@ModifyVariable
-	(
+	@ModifyVariable(
 		method = "calculateFov",
-		at = @At
-		(
+		at = @At(
 			value = "TAIL",
 			shift = Shift.BY,
 			by = -2
 		),
 		ordinal = 1
 	)
-	private float calculateFov(float lerpedFov)
-	{
+	private float calculateFov(float lerpedFov) {
 		ICameraConfig config = Config.CLIENT.getCameraConfig();
-		
-		if(ShoulderSurfing.getInstance().isShoulderSurfing() && config.isFovOverrideEnabled())
-		{
+		if (ShoulderSurfing.getInstance().isShoulderSurfing() && config.isFovOverrideEnabled()) {
 			return (config.getFovOverride() / (float) Minecraft.getInstance().options.fov().get()) * lerpedFov;
 		}
-		
 		return lerpedFov;
 	}
 	
 	@Override
-	public float shouldersurfing$getZRot()
-	{
+	public float shouldersurfing$getZRot() {
 		return this.zRot;
 	}
 	
 	@Override
-	public void shouldersurfing$setZRot(float zRot)
-	{
+	public void shouldersurfing$setZRot(float zRot) {
 		this.zRot = zRot;
 	}
 }

@@ -12,20 +12,16 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import java.util.function.Function;
 
 @Mixin(BeeStingerModel.class)
-public class MixinBeeStingerModel
-{
-	@ModifyArg
-	(
+public class MixinBeeStingerModel {
+	@ModifyArg(
 		method = "<init>",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/model/Model.<init>(Lnet/minecraft/client/model/geom/ModelPart;Ljava/util/function/Function;)V"
 		),
 		index = 1
 	)
-	private static Function<Identifier, RenderType> init(Function<Identifier, RenderType> renderType)
-	{
+	private static Function<Identifier, RenderType> init(Function<Identifier, RenderType> renderType) {
 		return Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() ? RenderTypes::armorTranslucent : renderType;
 	}
 }

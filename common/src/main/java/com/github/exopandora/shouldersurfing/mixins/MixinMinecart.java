@@ -18,37 +18,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecart.class)
-public abstract class MixinMinecart extends AbstractMinecart
-{
+public abstract class MixinMinecart extends AbstractMinecart {
 	@Shadow
 	private float rotationOffset;
 	
 	@Shadow
 	private float playerRotationOffset;
 	
-	protected MixinMinecart(EntityType<?> entityType, Level level)
-	{
+	protected MixinMinecart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "positionRider",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/world/entity/vehicle/minecart/AbstractMinecart.positionRider(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity$MoveFunction;)V",
 			shift = Shift.AFTER
 		)
 	)
-	private void positionRider(Entity rider, MoveFunction moveFunction, CallbackInfo ci)
-	{
+	private void positionRider(Entity rider, MoveFunction moveFunction, CallbackInfo ci) {
 		IShoulderSurfing instance = ShoulderSurfing.getInstance();
 		
-		if(instance.isShoulderSurfing() && this.level().isClientSide() && rider instanceof Player player)
-		{
-			if(player.shouldRotateWithMinecart() && AbstractMinecart.useExperimentalMovement(this.level()))
-			{
+		if (instance.isShoulderSurfing() && this.level().isClientSide() && rider instanceof Player player) {
+			if (player.shouldRotateWithMinecart() && AbstractMinecart.useExperimentalMovement(this.level())) {
 				IShoulderSurfingCamera camera = instance.getCamera();
 				float f = (float) Mth.rotLerp(0.5F, this.playerRotationOffset, (double) this.rotationOffset);
 				camera.setYRot(camera.getYRot() - (f - this.playerRotationOffset));

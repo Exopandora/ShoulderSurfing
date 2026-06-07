@@ -18,56 +18,44 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
-public abstract class MixinGameRenderer implements GameRendererAccessor
-{
+public abstract class MixinGameRenderer implements GameRendererAccessor {
 	@Shadow
 	private @Final GameRenderState gameRenderState;
 	
-	@Inject
-	(
+	@Inject(
 		method = "render",
 		at = @At("TAIL")
 	)
-	public void render(CallbackInfo ci)
-	{
+	public void render(CallbackInfo ci) {
 		ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(null);
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "renderLevel",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
 		),
-		slice = @Slice
-		(
-			from = @At
-			(
+		slice = @Slice(
+			from = @At(
 				value = "FIELD",
 				target = "net/minecraft/client/gui/components/debug/DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR:Lnet/minecraft/resources/Identifier;",
 				opcode = Opcodes.GETSTATIC
 			)
 		)
 	)
-	private boolean doRenderCrosshair(CameraType cameraType)
-	{
+	private boolean doRenderCrosshair(CameraType cameraType) {
 		return ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "extractOptions",
 		at = @At("TAIL")
 	)
-	public void extractOptions(CallbackInfo ci)
-	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing())
-		{
+	public void extractOptions(CallbackInfo ci) {
+		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing()) {
 			OptionsRenderState optionsRenderState = this.gameRenderState.optionsRenderState;
-			optionsRenderState.bobView = switch(Config.CLIENT.getCameraConfig().getViewBobbingMode())
-			{
+			optionsRenderState.bobView = switch (Config.CLIENT.getCameraConfig().getViewBobbingMode()) {
 				case INHERIT -> optionsRenderState.bobView;
 				case ON -> true;
 				case OFF -> false;
@@ -75,16 +63,13 @@ public abstract class MixinGameRenderer implements GameRendererAccessor
 		}
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "bobView",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public void bobView(CallbackInfo ci)
-	{
-		if(ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF)
-		{
+	public void bobView(CallbackInfo ci) {
+		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
 			ci.cancel();
 		}
 	}

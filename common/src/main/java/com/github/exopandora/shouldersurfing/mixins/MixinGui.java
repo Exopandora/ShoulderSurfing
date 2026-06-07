@@ -14,52 +14,42 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Gui.class)
-public class MixinGui
-{
+public class MixinGui {
 	@Shadow
 	private @Final Minecraft minecraft;
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "extractCrosshair",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
 		)
 	)
-	private boolean doRenderCrosshair(CameraType cameraType)
-	{
+	private boolean doRenderCrosshair(CameraType cameraType) {
 		return ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "extractCrosshair",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/gui/components/debug/DebugScreenEntryList.isCurrentlyEnabled(Lnet/minecraft/resources/Identifier;)Z"
 		)
 	)
-	private boolean doRenderCrosshair(DebugScreenEntryList debugScreenEntryList, Identifier identifier)
-	{
+	private boolean doRenderCrosshair(DebugScreenEntryList debugScreenEntryList, Identifier identifier) {
 		return debugScreenEntryList.isCurrentlyEnabled(identifier) &&
 			!ShoulderSurfingImpl.getInstance().getCrosshairRenderer().isCrosshairDynamic(this.minecraft.getCameraEntity());
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "extractCameraOverlays",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
 		),
 		require = 0
 	)
-	private boolean isFirstPerson(CameraType cameraType)
-	{
+	private boolean isFirstPerson(CameraType cameraType) {
 		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING == Perspective.current() && this.minecraft.player.isScoping();
 	}
 }

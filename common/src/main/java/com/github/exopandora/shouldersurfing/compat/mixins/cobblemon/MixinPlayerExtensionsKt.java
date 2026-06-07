@@ -13,24 +13,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(targets = "com.cobblemon.mod.common.util.PlayerExtensionsKt")
-public class MixinPlayerExtensionsKt
-{
-	@Inject
-	(
+public class MixinPlayerExtensionsKt {
+	@Inject(
 		method = "traceFirstEntityCollision",
 		at = @At("HEAD"),
 		remap = false
 	)
-	private static <T extends Entity> void traceFirstEntityCollision(LivingEntity entity, float maxDistance, float stepDistance, Class<T> entityClass, T ignoreEntity, ClipContext.Fluid collideBlock, CallbackInfoReturnable<Object> ci)
-	{
+	private static <T extends Entity> void traceFirstEntityCollision(
+		LivingEntity entity,
+		float maxDistance,
+		float stepDistance,
+		Class<T> entityClass,
+		T ignoreEntity,
+		ClipContext.Fluid collideBlock,
+		CallbackInfoReturnable<Object> ci
+	) {
 		Minecraft minecraft = Minecraft.getInstance();
-		
-		if(entity == minecraft.player && entity == minecraft.getCameraEntity())
-		{
+		if (entity == minecraft.player && entity == minecraft.getCameraEntity()) {
 			ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-			
-			if(instance.isShoulderSurfing() && !instance.getCrosshairRenderer().isCrosshairDynamic(entity))
-			{
+			if (instance.isShoulderSurfing() && !instance.getCrosshairRenderer().isCrosshairDynamic(entity)) {
 				instance.lookAtCrosshairTarget();
 			}
 		}

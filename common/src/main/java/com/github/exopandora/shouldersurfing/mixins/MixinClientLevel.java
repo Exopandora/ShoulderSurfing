@@ -25,49 +25,79 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientLevel.class)
-public abstract class MixinClientLevel extends Level
-{
-	protected MixinClientLevel(WritableLevelData levelData, ResourceKey<Level> dimension, RegistryAccess registryAccess, Holder<DimensionType> dimensionTypeRegistration, boolean isClientSide, boolean isDebug, long seed, int maxChainedNeighborUpdates)
-	{
+public abstract class MixinClientLevel extends Level {
+	protected MixinClientLevel(
+		WritableLevelData levelData,
+		ResourceKey<Level> dimension,
+		RegistryAccess registryAccess,
+		Holder<DimensionType> dimensionTypeRegistration,
+		boolean isClientSide,
+		boolean isDebug,
+		long seed,
+		int maxChainedNeighborUpdates
+	) {
 		super(levelData, dimension, registryAccess, dimensionTypeRegistration, isClientSide, isDebug, seed, maxChainedNeighborUpdates);
 	}
 	
 	@Shadow
-	abstract void playSound(double x, double y, double z, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch, boolean isDelayed, long seed);
+	abstract void playSound(
+		double x,
+		double y,
+		double z,
+		SoundEvent soundEvent,
+		SoundSource soundSource,
+		float volume,
+		float pitch,
+		boolean isDelayed,
+		long seed
+	);
 	
-	@Inject
-	(
+	@Inject(
 		method = "playSeededSound(Lnet/minecraft/world/entity/Entity;DDDLnet/minecraft/core/Holder;Lnet/minecraft/sounds/SoundSource;FFJ)V",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/multiplayer/ClientLevel.playSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZJ)V",
 			shift = Shift.BEFORE
 		),
 		cancellable = true
 	)
-	private void playSeededSound(@Nullable Entity entity, double x, double y, double z, Holder<SoundEvent> soundEvent, SoundSource soundSource, float volume, float pitch, long seed, CallbackInfo ci)
-	{
-		if(entity != null && entity == Minecraft.getInstance().player && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z)
-		{
+	private void playSeededSound(
+		@Nullable Entity entity,
+		double x,
+		double y,
+		double z,
+		Holder<SoundEvent> soundEvent,
+		SoundSource soundSource,
+		float volume,
+		float pitch,
+		long seed,
+		CallbackInfo ci
+	) {
+		if (entity != null && entity == Minecraft.getInstance().player && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(entity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent.value(), soundSource, volume, pitch, false, seed);
 			ci.cancel();
 		}
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void playLocalSound(double x, double y, double z, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch, boolean isDelayed, CallbackInfo ci)
-	{
+	private void playLocalSound(
+		double x,
+		double y,
+		double z,
+		SoundEvent soundEvent,
+		SoundSource soundSource,
+		float volume,
+		float pitch,
+		boolean isDelayed,
+		CallbackInfo ci
+	) {
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		
-		if(cameraEntity != null && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z)
-		{
+		if (cameraEntity != null && ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isDelayed, this.random.nextLong());
 			ci.cancel();
@@ -75,8 +105,7 @@ public abstract class MixinClientLevel extends Level
 	}
 	
 	@Unique
-	private static double round(double d)
-	{
+	private static double round(double d) {
 		return ((int) (d * 8.0)) / 8.0F;
 	}
 }

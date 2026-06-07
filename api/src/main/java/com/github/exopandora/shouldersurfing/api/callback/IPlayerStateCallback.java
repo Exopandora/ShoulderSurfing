@@ -18,10 +18,10 @@ import org.jetbrains.annotations.Nullable;
  * The final result is calculated from all partial results using a logical OR.
  * <p>
  * If no callback provides a definitive result, the default logic is used.
+ *
  * @since 4.15.0
  */
-public interface IPlayerStateCallback
-{
+public interface IPlayerStateCallback {
 	/**
 	 * Determines whether the player is currently attacking.
 	 * <p>
@@ -41,13 +41,11 @@ public interface IPlayerStateCallback
 	 *                </ul>
 	 * @since 4.15.0
 	 */
-	default @NotNull Result isAttacking(@NotNull IsAttackingContext context)
-	{
+	default @NotNull Result isAttacking(@NotNull IsAttackingContext context) {
 		return Result.PASS;
 	}
 	
-	record IsAttackingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
-	{
+	record IsAttackingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity) {
 	}
 	
 	/**
@@ -58,7 +56,7 @@ public interface IPlayerStateCallback
 	 * minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem()
 	 * }</pre>
 	 * <p>
-	 *
+	 * <p>
 	 * An example use case is to support custom keybinds that differ from the vanilla use key, or for a controller mod that supports only input/button binds.
 	 *
 	 * @param context The arguments of this callback.
@@ -69,13 +67,11 @@ public interface IPlayerStateCallback
 	 *                </ul>
 	 * @since 4.15.0
 	 */
-	default @NotNull Result isInteracting(@NotNull IsInteractingContext context)
-	{
+	default @NotNull Result isInteracting(@NotNull IsInteractingContext context) {
 		return Result.PASS;
 	}
 	
-	record IsInteractingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
-	{
+	record IsInteractingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity) {
 	}
 	
 	/**
@@ -86,7 +82,7 @@ public interface IPlayerStateCallback
 	 * minecraft.options.keyPickItem.isDown()
 	 * }</pre>
 	 * <p>
-	 *
+	 * <p>
 	 * An example use case is to support custom keybinds that differ from the vanilla pick key (mouse middle button), or for a controller mod that supports only input/button binds.
 	 *
 	 * @param context The arguments of this callback.
@@ -97,13 +93,11 @@ public interface IPlayerStateCallback
 	 *                </ul>
 	 * @since 4.15.0
 	 */
-	default @NotNull Result isPicking(@NotNull IsPickingContext context)
-	{
+	default @NotNull Result isPicking(@NotNull IsPickingContext context) {
 		return Result.PASS;
 	}
 	
-	record IsPickingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
-	{
+	record IsPickingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity) {
 	}
 	
 	/**
@@ -123,13 +117,11 @@ public interface IPlayerStateCallback
 	 *                </ul>
 	 * @since 4.15.0
 	 */
-	default @NotNull Result isUsingItem(@NotNull IsUsingContext context)
-	{
+	default @NotNull Result isUsingItem(@NotNull IsUsingContext context) {
 		return Result.PASS;
 	}
 	
-	record IsUsingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity)
-	{
+	record IsUsingContext(@NotNull Minecraft minecraft, @NotNull LivingEntity cameraEntity) {
 	}
 	
 	/**
@@ -143,23 +135,22 @@ public interface IPlayerStateCallback
 	 *                </ul>
 	 * @since 4.17.0
 	 */
-	default @NotNull Result isRidingBoat(@NotNull IsRidingBoatContext context)
-	{
+	default @NotNull Result isRidingBoat(@NotNull IsRidingBoatContext context) {
 		return Result.PASS;
 	}
 	
-	record IsRidingBoatContext(@NotNull Minecraft minecraft, @NotNull Entity cameraEntity, @NotNull Entity vehicle)
-	{
+	record IsRidingBoatContext(@NotNull Minecraft minecraft, @NotNull Entity cameraEntity, @NotNull Entity vehicle) {
 	}
 	
 	/**
 	 * Represents the possible outcomes of an {@link IPlayerStateCallback}.
 	 */
-	enum Result
-	{
+	enum Result {
 		TRUE,
 		FALSE,
-		/** Defers to other callbacks or the default logic. */
+		/**
+		 * Defers to other callbacks or the default logic.
+		 */
 		PASS;
 		
 		/**
@@ -168,8 +159,7 @@ public interface IPlayerStateCallback
 		 * @param b the Boolean to convert; may be null
 		 * @return {@link #TRUE} if {@code b} is {@code true}, {@link #FALSE} if {@code b} is {@code false}, {@link #PASS} if {@code b} is {@code null}
 		 */
-		public static @NotNull Result of(@Nullable Boolean b)
-		{
+		public static @NotNull Result of(@Nullable Boolean b) {
 			return b == null ? PASS : b ? TRUE : FALSE;
 		}
 	}

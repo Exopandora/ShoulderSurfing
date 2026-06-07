@@ -11,10 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityHelper
-{
-	public static void lookAtTarget(LocalPlayer player, Vec3 target)
-	{
+public class EntityHelper {
+	public static void lookAtTarget(LocalPlayer player, Vec3 target) {
 		float yHeadRot = player.yHeadRot;
 		float yHeadRotO = player.yHeadRotO;
 		float yBodyRot = player.yBodyRot;
@@ -31,25 +29,21 @@ public class EntityHelper
 		player.yRotO = yRotO;
 	}
 	
-	public static boolean isPlayerSpectatingEntity()
-	{
+	public static boolean isPlayerSpectatingEntity() {
 		Minecraft minecraft = Minecraft.getInstance();
 		Player player = minecraft.player;
 		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
 	}
 	
-	public static float getScale(Entity entity)
-	{
+	public static float getScale(Entity entity) {
 		return entity instanceof LivingEntity living ? living.getScale() : 1.0F;
 	}
 	
-	public static float getMaxScale(Entity cameraEntity)
-	{
+	public static float getMaxScale(Entity cameraEntity) {
 		Entity entity = cameraEntity;
 		float scale = getScale(entity);
 		
-		while(entity.getVehicle() != null)
-		{
+		while (entity.getVehicle() != null) {
 			entity = entity.getVehicle();
 			scale = Math.max(scale, getScale(entity));
 		}
@@ -57,12 +51,10 @@ public class EntityHelper
 		return scale;
 	}
 	
-	public static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO)
-	{
+	public static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO) {
 		Entity vehicle = player.getVehicle();
 		
-		if(vehicle != null)
-		{
+		if (vehicle != null) {
 			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			
 			float playerXRot = player.getXRot();
@@ -93,13 +85,11 @@ public class EntityHelper
 			
 			vehicle.onPassengerTurned(player);
 			
-			if(player.getXRot() != cameraXRot)
-			{
+			if (player.getXRot() != cameraXRot) {
 				cameraXRot = player.getXRot();
 			}
 			
-			if(player.getYRot() != cameraYRot)
-			{
+			if (player.getYRot() != cameraYRot) {
 				cameraYRot = player.getYRot();
 			}
 			
@@ -115,12 +105,10 @@ public class EntityHelper
 			vehicle.setXRot(vehicleXRot);
 			vehicle.setYRot(vehicleYRot);
 		}
-		
 		return new Vec2f(cameraXRot, cameraYRot);
 	}
 	
-	public static Vec3 getDeltaMovementWithoutGravity(Entity entity)
-	{
+	public static Vec3 getDeltaMovementWithoutGravity(Entity entity) {
 		return entity.getDeltaMovement().add(0, entity.getGravity(), 0);
 	}
 }

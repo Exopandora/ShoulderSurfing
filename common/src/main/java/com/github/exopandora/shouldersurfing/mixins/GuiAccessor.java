@@ -6,8 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Gui.class)
-public interface GuiAccessor
-{
+public interface GuiAccessor {
 	@Invoker
 	boolean invokeCanRenderCrosshairForSpectator(HitResult hitResult);
 }

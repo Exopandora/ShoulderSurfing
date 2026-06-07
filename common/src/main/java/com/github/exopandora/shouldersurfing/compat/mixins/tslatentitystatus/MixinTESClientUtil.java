@@ -11,25 +11,19 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
 @Mixin(targets = "net.tslat.tes.api.util.TESClientUtil")
-public class MixinTESClientUtil
-{
-	@Redirect
-	(
+public class MixinTESClientUtil {
+	@Redirect(
 		method = "getClosestEntityPosition",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/world/entity/player/Player.getLookAngle()Lnet/minecraft/world/phys/Vec3;",
 			remap = true
 		),
 		remap = false
 	)
-	private static Vec3 getLookAngle(Player player)
-	{
+	private static Vec3 getLookAngle(Player player) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			float realXRot = instance.getCamera().getXRot() * ((float) Math.PI / 180F);
 			float realYRot = -instance.getCamera().getYRot() * ((float) Math.PI / 180F);
 			float yCos = Mth.cos(realYRot);
@@ -38,7 +32,6 @@ public class MixinTESClientUtil
 			float xSin = Mth.sin(realXRot);
 			return new Vec3(ySin * xCos, -xSin, yCos * xCos);
 		}
-		
 		return player.getLookAngle();
 	}
 }

@@ -23,31 +23,24 @@ import snownee.jade.api.callback.JadeRayTraceCallback;
 import snownee.jade.api.config.IWailaConfig;
 
 @WailaPlugin
-public class ShoulderSurfingJadePlugin implements IWailaPlugin
-{
+public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 	@Override
-	public void registerClient(IWailaClientRegistration registration)
-	{
+	public void registerClient(IWailaClientRegistration registration) {
 		registration.addRayTraceCallback(new ShoulderSurfingRayTraceCallback(registration));
 	}
 	
-	private static class ShoulderSurfingRayTraceCallback implements JadeRayTraceCallback
-	{
+	private static class ShoulderSurfingRayTraceCallback implements JadeRayTraceCallback {
 		private final IWailaClientRegistration registration;
 		
-		public ShoulderSurfingRayTraceCallback(IWailaClientRegistration registration)
-		{
+		public ShoulderSurfingRayTraceCallback(IWailaClientRegistration registration) {
 			this.registration = registration;
 		}
 		
 		@Override
-		public @Nullable Accessor<?> onRayTrace(HitResult hitResult, @Nullable Accessor<?> accessor, @Nullable Accessor<?> originalAccessor)
-		{
+		public @Nullable Accessor<?> onRayTrace(HitResult hitResult, @Nullable Accessor<?> accessor, @Nullable Accessor<?> originalAccessor) {
 			ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
 			Minecraft minecraft = Minecraft.getInstance();
-			
-			if(instance.isShoulderSurfing() && minecraft.player != null && minecraft.level != null)
-			{
+			if (instance.isShoulderSurfing() && minecraft.player != null && minecraft.level != null) {
 				Player player = minecraft.player;
 				Camera camera = minecraft.gameRenderer.getMainCamera();
 				ClipContext.Fluid fluidContext = IWailaConfig.get().general().getDisplayFluids().ctx;
@@ -58,14 +51,10 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 					.build();
 				HitResult target = instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 				Level level = minecraft.level;
-				
-				if(Type.MISS.equals(target.getType()))
-				{
+				if (Type.MISS.equals(target.getType())) {
 					return null;
 				}
-				
-				if(target instanceof BlockHitResult blockTarget)
-				{
+				if (target instanceof BlockHitResult blockTarget) {
 					BlockState state = level.getBlockState(blockTarget.getBlockPos());
 					BlockEntity tileEntity = level.getBlockEntity(blockTarget.getBlockPos());
 					return this.registration.blockAccessor()
@@ -78,9 +67,7 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 						.hit(blockTarget)
 						.serversideRep(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
 						.build();
-				}
-				else if(target instanceof EntityHitResult entityTarget)
-				{
+				} else if (target instanceof EntityHitResult entityTarget) {
 					return this.registration.entityAccessor()
 						.level(level)
 						.player(player)
@@ -91,7 +78,6 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin
 						.build();
 				}
 			}
-			
 			return accessor;
 		}
 	}

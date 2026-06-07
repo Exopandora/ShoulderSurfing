@@ -30,8 +30,7 @@ import org.joml.Vector4f;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class CrosshairRenderer implements ICrosshairRenderer
-{
+public class CrosshairRenderer implements ICrosshairRenderer {
 	private static final Identifier OBSTRUCTION_INDICATOR_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstruction_indicator");
 	private static final Identifier OBSTRUCTED_CROSSHAIR_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
 	private static final Identifier OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_cross");
@@ -39,228 +38,166 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	private final ShoulderSurfingImpl instance;
 	private Vec2f crosshairOffset;
 	
-	public CrosshairRenderer(ShoulderSurfingImpl instance)
-	{
+	public CrosshairRenderer(ShoulderSurfingImpl instance) {
 		this.instance = instance;
 		this.init();
 	}
 	
-	private void init()
-	{
+	private void init() {
 		this.crosshairOffset = null;
 	}
 	
-	public void preRenderCrosshair(GuiGraphicsExtractor guiGraphics)
-	{
+	public void preRenderCrosshair(GuiGraphicsExtractor guiGraphics) {
 		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
-		
-		if(isDynamic || this.doRenderObstructionCrosshair())
-		{
+		if (isDynamic || this.doRenderObstructionCrosshair()) {
 			this.setupPoseStack(guiGraphics.pose());
 		}
 	}
 	
-	public void postRenderCrosshair(GuiGraphicsExtractor guiGraphics)
-	{
+	public void postRenderCrosshair(GuiGraphicsExtractor guiGraphics) {
 		boolean doRenderObstructionCrosshair = this.doRenderObstructionCrosshair();
 		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
-		
-		if(isDynamic || doRenderObstructionCrosshair)
-		{
+		if (isDynamic || doRenderObstructionCrosshair) {
 			this.resetPoseStack(guiGraphics.pose());
 		}
-		
-		if(doRenderObstructionCrosshair)
-		{
+		if (doRenderObstructionCrosshair) {
 			this.renderObstructionCrosshair(guiGraphics);
-		}
-		else if(this.doRenderObstructionIndicator())
-		{
+		} else if (this.doRenderObstructionIndicator()) {
 			this.setupPoseStack(guiGraphics.pose());
 			this.renderObstructionIndicator(guiGraphics);
 			this.resetPoseStack(guiGraphics.pose());
 		}
 	}
 	
-	private void setupPoseStack(Matrix3x2fStack poseStack)
-	{
-		if(this.crosshairOffset != null)
-		{
+	private void setupPoseStack(Matrix3x2fStack poseStack) {
+		if (this.crosshairOffset != null) {
 			poseStack.pushMatrix();
 			poseStack.translate(this.crosshairOffset.x(), -this.crosshairOffset.y());
 		}
 	}
 	
-	private void resetPoseStack(Matrix3x2fStack poseStack)
-	{
-		if(this.crosshairOffset != null)
-		{
+	private void resetPoseStack(Matrix3x2fStack poseStack) {
+		if (this.crosshairOffset != null) {
 			poseStack.popMatrix();
 		}
 	}
 	
 	@Override
-	public boolean doRenderCrosshair()
-	{
-		if(this.crosshairOffset == null && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
-		{
+	public boolean doRenderCrosshair() {
+		if (this.crosshairOffset == null && this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity())) {
 			return false;
 		}
-		
 		CrosshairVisibility crosshairVisibility = Config.CLIENT.getCrosshairConfig().getCrosshairVisibility(Perspective.current());
 		HitResult hitResult = Minecraft.getInstance().hitResult;
-		
 		return crosshairVisibility.doRender(hitResult, this.instance.isAiming());
 	}
 	
 	@Override
-	public boolean doRenderObstructionCrosshair()
-	{
-		if(Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR))
-		{
+	public boolean doRenderObstructionCrosshair() {
+		if (Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR)) {
 			return false;
 		}
-		
 		return this.instance.isAiming() && this.doRenderObstructionIndicator();
 	}
 	
 	@Override
-	public boolean doRenderObstructionIndicator()
-	{
-		if(this.crosshairOffset == null || !this.instance.isShoulderSurfing() || !Config.CLIENT.getCrosshairConfig().getShowObstructionCrosshair())
-		{
+	public boolean doRenderObstructionIndicator() {
+		if (this.crosshairOffset == null || !this.instance.isShoulderSurfing() || !Config.CLIENT.getCrosshairConfig().getShowObstructionCrosshair()) {
 			return false;
 		}
-		
-		if(this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()))
-		{
+		if (this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity())) {
 			return false;
 		}
-		
-		if(!this.instance.isAiming() && Config.CLIENT.getCrosshairConfig().isObstructionIndicatorOnlyShownWhenAiming())
-		{
+		if (!this.instance.isAiming() && Config.CLIENT.getCrosshairConfig().isObstructionIndicatorOnlyShownWhenAiming()) {
 			return false;
 		}
-		
 		int minDistanceToCrosshair = Config.CLIENT.getCrosshairConfig().getObstructionIndicatorMinDistanceToCrosshair();
-		
 		return this.crosshairOffset.lengthSquared() >= minDistanceToCrosshair * minDistanceToCrosshair;
 	}
 	
-	public void updateDynamicRaytrace(Camera camera, Matrix4fc modelViewMatrix, Matrix4f projectionMatrix, float partialTick)
-	{
-		if(!this.instance.isShoulderSurfing() || Minecraft.getInstance().player == null)
-		{
+	public void updateDynamicRaytrace(Camera camera, Matrix4fc modelViewMatrix, Matrix4f projectionMatrix, float partialTick) {
+		if (!this.instance.isShoulderSurfing() || Minecraft.getInstance().player == null) {
 			return;
 		}
-		
 		boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
 		ObjectPickerConfig objectPickerConfig = Config.CLIENT.getObjectPickerConfig();
 		double interactionRangeOverride = objectPickerConfig.isCustomRaytraceDistanceEnabled() ? objectPickerConfig.getCustomRaytraceDistance() : 0;
 		Player player = Minecraft.getInstance().player;
 		// Trace primary crosshair
 		PickContext.Builder pickContextBuilder = new PickContext.Builder(camera);
-		
-		if(isDynamic)
-		{
+		if (isDynamic) {
 			pickContextBuilder.dynamicTrace();
 		}
-		
 		PickContext pickContext = pickContextBuilder.build();
 		HitResult hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 		Vec3 position = hitResult.getLocation();
-		
 		// Trace obstruction crosshair
-		if(!isDynamic)
-		{
+		if (!isDynamic) {
 			pickContext = pickContextBuilder.obstructionTrace(position).build();
 			hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
 			position = hitResult.getLocation();
 		}
-		
 		Vec2f projected = project2D(position.subtract(camera.position()), modelViewMatrix, projectionMatrix);
 		Vec2f crosshairOffset = null;
-		
-		if(projected != null)
-		{
+		if (projected != null) {
 			Window window = Minecraft.getInstance().getWindow();
 			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
 			Vec2f center = screenSize.divide(2);
 			CrosshairConfig crosshairConfig = Config.CLIENT.getCrosshairConfig();
 			double maxDistanceToObstruction = crosshairConfig.getObstructionIndicatorMaxDistanceToObstruction();
-			
-			if(isDynamic || !crosshairConfig.getShowObstructionCrosshair() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction)
-			{
+			if (isDynamic || !crosshairConfig.getShowObstructionCrosshair() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction) {
 				crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
 			}
 		}
-		
 		this.crosshairOffset = crosshairOffset;
 	}
 	
 	@Override
-	public boolean isCrosshairDynamic(Entity entity)
-	{
+	public boolean isCrosshairDynamic(Entity entity) {
 		return this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairConfig().getCrosshairType().isDynamic(entity, this.instance.isAiming());
 	}
 	
-	private void renderObstructionCrosshair(GuiGraphicsExtractor guiGraphics)
-	{
+	private void renderObstructionCrosshair(GuiGraphicsExtractor guiGraphics) {
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_SPRITE, RenderPipelines.CROSSHAIR);
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTED_CROSSHAIR_CROSS_SPRITE, RenderPipelines.GUI_TEXTURED);
 	}
 	
-	private void renderObstructionIndicator(GuiGraphicsExtractor guiGraphics)
-	{
+	private void renderObstructionIndicator(GuiGraphicsExtractor guiGraphics) {
 		this.renderCustomCrosshair(guiGraphics, OBSTRUCTION_INDICATOR_SPRITE, RenderPipelines.CROSSHAIR);
 	}
 	
-	private void renderCustomCrosshair(GuiGraphicsExtractor guiGraphics, Identifier sprite, RenderPipeline renderPipeline)
-	{
+	private void renderCustomCrosshair(GuiGraphicsExtractor guiGraphics, Identifier sprite, RenderPipeline renderPipeline) {
 		Minecraft minecraft = Minecraft.getInstance();
-		
-		if(minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult))
-		{
+		if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult)) {
 			guiGraphics.blitSprite(renderPipeline, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
 		}
 	}
 	
-	public void resetState()
-	{
+	public void resetState() {
 		this.init();
 	}
 	
-	private static @Nullable Vec2f project2D(Vec3 position, Matrix4fc modelView, Matrix4f projection)
-	{
+	private static @Nullable Vec2f project2D(Vec3 position, Matrix4fc modelView, Matrix4f projection) {
 		Window window = Minecraft.getInstance().getWindow();
 		int screenWidth = window.getScreenWidth();
 		int screenHeight = window.getScreenHeight();
-		
-		if(screenWidth == 0 || screenHeight == 0)
-		{
+		if (screenWidth == 0 || screenHeight == 0) {
 			return null;
 		}
-		
 		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
 		vec.mul(modelView);
 		vec.mul(projection);
-		
-		if(vec.w() == 0.0F)
-		{
+		if (vec.w() == 0.0F) {
 			return null;
 		}
-		
 		float w = (1.0F / vec.w()) * 0.5F;
 		float x = (vec.x() * w + 0.5F) * screenWidth;
 		float y = (vec.y() * w + 0.5F) * screenHeight;
 		float z = vec.z() * w + 0.5F;
 		vec.set(x, y, z, w);
-		
-		if(Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y) || w < 0.0F)
-		{
+		if (Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y) || w < 0.0F) {
 			return null;
 		}
-		
 		return new Vec2f(x, y);
 	}
 }

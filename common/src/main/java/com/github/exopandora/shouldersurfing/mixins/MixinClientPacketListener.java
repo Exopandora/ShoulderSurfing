@@ -19,64 +19,48 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
-public abstract class MixinClientPacketListener extends ClientCommonPacketListenerImpl
-{
-	protected MixinClientPacketListener(Minecraft minecraft, Connection connection, CommonListenerCookie commonListenerCookie)
-	{
+public abstract class MixinClientPacketListener extends ClientCommonPacketListenerImpl {
+	protected MixinClientPacketListener(Minecraft minecraft, Connection connection, CommonListenerCookie commonListenerCookie) {
 		super(minecraft, connection, commonListenerCookie);
 	}
 	
-	@Inject
-	(
+	@Inject(
 		at = @At("TAIL"),
 		method = "handleLogin"
 	)
-	private void handleLogin(CallbackInfo ci)
-	{
+	private void handleLogin(CallbackInfo ci) {
 		ShoulderSurfingImpl.getInstance().resetState();
 	}
 	
-	@Inject
-	(
+	@Inject(
 		at = @At("HEAD"),
 		method = "handleRespawn"
 	)
-	private void handleRespawn(ClientboundRespawnPacket packet, CallbackInfo ci)
-	{
-		if(!packet.shouldKeep(ClientboundRespawnPacket.KEEP_ALL_DATA))
-		{
+	private void handleRespawn(ClientboundRespawnPacket packet, CallbackInfo ci) {
+		if (!packet.shouldKeep(ClientboundRespawnPacket.KEEP_ALL_DATA)) {
 			ShoulderSurfingImpl.getInstance().resetState();
 		}
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "handleMovePlayer",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/network/protocol/PacketUtils.ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/network/PacketProcessor;)V",
 			shift = Shift.AFTER
 		)
 	)
-	private void handleMovePlayer(ClientboundPlayerPositionPacket packet, CallbackInfo ci)
-	{
+	private void handleMovePlayer(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().doOrientCameraOnTeleport())
-		{
+		if (instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().doOrientCameraOnTeleport()) {
 			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.relatives().contains(Relative.X_ROT);
 			boolean isRelativeYRot = packet.relatives().contains(Relative.Y_ROT);
-			
-			if(isRelativeXRot && packet.change().xRot() != 0.0F || !isRelativeXRot && player.getXRot() != packet.change().xRot())
-			{
+			if (isRelativeXRot && packet.change().xRot() != 0.0F || !isRelativeXRot && player.getXRot() != packet.change().xRot()) {
 				ShoulderSurfingCamera camera = instance.getCamera();
 				camera.setXRot(isRelativeXRot ? camera.getXRot() + packet.change().xRot() : packet.change().xRot());
 			}
-			
-			if(isRelativeYRot && packet.change().yRot() != 0.0F || !isRelativeYRot && player.getYRot() != packet.change().yRot())
-			{
+			if (isRelativeYRot && packet.change().yRot() != 0.0F || !isRelativeYRot && player.getYRot() != packet.change().yRot()) {
 				ShoulderSurfingCamera camera = instance.getCamera();
 				camera.setYRot(isRelativeYRot ? camera.getYRot() + packet.change().yRot() : packet.change().yRot());
 			}

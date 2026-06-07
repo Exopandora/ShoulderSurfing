@@ -6,8 +6,7 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 
 import java.util.List;
 
-public interface ICrosshairConfig
-{
+public interface ICrosshairConfig {
 	CrosshairVisibility getCrosshairVisibility(Perspective perspective);
 	
 	CrosshairType getCrosshairType();

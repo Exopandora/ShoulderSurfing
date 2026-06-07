@@ -17,44 +17,51 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderDispatcher.class)
-public class MixinEntityRenderDispatcher
-{
-	@Inject
-	(
+public class MixinEntityRenderDispatcher {
+	@Inject(
 		method = "submit",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public <S extends EntityRenderState> void preRender(S renderState, CameraRenderState camera, double x, double y, double z, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CallbackInfo ci)
-	{
+	public <S extends EntityRenderState> void preRender(
+		S renderState,
+		CameraRenderState camera,
+		double x,
+		double y,
+		double z,
+		PoseStack poseStack,
+		SubmitNodeCollector submitNodeCollector,
+		CallbackInfo ci
+	) {
 		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfingImpl.getInstance().getCameraEntityRenderer();
-		
-		if(renderState == cameraEntityRenderer.getCameraEntityRenderState())
-		{
+		if (renderState == cameraEntityRenderer.getCameraEntityRenderState()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Entity entity = minecraft.getCameraEntity();
 			TickRateManager tickRateManager = minecraft.level.tickRateManager();
 			DeltaTracker deltaTracker = minecraft.getDeltaTracker();
 			float partialTick = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(entity));
-			
-			if(cameraEntityRenderer.preRenderCameraEntity(entity, partialTick))
-			{
+			if (cameraEntityRenderer.preRenderCameraEntity(entity, partialTick)) {
 				ci.cancel();
 			}
 		}
 	}
 	
-	@Inject
-	(
+	@Inject(
 		method = "submit",
 		at = @At("TAIL")
 	)
-	public <S extends EntityRenderState> void postRender(S renderState, CameraRenderState camera, double x, double y, double z, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CallbackInfo ci)
-	{
+	public <S extends EntityRenderState> void postRender(
+		S renderState,
+		CameraRenderState camera,
+		double x,
+		double y,
+		double z,
+		PoseStack poseStack,
+		SubmitNodeCollector submitNodeCollector,
+		CallbackInfo ci
+	) {
 		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfingImpl.getInstance().getCameraEntityRenderer();
-		
-		if(renderState == cameraEntityRenderer.getCameraEntityRenderState())
-		{
+		if (renderState == cameraEntityRenderer.getCameraEntityRenderState()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Entity entity = minecraft.getCameraEntity();
 			TickRateManager tickRateManager = minecraft.level.tickRateManager();

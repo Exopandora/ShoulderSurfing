@@ -14,21 +14,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Options.class)
-public abstract class MixinOptions implements OptionsDuck
-{
+public abstract class MixinOptions implements OptionsDuck {
 	@Shadow
 	private CameraType cameraType;
 	
-	@Inject
-	(
+	@Inject(
 		at = @At("HEAD"),
 		method = "setCameraType",
 		cancellable = true
 	)
-	public void setCameraType(CameraType cameraType, CallbackInfo ci)
-	{
-		if(cameraType != this.cameraType)
-		{
+	public void setCameraType(CameraType cameraType, CallbackInfo ci) {
+		if (cameraType != this.cameraType) {
 			Perspective newPerspective = Perspective.of(cameraType, Config.CLIENT.getPerspectiveConfig().isThirdPersonReplaced() && cameraType == CameraType.THIRD_PERSON_BACK);
 			ShoulderSurfingImpl.getInstance().changePerspective(newPerspective);
 			ci.cancel();
@@ -36,8 +32,7 @@ public abstract class MixinOptions implements OptionsDuck
 	}
 	
 	@Unique
-	public void shouldersurfing$setCameraTypeDirect(CameraType cameraType)
-	{
+	public void shouldersurfing$setCameraTypeDirect(CameraType cameraType) {
 		this.cameraType = cameraType;
 	}
 }

@@ -9,52 +9,38 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
 @Mixin(targets = "com.mrcrayfish.guns.client.handler.RecoilHandler")
-public class MixinRecoilHandler
-{
-	@Redirect
-	(
+public class MixinRecoilHandler {
+	@Redirect(
 		method = "onRenderTick",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/player/LocalPlayer.getXRot()F",
 			remap = true
 		),
 		remap = false
 	)
-	private float getXRot(LocalPlayer player)
-	{
+	private float getXRot(LocalPlayer player) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			return instance.getCamera().getXRot();
 		}
-		
 		return player.getXRot();
 	}
 	
-	@Redirect
-	(
+	@Redirect(
 		method = "onRenderTick",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/player/LocalPlayer.setXRot(F)V",
 			remap = true
 		),
 		remap = false
 	)
-	private void setXRot(LocalPlayer player, float xRot)
-	{
+	private void setXRot(LocalPlayer player, float xRot) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			instance.getCamera().setXRot(xRot);
-		}
-		else
-		{
+		} else {
 			player.setXRot(xRot);
 		}
 	}

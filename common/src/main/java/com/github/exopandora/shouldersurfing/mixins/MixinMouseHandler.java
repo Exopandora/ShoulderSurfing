@@ -8,19 +8,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(MouseHandler.class)
-public class MixinMouseHandler
-{
-	@Redirect
-	(
+public class MixinMouseHandler {
+	@Redirect(
 		method = "turnPlayer",
-		at = @At
-		(
+		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
 		)
 	)
-	private boolean isFirstPerson(CameraType cameraType)
-	{
+	private boolean isFirstPerson(CameraType cameraType) {
 		return cameraType.isFirstPerson() || Perspective.SHOULDER_SURFING.equals(Perspective.current());
 	}
 }

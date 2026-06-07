@@ -13,11 +13,9 @@ import java.util.List;
 
 import static com.github.exopandora.shouldersurfing.forge.Platform.parseVersionRangeSilent;
 
-public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin
-{
+public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin {
 	@Override
-	public List<String> getMixins()
-	{
+	public List<String> getMixins() {
 		List<String> mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
@@ -26,41 +24,28 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
-	private static void addMtsMixins(List<String> mixins)
-	{
-		if(Mods.MTS.isLoaded())
-		{
+	private static void addMtsMixins(List<String> mixins) {
+		if (Mods.MTS.isLoaded()) {
 			mixins.add("mts.MixinCameraSystem");
 		}
 	}
 	
-	private static void addCreateModMixins(List<String> mixins)
-	{
+	private static void addCreateModMixins(List<String> mixins) {
 		String createModVersion = Mods.CREATE.getModVersion();
-		
-		if(createModVersion != null)
-		{
+		if (createModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
-			
-			if(parseVersionRangeSilent("[6.0.0,)").containsVersion(version))
-			{
+			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
 				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
-			}
-			else if(parseVersionRangeSilent("(,6.0.0)").containsVersion(version))
-			{
+			} else if (parseVersionRangeSilent("(,6.0.0)").containsVersion(version)) {
 				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
 			}
 		}
 	}
 	
-	private static void addCobblemonMixins(List<String> mixins)
-	{
+	private static void addCobblemonMixins(List<String> mixins) {
 		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
-		
-		if(cobblemonVersion != null)
-		{
+		if (cobblemonVersion != null) {
 			ShoulderSurfingCommon.LOGGER.warn("Cobblemon integration is limited in this version!");
-			
 			mixins.add("cobblemon.MixinLocalPlayer");
 			mixins.add("cobblemon.MixinPlayerExtensionsKt");
 			mixins.add("cobblemon.MixinPokemonRenderer");
@@ -68,14 +53,12 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	}
 	
 	@Override
-	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 	
 	@Override
-	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 }

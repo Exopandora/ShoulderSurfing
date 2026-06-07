@@ -15,19 +15,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ContraptionHandlerClient.class)
-public class MixinContraptionHandlerClient
-{
-	@Inject
-	(
+public class MixinContraptionHandlerClient {
+	@Inject(
 		method = "getRayInputs",
 		at = @At("HEAD"),
 		cancellable = true,
 		remap = false
 	)
-	private static void getRayInputs(LocalPlayer player, CallbackInfoReturnable<Couple<Vec3>> cir)
-	{
-		if(ShoulderSurfing.getInstance().isShoulderSurfing())
-		{
+	private static void getRayInputs(LocalPlayer player, CallbackInfoReturnable<Couple<Vec3>> cir) {
+		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);

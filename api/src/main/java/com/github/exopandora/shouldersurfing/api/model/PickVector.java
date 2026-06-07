@@ -6,30 +6,26 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public enum PickVector
-{
+public enum PickVector {
 	PLAYER((camera, entity, partialTick) -> entityViewVector(entity, partialTick)),
 	CAMERA((camera, entity, partialTick) -> new Vec3(camera.forwardVector()));
 	
 	private final IPickVectorFunction pickVectorFunction;
 	
-	private PickVector(IPickVectorFunction pickVectorFunction)
+	PickVector(IPickVectorFunction pickVectorFunction)
 	{
 		this.pickVectorFunction = pickVectorFunction;
 	}
 	
-	public Vec3 calc(Camera camera, Entity entity, float partialTick)
-	{
+	public Vec3 calc(Camera camera, Entity entity, float partialTick) {
 		return this.pickVectorFunction.apply(camera, entity, partialTick);
 	}
 	
-	private interface IPickVectorFunction
-	{
+	private interface IPickVectorFunction {
 		Vec3 apply(Camera camera, Entity entity, float partialTick);
 	}
 	
-	private static @NotNull Vec3 entityViewVector(Entity entity, float partialTick)
-	{
+	private static @NotNull Vec3 entityViewVector(Entity entity, float partialTick) {
 		float xRot = partialTick == 1.0F ? entity.getXRot() : Mth.rotLerp(partialTick, entity.xRotO, entity.getXRot());
 		float yRot = partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
 		float xRotDeg = xRot * Mth.DEG_TO_RAD;

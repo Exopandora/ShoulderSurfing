@@ -8,42 +8,31 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
-public class CameraEntityTransparencyCallbackWhenAiming implements ICameraEntityTransparencyCallback, ITickableCallback
-{
+public class CameraEntityTransparencyCallbackWhenAiming implements ICameraEntityTransparencyCallback, ITickableCallback {
 	private static final int TRANSITION_TICK_COUNT = 5;
 	private int aimingTicks;
 	private int aimingTicksO;
 	
 	@Override
-	public void tick()
-	{
-		if(Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenAiming())
-		{
+	public void tick() {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenAiming()) {
 			this.aimingTicksO = this.aimingTicks;
-			
-			if(ShoulderSurfingImpl.getInstance().isAiming())
-			{
-				if(this.aimingTicks < TRANSITION_TICK_COUNT)
-				{
+			if (ShoulderSurfingImpl.getInstance().isAiming()) {
+				if (this.aimingTicks < TRANSITION_TICK_COUNT) {
 					this.aimingTicks++;
 				}
-			}
-			else if(this.aimingTicks > 0)
-			{
+			} else if (this.aimingTicks > 0) {
 				this.aimingTicks--;
 			}
 		}
 	}
 	
 	@Override
-	public float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float partialTick)
-	{
-		if(Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenAiming())
-		{
+	public float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float partialTick) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenAiming()) {
 			float f = (TRANSITION_TICK_COUNT - Mth.lerp(partialTick, this.aimingTicksO, this.aimingTicks)) / TRANSITION_TICK_COUNT;
 			return CameraEntityTransparencyCallback.MIN_CAMERA_ENTITY_ALPHA + (1F - CameraEntityTransparencyCallback.MIN_CAMERA_ENTITY_ALPHA) * f;
 		}
-		
 		return 1.0F;
 	}
 }

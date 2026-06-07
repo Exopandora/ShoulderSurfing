@@ -10,16 +10,14 @@ import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class ObjectPickerConfig implements IObjectPickerConfig
-{
+public class ObjectPickerConfig implements IObjectPickerConfig {
 	private final DoubleValue customRaytraceDistance;
 	private final BooleanValue isCustomRaytraceDistanceEnabled;
 	private final ConfigValue<PickOrigin> entityPickOrigin;
 	private final ConfigValue<PickOrigin> blockPickOrigin;
 	private final ConfigValue<PickVector> pickVector;
 	
-	protected ObjectPickerConfig(ModConfigSpec.Builder builder)
-	{
+	protected ObjectPickerConfig(ModConfigSpec.Builder builder) {
 		builder.push("object_picker");
 		
 		this.customRaytraceDistance = builder
@@ -57,32 +55,27 @@ public class ObjectPickerConfig implements IObjectPickerConfig
 	}
 	
 	@Override
-	public double getCustomRaytraceDistance()
-	{
+	public double getCustomRaytraceDistance() {
 		return this.customRaytraceDistance.get();
 	}
 	
 	@Override
-	public boolean isCustomRaytraceDistanceEnabled()
-	{
+	public boolean isCustomRaytraceDistanceEnabled() {
 		return this.isCustomRaytraceDistanceEnabled.get();
 	}
 	
 	@Override
-	public PickOrigin getEntityPickOrigin()
-	{
+	public PickOrigin getEntityPickOrigin() {
 		return this.entityPickOrigin.get();
 	}
 	
 	@Override
-	public PickOrigin getBlockPickOrigin()
-	{
+	public PickOrigin getBlockPickOrigin() {
 		return this.blockPickOrigin.get();
 	}
 	
 	@Override
-	public PickVector getPickVector()
-	{
+	public PickVector getPickVector() {
 		return this.pickVector.get();
 	}
 }

@@ -6,12 +6,10 @@ import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class AudioConfig implements IAudioConfig
-{
+public class AudioConfig implements IAudioConfig {
 	private final BooleanValue isPlayerSoundCentered;
 	
-	protected AudioConfig(ModConfigSpec.Builder builder)
-	{
+	protected AudioConfig(ModConfigSpec.Builder builder) {
 		builder.push("audio");
 		
 		this.isPlayerSoundCentered = builder
@@ -23,8 +21,7 @@ public class AudioConfig implements IAudioConfig
 	}
 	
 	@Override
-	public boolean isPlayerSoundCentered()
-	{
+	public boolean isPlayerSoundCentered() {
 		return this.isPlayerSoundCentered.get();
 	}
 }

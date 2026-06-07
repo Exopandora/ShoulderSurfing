@@ -1,7 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client.config;
 
-public interface IClientConfig
-{
+public interface IClientConfig {
 	ICameraConfig getCameraConfig();
 	
 	IPerspectiveConfig getPerspectiveConfig();

@@ -23,12 +23,9 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(value = ShoulderSurfingCommon.MOD_ID, dist = Dist.CLIENT)
-public class ShoulderSurfingNeoForge
-{
-	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus)
-	{
-		if(FMLEnvironment.getDist().isClient())
-		{
+public class ShoulderSurfingNeoForge {
+	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus) {
+		if (FMLEnvironment.getDist().isClient()) {
 			modEventBus.addListener(this::clientSetup);
 			modEventBus.addListener(this::loadComplete);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
@@ -40,8 +37,7 @@ public class ShoulderSurfingNeoForge
 	}
 	
 	@SubscribeEvent
-	public void clientSetup(FMLClientSetupEvent event)
-	{
+	public void clientSetup(FMLClientSetupEvent event) {
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::frameGraphSetupEvent);
@@ -49,25 +45,21 @@ public class ShoulderSurfingNeoForge
 	}
 	
 	@SubscribeEvent
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
+	public void loadComplete(FMLLoadCompleteEvent event) {
 		// Workaround to force TransformerClassLoader to load the PluginLoader, which in turn finds and loads the service implementation.
 		// Otherwise, there is a chance that the current class loader ends up being AppClassLoader, which cannot find our service implementation.
 		Minecraft.getInstance().execute(() -> PluginLoader.getInstance().loadPlugins());
 	}
 	
 	@SubscribeEvent
-	public void modConfigReloadingEvent(ModConfigEvent.Reloading event)
-	{
-		if(ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT)
-		{
+	public void modConfigReloadingEvent(ModConfigEvent.Reloading event) {
+		if (ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT) {
 			Config.onConfigReload();
 		}
 	}
 	
 	@SubscribeEvent
-	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
-	{
+	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event) {
 		event.register(InputHandler.CAMERA_LEFT);
 		event.register(InputHandler.CAMERA_RIGHT);
 		event.register(InputHandler.CAMERA_IN);

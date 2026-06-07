@@ -1,13 +1,10 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.callback.IAdaptiveItemCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraCouplingCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraEntityTransparencyCallback;
-import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback;
+import com.github.exopandora.shouldersurfing.api.callback.*;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupContext;
 import com.github.exopandora.shouldersurfing.api.callback.ICameraRotationSetupCallback.CameraRotationSetupResult;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback;
-import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerInputCallback.IsForcingVanillaMovementInputContext;
+import com.github.exopandora.shouldersurfing.api.callback.IPlayerStateCallback.*;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.plugin.ShoulderSurfingRegistrar;
 import net.minecraft.client.Minecraft;
@@ -22,207 +19,140 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-class CallbackHelper
-{
-	protected static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		final IPlayerStateCallback.IsUsingContext context = new IPlayerStateCallback.IsUsingContext(minecraft, cameraEntity);
-		
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isUsingItem(context);
-			
-			if(result == IPlayerStateCallback.Result.TRUE)
-			{
+class CallbackHelper {
+	protected static boolean isUsingItem(LivingEntity cameraEntity, Minecraft minecraft) {
+		final IsUsingContext context = new IsUsingContext(minecraft, cameraEntity);
+		for (final IPlayerStateCallback callback : getPlayerStateCallbacks()) {
+			final IPlayerStateCallback.Result result = callback.isUsingItem(context);
+			if (result == IPlayerStateCallback.Result.TRUE) {
 				return true;
-			}
-			else if(result == IPlayerStateCallback.Result.FALSE)
-			{
+			} else if (result == IPlayerStateCallback.Result.FALSE) {
 				return false;
 			}
 		}
-		
 		return cameraEntity.isUsingItem() && !cameraEntity.getUseItem().has(DataComponents.FOOD) || cameraEntity instanceof Player player && player.isScoping();
 	}
 	
-	protected static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		final IPlayerStateCallback.IsInteractingContext context = new IPlayerStateCallback.IsInteractingContext(minecraft, cameraEntity);
-		
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isInteracting(context);
-			
-			if(result == IPlayerStateCallback.Result.TRUE)
-			{
+	protected static boolean isInteracting(LivingEntity cameraEntity, Minecraft minecraft) {
+		final IsInteractingContext context = new IsInteractingContext(minecraft, cameraEntity);
+		for (final IPlayerStateCallback callback : getPlayerStateCallbacks()) {
+			final IPlayerStateCallback.Result result = callback.isInteracting(context);
+			if (result == IPlayerStateCallback.Result.TRUE) {
 				return true;
-			}
-			else if(result == IPlayerStateCallback.Result.FALSE)
-			{
+			} else if (result == IPlayerStateCallback.Result.FALSE) {
 				return false;
 			}
 		}
-		
 		return minecraft.options.keyUse.isDown() && !cameraEntity.isUsingItem();
 	}
 	
-	protected static boolean isAttacking(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		final IPlayerStateCallback.IsAttackingContext context = new IPlayerStateCallback.IsAttackingContext(minecraft, cameraEntity);
-		
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isAttacking(context);
-			
-			if(result == IPlayerStateCallback.Result.TRUE)
-			{
+	protected static boolean isAttacking(LivingEntity cameraEntity, Minecraft minecraft) {
+		final IsAttackingContext context = new IsAttackingContext(minecraft, cameraEntity);
+		for (final IPlayerStateCallback callback : getPlayerStateCallbacks()) {
+			final IPlayerStateCallback.Result result = callback.isAttacking(context);
+			if (result == IPlayerStateCallback.Result.TRUE) {
 				return true;
-			}
-			else if(result == IPlayerStateCallback.Result.FALSE)
-			{
+			} else if (result == IPlayerStateCallback.Result.FALSE) {
 				return false;
 			}
 		}
-		
 		return minecraft.options.keyAttack.isDown();
 	}
 	
-	protected static boolean isPicking(LivingEntity cameraEntity, Minecraft minecraft)
-	{
-		final IPlayerStateCallback.IsPickingContext context = new IPlayerStateCallback.IsPickingContext(minecraft, cameraEntity);
-		
-		for(final IPlayerStateCallback callback : getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isPicking(context);
-			
-			if(result == IPlayerStateCallback.Result.TRUE)
-			{
+	protected static boolean isPicking(LivingEntity cameraEntity, Minecraft minecraft) {
+		final IsPickingContext context = new IsPickingContext(minecraft, cameraEntity);
+		for (final IPlayerStateCallback callback : getPlayerStateCallbacks()) {
+			final IPlayerStateCallback.Result result = callback.isPicking(context);
+			if (result == IPlayerStateCallback.Result.TRUE) {
 				return true;
-			}
-			else if(result == IPlayerStateCallback.Result.FALSE)
-			{
+			} else if (result == IPlayerStateCallback.Result.FALSE) {
 				return false;
 			}
 		}
-		
 		return minecraft.options.keyPickItem.isDown();
 	}
 	
-	protected static boolean isRidingBoat(Minecraft minecraft, @Nullable Entity entity)
-	{
-		if(!(entity instanceof LivingEntity))
-		{
+	protected static boolean isRidingBoat(Minecraft minecraft, @Nullable Entity entity) {
+		if (!(entity instanceof LivingEntity)) {
 			return false;
 		}
-		
 		Entity vehicle = entity.getVehicle();
-		
-		if(vehicle == null)
-		{
+		if (vehicle == null) {
 			return false;
 		}
-		
-		final IPlayerStateCallback.IsRidingBoatContext context = new IPlayerStateCallback.IsRidingBoatContext(minecraft, entity, vehicle);
-		
-		for(final IPlayerStateCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks())
-		{
-			IPlayerStateCallback.Result result = callback.isRidingBoat(context);
-			
-			if(result == IPlayerStateCallback.Result.TRUE)
-			{
+		final IsRidingBoatContext context = new IsRidingBoatContext(minecraft, entity, vehicle);
+		for (final IPlayerStateCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks()) {
+			final IPlayerStateCallback.Result result = callback.isRidingBoat(context);
+			if (result == IPlayerStateCallback.Result.TRUE) {
 				return true;
-			}
-			else if(result == IPlayerStateCallback.Result.FALSE)
-			{
+			} else if (result == IPlayerStateCallback.Result.FALSE) {
 				return false;
 			}
 		}
-		
 		return vehicle instanceof AbstractBoat;
 	}
 	
-	protected static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity)
-	{
-		if(entity instanceof LivingEntity living)
-		{
-			for(IAdaptiveItemCallback callback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks())
-			{
-				if(callback.isHoldingAdaptiveItem(minecraft, living))
-				{
+	protected static boolean isHoldingAdaptiveItem(Minecraft minecraft, Entity entity) {
+		if (entity instanceof LivingEntity living) {
+			for (IAdaptiveItemCallback callback : ShoulderSurfingRegistrar.getInstance().getAdaptiveItemCallbacks()) {
+				if (callback.isHoldingAdaptiveItem(minecraft, living)) {
 					return true;
 				}
 			}
 		}
-		
 		return false;
 	}
 	
-	protected static boolean isForcingCoupledCamera(Minecraft minecraft)
-	{
-		for(ICameraCouplingCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks())
-		{
-			if(callback.isForcingCameraCoupling(minecraft))
-			{
+	protected static boolean isForcingCoupledCamera(Minecraft minecraft) {
+		for (ICameraCouplingCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraCouplingCallbacks()) {
+			if (callback.isForcingCameraCoupling(minecraft)) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 	
-	protected static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
-	{
-		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
-		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
-		
-		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
-		{
+	protected static CameraRotationSetupResult fireCameraRotationSetupCallbackPre(
+		LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot
+	) {
+		final CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
+		final CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
+		for (ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks()) {
 			callback.pre(context, result);
 		}
-		
 		return result;
 	}
 	
-	protected static CameraRotationSetupResult fireCameraRotationSetupCallbackPost(LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot)
-	{
-		CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
-		CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
-		
-		for(ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks())
-		{
+	protected static CameraRotationSetupResult fireCameraRotationSetupCallbackPost(
+		LocalPlayer player, double yRotDelta, double xRotDelta, float yRot, float xRot
+	) {
+		final CameraRotationSetupContext context = new CameraRotationSetupContext(player, xRotDelta, yRotDelta);
+		final CameraRotationSetupResult result = new CameraRotationSetupResult(xRot, yRot);
+		for (ICameraRotationSetupCallback callback : ShoulderSurfingRegistrar.getInstance().getSetupCameraRotationCallbacks()) {
 			callback.post(context, result);
 		}
-		
 		return result;
 	}
 	
-	protected static boolean isForcingVanillaMovementInput(Minecraft minecraft, Entity cameraEntity)
-	{
-		for(IPlayerInputCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerInputCallbacks())
-		{
-			if(callback.isForcingVanillaMovementInput(new IPlayerInputCallback.IsForcingVanillaMovementInputContext(minecraft, cameraEntity)))
-			{
+	protected static boolean isForcingVanillaMovementInput(Minecraft minecraft, Entity cameraEntity) {
+		final IsForcingVanillaMovementInputContext context = new IsForcingVanillaMovementInputContext(minecraft, cameraEntity);
+		for (IPlayerInputCallback callback : ShoulderSurfingRegistrar.getInstance().getPlayerInputCallbacks()) {
+			if (callback.isForcingVanillaMovementInput(context)) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 	
-	protected static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float alpha, float partialTick)
-	{
+	protected static float getCameraEntityAlpha(IShoulderSurfing instance, Entity entity, float alpha, float partialTick) {
 		float result = alpha;
-		
-		for(ICameraEntityTransparencyCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraEntityTransparencyCallbacks())
-		{
+		for (ICameraEntityTransparencyCallback callback : ShoulderSurfingRegistrar.getInstance().getCameraEntityTransparencyCallbacks()) {
 			result = Math.min(Mth.clamp(callback.getCameraEntityAlpha(instance, entity, partialTick), 0.0F, 1.0F), result);
 		}
-		
 		return result;
 	}
 	
-	private static List<IPlayerStateCallback> getPlayerStateCallbacks()
-	{
+	private static List<IPlayerStateCallback> getPlayerStateCallbacks() {
 		return ShoulderSurfingRegistrar.getInstance().getPlayerStateCallbacks();
 	}
 }

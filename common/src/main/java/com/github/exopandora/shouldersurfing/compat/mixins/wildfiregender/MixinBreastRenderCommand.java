@@ -8,18 +8,15 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Pseudo
 @Mixin(targets = "com.wildfire.render.BreastRenderCommand")
-public class MixinBreastRenderCommand
-{
-	@ModifyVariable
-	(
+public class MixinBreastRenderCommand {
+	@ModifyVariable(
 		method = "<init>",
 		at = @At("HEAD"),
 		index = 4,
 		argsOnly = true,
 		remap = false
 	)
-	private static int color(int color)
-	{
+	private static int color(int color) {
 		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(color);
 	}
 }

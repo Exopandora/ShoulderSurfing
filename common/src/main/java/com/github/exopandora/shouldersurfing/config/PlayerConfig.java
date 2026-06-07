@@ -10,8 +10,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class PlayerConfig implements IPlayerConfig
-{
+public class PlayerConfig implements IPlayerConfig {
 	private final BooleanValue playerTransparency;
 	private final BooleanValue isPlayerTransparentWhenAiming;
 	private final DoubleValue hidePlayerWhenLookingUpAngle;
@@ -25,8 +24,7 @@ public class PlayerConfig implements IPlayerConfig
 	private final BooleanValue isPlayerYRotFollowingCamera;
 	private final DoubleValue playerYRotFollowAngleLimit;
 	
-	protected PlayerConfig(ModConfigSpec.Builder builder)
-	{
+	protected PlayerConfig(ModConfigSpec.Builder builder) {
 		builder.push("player");
 		
 		this.playerTransparency = builder
@@ -97,74 +95,62 @@ public class PlayerConfig implements IPlayerConfig
 	}
 	
 	@Override
-	public double getHidePlayerWhenLookingUpAngle()
-	{
+	public double getHidePlayerWhenLookingUpAngle() {
 		return this.hidePlayerWhenLookingUpAngle.get();
 	}
 	
 	@Override
-	public boolean isPlayerTransparencyEnabled()
-	{
+	public boolean isPlayerTransparencyEnabled() {
 		return Config.CLIENT_SPEC.isLoaded() ? this.playerTransparency.get() : this.playerTransparency.getDefault();
 	}
 	
 	@Override
-	public boolean isPlayerTransparentWhenAiming()
-	{
+	public boolean isPlayerTransparentWhenAiming() {
 		return this.isPlayerTransparentWhenAiming.get();
 	}
 	
 	@Override
-	public TurningMode getTurningModeWhenUsingItem()
-	{
+	public TurningMode getTurningModeWhenUsingItem() {
 		return this.turningModeWhenUsingItem.get();
 	}
 	
 	@Override
-	public TurningMode getTurningModeWhenAttacking()
-	{
+	public TurningMode getTurningModeWhenAttacking() {
 		return this.turningModeWhenAttacking.get();
 	}
 	
 	@Override
-	public TurningMode getTurningModeWhenInteracting()
-	{
+	public TurningMode getTurningModeWhenInteracting() {
 		return this.turningModeWhenInteraction.get();
 	}
 	
 	@Override
-	public TurningMode getTurningModeWhenPicking()
-	{
+	public TurningMode getTurningModeWhenPicking() {
 		return this.turningModeWhenPicking.get();
 	}
 	
 	@Override
-	public int getTurningLockTime()
-	{
+	public int getTurningLockTime() {
 		return this.turningLockTime.get();
 	}
 	
 	@Override
-	public double getTurningSpeedMultiplier()
-	{
+	public double getTurningSpeedMultiplier() {
 		return this.turningSpeedMultiplier.get();
 	}
 	
 	@Override
-	public boolean isPlayerXRotFollowingCamera()
-	{
+	public boolean isPlayerXRotFollowingCamera() {
 		return this.isPlayerXRotFollowingCamera.get();
 	}
 	
 	@Override
-	public boolean isPlayerYRotFollowingCamera()
-	{
+	public boolean isPlayerYRotFollowingCamera() {
 		return this.isPlayerYRotFollowingCamera.get();
 	}
 	
 	@Override
-	public double getPlayerYRotFollowAngleLimit()
-	{
+	public double getPlayerYRotFollowAngleLimit() {
 		return this.playerYRotFollowAngleLimit.get();
 	}
 }

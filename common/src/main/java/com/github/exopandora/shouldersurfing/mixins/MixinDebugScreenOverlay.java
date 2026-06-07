@@ -11,15 +11,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(DebugScreenOverlay.class)
-public class MixinDebugScreenOverlay
-{
-	@Inject
-	(
+public class MixinDebugScreenOverlay {
+	@Inject(
 		method = "extractLines",
 		at = @At("HEAD")
 	)
-	private void render(GuiGraphicsExtractor graphics, List<String> lines, boolean alignLeft, CallbackInfo ci)
-	{
+	private void render(GuiGraphicsExtractor graphics, List<String> lines, boolean alignLeft, CallbackInfo ci) {
 		DebugScreenOverlayHandler.appendDebugText(lines);
 	}
 }

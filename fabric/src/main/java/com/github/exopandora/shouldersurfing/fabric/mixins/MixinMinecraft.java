@@ -13,34 +13,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
-public class MixinMinecraft
-{
-	@Inject
-	(
+public class MixinMinecraft {
+	@Inject(
 		method = "<init>",
 		at = @At("TAIL")
 	)
-	private void init(GameConfig gameConfig, CallbackInfo ci)
-	{
+	private void init(GameConfig gameConfig, CallbackInfo ci) {
 		ShoulderSurfingImpl.getInstance().init();
-		ModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config ->
-		{
-			if(ModConfig.Type.CLIENT == config.getType())
-			{
+		ModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config -> {
+			if (ModConfig.Type.CLIENT == config.getType()) {
 				Config.onConfigReload();
 			}
 		});
 	}
 	
-	@Inject
-	(
+	@Inject(
 		at = @At("HEAD"),
 		method = "tick"
 	)
-	private void onStartTick(CallbackInfo info)
-	{
-		if(Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())
-		{
+	private void onStartTick(CallbackInfo info) {
+		if (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused()) {
 			ShoulderSurfingImpl.getInstance().tick();
 		}
 	}

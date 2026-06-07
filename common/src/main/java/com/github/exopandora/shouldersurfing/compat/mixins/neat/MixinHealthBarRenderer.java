@@ -14,21 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(targets = "vazkii.neat.HealthBarRenderer")
-public class MixinHealthBarRenderer
-{
-	@Inject
-	(
+public class MixinHealthBarRenderer {
+	@Inject(
 		method = "getEntityLookedAt",
 		at = @At("HEAD"),
 		remap = false,
 		cancellable = true
 	)
-	private static void getEntityLookedAt(Entity cameraEntity, CallbackInfoReturnable<Entity> cir)
-	{
+	private static void getEntityLookedAt(Entity cameraEntity, CallbackInfoReturnable<Entity> cir) {
 		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
-		
-		if(instance.isShoulderSurfing())
-		{
+		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);

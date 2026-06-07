@@ -9,14 +9,12 @@ import java.util.List;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
-public class IntegrationsConfig implements IIntegrationsConfig
-{
+public class IntegrationsConfig implements IIntegrationsConfig {
 	private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairItems;
 	private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairDefaultItemComponents;
 	private final ConfigValue<List<? extends String>> curiosAdaptiveCrosshairItemComponents;
 	
-	protected IntegrationsConfig(ModConfigSpec.Builder builder)
-	{
+	protected IntegrationsConfig(ModConfigSpec.Builder builder) {
 		builder.push("integrations");
 		builder.push("curios");
 		
@@ -40,20 +38,17 @@ public class IntegrationsConfig implements IIntegrationsConfig
 	}
 	
 	@Override
-	public List<? extends String> getCuriosAdaptiveCrosshairItems()
-	{
+	public List<? extends String> getCuriosAdaptiveCrosshairItems() {
 		return this.curiosAdaptiveCrosshairItems.get();
 	}
 	
 	@Override
-	public List<? extends String> getCuriosAdaptiveCrosshairDefaultItemComponents()
-	{
+	public List<? extends String> getCuriosAdaptiveCrosshairDefaultItemComponents() {
 		return this.curiosAdaptiveCrosshairDefaultItemComponents.get();
 	}
 	
 	@Override
-	public List<? extends String> getCuriosAdaptiveCrosshairItemComponents()
-	{
+	public List<? extends String> getCuriosAdaptiveCrosshairItemComponents() {
 		return this.curiosAdaptiveCrosshairItemComponents.get();
 	}
 }
