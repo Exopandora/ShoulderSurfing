@@ -28,16 +28,16 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		if (Mods.CREATE.isLoaded()) {
 			Version version = parseVersionSilent(Mods.CREATE.getModVersion());
 			if (parseVersionPredicateSilent(">=6.0.0").test(version)) {
-				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
+				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
 			} else if (parseVersionPredicateSilent("<6.0.0").test(version)) {
-				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
+				mixins.add("create.ContraptionHandlerClientMixin_0_5_0");
 			}
 		}
 	}
 	
 	private static void addCreateFlyMixins(List<String> mixins) {
 		if (Mods.CREATE_FLY.isLoaded()) {
-			mixins.add("createfly.MixinContraptionHandlerClient");
+			mixins.add("createfly.ContraptionHandlerClientMixin");
 		}
 	}
 	
@@ -45,9 +45,9 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
 			ShoulderSurfingCommon.LOGGER.warn("Cobblemon integration is limited in this version!");
-			mixins.add("cobblemon.MixinLocalPlayer");
-			mixins.add("cobblemon.MixinPlayerExtensionsKt");
-			mixins.add("cobblemon.MixinPokemonRenderer");
+			mixins.add("cobblemon.LocalPlayerMixin");
+			mixins.add("cobblemon.PlayerExtensionsKtMixin");
+			mixins.add("cobblemon.PokemonRendererMixin");
 		}
 	}
 	

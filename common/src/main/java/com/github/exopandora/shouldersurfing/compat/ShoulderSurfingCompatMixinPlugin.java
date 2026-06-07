@@ -36,32 +36,32 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	
 	private static void addCGMMixins(List<String> mixins) {
 		if (Mods.CGM.isLoaded()) {
-			mixins.add("cgm.MixinRecoilHandler");
+			mixins.add("cgm.RecoilHandlerMixin");
 		}
 	}
 	
 	private static void addNeatMixins(List<String> mixins) {
 		if (Mods.NEAT.isLoaded()) {
-			mixins.add("neat.MixinHealthBarRenderer");
+			mixins.add("neat.HealthBarRendererMixin");
 		}
 	}
 	
 	private static void addTheOneProbeMixins(List<String> mixins) {
 		if (Mods.THE_ONE_PROBE.isLoaded()) {
-			mixins.add("theoneprobe.MixinOverlayRenderer");
+			mixins.add("theoneprobe.OverlayRendererMixin");
 		}
 	}
 	
 	private static void addTslatEntityStatusMixins(List<String> mixins) {
 		if (Mods.TSLAT_ENTITY_STATUS.isLoaded()) {
-			mixins.add("tslatentitystatus.MixinTESClientUtil");
-			mixins.add("tslatentitystatus.MixinTESHud");
+			mixins.add("tslatentitystatus.TESClientUtilMixin");
+			mixins.add("tslatentitystatus.TESHudMixin");
 		}
 	}
 	
 	private static void addWildfireGenderMixins(List<String> mixins) {
 		if (Mods.WILDFIRE_GENDER.isLoaded()) {
-			mixins.add("wildfiregender.MixinBreastRenderCommand");
+			mixins.add("wildfiregender.BreastRenderCommandMixin");
 		}
 	}
 }

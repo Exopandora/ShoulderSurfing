@@ -5,8 +5,8 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"MixinCamera",
-		"MixinMinecraft"
+		"CameraMixin",
+		"MinecraftMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

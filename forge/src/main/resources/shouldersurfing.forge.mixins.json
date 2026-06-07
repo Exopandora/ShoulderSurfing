@@ -5,8 +5,8 @@
 	"refmap": "shouldersurfing.refmap.json",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"MixinGui",
-		"MixinLevelRenderer"
+		"GuiMixin",
+		"LevelRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
