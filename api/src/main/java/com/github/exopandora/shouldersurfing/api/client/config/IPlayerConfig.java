@@ -8,7 +8,7 @@ public interface IPlayerConfig
 	
 	boolean isPlayerTransparencyEnabled();
 	
-	boolean turnPlayerTransparentWhenAiming();
+	boolean isPlayerTransparentWhenAiming();
 	
 	TurningMode getTurningModeWhenUsingItem();
 	
@@ -22,9 +22,9 @@ public interface IPlayerConfig
 	
 	double getTurningSpeedMultiplier();
 	
-	boolean shouldPlayerXRotFollowCamera();
+	boolean isPlayerXRotFollowingCamera();
 	
-	boolean shouldPlayerYRotFollowCamera();
+	boolean isPlayerYRotFollowingCamera();
 	
 	double getPlayerYRotFollowAngleLimit();
 }

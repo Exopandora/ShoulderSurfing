@@ -268,7 +268,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing
 			minecraft.gameRenderer.checkEntityPostEffect(isFirstPerson ? minecraft.getCameraEntity() : null);
 		}
 		
-		if(perspectiveConfig.doRememberLastPerspective())
+		if(perspectiveConfig.isPerspectivePersistent())
 		{
 			perspectiveConfig.setDefaultPerspective(next);
 		}

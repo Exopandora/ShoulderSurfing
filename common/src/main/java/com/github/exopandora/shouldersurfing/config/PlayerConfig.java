@@ -13,7 +13,7 @@ import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID
 public class PlayerConfig implements IPlayerConfig
 {
 	private final BooleanValue playerTransparency;
-	private final BooleanValue turnPlayerTransparentWhenAiming;
+	private final BooleanValue isPlayerTransparentWhenAiming;
 	private final DoubleValue hidePlayerWhenLookingUpAngle;
 	private final ConfigValue<TurningMode> turningModeWhenUsingItem;
 	private final ConfigValue<TurningMode> turningModeWhenAttacking;
@@ -21,8 +21,8 @@ public class PlayerConfig implements IPlayerConfig
 	private final ConfigValue<TurningMode> turningModeWhenPicking;
 	private final IntValue turningLockTime;
 	private final DoubleValue turningSpeedMultiplier;
-	private final BooleanValue playerXRotFollowsCamera;
-	private final BooleanValue playerYRotFollowsCamera;
+	private final BooleanValue isPlayerXRotFollowingCamera;
+	private final BooleanValue isPlayerYRotFollowingCamera;
 	private final DoubleValue playerYRotFollowAngleLimit;
 	
 	protected PlayerConfig(ModConfigSpec.Builder builder)
@@ -30,13 +30,13 @@ public class PlayerConfig implements IPlayerConfig
 		builder.push("player");
 		
 		this.playerTransparency = builder
-			.comment("Whether or not to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
+			.comment("Whether to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
 			.translation(MOD_ID + ".configuration.player.adjust_player_transparency")
 			.gameRestart()
 			.define("adjust_player_transparency", true);
 		
-		this.turnPlayerTransparentWhenAiming = builder
-			.comment("Whether or not to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.")
+		this.isPlayerTransparentWhenAiming = builder
+			.comment("Whether to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.")
 			.translation(MOD_ID + ".configuration.player.turn_player_transparent_when_aiming")
 			.define("turn_player_transparent_when_aiming", false);
 		
@@ -45,12 +45,12 @@ public class PlayerConfig implements IPlayerConfig
 			.translation(MOD_ID + ".configuration.player.hide_player_when_looking_up_angle")
 			.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 		
-		this.playerXRotFollowsCamera = builder
+		this.isPlayerXRotFollowingCamera = builder
 			.comment("Whether the x-rot of the player should follow the camera x-rot. This config option only applies when camera is decoupled.")
 			.translation(MOD_ID + ".configuration.player.player_x_rot_follows_camera")
 			.define("player_x_rot_follows_camera", false);
 		
-		this.playerYRotFollowsCamera = builder
+		this.isPlayerYRotFollowingCamera = builder
 			.comment("Whether the y-rot of the player should follow the camera y-rot. This config option only applies when camera is decoupled.")
 			.translation(MOD_ID + ".configuration.player.player_y_rot_follows_camera")
 			.define("player_y_rot_follows_camera", false);
@@ -109,9 +109,9 @@ public class PlayerConfig implements IPlayerConfig
 	}
 	
 	@Override
-	public boolean turnPlayerTransparentWhenAiming()
+	public boolean isPlayerTransparentWhenAiming()
 	{
-		return this.turnPlayerTransparentWhenAiming.get();
+		return this.isPlayerTransparentWhenAiming.get();
 	}
 	
 	@Override
@@ -151,15 +151,15 @@ public class PlayerConfig implements IPlayerConfig
 	}
 	
 	@Override
-	public boolean shouldPlayerXRotFollowCamera()
+	public boolean isPlayerXRotFollowingCamera()
 	{
-		return this.playerXRotFollowsCamera.get();
+		return this.isPlayerXRotFollowingCamera.get();
 	}
 	
 	@Override
-	public boolean shouldPlayerYRotFollowCamera()
+	public boolean isPlayerYRotFollowingCamera()
 	{
-		return this.playerYRotFollowsCamera.get();
+		return this.isPlayerYRotFollowingCamera.get();
 	}
 	
 	@Override

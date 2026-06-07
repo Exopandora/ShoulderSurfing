@@ -117,7 +117,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 	{
 		int minDistanceToCrosshair = Config.CLIENT.getCrosshairConfig().getObstructionIndicatorMinDistanceToCrosshair();
 		return this.crosshairOffset != null && this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairConfig().getShowObstructionCrosshair() &&
-			(this.instance.isAiming() || !Config.CLIENT.getCrosshairConfig().showObstructionIndicatorWhenAiming()) &&
+			(this.instance.isAiming() || !Config.CLIENT.getCrosshairConfig().isObstructionIndicatorShownWhenAiming()) &&
 			!this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity()) &&
 			this.crosshairOffset.lengthSquared() >= minDistanceToCrosshair * minDistanceToCrosshair;
 	}
@@ -128,7 +128,7 @@ public class CrosshairRenderer implements ICrosshairRenderer
 		{
 			boolean isDynamic = this.isCrosshairDynamic(Minecraft.getInstance().getCameraEntity());
 			ObjectPickerConfig objectPickerConfig = Config.CLIENT.getObjectPickerConfig();
-			double interactionRangeOverride = objectPickerConfig.useCustomRaytraceDistance() ? objectPickerConfig.getCustomRaytraceDistance() : 0;
+			double interactionRangeOverride = objectPickerConfig.isCustomRaytraceDistanceEnabled() ? objectPickerConfig.getCustomRaytraceDistance() : 0;
 			Player player = Minecraft.getInstance().player;
 			// Trace primary crosshair
 			PickContext.Builder pickContextBuilder = new PickContext.Builder(camera);

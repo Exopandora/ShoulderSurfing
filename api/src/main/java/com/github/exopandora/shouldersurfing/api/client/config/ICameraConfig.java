@@ -48,11 +48,11 @@ public interface ICameraConfig
 		return new Vec3(this.getMaxOffsetX(), this.getMaxOffsetY(), this.getMaxOffsetZ());
 	}
 	
-	boolean isUnlimitedOffsetX();
+	boolean isOffsetXUnlimited();
 	
-	boolean isUnlimitedOffsetY();
+	boolean isOffsetYUnlimited();
 	
-	boolean isUnlimitedOffsetZ();
+	boolean isOffsetZUnlimited();
 	
 	double getPassengerOffsetXMultiplier();
 	
@@ -174,7 +174,7 @@ public interface ICameraConfig
 	
 	double getCenterCameraWhenLookingDownAngle();
 	
-	boolean doDynamicallyAdjustOffsets();
+	boolean isOffsetDynamic();
 	
 	boolean isCameraDecoupled();
 	

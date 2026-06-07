@@ -4,7 +4,7 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 
 public interface IPerspectiveConfig
 {
-	boolean replaceDefaultPerspective();
+	boolean isThirdPersonReplaced();
 	
 	boolean isFirstPersonEnabled();
 	
@@ -14,5 +14,5 @@ public interface IPerspectiveConfig
 	
 	Perspective getDefaultPerspective();
 	
-	boolean doRememberLastPerspective();
+	boolean isPerspectivePersistent();
 }

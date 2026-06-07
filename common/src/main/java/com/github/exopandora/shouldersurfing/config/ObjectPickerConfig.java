@@ -13,7 +13,7 @@ import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID
 public class ObjectPickerConfig implements IObjectPickerConfig
 {
 	private final DoubleValue customRaytraceDistance;
-	private final BooleanValue useCustomRaytraceDistance;
+	private final BooleanValue isCustomRaytraceDistanceEnabled;
 	private final ConfigValue<PickOrigin> entityPickOrigin;
 	private final ConfigValue<PickOrigin> blockPickOrigin;
 	private final ConfigValue<PickVector> pickVector;
@@ -27,8 +27,8 @@ public class ObjectPickerConfig implements IObjectPickerConfig
 			.translation(MOD_ID + ".configuration.object_picker.custom_raytrace_distance")
 			.defineInRange("custom_raytrace_distance", 400, 0, Double.MAX_VALUE);
 		
-		this.useCustomRaytraceDistance = builder
-			.comment("Whether or not to use the custom raytrace distance used for the dynamic crosshair.")
+		this.isCustomRaytraceDistanceEnabled = builder
+			.comment("Whether to use the custom raytrace distance used for the dynamic crosshair.")
 			.translation(MOD_ID + ".configuration.object_picker.use_custom_raytrace_distance")
 			.define("use_custom_raytrace_distance", true);
 		
@@ -57,9 +57,15 @@ public class ObjectPickerConfig implements IObjectPickerConfig
 	}
 	
 	@Override
-	public boolean useCustomRaytraceDistance()
+	public double getCustomRaytraceDistance()
 	{
-		return this.useCustomRaytraceDistance.get();
+		return this.customRaytraceDistance.get();
+	}
+	
+	@Override
+	public boolean isCustomRaytraceDistanceEnabled()
+	{
+		return this.isCustomRaytraceDistanceEnabled.get();
 	}
 	
 	@Override
@@ -78,11 +84,5 @@ public class ObjectPickerConfig implements IObjectPickerConfig
 	public PickVector getPickVector()
 	{
 		return this.pickVector.get();
-	}
-	
-	@Override
-	public double getCustomRaytraceDistance()
-	{
-		return this.customRaytraceDistance.get();
 	}
 }

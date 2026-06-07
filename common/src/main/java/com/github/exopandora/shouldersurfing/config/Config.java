@@ -35,13 +35,13 @@ public class Config
 		
 		public ClientConfig(ModConfigSpec.Builder builder)
 		{
+			this.audioConfig = new AudioConfig(builder);
 			this.cameraConfig = new CameraConfig(builder);
+			this.crosshairConfig = new CrosshairConfig(builder);
+			this.integrationsConfig = new IntegrationsConfig(builder);
+			this.objectPickerConfig = new ObjectPickerConfig(builder);
 			this.perspectiveConfig = new PerspectiveConfig(builder);
 			this.playerConfig = new PlayerConfig(builder);
-			this.objectPickerConfig = new ObjectPickerConfig(builder);
-			this.crosshairConfig = new CrosshairConfig(builder);
-			this.audioConfig = new AudioConfig(builder);
-			this.integrationsConfig = new IntegrationsConfig(builder);
 		}
 		
 		@Override
@@ -211,7 +211,7 @@ public class Config
 			instance.changePerspective(currentPerspective.next(perspectiveConfig));
 		}
 		
-		if(perspectiveConfig.doRememberLastPerspective())
+		if(perspectiveConfig.isPerspectivePersistent())
 		{
 			perspectiveConfig.setDefaultPerspective(Perspective.current());
 		}

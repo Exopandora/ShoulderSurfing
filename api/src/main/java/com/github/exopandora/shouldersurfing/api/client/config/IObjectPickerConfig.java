@@ -7,7 +7,7 @@ public interface IObjectPickerConfig
 {
 	double getCustomRaytraceDistance();
 	
-	boolean useCustomRaytraceDistance();
+	boolean isCustomRaytraceDistanceEnabled();
 	
 	PickOrigin getEntityPickOrigin();
 	

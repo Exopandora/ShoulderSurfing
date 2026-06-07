@@ -10,12 +10,12 @@ import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID
 
 public class PerspectiveConfig implements IPerspectiveConfig
 {
-	private final BooleanValue replaceDefaultPerspective;
+	private final BooleanValue isThirdPersonReplaced;
 	private final BooleanValue isFirstPersonEnabled;
 	private final BooleanValue isThirdPersonFrontEnabled;
 	private final BooleanValue isThirdPersonBackEnabled;
 	private final ConfigValue<Perspective> defaultPerspective;
-	private final BooleanValue rememberLastPerspective;
+	private final BooleanValue isPerspectivePersistent;
 	
 	protected PerspectiveConfig(ModConfigSpec.Builder builder)
 	{
@@ -26,28 +26,28 @@ public class PerspectiveConfig implements IPerspectiveConfig
 			.translation(MOD_ID + ".configuration.perspective.default_perspective")
 			.defineEnum("default_perspective", Perspective.SHOULDER_SURFING, Perspective.values());
 		
-		this.rememberLastPerspective = builder
-			.comment("Whether or not to remember the last perspective used.")
+		this.isPerspectivePersistent = builder
+			.comment("Whether to remember the last perspective used.")
 			.translation(MOD_ID + ".configuration.perspective.remember_last_perspective")
 			.define("remember_last_perspective", true);
 		
-		this.replaceDefaultPerspective = builder
-			.comment("Whether or not to replace the default third person perspective.")
+		this.isThirdPersonReplaced = builder
+			.comment("Whether to replace the default third person perspective.")
 			.translation(MOD_ID + ".configuration.perspective.replace_default_perspective")
 			.define("replace_default_perspective", false);
 		
 		this.isFirstPersonEnabled = builder
-			.comment("Whether or not the first person perspective is enabled.")
+			.comment("Whether the first person perspective is enabled.")
 			.translation(MOD_ID + ".configuration.perspective.first_person_enabled")
 			.define("first_person_enabled", true);
 		
 		this.isThirdPersonFrontEnabled = builder
-			.comment("Whether or not the third person front perspective is enabled.")
+			.comment("Whether the third person front perspective is enabled.")
 			.translation(MOD_ID + ".configuration.perspective.third_person_front_enabled")
 			.define("third_person_front_enabled", true);
 		
 		this.isThirdPersonBackEnabled = builder
-			.comment("Whether or not the third person back perspective is enabled.")
+			.comment("Whether the third person back perspective is enabled.")
 			.translation(MOD_ID + ".configuration.perspective.third_person_back_enabled")
 			.define("third_person_back_enabled", true);
 		
@@ -55,9 +55,9 @@ public class PerspectiveConfig implements IPerspectiveConfig
 	}
 	
 	@Override
-	public boolean replaceDefaultPerspective()
+	public boolean isThirdPersonReplaced()
 	{
-		return this.replaceDefaultPerspective.get();
+		return this.isThirdPersonReplaced.get();
 	}
 	
 	@Override
@@ -90,8 +90,8 @@ public class PerspectiveConfig implements IPerspectiveConfig
 	}
 	
 	@Override
-	public boolean doRememberLastPerspective()
+	public boolean isPerspectivePersistent()
 	{
-		return this.rememberLastPerspective.get();
+		return this.isPerspectivePersistent.get();
 	}
 }

@@ -35,7 +35,7 @@ public enum Perspective
 	{
 		Perspective next;
 		
-		if(config.replaceDefaultPerspective())
+		if(config.isThirdPersonReplaced())
 		{
 			next = switch(this)
 			{
@@ -81,7 +81,7 @@ public enum Perspective
 		return switch(this)
 		{
 			case FIRST_PERSON -> config.isFirstPersonEnabled();
-			case THIRD_PERSON_BACK -> config.isThirdPersonBackEnabled() && !config.replaceDefaultPerspective();
+			case THIRD_PERSON_BACK -> config.isThirdPersonBackEnabled() && !config.isThirdPersonReplaced();
 			case THIRD_PERSON_FRONT -> config.isThirdPersonFrontEnabled();
 			case SHOULDER_SURFING -> true;
 		};

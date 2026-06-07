@@ -29,7 +29,7 @@ public abstract class MixinOptions implements OptionsDuck
 	{
 		if(cameraType != this.cameraType)
 		{
-			Perspective newPerspective = Perspective.of(cameraType, Config.CLIENT.getPerspectiveConfig().replaceDefaultPerspective() && cameraType == CameraType.THIRD_PERSON_BACK);
+			Perspective newPerspective = Perspective.of(cameraType, Config.CLIENT.getPerspectiveConfig().isThirdPersonReplaced() && cameraType == CameraType.THIRD_PERSON_BACK);
 			ShoulderSurfingImpl.getInstance().changePerspective(newPerspective);
 			ci.cancel();
 		}

@@ -32,9 +32,9 @@ public class CameraConfig implements ICameraConfig
 	private final DoubleValue maxOffsetY;
 	private final DoubleValue maxOffsetZ;
 	
-	private final BooleanValue unlimitedOffsetX;
-	private final BooleanValue unlimitedOffsetY;
-	private final BooleanValue unlimitedOffsetZ;
+	private final BooleanValue isOffsetXUnlimited;
+	private final BooleanValue isOffsetYUnlimited;
+	private final BooleanValue isOffsetZUnlimited;
 	
 	private final DoubleValue passengerOffsetXMultiplier;
 	private final DoubleValue passengerOffsetYMultiplier;
@@ -79,10 +79,10 @@ public class CameraConfig implements ICameraConfig
 	private final ConfigValue<CameraDistanceAttributeMode> cameraDistanceAttributeMode;
 	
 	private final DoubleValue keepCameraOutOfHeadMultiplier;
-	private final DoubleValue cameraStepSize;
+	private final DoubleValue offsetStepSize;
 	private final DoubleValue cameraTransitionSpeedMultiplier;
 	private final DoubleValue centerCameraWhenLookingDownAngle;
-	private final BooleanValue dynamicallyAdjustOffsets;
+	private final BooleanValue isOffsetDynamic;
 	private final BooleanValue isCameraDecoupled;
 	private final BooleanValue orientCameraOnTeleport;
 	private final BooleanValue isFovOverrideEnabled;
@@ -124,17 +124,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.offsetXPresets = builder
 			.comment("A list of x-offset presets that can be toggled via the 'Toggle X-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
-			.translation(MOD_ID + ".configuration.offset.presets.offset_x_presets")
+			.translation(MOD_ID + ".configuration.camera.offset.presets.offset_x_presets")
 			.defineList("presets_offset_x", ArrayList::new, String::new, Config.ClientConfig::isValidDouble);
 		
 		this.offsetYPresets = builder
 			.comment("A list of y-offset presets that can be toggled via the 'Toggle Y-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
-			.translation(MOD_ID + ".configuration.offset.presets.offset_y_presets")
+			.translation(MOD_ID + ".configuration.camera.offset.presets.offset_y_presets")
 			.defineList("presets_offset_y", ArrayList::new, String::new, Config.ClientConfig::isValidDouble);
 		
 		this.offsetZPresets = builder
 			.comment("A list of z-offset presets that can be toggled via the 'Toggle Z-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
-			.translation(MOD_ID + ".configuration.offset.presets.offset_z_presets")
+			.translation(MOD_ID + ".configuration.camera.offset.presets.offset_z_presets")
 			.defineList("presets_offset_z", ArrayList::new, String::new, Config.ClientConfig::isValidDouble);
 		
 		builder.pop();
@@ -142,17 +142,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.minOffsetX = builder
 			.comment("When x-offset is limited this is the minimum amount.")
-			.translation(MOD_ID + ".configuration.offset.min.min_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.min.min_offset_x")
 			.defineInRange("min_offset_x", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.minOffsetY = builder
 			.comment("When y-offset is limited this is the minimum amount.")
-			.translation(MOD_ID + ".configuration.offset.min.min_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.min.min_offset_y")
 			.defineInRange("min_offset_y", -1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.minOffsetZ = builder
 			.comment("When z-offset is limited this is the minimum amount.")
-			.translation(MOD_ID + ".configuration.offset.min.min_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.min.min_offset_z")
 			.defineInRange("min_offset_z", -3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -160,35 +160,35 @@ public class CameraConfig implements ICameraConfig
 		
 		this.maxOffsetX = builder
 			.comment("When x-offset is limited this is the maximum amount.")
-			.translation(MOD_ID + ".configuration.offset.max.max_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.max.max_offset_x")
 			.defineInRange("max_offset_x", 3.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.maxOffsetY = builder
 			.comment("When y-offset is limited this is the maximum amount.")
-			.translation(MOD_ID + ".configuration.offset.max.max_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.max.max_offset_y")
 			.defineInRange("max_offset_y", 1.5D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.maxOffsetZ = builder
 			.comment("When z-offset is limited this is the maximum amount.")
-			.translation(MOD_ID + ".configuration.offset.max.max_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.max.max_offset_z")
 			.defineInRange("max_offset_z", 5.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
 		builder.push("limits");
 		
-		this.unlimitedOffsetX = builder
-			.comment("Whether or not x-offset adjustment has limits.")
-			.translation(MOD_ID + ".configuration.offset.limits.unlimited_offset_x")
+		this.isOffsetXUnlimited = builder
+			.comment("Whether x-offset adjustment has limits.")
+			.translation(MOD_ID + ".configuration.camera.offset.limits.unlimited_offset_x")
 			.define("unlimited_offset_x", false);
 		
-		this.unlimitedOffsetY = builder
-			.comment("Whether or not y-offset adjustment has limits.")
-			.translation(MOD_ID + ".configuration.offset.limits.unlimited_offset_y")
+		this.isOffsetYUnlimited = builder
+			.comment("Whether y-offset adjustment has limits.")
+			.translation(MOD_ID + ".configuration.camera.offset.limits.unlimited_offset_y")
 			.define("unlimited_offset_y", false);
 		
-		this.unlimitedOffsetZ = builder
-			.comment("Whether or not z-offset adjustment has limits.")
-			.translation(MOD_ID + ".configuration.offset.limits.unlimited_offset_z")
+		this.isOffsetZUnlimited = builder
+			.comment("Whether z-offset adjustment has limits.")
+			.translation(MOD_ID + ".configuration.camera.offset.limits.unlimited_offset_z")
 			.define("unlimited_offset_z", false);
 		
 		builder.pop();
@@ -197,17 +197,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.passengerOffsetXMultiplier = builder
 			.comment("x-offset multiplier for when the player is a passenger.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.passenger.multiplier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.passenger.multiplier_offset_x")
 			.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.passengerOffsetYMultiplier = builder
 			.comment("y-offset multiplier for when the player is a passenger.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.passenger.multiplier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.passenger.multiplier_offset_y")
 			.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.passengerOffsetZMultiplier = builder
 			.comment("z-offset multiplier for when the player is a passenger.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.passenger.multiplier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.passenger.multiplier_offset_z")
 			.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -215,17 +215,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.sprintOffsetXMultiplier = builder
 			.comment("x-offset multiplier for when the player is sprinting.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.sprint.multiplier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.sprint.multiplier_offset_x")
 			.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.sprintOffsetYMultiplier = builder
 			.comment("y-offset multiplier for when the player is sprinting.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.sprint.multiplier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.sprint.multiplier_offset_y")
 			.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.sprintOffsetZMultiplier = builder
 			.comment("z-offset multiplier for when the player is sprinting.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.sprint.multiplier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.sprint.multiplier_offset_z")
 			.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -233,17 +233,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.aimingOffsetXMultiplier = builder
 			.comment("x-offset multiplier for when the player is aiming.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.aiming.multiplier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.aiming.multiplier_offset_x")
 			.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.aimingOffsetYMultiplier = builder
 			.comment("y-offset multiplier for when the player is aiming.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.aiming.multiplier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.aiming.multiplier_offset_y")
 			.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.aimingOffsetZMultiplier = builder
 			.comment("z-offset multiplier for when the player is aiming.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.aiming.multiplier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.aiming.multiplier_offset_z")
 			.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -251,17 +251,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.fallFlyingOffsetXMultiplier = builder
 			.comment("x-offset multiplier for when using Elytra.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.fall_flying.multiplier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.fall_flying.multiplier_offset_x")
 			.defineInRange("multiplier_offset_x", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.fallFlyingOffsetYMultiplier = builder
 			.comment("y-offset multiplier for when using Elytra.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.fall_flying.multiplier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.fall_flying.multiplier_offset_y")
 			.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.fallFlyingOffsetZMultiplier = builder
 			.comment("z-offset multiplier for when using Elytra.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.fall_flying.multiplier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.fall_flying.multiplier_offset_z")
 			.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -269,17 +269,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.climbingOffsetXMultiplier = builder
 			.comment("x-offset multiplier for when the player is climbing.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.climbing.multiplier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.climbing.multiplier_offset_x")
 			.defineInRange("multiplier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.climbingOffsetYMultiplier = builder
 			.comment("y-offset multiplier for when the player is climbing.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.climbing.multiplier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.climbing.multiplier_offset_y")
 			.defineInRange("multiplier_offset_y", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.climbingOffsetZMultiplier = builder
 			.comment("z-offset multiplier for when the player is climbing.")
-			.translation(MOD_ID + ".configuration.offset.multiplier.climbing.multiplier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.multiplier.climbing.multiplier_offset_z")
 			.defineInRange("multiplier_offset_z", 1.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -289,17 +289,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.passengerOffsetXModifier = builder
 			.comment("x-offset modifier for when the player is a passenger.")
-			.translation(MOD_ID + ".configuration.offset.modifier.passenger.modifier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.passenger.modifier_offset_x")
 			.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.passengerOffsetYModifier = builder
 			.comment("y-offset modifier for when the player is a passenger.")
-			.translation(MOD_ID + ".configuration.offset.modifier.passenger.modifier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.passenger.modifier_offset_y")
 			.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.passengerOffsetZModifier = builder
 			.comment("z-offset modifier for when the player is a passenger.")
-			.translation(MOD_ID + ".configuration.offset.modifier.passenger.modifier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.passenger.modifier_offset_z")
 			.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -307,17 +307,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.sprintOffsetXModifier = builder
 			.comment("x-offset modifier for when the player is sprinting.")
-			.translation(MOD_ID + ".configuration.offset.modifier.sprint.modifier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.sprint.modifier_offset_x")
 			.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.sprintOffsetYModifier = builder
 			.comment("y-offset modifier for when the player is sprinting.")
-			.translation(MOD_ID + ".configuration.offset.modifier.sprint.modifier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.sprint.modifier_offset_y")
 			.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.sprintOffsetZModifier = builder
 			.comment("z-offset modifier for when the player is sprinting.")
-			.translation(MOD_ID + ".configuration.offset.modifier.sprint.modifier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.sprint.modifier_offset_z")
 			.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -325,17 +325,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.aimingOffsetXModifier = builder
 			.comment("x-offset modifier for when the player is aiming.")
-			.translation(MOD_ID + ".configuration.offset.modifier.aiming.modifier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.aiming.modifier_offset_x")
 			.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.aimingOffsetYModifier = builder
 			.comment("y-offset modifier for when the player is aiming.")
-			.translation(MOD_ID + ".configuration.offset.modifier.aiming.modifier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.aiming.modifier_offset_y")
 			.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.aimingOffsetZModifier = builder
 			.comment("z-offset modifier for when the player is aiming.")
-			.translation(MOD_ID + ".configuration.offset.modifier.aiming.modifier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.aiming.modifier_offset_z")
 			.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -343,17 +343,17 @@ public class CameraConfig implements ICameraConfig
 		
 		this.fallFlyingOffsetXModifier = builder
 			.comment("x-offset modifier for when using Elytra.")
-			.translation(MOD_ID + ".configuration.offset.modifier.fall_flying.modifier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.fall_flying.modifier_offset_x")
 			.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.fallFlyingOffsetYModifier = builder
 			.comment("y-offset modifier for when using Elytra.")
-			.translation(MOD_ID + ".configuration.offset.modifier.fall_flying.modifier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.fall_flying.modifier_offset_y")
 			.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.fallFlyingOffsetZModifier = builder
 			.comment("z-offset modifier for when using Elytra.")
-			.translation(MOD_ID + ".configuration.offset.modifier.fall_flying.modifier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.fall_flying.modifier_offset_z")
 			.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
@@ -361,38 +361,38 @@ public class CameraConfig implements ICameraConfig
 		
 		this.climbingOffsetXModifier = builder
 			.comment("x-offset modifier for when the player is climbing.")
-			.translation(MOD_ID + ".configuration.offset.modifier.climbing.modifier_offset_x")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.climbing.modifier_offset_x")
 			.defineInRange("modifier_offset_x", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.climbingOffsetYModifier = builder
 			.comment("y-offset modifier for when the player is climbing.")
-			.translation(MOD_ID + ".configuration.offset.modifier.climbing.modifier_offset_y")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.climbing.modifier_offset_y")
 			.defineInRange("modifier_offset_y", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.climbingOffsetZModifier = builder
 			.comment("z-offset modifier for when the player is climbing.")
-			.translation(MOD_ID + ".configuration.offset.modifier.climbing.modifier_offset_z")
+			.translation(MOD_ID + ".configuration.camera.offset.modifier.climbing.modifier_offset_z")
 			.defineInRange("modifier_offset_z", 0.0D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
 		builder.pop();
 		
-		this.cameraDistanceAttributeMode = builder
-			.comment("Defines how to handle the camera distance attribute.")
-			.translation(MOD_ID + ".configuration.offset.camera_distance_attribute_mode")
-			.defineEnum("camera_distance_attribute_mode", CameraDistanceAttributeMode.RELATIVE, CameraDistanceAttributeMode.values());
+		this.isOffsetDynamic = builder
+			.comment("Whether to dynamically adjust camera offsets depending on space constraints.")
+			.translation(MOD_ID + ".configuration.camera.offset.dynamic_offsets")
+			.define("dynamic_offsets", true);
+		
+		this.offsetStepSize = builder
+			.comment("Size of the offset adjustment per step.")
+			.translation(MOD_ID + ".configuration.camera.offset.step_size")
+			.defineInRange("step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		builder.pop();
 		
 		this.keepCameraOutOfHeadMultiplier = builder
-			.comment("The distance multiplier on whether or not to hide the player model if the camera gets too close to it. Set to 0 to disable.")
+			.comment("The distance multiplier on whether to hide the player model if the camera gets too close to it. Set to 0 to disable.")
 			.translation(MOD_ID + ".configuration.camera.keep_camera_out_of_head_distance_multiplier")
 			.defineInRange("keep_camera_out_of_head_distance_multiplier", 0.75D, 0D, Double.MAX_VALUE);
-		
-		this.cameraStepSize = builder
-			.comment("Size of the camera adjustment per step.")
-			.translation(MOD_ID + ".configuration.camera.camera_step_size")
-			.defineInRange("camera_step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		this.cameraTransitionSpeedMultiplier = builder
 			.comment("The speed multiplier at which the camera transitions between positions.")
@@ -404,30 +404,34 @@ public class CameraConfig implements ICameraConfig
 			.translation(MOD_ID + ".configuration.camera.center_camera_when_looking_down_angle")
 			.defineInRange("center_camera_when_looking_down_angle", 1D, 0D, 90D);
 		
-		this.dynamicallyAdjustOffsets = builder
-			.comment("Whether or not to dynamically adjust camera offsets depending on space constraints.")
-			.translation(MOD_ID + ".configuration.camera.dynamically_adjust_offsets")
-			.define("dynamically_adjust_offsets", true);
+		this.cameraDistanceAttributeMode = builder
+			.comment("Defines how to handle the camera distance attribute.")
+			.translation(MOD_ID + ".configuration.camera.camera_distance_attribute_mode")
+			.defineEnum("camera_distance_attribute_mode", CameraDistanceAttributeMode.RELATIVE, CameraDistanceAttributeMode.values());
 		
 		this.isCameraDecoupled = builder
-			.comment("Whether or not to decouple the camera rotation from the player rotation.")
+			.comment("Whether to decouple the camera rotation from the player rotation.")
 			.translation(MOD_ID + ".configuration.camera.decoupled_camera")
 			.define("decoupled_camera", true);
 		
 		this.orientCameraOnTeleport = builder
-			.comment("Whether or not to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.")
+			.comment("Whether to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.")
 			.translation(MOD_ID + ".configuration.camera.orient_camera_on_teleport")
 			.define("orient_camera_on_teleport", true);
 		
+		builder.push("fov");
+		
 		this.isFovOverrideEnabled = builder
-			.comment("Whether or not to apply the FOV override when in shoulder surfing perspective.")
-			.translation(MOD_ID + ".configuration.camera.fov_override_enabled")
+			.comment("Whether to apply the FOV override when in shoulder surfing perspective.")
+			.translation(MOD_ID + ".configuration.camera.fov.fov_override_enabled")
 			.define("fov_override_enabled", false);
 		
 		this.fovOverride = builder
 			.comment("The camera FOV when in shoulder surfing perspective. Depends on config option 'fov_override_enabled'.")
-			.translation(MOD_ID + ".configuration.camera.fov_override")
+			.translation(MOD_ID + ".configuration.camera.fov.fov_override")
 			.defineInRange("fov_override", 70.0D, 30.0D, 110.0D);
+		
+		builder.pop();
 		
 		this.viewBobbingMode = builder
 			.comment("Whether to apply view bobbing in shoulder surfing perspective. Set to INHERIT to inherit vanilla setting.")
@@ -435,7 +439,7 @@ public class CameraConfig implements ICameraConfig
 			.defineEnum("view_bobbing_mode", ViewBobbingMode.INHERIT, ViewBobbingMode.values());
 		
 		this.followPlayerRotations = builder
-			.comment("Whether or not to follow the rotations of the player when camera is decoupled.")
+			.comment("Whether to follow the rotations of the player when camera is decoupled.")
 			.translation(MOD_ID + ".configuration.camera.follow_player_rotations")
 			.define("follow_player_rotations", true);
 		
@@ -561,21 +565,21 @@ public class CameraConfig implements ICameraConfig
 	}
 	
 	@Override
-	public boolean isUnlimitedOffsetX()
+	public boolean isOffsetXUnlimited()
 	{
-		return this.unlimitedOffsetX.get();
+		return this.isOffsetXUnlimited.get();
 	}
 	
 	@Override
-	public boolean isUnlimitedOffsetY()
+	public boolean isOffsetYUnlimited()
 	{
-		return this.unlimitedOffsetY.get();
+		return this.isOffsetYUnlimited.get();
 	}
 	
 	@Override
-	public boolean isUnlimitedOffsetZ()
+	public boolean isOffsetZUnlimited()
 	{
-		return this.unlimitedOffsetZ.get();
+		return this.isOffsetZUnlimited.get();
 	}
 	
 	@Override
@@ -773,7 +777,7 @@ public class CameraConfig implements ICameraConfig
 	@Override
 	public double getCameraStepSize()
 	{
-		return this.cameraStepSize.get();
+		return this.offsetStepSize.get();
 	}
 	
 	@Override
@@ -789,9 +793,9 @@ public class CameraConfig implements ICameraConfig
 	}
 	
 	@Override
-	public boolean doDynamicallyAdjustOffsets()
+	public boolean isOffsetDynamic()
 	{
-		return this.dynamicallyAdjustOffsets.get();
+		return this.isOffsetDynamic.get();
 	}
 	
 	@Override
@@ -880,32 +884,32 @@ public class CameraConfig implements ICameraConfig
 	
 	public void adjustCameraLeft()
 	{
-		Config.CLIENT.set(this.offsetX, this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isUnlimitedOffsetX()));
+		Config.CLIENT.set(this.offsetX, this.addStep(this.getOffsetX(), this.getMaxOffsetX(), this.isOffsetXUnlimited()));
 	}
 	
 	public void adjustCameraRight()
 	{
-		Config.CLIENT.set(this.offsetX, this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isUnlimitedOffsetX()));
+		Config.CLIENT.set(this.offsetX, this.subStep(this.getOffsetX(), this.getMinOffsetX(), this.isOffsetXUnlimited()));
 	}
 	
 	public void adjustCameraUp()
 	{
-		Config.CLIENT.set(this.offsetY, this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isUnlimitedOffsetY()));
+		Config.CLIENT.set(this.offsetY, this.addStep(this.getOffsetY(), this.getMaxOffsetY(), this.isOffsetYUnlimited()));
 	}
 	
 	public void adjustCameraDown()
 	{
-		Config.CLIENT.set(this.offsetY, this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isUnlimitedOffsetY()));
+		Config.CLIENT.set(this.offsetY, this.subStep(this.getOffsetY(), this.getMinOffsetY(), this.isOffsetYUnlimited()));
 	}
 	
 	public void adjustCameraIn()
 	{
-		Config.CLIENT.set(this.offsetZ, this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isUnlimitedOffsetZ()));
+		Config.CLIENT.set(this.offsetZ, this.subStep(this.getOffsetZ(), this.getMinOffsetZ(), this.isOffsetZUnlimited()));
 	}
 	
 	public void adjustCameraOut()
 	{
-		Config.CLIENT.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isUnlimitedOffsetZ()));
+		Config.CLIENT.set(this.offsetZ, this.addStep(this.getOffsetZ(), this.getMaxOffsetZ(), this.isOffsetZUnlimited()));
 	}
 	
 	public void toggleOffsetXPreset()

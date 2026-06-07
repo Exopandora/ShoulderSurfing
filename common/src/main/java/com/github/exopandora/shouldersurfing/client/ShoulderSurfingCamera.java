@@ -350,13 +350,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera
 	{
 		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
 		
-		if(playerConfig.shouldPlayerXRotFollowCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations())
+		if(playerConfig.isPlayerXRotFollowingCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations())
 		{
 			player.setXRot(this.rotation.x());
 			player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
 		}
 		
-		if((playerConfig.shouldPlayerYRotFollowCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations()) && !isMoving)
+		if((playerConfig.isPlayerYRotFollowingCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations()) && !isMoving)
 		{
 			float maxFollowAngle = (float) playerConfig.getPlayerYRotFollowAngleLimit();
 			float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);

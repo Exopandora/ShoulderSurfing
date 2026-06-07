@@ -30,7 +30,7 @@ public interface ICrosshairConfig
 	
 	boolean getShowObstructionCrosshair();
 	
-	boolean showObstructionIndicatorWhenAiming();
+	boolean isObstructionIndicatorShownWhenAiming();
 	
 	int getObstructionIndicatorMinDistanceToCrosshair();
 	

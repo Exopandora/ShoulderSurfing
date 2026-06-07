@@ -198,7 +198,7 @@ public class TargetCameraOffsetCallback
 		@Override
 		public Vec3 getTargetOffset(Context context)
 		{
-			if(!context.cameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().doDynamicallyAdjustOffsets())
+			if(!context.cameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().isOffsetDynamic())
 			{
 				return calcDynamicOffsets(context.camera(), context.cameraEntity(), context.level(), context.targetOffset());
 			}
@@ -259,13 +259,13 @@ public class TargetCameraOffsetCallback
 		public Vec3 getTargetOffset(Context context)
 		{
 			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
-			double targetOffsetX = cameraConfig.isUnlimitedOffsetX()
+			double targetOffsetX = cameraConfig.isOffsetXUnlimited()
 				? context.targetOffset().x()
 				: Mth.clamp(context.targetOffset().x(), cameraConfig.getMinOffsetX(), cameraConfig.getMaxOffsetX());
-			double targetOffsetY = cameraConfig.isUnlimitedOffsetY()
+			double targetOffsetY = cameraConfig.isOffsetYUnlimited()
 				? context.targetOffset().y()
 				: Mth.clamp(context.targetOffset().y(), cameraConfig.getMinOffsetY(), cameraConfig.getMaxOffsetY());
-			double targetOffsetZ = cameraConfig.isUnlimitedOffsetZ()
+			double targetOffsetZ = cameraConfig.isOffsetZUnlimited()
 				? context.targetOffset().z()
 				: Mth.clamp(context.targetOffset().z(), cameraConfig.getMinOffsetZ(), cameraConfig.getMaxOffsetZ());
 			return new Vec3(targetOffsetX, targetOffsetY, targetOffsetZ);
