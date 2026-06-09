@@ -1,6 +1,6 @@
 [*]
 charset = utf-8
-end_of_line = crlf
+end_of_line = lf
 indent_size = 4
 indent_style = space
 insert_final_newline = true
@@ -1111,3 +1111,6 @@ ij_yaml_sequence_on_new_line = false
 ij_yaml_space_before_colon = false
 ij_yaml_spaces_within_braces = true
 ij_yaml_spaces_within_brackets = true
+
+[*.bat]
+end_of_line = crlf
