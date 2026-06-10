@@ -1,3 +1,5 @@
 {
-	"entrypoint": "com.github.exopandora.shouldersurfing.plugin.BuiltinPlugin"
+	"entrypoints": [
+    "com.github.exopandora.shouldersurfing.plugin.BuiltinPlugin"
+  ]
 }

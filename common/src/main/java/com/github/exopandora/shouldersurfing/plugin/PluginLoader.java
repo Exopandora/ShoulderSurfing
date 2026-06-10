@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.plugin;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -13,7 +14,7 @@ import java.util.ServiceLoader;
 
 public abstract class PluginLoader<T> {
 	private static final PluginLoader<?> INSTANCE = ServiceLoader.load(PluginLoader.class).findFirst().orElseThrow();
-	private static final String ENTRYPOINT_KEY = "entrypoint";
+	private static final String ENTRYPOINTS_KEY = "entrypoints";
 	protected static final String PLUGIN_JSON_PATH = "shouldersurfing_plugin.json";
 	
 	private final List<PluginContainer> plugins = new LinkedList<PluginContainer>();
@@ -24,12 +25,26 @@ public abstract class PluginLoader<T> {
 		ShoulderSurfingCommon.LOGGER.info("Registering plugin for {} ({})", modName, modId);
 		try (Reader reader = this.readConfiguration(source)) {
 			JsonObject configuration = JsonParser.parseReader(reader).getAsJsonObject();
-			if (configuration.has(ENTRYPOINT_KEY)) {
-				String entrypoint = configuration.get(ENTRYPOINT_KEY).getAsString();
-				IShoulderSurfingPlugin plugin = (IShoulderSurfingPlugin) Class.forName(entrypoint).getConstructor().newInstance();
-				this.plugins.add(new PluginContainer(modName, modId, plugin));
+			if (configuration.has(ENTRYPOINTS_KEY)) {
+				List<String> entrypoints = configuration.get(ENTRYPOINTS_KEY).getAsJsonArray().asList().stream()
+					.distinct()
+					.map(JsonElement::getAsString)
+					.toList();
+				if (entrypoints.isEmpty()) {
+					ShoulderSurfingCommon.LOGGER.warn("Plugin for {} ({}) does not contain any entrypoints", modName, modId);
+				}
+				for (String entrypoint : entrypoints) {
+					try {
+						Class<?> entrypointClass = Class.forName(entrypoint);
+						IShoulderSurfingPlugin plugin = (IShoulderSurfingPlugin) entrypointClass.getConstructor().newInstance();
+						PluginContainer pluginContainer = new PluginContainer(modName, modId, plugin, entrypoint);
+						this.plugins.add(pluginContainer);
+					} catch (Throwable e) {
+						ShoulderSurfingCommon.LOGGER.error("Failed to load entrypoint {} for {} ({})", entrypoint, modName, modId, e);
+					}
+				}
 			} else {
-				ShoulderSurfingCommon.LOGGER.error("Plugin for {} ({}) does not contain an entrypoint", modName, modId);
+				ShoulderSurfingCommon.LOGGER.error("Plugin for {} ({}) does not contain an entrypoints key", modName, modId);
 			}
 		} catch (Throwable e) {
 			ShoulderSurfingCommon.LOGGER.error("Failed to load plugin for {} ({})", modName, modId, e);
