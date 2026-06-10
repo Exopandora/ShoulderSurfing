@@ -105,9 +105,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				float dy = living.getYHeadRot() - living.yHeadRotO;
 				return rotation.add(new Vec2f(dx, dy).scale(partialTick));
 			}
-		} else if (shouldSyncCameraRotationsWithVehicleRotations(Minecraft.getInstance(), cameraEntity)) {
+		} else if (shouldSyncCameraRotationsWithVehicleRotations(cameraEntity)) {
 			Entity vehicle = cameraEntity.getVehicle();
-			
 			if (vehicle != null) {
 				return rotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
 			}
@@ -144,7 +143,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	
 	public void setup(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity) {
 		Vec3 defaultOffset = Config.CLIENT.getCameraConfig().getOffset();
-		this.targetOffset = CallbackHelper.getTargetOffset(this.instance, defaultOffset, camera, cameraEntity, level);
+		this.targetOffset = EventHooks.getTargetOffset(defaultOffset, camera, cameraEntity, level);
 		Vec3 drag = this.calcCameraDrag(camera, cameraEntity, partialTick);
 		Vec3 lerpedOffset = this.offsetO.lerp(this.offset, partialTick).add(drag);
 		if (cameraEntity.isSpectator()) {
@@ -224,22 +223,19 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			this.followPlayerRotationsEaseIn = 1.0F;
 			this.followPlayerRotationsEaseInO = 1.0F;
 		}
-		Vec2f cameraRot = CallbackHelper.fireCameraRotationSetupCallbackPre(player, yRot, xRot, this.rotation.y(), this.rotation.x()).getRotation();
-		Vec2f scaledRot = new Vec2f((float) (xRot * 0.15F), (float) (yRot * 0.15F));
+		Vec2f dRot = new Vec2f((float) xRot, (float) yRot);
+		Vec2f dRotScaled = dRot.scale(0.15F);
 		if (this.instance.isFreeLooking()) {
-			this.rotationOffset = this.rotationOffset.add(scaledRot).clampX(-90F, 90F);
+			this.rotationOffset = this.rotationOffset.add(dRotScaled).clampX(-90F, 90F);
 			this.rotationOffsetO = this.rotationOffset;
 			return true;
 		}
-		cameraRot = cameraRot.add(scaledRot).clampX(-90F, 90F);
-		if (player.isPassenger()) {
-			cameraRot = EntityHelper.applyPassengerRotationConstraints(player, cameraRot.x(), cameraRot.y(), this.rotation.x(), this.rotation.y());
-		}
-		this.rotation = CallbackHelper.fireCameraRotationSetupCallbackPost(player, yRot, xRot, cameraRot.y(), cameraRot.x()).getRotation();
+		Vec2f cameraRot = this.rotation.add(dRotScaled).clampX(-90F, 90F);
+		this.rotation = EventHooks.setupCameraRotation(player, cameraRot, this.rotation, dRot, dRotScaled);
 		boolean isMoving = player.input.getMoveVector().x != 0.0F || player.input.getMoveVector().y != 0.0F || player.isFallFlying();
 		if (this.instance.isCameraDecoupled()) {
 			if (!this.instance.isLookFollowingCrosshairTarget()) {
-				this.turnPlayerWithCamera(player, scaledRot, isMoving);
+				this.turnPlayerWithCamera(player, dRotScaled, isMoving);
 			}
 			if (isMoving) {
 				this.lastMovedYRot = player.getYRot();
@@ -275,8 +271,15 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		return this.instance.isLookFollowingCrosshairTarget();
 	}
 	
-	private static boolean shouldSyncCameraRotationsWithVehicleRotations(Minecraft minecraft, @Nullable Entity entity) {
-		return CallbackHelper.isRidingBoat(minecraft, entity);
+	private static boolean shouldSyncCameraRotationsWithVehicleRotations(@Nullable Entity entity) {
+		if (!(entity instanceof LivingEntity)) {
+			return false;
+		}
+		Entity vehicle = entity.getVehicle();
+		if (vehicle == null) {
+			return false;
+		}
+		return EventHooks.isRidingBoat((LivingEntity) entity, vehicle);
 	}
 	
 	public void resetState() {

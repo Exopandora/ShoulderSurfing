@@ -51,8 +51,10 @@ public class EntityHelper {
 		return scale;
 	}
 	
-	public static Vec2f applyPassengerRotationConstraints(Player player, float cameraXRot, float cameraYRot, float cameraXRotO, float cameraYRotO) {
+	public static Vec2f applyPassengerRotationConstraints(Player player, Vec2f cameraRot, Vec2f cameraRotO) {
 		Entity vehicle = player.getVehicle();
+		float cameraXRot = cameraRot.x();
+		float cameraYRot = cameraRot.y();
 		
 		if (vehicle != null) {
 			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
@@ -76,12 +78,12 @@ public class EntityHelper {
 			
 			player.setXRot(cameraXRot);
 			player.setYRot(cameraYRot);
-			player.xRotO = cameraXRotO;
-			player.yRotO = cameraYRotO;
+			player.xRotO = cameraRotO.x();
+			player.yRotO = cameraRotO.y();
 			player.yHeadRot = cameraYRot;
-			player.yHeadRotO = cameraYRotO;
+			player.yHeadRotO = cameraRotO.y();
 			player.yBodyRot = cameraYRot;
-			player.yBodyRotO = cameraYRotO;
+			player.yBodyRotO = cameraRotO.y();
 			
 			vehicle.onPassengerTurned(player);
 			

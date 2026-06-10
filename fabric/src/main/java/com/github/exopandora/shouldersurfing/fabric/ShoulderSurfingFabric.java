@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.fabric;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import fuzs.forgeconfigapiport.fabric.api.v5.client.ConfigScreenFactoryRegistry;
 import net.fabricmc.api.ClientModInitializer;
@@ -35,6 +34,5 @@ public class ShoulderSurfingFabric implements ClientModInitializer {
 		KeyMappingHelper.registerKeyMapping(InputHandler.ENTER_THIRD_PERSON_FRONT);
 		KeyMappingHelper.registerKeyMapping(InputHandler.ENTER_THIRD_PERSON_BACK);
 		KeyMappingHelper.registerKeyMapping(InputHandler.ENTER_SHOULDER_SURFING);
-		PluginLoader.getInstance().loadPlugins();
 	}
 }

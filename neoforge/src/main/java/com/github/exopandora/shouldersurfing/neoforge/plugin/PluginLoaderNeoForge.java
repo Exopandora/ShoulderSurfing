@@ -19,7 +19,6 @@ public class PluginLoaderNeoForge extends PluginLoader<JarResource> {
 				this.loadPlugin(modInfo.getDisplayName(), modInfo.getModId(), resource);
 			}
 		}
-		this.freeze();
 	}
 	
 	@Override

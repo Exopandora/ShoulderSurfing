@@ -2,8 +2,8 @@ package com.github.exopandora.shouldersurfing.client.renderer;
 
 import com.github.exopandora.shouldersurfing.api.client.renderer.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
-import com.github.exopandora.shouldersurfing.client.CallbackHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
+import com.github.exopandora.shouldersurfing.client.EventHooks;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.util.Util;
@@ -26,9 +26,10 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 		if (this.isCameraEntityRenderingSkipped(entity)) {
 			return true;
 		}
-		this.cameraEntityAlpha = 1.0F;
 		if (this.instance.isShoulderSurfing() && Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
-			this.cameraEntityAlpha = CallbackHelper.getCameraEntityAlpha(this.instance, entity, this.cameraEntityAlpha, partialTick);
+			this.cameraEntityAlpha = EventHooks.getCameraEntityAlpha(entity, partialTick);
+		} else {
+			this.cameraEntityAlpha = 1.0F;
 		}
 		this.isRenderingCameraEntity = true;
 		return false;

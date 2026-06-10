@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ServiceLoader;
 
 public abstract class PluginLoader<T> {
@@ -14,36 +16,31 @@ public abstract class PluginLoader<T> {
 	private static final String ENTRYPOINT_KEY = "entrypoint";
 	protected static final String PLUGIN_JSON_PATH = "shouldersurfing_plugin.json";
 	
+	private final List<PluginContainer> plugins = new LinkedList<PluginContainer>();
+	
 	public abstract void loadPlugins();
 	
 	protected void loadPlugin(String modName, String modId, T source) {
-		this.loadPlugin(new PluginContext<T>(modName, modId, source));
-	}
-	
-	private void loadPlugin(PluginContext<T> context) {
-		ShoulderSurfingCommon.LOGGER.info("Registering plugin for {}", context.formattedModName());
-		try (Reader reader = this.readConfiguration(context.source())) {
+		ShoulderSurfingCommon.LOGGER.info("Registering plugin for {} ({})", modName, modId);
+		try (Reader reader = this.readConfiguration(source)) {
 			JsonObject configuration = JsonParser.parseReader(reader).getAsJsonObject();
 			if (configuration.has(ENTRYPOINT_KEY)) {
 				String entrypoint = configuration.get(ENTRYPOINT_KEY).getAsString();
 				IShoulderSurfingPlugin plugin = (IShoulderSurfingPlugin) Class.forName(entrypoint).getConstructor().newInstance();
-				ShoulderSurfingRegistrar registrar = ShoulderSurfingRegistrar.getInstance();
-				registrar.setPluginContext(context);
-				plugin.register(registrar);
+				this.plugins.add(new PluginContainer(modName, modId, plugin));
 			} else {
-				ShoulderSurfingCommon.LOGGER.error("Plugin for {} does not contain an entrypoint", context.formattedModName());
+				ShoulderSurfingCommon.LOGGER.error("Plugin for {} ({}) does not contain an entrypoint", modName, modId);
 			}
 		} catch (Throwable e) {
-			ShoulderSurfingCommon.LOGGER.error("Failed to load plugin for {}", context.formattedModName(), e);
+			ShoulderSurfingCommon.LOGGER.error("Failed to load plugin for {} ({})", modName, modId, e);
 		}
 	}
 	
-	protected void freeze() {
-		ShoulderSurfingCommon.LOGGER.info("Freezing plugin registrar");
-		ShoulderSurfingRegistrar.getInstance().freeze();
-	}
-	
 	protected abstract Reader readConfiguration(T source) throws IOException;
+	
+	public List<PluginContainer> getPluginContainers() {
+		return this.plugins;
+	}
 	
 	public static PluginLoader<?> getInstance() {
 		return INSTANCE;

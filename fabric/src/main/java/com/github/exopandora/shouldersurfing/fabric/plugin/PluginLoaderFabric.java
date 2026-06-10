@@ -13,10 +13,10 @@ public class PluginLoaderFabric extends PluginLoader<Path> {
 	@Override
 	public void loadPlugins() {
 		for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
-			mod.findPath(PLUGIN_JSON_PATH)
-				.ifPresent(path -> this.loadPlugin(mod.getMetadata().getName(), mod.getMetadata().getId(), path));
+			mod.findPath(PLUGIN_JSON_PATH).ifPresent(path ->
+				this.loadPlugin(mod.getMetadata().getName(), mod.getMetadata().getId(), path)
+			);
 		}
-		this.freeze();
 	}
 	
 	@Override

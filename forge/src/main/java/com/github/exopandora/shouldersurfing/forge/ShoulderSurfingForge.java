@@ -5,7 +5,6 @@ import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -22,7 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.LoadingModList;
@@ -41,7 +39,6 @@ public class ShoulderSurfingForge {
 		if (FMLEnvironment.dist.isClient()) {
 			BusGroup modBusGroup = modLoadingContext.getModBusGroup();
 			FMLClientSetupEvent.getBus(modBusGroup).addListener(this::clientSetup);
-			FMLLoadCompleteEvent.getBus(modBusGroup).addListener(this::loadComplete);
 			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
 			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
@@ -62,11 +59,6 @@ public class ShoulderSurfingForge {
 			.filter(info -> incompatibleModIds.contains(info.getModId()))
 			.map(ShoulderSurfingForge::createIncompatibleModWarning)
 			.forEach(ModLoader::addWarning);
-	}
-	
-	@SubscribeEvent
-	public void loadComplete(FMLLoadCompleteEvent event) {
-		PluginLoader.getInstance().loadPlugins();
 	}
 	
 	@SubscribeEvent

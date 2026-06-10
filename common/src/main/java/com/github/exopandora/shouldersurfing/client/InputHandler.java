@@ -159,7 +159,7 @@ public class InputHandler {
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
 		
-		if (this.instance.isFreeLooking() || cameraEntity == null || CallbackHelper.isForcingVanillaMovementInput(minecraft, cameraEntity)) {
+		if (this.instance.isFreeLooking() || cameraEntity == null || EventHooks.isForcingVanillaPlayerInput(cameraEntity)) {
 			return;
 		}
 		

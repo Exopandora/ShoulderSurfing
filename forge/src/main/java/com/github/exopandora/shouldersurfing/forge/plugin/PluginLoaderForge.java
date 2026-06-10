@@ -20,7 +20,6 @@ public class PluginLoaderForge extends PluginLoader<Path> {
 				this.loadPlugin(modInfo.getDisplayName(), modInfo.getModId(), path);
 			}
 		}
-		this.freeze();
 	}
 	
 	@Override
