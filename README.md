@@ -96,7 +96,7 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 Shoulder Surfing Reloaded features a plugin API for third party mod developers.
 This allows for implementing custom camera behaviors and compatibility features without the use of invasive mixins.
 The documentation can be found in the [wiki](https://github.com/Exopandora/ShoulderSurfing/wiki).
-It explains step by step on how to create and register your own plugin, and how you can implement and register custom callbacks.
+It explains step by step on how to create and register your own plugin, and how you can implement and register custom event handlers.
 
 # Building From Source #
 Clone the repository and run the following command in the root directory of this repository:
