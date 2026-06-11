@@ -12,8 +12,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCameraEntityTransparencyEventHandler {
-	protected static final float MIN_CAMERA_ENTITY_ALPHA = 0.15F;
+public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCameraEntityTransparencyEventHandler {
+	INSTANCE;
+	
+	private static final float MIN_CAMERA_ENTITY_ALPHA = 0.15F;
 	
 	@Override
 	public void handle(ComputeCameraEntityTransparencyEvent event) {
@@ -47,7 +49,9 @@ public class ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeC
 			(renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight());
 	}
 	
-	public static class WhenAiming implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
+	public enum WhenAiming implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
+		INSTANCE;
+		
 		private static final int TRANSITION_TICK_COUNT = 5;
 		private int aimingTicks;
 		private int aimingTicksO;

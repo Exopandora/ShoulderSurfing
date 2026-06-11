@@ -4,7 +4,9 @@ import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCamer
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 
-public class CreateModEventHandler implements ComputeTargetCameraOffsetEventHandler {
+public enum CreateModEventHandler implements ComputeTargetCameraOffsetEventHandler {
+	INSTANCE;
+	
 	@Override
 	public void handle(ComputeTargetCameraOffsetEvent event) {
 		event.setResult(event.getResult().multiply(1.0D, 1.0D, CameraDistanceModifier.getMultiplier()));

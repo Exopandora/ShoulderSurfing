@@ -18,7 +18,9 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 public class ComputeTargetCameraOffsetEventHandlerImpl {
-	public static class CameraDistanceAttribute implements ComputeTargetCameraOffsetEventHandler {
+	public enum CameraDistanceAttribute implements ComputeTargetCameraOffsetEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
 			if (event.getCameraEntity() instanceof LivingEntity living) {
@@ -27,7 +29,9 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		}
 	}
 	
-	public static class CameraDistanceAttributePassenger implements ComputeTargetCameraOffsetEventHandler {
+	public enum CameraDistanceAttributePassenger implements ComputeTargetCameraOffsetEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
 			if (event.getCameraEntity().isPassenger() && event.getCameraEntity().getVehicle() instanceof LivingEntity living) {
@@ -36,9 +40,9 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		}
 	}
 	
-	private static abstract class AbstractModifiersAndMultipliers implements ComputeTargetCameraOffsetEventHandler {
+	private interface AbstractModifiersAndMultipliers extends ComputeTargetCameraOffsetEventHandler {
 		@Override
-		public void handle(ComputeTargetCameraOffsetEvent event) {
+		default void handle(ComputeTargetCameraOffsetEvent event) {
 			if (this.shouldApply(event)) {
 				Vec3 result = event.getResult()
 					.add(event.getDefaultOffset().multiply(this.getMultipliers()).subtract(event.getDefaultOffset()))
@@ -47,99 +51,111 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 			}
 		}
 		
-		protected abstract boolean shouldApply(ComputeTargetCameraOffsetEvent event);
+		boolean shouldApply(ComputeTargetCameraOffsetEvent event);
 		
-		protected abstract Vec3 getModifiers();
+		Vec3 getModifiers();
 		
-		protected abstract Vec3 getMultipliers();
+		Vec3 getMultipliers();
 	}
 	
-	public static class PassengerModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
+	public enum PassengerModifiersAndMultipliers implements AbstractModifiersAndMultipliers {
+		INSTANCE;
+		
 		@Override
-		protected boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
+		public boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
 			return event.getCameraEntity().isPassenger();
 		}
 		
 		@Override
-		protected Vec3 getModifiers() {
+		public Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getPassengerOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers() {
+		public Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getPassengerOffsetMultipliers();
 		}
 	}
 	
-	public static class SprintingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
+	public enum SprintingModifiersAndMultipliers implements AbstractModifiersAndMultipliers {
+		INSTANCE;
+		
 		@Override
-		protected boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
+		public boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
 			return event.getCameraEntity().isSprinting();
 		}
 		
 		@Override
-		protected Vec3 getModifiers() {
+		public Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getSprintOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers() {
+		public Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getSprintOffsetMultipliers();
 		}
 	}
 	
-	public static class AimingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
+	public enum AimingModifiersAndMultipliers implements AbstractModifiersAndMultipliers {
+		INSTANCE;
+		
 		@Override
-		protected boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
+		public boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
 			return ShoulderSurfing.getInstance().isAiming();
 		}
 		
 		@Override
-		protected Vec3 getModifiers() {
+		public Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getAimingOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers() {
+		public Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getAimingOffsetMultipliers();
 		}
 	}
 	
-	public static class FallFlyingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
+	public enum FallFlyingModifiersAndMultipliers implements AbstractModifiersAndMultipliers {
+		INSTANCE;
+		
 		@Override
-		protected boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
+		public boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
 			return event.getCameraEntity() instanceof LivingEntity living && living.isFallFlying();
 		}
 		
 		@Override
-		protected Vec3 getModifiers() {
+		public Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getFallFlyingOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers() {
+		public Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getFallFlyingMultipliers();
 		}
 	}
 	
-	public static class ClimbingModifiersAndMultipliers extends AbstractModifiersAndMultipliers {
+	public enum ClimbingModifiersAndMultipliers implements AbstractModifiersAndMultipliers {
+		INSTANCE;
+		
 		@Override
-		protected boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
+		public boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
 			return !event.getCameraEntity().isSpectator() && event.getCameraEntity() instanceof LivingEntity living && living.onClimbable();
 		}
 		
 		@Override
-		protected Vec3 getModifiers() {
+		public Vec3 getModifiers() {
 			return Config.CLIENT.getCameraConfig().getClimbingOffsetModifiers();
 		}
 		
 		@Override
-		protected Vec3 getMultipliers() {
+		public Vec3 getMultipliers() {
 			return Config.CLIENT.getCameraConfig().getClimbingMultipliers();
 		}
 	}
 	
-	public static class CenterWhenLookingDown implements ComputeTargetCameraOffsetEventHandler {
+	public enum CenterWhenLookingDown implements ComputeTargetCameraOffsetEventHandler {
+		INSTANCE;
+		
 		private static final Vector3f VECTOR_NEGATIVE_Y = new Vector3f(0, -1, 0);
 		
 		@Override
@@ -154,7 +170,9 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		}
 	}
 	
-	public static class DynamicOffsets implements ComputeTargetCameraOffsetEventHandler {
+	public enum DynamicOffsets implements ComputeTargetCameraOffsetEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
 			if (!event.getCameraEntity().isSpectator() && Config.CLIENT.getCameraConfig().isOffsetDynamic()) {
@@ -198,7 +216,9 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		}
 	}
 	
-	public static class OffsetLimits implements ComputeTargetCameraOffsetEventHandler {
+	public enum OffsetLimits implements ComputeTargetCameraOffsetEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
 			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
@@ -215,7 +235,9 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		}
 	}
 	
-	public static class EntityScale implements ComputeTargetCameraOffsetEventHandler {
+	public enum EntityScale implements ComputeTargetCameraOffsetEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
 			event.setResult(event.getResult().scale(EntityHelper.getMaxScale(event.getCameraEntity())));

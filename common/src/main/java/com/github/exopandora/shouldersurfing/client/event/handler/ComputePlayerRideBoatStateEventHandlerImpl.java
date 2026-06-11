@@ -4,7 +4,9 @@ import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerRideB
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerRideBoatStateEventHandler;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 
-public class ComputePlayerRideBoatStateEventHandlerImpl implements ComputePlayerRideBoatStateEventHandler {
+public enum ComputePlayerRideBoatStateEventHandlerImpl implements ComputePlayerRideBoatStateEventHandler {
+	INSTANCE;
+	
 	@Override
 	public void handle(ComputePlayerRideBoatStateEvent event) {
 		if (event.getVehicle() instanceof AbstractBoat) {

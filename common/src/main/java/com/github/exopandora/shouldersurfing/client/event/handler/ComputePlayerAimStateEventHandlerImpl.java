@@ -16,7 +16,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public class ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimStateEventHandler {
+public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimStateEventHandler {
+	INSTANCE;
+	
 	@Override
 	public void handle(ComputePlayerAimStateEvent event) {
 		ItemStack useStack = event.getEntity().getUseItem();

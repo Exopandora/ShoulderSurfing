@@ -8,7 +8,9 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 
 public class ComputePlayerInteractionStateEventHandlerImpl {
-	public static class Pre implements ComputePlayerInteractionStateEventHandler {
+	public static enum Pre implements ComputePlayerInteractionStateEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputePlayerInteractionStateEvent event) {
 			if (Minecraft.getInstance().options.keyUse.isDown() && !event.getCameraEntity().isUsingItem()) {
@@ -17,7 +19,9 @@ public class ComputePlayerInteractionStateEventHandlerImpl {
 		}
 	}
 	
-	public static class Post implements ComputePlayerInteractionStateEventHandler {
+	public static enum Post implements ComputePlayerInteractionStateEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputePlayerInteractionStateEvent event) {
 			if (event.getCameraEntity().isFallFlying()) {

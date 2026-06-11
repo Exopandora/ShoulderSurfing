@@ -26,47 +26,45 @@ import java.util.ServiceLoader;
 public class BuiltinPlugin implements IShoulderSurfingPlugin {
 	@Override
 	public void register(IEventBus eventBus) {
-		eventBus.register(new ComputePlayerAimStateEventHandlerImpl());
-		eventBus.register(2000, new SetupCameraRotationEventHandlerImpl());
-		eventBus.register(new ComputeCameraCouplingEventHandlerImpl());
-		eventBus.register(new ComputeCameraEntityTransparencyEventHandlerImpl());
-		var cameraEntityTransparencyListener = new ComputeCameraEntityTransparencyEventHandlerImpl.WhenAiming();
-		eventBus.register((TickEventHandler) cameraEntityTransparencyListener);
-		eventBus.register((ComputeCameraEntityTransparencyEventHandler) cameraEntityTransparencyListener);
-		eventBus.register(0, new ComputePlayerAttackStateEventHandlerImpl.Pre());
-		eventBus.register(2000, new ComputePlayerAttackStateEventHandlerImpl.Post());
-		eventBus.register(0, new ComputePlayerInteractionStateEventHandlerImpl.Pre());
-		eventBus.register(2000, new ComputePlayerInteractionStateEventHandlerImpl.Post());
-		eventBus.register(0, new ComputePlayerPickStateEventHandlerImpl.Pre());
-		eventBus.register(2000, new ComputePlayerPickStateEventHandlerImpl.Post());
-		eventBus.register(new ComputePlayerRideBoatStateEventHandlerImpl());
-		eventBus.register(0, new ComputePlayerUseItemStateEventHandlerImpl.Pre());
-		eventBus.register(2000, new ComputePlayerUseItemStateEventHandlerImpl.Post());
-		eventBus.register(50, new ComputeTargetCameraOffsetEventHandlerImpl.CameraDistanceAttribute());
-		eventBus.register(100, new ComputeTargetCameraOffsetEventHandlerImpl.CameraDistanceAttributePassenger());
-		eventBus.register(150, new ComputeTargetCameraOffsetEventHandlerImpl.PassengerModifiersAndMultipliers());
-		eventBus.register(200, new ComputeTargetCameraOffsetEventHandlerImpl.SprintingModifiersAndMultipliers());
-		eventBus.register(250, new ComputeTargetCameraOffsetEventHandlerImpl.AimingModifiersAndMultipliers());
-		eventBus.register(300, new ComputeTargetCameraOffsetEventHandlerImpl.FallFlyingModifiersAndMultipliers());
-		eventBus.register(350, new ComputeTargetCameraOffsetEventHandlerImpl.ClimbingModifiersAndMultipliers());
-		eventBus.register(400, new ComputeTargetCameraOffsetEventHandlerImpl.CenterWhenLookingDown());
-		eventBus.register(450, new ComputeTargetCameraOffsetEventHandlerImpl.DynamicOffsets());
-		eventBus.register(500, new ComputeTargetCameraOffsetEventHandlerImpl.EntityScale());
-		eventBus.register(2000, new ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits());
+		eventBus.register(ComputePlayerAimStateEventHandlerImpl.INSTANCE);
+		eventBus.register(2000, SetupCameraRotationEventHandlerImpl.INSTANCE);
+		eventBus.register(ComputeCameraCouplingEventHandlerImpl.INSTANCE);
+		eventBus.register(ComputeCameraEntityTransparencyEventHandlerImpl.INSTANCE);
+		eventBus.register((TickEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.WhenAiming.INSTANCE);
+		eventBus.register((ComputeCameraEntityTransparencyEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.WhenAiming.INSTANCE);
+		eventBus.register(0, ComputePlayerAttackStateEventHandlerImpl.Pre.INSTANCE);
+		eventBus.register(2000, ComputePlayerAttackStateEventHandlerImpl.Post.INSTANCE);
+		eventBus.register(0, ComputePlayerInteractionStateEventHandlerImpl.Pre.INSTANCE);
+		eventBus.register(2000, ComputePlayerInteractionStateEventHandlerImpl.Post.INSTANCE);
+		eventBus.register(0, ComputePlayerPickStateEventHandlerImpl.Pre.INSTANCE);
+		eventBus.register(2000, ComputePlayerPickStateEventHandlerImpl.Post.INSTANCE);
+		eventBus.register(ComputePlayerRideBoatStateEventHandlerImpl.INSTANCE);
+		eventBus.register(0, ComputePlayerUseItemStateEventHandlerImpl.Pre.INSTANCE);
+		eventBus.register(2000, ComputePlayerUseItemStateEventHandlerImpl.Post.INSTANCE);
+		eventBus.register(50, ComputeTargetCameraOffsetEventHandlerImpl.CameraDistanceAttribute.INSTANCE);
+		eventBus.register(100, ComputeTargetCameraOffsetEventHandlerImpl.CameraDistanceAttributePassenger.INSTANCE);
+		eventBus.register(150, ComputeTargetCameraOffsetEventHandlerImpl.PassengerModifiersAndMultipliers.INSTANCE);
+		eventBus.register(200, ComputeTargetCameraOffsetEventHandlerImpl.SprintingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(250, ComputeTargetCameraOffsetEventHandlerImpl.AimingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(300, ComputeTargetCameraOffsetEventHandlerImpl.FallFlyingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(350, ComputeTargetCameraOffsetEventHandlerImpl.ClimbingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(400, ComputeTargetCameraOffsetEventHandlerImpl.CenterWhenLookingDown.INSTANCE);
+		eventBus.register(450, ComputeTargetCameraOffsetEventHandlerImpl.DynamicOffsets.INSTANCE);
+		eventBus.register(500, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
+		eventBus.register(2000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
 		registerCompatibilityEventHandlers(Mods.CREATE, () ->
-			eventBus.register(2000, new CreateModEventHandler())
+			eventBus.register(2000, CreateModEventHandler.INSTANCE)
 		);
 		registerCompatibilityEventHandlers(Mods.CURIOS, () ->
 			ServiceLoader.load(ICuriosEventHandler.class).findFirst().ifPresent(eventBus::register)
 		);
 		registerCompatibilityEventHandlers(Mods.COBBLEMON, () -> {
-			CobblemonEventHandler cobblemonEventHandler = new CobblemonEventHandler();
-			eventBus.register(cobblemonEventHandler::computePlayerAimState);
+			eventBus.register(CobblemonEventHandler.INSTANCE::computePlayerAimState);
 			if (CobblemonEventHandler.isRidingSupported()) {
-				eventBus.register(500, cobblemonEventHandler::preSetupCameraRotation);
-				eventBus.register(1500, cobblemonEventHandler::postSetupCameraRotation);
-				eventBus.register(cobblemonEventHandler::forceVanillaPlayerInput);
-				eventBus.register(cobblemonEventHandler::computePlayerRideBoatState);
+				eventBus.register(500, CobblemonEventHandler.INSTANCE::preSetupCameraRotation);
+				eventBus.register(1500, CobblemonEventHandler.INSTANCE::postSetupCameraRotation);
+				eventBus.register(CobblemonEventHandler.INSTANCE::forceVanillaPlayerInput);
+				eventBus.register(CobblemonEventHandler.INSTANCE::computePlayerRideBoatState);
 			}
 		});
 	}

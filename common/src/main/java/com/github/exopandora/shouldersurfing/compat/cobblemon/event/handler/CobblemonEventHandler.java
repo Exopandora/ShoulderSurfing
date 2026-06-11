@@ -19,7 +19,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class CobblemonEventHandler {
+public enum CobblemonEventHandler {
+	INSTANCE;
+	
 	public void computePlayerAimState(ComputePlayerAimStateEvent event) {
 		if (isAdaptiveItemStack(event.getEntity().getMainHandItem()) || isAdaptiveItemStack(event.getEntity().getOffhandItem())) {
 			event.setResult(true);

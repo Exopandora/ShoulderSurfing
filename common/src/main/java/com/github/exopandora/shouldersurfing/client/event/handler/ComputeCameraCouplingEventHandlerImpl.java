@@ -6,7 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
-public class ComputeCameraCouplingEventHandlerImpl implements ComputeCameraCouplingEventHandler {
+public enum ComputeCameraCouplingEventHandlerImpl implements ComputeCameraCouplingEventHandler {
+	INSTANCE;
+	
 	@Override
 	public void handle(ComputeCameraCouplingEvent event) {
 		LocalPlayer player = Minecraft.getInstance().player;

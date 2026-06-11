@@ -5,7 +5,9 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePla
 import net.minecraft.client.Minecraft;
 
 public class ComputePlayerPickStateEventHandlerImpl {
-	public static class Pre implements ComputePlayerPickStateEventHandler {
+	public enum Pre implements ComputePlayerPickStateEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputePlayerPickStateEvent event) {
 			if (Minecraft.getInstance().options.keyPickItem.isDown()) {
@@ -14,7 +16,9 @@ public class ComputePlayerPickStateEventHandlerImpl {
 		}
 	}
 	
-	public static class Post implements ComputePlayerPickStateEventHandler {
+	public enum Post implements ComputePlayerPickStateEventHandler {
+		INSTANCE;
+		
 		@Override
 		public void handle(ComputePlayerPickStateEvent event) {
 			if (event.getCameraEntity().isFallFlying()) {

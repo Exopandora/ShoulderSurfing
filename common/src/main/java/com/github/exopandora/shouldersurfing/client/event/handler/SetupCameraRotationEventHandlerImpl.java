@@ -4,7 +4,9 @@ import com.github.exopandora.shouldersurfing.api.client.event.SetupCameraRotatio
 import com.github.exopandora.shouldersurfing.api.client.event.handler.SetupCameraRotationEventHandler;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 
-public class SetupCameraRotationEventHandlerImpl implements SetupCameraRotationEventHandler {
+public enum SetupCameraRotationEventHandlerImpl implements SetupCameraRotationEventHandler {
+	INSTANCE;
+	
 	@Override
 	public void handle(SetupCameraRotationEvent event) {
 		if (event.getPlayer().isPassenger()) {
