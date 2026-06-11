@@ -7,7 +7,6 @@ import com.github.exopandora.shouldersurfing.api.event.IEventBus;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraCouplingEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraEntityTransparencyEventHandlerImpl;
-import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraEntityTransparencyEventHandlerImplWhenAiming;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerAimStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerAttackStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerInteractionStateEventHandlerImpl;
@@ -31,7 +30,7 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(2000, new SetupCameraRotationEventHandlerImpl());
 		eventBus.register(new ComputeCameraCouplingEventHandlerImpl());
 		eventBus.register(new ComputeCameraEntityTransparencyEventHandlerImpl());
-		var cameraEntityTransparencyListener = new ComputeCameraEntityTransparencyEventHandlerImplWhenAiming();
+		var cameraEntityTransparencyListener = new ComputeCameraEntityTransparencyEventHandlerImpl.WhenAiming();
 		eventBus.register((TickEventHandler) cameraEntityTransparencyListener);
 		eventBus.register((ComputeCameraEntityTransparencyEventHandler) cameraEntityTransparencyListener);
 		eventBus.register(0, new ComputePlayerAttackStateEventHandlerImpl.Pre());
