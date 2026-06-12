@@ -21,9 +21,9 @@ public interface IPlayerConfig {
 	
 	double getTurningSpeedMultiplier();
 	
-	boolean isPlayerXRotFollowingCamera();
+	boolean isPlayerXRotTurningWithCamera();
 	
-	boolean isPlayerYRotFollowingCamera();
+	boolean isPlayerYRotTurningWithCamera();
 	
-	double getPlayerYRotFollowAngleLimit();
+	double getPlayerYRotTurnAngleLimit();
 }

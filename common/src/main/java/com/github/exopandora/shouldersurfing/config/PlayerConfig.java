@@ -20,9 +20,9 @@ public class PlayerConfig implements IPlayerConfig {
 	private final ConfigValue<TurningMode> turningModeWhenPicking;
 	private final IntValue turningLockTime;
 	private final DoubleValue turningSpeedMultiplier;
-	private final BooleanValue isPlayerXRotFollowingCamera;
-	private final BooleanValue isPlayerYRotFollowingCamera;
-	private final DoubleValue playerYRotFollowAngleLimit;
+	private final BooleanValue isPlayerXRotTurningWithCamera;
+	private final BooleanValue isPlayerYRotTurningWithCamera;
+	private final DoubleValue playerYRotTurnAngleLimit;
 	
 	protected PlayerConfig(ModConfigSpec.Builder builder) {
 		builder.push("player");
@@ -43,20 +43,20 @@ public class PlayerConfig implements IPlayerConfig {
 			.translation(MOD_ID + ".configuration.player.hide_player_when_looking_up_angle")
 			.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 		
-		this.isPlayerXRotFollowingCamera = builder
-			.comment("Whether the x-rot of the player should follow the camera x-rot. This config option only applies when camera is decoupled.")
-			.translation(MOD_ID + ".configuration.player.player_x_rot_follows_camera")
-			.define("player_x_rot_follows_camera", false);
+		this.isPlayerXRotTurningWithCamera = builder
+			.comment("Whether the x-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
+			.translation(MOD_ID + ".configuration.player.turn_player_x_rot_with_camera")
+			.define("turn_player_x_rot_with_camera", false);
 		
-		this.isPlayerYRotFollowingCamera = builder
-			.comment("Whether the y-rot of the player should follow the camera y-rot. This config option only applies when camera is decoupled.")
-			.translation(MOD_ID + ".configuration.player.player_y_rot_follows_camera")
-			.define("player_y_rot_follows_camera", false);
+		this.isPlayerYRotTurningWithCamera = builder
+			.comment("Whether the y-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
+			.translation(MOD_ID + ".configuration.player.turn_player_y_rot_with_camera")
+			.define("turn_player_y_rot_with_camera", false);
 		
-		this.playerYRotFollowAngleLimit = builder
-			.comment("The maximum angle to which the player y-rot follows the camera y-rot. This config option only applies when player y-rot follows camera option is enabled.")
-			.translation(MOD_ID + ".configuration.player.player_y_rot_follow_angle_limit")
-			.defineInRange("player_y_rot_follow_angle_limit", 90D, 0D, 180D);
+		this.playerYRotTurnAngleLimit = builder
+			.comment("The maximum angle to turn the player y-rot with the camera. This config option only applies when 'Turn player y-rot with camera' is enabled.")
+			.translation(MOD_ID + ".configuration.player.turn_player_y_rot_angle_limit")
+			.defineInRange("turn_player_y_rot_angle_limit", 90D, 0D, 180D);
 		
 		builder.push("turning");
 		
@@ -140,17 +140,17 @@ public class PlayerConfig implements IPlayerConfig {
 	}
 	
 	@Override
-	public boolean isPlayerXRotFollowingCamera() {
-		return this.isPlayerXRotFollowingCamera.get();
+	public boolean isPlayerXRotTurningWithCamera() {
+		return this.isPlayerXRotTurningWithCamera.get();
 	}
 	
 	@Override
-	public boolean isPlayerYRotFollowingCamera() {
-		return this.isPlayerYRotFollowingCamera.get();
+	public boolean isPlayerYRotTurningWithCamera() {
+		return this.isPlayerYRotTurningWithCamera.get();
 	}
 	
 	@Override
-	public double getPlayerYRotFollowAngleLimit() {
-		return this.playerYRotFollowAngleLimit.get();
+	public double getPlayerYRotTurnAngleLimit() {
+		return this.playerYRotTurnAngleLimit.get();
 	}
 }
