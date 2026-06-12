@@ -1,23 +1,11 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-
 public enum CrosshairType {
 	ADAPTIVE,
 	DYNAMIC,
 	STATIC,
 	STATIC_WITH_1PP,
 	DYNAMIC_WITH_1PP;
-	
-	public boolean isDynamic(Entity entity, boolean isAiming) {
-		if (this == CrosshairType.ADAPTIVE) {
-			return isAiming;
-		} else if (this == CrosshairType.DYNAMIC || this == CrosshairType.DYNAMIC_WITH_1PP) {
-			return !(entity instanceof Player player && player.isScoping());
-		}
-		return false;
-	}
 	
 	public boolean isAimingDecoupled() {
 		return this == CrosshairType.STATIC || this == CrosshairType.STATIC_WITH_1PP;

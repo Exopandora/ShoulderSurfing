@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client.renderer;
 
+import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.client.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRenderer;
@@ -155,7 +156,14 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	
 	@Override
 	public boolean isCrosshairDynamic(Entity entity) {
-		return this.instance.isShoulderSurfing() && Config.CLIENT.getCrosshairConfig().getCrosshairType().isDynamic(entity, this.instance.isAiming());
+		if (!this.instance.isShoulderSurfing()) {
+			return false;
+		}
+		return switch (Config.CLIENT.getCrosshairConfig().getCrosshairType()) {
+			case CrosshairType.ADAPTIVE -> this.instance.isAiming();
+			case CrosshairType.DYNAMIC, CrosshairType.DYNAMIC_WITH_1PP -> entity instanceof Player player && !player.isScoping();
+			default -> false;
+		};
 	}
 	
 	private void renderObstructionCrosshair(GuiGraphicsExtractor guiGraphics) {
