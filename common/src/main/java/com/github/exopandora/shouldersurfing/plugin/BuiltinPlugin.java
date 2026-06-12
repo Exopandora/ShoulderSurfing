@@ -14,6 +14,7 @@ import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerP
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerRideBoatStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerUseItemStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeTargetCameraOffsetEventHandlerImpl;
+import com.github.exopandora.shouldersurfing.client.event.handler.ComputeTemporaryFirstPersonStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.SetupCameraRotationEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.cobblemon.event.handler.CobblemonEventHandler;
@@ -52,6 +53,7 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(450, ComputeTargetCameraOffsetEventHandlerImpl.DynamicOffsets.INSTANCE);
 		eventBus.register(500, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
 		eventBus.register(2000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
+		eventBus.register(ComputeTemporaryFirstPersonStateEventHandlerImpl.INSTANCE);
 		registerCompatibilityEventHandlers(Mods.CREATE, () ->
 			eventBus.register(2000, CreateModEventHandler.INSTANCE)
 		);

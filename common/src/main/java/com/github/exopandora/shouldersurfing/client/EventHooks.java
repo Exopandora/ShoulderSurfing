@@ -9,6 +9,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerPickS
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerRideBoatStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerUseItemStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
+import com.github.exopandora.shouldersurfing.api.client.event.ComputeTemporaryFirstPersonStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ForceVanillaPlayerInputEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.SetupCameraRotationEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
@@ -74,6 +75,11 @@ public class EventHooks {
 	
 	public static Vec3 getTargetOffset(Vec3 defaultOffset, Camera camera, Entity cameraEntity, BlockGetter level) {
 		ComputeTargetCameraOffsetEvent event = new ComputeTargetCameraOffsetEvent(defaultOffset, camera, cameraEntity, level);
+		return ShoulderSurfing.getInstance().getEventBus().fire(event).getResult();
+	}
+	
+	public static boolean isTemporaryFirstPerson() {
+		ComputeTemporaryFirstPersonStateEvent event = new ComputeTemporaryFirstPersonStateEvent();
 		return ShoulderSurfing.getInstance().getEventBus().fire(event).getResult();
 	}
 	

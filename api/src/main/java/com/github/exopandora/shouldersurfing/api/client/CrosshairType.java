@@ -22,11 +22,4 @@ public enum CrosshairType {
 	public boolean isAimingDecoupled() {
 		return this == CrosshairType.STATIC || this == CrosshairType.STATIC_WITH_1PP;
 	}
-	
-	public boolean doSwitchPerspective(boolean isAiming) {
-		if (this == CrosshairType.STATIC_WITH_1PP || this == CrosshairType.DYNAMIC_WITH_1PP) {
-			return isAiming;
-		}
-		return false;
-	}
 }

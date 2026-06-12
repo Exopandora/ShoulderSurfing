@@ -10,6 +10,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerPickS
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerRideBoatStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerUseItemStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
+import com.github.exopandora.shouldersurfing.api.client.event.ComputeTemporaryFirstPersonStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ForceVanillaPlayerInputEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.SetupCameraRotationEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
@@ -22,6 +23,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePla
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerRideBoatStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerUseItemStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTemporaryFirstPersonStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ForceVanillaPlayerInputEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.SetupCameraRotationEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
@@ -98,6 +100,11 @@ public class EventBus implements IEventBus {
 	@Override
 	public void register(int priority, SetupCameraRotationEventHandler handler) {
 		this.registerHandler(priority, handler::handle, SetupCameraRotationEvent.class);
+	}
+	
+	@Override
+	public void register(int priority, ComputeTemporaryFirstPersonStateEventHandler handler) {
+		this.registerHandler(priority, handler::handle, ComputeTemporaryFirstPersonStateEvent.class);
 	}
 	
 	@Override

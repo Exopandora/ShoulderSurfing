@@ -1,14 +1,15 @@
 package com.github.exopandora.shouldersurfing.api.event;
 
-import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraCouplingEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAttackStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerInteractionStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerPickStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerRideBoatStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerUseItemStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTemporaryFirstPersonStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ForceVanillaPlayerInputEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.SetupCameraRotationEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
@@ -79,6 +80,12 @@ public interface IEventBus {
 	void register(int priority, SetupCameraRotationEventHandler handler);
 	
 	default void register(SetupCameraRotationEventHandler handler) {
+		this.register(DEFAULT_PRIORITY, handler);
+	}
+	
+	void register(int priority, ComputeTemporaryFirstPersonStateEventHandler handler);
+	
+	default void register(ComputeTemporaryFirstPersonStateEventHandler handler) {
 		this.register(DEFAULT_PRIORITY, handler);
 	}
 	

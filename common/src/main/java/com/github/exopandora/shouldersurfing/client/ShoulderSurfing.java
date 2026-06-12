@@ -67,14 +67,18 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		}
 		Entity cameraEntity = minecraft.getCameraEntity();
 		this.isAiming = computeIsAiming(cameraEntity);
-		this.updatePlayerRotations = false;
-		LocalPlayer player = minecraft.player;
-		if (this.isShoulderSurfing && Config.CLIENT.getCrosshairConfig().getCrosshairType().doSwitchPerspective(this.isAiming)) {
-			this.changePerspective(Perspective.FIRST_PERSON);
-			this.isTemporaryFirstPerson = true;
-		} else if (this.isTemporaryFirstPerson && isFirstPerson && !Config.CLIENT.getCrosshairConfig().getCrosshairType().doSwitchPerspective(this.isAiming)) {
-			this.changePerspective(Perspective.SHOULDER_SURFING);
+		if (this.isShoulderSurfing) {
+			if (EventHooks.isTemporaryFirstPerson()) {
+				this.changePerspective(Perspective.FIRST_PERSON);
+				this.isTemporaryFirstPerson = true;
+			}
+		} else if (this.isTemporaryFirstPerson && isFirstPerson) {
+			if (!EventHooks.isTemporaryFirstPerson()) {
+				this.changePerspective(Perspective.SHOULDER_SURFING);
+			}
 		}
+		LocalPlayer player = minecraft.player;
+		this.updatePlayerRotations = false;
 		this.isCameraDecoupled = computeIsCameraDecoupled(cameraEntity, this.isShoulderSurfing, this.isAiming);
 		if (this.isShoulderSurfing && player != null) {
 			this.isLookFollowingCrosshairTarget = computeIsLookFollowingCrosshairTarget(cameraEntity, this.isAiming);
