@@ -212,9 +212,9 @@ public interface ICameraConfig {
 	
 	ViewBobbingMode getViewBobbingMode();
 	
-	boolean getFollowPlayerRotations();
+	boolean isCameraTurningWithPlayer();
 	
-	int getFollowPlayerRotationsDelay();
+	int getCameraTurningWithPlayerDelay();
 	
 	double getCameraDragXMultiplier();
 	

@@ -35,9 +35,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	private Vec2f renderRotation;
 	private float lastMovedYRot;
 	private boolean initialized;
-	private int followPlayerRotationsDelay;
-	private float followPlayerRotationsEaseIn;
-	private float followPlayerRotationsEaseInO;
+	private int turnCameraWithPlayerDelay;
+	private float turnCameraWithPlayerEaseIn;
+	private float turnCameraWithPlayerEaseInO;
 	
 	public ShoulderSurfingCamera(ShoulderSurfing instance) {
 		this.instance = instance;
@@ -56,19 +56,16 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		this.offset = this.offsetO.lerp(this.targetOffset, cameraTransitionSpeedMultiplier);
 		this.maxCameraDistanceO = this.maxCameraDistance;
 		this.maxCameraDistance = this.maxCameraDistance + (this.offset.length() - this.maxCameraDistance) * cameraTransitionSpeedMultiplier;
-		Minecraft minecraft = Minecraft.getInstance();
-		Entity cameraEntity = minecraft.getCameraEntity();
-		if (this.instance.isCameraDecoupled()) {
-			if (this.shouldResetFollowPlayerRotationsDelay(minecraft)) {
-				this.followPlayerRotationsDelay = cameraConfig.getFollowPlayerRotationsDelay();
-				this.followPlayerRotationsEaseIn = 1.0F;
-				this.followPlayerRotationsEaseInO = 1.0F;
-			} else if (this.followPlayerRotationsDelay == 0) {
-				this.followPlayerRotationsEaseInO = this.followPlayerRotationsEaseIn;
-				this.followPlayerRotationsEaseIn *= 1F - (float) cameraConfig.getCameraTransitionSpeedMultiplier();
-			} else if (this.followPlayerRotationsDelay > 0) {
-				this.followPlayerRotationsDelay--;
-			}
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		if (this.shouldResetCameraTurningWithPlayerDelay()) {
+			this.turnCameraWithPlayerDelay = cameraConfig.getCameraTurningWithPlayerDelay();
+			this.turnCameraWithPlayerEaseIn = 1.0F;
+			this.turnCameraWithPlayerEaseInO = 1.0F;
+		} else if (this.turnCameraWithPlayerDelay == 0) {
+			this.turnCameraWithPlayerEaseInO = this.turnCameraWithPlayerEaseIn;
+			this.turnCameraWithPlayerEaseIn *= 1F - (float) cameraConfig.getCameraTransitionSpeedMultiplier();
+		} else if (this.turnCameraWithPlayerDelay > 0) {
+			this.turnCameraWithPlayerDelay--;
 		}
 		this.rotation = this.applyPassengerRotations(this.rotation, cameraEntity, 1.0F);
 		if (cameraEntity != null) {
@@ -83,8 +80,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		if (!this.instance.isShoulderSurfing()) {
 			return;
 		}
-		if (this.instance.isCameraDecoupled() && Config.CLIENT.getCameraConfig().getFollowPlayerRotations() && this.followPlayerRotationsDelay == 0 && !EntityHelper.isPlayerSpectatingEntity()) {
-			float easeIn = 1F - Mth.lerp(partialTick, this.followPlayerRotationsEaseInO, this.followPlayerRotationsEaseIn);
+		if (this.isCameraTurningWithPlayer()) {
+			float easeIn = 1F - Mth.lerp(partialTick, this.turnCameraWithPlayerEaseInO, this.turnCameraWithPlayerEaseIn);
 			float f = partialTick * (float) Config.CLIENT.getCameraConfig().getCameraTransitionSpeedMultiplier() * easeIn;
 			float dy = Mth.degreesDifference(this.rotation.y(), cameraEntity.getYRot(partialTick));
 			this.rotation = this.rotationO.add(new Vec2f(0, dy).scale(f));
@@ -105,7 +102,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				float dy = living.getYHeadRot() - living.yHeadRotO;
 				return rotation.add(new Vec2f(dx, dy).scale(partialTick));
 			}
-		} else if (shouldSyncCameraRotationsWithVehicleRotations(cameraEntity)) {
+		} else if (isCameraTurningWithVehicle(cameraEntity)) {
 			Entity vehicle = cameraEntity.getVehicle();
 			if (vehicle != null) {
 				return rotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
@@ -135,9 +132,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		this.rotationOffset = Vec2f.ZERO;
 		this.rotationOffsetO = Vec2f.ZERO;
 		this.lastMovedYRot = this.rotation.y();
-		this.followPlayerRotationsDelay = 0;
-		this.followPlayerRotationsEaseIn = 1.0F;
-		this.followPlayerRotationsEaseInO = 1.0F;
+		this.turnCameraWithPlayerDelay = 0;
+		this.turnCameraWithPlayerEaseIn = 1.0F;
+		this.turnCameraWithPlayerEaseInO = 1.0F;
 		this.initialized = true;
 	}
 	
@@ -219,9 +216,9 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			return false;
 		}
 		if (yRot != 0.0F || xRot != 0.0F || EntityHelper.isPlayerSpectatingEntity()) {
-			this.followPlayerRotationsDelay = Config.CLIENT.getCameraConfig().getFollowPlayerRotationsDelay();
-			this.followPlayerRotationsEaseIn = 1.0F;
-			this.followPlayerRotationsEaseInO = 1.0F;
+			this.turnCameraWithPlayerDelay = Config.CLIENT.getCameraConfig().getCameraTurningWithPlayerDelay();
+			this.turnCameraWithPlayerEaseIn = 1.0F;
+			this.turnCameraWithPlayerEaseInO = 1.0F;
 		}
 		Vec2f dRot = new Vec2f((float) xRot, (float) yRot);
 		Vec2f dRotScaled = dRot.scale(0.15F);
@@ -246,11 +243,11 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	
 	private void turnPlayerWithCamera(LocalPlayer player, Vec2f scaledRot, boolean isMoving) {
 		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
-		if (playerConfig.isPlayerXRotFollowingCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations()) {
+		if (playerConfig.isPlayerXRotFollowingCamera() || Config.CLIENT.getCameraConfig().isCameraTurningWithPlayer()) {
 			player.setXRot(this.rotation.x());
 			player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
 		}
-		if ((playerConfig.isPlayerYRotFollowingCamera() || Config.CLIENT.getCameraConfig().getFollowPlayerRotations()) && !isMoving) {
+		if ((playerConfig.isPlayerYRotFollowingCamera() || Config.CLIENT.getCameraConfig().isCameraTurningWithPlayer()) && !isMoving) {
 			float maxFollowAngle = (float) playerConfig.getPlayerYRotFollowAngleLimit();
 			float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
 			player.yRotO = player.getYRot();
@@ -258,20 +255,28 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		}
 	}
 	
-	private boolean shouldResetFollowPlayerRotationsDelay(Minecraft minecraft) {
+	private boolean shouldResetCameraTurningWithPlayerDelay() {
 		if (this.instance.isFreeLooking()) {
 			return true;
 		}
+		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.player != null && minecraft.player.isScoping()) {
 			return true;
 		}
 		if (minecraft.screen != null) {
 			return true;
 		}
+		if (EntityHelper.isPlayerSpectatingEntity()) {
+			return true;
+		}
 		return this.instance.isLookFollowingCrosshairTarget();
 	}
 	
-	private static boolean shouldSyncCameraRotationsWithVehicleRotations(@Nullable Entity entity) {
+	private boolean isCameraTurningWithPlayer() {
+		return this.instance.isCameraDecoupled() && Config.CLIENT.getCameraConfig().isCameraTurningWithPlayer() && this.turnCameraWithPlayerDelay == 0;
+	}
+	
+	private static boolean isCameraTurningWithVehicle(@Nullable Entity entity) {
 		if (!(entity instanceof LivingEntity)) {
 			return false;
 		}

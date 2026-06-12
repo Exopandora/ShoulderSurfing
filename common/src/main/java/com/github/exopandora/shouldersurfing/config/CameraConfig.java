@@ -87,8 +87,8 @@ public class CameraConfig implements ICameraConfig {
 	private final BooleanValue isFovOverrideEnabled;
 	private final DoubleValue fovOverride;
 	private final ConfigValue<ViewBobbingMode> viewBobbingMode;
-	private final BooleanValue followPlayerRotations;
-	private final IntValue followPlayerRotationsDelay;
+	private final BooleanValue isCameraTurningWithPlayer;
+	private final IntValue cameraTurningWithPlayerDelay;
 	
 	private final DoubleValue cameraDragXMultiplier;
 	private final DoubleValue cameraDragYMultiplier;
@@ -436,15 +436,15 @@ public class CameraConfig implements ICameraConfig {
 			.translation(MOD_ID + ".configuration.camera.view_bobbing_mode")
 			.defineEnum("view_bobbing_mode", ViewBobbingMode.INHERIT, ViewBobbingMode.values());
 		
-		this.followPlayerRotations = builder
-			.comment("Whether to follow the rotations of the player when camera is decoupled.")
-			.translation(MOD_ID + ".configuration.camera.follow_player_rotations")
-			.define("follow_player_rotations", true);
+		this.isCameraTurningWithPlayer = builder
+			.comment("Whether to turn the camera with the player when camera is decoupled.")
+			.translation(MOD_ID + ".configuration.camera.turn_with_player")
+			.define("turn_with_player", false);
 		
-		this.followPlayerRotationsDelay = builder
-			.comment("The delay in ticks after which the camera rotations will follow rotations of the player.")
-			.translation(MOD_ID + ".configuration.camera.follow_player_rotations_delay")
-			.defineInRange("follow_player_rotations_delay", 40, 1, Integer.MAX_VALUE);
+		this.cameraTurningWithPlayerDelay = builder
+			.comment("The delay in ticks after which the camera will turn with the player.")
+			.translation(MOD_ID + ".configuration.camera.turn_with_player_delay")
+			.defineInRange("turn_with_player_delay", 40, 1, Integer.MAX_VALUE);
 		
 		builder.push("camera_drag");
 		
@@ -771,13 +771,13 @@ public class CameraConfig implements ICameraConfig {
 	}
 	
 	@Override
-	public boolean getFollowPlayerRotations() {
-		return this.followPlayerRotations.get();
+	public boolean isCameraTurningWithPlayer() {
+		return this.isCameraTurningWithPlayer.get();
 	}
 	
 	@Override
-	public int getFollowPlayerRotationsDelay() {
-		return this.followPlayerRotationsDelay.get();
+	public int getCameraTurningWithPlayerDelay() {
+		return this.cameraTurningWithPlayerDelay.get();
 	}
 	
 	@Override
