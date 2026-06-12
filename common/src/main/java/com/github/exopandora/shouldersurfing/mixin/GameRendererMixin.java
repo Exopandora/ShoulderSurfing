@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.ViewBobbingMode;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.renderer.GameRenderer;
@@ -27,7 +27,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		at = @At("TAIL")
 	)
 	public void render(CallbackInfo ci) {
-		ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(null);
+		ShoulderSurfing.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(null);
 	}
 	
 	@Redirect(
@@ -45,7 +45,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		)
 	)
 	private boolean doRenderCrosshair(CameraType cameraType) {
-		return ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair();
+		return ShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
 	@Inject(
@@ -53,7 +53,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		at = @At("TAIL")
 	)
 	public void extractOptions(CallbackInfo ci) {
-		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing()) {
+		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
 			OptionsRenderState optionsRenderState = this.gameRenderState.optionsRenderState;
 			optionsRenderState.bobView = switch (Config.CLIENT.getCameraConfig().getViewBobbingMode()) {
 				case INHERIT -> optionsRenderState.bobView;
@@ -69,7 +69,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		cancellable = true
 	)
 	public void bobView(CallbackInfo ci) {
-		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
+		if (ShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
 			ci.cancel();
 		}
 	}

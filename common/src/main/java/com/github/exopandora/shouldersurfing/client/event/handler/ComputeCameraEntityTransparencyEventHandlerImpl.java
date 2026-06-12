@@ -1,12 +1,10 @@
 package com.github.exopandora.shouldersurfing.client.event.handler;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraEntityTransparencyEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +17,7 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 	
 	@Override
 	public void handle(ComputeCameraEntityTransparencyEvent event) {
-		IShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		Entity entity = event.getCameraEntity();
 		if (isCameraEntityTransparent(instance, entity)) {
 			Vec3 renderOffset = instance.getCamera().getRenderOffset();
@@ -60,7 +58,7 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 		public void handle(TickEvent event) {
 			if (Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenAiming()) {
 				this.aimingTicksO = this.aimingTicks;
-				if (ShoulderSurfingImpl.getInstance().isAiming()) {
+				if (IShoulderSurfing.getInstance().isAiming()) {
 					if (this.aimingTicks < TRANSITION_TICK_COUNT) {
 						this.aimingTicks++;
 					}

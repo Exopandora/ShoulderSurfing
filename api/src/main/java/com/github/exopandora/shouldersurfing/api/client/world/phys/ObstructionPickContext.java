@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client.world.phys;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.util.Couple;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
@@ -25,7 +25,7 @@ public final class ObstructionPickContext extends PickContext {
 	
 	@Override
 	public ClipContext.Block blockContext() {
-		return ShoulderSurfing.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
+		return IShoulderSurfing.getInstance().isAiming() ? ClipContext.Block.COLLIDER : ClipContext.Block.OUTLINE;
 	}
 	
 	@Override

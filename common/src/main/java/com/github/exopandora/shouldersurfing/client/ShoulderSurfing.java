@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.client;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
@@ -23,7 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class ShoulderSurfingImpl implements IShoulderSurfing {
+public class ShoulderSurfing implements IShoulderSurfing {
 	private final ShoulderSurfingCamera camera = new ShoulderSurfingCamera(this);
 	private final CameraEntityRenderer playerRenderer = new CameraEntityRenderer(this);
 	private final CrosshairRenderer crosshairRenderer = new CrosshairRenderer(this);
@@ -314,7 +313,7 @@ public class ShoulderSurfingImpl implements IShoulderSurfing {
 		this.turningLockTime = 0;
 	}
 	
-	public static ShoulderSurfingImpl getInstance() {
-		return (ShoulderSurfingImpl) ShoulderSurfing.getInstance();
+	public static ShoulderSurfing getInstance() {
+		return (ShoulderSurfing) IShoulderSurfing.getInstance();
 	}
 }

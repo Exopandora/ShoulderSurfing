@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.cobblemon;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +30,7 @@ public class PlayerExtensionsKtMixin {
 	) {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (entity == minecraft.player && entity == minecraft.getCameraEntity()) {
-			ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+			ShoulderSurfing instance = ShoulderSurfing.getInstance();
 			if (instance.isShoulderSurfing() && !instance.getCrosshairRenderer().isCrosshairDynamic(entity)) {
 				instance.lookAtCrosshairTarget();
 			}

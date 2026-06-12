@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.create;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.simibubi.create.content.contraptions.ContraptionHandlerClient;
@@ -23,7 +23,7 @@ public class ContraptionHandlerClientMixin_0_5_0 {
 		remap = false
 	)
 	private static void getRayInputs(LocalPlayer player, CallbackInfoReturnable<Couple<Vec3>> cir) {
-		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
+		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);

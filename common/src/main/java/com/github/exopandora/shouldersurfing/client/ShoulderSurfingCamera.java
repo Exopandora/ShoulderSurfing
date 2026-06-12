@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
-	private final ShoulderSurfingImpl instance;
+	private final ShoulderSurfing instance;
 	private Vec3 offset;
 	private Vec3 offsetO;
 	private Vec3 renderOffset;
@@ -39,7 +39,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	private float followPlayerRotationsEaseIn;
 	private float followPlayerRotationsEaseInO;
 	
-	public ShoulderSurfingCamera(ShoulderSurfingImpl instance) {
+	public ShoulderSurfingCamera(ShoulderSurfing instance) {
 		this.instance = instance;
 		this.init();
 	}

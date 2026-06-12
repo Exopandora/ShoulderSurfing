@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.tslatentitystatus;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +22,7 @@ public class TESClientUtilMixin {
 		remap = false
 	)
 	private static Vec3 getLookAngle(Player player) {
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			float realXRot = instance.getCamera().getXRot() * ((float) Math.PI / 180F);
 			float realYRot = -instance.getCamera().getYRot() * ((float) Math.PI / 180F);

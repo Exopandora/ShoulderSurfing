@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -39,7 +39,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 		Predicate<Entity> filter,
 		double interactionRangeSq
 	) {
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			PickContext pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.getMainCamera())
 				.withEntity(shooter)
@@ -53,7 +53,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 	
 	@Override
 	public void turn(double yRot, double xRot) {
-		if (!ShoulderSurfingImpl.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot)) {
+		if (!ShoulderSurfing.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot)) {
 			super.turn(yRot, xRot);
 		}
 	}

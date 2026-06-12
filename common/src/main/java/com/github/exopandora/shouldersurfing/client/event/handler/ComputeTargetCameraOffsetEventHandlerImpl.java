@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.client.event.handler;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
@@ -101,7 +101,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		
 		@Override
 		public boolean shouldApply(ComputeTargetCameraOffsetEvent event) {
-			return ShoulderSurfing.getInstance().isAiming();
+			return IShoulderSurfing.getInstance().isAiming();
 		}
 		
 		@Override

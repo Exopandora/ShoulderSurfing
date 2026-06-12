@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.client.renderer;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class DebugScreenOverlayHandler {
 	public static void appendDebugText(List<String> lines) {
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && instance.isCameraDecoupled()) {
 			int index = findFacingDebugTextIndex(lines);
 			if (index != -1 && (index + 1 == lines.size() || index + 1 < lines.size() && !lines.get(index + 1).startsWith("Camera: "))) {

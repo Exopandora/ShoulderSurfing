@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +15,7 @@ public class SubmitNodeCollectionMixin {
 		argsOnly = true
 	)
 	public int submitModel(int tintedColor) {
-		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
+		return ShoulderSurfing.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
 	}
 	
 	@ModifyVariable(
@@ -25,6 +25,6 @@ public class SubmitNodeCollectionMixin {
 		argsOnly = true
 	)
 	public int submitModelPart(int tintedColor) {
-		return ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
+		return ShoulderSurfing.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
 	}
 }

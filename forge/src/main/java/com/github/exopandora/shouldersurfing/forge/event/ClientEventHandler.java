@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.forge.event;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -12,14 +12,14 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent.Pre event) {
 		if (!Minecraft.getInstance().isPaused()) {
-			ShoulderSurfingImpl.getInstance().tick();
+			ShoulderSurfing.getInstance().tick();
 		}
 	}
 	
 	@SubscribeEvent
 	public static void movementInputUpdateEvent(MovementInputUpdateEvent event) {
-		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getInput());
-		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
+		ShoulderSurfing.getInstance().getInputHandler().updateMovementInput(event.getInput());
+		ShoulderSurfing.getInstance().updatePlayerRotations();
 	}
 	
 	@SubscribeEvent

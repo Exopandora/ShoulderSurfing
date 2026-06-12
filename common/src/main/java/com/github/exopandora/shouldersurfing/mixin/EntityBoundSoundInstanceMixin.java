@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import net.minecraft.client.Minecraft;
@@ -50,7 +50,7 @@ public abstract class EntityBoundSoundInstanceMixin extends AbstractTickableSoun
 	
 	@Unique
 	private void correctSoundPositionIfNecessary() {
-		if (ShoulderSurfingImpl.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered()) {
+		if (ShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered()) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(this.entity);
 			this.x = pos.x();
 			this.y = pos.y();

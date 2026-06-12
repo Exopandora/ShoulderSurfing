@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.neoforge.event;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -19,13 +19,13 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent.Pre event) {
 		if (!Minecraft.getInstance().isPaused()) {
-			ShoulderSurfingImpl.getInstance().tick();
+			ShoulderSurfing.getInstance().tick();
 		}
 	}
 	
 	@SubscribeEvent
 	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event) {
-		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair()) {
+		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !ShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair()) {
 			event.setCanceled(true);
 		}
 	}
@@ -36,7 +36,7 @@ public class ClientEventHandler {
 			VanillaGuiLayers.CROSSHAIR,
 			Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"),
 			(guiGraphics, deltaTracker) -> {
-				CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 				if (crosshairRenderer.doRenderCrosshair()) {
 					crosshairRenderer.preRenderCrosshair(guiGraphics);
 				}
@@ -46,7 +46,7 @@ public class ClientEventHandler {
 			VanillaGuiLayers.CROSSHAIR,
 			Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"),
 			(guiGraphics, deltaTracker) -> {
-				CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 				if (crosshairRenderer.doRenderCrosshair()) {
 					crosshairRenderer.postRenderCrosshair(guiGraphics);
 				}
@@ -58,7 +58,7 @@ public class ClientEventHandler {
 	public static void frameGraphSetupEvent(FrameGraphSetupEvent event) {
 		float partialTick = event.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		Matrix4f modelViewMatrix = event.getCameraState().viewRotationMatrix;
 		Matrix4f projectionMatrix = event.getCameraState().projectionMatrix;
 		instance.getCamera().renderTick(camera.entity(), partialTick);
@@ -67,7 +67,7 @@ public class ClientEventHandler {
 	
 	@SubscribeEvent
 	public static void movementInputUpdateEvent(MovementInputUpdateEvent event) {
-		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getInput());
-		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
+		ShoulderSurfing.getInstance().getInputHandler().updateMovementInput(event.getInput());
+		ShoulderSurfing.getInstance().updatePlayerRotations();
 	}
 }

@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client.world.phys;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.api.util.Couple;
@@ -126,9 +126,9 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 				return new ObstructionPickContext(this.camera, fluidContext, entity, entityFilter, this.endPos);
 			}
 			
-			ICrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+			ICrosshairRenderer crosshairRenderer = IShoulderSurfing.getInstance().getCrosshairRenderer();
 			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
-			IObjectPickerConfig config = ShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
+			IObjectPickerConfig config = IShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
 			
 			if (offsetTrace) {
 				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;

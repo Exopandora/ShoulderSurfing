@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric.mixin;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 import net.minecraft.client.Minecraft;
@@ -19,7 +19,7 @@ public class MinecraftMixin {
 		at = @At("TAIL")
 	)
 	private void init(GameConfig gameConfig, CallbackInfo ci) {
-		ShoulderSurfingImpl.getInstance().init();
+		ShoulderSurfing.getInstance().init();
 		ModConfigEvents.reloading(ShoulderSurfingCommon.MOD_ID).register(config -> {
 			if (ModConfig.Type.CLIENT == config.getType()) {
 				Config.onConfigReload();
@@ -33,7 +33,7 @@ public class MinecraftMixin {
 	)
 	private void onStartTick(CallbackInfo info) {
 		if (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused()) {
-			ShoulderSurfingImpl.getInstance().tick();
+			ShoulderSurfing.getInstance().tick();
 		}
 	}
 }

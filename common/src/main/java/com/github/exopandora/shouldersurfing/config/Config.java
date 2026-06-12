@@ -2,7 +2,7 @@ package com.github.exopandora.shouldersurfing.config;
 
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.config.IClientConfig;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -157,7 +157,7 @@ public class Config {
 	public static void onConfigReload() {
 		Perspective currentPerspective = Perspective.current();
 		PerspectiveConfig perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (!currentPerspective.isEnabled(perspectiveConfig) && (currentPerspective != Perspective.FIRST_PERSON || !instance.isTemporaryFirstPerson())) {
 			instance.changePerspective(currentPerspective.next(perspectiveConfig));
 		}

@@ -5,7 +5,7 @@ import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRenderer;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
 import com.github.exopandora.shouldersurfing.config.ObjectPickerConfig;
@@ -36,10 +36,10 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	private static final Identifier OBSTRUCTED_CROSSHAIR_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair");
 	private static final Identifier OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = Identifier.fromNamespaceAndPath(MOD_ID, "hud/obstructed_crosshair_cross");
 	
-	private final ShoulderSurfingImpl instance;
+	private final ShoulderSurfing instance;
 	private Vec2f crosshairOffset;
 	
-	public CrosshairRenderer(ShoulderSurfingImpl instance) {
+	public CrosshairRenderer(ShoulderSurfing instance) {
 		this.instance = instance;
 		this.init();
 	}

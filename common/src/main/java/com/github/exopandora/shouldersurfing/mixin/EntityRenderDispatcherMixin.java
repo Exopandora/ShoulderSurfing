@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.CameraEntityRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
@@ -33,7 +33,7 @@ public class EntityRenderDispatcherMixin {
 		SubmitNodeCollector submitNodeCollector,
 		CallbackInfo ci
 	) {
-		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfingImpl.getInstance().getCameraEntityRenderer();
+		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
 		if (renderState == cameraEntityRenderer.getCameraEntityRenderState()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Entity entity = minecraft.getCameraEntity();
@@ -60,7 +60,7 @@ public class EntityRenderDispatcherMixin {
 		SubmitNodeCollector submitNodeCollector,
 		CallbackInfo ci
 	) {
-		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfingImpl.getInstance().getCameraEntityRenderer();
+		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
 		if (renderState == cameraEntityRenderer.getCameraEntityRenderState()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Entity entity = minecraft.getCameraEntity();

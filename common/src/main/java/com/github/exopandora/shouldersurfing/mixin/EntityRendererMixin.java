@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -25,7 +25,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 	)
 	public void createRenderState(T entity, float partialTick, CallbackInfoReturnable<S> ci, S renderState) {
 		if (entity == Minecraft.getInstance().getCameraEntity()) {
-			ShoulderSurfingImpl.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(renderState);
+			ShoulderSurfing.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(renderState);
 		}
 	}
 }

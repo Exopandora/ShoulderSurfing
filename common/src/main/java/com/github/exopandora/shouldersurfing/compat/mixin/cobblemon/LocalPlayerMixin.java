@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.cobblemon;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -23,7 +23,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 		cancellable = true
 	)
 	private void pick(double interactionRange, float partialTick, boolean stopOnFluid, CallbackInfoReturnable<HitResult> cir) {
-		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
+		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			cir.setReturnValue(super.pick(interactionRange, partialTick, stopOnFluid));
 		}
 	}

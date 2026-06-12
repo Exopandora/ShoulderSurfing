@@ -2,7 +2,7 @@ package com.github.exopandora.shouldersurfing.forge;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
@@ -63,7 +63,7 @@ public class ShoulderSurfingForge {
 	
 	@SubscribeEvent
 	public void modConfigLoadingEvent(ModConfigEvent.Loading event) {
-		ShoulderSurfingImpl.getInstance().init();
+		ShoulderSurfing.getInstance().init();
 	}
 	
 	@SubscribeEvent

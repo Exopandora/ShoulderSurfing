@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
@@ -29,7 +29,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 		method = "handleLogin"
 	)
 	private void handleLogin(CallbackInfo ci) {
-		ShoulderSurfingImpl.getInstance().resetState();
+		ShoulderSurfing.getInstance().resetState();
 	}
 	
 	@Inject(
@@ -38,7 +38,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 	)
 	private void handleRespawn(ClientboundRespawnPacket packet, CallbackInfo ci) {
 		if (!packet.shouldKeep(ClientboundRespawnPacket.KEEP_ALL_DATA)) {
-			ShoulderSurfingImpl.getInstance().resetState();
+			ShoulderSurfing.getInstance().resetState();
 		}
 	}
 	
@@ -51,7 +51,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 		)
 	)
 	private void handleMovePlayer(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
-		ShoulderSurfingImpl instance = ShoulderSurfingImpl.getInstance();
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().doOrientCameraOnTeleport()) {
 			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.relatives().contains(Relative.X_ROT);

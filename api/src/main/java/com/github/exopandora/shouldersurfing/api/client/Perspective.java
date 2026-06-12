@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
-import com.github.exopandora.shouldersurfing.api.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.config.IPerspectiveConfig;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -78,6 +77,6 @@ public enum Perspective {
 	}
 	
 	public static Perspective current() {
-		return Perspective.of(Minecraft.getInstance().options.getCameraType(), ShoulderSurfing.getInstance().isShoulderSurfing());
+		return Perspective.of(Minecraft.getInstance().options.getCameraType(), IShoulderSurfing.getInstance().isShoulderSurfing());
 	}
 }

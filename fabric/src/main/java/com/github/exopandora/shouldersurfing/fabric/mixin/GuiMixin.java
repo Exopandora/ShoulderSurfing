@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.fabric.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
@@ -18,7 +18,7 @@ public class GuiMixin {
 		cancellable = true
 	)
 	private void preRenderCrosshair(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-		CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
+		CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 		if (crosshairRenderer.doRenderCrosshair()) {
 			crosshairRenderer.preRenderCrosshair(guiGraphics);
 		} else {
@@ -31,6 +31,6 @@ public class GuiMixin {
 		at = @At("RETURN")
 	)
 	private void postRenderCrosshair(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-		ShoulderSurfingImpl.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
+		ShoulderSurfing.getInstance().getCrosshairRenderer().postRenderCrosshair(guiGraphics);
 	}
 }

@@ -41,9 +41,9 @@ public class InputHandler {
 	public static final KeyMapping ENTER_THIRD_PERSON_BACK = createKeyMapping("enter_third_person_back", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping ENTER_SHOULDER_SURFING = createKeyMapping("enter_shoulder_surfing", InputConstants.UNKNOWN.getValue());
 	
-	private final ShoulderSurfingImpl instance;
+	private final ShoulderSurfing instance;
 	
-	public InputHandler(ShoulderSurfingImpl instance) {
+	public InputHandler(ShoulderSurfing instance) {
 		this.instance = instance;
 	}
 	

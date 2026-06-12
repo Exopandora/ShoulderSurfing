@@ -4,7 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.renderer.ICameraEntityRe
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.EventHooks;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.util.Util;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -13,12 +13,12 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Entity;
 
 public class CameraEntityRenderer implements ICameraEntityRenderer {
-	private final ShoulderSurfingImpl instance;
+	private final ShoulderSurfing instance;
 	private float cameraEntityAlpha = 1.0F;
 	private boolean isRenderingCameraEntity;
 	private EntityRenderState cameraEntityRenderState;
 	
-	public CameraEntityRenderer(ShoulderSurfingImpl instance) {
+	public CameraEntityRenderer(ShoulderSurfing instance) {
 		this.instance = instance;
 	}
 	

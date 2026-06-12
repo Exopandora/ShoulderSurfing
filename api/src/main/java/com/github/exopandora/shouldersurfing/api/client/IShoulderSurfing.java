@@ -5,7 +5,11 @@ import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRende
 import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.config.IClientConfig;
 
+import java.util.ServiceLoader;
+
 public interface IShoulderSurfing {
+	IShoulderSurfing INSTANCE = ServiceLoader.load(IShoulderSurfing.class).findFirst().orElseThrow();
+	
 	IShoulderSurfingCamera getCamera();
 	
 	ICameraEntityRenderer getCameraEntityRenderer();
@@ -31,4 +35,8 @@ public interface IShoulderSurfing {
 	void swapShoulder();
 	
 	void resetState();
+	
+	static IShoulderSurfing getInstance() {
+		return INSTANCE;
+	}
 }

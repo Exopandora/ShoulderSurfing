@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.neoforge.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +15,6 @@ public class MinecraftMixin {
 		at = @At("TAIL")
 	)
 	private void init(GameConfig gameConfig, CallbackInfo ci) {
-		ShoulderSurfingImpl.getInstance().init();
+		ShoulderSurfing.getInstance().init();
 	}
 }
