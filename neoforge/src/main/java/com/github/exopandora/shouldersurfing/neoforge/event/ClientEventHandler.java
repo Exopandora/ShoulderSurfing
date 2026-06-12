@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.neoforge.event;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
 import net.minecraft.client.Camera;
@@ -25,7 +26,7 @@ public class ClientEventHandler {
 	
 	@SubscribeEvent
 	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event) {
-		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !ShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair()) {
+		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !IShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair()) {
 			event.setCanceled(true);
 		}
 	}

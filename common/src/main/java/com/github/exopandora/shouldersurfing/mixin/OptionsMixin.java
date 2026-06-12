@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinduck.OptionsDuck;
 import net.minecraft.client.CameraType;
@@ -26,7 +26,7 @@ public abstract class OptionsMixin implements OptionsDuck {
 	public void setCameraType(CameraType cameraType, CallbackInfo ci) {
 		if (cameraType != this.cameraType) {
 			Perspective newPerspective = Perspective.of(cameraType, Config.CLIENT.getPerspectiveConfig().isThirdPersonReplaced() && cameraType == CameraType.THIRD_PERSON_BACK);
-			ShoulderSurfing.getInstance().changePerspective(newPerspective);
+			IShoulderSurfing.getInstance().changePerspective(newPerspective);
 			ci.cancel();
 		}
 	}

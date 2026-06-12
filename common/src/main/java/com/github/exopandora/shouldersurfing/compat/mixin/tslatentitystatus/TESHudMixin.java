@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.tslatentitystatus;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +32,7 @@ public class TESHudMixin {
 		remap = false
 	)
 	private static EntityHitResult getEntityHitResult(Entity player, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
@@ -56,7 +56,7 @@ public class TESHudMixin {
 		remap = false
 	)
 	private static BlockHitResult clip(Level level, ClipContext clipContext) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();

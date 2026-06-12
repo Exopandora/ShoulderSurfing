@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import net.minecraft.client.renderer.item.properties.numeric.CompassAngleState;
 import net.minecraft.world.entity.ItemOwner;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +17,7 @@ public class CompassAngleStateMixin {
 		)
 	)
 	private static float getVisualRotationYInDegrees(ItemOwner itemOwner) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && instance.isCameraDecoupled()) {
 			return instance.getCamera().getYRot();
 		}

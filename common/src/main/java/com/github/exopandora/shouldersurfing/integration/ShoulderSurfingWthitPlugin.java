@@ -1,9 +1,9 @@
 package com.github.exopandora.shouldersurfing.integration;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.util.Couple;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import mcp.mobius.waila.api.IClientRegistrar;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRayCastVectorProvider;
@@ -26,7 +26,7 @@ public class ShoulderSurfingWthitPlugin implements IWailaClientPlugin {
 	private static class ShoulderSurfingObjectPicker implements IRayCastVectorProvider {
 		@Override
 		public boolean isEnabled(@NonNull IPluginConfig config) {
-			return ShoulderSurfing.getInstance().isShoulderSurfing() && Minecraft.getInstance().player != null;
+			return IShoulderSurfing.getInstance().isShoulderSurfing() && Minecraft.getInstance().player != null;
 		}
 		
 		@Override

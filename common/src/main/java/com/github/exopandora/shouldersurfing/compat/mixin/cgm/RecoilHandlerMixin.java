@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.cgm;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -20,7 +20,7 @@ public class RecoilHandlerMixin {
 		remap = false
 	)
 	private float getXRot(LocalPlayer player) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			return instance.getCamera().getXRot();
 		}
@@ -37,7 +37,7 @@ public class RecoilHandlerMixin {
 		remap = false
 	)
 	private void setXRot(LocalPlayer player, float xRot) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			instance.getCamera().setXRot(xRot);
 		} else {

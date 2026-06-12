@@ -1,8 +1,8 @@
 package com.github.exopandora.shouldersurfing.integration;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +38,7 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 		
 		@Override
 		public @Nullable Accessor<?> onRayTrace(HitResult hitResult, @Nullable Accessor<?> accessor, @Nullable Accessor<?> originalAccessor) {
-			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			IShoulderSurfing instance = IShoulderSurfing.getInstance();
 			Minecraft minecraft = Minecraft.getInstance();
 			if (instance.isShoulderSurfing() && minecraft.player != null && minecraft.level != null) {
 				Player player = minecraft.player;

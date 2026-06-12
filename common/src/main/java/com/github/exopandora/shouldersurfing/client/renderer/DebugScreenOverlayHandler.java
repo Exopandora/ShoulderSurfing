@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.client.renderer;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
@@ -11,11 +12,11 @@ import java.util.Locale;
 
 public class DebugScreenOverlayHandler {
 	public static void appendDebugText(List<String> lines) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && !Minecraft.getInstance().showOnlyReducedInfo() && instance.isCameraDecoupled()) {
 			int index = findFacingDebugTextIndex(lines);
 			if (index != -1 && (index + 1 == lines.size() || index + 1 < lines.size() && !lines.get(index + 1).startsWith("Camera: "))) {
-				ShoulderSurfingCamera camera = instance.getCamera();
+				IShoulderSurfingCamera camera = instance.getCamera();
 				Direction direction = Direction.fromYRot(camera.getYRot());
 				String axis = switch (direction) {
 					case NORTH -> "Towards negative Z";

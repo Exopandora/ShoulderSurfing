@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -39,7 +39,7 @@ public class ProjectileUtilMixin {
 			return;
 		}
 		Minecraft minecraft = Minecraft.getInstance();
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (entity == minecraft.player && instance.isShoulderSurfing()) {
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)

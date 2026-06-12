@@ -1,6 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import net.minecraft.client.Minecraft;
@@ -73,7 +73,7 @@ public abstract class ClientLevelMixin extends Level {
 		long seed,
 		CallbackInfo ci
 	) {
-		if (entity != null && entity == Minecraft.getInstance().player && ShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z) {
+		if (entity != null && entity == Minecraft.getInstance().player && IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(entity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent.value(), soundSource, volume, pitch, false, seed);
 			ci.cancel();
@@ -97,7 +97,7 @@ public abstract class ClientLevelMixin extends Level {
 		CallbackInfo ci
 	) {
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		if (cameraEntity != null && ShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z) {
+		if (cameraEntity != null && IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isDelayed, this.random.nextLong());
 			ci.cancel();

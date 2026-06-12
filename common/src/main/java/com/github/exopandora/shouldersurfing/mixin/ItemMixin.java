@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -29,7 +29,7 @@ public class ItemMixin {
 		ClipContext.Fluid fluidContext,
 		@NotNull Entity entity
 	) {
-		if (ShoulderSurfing.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide()) {
+		if (IShoulderSurfing.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)

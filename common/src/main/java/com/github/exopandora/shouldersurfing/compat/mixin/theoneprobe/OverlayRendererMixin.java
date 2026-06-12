@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.compat.mixin.theoneprobe;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +32,7 @@ public class OverlayRendererMixin {
 		ClipContext.Fluid fluidContext,
 		@NotNull Entity entity
 	) {
-		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
+		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Camera camera = minecraft.gameRenderer.getMainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)

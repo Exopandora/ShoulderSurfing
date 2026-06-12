@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
@@ -45,7 +46,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		)
 	)
 	private boolean doRenderCrosshair(CameraType cameraType) {
-		return ShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
+		return IShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
 	@Inject(
@@ -53,7 +54,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		at = @At("TAIL")
 	)
 	public void extractOptions(CallbackInfo ci) {
-		if (ShoulderSurfing.getInstance().isShoulderSurfing()) {
+		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			OptionsRenderState optionsRenderState = this.gameRenderState.optionsRenderState;
 			optionsRenderState.bobView = switch (Config.CLIENT.getCameraConfig().getViewBobbingMode()) {
 				case INHERIT -> optionsRenderState.bobView;
@@ -69,7 +70,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		cancellable = true
 	)
 	public void bobView(CallbackInfo ci) {
-		if (ShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
+		if (IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
 			ci.cancel();
 		}
 	}

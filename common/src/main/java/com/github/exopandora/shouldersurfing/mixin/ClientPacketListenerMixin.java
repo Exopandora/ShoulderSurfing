@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
@@ -29,7 +29,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 		method = "handleLogin"
 	)
 	private void handleLogin(CallbackInfo ci) {
-		ShoulderSurfing.getInstance().resetState();
+		IShoulderSurfing.getInstance().resetState();
 	}
 	
 	@Inject(
@@ -38,7 +38,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 	)
 	private void handleRespawn(ClientboundRespawnPacket packet, CallbackInfo ci) {
 		if (!packet.shouldKeep(ClientboundRespawnPacket.KEEP_ALL_DATA)) {
-			ShoulderSurfing.getInstance().resetState();
+			IShoulderSurfing.getInstance().resetState();
 		}
 	}
 	
@@ -51,17 +51,17 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 		)
 	)
 	private void handleMovePlayer(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().doOrientCameraOnTeleport()) {
 			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.relatives().contains(Relative.X_ROT);
 			boolean isRelativeYRot = packet.relatives().contains(Relative.Y_ROT);
 			if (isRelativeXRot && packet.change().xRot() != 0.0F || !isRelativeXRot && player.getXRot() != packet.change().xRot()) {
-				ShoulderSurfingCamera camera = instance.getCamera();
+				IShoulderSurfingCamera camera = instance.getCamera();
 				camera.setXRot(isRelativeXRot ? camera.getXRot() + packet.change().xRot() : packet.change().xRot());
 			}
 			if (isRelativeYRot && packet.change().yRot() != 0.0F || !isRelativeYRot && player.getYRot() != packet.change().yRot()) {
-				ShoulderSurfingCamera camera = instance.getCamera();
+				IShoulderSurfingCamera camera = instance.getCamera();
 				camera.setYRot(isRelativeYRot ? camera.getYRot() + packet.change().yRot() : packet.change().yRot());
 			}
 		}

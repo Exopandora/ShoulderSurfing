@@ -1,7 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -26,7 +26,7 @@ public class GuiMixin {
 		)
 	)
 	private boolean doRenderCrosshair(CameraType cameraType) {
-		return ShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
+		return IShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
 	}
 	
 	@Redirect(
@@ -38,7 +38,7 @@ public class GuiMixin {
 	)
 	private boolean doRenderCrosshair(DebugScreenEntryList debugScreenEntryList, Identifier identifier) {
 		return debugScreenEntryList.isCurrentlyEnabled(identifier) &&
-			!ShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(this.minecraft.getCameraEntity());
+			!IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(this.minecraft.getCameraEntity());
 	}
 	
 	@Redirect(

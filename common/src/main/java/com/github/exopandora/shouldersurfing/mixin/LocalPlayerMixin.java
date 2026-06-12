@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.mojang.authlib.GameProfile;
@@ -39,7 +40,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 		Predicate<Entity> filter,
 		double interactionRangeSq
 	) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			PickContext pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.getMainCamera())
 				.withEntity(shooter)
