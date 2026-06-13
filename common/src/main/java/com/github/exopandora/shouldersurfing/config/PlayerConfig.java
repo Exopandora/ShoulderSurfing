@@ -43,21 +43,6 @@ public class PlayerConfig implements IPlayerConfig {
 			.translation(MOD_ID + ".configuration.player.hide_player_when_looking_up_angle")
 			.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 		
-		this.isPlayerXRotTurningWithCamera = builder
-			.comment("Whether the x-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
-			.translation(MOD_ID + ".configuration.player.turn_player_x_rot_with_camera")
-			.define("turn_player_x_rot_with_camera", false);
-		
-		this.isPlayerYRotTurningWithCamera = builder
-			.comment("Whether the y-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
-			.translation(MOD_ID + ".configuration.player.turn_player_y_rot_with_camera")
-			.define("turn_player_y_rot_with_camera", false);
-		
-		this.playerYRotTurnAngleLimit = builder
-			.comment("The maximum angle to turn the player y-rot with the camera. This config option only applies when 'Turn player y-rot with camera' is enabled.")
-			.translation(MOD_ID + ".configuration.player.turn_player_y_rot_angle_limit")
-			.defineInRange("turn_player_y_rot_angle_limit", 90D, 0D, 180D);
-		
 		builder.push("turning");
 		
 		this.turningModeWhenUsingItem = builder
@@ -89,6 +74,21 @@ public class PlayerConfig implements IPlayerConfig {
 			.comment("The speed multiplier at which the player rotation converges to the movement direction of the player.")
 			.translation(MOD_ID + ".configuration.player.turning.turning_speed_multiplier")
 			.defineInRange("turning_speed_multiplier", 0.25F, 0.05F, 1.0F);
+		
+		this.isPlayerXRotTurningWithCamera = builder
+			.comment("Whether the x-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
+			.translation(MOD_ID + ".configuration.player.turning.turn_player_x_rot_with_camera")
+			.define("turn_player_x_rot_with_camera", false);
+		
+		this.isPlayerYRotTurningWithCamera = builder
+			.comment("Whether the y-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
+			.translation(MOD_ID + ".configuration.player.turning.turn_player_y_rot_with_camera")
+			.define("turn_player_y_rot_with_camera", false);
+		
+		this.playerYRotTurnAngleLimit = builder
+			.comment("The maximum angle to turn the player y-rot with the camera. This config option only applies when 'Turn player y-rot with camera' is enabled.")
+			.translation(MOD_ID + ".configuration.player.turning.turn_player_y_rot_angle_limit")
+			.defineInRange("turn_player_y_rot_angle_limit", 90D, 0D, 180D);
 		
 		builder.pop();
 		builder.pop();
