@@ -230,10 +230,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		}
 	}
 	
-	public boolean isLookFollowingCrosshairTarget() {
-		return this.turningLockTime > 0 || this.isLookFollowingCrosshairTarget;
-	}
-	
+	@Override
 	public void toggleCameraCoupling() {
 		Config.CLIENT.getCameraConfig().toggleCameraCoupling();
 	}
@@ -257,6 +254,11 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	@Override
 	public void swapShoulder() {
 		Config.CLIENT.getCameraConfig().swapShoulder();
+	}
+	
+	@Override
+	public boolean isLookFollowingCrosshairTarget() {
+		return this.turningLockTime > 0 || this.isLookFollowingCrosshairTarget;
 	}
 	
 	@Override

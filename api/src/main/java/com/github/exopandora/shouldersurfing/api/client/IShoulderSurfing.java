@@ -32,7 +32,11 @@ public interface IShoulderSurfing {
 	
 	void togglePerspective();
 	
+	void toggleCameraCoupling();
+	
 	void swapShoulder();
+	
+	boolean isLookFollowingCrosshairTarget();
 	
 	void resetState();
 	

@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client;
 
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import net.minecraft.world.phys.Vec3;
 
 public interface IShoulderSurfingCamera {
@@ -18,4 +19,6 @@ public interface IShoulderSurfingCamera {
 	float getYRot();
 	
 	void setYRot(float yRot);
+	
+	Vec2f getRenderRotation();
 }

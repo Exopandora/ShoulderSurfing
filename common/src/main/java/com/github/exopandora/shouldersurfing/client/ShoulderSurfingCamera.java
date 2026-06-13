@@ -335,6 +335,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		this.rotationOffsetO = new Vec2f(this.rotationOffsetO.x(), 0);
 	}
 	
+	@Override
 	public Vec2f getRenderRotation() {
 		return this.renderRotation;
 	}
