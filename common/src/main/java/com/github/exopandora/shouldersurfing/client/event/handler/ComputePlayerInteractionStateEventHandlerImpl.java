@@ -8,7 +8,7 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 
 public class ComputePlayerInteractionStateEventHandlerImpl {
-	public static enum Pre implements ComputePlayerInteractionStateEventHandler {
+	public enum Pre implements ComputePlayerInteractionStateEventHandler {
 		INSTANCE;
 		
 		@Override
@@ -19,7 +19,7 @@ public class ComputePlayerInteractionStateEventHandlerImpl {
 		}
 	}
 	
-	public static enum Post implements ComputePlayerInteractionStateEventHandler {
+	public enum Post implements ComputePlayerInteractionStateEventHandler {
 		INSTANCE;
 		
 		@Override
