@@ -104,6 +104,10 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	}
 	
 	public void renderTick(Entity cameraEntity, float partialTick) {
+		if (this.instance.isTemporaryFirstPerson()) {
+			this.renderRotation = this.rotation;
+			return;
+		}
 		if (!this.instance.isShoulderSurfing()) {
 			return;
 		}

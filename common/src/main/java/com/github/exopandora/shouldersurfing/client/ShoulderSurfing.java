@@ -90,6 +90,8 @@ public class ShoulderSurfing implements IShoulderSurfing {
 					player.setYRot(this.camera.getYRot());
 				}
 			}
+		} else if (this.isTemporaryFirstPerson && isFirstPerson) {
+			this.camera.tick();
 		}
 		EventHooks.tick();
 	}
