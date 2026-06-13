@@ -151,7 +151,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 			Vec2f center = screenSize.divide(2);
 			CrosshairConfig crosshairConfig = Config.CLIENT.getCrosshairConfig();
 			double maxDistanceToObstruction = crosshairConfig.getObstructionIndicatorMaxDistanceToObstruction();
-			if (this.isCrosshairDynamic || !crosshairConfig.getShowObstructionCrosshair() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction) {
+			if (this.isCrosshairDynamic || !crosshairConfig.isObstructionIndicatorEnabled() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction) {
 				crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
 			}
 		}
@@ -186,7 +186,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	}
 	
 	private static boolean computeIsObstructionIndicatorVisible(@Nullable Vec2f crosshairOffset, boolean isCrosshairDynamic, boolean isAiming) {
-		if (crosshairOffset == null || !Config.CLIENT.getCrosshairConfig().getShowObstructionCrosshair()) {
+		if (crosshairOffset == null || !Config.CLIENT.getCrosshairConfig().isObstructionIndicatorEnabled()) {
 			return false;
 		}
 		if (isCrosshairDynamic) {

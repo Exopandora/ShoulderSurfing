@@ -34,7 +34,7 @@ public class CrosshairConfig implements ICrosshairConfig {
 	private final ConfigValue<List<? extends String>> adaptiveCrosshairUseItemComponents;
 	private final Map<Perspective, ConfigValue<CrosshairVisibility>> crosshairVisibility = new HashMap<Perspective, ConfigValue<CrosshairVisibility>>();
 	
-	private final BooleanValue showObstructionIndicator;
+	private final BooleanValue isObstructionIndicatorEnabled;
 	private final BooleanValue isObstructionIndicatorOnlyShownWhenAiming;
 	private final IntValue obstructionIndicatorMinDistanceToCrosshair;
 	private final DoubleValue obstructionIndicatorMaxDistanceToObstruction;
@@ -114,10 +114,10 @@ public class CrosshairConfig implements ICrosshairConfig {
 		
 		builder.push("obstruction");
 		
-		this.showObstructionIndicator = builder
+		this.isObstructionIndicatorEnabled = builder
 			.comment("When the crosshair type is static, shows an additional indicator on obstacles that stand between you and your target.")
-			.translation(MOD_ID + ".configuration.obstruction.show_obstruction_indicator")
-			.define("show_obstruction_indicator", true);
+			.translation(MOD_ID + ".configuration.obstruction.obstruction_indicator")
+			.define("obstruction_indicator", true);
 		
 		this.isObstructionIndicatorOnlyShownWhenAiming = builder
 			.comment("Only show the obstruction indicator when using items that would trigger the adaptive crosshair.")
@@ -201,8 +201,8 @@ public class CrosshairConfig implements ICrosshairConfig {
 	}
 	
 	@Override
-	public boolean getShowObstructionCrosshair() {
-		return this.showObstructionIndicator.get();
+	public boolean isObstructionIndicatorEnabled() {
+		return this.isObstructionIndicatorEnabled.get();
 	}
 	
 	@Override

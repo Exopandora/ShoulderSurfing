@@ -27,7 +27,7 @@ public interface ICrosshairConfig {
 	
 	List<? extends String> getAdaptiveCrosshairUseItemComponents();
 	
-	boolean getShowObstructionCrosshair();
+	boolean isObstructionIndicatorEnabled();
 	
 	boolean isObstructionIndicatorOnlyShownWhenAiming();
 	
