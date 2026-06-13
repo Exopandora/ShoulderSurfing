@@ -127,7 +127,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			}
 			
 			ICrosshairRenderer crosshairRenderer = IShoulderSurfing.getInstance().getCrosshairRenderer();
-			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
+			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic() : this.offsetTrace;
 			IObjectPickerConfig config = IShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
 			
 			if (offsetTrace) {

@@ -26,7 +26,7 @@ public class GuiMixin {
 		)
 	)
 	private boolean doRenderCrosshair(CameraType cameraType) {
-		return IShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
+		return IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible();
 	}
 	
 	@Redirect(
@@ -38,7 +38,7 @@ public class GuiMixin {
 	)
 	private boolean doRenderCrosshair(DebugScreenEntryList debugScreenEntryList, Identifier identifier) {
 		return debugScreenEntryList.isCurrentlyEnabled(identifier) &&
-			!IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic(this.minecraft.getCameraEntity());
+			!IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairDynamic();
 	}
 	
 	@Redirect(

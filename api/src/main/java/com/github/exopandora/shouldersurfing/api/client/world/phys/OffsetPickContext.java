@@ -31,7 +31,7 @@ public final class OffsetPickContext extends PickContext {
 	public ClipContext.Block blockContext() {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		
-		if (instance.isAiming() || instance.getCrosshairRenderer().isCrosshairDynamic(this.entity())) {
+		if (instance.isAiming() || instance.getCrosshairRenderer().isCrosshairDynamic()) {
 			return ClipContext.Block.COLLIDER;
 		}
 		

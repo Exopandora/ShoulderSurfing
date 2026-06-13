@@ -26,7 +26,7 @@ public class ClientEventHandler {
 	
 	@SubscribeEvent
 	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event) {
-		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !IShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair()) {
+		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible()) {
 			event.setCanceled(true);
 		}
 	}
@@ -38,7 +38,7 @@ public class ClientEventHandler {
 			Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"),
 			(guiGraphics, deltaTracker) -> {
 				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
-				if (crosshairRenderer.doRenderCrosshair()) {
+				if (crosshairRenderer.isCrosshairVisible()) {
 					crosshairRenderer.preRenderCrosshair(guiGraphics);
 				}
 			}
@@ -48,7 +48,7 @@ public class ClientEventHandler {
 			Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"),
 			(guiGraphics, deltaTracker) -> {
 				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
-				if (crosshairRenderer.doRenderCrosshair()) {
+				if (crosshairRenderer.isCrosshairVisible()) {
 					crosshairRenderer.postRenderCrosshair(guiGraphics);
 				}
 			}
@@ -63,7 +63,7 @@ public class ClientEventHandler {
 		Matrix4f modelViewMatrix = event.getCameraState().viewRotationMatrix;
 		Matrix4f projectionMatrix = event.getCameraState().projectionMatrix;
 		instance.getCamera().renderTick(camera.entity(), partialTick);
-		instance.getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, partialTick);
+		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}
 	
 	@SubscribeEvent

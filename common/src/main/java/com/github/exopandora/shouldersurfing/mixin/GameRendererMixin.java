@@ -46,7 +46,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		)
 	)
 	private boolean doRenderCrosshair(CameraType cameraType) {
-		return IShoulderSurfing.getInstance().getCrosshairRenderer().doRenderCrosshair();
+		return IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible();
 	}
 	
 	@Inject(

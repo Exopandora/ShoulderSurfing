@@ -31,7 +31,7 @@ public class PlayerExtensionsKtMixin {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (entity == minecraft.player && entity == minecraft.getCameraEntity()) {
 			ShoulderSurfing instance = ShoulderSurfing.getInstance();
-			if (instance.isShoulderSurfing() && !instance.getCrosshairRenderer().isCrosshairDynamic(entity)) {
+			if (instance.isShoulderSurfing() && !instance.getCrosshairRenderer().isCrosshairDynamic()) {
 				instance.lookAtCrosshairTarget();
 			}
 		}

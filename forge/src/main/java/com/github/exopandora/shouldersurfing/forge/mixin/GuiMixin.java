@@ -19,7 +19,7 @@ public class GuiMixin {
 	)
 	private void preRenderCrosshair(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
 		CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
-		if (crosshairRenderer.doRenderCrosshair()) {
+		if (crosshairRenderer.isCrosshairVisible()) {
 			crosshairRenderer.preRenderCrosshair(guiGraphics);
 		} else {
 			ci.cancel();

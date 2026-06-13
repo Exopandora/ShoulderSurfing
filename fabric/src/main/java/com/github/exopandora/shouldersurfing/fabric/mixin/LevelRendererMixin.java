@@ -38,6 +38,6 @@ public class LevelRendererMixin {
 		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
 		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		instance.getCamera().renderTick(camera.entity(), partialTick);
-		instance.getCrosshairRenderer().updateDynamicRaytrace(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
+		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
 	}
 }
