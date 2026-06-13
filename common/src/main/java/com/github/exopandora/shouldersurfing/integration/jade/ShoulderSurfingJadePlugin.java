@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.integration;
+package com.github.exopandora.shouldersurfing.integration.jade;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;

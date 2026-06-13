@@ -20,7 +20,7 @@
 			"com.github.exopandora.shouldersurfing.fabric.ShoulderSurfingFabric"
 		],
 		"jade": [
-			"com.github.exopandora.shouldersurfing.integration.ShoulderSurfingJadePlugin"
+			"com.github.exopandora.shouldersurfing.integration.jade.ShoulderSurfingJadePlugin"
 		]
 	},
 	"mixins": [
