@@ -40,7 +40,7 @@
 		"betterthirdperson": "*",
 		"camerautils": "*",
 		"nimble": "*",
-		"valkyrienskies": "*"
+		"valkyrienskies": "<=2.4.11"
 	},
 	"conflicts": {
 		"theoneprobe": "*"
