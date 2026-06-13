@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.rendertype.ShoulderSurfingRenderTypes;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -15,12 +16,14 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(AvatarRenderer.class)
 public abstract class AvatarRendererMixin extends LivingEntityRenderer<LivingEntity, LivingEntityRenderState, EntityModel<LivingEntityRenderState>> {
-	public AvatarRendererMixin(EntityRendererProvider.Context context, EntityModel<LivingEntityRenderState> model, float shadow) {
+	public AvatarRendererMixin(Context context, EntityModel<LivingEntityRenderState> model, float shadow) {
 		super(context, model, shadow);
 	}
 	
 	@Nullable
-	protected RenderType getRenderType(@NonNull LivingEntityRenderState state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing) {
+	protected RenderType getRenderType(
+		@NonNull LivingEntityRenderState state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing
+	) {
 		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		if (instance.getCameraEntityRenderer().isEntityTransparentPlayer(state)) {
 			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));

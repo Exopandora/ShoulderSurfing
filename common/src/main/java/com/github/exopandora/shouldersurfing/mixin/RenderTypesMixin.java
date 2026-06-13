@@ -41,8 +41,10 @@ public class RenderTypesMixin {
 		cancellable = true
 	)
 	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir) {
-		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat()) {
-			cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+			if (Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat()) {
+				cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
+			}
 		}
 	}
 }

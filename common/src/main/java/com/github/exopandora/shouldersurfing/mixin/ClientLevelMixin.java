@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.math.MathHelper;
 import com.github.exopandora.shouldersurfing.util.SoundHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,7 +19,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -73,7 +73,13 @@ public abstract class ClientLevelMixin extends Level {
 		long seed,
 		CallbackInfo ci
 	) {
-		if (entity != null && entity == Minecraft.getInstance().player && IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && round(entity.xo) == x && round(entity.yo) == y && round(entity.zo) == z) {
+		if (entity == null || entity != Minecraft.getInstance().player) {
+			return;
+		}
+		if (!IShoulderSurfing.getInstance().isShoulderSurfing() || !Config.CLIENT.getAudioConfig().isPlayerSoundCentered()) {
+			return;
+		}
+		if (MathHelper.roundDouble(entity.xo) == x && MathHelper.roundDouble(entity.yo) == y && MathHelper.roundDouble(entity.zo) == z) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(entity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent.value(), soundSource, volume, pitch, false, seed);
 			ci.cancel();
@@ -97,15 +103,16 @@ public abstract class ClientLevelMixin extends Level {
 		CallbackInfo ci
 	) {
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		if (cameraEntity != null && IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered() && cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z) {
+		if (cameraEntity == null) {
+			return;
+		}
+		if (!IShoulderSurfing.getInstance().isShoulderSurfing() || !Config.CLIENT.getAudioConfig().isPlayerSoundCentered()) {
+			return;
+		}
+		if (cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z) {
 			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isDelayed, this.random.nextLong());
 			ci.cancel();
 		}
-	}
-	
-	@Unique
-	private static double round(double d) {
-		return ((int) (d * 8.0)) / 8.0F;
 	}
 }

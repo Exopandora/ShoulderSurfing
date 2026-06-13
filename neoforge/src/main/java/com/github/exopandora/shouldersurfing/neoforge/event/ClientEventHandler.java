@@ -26,8 +26,10 @@ public class ClientEventHandler {
 	
 	@SubscribeEvent
 	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event) {
-		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible()) {
-			event.setCanceled(true);
+		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName())) {
+			if (!IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible()) {
+				event.setCanceled(true);
+			}
 		}
 	}
 	

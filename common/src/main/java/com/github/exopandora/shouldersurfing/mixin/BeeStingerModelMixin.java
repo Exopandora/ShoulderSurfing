@@ -22,6 +22,9 @@ public class BeeStingerModelMixin {
 		index = 1
 	)
 	private static Function<Identifier, RenderType> init(Function<Identifier, RenderType> renderType) {
-		return Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() ? RenderTypes::armorTranslucent : renderType;
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+			return RenderTypes::armorTranslucent;
+		}
+		return renderType;
 	}
 }

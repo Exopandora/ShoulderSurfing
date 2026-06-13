@@ -70,8 +70,10 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		cancellable = true
 	)
 	public void bobView(CallbackInfo ci) {
-		if (IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
-			ci.cancel();
+		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
+			if (Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
+				ci.cancel();
+			}
 		}
 	}
 }
