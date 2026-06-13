@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 public enum TurningMode {
 	ALWAYS(Predicates.alwaysTrue()),
 	NEVER(Predicates.alwaysFalse()),
-	REQUIRES_TARGET(hitResult -> hitResult != null && !HitResult.Type.MISS.equals(hitResult.getType()));
+	REQUIRES_TARGET(hitResult -> hitResult != null && hitResult.getType() != HitResult.Type.MISS);
 	
 	private final Predicate<@Nullable HitResult> shouldTurnPredicate;
 	

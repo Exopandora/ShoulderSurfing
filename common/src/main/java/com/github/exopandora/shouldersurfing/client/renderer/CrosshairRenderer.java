@@ -179,8 +179,8 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 		return switch (Config.CLIENT.getCrosshairConfig().getCrosshairVisibility(Perspective.current())) {
 			case NEVER -> false;
 			case WHEN_AIMING -> isAiming;
-			case WHEN_IN_RANGE -> hitResult != null && !HitResult.Type.MISS.equals(hitResult.getType());
-			case WHEN_AIMING_OR_IN_RANGE -> isAiming || hitResult != null && !HitResult.Type.MISS.equals(hitResult.getType());
+			case WHEN_IN_RANGE -> hitResult != null && hitResult.getType() != HitResult.Type.MISS;
+			case WHEN_AIMING_OR_IN_RANGE -> isAiming || hitResult != null && hitResult.getType() != HitResult.Type.MISS;
 			default -> true;
 		};
 	}
