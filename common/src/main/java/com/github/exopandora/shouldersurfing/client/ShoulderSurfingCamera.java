@@ -44,6 +44,33 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		this.init();
 	}
 	
+	private void init() {
+		this.offset = Config.CLIENT.getCameraConfig().getOffset();
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		if (cameraEntity != null) {
+			this.offset = this.offset.scale(EntityHelper.getScale(cameraEntity));
+			this.rotation = new Vec2f(cameraEntity.getXRot(), cameraEntity.getYRot());
+			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
+		} else {
+			this.rotation = new Vec2f(0F, -180F);
+			this.deltaMovementO = Vec3.ZERO;
+		}
+		this.rotationO = this.rotation;
+		this.offsetO = this.offset;
+		this.renderOffset = this.offset;
+		this.targetOffset = this.offset;
+		this.maxCameraDistance = this.offset.length();
+		this.maxCameraDistanceO = this.maxCameraDistance;
+		this.renderRotation = this.rotation;
+		this.rotationOffset = Vec2f.ZERO;
+		this.rotationOffsetO = Vec2f.ZERO;
+		this.lastMovedYRot = this.rotation.y();
+		this.turnCameraWithPlayerDelay = 0;
+		this.turnCameraWithPlayerEaseIn = 1.0F;
+		this.turnCameraWithPlayerEaseInO = 1.0F;
+		this.initialized = true;
+	}
+	
 	public void tick() {
 		if (!this.initialized) {
 			this.init();
@@ -95,49 +122,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		}
 	}
 	
-	private Vec2f applyPassengerRotations(Vec2f rotation, @Nullable Entity cameraEntity, float partialTick) {
-		if (this.instance.isCameraDecoupled()) {
-			if (EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living) {
-				float dx = living.getXRot() - living.xRotO;
-				float dy = living.getYHeadRot() - living.yHeadRotO;
-				return rotation.add(new Vec2f(dx, dy).scale(partialTick));
-			}
-		} else if (isCameraTurningWithVehicle(cameraEntity)) {
-			Entity vehicle = cameraEntity.getVehicle();
-			if (vehicle != null) {
-				return rotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
-			}
-		}
-		return rotation;
-	}
-	
-	private void init() {
-		this.offset = Config.CLIENT.getCameraConfig().getOffset();
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-		if (cameraEntity != null) {
-			this.offset = this.offset.scale(EntityHelper.getScale(cameraEntity));
-			this.rotation = new Vec2f(cameraEntity.getXRot(), cameraEntity.getYRot());
-			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
-		} else {
-			this.rotation = new Vec2f(0F, -180F);
-			this.deltaMovementO = Vec3.ZERO;
-		}
-		this.rotationO = this.rotation;
-		this.offsetO = this.offset;
-		this.renderOffset = this.offset;
-		this.targetOffset = this.offset;
-		this.maxCameraDistance = this.offset.length();
-		this.maxCameraDistanceO = this.maxCameraDistance;
-		this.renderRotation = this.rotation;
-		this.rotationOffset = Vec2f.ZERO;
-		this.rotationOffsetO = Vec2f.ZERO;
-		this.lastMovedYRot = this.rotation.y();
-		this.turnCameraWithPlayerDelay = 0;
-		this.turnCameraWithPlayerEaseIn = 1.0F;
-		this.turnCameraWithPlayerEaseInO = 1.0F;
-		this.initialized = true;
-	}
-	
 	public void setup(Camera camera, BlockGetter level, float partialTick, Entity cameraEntity) {
 		Vec3 defaultOffset = Config.CLIENT.getCameraConfig().getOffset();
 		this.targetOffset = EventHooks.getTargetOffset(defaultOffset, camera, cameraEntity, level);
@@ -155,6 +139,22 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			this.cameraDistance = Math.min(targetCameraDistance, lerpedMaxDistance);
 			this.renderOffset = lerpedOffset.normalize().scale(this.cameraDistance);
 		}
+	}
+	
+	private Vec2f applyPassengerRotations(Vec2f rotation, @Nullable Entity cameraEntity, float partialTick) {
+		if (this.instance.isCameraDecoupled()) {
+			if (EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living) {
+				float dx = living.getXRot() - living.xRotO;
+				float dy = living.getYHeadRot() - living.yHeadRotO;
+				return rotation.add(new Vec2f(dx, dy).scale(partialTick));
+			}
+		} else if (isCameraTurningWithVehicle(cameraEntity)) {
+			Entity vehicle = cameraEntity.getVehicle();
+			if (vehicle != null) {
+				return rotation.add(0, (vehicle.getYRot() - vehicle.yRotO) * partialTick);
+			}
+		}
+		return rotation;
 	}
 	
 	private static double maxZoom(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 cameraOffset, float partialTick) {
