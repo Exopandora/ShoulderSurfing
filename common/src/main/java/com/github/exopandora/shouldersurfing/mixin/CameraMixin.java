@@ -66,9 +66,15 @@ public abstract class CameraMixin implements CameraDuck {
 		)
 	)
 	private void setupRotations(float partialTick, CallbackInfo ci) {
-		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
-			Vec2f rotation = ShoulderSurfing.getInstance().getCamera().getRenderRotation();
-			this.setRotation(rotation.y(), rotation.x());
+		if (!(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
+			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			if (Perspective.SHOULDER_SURFING == Perspective.current()) {
+				Vec2f rotation = instance.getCamera().getRenderRotation();
+				this.setRotation(rotation.y(), rotation.x());
+			} else if (instance.isTemporaryFirstPerson()) {
+				ShoulderSurfingCamera camera = instance.getCamera();
+				camera.setup((Camera) (Object) this, this.level, partialTick, this.entity);
+			}
 		}
 	}
 	

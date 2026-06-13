@@ -95,6 +95,8 @@ public class ShoulderSurfing implements IShoulderSurfing {
 					player.setYRot(this.camera.getYRot());
 				}
 			}
+		} else if (this.isTemporaryFirstPerson && isFirstPerson) {
+			this.camera.tick();
 		}
 		EventHooks.tick();
 	}
@@ -247,10 +249,6 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		Config.CLIENT.getCameraConfig().toggleOffsetZPreset();
 	}
 	
-	public boolean isTemporaryFirstPerson() {
-		return this.isTemporaryFirstPerson;
-	}
-	
 	@Override
 	public void swapShoulder() {
 		Config.CLIENT.getCameraConfig().swapShoulder();
@@ -279,6 +277,11 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	@Override
 	public boolean isFreeLooking() {
 		return this.isFreeLooking && this.isShoulderSurfing;
+	}
+	
+	@Override
+	public boolean isTemporaryFirstPerson() {
+		return this.isTemporaryFirstPerson;
 	}
 	
 	@Override

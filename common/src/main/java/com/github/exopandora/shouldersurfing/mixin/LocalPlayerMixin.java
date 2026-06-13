@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -54,8 +55,14 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 	
 	@Override
 	public void turn(double yRot, double xRot) {
-		if (!ShoulderSurfing.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot)) {
+		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		ShoulderSurfingCamera camera = instance.getCamera();
+		if (!camera.turn((LocalPlayer) (Object) this, yRot, xRot)) {
 			super.turn(yRot, xRot);
+			if (instance.isTemporaryFirstPerson()) {
+				camera.setXRot(this.getXRot());
+				camera.setYRot(this.getYRot());
+			}
 		}
 	}
 }

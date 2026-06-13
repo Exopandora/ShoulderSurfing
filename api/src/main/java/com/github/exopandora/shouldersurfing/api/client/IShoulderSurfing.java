@@ -28,6 +28,8 @@ public interface IShoulderSurfing {
 	
 	boolean isFreeLooking();
 	
+	boolean isTemporaryFirstPerson();
+	
 	void changePerspective(Perspective perspective);
 	
 	void togglePerspective();
