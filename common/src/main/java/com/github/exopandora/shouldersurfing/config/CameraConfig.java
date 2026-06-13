@@ -83,7 +83,7 @@ public class CameraConfig implements ICameraConfig {
 	private final DoubleValue centerCameraWhenLookingDownAngle;
 	private final BooleanValue isOffsetDynamic;
 	private final BooleanValue isCameraDecoupled;
-	private final BooleanValue orientCameraOnTeleport;
+	private final BooleanValue isCameraOrientedOnTeleport;
 	private final BooleanValue isFovOverrideEnabled;
 	private final DoubleValue fovOverride;
 	private final ConfigValue<ViewBobbingMode> viewBobbingMode;
@@ -412,7 +412,7 @@ public class CameraConfig implements ICameraConfig {
 			.translation(MOD_ID + ".configuration.camera.decoupled_camera")
 			.define("decoupled_camera", true);
 		
-		this.orientCameraOnTeleport = builder
+		this.isCameraOrientedOnTeleport = builder
 			.comment("Whether to orient the camera rotation when the player is teleported. This includes passenger (dis-)mounting and traveling through portals.")
 			.translation(MOD_ID + ".configuration.camera.orient_camera_on_teleport")
 			.define("orient_camera_on_teleport", true);
@@ -751,8 +751,8 @@ public class CameraConfig implements ICameraConfig {
 	}
 	
 	@Override
-	public boolean doOrientCameraOnTeleport() {
-		return this.orientCameraOnTeleport.get();
+	public boolean isCameraOrientedOnTeleport() {
+		return this.isCameraOrientedOnTeleport.get();
 	}
 	
 	@Override

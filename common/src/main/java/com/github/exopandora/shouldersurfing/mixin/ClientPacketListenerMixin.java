@@ -52,7 +52,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 	)
 	private void handleMovePlayer(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
-		if (instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().doOrientCameraOnTeleport()) {
+		if (instance.isShoulderSurfing() && Config.CLIENT.getCameraConfig().isCameraOrientedOnTeleport()) {
 			Player player = this.minecraft.player;
 			boolean isRelativeXRot = packet.relatives().contains(Relative.X_ROT);
 			boolean isRelativeYRot = packet.relatives().contains(Relative.Y_ROT);

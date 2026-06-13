@@ -204,7 +204,7 @@ public interface ICameraConfig {
 	
 	boolean isCameraDecoupled();
 	
-	boolean doOrientCameraOnTeleport();
+	boolean isCameraOrientedOnTeleport();
 	
 	boolean isFovOverrideEnabled();
 	
