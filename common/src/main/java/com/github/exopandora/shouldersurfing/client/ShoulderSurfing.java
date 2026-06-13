@@ -86,7 +86,9 @@ public class ShoulderSurfing implements IShoulderSurfing {
 			this.camera.tick();
 			if (!this.isFreeLooking && cameraEntity == player) {
 				if (this.isLookFollowingCrosshairTarget()) {
-					this.turningLockTime = this.isLookFollowingCrosshairTarget ? Config.CLIENT.getPlayerConfig().getTurningLockTime() : (this.turningLockTime - 1);
+					this.turningLockTime = this.isLookFollowingCrosshairTarget
+						? Config.CLIENT.getPlayerConfig().getTurningLockTime()
+						: (this.turningLockTime - 1);
 					this.lookAtCrosshairTargetInternal();
 				} else if (!this.isCameraDecoupled) {
 					player.setXRot(this.camera.getXRot());
