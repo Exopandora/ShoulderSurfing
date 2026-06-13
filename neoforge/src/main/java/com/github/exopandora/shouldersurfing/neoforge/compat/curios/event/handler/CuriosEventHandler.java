@@ -31,11 +31,17 @@ public enum CuriosEventHandler implements ICuriosEventHandler {
 		ICuriosItemHandler inventory = optionalInventory.get();
 		IntegrationsConfig integrationsConfig = Config.CLIENT.getIntegrationsConfig();
 		Map<String, List<String>> slotToItems = parseSlots(integrationsConfig.getCuriosAdaptiveCrosshairItems());
-		Map<String, List<String>> slotToDefaultItemComponents = parseSlots(integrationsConfig.getCuriosAdaptiveCrosshairDefaultItemComponents());
-		Map<String, List<String>> slotToItemComponents = parseSlots(integrationsConfig.getCuriosAdaptiveCrosshairItemComponents());
+		Map<String, List<String>> slotToDefaultItemComponents = parseSlots(
+			integrationsConfig.getCuriosAdaptiveCrosshairDefaultItemComponents()
+		);
+		Map<String, List<String>> slotToItemComponents = parseSlots(
+			integrationsConfig.getCuriosAdaptiveCrosshairItemComponents()
+		);
 		for (Entry<String, ICurioStacksHandler> entry : inventory.getCurios().entrySet()) {
 			List<String> items = slotToItems.getOrDefault(entry.getKey(), Collections.emptyList());
-			List<String> defaultComponentIds = slotToDefaultItemComponents.getOrDefault(entry.getKey(), Collections.emptyList());
+			List<String> defaultComponentIds = slotToDefaultItemComponents.getOrDefault(
+				entry.getKey(), Collections.emptyList()
+			);
 			List<String> componentIds = slotToItemComponents.getOrDefault(entry.getKey(), Collections.emptyList());
 			if (items.isEmpty() && defaultComponentIds.isEmpty() && componentIds.isEmpty()) {
 				continue;
@@ -43,7 +49,10 @@ public enum CuriosEventHandler implements ICuriosEventHandler {
 			IDynamicStackHandler stackHandler = entry.getValue().getStacks();
 			for (int x = 0; x < stackHandler.getSlots(); x++) {
 				ItemStack stack = stackHandler.getStackInSlot(x);
-				if (ComputePlayerAimStateEventHandlerImpl.isAdaptiveItemStack(stack, items, componentIds, defaultComponentIds, Collections.emptyList())) {
+				boolean isAdaptiveItemStack = ComputePlayerAimStateEventHandlerImpl.isAdaptiveItemStack(
+					stack, items, componentIds, defaultComponentIds, Collections.emptyList()
+				);
+				if (isAdaptiveItemStack) {
 					event.setResult(true);
 					return;
 				}
