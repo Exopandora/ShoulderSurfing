@@ -6,6 +6,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePla
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.phys.HitResult;
 
 public class ComputePlayerInteractionStateEventHandlerImpl {
 	public enum Pre implements ComputePlayerInteractionStateEventHandler {
@@ -14,7 +15,10 @@ public class ComputePlayerInteractionStateEventHandlerImpl {
 		@Override
 		public void handle(ComputePlayerInteractionStateEvent event) {
 			if (Minecraft.getInstance().options.keyUse.isDown() && !event.getCameraEntity().isUsingItem()) {
-				event.setResult(true);
+				HitResult hitResult = Minecraft.getInstance().hitResult;
+				if (hitResult != null && hitResult.getType() != HitResult.Type.MISS) {
+					event.setResult(true);
+				}
 			}
 		}
 	}
