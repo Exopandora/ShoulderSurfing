@@ -78,12 +78,12 @@ public class PlayerConfig implements IPlayerConfig {
 		this.isPlayerXRotTurningWithCamera = builder
 			.comment("Whether the x-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
 			.translation(MOD_ID + ".configuration.player.turning.turn_player_x_rot_with_camera")
-			.define("turn_player_x_rot_with_camera", false);
+			.define("turn_player_x_rot_with_camera", true);
 		
 		this.isPlayerYRotTurningWithCamera = builder
 			.comment("Whether the y-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
 			.translation(MOD_ID + ".configuration.player.turning.turn_player_y_rot_with_camera")
-			.define("turn_player_y_rot_with_camera", false);
+			.define("turn_player_y_rot_with_camera", true);
 		
 		this.playerYRotTurnAngleLimit = builder
 			.comment("The maximum angle to turn the player y-rot with the camera. This config option only applies when 'Turn player y-rot with camera' is enabled.")
