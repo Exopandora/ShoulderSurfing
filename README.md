@@ -7,7 +7,7 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for M
 * Over-the-shoulder camera - see what you are interacting with in 3rd person
 * Decoupled camera - walk left and right without turning your mouse
 * Free look (default: `left alt`) - keep walking in a direction while looking in a different one
-* Hotkeys to move the camera (default: `arrow keys`, `page up` and `page down`, `o` to switch shoulders)
+* Hotkeys to move the camera (default: `arrow keys`, `page up` and `page down`, `u` to switch shoulders)
 * Corrective cross-hair positioning when using adaptive or dynamic crosshair
 * Adaptive player transparency - fades the player model to transparent when view is obstructed
 * Highly configurable - customize your 3rd person experience with many configuration options
@@ -36,7 +36,7 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 1. Select Forge as your profile
 2. Launch Minecraft
 3. Join a world or server
-4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `o` to switch shoulders
+4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `u` to switch shoulders
 
 </details>
 
@@ -57,7 +57,7 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 1. Select Fabric as your profile
 2. Launch Minecraft
 3. Join a world or server
-4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `o` to switch shoulders
+4. Use `arrow keys`, `page up` and `page down` to adjust the perspective, `z` to switch shoulders
 
 </details>
 
