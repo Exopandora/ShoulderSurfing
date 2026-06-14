@@ -4,8 +4,6 @@ import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
-import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -15,7 +13,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -23,14 +20,10 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(value = ShoulderSurfingCommon.MOD_ID, dist = Dist.CLIENT)
-public class ShoulderSurfingNeoForge
-{
-	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus)
-	{
-		if(FMLEnvironment.getDist().isClient())
-		{
+public class ShoulderSurfingNeoForge {
+	public ShoulderSurfingNeoForge(ModContainer modContainer, IEventBus modEventBus) {
+		if (FMLEnvironment.getDist().isClient()) {
 			modEventBus.addListener(this::clientSetup);
-			modEventBus.addListener(this::loadComplete);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
 			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
@@ -40,8 +33,7 @@ public class ShoulderSurfingNeoForge
 	}
 	
 	@SubscribeEvent
-	public void clientSetup(FMLClientSetupEvent event)
-	{
+	public void clientSetup(FMLClientSetupEvent event) {
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::clientTickEvent);
 		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, ClientEventHandler::preRenderGuiOverlayEvent);
 		NeoForge.EVENT_BUS.addListener(ClientEventHandler::frameGraphSetupEvent);
@@ -49,25 +41,14 @@ public class ShoulderSurfingNeoForge
 	}
 	
 	@SubscribeEvent
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
-		// Workaround to force TransformerClassLoader to load the PluginLoader, which in turn finds and loads the service implementation.
-		// Otherwise, there is a chance that the current class loader ends up being AppClassLoader, which cannot find our service implementation.
-		Minecraft.getInstance().execute(() -> PluginLoader.getInstance().loadPlugins());
-	}
-	
-	@SubscribeEvent
-	public void modConfigReloadingEvent(ModConfigEvent.Reloading event)
-	{
-		if(ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT)
-		{
+	public void modConfigReloadingEvent(ModConfigEvent.Reloading event) {
+		if (ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT) {
 			Config.onConfigReload();
 		}
 	}
 	
 	@SubscribeEvent
-	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
-	{
+	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event) {
 		event.register(InputHandler.CAMERA_LEFT);
 		event.register(InputHandler.CAMERA_RIGHT);
 		event.register(InputHandler.CAMERA_IN);

@@ -1,5 +1,4 @@
 package com.zurrtum.create.content.contraptions;
 
-public class ContraptionHandlerClient
-{
+public class ContraptionHandlerClient {
 }

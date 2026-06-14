@@ -1,48 +1,50 @@
 {
-	"schemaVersion": 1,
-	"id": "${modId}",
-	"version": "${modVersion}",
-	"name": "${modName}",
-	"description": "${modDescription}",
-	"authors": [
-		"${modAuthor}"
-	],
-	"contributors": [ "${modContributors}" ],
-	"contact": {
-		"homepage": "${modUrl}",
-		"sources": "${modUrl}"
-	},
-	"license": "MIT",
-	"icon": "logo.png",
-	"environment": "client",
-	"entrypoints": {
-		"client": [
-			"com.github.exopandora.shouldersurfing.fabric.ShoulderSurfingFabric"
-		],
-		"jade": [
-			"com.github.exopandora.shouldersurfing.integration.ShoulderSurfingJadePlugin"
-		]
-	},
-	"mixins": [
-		"shouldersurfing.common.mixins.json",
-		"shouldersurfing.common.compat.mixins.json",
-		"shouldersurfing.fabric.mixins.json",
-		"shouldersurfing.fabric.compat.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.18.2",
-		"fabric": ">=0.139.4",
-		"minecraft": ">=1.21.11",
-		"forgeconfigapiport": ">=21.11.0",
-		"java": ">=21"
-	},
-	"breaks": {
-		"betterthirdperson": "*",
-		"camerautils": "*",
-		"nimble": "*",
-		"valkyrienskies": "*"
-	},
-	"conflicts": {
-		"theoneprobe": "*"
-	}
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${modVersion}",
+  "name": "${modName}",
+  "description": "${modDescription}",
+  "authors": [
+    "${modAuthor}"
+  ],
+  "contributors": [
+    "${modContributors}"
+  ],
+  "contact": {
+    "homepage": "${modUrl}",
+    "sources": "${modUrl}"
+  },
+  "license": "MIT",
+  "icon": "logo.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.github.exopandora.shouldersurfing.fabric.ShoulderSurfingFabric"
+    ],
+    "jade": [
+      "com.github.exopandora.shouldersurfing.integration.ShoulderSurfingJadePlugin"
+    ]
+  },
+  "mixins": [
+    "shouldersurfing.common.mixins.json",
+    "shouldersurfing.common.compat.mixins.json",
+    "shouldersurfing.fabric.mixins.json",
+    "shouldersurfing.fabric.compat.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.2",
+    "fabric": ">=0.139.4",
+    "minecraft": ">=1.21.11",
+    "forgeconfigapiport": ">=21.11.0",
+    "java": ">=21"
+  },
+  "breaks": {
+    "betterthirdperson": "*",
+    "camerautils": "*",
+    "nimble": "*",
+    "valkyrienskies": "<=2.4.11"
+  },
+  "conflicts": {
+    "theoneprobe": "*"
+  }
 }

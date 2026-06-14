@@ -1,11 +1,11 @@
 {
-	"required": true,
-	"minVersion": "0.8.7",
-	"plugin": "com.github.exopandora.shouldersurfing.forge.compat.ShoulderSurfingCompatMixinPluginForge",
-	"package": "com.github.exopandora.shouldersurfing.compat.mixins",
-	"refmap": "shouldersurfing.refmap.json",
-	"compatibilityLevel": "JAVA_21",
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "minVersion": "0.8.7",
+  "plugin": "com.github.exopandora.shouldersurfing.forge.compat.ShoulderSurfingCompatMixinPluginForge",
+  "package": "com.github.exopandora.shouldersurfing.compat.mixin",
+  "refmap": "shouldersurfing.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

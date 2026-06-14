@@ -2,10 +2,9 @@ package com.github.exopandora.shouldersurfing.forge;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -22,7 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -33,31 +31,24 @@ import java.util.List;
 import java.util.Map;
 
 @Mod(ShoulderSurfingCommon.MOD_ID)
-public class ShoulderSurfingForge
-{
+public class ShoulderSurfingForge {
 	private final FMLJavaModLoadingContext modLoadingContext;
 	
-	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext)
-	{
+	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext) {
 		this.modLoadingContext = modLoadingContext;
-		
-		if(FMLEnvironment.dist.isClient())
-		{
+		if (FMLEnvironment.dist.isClient()) {
 			BusGroup modBusGroup = modLoadingContext.getModBusGroup();
 			FMLClientSetupEvent.getBus(modBusGroup).addListener(this::clientSetup);
-			FMLLoadCompleteEvent.getBus(modBusGroup).addListener(this::loadComplete);
 			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
 			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 			RegisterKeyMappingsEvent.BUS.addListener(this::registerKeyMappingsEvent);
 		}
-		
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
 	}
 	
 	@SuppressWarnings("UnstableApiUsage")
-	public void clientSetup(FMLClientSetupEvent event)
-	{
+	public void clientSetup(FMLClientSetupEvent event) {
 		TickEvent.ClientTickEvent.Pre.BUS.addListener(ClientEventHandler::clientTickEvent);
 		MovementInputUpdateEvent.BUS.addListener(Priority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		ViewportEvent.ComputeCameraAngles.BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
@@ -71,29 +62,19 @@ public class ShoulderSurfingForge
 	}
 	
 	@SubscribeEvent
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
-		PluginLoader.getInstance().loadPlugins();
+	public void modConfigLoadingEvent(ModConfigEvent.Loading event) {
+		ShoulderSurfing.getInstance().init();
 	}
 	
 	@SubscribeEvent
-	public void modConfigLoadingEvent(ModConfigEvent.Loading event)
-	{
-		ShoulderSurfingImpl.getInstance().init();
-	}
-	
-	@SubscribeEvent
-	public void modConfigReloadingEvent(ModConfigEvent.Reloading event)
-	{
-		if(ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT)
-		{
+	public void modConfigReloadingEvent(ModConfigEvent.Reloading event) {
+		if (ShoulderSurfingCommon.MOD_ID.equals(event.getConfig().getModId()) && event.getConfig().getType() == Type.CLIENT) {
 			Config.onConfigReload();
 		}
 	}
 	
 	@SubscribeEvent
-	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event)
-	{
+	public void registerKeyMappingsEvent(RegisterKeyMappingsEvent event) {
 		event.register(InputHandler.CAMERA_LEFT);
 		event.register(InputHandler.CAMERA_RIGHT);
 		event.register(InputHandler.CAMERA_IN);
@@ -115,8 +96,7 @@ public class ShoulderSurfingForge
 		event.register(InputHandler.ENTER_SHOULDER_SURFING);
 	}
 	
-	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod)
-	{
+	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod) {
 		String translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
 		String modId = incompatibleMod.getModId();
 		String modVersion = incompatibleMod.getVersion().toString();

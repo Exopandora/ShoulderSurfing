@@ -84,12 +84,12 @@ publishMods {
     curseforge {
         minecraftVersions.set(compatibleVersions)
         requires("fabric-api", "forge-config-api-port")
-        incompatible("better-third-person", "nimble-fabric", "valkyrien-skies")
+        incompatible("better-third-person", "nimble-fabric")
     }
     
     modrinth {
         minecraftVersions.set(compatibleVersions)
         requires("fabric-api", "forge-config-api-port")
-        incompatible("better-third-person", "nimble", "valkyrien-skies")
+        incompatible("better-third-person", "nimble")
     }
 }
