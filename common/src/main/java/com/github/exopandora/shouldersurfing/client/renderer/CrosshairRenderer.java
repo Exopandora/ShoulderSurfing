@@ -59,7 +59,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	public void renderTick(Camera camera, Matrix4fc modelViewMatrix, Matrix4f projectionMatrix, float partialTick) {
 		if (this.instance.isShoulderSurfing()) {
 			Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-			this.isCrosshairDynamic = computeIsCrosshairDynamic(cameraEntity, isCrosshairDynamic);
+			this.isCrosshairDynamic = computeIsCrosshairDynamic(cameraEntity, this.instance.isAiming());
 			if (Minecraft.getInstance().player != null) {
 				this.updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, partialTick);
 			}
