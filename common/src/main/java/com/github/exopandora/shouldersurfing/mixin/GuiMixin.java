@@ -16,7 +16,7 @@ public class GuiMixin {
 			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
 		)
 	)
-	private boolean doRenderCrosshair(CameraType cameraType) {
+	private boolean isCrosshairVisible(CameraType cameraType) {
 		return IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible();
 	}
 }
