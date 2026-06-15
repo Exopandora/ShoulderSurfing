@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.config;
 import com.github.exopandora.shouldersurfing.api.client.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.client.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
+import com.github.exopandora.shouldersurfing.config.Config.ClientConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
@@ -123,17 +124,17 @@ public class CameraConfig implements ICameraConfig {
 		this.offsetXPresets = builder
 			.comment("A list of x-offset presets that can be toggled via the 'Toggle X-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
 			.translation(MOD_ID + ".configuration.camera.offset.presets.offset_x_presets")
-			.defineList("presets_offset_x", ArrayList::new, String::new, Config.ClientConfig::isValidDouble);
+			.defineList("presets_offset_x", ArrayList::new, String::new, ClientConfig::isValidDouble);
 		
 		this.offsetYPresets = builder
 			.comment("A list of y-offset presets that can be toggled via the 'Toggle Y-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
 			.translation(MOD_ID + ".configuration.camera.offset.presets.offset_y_presets")
-			.defineList("presets_offset_y", ArrayList::new, String::new, Config.ClientConfig::isValidDouble);
+			.defineList("presets_offset_y", ArrayList::new, String::new, ClientConfig::isValidDouble);
 		
 		this.offsetZPresets = builder
 			.comment("A list of z-offset presets that can be toggled via the 'Toggle Z-Offset Presets' keybind. WARNING: Duplicate entries can result in undefined behavior!")
 			.translation(MOD_ID + ".configuration.camera.offset.presets.offset_z_presets")
-			.defineList("presets_offset_z", ArrayList::new, String::new, Config.ClientConfig::isValidDouble);
+			.defineList("presets_offset_z", ArrayList::new, String::new, ClientConfig::isValidDouble);
 		
 		builder.pop();
 		builder.push("min");

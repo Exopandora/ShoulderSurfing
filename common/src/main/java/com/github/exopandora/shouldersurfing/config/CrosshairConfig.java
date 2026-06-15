@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.client.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.config.ICrosshairConfig;
+import com.github.exopandora.shouldersurfing.config.Config.ClientConfig;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -71,7 +72,7 @@ public class CrosshairConfig implements ICrosshairConfig {
 		this.adaptiveCrosshairHoldItemAnimations = builder
 			.comment("Item use-animations of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_hold_item_animations")
-			.defineList("adaptive_crosshair_hold_item_animations", ArrayList::new, String::new, Config.ClientConfig::isValidItemUseAnimation);
+			.defineList("adaptive_crosshair_hold_item_animations", ArrayList::new, String::new, ClientConfig::isValidItemUseAnimation);
 		
 		this.adaptiveCrosshairUseItemAnimations = builder
 			.comment("Item use-animations of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
@@ -81,7 +82,7 @@ public class CrosshairConfig implements ICrosshairConfig {
 				items.add(ItemUseAnimation.BOW.getSerializedName());
 				items.add(ItemUseAnimation.TRIDENT.getSerializedName());
 				return items;
-			}, String::new, Config.ClientConfig::isValidItemUseAnimation);
+			}, String::new, ClientConfig::isValidItemUseAnimation);
 		
 		this.adaptiveCrosshairHoldItemComponents = builder
 			.comment("Item components (modified only) of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
@@ -91,12 +92,12 @@ public class CrosshairConfig implements ICrosshairConfig {
 				components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.CHARGED_PROJECTILES)).toString());
 				components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.PIERCING_WEAPON)).toString());
 				return components;
-			}, String::new, Config.ClientConfig::isValidDataComponentId);
+			}, String::new, ClientConfig::isValidDataComponentId);
 		
 		this.adaptiveCrosshairUseItemComponents = builder
 			.comment("Item components (modified only) of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_use_item_components")
-			.defineList("adaptive_crosshair_use_item_components", ArrayList::new, String::new, Config.ClientConfig::isValidDataComponentId);
+			.defineList("adaptive_crosshair_use_item_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentId);
 		
 		this.adaptiveCrosshairHoldItemDefaultComponents = builder
 			.comment("Default components of an item, that when the item is held, trigger the dynamic crosshair in adaptive mode.")
@@ -105,12 +106,12 @@ public class CrosshairConfig implements ICrosshairConfig {
 				List<String> components = new ArrayList<String>();
 				components.add(Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(DataComponents.PIERCING_WEAPON)).toString());
 				return components;
-			}, String::new, Config.ClientConfig::isValidDataComponentId);
+			}, String::new, ClientConfig::isValidDataComponentId);
 		
 		this.adaptiveCrosshairUseItemDefaultComponents = builder
 			.comment("Default components of an item, that when the item is used, trigger the dynamic crosshair in adaptive mode.")
 			.translation(MOD_ID + ".configuration.crosshair.adaptive_crosshair_item_use_default_components")
-			.defineList("adaptive_crosshair_item_use_default_components", ArrayList::new, String::new, Config.ClientConfig::isValidDataComponentId);
+			.defineList("adaptive_crosshair_item_use_default_components", ArrayList::new, String::new, ClientConfig::isValidDataComponentId);
 		
 		builder.push("obstruction");
 		
