@@ -154,18 +154,14 @@ public class InputHandler {
 	public void updateMovementInput(Input input) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Entity cameraEntity = minecraft.getCameraEntity();
-		
 		if (this.instance.isFreeLooking() || cameraEntity == null || EventHooks.isForcingVanillaPlayerInput(cameraEntity)) {
 			return;
 		}
-		
 		Vec2f moveVector = new Vec2f(input.getMoveVector());
-		
 		if (this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player && moveVector.lengthSquared() > 0) {
 			ShoulderSurfingCamera camera = this.instance.getCamera();
 			LocalPlayer player = minecraft.player;
 			float yRot = player.getYRot();
-			
 			if (this.instance.isCameraDecoupled() && !this.instance.isLookFollowingCrosshairTarget()) {
 				// Update player rotations according to keyboard inputs and camera rotation
 				float cameraXRot = camera.getXRot();
@@ -181,7 +177,6 @@ public class InputHandler {
 				player.setXRot(xRot);
 				player.setYRot(yRot);
 			}
-			
 			Vec2f rotated = moveVector.rotateDegrees(Mth.degreesDifference(yRot, camera.getYRot()));
 			input.leftImpulse = rotated.x();
 			input.forwardImpulse = rotated.y();
