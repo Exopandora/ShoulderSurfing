@@ -12,11 +12,9 @@ import java.util.List;
 import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersionPredicateSilent;
 import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersionSilent;
 
-public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin
-{
+public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin {
 	@Override
-	public List<String> getMixins()
-	{
+	public List<String> getMixins() {
 		List<String> mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
@@ -25,75 +23,54 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
-	private static void addIrisMixins(List<String> mixins)
-	{
+	private static void addIrisMixins(List<String> mixins) {
 		String irisModVersion = Mods.IRIS.getModVersion();
-		
-		if(irisModVersion != null)
-		{
+		if (irisModVersion != null) {
 			Version version = parseVersionSilent(irisModVersion);
-			
-			if(parseVersionPredicateSilent(">=1.7.0-snapshot").test(version))
-			{
-				mixins.add("iris.MixinSheets_1_7_0");
-			}
-			else if(parseVersionPredicateSilent("<1.7.0-snapshot >=1.6.17").test(version))
-			{
-				mixins.add("iris.MixinSheets_1_6_15");
+			if (parseVersionPredicateSilent(">=1.7.0-snapshot").test(version)) {
+				mixins.add("iris.SheetsMixin_1_7_0");
+			} else if (parseVersionPredicateSilent("<1.7.0-snapshot >=1.6.17").test(version)) {
+				mixins.add("iris.SheetsMixin_1_6_15");
 			}
 		}
 	}
 	
-	private static void addCreateModMixins(List<String> mixins)
-	{
+	private static void addCreateModMixins(List<String> mixins) {
 		String createModVersion = Mods.CREATE.getModVersion();
-		
-		if(createModVersion != null)
-		{
+		if (createModVersion != null) {
 			Version version = parseVersionSilent(createModVersion);
-			
-			if(parseVersionPredicateSilent(">=6.0.0").test(version))
-			{
-				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
-			}
-			else if(parseVersionPredicateSilent("<6.0.0").test(version))
-			{
-				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
+			if (parseVersionPredicateSilent(">=6.0.0").test(version)) {
+				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
+			} else if (parseVersionPredicateSilent("<6.0.0").test(version)) {
+				mixins.add("create.ContraptionHandlerClientMixin_0_5_0");
 			}
 		}
 	}
 	
-	private static void addCobblemonMixins(List<String> mixins)
-	{
+	private static void addCobblemonMixins(List<String> mixins) {
 		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		
-		if(cobblemonVersion != null)
-		{
+		if (cobblemonVersion != null) {
 			Version version = parseVersionSilent(cobblemonVersion);
 			
-			if(parseVersionPredicateSilent(">=1.7.0").test(version))
-			{
-				mixins.add("cobblemon.MixinLocalPlayer");
-				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_7");
-			}
-			else if(parseVersionPredicateSilent("<1.7.0").test(version))
-			{
-				mixins.add("cobblemon.MixinPlayerExtensionsKt_1_6");
+			if (parseVersionPredicateSilent(">=1.7.0").test(version)) {
+				mixins.add("cobblemon.LocalPlayerMixin");
+				mixins.add("cobblemon.PlayerExtensionsKtMixin_1_7");
+			} else if (parseVersionPredicateSilent("<1.7.0").test(version)) {
+				mixins.add("cobblemon.PlayerExtensionsKtMixin_1_6");
 			}
 			
-			mixins.add("cobblemon.MixinPokemonRenderer");
+			mixins.add("cobblemon.PokemonRendererMixin");
 		}
 	}
 	
 	@Override
-	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 	
 	@Override
-	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 }

@@ -1,0 +1,68 @@
+name: Compatibility issue
+description: Report an incompatibility with another mod
+title: "Incompatible with MOD NAME HERE"
+labels: ["compatibility"]
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: |
+        Please take following steps seriously before reporting a compatibility issue.
+        They ensure that your issue can be resolved quickly and reduce overhead for maintainers.
+        Conflicting mods can be isolated using the method described [here](https://gist.github.com/TomeWyrm/a8cff19ce112edbc3c8a).
+      options:
+        - label: I have read the text above
+          required: true
+        - label: I have read the [FAQ](https://github.com/Exopandora/ShoulderSurfing#faq) section before submitting a new issue
+          required: true
+        - label: I have read the [compatibility](https://github.com/Exopandora/ShoulderSurfing?tab=readme-ov-file#compatibility) section before submitting a new issue
+          required: true
+        - label: I have searched the [issue tracker](https://github.com/Exopandora/ShoulderSurfing/issues?q=is%3Aissue) for identical issues before submitting a new issue
+          required: true
+        - label: I have isolated the conflicting mod (using the method described above), and my game logs and screenshots will reflect that
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Imagine you have a new Minecraft installation with just your mod loader, Shoulder Surfing Reloaded, it's dependencies, and the conflicting mod installed.
+        What steps are required to trigger the incompatibility and how does it present itself?
+        If applicable, add screenshots to help explain the issue.
+    validations:
+      required: true
+  - type: dropdown
+    id: minecraft-version
+    attributes:
+      label: Minecraft version
+      multiple: true
+      options:
+        - 1.21.11
+        - 1.21.1
+        - 1.20.1
+        - 1.19.2
+        - 1.18.2
+    validations:
+      required: true
+  - type: input
+    id: mod-name
+    attributes:
+      label: Incompatible mod name
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Incompatible mod version
+    validations:
+      required: true
+  - type: input
+    id: logs
+    attributes:
+      label: Game Logs
+      description: |
+        Navigate to `.minecraft/logs/` and upload the file named `latest.log` to https://mclo.gs/ and paste the link here.
+        The location of the logs might be different if you are using a custom launcher.
+    validations:
+      required: true

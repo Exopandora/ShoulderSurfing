@@ -1,13 +1,13 @@
 {
-	"required": true,
-	"minVersion": "0.8.5",
-	"package": "com.github.exopandora.shouldersurfing.forge.mixins",
-	"refmap": "shouldersurfing.refmap.json",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"MixinGui"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.github.exopandora.shouldersurfing.forge.mixin",
+  "refmap": "shouldersurfing.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "GuiMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

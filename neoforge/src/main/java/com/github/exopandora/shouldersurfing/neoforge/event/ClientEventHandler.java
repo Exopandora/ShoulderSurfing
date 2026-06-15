@@ -1,8 +1,10 @@
 package com.github.exopandora.shouldersurfing.neoforge.event;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
-import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,65 +14,65 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import org.joml.Matrix4f;
 
-public class ClientEventHandler
-{
+public class ClientEventHandler {
 	@SubscribeEvent
-	public static void clientTickEvent(ClientTickEvent.Pre event)
-	{
-		if(!Minecraft.getInstance().isPaused())
-		{
-			ShoulderSurfingImpl.getInstance().tick();
+	public static void clientTickEvent(ClientTickEvent.Pre event) {
+		if (!Minecraft.getInstance().isPaused()) {
+			ShoulderSurfing.getInstance().tick();
 		}
 	}
 	
 	@SubscribeEvent
-	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event)
-	{
-		if(VanillaGuiLayers.CROSSHAIR.equals(event.getName()) && !ShoulderSurfingImpl.getInstance().getCrosshairRenderer().doRenderCrosshair())
-		{
-			event.setCanceled(true);
+	public static void preRenderGuiOverlayEvent(RenderGuiLayerEvent.Pre event) {
+		if (VanillaGuiLayers.CROSSHAIR.equals(event.getName())) {
+			if (!IShoulderSurfing.getInstance().getCrosshairRenderer().isCrosshairVisible()) {
+				event.setCanceled(true);
+			}
 		}
 	}
 	
 	@SubscribeEvent
-	public static void registerGuiOverlaysEvent(RegisterGuiLayersEvent event)
-	{
-		event.registerBelow(VanillaGuiLayers.CROSSHAIR, ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"), (guiGraphics, deltaTracker) ->
-		{
-			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-			
-			if(crosshairRenderer.doRenderCrosshair())
-			{
-				crosshairRenderer.preRenderCrosshair(guiGraphics);
+	public static void registerGuiOverlaysEvent(RegisterGuiLayersEvent event) {
+		event.registerBelow(
+			VanillaGuiLayers.CROSSHAIR,
+			ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"),
+			(guiGraphics, deltaTracker) -> {
+				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+				if (crosshairRenderer.isCrosshairVisible()) {
+					crosshairRenderer.preRenderCrosshair(guiGraphics);
+				}
 			}
-		});
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"), (guiGraphics, deltaTracker) ->
-		{
-			CrosshairRenderer crosshairRenderer = ShoulderSurfingImpl.getInstance().getCrosshairRenderer();
-			
-			if(crosshairRenderer.doRenderCrosshair())
-			{
-				crosshairRenderer.postRenderCrosshair(guiGraphics);
+		);
+		event.registerAbove(
+			VanillaGuiLayers.CROSSHAIR,
+			ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"),
+			(guiGraphics, deltaTracker) -> {
+				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+				if (crosshairRenderer.isCrosshairVisible()) {
+					crosshairRenderer.postRenderCrosshair(guiGraphics);
+				}
 			}
-		});
+		);
 	}
 	
 	@SubscribeEvent
-	public static void renderLevelStageEvent(RenderLevelStageEvent event)
-	{
-		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
-		{
+	public static void renderLevelStageEvent(RenderLevelStageEvent event) {
+		if (RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage())) {
 			float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
-			ShoulderSurfingImpl.getInstance().getCamera().renderTick(event.getCamera().getEntity(), partialTick);
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getModelViewMatrix(), event.getProjectionMatrix(), partialTick);
+			Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			Matrix4f modelViewMatrix = event.getModelViewMatrix();
+			Matrix4f projectionMatrix = event.getProjectionMatrix();
+			instance.getCamera().renderTick(camera.getEntity(), partialTick);
+			instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
 		}
 	}
 	
 	@SubscribeEvent
-	public static void movementInputUpdateEvent(MovementInputUpdateEvent event)
-	{
-		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getInput());
-		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
+	public static void movementInputUpdateEvent(MovementInputUpdateEvent event) {
+		ShoulderSurfing.getInstance().getInputHandler().updateMovementInput(event.getInput());
+		ShoulderSurfing.getInstance().updatePlayerRotations();
 	}
 }

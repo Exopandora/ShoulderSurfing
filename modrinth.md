@@ -12,6 +12,9 @@ Shoulder Surfing Reloaded is a highly configurable third person camera mod for m
 * Client side only - no server mods required
 * Plugin API - implement custom camera behaviours and compatibility features with ease
 
+Please note that this mod modifies the camera position and player movement, which can be an issue for servers with strict anti-cheat.
+Use at your own risk!
+
 # Installation #
 <details>
   <summary>Forge</summary>

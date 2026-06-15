@@ -7,13 +7,10 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import org.jetbrains.annotations.Nullable;
 
-public class Platform implements IPlatform
-{
+public class Platform implements IPlatform {
 	@Override
-	public @Nullable String getModVersion(Mods mod)
-	{
-		return switch(mod)
-		{
+	public @Nullable String getModVersion(Mods mod) {
+		return switch (mod) {
 			case CGM, CURIOS, EPIC_FIGHT, MTS, OCULUS -> null;
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");
@@ -28,38 +25,28 @@ public class Platform implements IPlatform
 	}
 	
 	@Override
-	public boolean isSameOrLaterVersion(String version, String baseVersion)
-	{
+	public boolean isSameOrLaterVersion(String version, String baseVersion) {
 		return parseVersionPredicateSilent(">=" + baseVersion).test(parseVersionSilent(version));
 	}
 	
-	private static String findModVersionForId(String modId)
-	{
+	private static String findModVersionForId(String modId) {
 		return FabricLoader.getInstance().getModContainer(modId)
 			.map(modContainer -> modContainer.getMetadata().getVersion().getFriendlyString())
 			.orElse(null);
 	}
 	
-	public static Version parseVersionSilent(String version)
-	{
-		try
-		{
+	public static Version parseVersionSilent(String version) {
+		try {
 			return Version.parse(version);
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public static VersionPredicate parseVersionPredicateSilent(String predicate)
-	{
-		try
-		{
+	public static VersionPredicate parseVersionPredicateSilent(String predicate) {
+		try {
 			return VersionPredicate.parse(predicate);
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

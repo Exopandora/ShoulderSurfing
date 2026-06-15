@@ -1,17 +1,17 @@
 {
-	"required": true,
-	"minVersion": "0.8.5",
-	"package": "com.github.exopandora.shouldersurfing.fabric.mixins",
-	"refmap": "shouldersurfing.refmap.json",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"MixinCamera",
-		"MixinGui",
-		"MixinLevelRenderer",
-		"MixinLocalPlayer",
-		"MixinMinecraft"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.github.exopandora.shouldersurfing.fabric.mixin",
+  "refmap": "shouldersurfing.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "CameraMixin",
+    "GuiMixin",
+    "LevelRendererMixin",
+    "LocalPlayerMixin",
+    "MinecraftMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

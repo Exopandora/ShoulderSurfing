@@ -1,48 +1,44 @@
 package com.github.exopandora.shouldersurfing.forge.event;
 
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.github.exopandora.shouldersurfing.mixinducks.CameraDuck;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.joml.Matrix4f;
 
-public class ClientEventHandler
-{
+public class ClientEventHandler {
 	@SubscribeEvent
-	public static void clientTickEvent(ClientTickEvent.Pre event)
-	{
-		if(!Minecraft.getInstance().isPaused())
-		{
-			ShoulderSurfingImpl.getInstance().tick();
+	public static void clientTickEvent(ClientTickEvent.Pre event) {
+		if (!Minecraft.getInstance().isPaused()) {
+			ShoulderSurfing.getInstance().tick();
 		}
 	}
 	
 	@SubscribeEvent
-	public static void renderLevelStageEvent(RenderLevelStageEvent event)
-	{
-		if(RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage()))
-		{
+	public static void renderLevelStageEvent(RenderLevelStageEvent event) {
+		if (RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage())) {
 			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
-			ShoulderSurfingImpl.getInstance().getCamera().renderTick(event.getCamera().getEntity(), partialTick);
-			ShoulderSurfingImpl.getInstance().getCrosshairRenderer().updateDynamicRaytrace(event.getCamera(), event.getPoseStack(), RenderSystem.getProjectionMatrix(), partialTick);
+			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			instance.getCamera().renderTick(event.getCamera().getEntity(), partialTick);
+			Matrix4f modelViewMatrix = event.getPoseStack();
+			Matrix4f projectionMatrix = RenderSystem.getProjectionMatrix();
+			instance.getCrosshairRenderer().renderTick(event.getCamera(), modelViewMatrix, projectionMatrix, partialTick);
 		}
 	}
 	
 	@SubscribeEvent
-	public static void movementInputUpdateEvent(MovementInputUpdateEvent event)
-	{
-		ShoulderSurfingImpl.getInstance().getInputHandler().updateMovementInput(event.getInput());
-		ShoulderSurfingImpl.getInstance().updatePlayerRotations();
+	public static void movementInputUpdateEvent(MovementInputUpdateEvent event) {
+		ShoulderSurfing.getInstance().getInputHandler().updateMovementInput(event.getInput());
+		ShoulderSurfing.getInstance().updatePlayerRotations();
 	}
 	
 	@SubscribeEvent
-	public static void computeCameraAnglesEvent(ViewportEvent.ComputeCameraAngles event)
-	{
+	public static void computeCameraAnglesEvent(ViewportEvent.ComputeCameraAngles event) {
 		event.setRoll(event.getRoll() - ((CameraDuck) event.getCamera()).shouldersurfing$getZRot());
 	}
 }

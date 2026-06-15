@@ -19,8 +19,9 @@ config = "shouldersurfing.neoforge.compat.mixins.json"
 
 [[mods]]
 modId = "${modId}"
-displayName = "${modName}"
 version = "${minecraftVersion}-${modVersion}"
+displayName = "${modName}"
+credits = "${modContributors}"
 description = "${modDescription}"
 displayTest = "NONE"
 
@@ -57,6 +58,7 @@ side = "CLIENT"
 modId = "valkyrienskies"
 type = "incompatible"
 side = "CLIENT"
+versionRange = "(,2.4.11]"
 
 [[dependencies.${modId}]]
 modId = "customcameraview"
