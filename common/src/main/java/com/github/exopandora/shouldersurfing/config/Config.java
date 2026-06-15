@@ -99,13 +99,11 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			
 			for (ItemUseAnimation itemUseAnimation : ItemUseAnimation.values()) {
 				if (itemUseAnimation.getSerializedName().equals(id)) {
 					return true;
 				}
 			}
-			
 			return false;
 		}
 		
