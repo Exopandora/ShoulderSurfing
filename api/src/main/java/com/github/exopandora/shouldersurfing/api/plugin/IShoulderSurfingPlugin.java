@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.plugin;
 
-public interface IShoulderSurfingPlugin
-{
-	void register(IShoulderSurfingRegistrar registrar);
+import com.github.exopandora.shouldersurfing.api.event.IEventBus;
+
+public interface IShoulderSurfingPlugin {
+	void register(IEventBus eventBus);
 }

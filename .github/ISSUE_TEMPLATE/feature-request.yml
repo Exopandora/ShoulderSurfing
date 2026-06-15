@@ -1,0 +1,12 @@
+name: Feature request
+description: Suggest a feature for Shoulder Surfing Reloaded
+title: "Short description of the feature"
+labels: ["feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what feature you want and why.
+    validations:
+      required: true

@@ -6,8 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Mods
-{
+public enum Mods {
 	CGM,
 	COBBLEMON,
 	CREATE,
@@ -26,13 +25,21 @@ public enum Mods
 	private static final Map<Mods, @Nullable String> MODS_TO_VERSION = new HashMap<Mods, String>();
 	
 	@Nullable
-	public String getModVersion()
-	{
+	public String getModVersion() {
 		return MODS_TO_VERSION.computeIfAbsent(this, IPlatform.INSTANCE::getModVersion);
 	}
 	
-	public boolean isLoaded()
-	{
+	public boolean isSameOrLaterVersion(String version) {
+		String modVersion = this.getModVersion();
+		
+		if (modVersion == null) {
+			return false;
+		}
+		
+		return IPlatform.INSTANCE.isSameOrLaterVersion(modVersion, version);
+	}
+	
+	public boolean isLoaded() {
 		return this.getModVersion() != null;
 	}
 }

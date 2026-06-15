@@ -5,10 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ServiceLoader;
 
-public interface IPlatform
-{
+public interface IPlatform {
 	IPlatform INSTANCE = ServiceLoader.load(IPlatform.class).findFirst().orElseThrow();
 	
-	@Nullable
-	String getModVersion(Mods mod);
+	@Nullable String getModVersion(Mods mod);
+	
+	boolean isSameOrLaterVersion(String version, String baseVersion);
 }

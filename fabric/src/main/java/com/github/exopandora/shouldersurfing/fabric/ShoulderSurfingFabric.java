@@ -3,17 +3,14 @@ package com.github.exopandora.shouldersurfing.fabric;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
-public class ShoulderSurfingFabric implements ClientModInitializer
-{
+public class ShoulderSurfingFabric implements ClientModInitializer {
 	@Override
-	public void onInitializeClient()
-	{
+	public void onInitializeClient() {
 		ForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 		KeyBindingHelper.registerKeyBinding(InputHandler.CAMERA_LEFT);
 		KeyBindingHelper.registerKeyBinding(InputHandler.CAMERA_RIGHT);
@@ -34,6 +31,5 @@ public class ShoulderSurfingFabric implements ClientModInitializer
 		KeyBindingHelper.registerKeyBinding(InputHandler.ENTER_THIRD_PERSON_FRONT);
 		KeyBindingHelper.registerKeyBinding(InputHandler.ENTER_THIRD_PERSON_BACK);
 		KeyBindingHelper.registerKeyBinding(InputHandler.ENTER_SHOULDER_SURFING);
-		PluginLoader.getInstance().loadPlugins();
 	}
 }

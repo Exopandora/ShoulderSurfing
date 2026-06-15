@@ -1,18 +1,19 @@
 package com.github.exopandora.shouldersurfing.api.util;
 
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityHelper
-{
-	public static void lookAtTarget(LocalPlayer player, Vec3 target)
-	{
+public class EntityHelper {
+	public static void lookAtTarget(LocalPlayer player, Vec3 target) {
 		float yHeadRot = player.yHeadRot;
 		float yHeadRotO = player.yHeadRotO;
 		float yBodyRot = player.yBodyRot;
@@ -29,20 +30,90 @@ public class EntityHelper
 		player.yRotO = yRotO;
 	}
 	
-	public static boolean isPlayerSpectatingEntity()
-	{
+	public static float getLerpedXRot(Entity entity, float partialTick) {
+		return partialTick == 1.0F ? entity.getXRot() : Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+	}
+	
+	public static float getLerpedYRot(Entity entity, float partialTick) {
+		return partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
+	}
+	
+	public static boolean isPlayerSpectatingEntity() {
 		Minecraft minecraft = Minecraft.getInstance();
 		Player player = minecraft.player;
 		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
 	}
 	
-	public static float getLerpedXRot(Entity entity, float partialTick)
-	{
-		return partialTick == 1.0F ? entity.getXRot() : Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+	public static Vec2f applyPassengerRotationConstraints(Player player, Vec2f cameraRot, Vec2f cameraRotO) {
+		Entity vehicle = player.getVehicle();
+		float cameraXRot = cameraRot.x();
+		float cameraYRot = cameraRot.y();
+		
+		if (vehicle != null) {
+			float partialTick = Minecraft.getInstance().getFrameTime();
+			
+			float playerXRot = player.getXRot();
+			float playerYRot = player.getYRot();
+			float playerXRotO = player.xRotO;
+			float playerYRotO = player.yRotO;
+			float playerYHeadRot = player.yHeadRot;
+			float playerYHeadRotO = player.yHeadRotO;
+			float playerYBodyRot = player.yBodyRot;
+			float playerYBodyRotO = player.yBodyRotO;
+			
+			float vehicleXRot = vehicle.getXRot();
+			float vehicleYRot = vehicle.getYRot();
+			float vehicleXRotO = vehicle.xRotO;
+			float vehicleYRotO = vehicle.yRotO;
+			
+			vehicle.setXRot(Mth.rotLerp(partialTick, vehicleXRotO, vehicleXRot));
+			vehicle.setYRot(Mth.rotLerp(partialTick, vehicleYRotO, vehicleYRot));
+			
+			player.setXRot(cameraXRot);
+			player.setYRot(cameraYRot);
+			player.xRotO = cameraRotO.x();
+			player.yRotO = cameraRotO.y();
+			player.yHeadRot = cameraYRot;
+			player.yHeadRotO = cameraRotO.y();
+			player.yBodyRot = cameraYRot;
+			player.yBodyRotO = cameraRotO.y();
+			
+			vehicle.onPassengerTurned(player);
+			
+			if (player.getXRot() != cameraXRot) {
+				cameraXRot = player.getXRot();
+			}
+			
+			if (player.getYRot() != cameraYRot) {
+				cameraYRot = player.getYRot();
+			}
+			
+			player.setXRot(playerXRot);
+			player.setYRot(playerYRot);
+			player.xRotO = playerXRotO;
+			player.yRotO = playerYRotO;
+			player.yHeadRot = playerYHeadRot;
+			player.yHeadRotO = playerYHeadRotO;
+			player.yBodyRot = playerYBodyRot;
+			player.yBodyRotO = playerYBodyRotO;
+			
+			vehicle.setXRot(vehicleXRot);
+			vehicle.setYRot(vehicleYRot);
+		}
+		return new Vec2f(cameraXRot, cameraYRot);
 	}
 	
-	public static float getLerpedYRot(Entity entity, float partialTick)
-	{
-		return partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
+	public static Vec3 getDeltaMovementWithoutGravity(Entity entity) {
+		Vec3 deltaMovement = entity.getDeltaMovement();
+		final double friction = 0.98D;
+		double gravity = 0.08D;
+		if (deltaMovement.y <= 0.0 && entity instanceof LivingEntity living && living.hasEffect(MobEffects.SLOW_FALLING)) {
+			gravity = 0.01D;
+		}
+		return deltaMovement.add(0, gravity * friction, 0);
+	}
+	
+	public static boolean isScoping(Entity entity) {
+		return entity instanceof Player player && player.isScoping();
 	}
 }

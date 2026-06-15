@@ -12,11 +12,9 @@ import java.util.List;
 import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersionPredicateSilent;
 import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersionSilent;
 
-public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin
-{
+public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin {
 	@Override
-	public List<String> getMixins()
-	{
+	public List<String> getMixins() {
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
@@ -25,72 +23,49 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
-	private static void addIrisMixins(List<String> mixins)
-	{
+	private static void addIrisMixins(List<String> mixins) {
 		String irisModVersion = Mods.IRIS.getModVersion();
-		
-		if(irisModVersion != null)
-		{
+		if (irisModVersion != null) {
 			Version version = parseVersionSilent(irisModVersion);
-			
-			if(parseVersionPredicateSilent(">=1.7.0-snapshot").test(version))
-			{
-				mixins.add("iris.MixinSheets_1_7_0");
-			}
-			else if(parseVersionPredicateSilent("<1.7.0-snapshot >=1.6.17").test(version))
-			{
-				mixins.add("iris.MixinSheets_1_6_15");
+			if (parseVersionPredicateSilent(">=1.7.0-snapshot").test(version)) {
+				mixins.add("iris.SheetsMixin_1_7_0");
+			} else if (parseVersionPredicateSilent("<1.7.0-snapshot >=1.6.17").test(version)) {
+				mixins.add("iris.SheetsMixin_1_6_15");
 			}
 		}
 	}
 	
-	private static void addCreateModMixins(List<String> mixins)
-	{
+	private static void addCreateModMixins(List<String> mixins) {
 		String createModVersion = Mods.CREATE.getModVersion();
-		
-		if(createModVersion != null)
-		{
+		if (createModVersion != null) {
 			Version version = parseVersionSilent(createModVersion);
-			
-			if(parseVersionPredicateSilent(">=6.0.0").test(version))
-			{
-				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
-			}
-			else if(parseVersionPredicateSilent("<6.0.0").test(version))
-			{
-				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
+			if (parseVersionPredicateSilent(">=6.0.0").test(version)) {
+				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
+			} else if (parseVersionPredicateSilent("<6.0.0").test(version)) {
+				mixins.add("create.ContraptionHandlerClientMixin_0_5_0");
 			}
 		}
 	}
 	
-	private static void addSkinLayersMixins(List<String> mixins)
-	{
+	private static void addSkinLayersMixins(List<String> mixins) {
 		String skinLayersModVersion = Mods.SKIN_LAYERS.getModVersion();
-		
-		if(skinLayersModVersion != null)
-		{
+		if (skinLayersModVersion != null) {
 			Version version = parseVersionSilent(skinLayersModVersion);
-			
-			if(parseVersionPredicateSilent(">=1.6.6").test(version))
-			{
-				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_6");
-			}
-			else if(parseVersionPredicateSilent("<1.6.6").test(version))
-			{
-				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_5");
+			if (parseVersionPredicateSilent(">=1.6.6").test(version)) {
+				mixins.add("skinlayers.CustomizableModelPartMixin_1_6_6");
+			} else if (parseVersionPredicateSilent("<1.6.6").test(version)) {
+				mixins.add("skinlayers.CustomizableModelPartMixin_1_6_5");
 			}
 		}
 	}
 	
 	@Override
-	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 	
 	@Override
-	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 }

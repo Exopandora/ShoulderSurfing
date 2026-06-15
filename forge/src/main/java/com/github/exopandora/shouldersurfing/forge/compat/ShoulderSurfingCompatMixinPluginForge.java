@@ -12,11 +12,9 @@ import java.util.List;
 
 import static com.github.exopandora.shouldersurfing.forge.Platform.parseVersionRangeSilent;
 
-public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin
-{
+public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin {
 	@Override
-	public List<String> getMixins()
-	{
+	public List<String> getMixins() {
 		List<String> mixins = new ArrayList<String>();
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
@@ -26,80 +24,55 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
-	private static void addMtsMixins(List<String> mixins)
-	{
-		if(Mods.MTS.isLoaded())
-		{
-			mixins.add("mts.MixinCameraSystem");
+	private static void addMtsMixins(List<String> mixins) {
+		if (Mods.MTS.isLoaded()) {
+			mixins.add("mts.CameraSystemMixin");
 		}
 	}
 	
-	private static void addOculusMixins(List<String> mixins)
-	{
+	private static void addOculusMixins(List<String> mixins) {
 		String oculusModVersion = Mods.OCULUS.getModVersion();
-		
-		if(oculusModVersion != null)
-		{
+		if (oculusModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(oculusModVersion);
-			
-			if(parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version))
-			{
-				mixins.add("iris.MixinSheets_1_7_0");
-			}
-			else if(parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version))
-			{
-				mixins.add("iris.MixinSheets_1_6_15");
+			if (parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version)) {
+				mixins.add("iris.SheetsMixin_1_7_0");
+			} else if (parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version)) {
+				mixins.add("iris.SheetsMixin_1_6_15");
 			}
 		}
 	}
 	
-	private static void addCreateModMixins(List<String> mixins)
-	{
+	private static void addCreateModMixins(List<String> mixins) {
 		String createModVersion = Mods.CREATE.getModVersion();
-		
-		if(createModVersion != null)
-		{
+		if (createModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
-			
-			if(parseVersionRangeSilent("[6.0.0,)").containsVersion(version))
-			{
-				mixins.add("create.MixinContraptionHandlerClient_6_0_0");
-			}
-			else if(parseVersionRangeSilent("(,6.0.0)").containsVersion(version))
-			{
-				mixins.add("create.MixinContraptionHandlerClient_0_5_0");
+			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
+				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
+			} else if (parseVersionRangeSilent("(,6.0.0)").containsVersion(version)) {
+				mixins.add("create.ContraptionHandlerClientMixin_0_5_0");
 			}
 		}
 	}
 	
-	private static void addSkinLayersMixins(List<String> mixins)
-	{
+	private static void addSkinLayersMixins(List<String> mixins) {
 		String skinLayersModVersion = Mods.SKIN_LAYERS.getModVersion();
-		
-		if(skinLayersModVersion != null)
-		{
+		if (skinLayersModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(skinLayersModVersion);
-			
-			if(parseVersionRangeSilent("[1_6_6,)").containsVersion(version))
-			{
-				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_6");
-			}
-			else if(parseVersionRangeSilent("(,1.6.6)").containsVersion(version))
-			{
-				mixins.add("skinlayers.MixinCustomizableModelPart_1_6_5");
+			if (parseVersionRangeSilent("[1_6_6,)").containsVersion(version)) {
+				mixins.add("skinlayers.CustomizableModelPartMixin_1_6_6");
+			} else if (parseVersionRangeSilent("(,1.6.6)").containsVersion(version)) {
+				mixins.add("skinlayers.CustomizableModelPartMixin_1_6_5");
 			}
 		}
 	}
 	
 	@Override
-	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 	
 	@Override
-	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo)
-	{
+	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 		
 	}
 }
