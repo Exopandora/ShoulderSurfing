@@ -1,6 +1,8 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
@@ -243,11 +245,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	
 	private void turnPlayerWithCamera(LocalPlayer player, Vec2f scaledRot, boolean isMoving) {
 		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
-		if (playerConfig.isPlayerXRotTurningWithCamera()) {
+		boolean isPickingFromPlayerWithDynamicCrosshair = Config.CLIENT.getObjectPickerConfig().getPickVector() == PickVector.PLAYER &&
+			Config.CLIENT.getCrosshairConfig().getCrosshairType() == CrosshairType.DYNAMIC;
+		if (playerConfig.isPlayerXRotTurningWithCamera() || isPickingFromPlayerWithDynamicCrosshair) {
 			player.setXRot(this.rotation.x());
 			player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
 		}
-		if (playerConfig.isPlayerYRotTurningWithCamera() && !isMoving) {
+		if ((playerConfig.isPlayerYRotTurningWithCamera() || isPickingFromPlayerWithDynamicCrosshair) && !isMoving) {
 			float maxFollowAngle = (float) playerConfig.getPlayerYRotTurnAngleLimit();
 			float playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
 			player.yRotO = player.getYRot();
