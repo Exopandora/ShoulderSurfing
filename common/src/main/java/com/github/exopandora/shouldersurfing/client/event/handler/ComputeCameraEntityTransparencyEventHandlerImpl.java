@@ -6,8 +6,10 @@ import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCameraEntityTransparencyEventHandler {
@@ -45,6 +47,31 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 		}
 		return (renderOffset.y() >= 0 && renderOffset.y() < entity.getBbHeight() - entity.getEyeHeight()) ||
 			(renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight());
+	}
+	
+	public enum Climbing implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
+		INSTANCE;
+		
+		private static final int OPAQUE_TICK_COUNT = 5;
+		private int opaqueTicks;
+		
+		@Override
+		public void handle(TickEvent event) {
+			if (!Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenClimbing()) {
+				if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living && living.onClimbable()) {
+					this.opaqueTicks = OPAQUE_TICK_COUNT;
+				} else if (this.opaqueTicks > 0) {
+					this.opaqueTicks--;
+				}
+			}
+		}
+		
+		@Override
+		public void handle(ComputeCameraEntityTransparencyEvent event) {
+			if (!Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenClimbing() && this.opaqueTicks > 0) {
+				event.setResult(1.0F);
+			}
+		}
 	}
 	
 	public enum WhenAiming implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
