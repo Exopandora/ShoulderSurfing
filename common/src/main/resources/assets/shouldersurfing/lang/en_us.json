@@ -248,6 +248,8 @@
   "${modId}.configuration.player.transparency.adjust_transparency.tooltip": "Whether to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.",
   "${modId}.configuration.player.transparency.when_aiming": "Turn player transparent when aiming",
   "${modId}.configuration.player.transparency.when_aiming.tooltip": "Whether to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.",
+  "${modId}.configuration.player.transparency.when_climbing": "Turn player transparent when climbing",
+  "${modId}.configuration.player.transparency.when_climbing.tooltip": "Whether to turn the player model transparent when climbing. This config option only applies when adjust player transparency is enabled.",
 
   "${modId}.configuration.turning.button": "Edit",
   "${modId}.configuration.turning": "Turning",

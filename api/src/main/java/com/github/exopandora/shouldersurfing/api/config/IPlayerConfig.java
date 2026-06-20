@@ -9,6 +9,8 @@ public interface IPlayerConfig {
 	
 	boolean isPlayerTransparentWhenAiming();
 	
+	boolean isPlayerTransparentWhenClimbing();
+	
 	TurningMode getTurningModeWhenUsingItem();
 	
 	TurningMode getTurningModeWhenAttacking();
