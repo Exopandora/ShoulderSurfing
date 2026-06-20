@@ -105,6 +105,9 @@ public class EntityHelper {
 	
 	public static Vec3 getDeltaMovementWithoutGravity(Entity entity) {
 		Vec3 deltaMovement = entity.getDeltaMovement();
+		if (entity.isNoGravity() || entity instanceof Player player && player.getAbilities().flying) {
+			return deltaMovement;
+		}
 		final double friction = 0.98D;
 		double gravity = 0.08D;
 		if (deltaMovement.y <= 0.0 && entity instanceof LivingEntity living && living.hasEffect(MobEffects.SLOW_FALLING)) {
