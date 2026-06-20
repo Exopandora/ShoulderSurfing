@@ -175,10 +175,11 @@
   "${modId}.configuration.player": "Oyuncu",
   "${modId}.configuration.player.tooltip": "Oyuncu ayarları.",
 
-  "${modId}.configuration.player.adjust_player_transparency": "Oyuncu şeffaflığını ayarlayın",
-  "${modId}.configuration.player.adjust_player_transparency.tooltip": "Görüntü engellendiğinde oyuncu modeli şeffaflığının ayarlanıp ayarlanmaması. Bu değeri değiştirmek, tam etki göstermesi için oyunun yeniden başlatılmasını gerektirebilir.",
   "${modId}.configuration.player.hide_player_when_looking_up_angle": "Yukarıya bakıldığında kamerayı ortala",
   "${modId}.configuration.player.hide_player_when_looking_up_angle.tooltip": "Yukarı bakıldığında oyuncunun artık gösterilmeyeceği açı. Devre dışı bırakmak için 0 yapın.",
+
+  "${modId}.configuration.player.transparency.adjust_transparency": "Oyuncu şeffaflığını ayarlayın",
+  "${modId}.configuration.player.transparency.adjust_transparency.tooltip": "Görüntü engellendiğinde oyuncu modeli şeffaflığının ayarlanıp ayarlanmaması. Bu değeri değiştirmek, tam etki göstermesi için oyunun yeniden başlatılmasını gerektirebilir.",
 
   "${modId}.configuration.turning.button": "Düzenle",
   "${modId}.configuration.turning": "Dönüş",

@@ -157,10 +157,11 @@
   "${modId}.configuration.player": "玩家",
   "${modId}.configuration.player.tooltip": "玩家設定。",
 
-  "${modId}.configuration.player.adjust_player_transparency": "調整玩家透明度",
-  "${modId}.configuration.player.adjust_player_transparency.tooltip": "當視線被阻擋時，是否調整玩家模型的透明度。更改此值可能需要重新啟動遊戲才能完全生效。",
   "${modId}.configuration.player.hide_player_when_looking_up_angle": "向上看時隱藏玩家的角度",
   "${modId}.configuration.player.hide_player_when_looking_up_angle.tooltip": "向上看時，玩家模型不再被繪製的角度。設為 0 以停用。",
+
+  "${modId}.configuration.player.transparency.adjust_transparency": "調整玩家透明度",
+  "${modId}.configuration.player.transparency.adjust_transparency.tooltip": "當視線被阻擋時，是否調整玩家模型的透明度。更改此值可能需要重新啟動遊戲才能完全生效。",
 
   "${modId}.configuration.turning.button": "編輯",
   "${modId}.configuration.turning": "轉向",

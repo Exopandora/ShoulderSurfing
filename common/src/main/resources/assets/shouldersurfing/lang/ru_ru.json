@@ -226,12 +226,13 @@
   "${modId}.configuration.player": "Модель игрока",
   "${modId}.configuration.player.tooltip": "Настройки отображения модели игрока.",
 
-  "${modId}.configuration.player.adjust_player_transparency": "Регулировать прозрачность игрока",
-  "${modId}.configuration.player.adjust_player_transparency.tooltip": "Следует ли автоматически настраивать прозрачность модели игрока, если она заслоняет обзор. Для полного применения может потребоваться перезапуск игры.",
   "${modId}.configuration.player.turn_player_transparent_when_aiming": "Делать игрока прозрачным при прицеливании",
   "${modId}.configuration.player.turn_player_transparent_when_aiming.tooltip": "Следует ли делать модель игрока прозрачной во время прицеливания. Работает только при включённой опции 'Регулировать прозрачность игрока'.",
   "${modId}.configuration.player.hide_player_when_looking_up_angle": "Угол скрытия игрока при взгляде вверх",
   "${modId}.configuration.player.hide_player_when_looking_up_angle.tooltip": "Угол (в градусах), при превышении которого модель игрока будет скрываться при взгляде вверх. Установите значение 0 для отключения.",
+
+  "${modId}.configuration.player.transparency.adjust_transparency": "Регулировать прозрачность игрока",
+  "${modId}.configuration.player.transparency.adjust_transparency.tooltip": "Следует ли автоматически настраивать прозрачность модели игрока, если она заслоняет обзор. Для полного применения может потребоваться перезапуск игры.",
 
   "${modId}.configuration.turning.button": "Изменить",
   "${modId}.configuration.turning": "Поворот игрока",
