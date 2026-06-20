@@ -33,8 +33,8 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(1000, ComputeCameraEntityTransparencyEventHandlerImpl.INSTANCE);
 		eventBus.register(1500, (TickEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.Climbing.INSTANCE);
 		eventBus.register(1500, (ComputeCameraEntityTransparencyEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.Climbing.INSTANCE);
-		eventBus.register(2000, (TickEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.WhenAiming.INSTANCE);
-		eventBus.register(2000, (ComputeCameraEntityTransparencyEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.WhenAiming.INSTANCE);
+		eventBus.register(2000, (TickEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.Aiming.INSTANCE);
+		eventBus.register(2000, (ComputeCameraEntityTransparencyEventHandler) ComputeCameraEntityTransparencyEventHandlerImpl.Aiming.INSTANCE);
 		eventBus.register(0, ComputePlayerAttackStateEventHandlerImpl.Pre.INSTANCE);
 		eventBus.register(2000, ComputePlayerAttackStateEventHandlerImpl.Post.INSTANCE);
 		eventBus.register(0, ComputePlayerInteractionStateEventHandlerImpl.Pre.INSTANCE);
