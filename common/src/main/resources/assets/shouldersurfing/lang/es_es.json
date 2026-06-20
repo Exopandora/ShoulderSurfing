@@ -187,10 +187,11 @@
   "${modId}.configuration.player": "Jugador",
   "${modId}.configuration.player.tooltip": "Configuración del jugador.",
 
-  "${modId}.configuration.player.adjust_player_transparency": "Ajustar transparencia del jugador",
-  "${modId}.configuration.player.adjust_player_transparency.tooltip": "Si se debe ajustar la transparencia del modelo del jugador cuando la vista está obstruida. Cambiar este valor puede requerir reiniciar el juego para que tenga efecto completo.",
   "${modId}.configuration.player.hide_player_when_looking_up_angle": "Centrar cámara al mirar hacia arriba",
   "${modId}.configuration.player.hide_player_when_looking_up_angle.tooltip": "El ángulo al que el jugador dejará de ser renderizado al mirar hacia arriba. Establecer en 0 para desactivar.",
+
+  "${modId}.configuration.player.transparency.adjust_transparency": "Ajustar transparencia del jugador",
+  "${modId}.configuration.player.transparency.adjust_transparency.tooltip": "Si se debe ajustar la transparencia del modelo del jugador cuando la vista está obstruida. Cambiar este valor puede requerir reiniciar el juego para que tenga efecto completo.",
 
   "${modId}.configuration.turning.button": "Editar",
   "${modId}.configuration.turning": "Girar",

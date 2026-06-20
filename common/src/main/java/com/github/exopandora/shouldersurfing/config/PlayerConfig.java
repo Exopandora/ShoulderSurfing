@@ -11,9 +11,11 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class PlayerConfig implements IPlayerConfig {
+	private final DoubleValue hidePlayerWhenLookingUpAngle;
+	
 	private final BooleanValue playerTransparency;
 	private final BooleanValue isPlayerTransparentWhenAiming;
-	private final DoubleValue hidePlayerWhenLookingUpAngle;
+	
 	private final ConfigValue<TurningMode> turningModeWhenUsingItem;
 	private final ConfigValue<TurningMode> turningModeWhenAttacking;
 	private final ConfigValue<TurningMode> turningModeWhenInteraction;
@@ -27,22 +29,25 @@ public class PlayerConfig implements IPlayerConfig {
 	protected PlayerConfig(ModConfigSpec.Builder builder) {
 		builder.push("player");
 		
-		this.playerTransparency = builder
-			.comment("Whether to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
-			.translation(MOD_ID + ".configuration.player.adjust_player_transparency")
-			.gameRestart()
-			.define("adjust_player_transparency", true);
-		
-		this.isPlayerTransparentWhenAiming = builder
-			.comment("Whether to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.")
-			.translation(MOD_ID + ".configuration.player.turn_player_transparent_when_aiming")
-			.define("turn_player_transparent_when_aiming", false);
-		
 		this.hidePlayerWhenLookingUpAngle = builder
 			.comment("The angle at which the player will no longer be rendered when looking up. Set to 0 to disable.")
 			.translation(MOD_ID + ".configuration.player.hide_player_when_looking_up_angle")
 			.defineInRange("hide_player_when_looking_up_angle", 0D, 0D, 90D);
 		
+		builder.push("transparency");
+		
+		this.playerTransparency = builder
+			.comment("Whether to adjust the player model transparency when view is obstructed. Changing this value may require a game restart to take full effect.")
+			.translation(MOD_ID + ".configuration.player.transparency.adjust_transparency")
+			.gameRestart()
+			.define("adjust_transparency", true);
+		
+		this.isPlayerTransparentWhenAiming = builder
+			.comment("Whether to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.")
+			.translation(MOD_ID + ".configuration.player.transparency.when_aiming")
+			.define("when_aiming", false);
+		
+		builder.pop();
 		builder.push("turning");
 		
 		this.turningModeWhenUsingItem = builder
