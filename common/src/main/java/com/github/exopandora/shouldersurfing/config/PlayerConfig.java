@@ -15,6 +15,7 @@ public class PlayerConfig implements IPlayerConfig {
 	
 	private final BooleanValue playerTransparency;
 	private final BooleanValue isPlayerTransparentWhenAiming;
+	private final BooleanValue isPlayerTransparentWhenClimbing;
 	
 	private final ConfigValue<TurningMode> turningModeWhenUsingItem;
 	private final ConfigValue<TurningMode> turningModeWhenAttacking;
@@ -45,6 +46,11 @@ public class PlayerConfig implements IPlayerConfig {
 			.comment("Whether to turn the player model transparent when aiming. This config option only applies when adjust player transparency is enabled.")
 			.translation(MOD_ID + ".configuration.player.transparency.when_aiming")
 			.define("when_aiming", false);
+		
+		this.isPlayerTransparentWhenClimbing = builder
+			.comment("Whether to turn the player model transparent when climbing. This config option only applies when adjust player transparency is enabled.")
+			.translation(MOD_ID + ".configuration.player.transparency.when_climbing")
+			.define("when_climbing", false);
 		
 		builder.pop();
 		builder.push("turning");
@@ -111,6 +117,11 @@ public class PlayerConfig implements IPlayerConfig {
 	@Override
 	public boolean isPlayerTransparentWhenAiming() {
 		return this.isPlayerTransparentWhenAiming.get();
+	}
+	
+	@Override
+	public boolean isPlayerTransparentWhenClimbing() {
+		return this.isPlayerTransparentWhenClimbing.get();
 	}
 	
 	@Override
