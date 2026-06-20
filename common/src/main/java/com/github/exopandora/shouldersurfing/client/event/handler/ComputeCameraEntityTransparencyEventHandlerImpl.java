@@ -74,7 +74,7 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 		}
 	}
 	
-	public enum WhenAiming implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
+	public enum Aiming implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
 		INSTANCE;
 		
 		private static final int TRANSITION_TICK_COUNT = 5;
