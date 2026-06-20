@@ -119,6 +119,9 @@ public class EntityHelper {
 	}
 	
 	public static Vec3 getDeltaMovementWithoutGravity(Entity entity) {
+		if (entity.isNoGravity() || entity instanceof Player player && player.getAbilities().flying) {
+			return entity.getDeltaMovement();
+		}
 		return entity.getDeltaMovement().add(0, entity.getGravity(), 0);
 	}
 	
