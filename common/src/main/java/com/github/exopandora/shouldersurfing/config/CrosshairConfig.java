@@ -40,7 +40,7 @@ public class CrosshairConfig implements ICrosshairConfig {
 	private final IntValue obstructionIndicatorMinDistanceToCrosshair;
 	private final DoubleValue obstructionIndicatorMaxDistanceToObstruction;
 	
-	public CrosshairConfig(ModConfigSpec.Builder builder) {
+	protected CrosshairConfig(ModConfigSpec.Builder builder) {
 		builder.push("crosshair");
 		
 		this.crosshairType = builder
