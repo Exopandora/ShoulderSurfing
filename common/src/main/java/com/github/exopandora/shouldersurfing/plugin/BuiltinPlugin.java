@@ -44,15 +44,15 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(ComputePlayerRideBoatStateEventHandlerImpl.INSTANCE);
 		eventBus.register(0, ComputePlayerUseItemStateEventHandlerImpl.Pre.INSTANCE);
 		eventBus.register(2000, ComputePlayerUseItemStateEventHandlerImpl.Post.INSTANCE);
-		eventBus.register(150, ComputeTargetCameraOffsetEventHandlerImpl.PassengerModifiersAndMultipliers.INSTANCE);
-		eventBus.register(200, ComputeTargetCameraOffsetEventHandlerImpl.SprintingModifiersAndMultipliers.INSTANCE);
-		eventBus.register(250, ComputeTargetCameraOffsetEventHandlerImpl.AimingModifiersAndMultipliers.INSTANCE);
-		eventBus.register(300, ComputeTargetCameraOffsetEventHandlerImpl.FallFlyingModifiersAndMultipliers.INSTANCE);
-		eventBus.register(350, ComputeTargetCameraOffsetEventHandlerImpl.ClimbingModifiersAndMultipliers.INSTANCE);
-		eventBus.register(400, ComputeTargetCameraOffsetEventHandlerImpl.CenterWhenLookingDown.INSTANCE);
-		eventBus.register(450, ComputeTargetCameraOffsetEventHandlerImpl.DynamicOffsets.INSTANCE);
-		eventBus.register(500, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
-		eventBus.register(2000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
+		eventBus.register(-8000, ComputeTargetCameraOffsetEventHandlerImpl.PassengerModifiersAndMultipliers.INSTANCE);
+		eventBus.register(-7000, ComputeTargetCameraOffsetEventHandlerImpl.SprintingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(-6000, ComputeTargetCameraOffsetEventHandlerImpl.AimingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(-5000, ComputeTargetCameraOffsetEventHandlerImpl.FallFlyingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(-4000, ComputeTargetCameraOffsetEventHandlerImpl.ClimbingModifiersAndMultipliers.INSTANCE);
+		eventBus.register(-3000, ComputeTargetCameraOffsetEventHandlerImpl.CenterWhenLookingDown.INSTANCE);
+		eventBus.register(2000, ComputeTargetCameraOffsetEventHandlerImpl.DynamicOffsets.INSTANCE);
+		eventBus.register(3000, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
+		eventBus.register(4000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
 		eventBus.register(ComputeTemporaryFirstPersonStateEventHandlerImpl.INSTANCE);
 		registerCompatibilityEventHandlers(Mods.CREATE, () ->
 			eventBus.register(2000, CreateModEventHandler.INSTANCE)
