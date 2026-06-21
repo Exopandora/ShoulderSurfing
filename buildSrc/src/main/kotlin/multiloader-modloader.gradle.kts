@@ -48,13 +48,14 @@ publishMods {
         tasks.named("apiJar").get(),
         tasks.named("apiSourcesJar").get()
     )
-    changelog = provider { rootProject.file("changelog.txt").readText() }
+    changelog = provider { rootProject.file("CHANGELOG.md").readText() }
     type = STABLE
     
     curseforge {
         projectId = curseProjectId
         accessToken = System.getenv("CURSE_API_KEY")
         javaVersions.add(JavaVersion.toVersion(javaVersion))
+        changelogType = "markdown"
         client = true
         server = false
     }
