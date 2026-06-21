@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = CapeLayer.class, priority = 500 /* apply before capes mod */)
 public class CapeLayerMixin {
 	@Redirect(
-		method = "submit",
+		method = "render",
 		at = @At(
 			value = "INVOKE",
-			target = "net/minecraft/client/renderer/rendertype/RenderTypes.entitySolid(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/rendertype/RenderType;"
+			target = "net/minecraft/client/renderer/RenderType.entitySolid(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;"
 		),
 		require = 0
 	)
