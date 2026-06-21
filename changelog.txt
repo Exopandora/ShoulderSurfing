@@ -1,2 +1,0 @@
-- Fixed legs not rendering inside boats when improved transparency is enabled
-- Fixed armor trim rendering
