@@ -48,7 +48,7 @@ publishMods {
         tasks.named("apiJar").get(),
         tasks.named("apiSourcesJar").get()
     )
-    changelog = provider { file("../changelog.txt").readText() }
+    changelog = provider { rootProject.file("CHANGELOG.md").readText() }
     type = STABLE
     
     curseforge {
