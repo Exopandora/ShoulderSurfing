@@ -60,7 +60,7 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void frameGraphSetupEvent(FrameGraphSetupEvent event) {
 		float partialTick = event.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
 		ShoulderSurfing instance = ShoulderSurfing.getInstance();
 		Matrix4f modelViewMatrix = event.getCameraState().viewRotationMatrix;
 		Matrix4f projectionMatrix = event.getCameraState().projectionMatrix;

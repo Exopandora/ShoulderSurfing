@@ -14,7 +14,7 @@ public class Util {
 	public static boolean isCameraEntityRidingBoat() {
 		Minecraft instance = Minecraft.getInstance();
 		//noinspection ConstantValue
-		return instance != null && instance.gameRenderer != null && instance.gameRenderer.getMainCamera() != null &&
+		return instance != null && instance.gameRenderer != null && instance.gameRenderer.mainCamera() != null &&
 			instance.getCameraEntity() != null && instance.getCameraEntity().getVehicle() instanceof AbstractBoat;
 	}
 }

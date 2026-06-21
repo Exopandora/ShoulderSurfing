@@ -38,6 +38,7 @@ body:
       label: Minecraft version
       multiple: true
       options:
+        - '26.2'
         - '26.1.x'
         - '1.21.11'
         - '1.21.1'

@@ -25,7 +25,7 @@ public class HealthBarRendererMixin {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withEntity(cameraEntity)

@@ -9,7 +9,7 @@ import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
 import com.github.exopandora.shouldersurfing.config.ObjectPickerConfig;
-import com.github.exopandora.shouldersurfing.mixin.GuiAccessor;
+import com.github.exopandora.shouldersurfing.mixin.HudAccessor;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Camera;
@@ -118,7 +118,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	
 	private void renderCustomCrosshair(GuiGraphicsExtractor guiGraphics, Identifier sprite, RenderPipeline renderPipeline) {
 		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult)) {
+		if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((HudAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult)) {
 			guiGraphics.blitSprite(renderPipeline, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
 		}
 	}

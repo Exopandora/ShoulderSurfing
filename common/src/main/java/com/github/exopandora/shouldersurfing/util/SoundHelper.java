@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 public class SoundHelper {
 	public static Vec3 calcCameraCentricSoundPosition(Entity entity) {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
-		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
 		Vec3 leftVector = new Vec3(camera.leftVector());
 		Vec3 effectiveOffset = instance.getCamera().getOffset().normalize().scale(instance.getCamera().getCameraDistance());
 		return entity.position().add(leftVector.scale(effectiveOffset.x()));

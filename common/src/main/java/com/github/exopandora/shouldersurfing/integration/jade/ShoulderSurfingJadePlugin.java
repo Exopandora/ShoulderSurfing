@@ -42,7 +42,7 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (instance.isShoulderSurfing() && minecraft.player != null && minecraft.level != null) {
 				Player player = minecraft.player;
-				Camera camera = minecraft.gameRenderer.getMainCamera();
+				Camera camera = minecraft.gameRenderer.mainCamera();
 				ClipContext.Fluid fluidContext = IWailaConfig.get().general().getDisplayFluids().ctx;
 				double interactionRangeOverride = IObjectPicker.maxInteractionRange(player) + IWailaConfig.get().general().getExtendedReach();
 				float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);

@@ -55,8 +55,8 @@ publishMods {
         projectId = curseProjectId
         accessToken = System.getenv("CURSE_API_KEY")
         javaVersions.add(JavaVersion.toVersion(javaVersion))
-        clientRequired = true
-        serverRequired = false
+        client = true
+        server = false
     }
     
     modrinth {

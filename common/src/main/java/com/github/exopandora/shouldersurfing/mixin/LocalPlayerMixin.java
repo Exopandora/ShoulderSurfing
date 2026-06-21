@@ -42,7 +42,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 	) {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			PickContext pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.getMainCamera())
+			PickContext pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.mainCamera())
 				.withEntity(shooter)
 				.build();
 			double interactionRange = Math.sqrt(interactionRangeSq);

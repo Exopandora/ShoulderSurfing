@@ -41,7 +41,7 @@ public class ProjectileUtilMixin {
 		Minecraft minecraft = Minecraft.getInstance();
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (entity == minecraft.player && instance.isShoulderSurfing()) {
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withEntity(entity)
 				.build();

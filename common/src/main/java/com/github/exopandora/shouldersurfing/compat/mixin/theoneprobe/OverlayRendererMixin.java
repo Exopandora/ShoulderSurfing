@@ -34,7 +34,7 @@ public class OverlayRendererMixin {
 	) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withFluidContext(fluidContext)
 				.withEntity(entity)

@@ -17,14 +17,4 @@ public class SubmitNodeCollectionMixin {
 	public int submitModel(int tintedColor) {
 		return ShoulderSurfing.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
 	}
-	
-	@ModifyVariable(
-		at = @At("HEAD"),
-		method = "submitModelPart",
-		index = 9,
-		argsOnly = true
-	)
-	public int submitModelPart(int tintedColor) {
-		return ShoulderSurfing.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(tintedColor);
-	}
 }

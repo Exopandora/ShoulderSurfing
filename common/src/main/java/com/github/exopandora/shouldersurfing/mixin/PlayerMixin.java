@@ -22,7 +22,7 @@ public abstract class PlayerMixin extends Entity {
 	
 	@Override
 	public @NotNull HitResult pick(double interactionRange, float partialTick, boolean stopOnFluid) {
-		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && this.level().isClientSide()) {
 			PickContext pickContext = new PickContext.Builder(camera)

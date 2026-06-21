@@ -267,7 +267,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		if (minecraft.player != null && minecraft.player.isScoping()) {
 			return true;
 		}
-		if (minecraft.screen != null) {
+		if (minecraft.gui.screen() != null) {
 			return true;
 		}
 		if (EntityHelper.isPlayerSpectatingEntity()) {

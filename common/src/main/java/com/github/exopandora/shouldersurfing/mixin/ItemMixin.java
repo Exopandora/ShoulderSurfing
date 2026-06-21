@@ -31,7 +31,7 @@ public class ItemMixin {
 	) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withFluidContext(fluidContext)
 				.withEntity(entity)

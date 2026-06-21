@@ -58,7 +58,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 			Config.CLIENT.save();
 		}
 		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.screen == null) {
+		if (minecraft.gui.screen() == null) {
 			this.inputHandler.tick();
 		}
 		boolean isFirstPerson = Perspective.FIRST_PERSON == Perspective.current();
@@ -115,7 +115,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		assert player != null;
-		Camera camera = minecraft.gameRenderer.getMainCamera();
+		Camera camera = minecraft.gameRenderer.mainCamera();
 		double interactionRange = Config.CLIENT.getCrosshairConfig().getCrosshairType().isAimingDecoupled()
 			? 400
 			: Config.CLIENT.getObjectPickerConfig().getCustomRaytraceDistance();
@@ -206,9 +206,6 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		}
 		((OptionsDuck) minecraft.options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
 		this.isShoulderSurfing = isShoulderSurfing;
-		if (minecraft.level != null) {
-			minecraft.levelRenderer.needsUpdate();
-		}
 		if (isEnteringShoulderSurfing) {
 			this.resetState();
 		}

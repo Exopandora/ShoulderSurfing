@@ -34,17 +34,17 @@ dependencies {
 loom {
     runs {
         configureEach {
-            runDir(rootProject.layout.projectDirectory.dir("run").asFile.relativeTo(layout.projectDirectory.asFile).path)
-            ideConfigGenerated(true)
+            runDirectory = rootProject.layout.projectDirectory.dir("run")
+            generateRunConfig = false
         }
         named("client") {
             client()
-            configName = "$modName Fabric Client"
-            programArgs("--username", "Dev")
+            displayName = "$modName Fabric Client"
+            programArguments.addAll("--username", "Dev")
         }
         named("server") {
             server()
-            configName = "$modName Fabric Server"
+            displayName = "$modName Fabric Server"
         }
     }
 }

@@ -35,7 +35,7 @@ public class TESHudMixin {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			double interactionRange = Math.sqrt(interactionRangeSq);
 			PickContext pickContext = new PickContext.Builder(camera)
@@ -59,7 +59,7 @@ public class TESHudMixin {
 		IShoulderSurfing instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			double interactionRange = camera.position().distanceTo(clipContext.getTo());
 			PickContext pickContext = new PickContext.Builder(camera).build();

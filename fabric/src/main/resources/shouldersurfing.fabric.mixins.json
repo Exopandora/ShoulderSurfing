@@ -6,7 +6,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "CameraMixin",
-    "GuiMixin",
+    "HudMixin",
     "LevelRendererMixin",
     "LocalPlayerMixin",
     "MinecraftMixin"

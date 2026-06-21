@@ -31,7 +31,7 @@ public class ShoulderSurfingWthitPlugin implements IWailaClientPlugin {
 		
 		@Override
 		public @NonNull Vec3 getOrigin(float delta) {
-			Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+			Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
 			boolean showFluid = PluginConfig.CLIENT.getBoolean(WailaConstants.CONFIG_SHOW_FLUID);
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withBlockPickOrigin(PickOrigin.PLAYER)
@@ -43,7 +43,7 @@ public class ShoulderSurfingWthitPlugin implements IWailaClientPlugin {
 		
 		@Override
 		public @NonNull Vec3 getDirection(float delta) {
-			Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+			Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
 			boolean showFluid = PluginConfig.CLIENT.getBoolean(WailaConstants.CONFIG_SHOW_FLUID);
 			PickContext pickContext = new PickContext.Builder(camera)
 				.withFluidContext(showFluid ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE)

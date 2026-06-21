@@ -25,7 +25,7 @@ public class ContraptionHandlerClientMixin_6_0_0 {
 	private static void getRayInputs(LocalPlayer player, CallbackInfoReturnable<Couple<Vec3>> cir) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
+			Camera camera = minecraft.gameRenderer.mainCamera();
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			double interactionRange = IObjectPicker.maxInteractionRange(player);
 			var blockTrace = new PickContext.Builder(camera)
