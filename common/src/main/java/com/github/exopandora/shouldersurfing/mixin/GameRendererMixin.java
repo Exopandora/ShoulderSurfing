@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin implements GameRendererAccessor {
 	@Redirect(
-		method = "pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;",
+		method = "pick",
 		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/world/entity/projectile/ProjectileUtil.getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;"
