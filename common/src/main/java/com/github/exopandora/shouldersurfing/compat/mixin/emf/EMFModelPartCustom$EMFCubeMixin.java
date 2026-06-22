@@ -12,7 +12,7 @@ public class EMFModelPartCustom$EMFCubeMixin {
 	@ModifyVariable(
 		at = @At("HEAD"),
 		method = {"compile", "method_32089", "m_171332_"},
-		index = 0,
+		index = 8,
 		argsOnly = true,
 		remap = false
 	)
