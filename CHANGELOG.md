@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.1
 - Updated Russian translations (thanks to mpustovoi)
 - Fixed EMF compatibility
 
