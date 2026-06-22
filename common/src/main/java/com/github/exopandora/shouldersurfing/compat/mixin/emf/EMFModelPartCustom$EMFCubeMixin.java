@@ -8,8 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Pseudo
 @Mixin(targets = "traben.entity_model_features.models.parts.EMFModelPartCustom$EMFCube")
-public class EMFModelPartCustom$EMFCubeMixin
-{
+public class EMFModelPartCustom$EMFCubeMixin {
 	@ModifyVariable(
 		at = @At("HEAD"),
 		method = {"compile", "method_32089", "m_171332_"},
