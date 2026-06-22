@@ -1,3 +1,7 @@
+# Unreleased
+- Updated Russian translations (thanks to mpustovoi)
+- Fixed EMF compatibility
+
 # 5.0.0
 - Added config option to control player transparency effect when climbing (disabled by default)
 - Changed default keybind for swapping shoulders from 'O' to 'U'
