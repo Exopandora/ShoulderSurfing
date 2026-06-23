@@ -31,9 +31,9 @@ import org.joml.Vector4f;
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class CrosshairRenderer implements ICrosshairRenderer {
-	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = new ResourceLocation(MOD_ID, "hud/obstruction_indicator");
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = new ResourceLocation(MOD_ID, "hud/obstructed_crosshair");
-	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = new ResourceLocation(MOD_ID, "hud/obstructed_crosshair_cross");
+	private static final ResourceLocation OBSTRUCTION_INDICATOR_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstruction_indicator.png");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair.png");
+	private static final ResourceLocation OBSTRUCTED_CROSSHAIR_CROSS_SPRITE = new ResourceLocation(MOD_ID, "textures/gui/sprites/hud/obstructed_crosshair_cross.png");
 	
 	private final ShoulderSurfing instance;
 	private Vec2f crosshairOffset;
