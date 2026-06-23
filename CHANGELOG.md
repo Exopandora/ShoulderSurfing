@@ -1,3 +1,6 @@
+# Unreleased
+- Improved mod-compatibility
+
 # 5.0.1
 - Updated Russian translations (thanks to mpustovoi)
 
