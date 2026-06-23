@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.2
 - Improved mod-compatibility
 - Fixed obstruction crosshair rendering
 
