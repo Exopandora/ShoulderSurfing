@@ -1,3 +1,7 @@
+# Unreleased
+- Improved mod-compatibility
+- Fixed obstruction crosshair rendering
+
 # 5.0.1
 - Updated Russian translations (thanks to mpustovoi)
 - Fixed EMF compatibility
