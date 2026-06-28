@@ -44,6 +44,7 @@ public class ShoulderSurfingForge {
 			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
 			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
+			AddGuiOverlayLayersEvent.BUS.addListener(ClientEventHandler::modifyCrosshairPosition);
 			RegisterKeyMappingsEvent.BUS.addListener(this::registerKeyMappingsEvent);
 		}
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (_, _) -> true));
@@ -54,7 +55,6 @@ public class ShoulderSurfingForge {
 		TickEvent.ClientTickEvent.Pre.BUS.addListener(ClientEventHandler::clientTickEvent);
 		MovementInputUpdateEvent.BUS.addListener(Priority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		ViewportEvent.ComputeCameraAngles.BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
-		AddGuiOverlayLayersEvent.BUS.addListener(ClientEventHandler::replaceCrosshairRenderer);
 		
 		Map<String, Object> modProperties = this.modLoadingContext.getContainer().getModInfo().getModProperties();
 		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
