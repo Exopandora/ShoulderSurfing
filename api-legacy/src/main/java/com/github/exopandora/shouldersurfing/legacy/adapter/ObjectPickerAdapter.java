@@ -28,4 +28,19 @@ class ObjectPickerAdapter implements IObjectPicker {
 	public BlockHitResult pickBlocks(PickContext context, double interactionRange, float partialTick) {
 		return this.objectPicker.pickBlocks(context.toNewApi(), interactionRange, partialTick);
 	}
+	
+	@Override
+	public HitResult pick(com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext context, double interactionRange, float partialTick, MultiPlayerGameMode gameMode) {
+		return this.objectPicker.pick(context, interactionRange, partialTick, gameMode);
+	}
+	
+	@Override
+	public EntityHitResult pickEntities(com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext context, double interactionRange, float partialTick) {
+		return this.objectPicker.pickEntities(context, interactionRange, partialTick);
+	}
+	
+	@Override
+	public BlockHitResult pickBlocks(com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext context, double interactionRange, float partialTick) {
+		return this.objectPicker.pickBlocks(context, interactionRange, partialTick);
+	}
 }
