@@ -28,6 +28,7 @@ minecraft {
             systemProperty("eventbus.api.strictRuntimeChecks", "true")
             
             args(
+                "-mixin.config=$modId.api-legacy.mixins.json",
                 "-mixin.config=$modId.common.mixins.json",
                 "-mixin.config=$modId.common.compat.mixins.json",
                 "-mixin.config=$modId.forge.mixins.json",
@@ -65,6 +66,7 @@ tasks.withType<Jar> {
     manifest {
         attributes(mapOf(
             "MixinConfigs" to listOf(
+                "$modId.api-legacy.mixins.json",
                 "$modId.common.mixins.json",
                 "$modId.common.compat.mixins.json",
                 "$modId.forge.mixins.json",
