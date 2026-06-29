@@ -9,7 +9,7 @@ import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.github.exopandora.shouldersurfing.legacy.mixinduck.IShoulderSurfingLegacy;
 
-public class ShoulderSurfingLegacyAdapter implements IShoulderSurfingLegacy {
+public class ShoulderSurfingLegacyAdapter implements IShoulderSurfingLegacy, IShoulderSurfing {
 	@Override
 	public IShoulderSurfingCamera getCamera() {
 		return IShoulderSurfing.getInstance().getCamera();
@@ -38,5 +38,60 @@ public class ShoulderSurfingLegacyAdapter implements IShoulderSurfingLegacy {
 	@Override
 	public void changePerspective(Perspective perspective) {
 		IShoulderSurfing.getInstance().changePerspective(perspective.toNewApi());
+	}
+	
+	@Override
+	public boolean isShoulderSurfing() {
+		return IShoulderSurfing.getInstance().isShoulderSurfing();
+	}
+	
+	@Override
+	public boolean isAiming() {
+		return IShoulderSurfing.getInstance().isAiming();
+	}
+	
+	@Override
+	public boolean isCameraDecoupled() {
+		return IShoulderSurfing.getInstance().isCameraDecoupled();
+	}
+	
+	@Override
+	public boolean isFreeLooking() {
+		return IShoulderSurfing.getInstance().isFreeLooking();
+	}
+	
+	@Override
+	public boolean isTemporaryFirstPerson() {
+		return IShoulderSurfing.getInstance().isTemporaryFirstPerson();
+	}
+	
+	@Override
+	public void changePerspective(com.github.exopandora.shouldersurfing.api.client.Perspective perspective) {
+		IShoulderSurfing.getInstance().changePerspective(perspective);
+	}
+	
+	@Override
+	public void togglePerspective() {
+		IShoulderSurfing.getInstance().togglePerspective();
+	}
+	
+	@Override
+	public void toggleCameraCoupling() {
+		IShoulderSurfing.getInstance().toggleCameraCoupling();
+	}
+	
+	@Override
+	public void swapShoulder() {
+		IShoulderSurfing.getInstance().swapShoulder();
+	}
+	
+	@Override
+	public boolean isLookFollowingCrosshairTarget() {
+		return IShoulderSurfing.getInstance().isLookFollowingCrosshairTarget();
+	}
+	
+	@Override
+	public void resetState() {
+		IShoulderSurfing.getInstance().resetState();
 	}
 }

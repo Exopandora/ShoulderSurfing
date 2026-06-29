@@ -27,7 +27,6 @@ neoForge {
 		
 		create("client") {
 			client()
-            jvmArgument("-Dmixin.debug.export=true")
 		}
 		
 		create("server") {
