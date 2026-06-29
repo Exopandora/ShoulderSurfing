@@ -29,4 +29,24 @@ class CrosshairRendererAdapter implements ICrosshairRenderer {
 	public boolean isCrosshairDynamic(Entity entity) {
 		return this.crosshairRenderer.isCrosshairDynamic();
 	}
+	
+	@Override
+	public boolean isCrosshairVisible() {
+		return this.crosshairRenderer.isCrosshairVisible();
+	}
+	
+	@Override
+	public boolean isObstructionCrosshairVisible() {
+		return this.crosshairRenderer.isObstructionCrosshairVisible();
+	}
+	
+	@Override
+	public boolean isObstructionIndicatorVisible() {
+		return this.crosshairRenderer.isObstructionIndicatorVisible();
+	}
+	
+	@Override
+	public boolean isCrosshairDynamic() {
+		return this.crosshairRenderer.isCrosshairDynamic();
+	}
 }

@@ -2,6 +2,13 @@ package com.github.exopandora.shouldersurfing.legacy.adapter;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
+import com.github.exopandora.shouldersurfing.api.config.IAudioConfig;
+import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
+import com.github.exopandora.shouldersurfing.api.config.ICrosshairConfig;
+import com.github.exopandora.shouldersurfing.api.config.IIntegrationsConfig;
+import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
+import com.github.exopandora.shouldersurfing.api.config.IPerspectiveConfig;
+import com.github.exopandora.shouldersurfing.api.config.IPlayerConfig;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
@@ -547,5 +554,40 @@ class ClientConfigAdapter implements IClientConfig {
 	@Override
 	public List<? extends String> getCuriosAdaptiveCrosshairItemComponents() {
 		return this.config.getIntegrationsConfig().getCuriosAdaptiveCrosshairItemComponents();
+	}
+	
+	@Override
+	public ICameraConfig getCameraConfig() {
+		return this.config.getCameraConfig();
+	}
+	
+	@Override
+	public IPerspectiveConfig getPerspectiveConfig() {
+		return this.config.getPerspectiveConfig();
+	}
+	
+	@Override
+	public IPlayerConfig getPlayerConfig() {
+		return this.config.getPlayerConfig();
+	}
+	
+	@Override
+	public IObjectPickerConfig getObjectPickerConfig() {
+		return this.config.getObjectPickerConfig();
+	}
+	
+	@Override
+	public ICrosshairConfig getCrosshairConfig() {
+		return this.config.getCrosshairConfig();
+	}
+	
+	@Override
+	public IAudioConfig getAudioConfig() {
+		return this.config.getAudioConfig();
+	}
+	
+	@Override
+	public IIntegrationsConfig getIntegrationsConfig() {
+		return this.config.getIntegrationsConfig();
 	}
 }
