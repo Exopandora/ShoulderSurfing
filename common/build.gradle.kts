@@ -11,8 +11,9 @@ base {
 
 dependencies {
     compileOnly(project(":api"))
+    compileOnly(project(":api-legacy"))
     compileOnly(project(":compat"))
-    
+
     compileOnly(libs.mixin)
     compileOnly(libs.forgeconfigapiport.common)
     compileOnly(libs.wthit.common)

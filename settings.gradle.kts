@@ -42,6 +42,7 @@ rootProject.name = "ShoulderSurfing"
 
 include(
     ":api",
+    ":api-legacy",
     ":common",
     ":compat",
     ":forge",

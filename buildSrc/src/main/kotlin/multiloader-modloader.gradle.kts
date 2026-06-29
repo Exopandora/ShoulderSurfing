@@ -11,14 +11,17 @@ dependencies {
     compileOnly(project(":api"))
     compileOnly(project(":common"))
     compileOnly(project(":compat"))
+    implementation(project(":api-legacy"))
 }
 
 tasks.named<JavaCompile>("compileJava") {
     source(project(":api").sourceSets.main.get().allSource)
+    source(project(":api-legacy").sourceSets.main.get().allSource)
     source(project(":common").sourceSets.main.get().allSource)
 }
 
 tasks.named<ProcessResources>("processResources") {
+    from(project(":api-legacy").sourceSets.main.get().resources)
     from(project(":common").sourceSets.main.get().resources)
 }
 

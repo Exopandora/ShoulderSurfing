@@ -3,6 +3,9 @@ loaderVersion = "[4,)"
 license = "MIT"
 
 [[mixins]]
+config = "shouldersurfing.api-legacy.mixins.json"
+
+[[mixins]]
 config = "shouldersurfing.common.mixins.json"
 
 [[mixins]]
