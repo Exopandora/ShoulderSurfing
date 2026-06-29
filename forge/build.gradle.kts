@@ -21,6 +21,7 @@ base {
 mixin {
 	add(sourceSets.main.get(), "$modId.refmap.json")
 	
+	config("$modId.api-legacy.mixins.json")
 	config("$modId.common.mixins.json")
 	config("$modId.common.compat.mixins.json")
 	config("$modId.forge.mixins.json")
@@ -65,6 +66,7 @@ tasks.withType<Jar> {
 	manifest {
 		attributes(mapOf(
 			"MixinConfigs" to listOf(
+				"$modId.api-legacy.mixins.json",
 				"$modId.common.mixins.json",
 				"$modId.common.compat.mixins.json",
 				"$modId.forge.mixins.json",
