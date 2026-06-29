@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public interface IClientConfig {
+public interface IClientConfig extends com.github.exopandora.shouldersurfing.api.config.IClientConfig {
 	double getOffsetX();
 	
 	double getOffsetY();
