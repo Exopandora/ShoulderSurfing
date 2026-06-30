@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.4
 - Improved compatibility with other crosshair mods for forge build (thanks to Fealtous)
 - Fixed incorrect behavior of setXRot and setYRot API methods
 
