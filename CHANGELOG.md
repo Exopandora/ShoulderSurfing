@@ -1,3 +1,7 @@
+# Unreleased
+- Improved compatibility with other crosshair mods for forge build (thanks to Fealtous)
+- Fixed incorrect behavior of setXRot and setYRot API methods
+
 # 5.0.3
 - Updated traditional and simplified Chinese translations (thanks to Xinyang-Gao)
 
