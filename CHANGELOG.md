@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.4
 - Fixed incorrect behavior of setXRot and setYRot API methods
 
 # 5.0.3
