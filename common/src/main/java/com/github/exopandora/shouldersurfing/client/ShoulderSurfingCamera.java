@@ -322,7 +322,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	
 	@Override
 	public void setXRot(float xRot) {
-		this.rotation = new Vec2f(0, this.rotation.y());
+		this.rotation = new Vec2f(xRot, this.rotation.y());
 		this.rotationOffset = new Vec2f(0, this.rotationOffset.y());
 		this.rotationOffsetO = new Vec2f(0, this.rotationOffsetO.y());
 	}
@@ -334,7 +334,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	
 	@Override
 	public void setYRot(float yRot) {
-		this.rotation = new Vec2f(this.rotation.x(), 0);
+		this.rotation = new Vec2f(this.rotation.x(), yRot);
 		this.rotationOffset = new Vec2f(this.rotationOffset.x(), 0);
 		this.rotationOffsetO = new Vec2f(this.rotationOffsetO.x(), 0);
 	}
