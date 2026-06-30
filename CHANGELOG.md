@@ -1,3 +1,7 @@
+# Unreleased
+- Updated traditional and simplified Chinese translations (thanks to Xinyang-Gao)
+- Added legacy API adapters for backwards compatibility
+
 # 5.0.2
 - Improved mod-compatibility
 
