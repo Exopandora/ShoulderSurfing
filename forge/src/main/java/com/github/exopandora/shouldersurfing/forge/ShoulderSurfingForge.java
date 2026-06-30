@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 //import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
+import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -43,6 +44,7 @@ public class ShoulderSurfingForge {
 			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
 			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
+			AddGuiOverlayLayersEvent.BUS.addListener(ClientEventHandler::modifyCrosshairPosition);
 			RegisterKeyMappingsEvent.BUS.addListener(this::registerKeyMappingsEvent);
 		}
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (_, _) -> true));
