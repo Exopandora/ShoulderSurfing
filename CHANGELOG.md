@@ -1,3 +1,6 @@
+# Unreleased
+- Updated traditional and simplified Chinese translations (thanks to Xinyang-Gao)
+
 # 5.0.2
 - Improved mod-compatibility
 
