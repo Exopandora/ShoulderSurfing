@@ -106,12 +106,12 @@ publishMods {
 	
 	curseforge {
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
+		incompatible("better-third-person", "nimble", "ydms-custom-camera-view")
 	}
 	
 	modrinth {
 		minecraftVersions.set(compatibleVersions)
-		incompatible("better-third-person", "nimble", "valkyrien-skies", "ydms-custom-camera-view")
+		incompatible("better-third-person", "nimble", "ydms-custom-camera-view")
 	}
 }
 
