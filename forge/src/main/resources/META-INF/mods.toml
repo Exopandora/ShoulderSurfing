@@ -1,6 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[65,)"
 license = "MIT"
+clientSideOnly = true
 
 [[mods]]
 modId = "${modId}"
