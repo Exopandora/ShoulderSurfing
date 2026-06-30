@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.3
 - Updated traditional and simplified Chinese translations (thanks to Xinyang-Gao)
 
 # 5.0.2
