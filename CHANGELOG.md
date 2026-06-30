@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed incorrect behavior of setXRot and setYRot API methods
+
 # 5.0.3
 - Updated traditional and simplified Chinese translations (thanks to Xinyang-Gao)
 - Added legacy API adapters for backwards compatibility
