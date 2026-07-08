@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.Function;
 
 @Mixin(RenderTypes.class)
-public class RenderTypesMixin {
+class RenderTypesMixin {
 	@Shadow
 	private static @Final Function<Identifier, RenderType> ARMOR_TRANSLUCENT;
 	

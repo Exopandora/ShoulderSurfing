@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 
 @Mixin(ProjectileUtil.class)
-public class ProjectileUtilMixin {
+class ProjectileUtilMixin {
 	@Inject(
 		method = "getHitEntitiesAlong",
 		at = @At("HEAD"),

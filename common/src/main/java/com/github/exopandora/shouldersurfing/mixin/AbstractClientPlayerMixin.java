@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(AbstractClientPlayer.class)
-public class AbstractClientPlayerMixin {
+class AbstractClientPlayerMixin {
 	@ModifyVariable(
 		method = "getFieldOfViewModifier",
 		at = @At("HEAD"),

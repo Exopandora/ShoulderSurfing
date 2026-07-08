@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LocalPlayer.class, priority = 1500 /* apply after other mods */)
-public class LocalPlayerMixin {
+class LocalPlayerMixin {
 	@Shadow
-	public ClientInput input;
+	private ClientInput input;
 	
 	@Inject(
 		method = "aiStep",

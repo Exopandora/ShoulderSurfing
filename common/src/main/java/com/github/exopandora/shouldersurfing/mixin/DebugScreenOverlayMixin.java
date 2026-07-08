@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(DebugScreenOverlay.class)
-public class DebugScreenOverlayMixin {
+class DebugScreenOverlayMixin {
 	@Inject(
 		method = "extractLines",
 		at = @At("HEAD")

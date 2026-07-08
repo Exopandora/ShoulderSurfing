@@ -17,14 +17,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecart.class)
-public abstract class MinecartMixin extends AbstractMinecart {
+abstract class MinecartMixin extends AbstractMinecart {
 	@Shadow
 	private float rotationOffset;
 	
 	@Shadow
 	private float playerRotationOffset;
 	
-	protected MinecartMixin(EntityType<?> entityType, Level level) {
+	private MinecartMixin(EntityType<?> entityType, Level level) {
 		super(entityType, level);
 	}
 	
