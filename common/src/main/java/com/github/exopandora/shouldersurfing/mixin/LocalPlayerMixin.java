@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.function.Predicate;
 
 @Mixin(value = LocalPlayer.class, priority = 1500 /* apply after essential client, so turn method gets overwritten */)
-public abstract class LocalPlayerMixin extends AbstractClientPlayer {
-	public LocalPlayerMixin(ClientLevel level, GameProfile gameProfile) {
+abstract class LocalPlayerMixin extends AbstractClientPlayer {
+	private LocalPlayerMixin(ClientLevel level, GameProfile gameProfile) {
 		super(level, gameProfile);
 	}
 	

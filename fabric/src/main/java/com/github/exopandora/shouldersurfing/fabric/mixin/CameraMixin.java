@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin implements CameraDuck {
+abstract class CameraMixin implements CameraDuck {
 	@ModifyArg(
 		method = "setRotation(FF)V",
 		at = @At(

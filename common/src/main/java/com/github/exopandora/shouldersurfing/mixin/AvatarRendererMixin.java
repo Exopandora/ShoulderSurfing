@@ -14,8 +14,8 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(AvatarRenderer.class)
-public abstract class AvatarRendererMixin extends LivingEntityRenderer<LivingEntity, LivingEntityRenderState, EntityModel<LivingEntityRenderState>> {
-	public AvatarRendererMixin(Context context, EntityModel<LivingEntityRenderState> model, float shadow) {
+abstract class AvatarRendererMixin extends LivingEntityRenderer<LivingEntity, LivingEntityRenderState, EntityModel<LivingEntityRenderState>> {
+	private AvatarRendererMixin(Context context, EntityModel<LivingEntityRenderState> model, float shadow) {
 		super(context, model, shadow);
 	}
 	

@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends Entity {
-	protected PlayerMixin(EntityType<? extends LivingEntity> type, Level level) {
+abstract class PlayerMixin extends Entity {
+	private PlayerMixin(EntityType<? extends LivingEntity> type, Level level) {
 		super(type, level);
 	}
 	

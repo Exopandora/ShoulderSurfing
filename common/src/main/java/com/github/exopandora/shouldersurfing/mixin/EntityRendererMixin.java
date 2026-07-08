@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EntityRenderer.class)
-public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
+class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
 	@Inject(
 		method = "createRenderState(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;",
 		at = @At(
@@ -23,7 +23,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 		),
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
-	public void createRenderState(T entity, float partialTick, CallbackInfoReturnable<S> ci, S renderState) {
+	private void createRenderState(T entity, float partialTick, CallbackInfoReturnable<S> ci, S renderState) {
 		if (entity == Minecraft.getInstance().getCameraEntity()) {
 			ShoulderSurfing.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(renderState);
 		}

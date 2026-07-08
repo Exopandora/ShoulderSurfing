@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
-public abstract class GameRendererMixin implements GameRendererAccessor {
+abstract class GameRendererMixin implements GameRendererAccessor {
 	@ModifyVariable(
 		method = "getFov",
 		at = @At(
@@ -42,7 +42,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		method = "render",
 		at = @At("HEAD")
 	)
-	public void render(CallbackInfo ci) {
+	private void render(CallbackInfo ci) {
 		ShoulderSurfing.getInstance().getCameraEntityRenderer().setCameraEntityRenderState(null);
 	}
 	
@@ -81,7 +81,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 			)
 		)
 	)
-	public Object bobView(OptionInstance<Boolean> instance) {
+	private Object bobView(OptionInstance<Boolean> instance) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			return switch (Config.CLIENT.getCameraConfig().getViewBobbingMode()) {
 				case INHERIT -> instance.get();
@@ -97,7 +97,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public void bobView(CallbackInfo ci) {
+	private void bobView(CallbackInfo ci) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			if (Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
 				ci.cancel();

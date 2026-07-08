@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import java.util.function.Function;
 
 @Mixin(BeeStingerModel.class)
-public class BeeStingerModelMixin {
+class BeeStingerModelMixin {
 	@ModifyArg(
 		method = "<init>",
 		at = @At(
