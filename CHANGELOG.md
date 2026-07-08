@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.5
 - Fixed obstruction indicator remaining visible after switching perspective
 
 # 5.0.4
