@@ -71,6 +71,9 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 			this.isObstructionCrosshairVisible = computeIsObstructionCrosshairVisible(
 				this.instance.isAiming(), this.isObstructionIndicatorVisible
 			);
+		} else {
+			this.isObstructionIndicatorVisible = false;
+			this.isObstructionCrosshairVisible = false;
 		}
 	}
 	
