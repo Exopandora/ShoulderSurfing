@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
 abstract class CameraMixin implements CameraDuck {
+	@Shadow
 	private static @Final Vector3f FORWARDS;
 	
 	@Shadow
