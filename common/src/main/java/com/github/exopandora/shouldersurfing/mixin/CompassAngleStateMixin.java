@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = CompassAngleState.class)
-public class CompassAngleStateMixin {
+class CompassAngleStateMixin {
 	@Redirect(
 		method = "getWrappedVisualRotationY",
 		at = @At(

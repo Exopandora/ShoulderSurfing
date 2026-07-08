@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin implements CameraDuck {
+abstract class CameraMixin implements CameraDuck {
 	private static @Final Vector3fc FORWARDS;
 	
 	@Shadow
@@ -67,10 +67,10 @@ public abstract class CameraMixin implements CameraDuck {
 	private @Final Quaternionf rotation;
 	
 	@Shadow
-	protected abstract void move(float x, float y, float z);
+	abstract void move(float x, float y, float z);
 	
 	@Shadow
-	protected abstract void setRotation(float yRot, float xRot);
+	abstract void setRotation(float yRot, float xRot);
 	
 	@Inject(
 		method = "alignWithEntity",

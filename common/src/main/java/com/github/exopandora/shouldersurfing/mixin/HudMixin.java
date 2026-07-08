@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Hud.class)
-public class HudMixin {
+class HudMixin {
 	@Shadow
 	private @Final Minecraft minecraft;
 	

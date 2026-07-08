@@ -20,11 +20,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityBoundSoundInstance.class)
-public abstract class EntityBoundSoundInstanceMixin extends AbstractTickableSoundInstance {
+abstract class EntityBoundSoundInstanceMixin extends AbstractTickableSoundInstance {
 	@Shadow
 	private @Final Entity entity;
 	
-	protected EntityBoundSoundInstanceMixin(SoundEvent soundEvent, SoundSource soundSource, RandomSource randomSource) {
+	private EntityBoundSoundInstanceMixin(SoundEvent soundEvent, SoundSource soundSource, RandomSource randomSource) {
 		super(soundEvent, soundSource, randomSource);
 	}
 	

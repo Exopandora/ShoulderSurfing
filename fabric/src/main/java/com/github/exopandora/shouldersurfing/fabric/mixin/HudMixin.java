@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Hud.class)
-public class HudMixin {
+class HudMixin {
 	@Inject(
 		method = "extractCrosshair",
 		at = @At("HEAD"),

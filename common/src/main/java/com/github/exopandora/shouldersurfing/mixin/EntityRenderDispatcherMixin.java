@@ -17,13 +17,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderDispatcher.class)
-public class EntityRenderDispatcherMixin {
+class EntityRenderDispatcherMixin {
 	@Inject(
 		method = "submit",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public <S extends EntityRenderState> void preRender(
+	private <S extends EntityRenderState> void preRender(
 		S renderState,
 		CameraRenderState camera,
 		double x,
@@ -50,7 +50,7 @@ public class EntityRenderDispatcherMixin {
 		method = "submit",
 		at = @At("TAIL")
 	)
-	public <S extends EntityRenderState> void postRender(
+	private <S extends EntityRenderState> void postRender(
 		S renderState,
 		CameraRenderState camera,
 		double x,
