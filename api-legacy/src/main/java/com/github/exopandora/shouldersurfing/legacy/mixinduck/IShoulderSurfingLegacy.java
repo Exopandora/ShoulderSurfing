@@ -9,26 +9,26 @@ import com.github.exopandora.shouldersurfing.api.model.Perspective;
 
 public interface IShoulderSurfingLegacy {
 	default IShoulderSurfingCamera getCamera() {
-		throw new AssertionError("Not implemented");
+		throw new AssertionError();
 	}
 	
 	default ICameraEntityRenderer getCameraEntityRenderer() {
-		throw new AssertionError("Not implemented");
+		throw new AssertionError();
 	}
 	
 	default ICrosshairRenderer getCrosshairRenderer() {
-		throw new AssertionError("Not implemented");
+		throw new AssertionError();
 	}
 	
 	default IObjectPicker getObjectPicker() {
-		throw new AssertionError("Not implemented");
+		throw new AssertionError();
 	}
 	
 	default IClientConfig getClientConfig() {
-		throw new AssertionError("Not implemented");
+		throw new AssertionError();
 	}
 	
 	default void changePerspective(Perspective perspective) {
-		throw new AssertionError("Not implemented");
+		throw new AssertionError();
 	}
 }
