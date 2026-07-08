@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed obstruction indicator remaining visible after switching perspective
+
 # 5.0.4
 - Fixed incorrect behavior of setXRot and setYRot API methods
 
