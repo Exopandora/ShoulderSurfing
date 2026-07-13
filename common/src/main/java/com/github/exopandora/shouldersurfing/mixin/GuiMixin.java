@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Gui.class)
-public class GuiMixin {
+class GuiMixin {
 	@Shadow
 	private @Final Minecraft minecraft;
 	

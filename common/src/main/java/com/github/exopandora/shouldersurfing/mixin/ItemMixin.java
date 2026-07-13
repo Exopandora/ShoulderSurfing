@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Item.class)
-public class ItemMixin {
+class ItemMixin {
 	@Redirect(
 		method = "getPlayerPOVHitResult",
 		at = @At(

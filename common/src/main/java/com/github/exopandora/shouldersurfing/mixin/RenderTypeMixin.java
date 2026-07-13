@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(RenderType.class)
-public abstract class RenderTypeMixin extends RenderStateShard {
-	public RenderTypeMixin(String name, Runnable setupState, Runnable clearState) {
+abstract class RenderTypeMixin extends RenderStateShard {
+	private RenderTypeMixin(String name, Runnable setupState, Runnable clearState) {
 		super(name, setupState, clearState);
 	}
 	

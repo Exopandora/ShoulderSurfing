@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.Predicate;
 
 @Mixin(GameRenderer.class)
-public abstract class GameRendererMixin implements GameRendererAccessor {
+abstract class GameRendererMixin implements GameRendererAccessor {
 	@Redirect(
 		method = "pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;",
 		at = @At(
@@ -81,7 +81,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 			)
 		)
 	)
-	public Object bobView(OptionInstance<Boolean> instance) {
+	private Object bobView(OptionInstance<Boolean> instance) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			return switch (Config.CLIENT.getCameraConfig().getViewBobbingMode()) {
 				case INHERIT -> instance.get();
@@ -97,7 +97,7 @@ public abstract class GameRendererMixin implements GameRendererAccessor {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public void bobView(CallbackInfo ci) {
+	private void bobView(CallbackInfo ci) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
 			if (Config.CLIENT.getCameraConfig().getViewBobbingMode() == ViewBobbingMode.OFF) {
 				ci.cancel();

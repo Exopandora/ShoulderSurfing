@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public class GuiMixin {
+class GuiMixin {
 	@Inject(
 		method = "renderCrosshair",
 		at = @At("HEAD"),

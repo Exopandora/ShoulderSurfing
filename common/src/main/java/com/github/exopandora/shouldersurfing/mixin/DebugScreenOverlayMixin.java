@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(DebugScreenOverlay.class)
-public class DebugScreenOverlayMixin {
+class DebugScreenOverlayMixin {
 	@Inject(
 		method = "getGameInformation",
 		at = @At("RETURN")

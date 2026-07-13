@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(BeeStingerLayer.class)
-public class BeeStingerLayerMixin {
+class BeeStingerLayerMixin {
 	@Redirect(
 		method = "renderStuckItem",
 		at = @At(

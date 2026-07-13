@@ -7,14 +7,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ModelPart.Cube.class)
-public class ModelPart$CubeMixin {
+class ModelPart$CubeMixin {
 	@ModifyVariable(
 		at = @At("HEAD"),
 		method = "compile",
 		index = 5,
 		argsOnly = true
 	)
-	public int compile(int color) {
+	private int compile(int color) {
 		return ShoulderSurfing.getInstance().getCameraEntityRenderer().applyCameraEntityAlphaContextAware(color);
 	}
 }
