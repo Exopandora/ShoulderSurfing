@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed curios compatibility plugin loading
+
 # 5.0.5
 - Fixed obstruction indicator remaining visible after switching perspective
 
