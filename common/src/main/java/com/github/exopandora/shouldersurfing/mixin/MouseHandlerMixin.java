@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(MouseHandler.class)
-public class MouseHandlerMixin {
+class MouseHandlerMixin {
 	@Redirect(
 		method = "turnPlayer",
 		at = @At(

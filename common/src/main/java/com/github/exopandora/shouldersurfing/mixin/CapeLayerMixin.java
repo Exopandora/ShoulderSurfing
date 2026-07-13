@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = CapeLayer.class, priority = 500 /* apply before capes mod */)
-public class CapeLayerMixin {
+class CapeLayerMixin {
 	@Redirect(
 		method = "render",
 		at = @At(

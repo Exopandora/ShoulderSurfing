@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin implements CameraDuck {
+abstract class CameraMixin implements CameraDuck {
 	@Shadow
 	private @Final Vector3f forwards;
 	
@@ -47,10 +47,10 @@ public abstract class CameraMixin implements CameraDuck {
 	private @Final Quaternionf rotation;
 	
 	@Shadow
-	protected abstract void move(double x, double y, double z);
+	abstract void move(double x, double y, double z);
 	
 	@Shadow
-	protected abstract void setRotation(float yRot, float xRot);
+	abstract void setRotation(float yRot, float xRot);
 	
 	@Inject(
 		method = "setup",

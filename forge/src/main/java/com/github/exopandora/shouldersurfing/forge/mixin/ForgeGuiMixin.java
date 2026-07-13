@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ForgeGui.class)
-public class ForgeGuiMixin {
+class ForgeGuiMixin {
 	@Redirect(
 		method = "renderSpyglassOverlay",
 		at = @At(

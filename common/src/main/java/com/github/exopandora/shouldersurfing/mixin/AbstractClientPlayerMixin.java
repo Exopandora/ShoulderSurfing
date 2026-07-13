@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(AbstractClientPlayer.class)
-public class AbstractClientPlayerMixin {
+class AbstractClientPlayerMixin {
 	@Redirect(
 		method = "getFieldOfViewModifier",
 		at = @At(

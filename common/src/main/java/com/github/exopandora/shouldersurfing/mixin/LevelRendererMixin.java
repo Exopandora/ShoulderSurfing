@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin {
+class LevelRendererMixin {
 	@Inject(
 		method = "renderEntity",
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	public void preRender(Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
+	private void preRender(Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
 		if (entity == Minecraft.getInstance().getCameraEntity() && ShoulderSurfing.getInstance().getCameraEntityRenderer().preRenderCameraEntity(entity, partialTick)) {
 			ci.cancel();
 		}
@@ -28,7 +28,7 @@ public class LevelRendererMixin {
 		method = "renderEntity",
 		at = @At("TAIL")
 	)
-	public void postRender(Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
+	private void postRender(Entity entity, double x, double y, double z, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, CallbackInfo ci) {
 		if (entity == Minecraft.getInstance().getCameraEntity()) {
 			ShoulderSurfing.getInstance().getCameraEntityRenderer().postRenderCameraEntity(entity, partialTick);
 		}
