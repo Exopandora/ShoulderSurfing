@@ -2,10 +2,8 @@ package com.github.exopandora.shouldersurfing.client.world.phys;
 
 import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.api.util.Couple;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -14,18 +12,18 @@ import net.minecraft.world.phys.Vec3;
 public class ObjectPicker implements IObjectPicker {
 	@Override
 	public HitResult pick(PickContext context, double interactionRangeOverride, float partialTick, MultiPlayerGameMode gameMode) {
-		double interactionRange = Math.max(gameMode.getPickRange(), interactionRangeOverride);
+		var interactionRange = Math.max(gameMode.getPickRange(), interactionRangeOverride);
 		if (gameMode.hasFarPickRange()) {
 			interactionRange = Math.max(interactionRange, 6.0D);
 		}
-		HitResult blockHit = this.pickBlocks(context, interactionRange, partialTick);
-		Vec3 eyePosition = context.entity().getEyePosition(partialTick);
+		var blockHit = this.pickBlocks(context, interactionRange, partialTick);
+		var eyePosition = context.entity().getEyePosition(partialTick);
 		if (blockHit.getType() != HitResult.Type.MISS) {
 			interactionRange = blockHit.getLocation().distanceTo(eyePosition);
 		}
-		EntityHitResult entityHit = this.pickEntities(context, interactionRange, partialTick);
+		var entityHit = this.pickEntities(context, interactionRange, partialTick);
 		if (entityHit != null) {
-			double distance = eyePosition.distanceTo(entityHit.getLocation());
+			var distance = eyePosition.distanceTo(entityHit.getLocation());
 			if (distance < interactionRange || blockHit.getType() != HitResult.Type.MISS) {
 				return entityHit;
 			}
@@ -35,12 +33,12 @@ public class ObjectPicker implements IObjectPicker {
 	
 	@Override
 	public EntityHitResult pickEntities(PickContext context, double interactionRange, float partialTick) {
-		Vec3 viewVector = new Vec3(context.camera().getLookVector()).scale(interactionRange);
-		AABB aabb = context.entity().getBoundingBox()
+		var viewVector = new Vec3(context.camera().getLookVector()).scale(interactionRange);
+		var aabb = context.entity().getBoundingBox()
 			.expandTowards(viewVector)
 			.inflate(1.0D, 1.0D, 1.0D);
-		Couple<Vec3> entityRay = context.entityTrace(interactionRange, partialTick);
-		double interactionRangeSq = entityRay.left().distanceToSqr(entityRay.right());
+		var entityRay = context.entityTrace(interactionRange, partialTick);
+		var interactionRangeSq = entityRay.left().distanceToSqr(entityRay.right());
 		return ProjectileUtil.getEntityHitResult(
 			context.entity(), entityRay.left(), entityRay.right(), aabb, context.entityFilter(), interactionRangeSq
 		);

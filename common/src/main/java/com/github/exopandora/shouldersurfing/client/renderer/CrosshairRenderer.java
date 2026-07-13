@@ -6,18 +6,14 @@ import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
-import com.github.exopandora.shouldersurfing.config.ObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.mixin.GuiAccessor;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -57,7 +53,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	
 	public void renderTick(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick) {
 		if (this.instance.isShoulderSurfing()) {
-			Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+			var cameraEntity = Minecraft.getInstance().getCameraEntity();
 			this.isCrosshairDynamic = computeIsCrosshairDynamic(cameraEntity, this.instance.isAiming());
 			if (Minecraft.getInstance().player != null) {
 				this.updateDynamicRaytrace(camera, modelViewMatrix, projectionMatrix, partialTick);
@@ -123,41 +119,41 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	}
 	
 	private void renderCustomCrosshair(GuiGraphics guiGraphics, ResourceLocation sprite) {
-		Minecraft minecraft = Minecraft.getInstance();
+		var minecraft = Minecraft.getInstance();
 		if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult)) {
 			guiGraphics.blit(sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 0, 0, 15, 15, 15, 15);
 		}
 	}
 	
 	private void updateDynamicRaytrace(Camera camera, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, float partialTick) {
-		ObjectPickerConfig objectPickerConfig = Config.CLIENT.getObjectPickerConfig();
-		double interactionRangeOverride = objectPickerConfig.isCustomRaytraceDistanceEnabled()
+		var objectPickerConfig = Config.CLIENT.getObjectPickerConfig();
+		var interactionRangeOverride = objectPickerConfig.isCustomRaytraceDistanceEnabled()
 			? objectPickerConfig.getCustomRaytraceDistance()
 			: 0;
-		MultiPlayerGameMode gameMode = Minecraft.getInstance().gameMode;
-		Player player = Minecraft.getInstance().player;
+		var gameMode = Minecraft.getInstance().gameMode;
+		var player = Minecraft.getInstance().player;
 		// Trace primary crosshair
-		PickContext.Builder pickContextBuilder = new PickContext.Builder(camera);
+		var pickContextBuilder = new PickContext.Builder(camera);
 		if (this.isCrosshairDynamic) {
 			pickContextBuilder.dynamicTrace();
 		}
-		PickContext pickContext = pickContextBuilder.build();
-		HitResult hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, gameMode);
-		Vec3 position = hitResult.getLocation();
+		var pickContext = pickContextBuilder.build();
+		var hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, gameMode);
+		var position = hitResult.getLocation();
 		// Trace obstruction crosshair
 		if (!this.isCrosshairDynamic) {
 			pickContext = pickContextBuilder.obstructionTrace(position).build();
 			hitResult = this.instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, gameMode);
 			position = hitResult.getLocation();
 		}
-		Vec2f projected = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
+		var projected = project2D(position.subtract(camera.getPosition()), modelViewMatrix, projectionMatrix);
 		Vec2f crosshairOffset = null;
 		if (projected != null) {
-			Window window = Minecraft.getInstance().getWindow();
-			Vec2f screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
-			Vec2f center = screenSize.divide(2);
-			CrosshairConfig crosshairConfig = Config.CLIENT.getCrosshairConfig();
-			double maxDistanceToObstruction = crosshairConfig.getObstructionIndicatorMaxDistanceToObstruction();
+			var window = Minecraft.getInstance().getWindow();
+			var screenSize = new Vec2f(window.getScreenWidth(), window.getScreenHeight());
+			var center = screenSize.divide(2);
+			var crosshairConfig = Config.CLIENT.getCrosshairConfig();
+			var maxDistanceToObstruction = crosshairConfig.getObstructionIndicatorMaxDistanceToObstruction();
 			if (this.isCrosshairDynamic || !crosshairConfig.isObstructionIndicatorEnabled() || maxDistanceToObstruction <= 0 || position.distanceToSqr(player.getEyePosition()) <= maxDistanceToObstruction * maxDistanceToObstruction) {
 				crosshairOffset = projected.subtract(center).divide((float) window.getGuiScale());
 			}
@@ -182,7 +178,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 		if (crosshairOffset == null && isCrosshairDynamic) {
 			return false;
 		}
-		HitResult hitResult = Minecraft.getInstance().hitResult;
+		var hitResult = Minecraft.getInstance().hitResult;
 		return switch (Config.CLIENT.getCrosshairConfig().getCrosshairVisibility(Perspective.current())) {
 			case NEVER -> false;
 			case WHEN_AIMING -> isAiming;
@@ -202,7 +198,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 		if (!isAiming && Config.CLIENT.getCrosshairConfig().isObstructionIndicatorOnlyShownWhenAiming()) {
 			return false;
 		}
-		int minDistanceToCrosshair = Config.CLIENT.getCrosshairConfig().getObstructionIndicatorMinDistanceToCrosshair();
+		var minDistanceToCrosshair = Config.CLIENT.getCrosshairConfig().getObstructionIndicatorMinDistanceToCrosshair();
 		return crosshairOffset.lengthSquared() >= minDistanceToCrosshair * minDistanceToCrosshair;
 	}
 	
@@ -231,22 +227,22 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	}
 	
 	private static @Nullable Vec2f project2D(Vec3 position, Matrix4f modelView, Matrix4f projection) {
-		Window window = Minecraft.getInstance().getWindow();
-		int screenWidth = window.getScreenWidth();
-		int screenHeight = window.getScreenHeight();
+		var window = Minecraft.getInstance().getWindow();
+		var screenWidth = window.getScreenWidth();
+		var screenHeight = window.getScreenHeight();
 		if (screenWidth == 0 || screenHeight == 0) {
 			return null;
 		}
-		Vector4f vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
+		var vec = new Vector4f((float) position.x(), (float) position.y(), (float) position.z(), 1.0F);
 		vec.mul(modelView);
 		vec.mul(projection);
 		if (vec.w() == 0.0F) {
 			return null;
 		}
-		float w = (1.0F / vec.w()) * 0.5F;
-		float x = (vec.x() * w + 0.5F) * screenWidth;
-		float y = (vec.y() * w + 0.5F) * screenHeight;
-		float z = vec.z() * w + 0.5F;
+		var w = (1.0F / vec.w()) * 0.5F;
+		var x = (vec.x() * w + 0.5F) * screenWidth;
+		var y = (vec.y() * w + 0.5F) * screenHeight;
+		var z = vec.z() * w + 0.5F;
 		vec.set(x, y, z, w);
 		if (Float.isInfinite(x) || Float.isInfinite(y) || Float.isNaN(x) || Float.isNaN(y) || w < 0.0F) {
 			return null;

@@ -1,16 +1,13 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
-import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import net.minecraft.client.Camera;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
@@ -78,7 +75,7 @@ abstract class CameraMixin implements CameraDuck {
 		CallbackInfo ci
 	) {
 		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
-			Vec2f rotation = ShoulderSurfing.getInstance().getCamera().getRenderRotation();
+			var rotation = ShoulderSurfing.getInstance().getCamera().getRenderRotation();
 			this.setRotation(rotation.y(), rotation.x());
 		}
 	}
@@ -103,11 +100,11 @@ abstract class CameraMixin implements CameraDuck {
 		float partialTick
 	) {
 		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(cameraEntity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
-			ShoulderSurfingCamera camera = ShoulderSurfing.getInstance().getCamera();
+			var camera = ShoulderSurfing.getInstance().getCamera();
 			camera.setup(cameraIn, level, partialTick, cameraEntity);
-			Vec3 cameraOffset = camera.getRenderOffset();
+			var cameraOffset = camera.getRenderOffset();
 			this.move(-cameraOffset.z(), cameraOffset.y(), cameraOffset.x());
-			Vec2f sway = camera.calcSway(cameraEntity, partialTick);
+			var sway = camera.calcSway(cameraEntity, partialTick);
 			this.shouldersurfing$rotate(sway.x(), 0, sway.y());
 		} else {
 			this.move(x, y, z);

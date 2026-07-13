@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.mixin;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.ViewBobbingMode;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
@@ -34,13 +33,13 @@ abstract class GameRendererMixin implements GameRendererAccessor {
 		)
 	)
 	private EntityHitResult getEntityHitResult(Entity shooter, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			PickContext pickContext = new PickContext.Builder(this.getMainCamera())
+			var pickContext = new PickContext.Builder(this.getMainCamera())
 				.withEntity(shooter)
 				.build();
-			double interactionRange = Math.sqrt(interactionRangeSq);
-			float partialTick = Minecraft.getInstance().getFrameTime();
+			var interactionRange = Math.sqrt(interactionRangeSq);
+			var partialTick = Minecraft.getInstance().getFrameTime();
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
 		return ProjectileUtil.getEntityHitResult(shooter, startPos, endPos, boundingBox, filter, interactionRangeSq);
@@ -57,7 +56,7 @@ abstract class GameRendererMixin implements GameRendererAccessor {
 		ordinal = 0
 	)
 	private float getFov(float fov) {
-		ICameraConfig config = Config.CLIENT.getCameraConfig();
+		var config = Config.CLIENT.getCameraConfig();
 		if (IShoulderSurfing.getInstance().isShoulderSurfing() && config.isFovOverrideEnabled()) {
 			return config.getFovOverride();
 		}

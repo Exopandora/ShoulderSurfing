@@ -9,17 +9,12 @@ import com.github.exopandora.shouldersurfing.client.renderer.CameraEntityRendere
 import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.client.world.phys.ObjectPicker;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.PerspectiveConfig;
-import com.github.exopandora.shouldersurfing.config.PlayerConfig;
 import com.github.exopandora.shouldersurfing.event.EventBus;
 import com.github.exopandora.shouldersurfing.mixinduck.OptionsDuck;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class ShoulderSurfing implements IShoulderSurfing {
@@ -43,8 +38,8 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	public void init() {
 		PluginLoader.getInstance().loadPlugins();
 		this.eventBus = EventBus.create(PluginLoader.getInstance().getPluginContainers());
-		PerspectiveConfig perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
-		Perspective targetPerspective = perspectiveConfig.getDefaultPerspective();
+		var perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
+		var targetPerspective = perspectiveConfig.getDefaultPerspective();
 		if (!targetPerspective.isEnabled(perspectiveConfig)) {
 			targetPerspective = targetPerspective.next(perspectiveConfig);
 		}
@@ -57,15 +52,15 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		if (Config.CLIENT.requiresSaving()) {
 			Config.CLIENT.save();
 		}
-		Minecraft minecraft = Minecraft.getInstance();
+		var minecraft = Minecraft.getInstance();
 		if (minecraft.screen == null) {
 			this.inputHandler.tick();
 		}
-		boolean isFirstPerson = Perspective.FIRST_PERSON == Perspective.current();
+		var isFirstPerson = Perspective.FIRST_PERSON == Perspective.current();
 		if (!isFirstPerson) {
 			this.isTemporaryFirstPerson = false;
 		}
-		Entity cameraEntity = minecraft.getCameraEntity();
+		var cameraEntity = minecraft.getCameraEntity();
 		this.isAiming = computeIsAiming(cameraEntity);
 		if (this.isShoulderSurfing) {
 			if (EventHooks.isTemporaryFirstPerson()) {
@@ -77,7 +72,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 				this.changePerspective(Perspective.SHOULDER_SURFING);
 			}
 		}
-		LocalPlayer player = minecraft.player;
+		var player = minecraft.player;
 		this.updatePlayerRotations = false;
 		this.isCameraDecoupled = computeIsCameraDecoupled(cameraEntity, this.isShoulderSurfing, this.isAiming);
 		if (this.isShoulderSurfing && player != null) {
@@ -112,15 +107,15 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	}
 	
 	private void lookAtCrosshairTargetInternal() {
-		Minecraft minecraft = Minecraft.getInstance();
-		LocalPlayer player = minecraft.player;
+		var minecraft = Minecraft.getInstance();
+		var player = minecraft.player;
 		assert player != null;
-		Camera camera = minecraft.gameRenderer.getMainCamera();
-		double interactionRange = Config.CLIENT.getCrosshairConfig().getCrosshairType().isAimingDecoupled()
+		var camera = minecraft.gameRenderer.getMainCamera();
+		var interactionRange = Config.CLIENT.getCrosshairConfig().getCrosshairType().isAimingDecoupled()
 			? 400
 			: Config.CLIENT.getObjectPickerConfig().getCustomRaytraceDistance();
-		PickContext pickContext = new PickContext.Builder(camera).build();
-		HitResult hitResult = this.objectPicker.pick(pickContext, interactionRange, 1.0F, minecraft.gameMode);
+		var pickContext = new PickContext.Builder(camera).build();
+		var hitResult = this.objectPicker.pick(pickContext, interactionRange, 1.0F, minecraft.gameMode);
 		this.playerXRotO = player.getXRot();
 		this.playerYRotO = player.getYRot();
 		this.updatePlayerRotations = true;
@@ -129,7 +124,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	}
 	
 	public void updatePlayerRotations() {
-		LocalPlayer player = Minecraft.getInstance().player;
+		var player = Minecraft.getInstance().player;
 		if (this.updatePlayerRotations && player != null) {
 			player.xRotO = this.playerXRotO;
 			player.yRotO = this.playerYRotO;
@@ -169,38 +164,38 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	}
 	
 	protected static boolean shouldTurnWhenUsingItem(LivingEntity cameraEntity) {
-		HitResult hitResult = Minecraft.getInstance().hitResult;
-		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
+		var hitResult = Minecraft.getInstance().hitResult;
+		var playerConfig = Config.CLIENT.getPlayerConfig();
 		return playerConfig.getTurningModeWhenUsingItem().shouldTurn(hitResult) && EventHooks.isUsingItem(cameraEntity);
 	}
 	
 	protected static boolean shouldTurnWhenInteracting(LivingEntity cameraEntity) {
-		HitResult hitResult = Minecraft.getInstance().hitResult;
-		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
+		var hitResult = Minecraft.getInstance().hitResult;
+		var playerConfig = Config.CLIENT.getPlayerConfig();
 		return playerConfig.getTurningModeWhenInteracting().shouldTurn(hitResult) && EventHooks.isInteracting(cameraEntity);
 	}
 	
 	protected static boolean shouldTurnWhenAttacking(LivingEntity cameraEntity) {
-		HitResult hitResult = Minecraft.getInstance().hitResult;
-		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
+		var hitResult = Minecraft.getInstance().hitResult;
+		var playerConfig = Config.CLIENT.getPlayerConfig();
 		return playerConfig.getTurningModeWhenAttacking().shouldTurn(hitResult) && EventHooks.isAttacking(cameraEntity);
 	}
 	
 	protected static boolean shouldTurnWhenPicking(LivingEntity cameraEntity) {
-		HitResult hitResult = Minecraft.getInstance().hitResult;
-		PlayerConfig playerConfig = Config.CLIENT.getPlayerConfig();
+		var hitResult = Minecraft.getInstance().hitResult;
+		var playerConfig = Config.CLIENT.getPlayerConfig();
 		return playerConfig.getTurningModeWhenPicking().shouldTurn(hitResult) && EventHooks.isPicking(cameraEntity);
 	}
 	
 	@Override
 	public void changePerspective(Perspective perspective) {
-		Minecraft minecraft = Minecraft.getInstance();
-		LocalPlayer player = minecraft.player;
-		boolean wasShoulderSurfing = this.isShoulderSurfing;
-		boolean isShoulderSurfing = perspective == Perspective.SHOULDER_SURFING;
-		boolean isEnteringShoulderSurfing = !wasShoulderSurfing && isShoulderSurfing;
-		boolean isExitingShoulderSurfing = wasShoulderSurfing && !isShoulderSurfing;
-		Entity cameraEntity = minecraft.getCameraEntity();
+		var minecraft = Minecraft.getInstance();
+		var player = minecraft.player;
+		var wasShoulderSurfing = this.isShoulderSurfing;
+		var isShoulderSurfing = perspective == Perspective.SHOULDER_SURFING;
+		var isEnteringShoulderSurfing = !wasShoulderSurfing && isShoulderSurfing;
+		var isExitingShoulderSurfing = wasShoulderSurfing && !isShoulderSurfing;
+		var cameraEntity = minecraft.getCameraEntity();
 		if (isExitingShoulderSurfing && player != null && cameraEntity == player) {
 			this.lookAtCrosshairTargetInternal();
 		}
@@ -216,12 +211,12 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	
 	@Override
 	public void togglePerspective() {
-		Minecraft minecraft = Minecraft.getInstance();
-		Perspective current = Perspective.current();
-		PerspectiveConfig perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
-		Perspective next = current.next(perspectiveConfig);
+		var minecraft = Minecraft.getInstance();
+		var current = Perspective.current();
+		var perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
+		var next = current.next(perspectiveConfig);
 		this.changePerspective(next);
-		boolean isFirstPerson = next.getCameraType().isFirstPerson();
+		var isFirstPerson = next.getCameraType().isFirstPerson();
 		if (current.getCameraType().isFirstPerson() != isFirstPerson) {
 			minecraft.gameRenderer.checkEntityPostEffect(isFirstPerson ? minecraft.getCameraEntity() : null);
 		}

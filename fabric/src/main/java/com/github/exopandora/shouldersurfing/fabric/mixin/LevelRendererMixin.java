@@ -29,7 +29,7 @@ class LevelRendererMixin {
 		Matrix4f projectionMatrix,
 		CallbackInfo ci
 	) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		var instance = ShoulderSurfing.getInstance();
 		instance.getCamera().renderTick(camera.getEntity(), partialTick);
 		instance.getCrosshairRenderer().renderTick(camera, poseStack.last().pose(), projectionMatrix, partialTick);
 	}

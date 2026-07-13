@@ -6,11 +6,8 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.player.Input;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -44,7 +41,7 @@ public class InputHandler {
 	}
 	
 	public void tick() {
-		Options options = Minecraft.getInstance().options;
+		var options = Minecraft.getInstance().options;
 		
 		while (TOGGLE_FIRST_PERSON.consumeClick()) {
 			if (this.instance.isShoulderSurfing()) {
@@ -152,32 +149,32 @@ public class InputHandler {
 	}
 	
 	public void updateMovementInput(Input input) {
-		Minecraft minecraft = Minecraft.getInstance();
-		Entity cameraEntity = minecraft.getCameraEntity();
+		var minecraft = Minecraft.getInstance();
+		var cameraEntity = minecraft.getCameraEntity();
 		if (this.instance.isFreeLooking() || cameraEntity == null || EventHooks.isForcingVanillaPlayerInput(cameraEntity)) {
 			return;
 		}
-		Vec2f moveVector = new Vec2f(input.getMoveVector());
+		var moveVector = new Vec2f(input.getMoveVector());
 		if (this.instance.isShoulderSurfing() && minecraft.player != null && cameraEntity == minecraft.player && moveVector.lengthSquared() > 0) {
-			ShoulderSurfingCamera camera = this.instance.getCamera();
-			LocalPlayer player = minecraft.player;
-			float yRot = player.getYRot();
+			var camera = this.instance.getCamera();
+			var player = minecraft.player;
+			var yRot = player.getYRot();
 			if (this.instance.isCameraDecoupled() && !this.instance.isLookFollowingCrosshairTarget()) {
 				// Update player rotations according to keyboard inputs and camera rotation
-				float cameraXRot = camera.getXRot();
-				float cameraYRot = camera.getYRot();
-				Vec2f rotated = moveVector.rotateDegrees(cameraYRot);
-				float xRot = cameraXRot * 0.5F;
-				float xRotO = player.getXRot();
-				float yRotO = yRot;
+				var cameraXRot = camera.getXRot();
+				var cameraYRot = camera.getYRot();
+				var rotated = moveVector.rotateDegrees(cameraYRot);
+				var xRot = cameraXRot * 0.5F;
+				var xRotO = player.getXRot();
+				var yRotO = yRot;
 				yRot = (float) Mth.wrapDegrees(Math.atan2(-rotated.x(), rotated.y()) * Mth.RAD_TO_DEG);
-				float turningSpeedMultiplier = (float) Config.CLIENT.getPlayerConfig().getTurningSpeedMultiplier();
+				var turningSpeedMultiplier = (float) Config.CLIENT.getPlayerConfig().getTurningSpeedMultiplier();
 				xRot = xRotO + Mth.degreesDifference(xRotO, xRot) * turningSpeedMultiplier;
 				yRot = yRotO + Mth.degreesDifference(yRotO, yRot) * turningSpeedMultiplier;
 				player.setXRot(xRot);
 				player.setYRot(yRot);
 			}
-			Vec2f rotated = moveVector.rotateDegrees(Mth.degreesDifference(yRot, camera.getYRot()));
+			var rotated = moveVector.rotateDegrees(Mth.degreesDifference(yRot, camera.getYRot()));
 			input.leftImpulse = rotated.x();
 			input.forwardImpulse = rotated.y();
 		}

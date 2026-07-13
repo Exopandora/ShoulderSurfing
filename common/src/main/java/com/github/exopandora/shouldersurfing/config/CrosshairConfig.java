@@ -106,9 +106,9 @@ public class CrosshairConfig implements ICrosshairConfig {
 		builder.pop();
 		builder.push("visibility");
 		
-		for (Perspective entry : Perspective.values()) {
-			String key = entry.toString().toLowerCase();
-			ConfigValue<CrosshairVisibility> crosshairVisibility = builder
+		for (var entry : Perspective.values()) {
+			var key = entry.toString().toLowerCase();
+			var crosshairVisibility = builder
 				.comment("Crosshair visibility for " + key.replace('_', ' ') + ".")
 				.translation(MOD_ID + ".configuration.crosshair.visibility." + key)
 				.defineEnum(entry.toString().toLowerCase(), entry.getDefaultCrosshairVisibility(), CrosshairVisibility.values());

@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.fabric.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -26,7 +25,7 @@ class GuiMixin {
 		cancellable = true
 	)
 	private void preRenderCrosshair(GuiGraphics guiGraphics, CallbackInfo ci) {
-		CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+		var crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 		if (crosshairRenderer.isCrosshairVisible()) {
 			crosshairRenderer.preRenderCrosshair(guiGraphics);
 		} else {

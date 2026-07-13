@@ -20,7 +20,7 @@ class RecoilHandlerMixin {
 		remap = false
 	)
 	private float getXRot(LocalPlayer player) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			return instance.getCamera().getXRot();
 		}
@@ -37,7 +37,7 @@ class RecoilHandlerMixin {
 		remap = false
 	)
 	private void setXRot(LocalPlayer player, float xRot) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
 			instance.getCamera().setXRot(xRot);
 		} else {

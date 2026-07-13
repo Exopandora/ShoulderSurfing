@@ -843,13 +843,12 @@ public class CameraConfig implements ICameraConfig {
 		if (presets.isEmpty()) {
 			return;
 		}
-		int closestIndex = 0;
-		double currentOffset = offset.get();
-		double distance = Math.abs(currentOffset - presets.get(0));
-		for (int x = 1; x < presets.size(); x++) {
-			double preset = presets.get(x);
-			double newDistance = Math.abs(currentOffset - preset);
-			
+		var closestIndex = 0;
+		var currentOffset = offset.get();
+		var distance = Math.abs(currentOffset - presets.get(0));
+		for (var x = 1; x < presets.size(); x++) {
+			var preset = presets.get(x);
+			var newDistance = Math.abs(currentOffset - preset);
 			if (newDistance <= distance) {
 				closestIndex = x;
 				distance = newDistance;
@@ -865,7 +864,7 @@ public class CameraConfig implements ICameraConfig {
 	}
 	
 	private double addStep(double value, double max, boolean unlimited) {
-		double next = value + this.getCameraStepSize();
+		var next = value + this.getCameraStepSize();
 		if (unlimited) {
 			return next;
 		}
@@ -873,7 +872,7 @@ public class CameraConfig implements ICameraConfig {
 	}
 	
 	private double subStep(double value, double min, boolean unlimited) {
-		double next = value - this.getCameraStepSize();
+		var next = value - this.getCameraStepSize();
 		if (unlimited) {
 			return next;
 		}

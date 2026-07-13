@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.forge.event;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -15,7 +14,6 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.joml.Matrix4f;
 
 public class ClientEventHandler {
 	@SubscribeEvent
@@ -36,7 +34,7 @@ public class ClientEventHandler {
 	public static void registerGuiOverlaysEvent(RegisterGuiOverlaysEvent event) {
 		event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), "pre_crosshair",
 			(gui, guiGraphics, partialTick, screenWith, screenHeight) -> {
-				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+				var crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 				if (crosshairRenderer.isCrosshairVisible()) {
 					crosshairRenderer.preRenderCrosshair(guiGraphics);
 				}
@@ -44,7 +42,7 @@ public class ClientEventHandler {
 		);
 		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "post_crosshair",
 			(gui, guiGraphics, partialTick, screenWith, screenHeight) -> {
-				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+				var crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 				if (crosshairRenderer.isCrosshairVisible()) {
 					crosshairRenderer.postRenderCrosshair(guiGraphics);
 				}
@@ -55,11 +53,11 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void renderLevelStageEvent(RenderLevelStageEvent event) {
 		if (RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage())) {
-			float partialTick = Minecraft.getInstance().getFrameTime();
-			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			var partialTick = Minecraft.getInstance().getFrameTime();
+			var instance = ShoulderSurfing.getInstance();
 			instance.getCamera().renderTick(event.getCamera().getEntity(), partialTick);
-			Matrix4f modelViewMatrix = event.getPoseStack().last().pose();
-			Matrix4f projectionMatrix = RenderSystem.getProjectionMatrix();
+			var modelViewMatrix = event.getPoseStack().last().pose();
+			var projectionMatrix = RenderSystem.getProjectionMatrix();
 			instance.getCrosshairRenderer().renderTick(event.getCamera(), modelViewMatrix, projectionMatrix, partialTick);
 		}
 	}

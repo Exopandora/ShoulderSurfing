@@ -22,14 +22,14 @@ class TESClientUtilMixin {
 		remap = false
 	)
 	private static Vec3 getLookAngle(Player player) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			float realXRot = instance.getCamera().getXRot() * ((float) Math.PI / 180F);
-			float realYRot = -instance.getCamera().getYRot() * ((float) Math.PI / 180F);
-			float yCos = Mth.cos(realYRot);
-			float ySin = Mth.sin(realYRot);
-			float xCos = Mth.cos(realXRot);
-			float xSin = Mth.sin(realXRot);
+			var realXRot = instance.getCamera().getXRot() * ((float) Math.PI / 180F);
+			var realYRot = -instance.getCamera().getYRot() * ((float) Math.PI / 180F);
+			var yCos = Mth.cos(realYRot);
+			var ySin = Mth.sin(realYRot);
+			var xCos = Mth.cos(realXRot);
+			var xSin = Mth.sin(realXRot);
 			return new Vec3(ySin * xCos, -xSin, yCos * xCos);
 		}
 		return player.getLookAngle();

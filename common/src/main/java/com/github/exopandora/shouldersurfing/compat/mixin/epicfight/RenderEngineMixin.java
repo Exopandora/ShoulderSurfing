@@ -24,7 +24,7 @@ class RenderEngineMixin {
 		remap = false
 	)
 	private void correctCamera(Camera camera, float yRot, float xRot) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (!instance.isShoulderSurfing()) {
 			((AccessorCamera) camera).invokeSetRotation(yRot, xRot);
 		} else if (!instance.isCameraDecoupled() || Config.CLIENT.getIntegrationsConfig().isEpicFightDecoupledCameraLockOnEnabled()) {

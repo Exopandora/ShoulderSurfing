@@ -17,7 +17,7 @@ class CompassItemPropertyFunctionMixin {
 		)
 	)
 	private float getVisualRotationYInDegrees(Entity entity) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && instance.isCameraDecoupled()) {
 			return instance.getCamera().getYRot();
 		}

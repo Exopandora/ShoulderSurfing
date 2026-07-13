@@ -7,14 +7,13 @@ import com.github.exopandora.shouldersurfing.mixin.ResourceLocationAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class Config {
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final ClientConfig CLIENT;
 	
 	static {
-		Pair<ClientConfig, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
+		var pair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
 		CLIENT_SPEC = pair.getRight();
 		CLIENT = pair.getLeft();
 	}
@@ -109,7 +108,7 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			String[] split = id.toString().split("@", 2);
+			var split = id.toString().split("@", 2);
 			if (split.length < 2) {
 				return false;
 			}
@@ -120,7 +119,7 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			String[] split = id.toString().split("@", 2);
+			var split = id.toString().split("@", 2);
 			if (split.length < 2) {
 				return false;
 			}
@@ -129,9 +128,9 @@ public class Config {
 	}
 	
 	public static void onConfigReload() {
-		Perspective currentPerspective = Perspective.current();
-		PerspectiveConfig perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		var currentPerspective = Perspective.current();
+		var perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
+		var instance = ShoulderSurfing.getInstance();
 		if (!currentPerspective.isEnabled(perspectiveConfig) && (currentPerspective != Perspective.FIRST_PERSON || !instance.isTemporaryFirstPerson())) {
 			instance.changePerspective(currentPerspective.next(perspectiveConfig));
 		}

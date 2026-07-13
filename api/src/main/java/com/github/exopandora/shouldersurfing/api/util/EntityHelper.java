@@ -14,12 +14,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityHelper {
 	public static void lookAtTarget(LocalPlayer player, Vec3 target) {
-		float yHeadRot = player.yHeadRot;
-		float yHeadRotO = player.yHeadRotO;
-		float yBodyRot = player.yBodyRot;
-		float yBodyRotO = player.yBodyRotO;
-		float xRotO = player.xRotO;
-		float yRotO = player.yRotO;
+		var yHeadRot = player.yHeadRot;
+		var yHeadRotO = player.yHeadRotO;
+		var yBodyRot = player.yBodyRot;
+		var yBodyRotO = player.yBodyRotO;
+		var xRotO = player.xRotO;
+		var yRotO = player.yRotO;
 		player.lookAt(EntityAnchorArgument.Anchor.EYES, target);
 		player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround()));
 		player.yHeadRot = yHeadRot;
@@ -39,32 +39,32 @@ public class EntityHelper {
 	}
 	
 	public static boolean isPlayerSpectatingEntity() {
-		Minecraft minecraft = Minecraft.getInstance();
-		Player player = minecraft.player;
+		var minecraft = Minecraft.getInstance();
+		var player = minecraft.player;
 		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
 	}
 	
 	public static Vec2f applyPassengerRotationConstraints(Player player, Vec2f cameraRot, Vec2f cameraRotO) {
-		Entity vehicle = player.getVehicle();
-		float cameraXRot = cameraRot.x();
-		float cameraYRot = cameraRot.y();
+		var vehicle = player.getVehicle();
+		var cameraXRot = cameraRot.x();
+		var cameraYRot = cameraRot.y();
 		
 		if (vehicle != null) {
-			float partialTick = Minecraft.getInstance().getFrameTime();
+			var partialTick = Minecraft.getInstance().getFrameTime();
 			
-			float playerXRot = player.getXRot();
-			float playerYRot = player.getYRot();
-			float playerXRotO = player.xRotO;
-			float playerYRotO = player.yRotO;
-			float playerYHeadRot = player.yHeadRot;
-			float playerYHeadRotO = player.yHeadRotO;
-			float playerYBodyRot = player.yBodyRot;
-			float playerYBodyRotO = player.yBodyRotO;
+			var playerXRot = player.getXRot();
+			var playerYRot = player.getYRot();
+			var playerXRotO = player.xRotO;
+			var playerYRotO = player.yRotO;
+			var playerYHeadRot = player.yHeadRot;
+			var playerYHeadRotO = player.yHeadRotO;
+			var playerYBodyRot = player.yBodyRot;
+			var playerYBodyRotO = player.yBodyRotO;
 			
-			float vehicleXRot = vehicle.getXRot();
-			float vehicleYRot = vehicle.getYRot();
-			float vehicleXRotO = vehicle.xRotO;
-			float vehicleYRotO = vehicle.yRotO;
+			var vehicleXRot = vehicle.getXRot();
+			var vehicleYRot = vehicle.getYRot();
+			var vehicleXRotO = vehicle.xRotO;
+			var vehicleYRotO = vehicle.yRotO;
 			
 			vehicle.setXRot(Mth.rotLerp(partialTick, vehicleXRotO, vehicleXRot));
 			vehicle.setYRot(Mth.rotLerp(partialTick, vehicleYRotO, vehicleYRot));
@@ -104,12 +104,12 @@ public class EntityHelper {
 	}
 	
 	public static Vec3 getDeltaMovementWithoutGravity(Entity entity) {
-		Vec3 deltaMovement = entity.getDeltaMovement();
+		var deltaMovement = entity.getDeltaMovement();
 		if (entity.isNoGravity() || entity instanceof Player player && player.getAbilities().flying) {
 			return deltaMovement;
 		}
-		final double friction = 0.98D;
-		double gravity = 0.08D;
+		final var friction = 0.98D;
+		var gravity = 0.08D;
 		if (deltaMovement.y <= 0.0 && entity instanceof LivingEntity living && living.hasEffect(MobEffects.SLOW_FALLING)) {
 			gravity = 0.01D;
 		}
