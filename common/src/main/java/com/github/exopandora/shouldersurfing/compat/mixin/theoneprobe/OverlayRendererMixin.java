@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
 @Mixin(targets = "mcjty.theoneprobe.rendering.OverlayRenderer")
-public class OverlayRendererMixin {
+class OverlayRendererMixin {
 	@Redirect(
 		method = "renderHUD",
 		at = @At(
