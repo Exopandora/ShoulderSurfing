@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.6
 - Fixed curios compatibility plugin loading
 
 # 5.0.5
