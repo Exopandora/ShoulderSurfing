@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.fabric.compat;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
-import net.fabricmc.loader.api.Version;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -26,7 +25,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 	
 	private static void addCreateModMixins(List<String> mixins) {
 		if (Mods.CREATE.isLoaded()) {
-			Version version = parseVersionSilent(Mods.CREATE.getModVersion());
+			var version = parseVersionSilent(Mods.CREATE.getModVersion());
 			if (parseVersionPredicateSilent(">=6.0.0").test(version)) {
 				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
 			} else if (parseVersionPredicateSilent("<6.0.0").test(version)) {
@@ -42,7 +41,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 	}
 	
 	private static void addCobblemonMixins(List<String> mixins) {
-		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
+		var cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
 			ShoulderSurfingCommon.LOGGER.warn("Cobblemon integration is limited in this version!");
 			mixins.add("cobblemon.LocalPlayerMixin");

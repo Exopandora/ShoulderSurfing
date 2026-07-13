@@ -13,12 +13,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityHelper {
 	public static void lookAtTarget(LocalPlayer player, Vec3 target) {
-		float yHeadRot = player.yHeadRot;
-		float yHeadRotO = player.yHeadRotO;
-		float yBodyRot = player.yBodyRot;
-		float yBodyRotO = player.yBodyRotO;
-		float xRotO = player.xRotO;
-		float yRotO = player.yRotO;
+		var yHeadRot = player.yHeadRot;
+		var yHeadRotO = player.yHeadRotO;
+		var yBodyRot = player.yBodyRot;
+		var yBodyRotO = player.yBodyRotO;
+		var xRotO = player.xRotO;
+		var yRotO = player.yRotO;
 		player.lookAt(EntityAnchorArgument.Anchor.EYES, target);
 		player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround(), player.horizontalCollision));
 		player.yHeadRot = yHeadRot;
@@ -30,8 +30,8 @@ public class EntityHelper {
 	}
 	
 	public static boolean isPlayerSpectatingEntity() {
-		Minecraft minecraft = Minecraft.getInstance();
-		Player player = minecraft.player;
+		var minecraft = Minecraft.getInstance();
+		var player = minecraft.player;
 		return player != null && player.isSpectator() && minecraft.getCameraEntity() != player;
 	}
 	
@@ -40,38 +40,36 @@ public class EntityHelper {
 	}
 	
 	public static float getMaxScale(Entity cameraEntity) {
-		Entity entity = cameraEntity;
-		float scale = getScale(entity);
-		
+		var entity = cameraEntity;
+		var scale = getScale(entity);
 		while (entity.getVehicle() != null) {
 			entity = entity.getVehicle();
 			scale = Math.max(scale, getScale(entity));
 		}
-		
 		return scale;
 	}
 	
 	public static Vec2f applyPassengerRotationConstraints(Player player, Vec2f cameraRot, Vec2f cameraRotO) {
-		Entity vehicle = player.getVehicle();
-		float cameraXRot = cameraRot.x();
-		float cameraYRot = cameraRot.y();
+		var vehicle = player.getVehicle();
+		var cameraXRot = cameraRot.x();
+		var cameraYRot = cameraRot.y();
 		
 		if (vehicle != null) {
-			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			
-			float playerXRot = player.getXRot();
-			float playerYRot = player.getYRot();
-			float playerXRotO = player.xRotO;
-			float playerYRotO = player.yRotO;
-			float playerYHeadRot = player.yHeadRot;
-			float playerYHeadRotO = player.yHeadRotO;
-			float playerYBodyRot = player.yBodyRot;
-			float playerYBodyRotO = player.yBodyRotO;
+			var playerXRot = player.getXRot();
+			var playerYRot = player.getYRot();
+			var playerXRotO = player.xRotO;
+			var playerYRotO = player.yRotO;
+			var playerYHeadRot = player.yHeadRot;
+			var playerYHeadRotO = player.yHeadRotO;
+			var playerYBodyRot = player.yBodyRot;
+			var playerYBodyRotO = player.yBodyRotO;
 			
-			float vehicleXRot = vehicle.getXRot();
-			float vehicleYRot = vehicle.getYRot();
-			float vehicleXRotO = vehicle.xRotO;
-			float vehicleYRotO = vehicle.yRotO;
+			var vehicleXRot = vehicle.getXRot();
+			var vehicleYRot = vehicle.getYRot();
+			var vehicleXRotO = vehicle.xRotO;
+			var vehicleYRotO = vehicle.yRotO;
 			
 			vehicle.setXRot(Mth.rotLerp(partialTick, vehicleXRotO, vehicleXRot));
 			vehicle.setYRot(Mth.rotLerp(partialTick, vehicleYRotO, vehicleYRot));

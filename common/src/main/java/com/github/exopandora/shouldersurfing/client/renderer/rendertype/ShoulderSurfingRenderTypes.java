@@ -25,7 +25,7 @@ public class ShoulderSurfingRenderTypes {
 	);
 	
 	private static final Function<Identifier, RenderType> ARMOR_TRANSLUCENT_ITEM_TARGET = Util.memoize(texture -> {
-		RenderSetup state = RenderSetup.builder(RenderPipelines.ARMOR_TRANSLUCENT)
+		var state = RenderSetup.builder(RenderPipelines.ARMOR_TRANSLUCENT)
 			.withTexture("Sampler0", texture)
 			.useLightmap()
 			.useOverlay()
@@ -39,7 +39,7 @@ public class ShoulderSurfingRenderTypes {
 	});
 	
 	private static final Function<Identifier, RenderType> ENTITY_TRANSLUCENT_ITEM_TARGET = Util.memoize(texture -> {
-		RenderSetup state = RenderSetup.builder(RenderPipelines.ENTITY_TRANSLUCENT)
+		var state = RenderSetup.builder(RenderPipelines.ENTITY_TRANSLUCENT)
 			.withTexture("Sampler0", texture)
 			.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
 			.useLightmap()

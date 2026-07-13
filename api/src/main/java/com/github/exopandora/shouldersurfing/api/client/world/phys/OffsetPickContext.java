@@ -29,12 +29,10 @@ public final class OffsetPickContext extends PickContext {
 	
 	@Override
 	public ClipContext.Block blockContext() {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
-		
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isAiming() || instance.getCrosshairRenderer().isCrosshairDynamic()) {
 			return ClipContext.Block.COLLIDER;
 		}
-		
 		return ClipContext.Block.OUTLINE;
 	}
 	
@@ -55,23 +53,21 @@ public final class OffsetPickContext extends PickContext {
 		float partialTick,
 		PickOrigin pickOrigin
 	) {
-		Vec3 eyePosition = entity.getEyePosition(partialTick);
-		Vec3 cameraPos = camera.position();
-		Vec3 cameraOffset = cameraPos.subtract(eyePosition);
-		Vec3 renderOffset = IShoulderSurfing.getInstance().getCamera().getRenderOffset();
-		Vec3 rayTraceStartOffset = new Vec3(camera.leftVector())
+		var eyePosition = entity.getEyePosition(partialTick);
+		var cameraPos = camera.position();
+		var cameraOffset = cameraPos.subtract(eyePosition);
+		var renderOffset = IShoulderSurfing.getInstance().getCamera().getRenderOffset();
+		var rayTraceStartOffset = new Vec3(camera.leftVector())
 			.scale(renderOffset.x())
 			.add(new Vec3(camera.upVector()).scale(renderOffset.y()));
-		Vec3 viewVector = new Vec3(camera.forwardVector());
-		double interactionRangeSq = Mth.square(interactionRange);
-		
+		var viewVector = new Vec3(camera.forwardVector());
+		var interactionRangeSq = Mth.square(interactionRange);
 		if (rayTraceStartOffset.lengthSqr() < interactionRangeSq) {
 			interactionRange = Math.sqrt(interactionRangeSq - rayTraceStartOffset.lengthSqr());
 		}
-		
-		double distance = interactionRange + cameraOffset.distanceTo(rayTraceStartOffset);
-		Vec3 startPos = pickOrigin.calc(cameraPos, eyePosition, rayTraceStartOffset);
-		Vec3 endPos = cameraPos.add(viewVector.scale(distance));
+		var distance = interactionRange + cameraOffset.distanceTo(rayTraceStartOffset);
+		var startPos = pickOrigin.calc(cameraPos, eyePosition, rayTraceStartOffset);
+		var endPos = cameraPos.add(viewVector.scale(distance));
 		return new Couple<Vec3>(startPos, endPos);
 	}
 }

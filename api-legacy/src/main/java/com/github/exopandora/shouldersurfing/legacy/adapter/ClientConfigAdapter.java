@@ -1,7 +1,6 @@
 package com.github.exopandora.shouldersurfing.legacy.adapter;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
-import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.config.IAudioConfig;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.config.ICrosshairConfig;
@@ -9,6 +8,7 @@ import com.github.exopandora.shouldersurfing.api.config.IIntegrationsConfig;
 import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.api.config.IPerspectiveConfig;
 import com.github.exopandora.shouldersurfing.api.config.IPlayerConfig;
+import com.github.exopandora.shouldersurfing.api.model.CameraDistanceAttributeMode;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.model.CrosshairVisibility;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;

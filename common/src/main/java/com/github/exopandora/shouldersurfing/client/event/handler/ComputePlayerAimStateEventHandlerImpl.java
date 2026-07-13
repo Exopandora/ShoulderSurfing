@@ -3,16 +3,11 @@ package com.github.exopandora.shouldersurfing.client.event.handler;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -21,22 +16,22 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 	
 	@Override
 	public void handle(ComputePlayerAimStateEvent event) {
-		ItemStack useStack = event.getEntity().getUseItem();
-		CrosshairConfig crosshairConfig = Config.CLIENT.getCrosshairConfig();
-		List<? extends String> useItems = crosshairConfig.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemComponents = crosshairConfig.getAdaptiveCrosshairUseItemComponents();
-		List<? extends String> useItemDefaultComponents = crosshairConfig.getAdaptiveCrosshairUseItemDefaultComponents();
-		List<? extends String> useItemAnimations = crosshairConfig.getAdaptiveCrosshairUseItemAnimations();
+		var useStack = event.getEntity().getUseItem();
+		var crosshairConfig = Config.CLIENT.getCrosshairConfig();
+		var useItems = crosshairConfig.getAdaptiveCrosshairUseItems();
+		var useItemComponents = crosshairConfig.getAdaptiveCrosshairUseItemComponents();
+		var useItemDefaultComponents = crosshairConfig.getAdaptiveCrosshairUseItemDefaultComponents();
+		var useItemAnimations = crosshairConfig.getAdaptiveCrosshairUseItemAnimations();
 		if (isAdaptiveItemStack(useStack, useItems, useItemComponents, useItemDefaultComponents, useItemAnimations)) {
 			event.setResult(true);
 			return;
 		}
-		List<? extends String> holdItems = crosshairConfig.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemComponents = crosshairConfig.getAdaptiveCrosshairHoldItemComponents();
-		List<? extends String> holdDefaultComponents = crosshairConfig.getAdaptiveCrosshairHoldItemDefaultComponents();
-		List<? extends String> holdItemAnimations = crosshairConfig.getAdaptiveCrosshairHoldItemAnimations();
-		ItemStack[] handItems = {event.getEntity().getMainHandItem(), event.getEntity().getOffhandItem()};
-		for (ItemStack handStack : handItems) {
+		var holdItems = crosshairConfig.getAdaptiveCrosshairHoldItems();
+		var holdItemComponents = crosshairConfig.getAdaptiveCrosshairHoldItemComponents();
+		var holdDefaultComponents = crosshairConfig.getAdaptiveCrosshairHoldItemDefaultComponents();
+		var holdItemAnimations = crosshairConfig.getAdaptiveCrosshairHoldItemAnimations();
+		var handItems = new ItemStack[]{event.getEntity().getMainHandItem(), event.getEntity().getOffhandItem()};
+		for (var handStack : handItems) {
 			if (isAdaptiveItemStack(handStack, holdItems, holdItemComponents, holdDefaultComponents, holdItemAnimations)) {
 				event.setResult(true);
 				return;
@@ -51,27 +46,27 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 		List<? extends String> defaultComponentIds,
 		List<? extends String> itemAnimations
 	) {
-		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+		var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		if (expressions.stream().map(ComputePlayerAimStateEventHandlerImpl::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId))) {
 			return true;
 		}
 		if (!stack.getComponentsPatch().isEmpty()) {
-			DataComponentPatch patch = stack.getComponentsPatch();
-			for (String componentId : componentIds) {
-				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(Identifier.tryParse(componentId));
+			var patch = stack.getComponentsPatch();
+			for (var componentId : componentIds) {
+				var type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(Identifier.tryParse(componentId));
 				if (type.isEmpty()) {
 					continue;
 				}
-				Optional<?> component = patch.get(type.get());
+				var component = patch.get(type.get());
 				if (component != null && component.isPresent()) {
 					return true;
 				}
 			}
 		}
 		if (!stack.getComponents().isEmpty()) {
-			DataComponentMap components = stack.getComponents();
-			for (String defaultComponentId : defaultComponentIds) {
-				Optional<DataComponentType<?>> type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(Identifier.tryParse(defaultComponentId));
+			var components = stack.getComponents();
+			for (var defaultComponentId : defaultComponentIds) {
+				var type = BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(Identifier.tryParse(defaultComponentId));
 				if (type.isEmpty()) {
 					continue;
 				}
@@ -80,8 +75,8 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 				}
 			}
 		}
-		String useAnimation = stack.getUseAnimation().getSerializedName();
-		for (String itemAnimation : itemAnimations) {
+		var useAnimation = stack.getUseAnimation().getSerializedName();
+		for (var itemAnimation : itemAnimations) {
 			if (itemAnimation.equals(useAnimation)) {
 				return true;
 			}

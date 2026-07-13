@@ -17,7 +17,7 @@ class CompassAngleStateMixin {
 		)
 	)
 	private static float getVisualRotationYInDegrees(ItemOwner itemOwner) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && instance.isCameraDecoupled()) {
 			return instance.getCamera().getYRot();
 		}

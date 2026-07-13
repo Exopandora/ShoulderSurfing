@@ -11,7 +11,7 @@ public enum ComputeTemporaryFirstPersonStateEventHandlerImpl implements ComputeT
 	@Override
 	public void handle(ComputeTemporaryFirstPersonStateEvent event) {
 		if (!event.getResult()) {
-			boolean result = switch (Config.CLIENT.getCrosshairConfig().getCrosshairType()) {
+			var result = switch (Config.CLIENT.getCrosshairConfig().getCrosshairType()) {
 				case STATIC_WITH_1PP, DYNAMIC_WITH_1PP -> IShoulderSurfing.getInstance().isAiming();
 				default -> false;
 			};

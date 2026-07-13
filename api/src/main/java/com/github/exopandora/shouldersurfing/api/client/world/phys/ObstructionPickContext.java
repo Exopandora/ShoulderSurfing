@@ -39,7 +39,7 @@ public final class ObstructionPickContext extends PickContext {
 	}
 	
 	private Couple<Vec3> calcRay(float partialTick) {
-		Vec3 startPos = this.entity().getEyePosition(partialTick);
+		var startPos = this.entity().getEyePosition(partialTick);
 		return new Couple<Vec3>(startPos, this.endPos);
 	}
 }

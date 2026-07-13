@@ -1,14 +1,8 @@
 package com.github.exopandora.shouldersurfing.compat.cobblemon.event.handler;
 
 import com.cobblemon.mod.common.OrientationControllable;
-import com.cobblemon.mod.common.api.orientation.OrientationController;
 import com.cobblemon.mod.common.item.PokeBallItem;
 import com.cobblemon.mod.common.item.interactive.PokerodItem;
-//import com.cobblemon.mod.common.api.riding.behaviour.ActiveRidingContext;
-//import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.BoatBehaviour;
-//import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.DolphinBehaviour;
-//import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.SubmarineBehaviour;
-//import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerRideBoatStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ForceVanillaPlayerInputEvent;
@@ -20,6 +14,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+//import com.cobblemon.mod.common.api.riding.behaviour.ActiveRidingContext;
+//import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.BoatBehaviour;
+//import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.DolphinBehaviour;
+//import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.SubmarineBehaviour;
+//import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 
 public enum CobblemonEventHandler {
 	INSTANCE;
@@ -58,7 +58,7 @@ public enum CobblemonEventHandler {
 	
 	public void preSetupCameraRotation(SetupCameraRotationEvent event) {
 		if (event.getPlayer().getVehicle() instanceof OrientationControllable controllableVehicle) {
-			OrientationController vehicleController = controllableVehicle.getOrientationController();
+			var vehicleController = controllableVehicle.getOrientationController();
 			if (vehicleController.isActive()) {
 				event.setResult(new Vec2f(vehicleController.getPitch(), vehicleController.getYaw()));
 			}
@@ -67,11 +67,11 @@ public enum CobblemonEventHandler {
 	
 	public void postSetupCameraRotation(SetupCameraRotationEvent event) {
 		if (hasActiveBoatBehaviour(event.getPlayer().getVehicle())) {
-			Entity vehicle = event.getPlayer().getVehicle();
-			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			float yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
-			float delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
-			float clamped = Mth.clamp(delta, -105.0F, 105.0F);
+			var vehicle = event.getPlayer().getVehicle();
+			var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
+			var delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
+			var clamped = Mth.clamp(delta, -105.0F, 105.0F);
 			event.setResult(event.getResult().add(0, clamped - delta));
 		}
 	}

@@ -1,16 +1,12 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.renderer.CameraEntityRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.world.TickRateManager;
-import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,13 +29,13 @@ class EntityRenderDispatcherMixin {
 		SubmitNodeCollector submitNodeCollector,
 		CallbackInfo ci
 	) {
-		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
+		var cameraEntityRenderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
 		if (renderState == cameraEntityRenderer.getCameraEntityRenderState()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Entity entity = minecraft.getCameraEntity();
-			TickRateManager tickRateManager = minecraft.level.tickRateManager();
-			DeltaTracker deltaTracker = minecraft.getDeltaTracker();
-			float partialTick = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(entity));
+			var minecraft = Minecraft.getInstance();
+			var entity = minecraft.getCameraEntity();
+			var tickRateManager = minecraft.level.tickRateManager();
+			var deltaTracker = minecraft.getDeltaTracker();
+			var partialTick = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(entity));
 			if (cameraEntityRenderer.preRenderCameraEntity(entity, partialTick)) {
 				ci.cancel();
 			}
@@ -60,13 +56,13 @@ class EntityRenderDispatcherMixin {
 		SubmitNodeCollector submitNodeCollector,
 		CallbackInfo ci
 	) {
-		CameraEntityRenderer cameraEntityRenderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
+		var cameraEntityRenderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
 		if (renderState == cameraEntityRenderer.getCameraEntityRenderState()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Entity entity = minecraft.getCameraEntity();
-			TickRateManager tickRateManager = minecraft.level.tickRateManager();
-			DeltaTracker deltaTracker = minecraft.getDeltaTracker();
-			float partialTick = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(entity));
+			var minecraft = Minecraft.getInstance();
+			var entity = minecraft.getCameraEntity();
+			var tickRateManager = minecraft.level.tickRateManager();
+			var deltaTracker = minecraft.getDeltaTracker();
+			var partialTick = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(entity));
 			cameraEntityRenderer.postRenderCameraEntity(entity, partialTick);
 		}
 	}

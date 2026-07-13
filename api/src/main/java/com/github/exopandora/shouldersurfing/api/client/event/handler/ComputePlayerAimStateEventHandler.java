@@ -44,7 +44,7 @@ public interface ComputePlayerAimStateEventHandler {
 	}
 	
 	private static boolean containsItem(Item itemToFind, ItemLike... items) {
-		for (ItemLike item : items) {
+		for (var item : items) {
 			if (itemToFind.equals(item.asItem())) {
 				return true;
 			}
