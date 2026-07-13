@@ -37,7 +37,7 @@ public enum Mods {
 	}
 	
 	public boolean isSameOrLaterVersion(String version) {
-		String modVersion = this.getModVersion();
+		var modVersion = this.getModVersion();
 		if (modVersion == null) {
 			return false;
 		}

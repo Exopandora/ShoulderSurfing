@@ -1,7 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,12 +36,11 @@ abstract class MinecartMixin extends AbstractMinecart {
 		)
 	)
 	private void positionRider(Entity rider, MoveFunction moveFunction, CallbackInfo ci) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
-		
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && this.level().isClientSide() && rider instanceof Player player) {
 			if (player.shouldRotateWithMinecart() && AbstractMinecart.useExperimentalMovement(this.level())) {
-				IShoulderSurfingCamera camera = instance.getCamera();
-				float f = (float) Mth.rotLerp(0.5F, this.playerRotationOffset, (double) this.rotationOffset);
+				var camera = instance.getCamera();
+				var f = (float) Mth.rotLerp(0.5F, this.playerRotationOffset, (double) this.rotationOffset);
 				camera.setYRot(camera.getYRot() - (f - this.playerRotationOffset));
 			}
 		}

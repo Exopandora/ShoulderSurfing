@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.client.renderer;
 
 import com.github.exopandora.shouldersurfing.api.client.renderer.ICameraEntityRenderer;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.client.EventHooks;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
@@ -43,7 +42,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 		if (!this.instance.isShoulderSurfing() || cameraEntity.isSpectator()) {
 			return false;
 		}
-		ShoulderSurfingCamera camera = this.instance.getCamera();
+		var camera = this.instance.getCamera();
 		if (camera.isInsideEntity(cameraEntity)) {
 			return true;
 		} else if (camera.isLookingUp()) {
@@ -57,8 +56,8 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 	}
 	
 	public int applyCameraEntityAlpha(int color) {
-		int cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
-		int alpha = ARGB.alpha(color);
+		var cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
+		var alpha = ARGB.alpha(color);
 		if (cameraEntityAlpha < alpha) {
 			return ARGB.transparent(color) + (cameraEntityAlpha << 24);
 		}

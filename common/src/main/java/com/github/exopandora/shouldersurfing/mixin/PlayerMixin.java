@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,10 +21,10 @@ abstract class PlayerMixin extends Entity {
 	
 	@Override
 	public @NotNull HitResult pick(double interactionRange, float partialTick, boolean stopOnFluid) {
-		Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var camera = Minecraft.getInstance().gameRenderer.mainCamera();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing() && this.level().isClientSide()) {
-			PickContext pickContext = new PickContext.Builder(camera)
+			var pickContext = new PickContext.Builder(camera)
 				.withFluidContext(stopOnFluid ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE)
 				.withEntity(this)
 				.build();

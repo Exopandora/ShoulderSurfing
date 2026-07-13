@@ -5,14 +5,12 @@ import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
-//import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
 import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.eventbus.api.listener.Priority;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
@@ -30,7 +28,6 @@ import net.minecraftforge.forgespi.language.IModInfo;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingForge {
@@ -39,7 +36,7 @@ public class ShoulderSurfingForge {
 	public ShoulderSurfingForge(FMLJavaModLoadingContext modLoadingContext) {
 		this.modLoadingContext = modLoadingContext;
 		if (FMLEnvironment.dist.isClient()) {
-			BusGroup modBusGroup = modLoadingContext.getModBusGroup();
+			var modBusGroup = modLoadingContext.getModBusGroup();
 			FMLClientSetupEvent.getBus(modBusGroup).addListener(this::clientSetup);
 			ModConfigEvent.Loading.getBus(modBusGroup).addListener(this::modConfigLoadingEvent);
 			ModConfigEvent.Reloading.getBus(modBusGroup).addListener(this::modConfigReloadingEvent);
@@ -56,8 +53,8 @@ public class ShoulderSurfingForge {
 		MovementInputUpdateEvent.BUS.addListener(Priority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		ViewportEvent.ComputeCameraAngles.BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		
-		Map<String, Object> modProperties = this.modLoadingContext.getContainer().getModInfo().getModProperties();
-		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
+		var modProperties = this.modLoadingContext.getContainer().getModInfo().getModProperties();
+		var incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
 		LoadingModList.getMods().stream()
 			.filter(info -> incompatibleModIds.contains(info.getModId()))
 			.map(ShoulderSurfingForge::createIncompatibleModWarning)
@@ -100,9 +97,9 @@ public class ShoulderSurfingForge {
 	}
 	
 	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod) {
-		String translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
-		String modId = incompatibleMod.getModId();
-		String modVersion = incompatibleMod.getVersion().toString();
+		var translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
+		var modId = incompatibleMod.getModId();
+		var modVersion = incompatibleMod.getVersion().toString();
 		return new ModLoadingWarning(null, ModLoadingStage.VALIDATE, translationKey, ShoulderSurfingCommon.MOD_ID, modId, modVersion);
 	}
 }

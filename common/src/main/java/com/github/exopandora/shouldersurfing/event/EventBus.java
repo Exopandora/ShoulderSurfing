@@ -115,7 +115,7 @@ public class EventBus implements IEventBus {
 	@SuppressWarnings("unchecked")
 	private  <T extends Event> void registerHandler(int priority, Consumer<T> consumer, Class<T> eventType) {
 		this.checkState();
-		HandlerList handlerList = this.handlerLists.computeIfAbsent(eventType, (type) ->
+		var handlerList = this.handlerLists.computeIfAbsent(eventType, (type) ->
 			new HandlerList(type.isAssignableFrom(CancellableEvent.class))
 		);
 		handlerList.add(priority, (Consumer<Event>) consumer, this.activePluginContainer);
@@ -141,11 +141,11 @@ public class EventBus implements IEventBus {
 	}
 	
 	public <T extends Event> T fire(T event) {
-		HandlerList handlerList = this.handlerLists.get(event.getClass());
+		var handlerList = this.handlerLists.get(event.getClass());
 		if (handlerList == null) {
 			return event;
 		}
-		for (EventHandler handler : handlerList.getListeners()) {
+		for (var handler : handlerList.getListeners()) {
 			try {
 				handler.handle(event);
 				if (handlerList.isEventCancellable() && ((CancellableEvent) event).isCancelled()) {
@@ -159,8 +159,8 @@ public class EventBus implements IEventBus {
 	}
 	
 	public static EventBus create(List<PluginContainer> plugins) {
-		EventBus eventBus = new EventBus();
-		for (PluginContainer plugin : plugins) {
+		var eventBus = new EventBus();
+		for (var plugin : plugins) {
 			try {
 				eventBus.setActivePluginContainer(plugin);
 				plugin.instance().register(eventBus);

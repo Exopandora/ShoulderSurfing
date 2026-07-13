@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 
 public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCameraEntityTransparencyEventHandler {
 	INSTANCE;
@@ -19,18 +18,18 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 	
 	@Override
 	public void handle(ComputeCameraEntityTransparencyEvent event) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
-		Entity entity = event.getCameraEntity();
+		var instance = IShoulderSurfing.getInstance();
+		var entity = event.getCameraEntity();
 		if (isCameraEntityTransparent(instance, entity)) {
-			Vec3 renderOffset = instance.getCamera().getRenderOffset();
-			float xAlpha = (float) Mth.clamp(Math.abs(renderOffset.x()) / (entity.getBbWidth() / 2.0D), 0, 1.0F);
+			var renderOffset = instance.getCamera().getRenderOffset();
+			var xAlpha = (float) Mth.clamp(Math.abs(renderOffset.x()) / (entity.getBbWidth() / 2.0D), 0, 1.0F);
 			float yAlpha = 0;
 			if (renderOffset.y() > 0) {
 				yAlpha = (float) Mth.clamp(renderOffset.y() / (entity.getBbHeight() - entity.getEyeHeight()), 0, 1.0F);
 			} else if (renderOffset.y() < 0) {
 				yAlpha = (float) Mth.clamp(-renderOffset.y() / -entity.getEyeHeight(), 0, 1.0F);
 			}
-			float result = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), MIN_CAMERA_ENTITY_ALPHA, 1.0F);
+			var result = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), MIN_CAMERA_ENTITY_ALPHA, 1.0F);
 			if (result < event.getResult()) {
 				event.setResult(result);
 			}
@@ -41,7 +40,7 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 		if (entity.isSpectator()) {
 			return false;
 		}
-		Vec3 renderOffset = instance.getCamera().getRenderOffset();
+		var renderOffset = instance.getCamera().getRenderOffset();
 		if (Math.abs(renderOffset.x()) >= (entity.getBbWidth() / 2.0D)) {
 			return false;
 		}
@@ -98,8 +97,8 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 		@Override
 		public void handle(ComputeCameraEntityTransparencyEvent event) {
 			if (Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenAiming()) {
-				float f = (TRANSITION_TICK_COUNT - Mth.lerp(event.getPartialTick(), this.aimingTicksO, this.aimingTicks)) / TRANSITION_TICK_COUNT;
-				float result = MIN_CAMERA_ENTITY_ALPHA + ((1F - MIN_CAMERA_ENTITY_ALPHA) * f);
+				var f = (TRANSITION_TICK_COUNT - Mth.lerp(event.getPartialTick(), this.aimingTicksO, this.aimingTicks)) / TRANSITION_TICK_COUNT;
+				var result = MIN_CAMERA_ENTITY_ALPHA + ((1F - MIN_CAMERA_ENTITY_ALPHA) * f);
 				if (result < event.getResult()) {
 					event.setResult(result);
 				}

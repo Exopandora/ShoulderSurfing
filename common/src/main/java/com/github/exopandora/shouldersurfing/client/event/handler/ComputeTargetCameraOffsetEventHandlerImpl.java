@@ -44,7 +44,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		@Override
 		default void handle(ComputeTargetCameraOffsetEvent event) {
 			if (this.shouldApply(event)) {
-				Vec3 result = event.getResult()
+				var result = event.getResult()
 					.add(event.getDefaultOffset().multiply(this.getMultipliers()).subtract(event.getDefaultOffset()))
 					.add(this.getModifiers());
 				event.setResult(result);
@@ -181,37 +181,37 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		}
 		
 		private static Vec3 calcDynamicOffsets(Camera camera, Entity cameraEntity, BlockGetter level, Vec3 targetOffset) {
-			Vec3 lookVector = new Vec3(camera.forwardVector());
-			Vec3 worldXYOffset = new Vec3(camera.upVector()).scale(targetOffset.y())
+			var lookVector = new Vec3(camera.forwardVector());
+			var worldXYOffset = new Vec3(camera.upVector()).scale(targetOffset.y())
 				.add(new Vec3(camera.leftVector()).scale(targetOffset.x()));
-			Vec3 worldOffset = worldXYOffset.add(lookVector.scale(-targetOffset.z()));
-			double offsetXAbs = Math.abs(targetOffset.x());
-			double offsetYAbs = Math.abs(targetOffset.y());
-			double offsetZAbs = Math.abs(targetOffset.z());
-			double targetX = offsetXAbs;
-			double targetY = offsetYAbs;
-			double clearance = cameraEntity.getBbWidth() / 3.0D;
-			Vec3 cameraPosition = camera.position();
+			var worldOffset = worldXYOffset.add(lookVector.scale(-targetOffset.z()));
+			var offsetXAbs = Math.abs(targetOffset.x());
+			var offsetYAbs = Math.abs(targetOffset.y());
+			var offsetZAbs = Math.abs(targetOffset.z());
+			var targetX = offsetXAbs;
+			var targetY = offsetYAbs;
+			var clearance = cameraEntity.getBbWidth() / 3.0D;
+			var cameraPosition = camera.position();
 			for (double dz = 0; dz <= offsetZAbs; dz += 0.03125D) {
-				double scale = dz / offsetZAbs;
-				Vec3 startPos = cameraPosition.add(worldOffset.scale(scale));
-				Vec3 endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
-				ClipContext context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
+				var scale = dz / offsetZAbs;
+				var startPos = cameraPosition.add(worldOffset.scale(scale));
+				var endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
+				var context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
 				HitResult hitResult = level.clip(context);
 				if (hitResult.getType() != HitResult.Type.MISS) {
-					double distance = hitResult.getLocation().distanceTo(startPos);
-					double newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
+					var distance = hitResult.getLocation().distanceTo(startPos);
+					var newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
 					if (newTargetX < targetX) {
 						targetX = newTargetX;
 					}
-					double newTargetY = Math.max(distance + offsetYAbs * scale - clearance, 0);
+					var newTargetY = Math.max(distance + offsetYAbs * scale - clearance, 0);
 					if (newTargetY < targetY) {
 						targetY = newTargetY;
 					}
 				}
 			}
-			double targetXOffset = Math.signum(targetOffset.x()) * targetX;
-			double targetYOffset = Math.signum(targetOffset.y()) * targetY;
+			var targetXOffset = Math.signum(targetOffset.x()) * targetX;
+			var targetYOffset = Math.signum(targetOffset.y()) * targetY;
 			return new Vec3(targetXOffset, targetYOffset, targetOffset.z());
 		}
 	}
@@ -222,13 +222,13 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
 			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
-			double targetOffsetX = cameraConfig.isOffsetXUnlimited()
+			var targetOffsetX = cameraConfig.isOffsetXUnlimited()
 				? event.getResult().x()
 				: Mth.clamp(event.getResult().x(), cameraConfig.getMinOffsetX(), cameraConfig.getMaxOffsetX());
-			double targetOffsetY = cameraConfig.isOffsetYUnlimited()
+			var targetOffsetY = cameraConfig.isOffsetYUnlimited()
 				? event.getResult().y()
 				: Mth.clamp(event.getResult().y(), cameraConfig.getMinOffsetY(), cameraConfig.getMaxOffsetY());
-			double targetOffsetZ = cameraConfig.isOffsetZUnlimited()
+			var targetOffsetZ = cameraConfig.isOffsetZUnlimited()
 				? event.getResult().z()
 				: Mth.clamp(event.getResult().z(), cameraConfig.getMinOffsetZ(), cameraConfig.getMaxOffsetZ());
 			event.setResult(new Vec3(targetOffsetX, targetOffsetY, targetOffsetZ));

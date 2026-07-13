@@ -25,8 +25,8 @@ abstract class OptionsMixin implements OptionsDuck {
 	)
 	private void setCameraType(CameraType cameraType, CallbackInfo ci) {
 		if (cameraType != this.cameraType) {
-			boolean isShoulderSurfing = Config.CLIENT.getPerspectiveConfig().isThirdPersonReplaced() && cameraType == CameraType.THIRD_PERSON_BACK;
-			Perspective newPerspective = Perspective.of(cameraType, isShoulderSurfing);
+			var isShoulderSurfing = Config.CLIENT.getPerspectiveConfig().isThirdPersonReplaced() && cameraType == CameraType.THIRD_PERSON_BACK;
+			var newPerspective = Perspective.of(cameraType, isShoulderSurfing);
 			IShoulderSurfing.getInstance().changePerspective(newPerspective);
 			ci.cancel();
 		}

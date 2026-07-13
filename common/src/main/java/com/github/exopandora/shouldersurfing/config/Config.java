@@ -8,14 +8,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class Config {
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final ClientConfig CLIENT;
 	
 	static {
-		Pair<ClientConfig, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(ClientConfig::new);
+		var pair = new ModConfigSpec.Builder().configure(ClientConfig::new);
 		CLIENT_SPEC = pair.getRight();
 		CLIENT = pair.getLeft();
 	}
@@ -99,7 +98,7 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			for (ItemUseAnimation itemUseAnimation : ItemUseAnimation.values()) {
+			for (var itemUseAnimation : ItemUseAnimation.values()) {
 				if (itemUseAnimation.getSerializedName().equals(id)) {
 					return true;
 				}
@@ -111,7 +110,7 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			Identifier location = Identifier.tryParse(id.toString());
+			var location = Identifier.tryParse(id.toString());
 			if (location == null) {
 				return false;
 			}
@@ -133,7 +132,7 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			String[] split = id.toString().split("@", 2);
+			var split = id.toString().split("@", 2);
 			if (split.length < 2) {
 				return false;
 			}
@@ -144,7 +143,7 @@ public class Config {
 			if (id == null) {
 				return false;
 			}
-			String[] split = id.toString().split("@", 2);
+			var split = id.toString().split("@", 2);
 			if (split.length < 2) {
 				return false;
 			}
@@ -153,9 +152,9 @@ public class Config {
 	}
 	
 	public static void onConfigReload() {
-		Perspective currentPerspective = Perspective.current();
-		PerspectiveConfig perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		var currentPerspective = Perspective.current();
+		var perspectiveConfig = Config.CLIENT.getPerspectiveConfig();
+		var instance = ShoulderSurfing.getInstance();
 		if (!currentPerspective.isEnabled(perspectiveConfig) && (currentPerspective != Perspective.FIRST_PERSON || !instance.isTemporaryFirstPerson())) {
 			instance.changePerspective(currentPerspective.next(perspectiveConfig));
 		}

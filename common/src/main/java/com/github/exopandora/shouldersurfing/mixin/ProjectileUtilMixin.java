@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.mixin;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.mojang.datafixers.util.Either;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -38,20 +37,20 @@ class ProjectileUtilMixin {
 		if (!entity.level().isClientSide()) {
 			return;
 		}
-		Minecraft minecraft = Minecraft.getInstance();
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var minecraft = Minecraft.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (entity == minecraft.player && instance.isShoulderSurfing()) {
-			Camera camera = minecraft.gameRenderer.mainCamera();
-			PickContext pickContext = new PickContext.Builder(camera)
+			var camera = minecraft.gameRenderer.mainCamera();
+			var pickContext = new PickContext.Builder(camera)
 				.withEntity(entity)
 				.build();
-			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			ClipContext clipContext = pickContext.toClipContext(attackRange.effectiveMinRange(entity), partialTick);
-			Vec3 from = clipContext.getFrom();
-			Vec3 to = clipContext.getTo();
-			Vec3 viewVector = from.vectorTo(to).normalize();
-			double extraRange = entity.getKnownMovement().dot(viewVector);
-			Vec3 rangeEnd = from.add(viewVector.scale(attackRange.effectiveMaxRange(entity) + Math.max(0.0, extraRange)));
+			var partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var clipContext = pickContext.toClipContext(attackRange.effectiveMinRange(entity), partialTick);
+			var from = clipContext.getFrom();
+			var to = clipContext.getTo();
+			var viewVector = from.vectorTo(to).normalize();
+			var extraRange = entity.getKnownMovement().dot(viewVector);
+			var rangeEnd = from.add(viewVector.scale(attackRange.effectiveMaxRange(entity) + Math.max(0.0, extraRange)));
 			cir.setReturnValue(getHitEntitiesAlong(entity, from, to, filter, rangeEnd, attackRange.hitboxMargin(), blockMode));
 		}
 	}
