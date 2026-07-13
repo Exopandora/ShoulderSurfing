@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 public class ClientEventHandler {
 	@SubscribeEvent
 	public static void clientTickEvent(ClientTickEvent.Pre event) {
-		if (!Minecraft.getInstance().isPaused()) {
+		if (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused()) {
 			ShoulderSurfing.getInstance().tick();
 		}
 	}
