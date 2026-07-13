@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(targets = "minecrafttransportsimulator.systems.CameraSystem")
-public class CameraSystemMixin {
+class CameraSystemMixin {
 	@Inject(
 		method = "adjustCamera",
 		at = @At("HEAD"),

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
 @Mixin(targets = "com.mrcrayfish.guns.client.handler.RecoilHandler")
-public class RecoilHandlerMixin {
+class RecoilHandlerMixin {
 	@Redirect(
 		method = "onRenderTick",
 		at = @At(

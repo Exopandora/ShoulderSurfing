@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(targets = "com.cobblemon.mod.common.util.PlayerExtensionsKt")
-public class PlayerExtensionsKtMixin_1_7 {
+class PlayerExtensionsKtMixin_1_7 {
 	@Inject(
 		method = "traceFirstEntityCollision",
 		at = @At("HEAD"),

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Pseudo
 @Mixin(targets = "com.wildfire.render.GenderLayer")
-public class GenderLayerMixin {
+class GenderLayerMixin {
 	@ModifyVariable(
 		method = "renderBox",
 		at = @At("HEAD"),
