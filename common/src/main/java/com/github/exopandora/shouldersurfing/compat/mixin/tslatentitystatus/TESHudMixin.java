@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 
 @Pseudo
 @Mixin(targets = "net.tslat.tes.core.hud.TESHud")
-public class TESHudMixin {
+class TESHudMixin {
 	@Redirect(
 		method = "pickNewEntity",
 		at = @At(

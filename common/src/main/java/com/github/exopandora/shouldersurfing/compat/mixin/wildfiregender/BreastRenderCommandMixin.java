@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Pseudo
 @Mixin(targets = "com.wildfire.render.BreastRenderCommand")
-public class BreastRenderCommandMixin {
+class BreastRenderCommandMixin {
 	@ModifyVariable(
 		method = "<init>",
 		at = @At("HEAD"),
