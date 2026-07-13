@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Pseudo
 @Mixin(targets = "dev.tr7zw.skinlayers.render.CustomizableModelPart")
-public class CustomizableModelPartMixin_1_6_5 {
+class CustomizableModelPartMixin_1_6_5 {
 	@ModifyVariable(
 		at = @At("HEAD"),
 		method = "compile",

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PokemonRenderer.class)
-public class PokemonRendererMixin {
+class PokemonRendererMixin {
 	@Redirect(
 		method = "shouldRenderLabel",
 		at = @At(

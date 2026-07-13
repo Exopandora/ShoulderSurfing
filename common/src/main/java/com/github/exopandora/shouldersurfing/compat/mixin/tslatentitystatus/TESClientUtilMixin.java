@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Pseudo
 @Mixin(targets = "net.tslat.tes.api.util.TESClientUtil")
-public class TESClientUtilMixin {
+class TESClientUtilMixin {
 	@Redirect(
 		method = "getClosestEntityPosition",
 		at = @At(

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Pseudo
 @Mixin(targets = "yesman.epicfight.client.events.engine.RenderEngine")
-public class RenderEngineMixin {
+class RenderEngineMixin {
 	@Redirect(
 		method = "correctCamera",
 		at = @At(
