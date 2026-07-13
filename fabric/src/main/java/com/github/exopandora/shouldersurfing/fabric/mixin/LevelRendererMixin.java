@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.fabric.mixin;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
-import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -34,9 +33,9 @@ class LevelRendererMixin {
 		ChunkSectionsToRender chunkSectionsToRender,
 		CallbackInfo ci
 	) {
-		float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
-		Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		var partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
+		var camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+		var instance = ShoulderSurfing.getInstance();
 		instance.getCamera().renderTick(camera.entity(), partialTick);
 		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
 	}

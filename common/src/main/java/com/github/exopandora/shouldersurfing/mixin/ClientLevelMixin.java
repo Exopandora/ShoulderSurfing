@@ -15,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.WritableLevelData;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -80,7 +79,7 @@ abstract class ClientLevelMixin extends Level {
 			return;
 		}
 		if (MathHelper.roundDouble(entity.xo) == x && MathHelper.roundDouble(entity.yo) == y && MathHelper.roundDouble(entity.zo) == z) {
-			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(entity);
+			var pos = SoundHelper.calcCameraCentricSoundPosition(entity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent.value(), soundSource, volume, pitch, false, seed);
 			ci.cancel();
 		}
@@ -102,7 +101,7 @@ abstract class ClientLevelMixin extends Level {
 		boolean isDelayed,
 		CallbackInfo ci
 	) {
-		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+		var cameraEntity = Minecraft.getInstance().getCameraEntity();
 		if (cameraEntity == null) {
 			return;
 		}
@@ -110,7 +109,7 @@ abstract class ClientLevelMixin extends Level {
 			return;
 		}
 		if (cameraEntity.getX() == x && cameraEntity.getY() == y && cameraEntity.getZ() == z) {
-			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
+			var pos = SoundHelper.calcCameraCentricSoundPosition(cameraEntity);
 			this.playSound(pos.x(), pos.y(), pos.z(), soundEvent, soundSource, volume, pitch, isDelayed, this.random.nextLong());
 			ci.cancel();
 		}

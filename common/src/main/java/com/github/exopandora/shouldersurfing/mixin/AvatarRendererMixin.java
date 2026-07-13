@@ -23,7 +23,7 @@ abstract class AvatarRendererMixin extends LivingEntityRenderer<LivingEntity, Li
 	protected RenderType getRenderType(
 		@NonNull LivingEntityRenderState state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing
 	) {
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		var instance = ShoulderSurfing.getInstance();
 		if (instance.getCameraEntityRenderer().isEntityTransparentPlayer(state)) {
 			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));
 		}

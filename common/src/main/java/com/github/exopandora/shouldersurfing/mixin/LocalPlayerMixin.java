@@ -40,13 +40,13 @@ abstract class LocalPlayerMixin extends AbstractClientPlayer {
 		Predicate<Entity> filter,
 		double interactionRangeSq
 	) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			PickContext pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.getMainCamera())
+			var pickContext = new PickContext.Builder(Minecraft.getInstance().gameRenderer.getMainCamera())
 				.withEntity(shooter)
 				.build();
-			double interactionRange = Math.sqrt(interactionRangeSq);
-			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var interactionRange = Math.sqrt(interactionRangeSq);
+			var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
 		return ProjectileUtil.getEntityHitResult(shooter, startPos, endPos, boundingBox, filter, interactionRangeSq);

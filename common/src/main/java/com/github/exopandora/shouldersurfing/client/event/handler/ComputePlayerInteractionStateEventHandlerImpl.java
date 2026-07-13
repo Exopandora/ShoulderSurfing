@@ -15,7 +15,7 @@ public class ComputePlayerInteractionStateEventHandlerImpl {
 		@Override
 		public void handle(ComputePlayerInteractionStateEvent event) {
 			if (Minecraft.getInstance().options.keyUse.isDown() && !event.getCameraEntity().isUsingItem()) {
-				HitResult hitResult = Minecraft.getInstance().hitResult;
+				var hitResult = Minecraft.getInstance().hitResult;
 				if (hitResult != null && hitResult.getType() != HitResult.Type.MISS) {
 					event.setResult(true);
 				}

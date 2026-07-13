@@ -5,7 +5,6 @@ import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
 import com.simibubi.create.content.contraptions.ContraptionHandlerClient;
 import net.createmod.catnip.data.Couple;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
@@ -24,10 +23,10 @@ class ContraptionHandlerClientMixin_6_0_0 {
 	)
 	private static void getRayInputs(LocalPlayer player, CallbackInfoReturnable<Couple<Vec3>> cir) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
-			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			double interactionRange = IObjectPicker.maxInteractionRange(player);
+			var minecraft = Minecraft.getInstance();
+			var camera = minecraft.gameRenderer.getMainCamera();
+			var partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var interactionRange = IObjectPicker.maxInteractionRange(player);
 			var blockTrace = new PickContext.Builder(camera)
 				.withEntity(player)
 				.build()

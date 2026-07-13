@@ -45,9 +45,9 @@ public final class DynamicPickContext extends PickContext {
 		float partialTick,
 		PickVector pickVector
 	) {
-		Vec3 startPos = entity.getEyePosition(partialTick);
-		Vec3 viewVector = pickVector.calc(camera, entity, partialTick);
-		Vec3 endPos = startPos.add(viewVector.scale(interactionRange));
+		var startPos = entity.getEyePosition(partialTick);
+		var viewVector = pickVector.calc(camera, entity, partialTick);
+		var endPos = startPos.add(viewVector.scale(interactionRange));
 		return new Couple<Vec3>(startPos, endPos);
 	}
 }

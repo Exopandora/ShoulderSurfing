@@ -81,7 +81,7 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 	@Override
 	public IShoulderSurfingRegistrar registerPlayerStateCallback(IPlayerStateCallback callback) {
 		this.eventBus.register((ComputePlayerAttackStateEventHandler) event -> {
-			IsAttackingContext context = new IsAttackingContext(Minecraft.getInstance());
+			var context = new IsAttackingContext(Minecraft.getInstance());
 			switch (callback.isAttacking(context)) {
 				case TRUE -> event.setResult(true);
 				case FALSE -> {
@@ -91,7 +91,7 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 			}
 		});
 		this.eventBus.register((ComputePlayerInteractionStateEventHandler) event -> {
-			IsInteractingContext context = new IsInteractingContext(Minecraft.getInstance(), event.getCameraEntity());
+			var context = new IsInteractingContext(Minecraft.getInstance(), event.getCameraEntity());
 			switch (callback.isInteracting(context)) {
 				case TRUE -> event.setResult(true);
 				case FALSE -> {
@@ -101,7 +101,7 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 			}
 		});
 		this.eventBus.register((ComputePlayerInteractionStateEventHandler) event -> {
-			IsPickingContext context = new IsPickingContext(Minecraft.getInstance());
+			var context = new IsPickingContext(Minecraft.getInstance());
 			switch (callback.isPicking(context)) {
 				case TRUE -> event.setResult(true);
 				case FALSE -> {
@@ -111,7 +111,7 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 			}
 		});
 		this.eventBus.register((ComputePlayerInteractionStateEventHandler) event -> {
-			IsUsingContext context = new IsUsingContext(Minecraft.getInstance(), event.getCameraEntity());
+			var context = new IsUsingContext(Minecraft.getInstance(), event.getCameraEntity());
 			switch (callback.isUsingItem(context)) {
 				case TRUE -> event.setResult(true);
 				case FALSE -> {
@@ -121,7 +121,7 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 			}
 		});
 		this.eventBus.register((ComputePlayerRideBoatStateEventHandler) event -> {
-			IsRidingBoatContext context = new IsRidingBoatContext(Minecraft.getInstance(), event.getCameraEntity(), event.getVehicle());
+			var context = new IsRidingBoatContext(Minecraft.getInstance(), event.getCameraEntity(), event.getVehicle());
 			switch (callback.isRidingBoat(context)) {
 				case TRUE -> event.setResult(true);
 				case FALSE -> {
@@ -136,16 +136,16 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 	@Override
 	public IShoulderSurfingRegistrar registerCameraRotationSetupCallback(ICameraRotationSetupCallback callback) {
 		this.eventBus.register(500, (SetupCameraRotationEventHandler) event -> {
-			CameraRotationSetupResult result = new CameraRotationSetupResult(event.getResult().x(), event.getResult().x());
-			CameraRotationSetupContext context = new CameraRotationSetupContext(
+			var result = new CameraRotationSetupResult(event.getResult().x(), event.getResult().x());
+			var context = new CameraRotationSetupContext(
 				event.getPlayer(), event.getDeltaRot().x(), event.getDeltaRot().y()
 			);
 			callback.pre(context, result);
 			event.setResult(new Vec2f(result.getXRot(), result.getYRot()));
 		});
 		this.eventBus.register(1500, (SetupCameraRotationEventHandler) event -> {
-			CameraRotationSetupResult result = new CameraRotationSetupResult(event.getResult().x(), event.getResult().x());
-			CameraRotationSetupContext context = new CameraRotationSetupContext(
+			var result = new CameraRotationSetupResult(event.getResult().x(), event.getResult().x());
+			var context = new CameraRotationSetupContext(
 				event.getPlayer(), event.getDeltaRot().x(), event.getDeltaRot().y()
 			);
 			callback.post(context, result);
@@ -158,7 +158,7 @@ public class ShoulderSurfingRegistrarAdapter implements IShoulderSurfingRegistra
 	public IShoulderSurfingRegistrar registerPlayerInputCallback(IPlayerInputCallback callback) {
 		this.eventBus.register((ForceVanillaPlayerInputEventHandler) event -> {
 			if (!event.getResult()) {
-				IsForcingVanillaMovementInputContext context = new IsForcingVanillaMovementInputContext(
+				var context = new IsForcingVanillaMovementInputContext(
 					Minecraft.getInstance(), event.getCameraEntity()
 				);
 				event.setResult(callback.isForcingVanillaMovementInput(context));

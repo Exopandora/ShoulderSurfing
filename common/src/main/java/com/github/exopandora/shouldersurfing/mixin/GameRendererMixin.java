@@ -7,7 +7,6 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.state.GameRenderState;
-import net.minecraft.client.renderer.state.OptionsRenderState;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,7 +54,7 @@ abstract class GameRendererMixin implements GameRendererAccessor {
 	)
 	private void extractOptions(CallbackInfo ci) {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing()) {
-			OptionsRenderState optionsRenderState = this.gameRenderState.optionsRenderState;
+			var optionsRenderState = this.gameRenderState.optionsRenderState;
 			optionsRenderState.bobView = switch (Config.CLIENT.getCameraConfig().getViewBobbingMode()) {
 				case INHERIT -> optionsRenderState.bobView;
 				case ON -> true;

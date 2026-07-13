@@ -24,7 +24,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	}
 	
 	private static void addCreateModMixins(List<String> mixins) {
-		String createModVersion = Mods.CREATE.getModVersion();
+		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
@@ -36,7 +36,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	}
 	
 	private static void addCobblemonMixins(List<String> mixins) {
-		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
+		var cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
 			ShoulderSurfingCommon.LOGGER.warn("Cobblemon integration is limited in this version!");
 			mixins.add("cobblemon.LocalPlayerMixin");

@@ -66,11 +66,11 @@ public enum CobblemonEventHandler {
 	
 	public void postSetupCameraRotation(SetupCameraRotationEvent event) {
 		if (hasActiveBoatBehaviour(event.getPlayer().getVehicle())) {
-			Entity vehicle = event.getPlayer().getVehicle();
-			float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			float yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
-			float delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
-			float clamped = Mth.clamp(delta, -105.0F, 105.0F);
+			var vehicle = event.getPlayer().getVehicle();
+			var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
+			var delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
+			var clamped = Mth.clamp(delta, -105.0F, 105.0F);
 			event.setResult(event.getResult().add(0, clamped - delta));
 		}
 	}

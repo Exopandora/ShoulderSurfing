@@ -2,10 +2,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
-import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
-import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import net.minecraft.client.Camera;
@@ -13,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
@@ -91,7 +87,7 @@ abstract class CameraMixin implements CameraDuck {
 	)
 	private void setupRotations(float partialTick, CallbackInfo ci) {
 		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
-			Vec2f rotation = ShoulderSurfing.getInstance().getCamera().getRenderRotation();
+			var rotation = ShoulderSurfing.getInstance().getCamera().getRenderRotation();
 			this.setRotation(rotation.y(), rotation.x());
 		}
 	}
@@ -106,11 +102,11 @@ abstract class CameraMixin implements CameraDuck {
 	)
 	private void setupPosition(Camera cameraIn, float x, float y, float z, float partialTick) {
 		if (Perspective.SHOULDER_SURFING == Perspective.current() && !(this.entity instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
-			ShoulderSurfingCamera camera = ShoulderSurfing.getInstance().getCamera();
+			var camera = ShoulderSurfing.getInstance().getCamera();
 			camera.setup(cameraIn, this.level, partialTick, this.entity);
-			Vec3 cameraOffset = camera.getRenderOffset();
+			var cameraOffset = camera.getRenderOffset();
 			this.move((float) -cameraOffset.z(), (float) cameraOffset.y(), (float) -cameraOffset.x());
-			Vec2f sway = camera.calcSway(this.entity, partialTick);
+			var sway = camera.calcSway(this.entity, partialTick);
 			this.shouldersurfing$rotate(sway.x(), 0, sway.y());
 		} else {
 			this.move(x, y, z);
@@ -142,7 +138,7 @@ abstract class CameraMixin implements CameraDuck {
 		ordinal = 1
 	)
 	private float calculateFov(float lerpedFov) {
-		ICameraConfig config = Config.CLIENT.getCameraConfig();
+		var config = Config.CLIENT.getCameraConfig();
 		if (IShoulderSurfing.getInstance().isShoulderSurfing() && config.isFovOverrideEnabled()) {
 			return (config.getFovOverride() / (float) Minecraft.getInstance().options.fov().get()) * lerpedFov;
 		}

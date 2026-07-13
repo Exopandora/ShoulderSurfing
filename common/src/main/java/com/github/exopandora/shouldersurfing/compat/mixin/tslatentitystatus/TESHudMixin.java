@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.compat.mixin.tslatentitystatus;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -32,13 +31,13 @@ class TESHudMixin {
 		remap = false
 	)
 	private static EntityHitResult getEntityHitResult(Entity player, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
-			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			double interactionRange = Math.sqrt(interactionRangeSq);
-			PickContext pickContext = new PickContext.Builder(camera)
+			var minecraft = Minecraft.getInstance();
+			var camera = minecraft.gameRenderer.getMainCamera();
+			var partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var interactionRange = Math.sqrt(interactionRangeSq);
+			var pickContext = new PickContext.Builder(camera)
 				.withEntity(player)
 				.build();
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
@@ -56,13 +55,13 @@ class TESHudMixin {
 		remap = false
 	)
 	private static BlockHitResult clip(Level level, ClipContext clipContext) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
-			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			double interactionRange = camera.position().distanceTo(clipContext.getTo());
-			PickContext pickContext = new PickContext.Builder(camera).build();
+			var minecraft = Minecraft.getInstance();
+			var camera = minecraft.gameRenderer.getMainCamera();
+			var partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+			var interactionRange = camera.position().distanceTo(clipContext.getTo());
+			var pickContext = new PickContext.Builder(camera).build();
 			return instance.getObjectPicker().pickBlocks(pickContext, interactionRange, partialTick);
 		}
 		return level.clip(clipContext);

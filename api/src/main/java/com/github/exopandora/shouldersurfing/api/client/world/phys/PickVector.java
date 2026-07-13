@@ -26,14 +26,14 @@ public enum PickVector {
 	}
 	
 	private static @NotNull Vec3 entityViewVector(Entity entity, float partialTick) {
-		float xRot = partialTick == 1.0F ? entity.getXRot() : Mth.rotLerp(partialTick, entity.xRotO, entity.getXRot());
-		float yRot = partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
-		float xRotDeg = xRot * Mth.DEG_TO_RAD;
-		float yRotDegNegated = -yRot * Mth.DEG_TO_RAD;
-		float a = Mth.cos(yRotDegNegated);
-		float b = Mth.sin(yRotDegNegated);
-		float c = Mth.cos(xRotDeg);
-		float d = Mth.sin(xRotDeg);
+		var xRot = partialTick == 1.0F ? entity.getXRot() : Mth.rotLerp(partialTick, entity.xRotO, entity.getXRot());
+		var yRot = partialTick == 1.0F ? entity.getYRot() : Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
+		var xRotDeg = xRot * Mth.DEG_TO_RAD;
+		var yRotDegNegated = -yRot * Mth.DEG_TO_RAD;
+		var a = Mth.cos(yRotDegNegated);
+		var b = Mth.sin(yRotDegNegated);
+		var c = Mth.cos(xRotDeg);
+		var d = Mth.sin(xRotDeg);
 		return new Vec3(b * c, -d, a * c);
 	}
 }

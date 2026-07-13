@@ -75,7 +75,7 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 	
 	private static void registerCompatibilityEventHandlers(Mods mod, Runnable runnable) {
 		if (mod.isLoaded()) {
-			String modName = StringUtils.capitalize(mod.name().toLowerCase());
+			var modName = StringUtils.capitalize(mod.name().toLowerCase());
 			try {
 				ShoulderSurfingCommon.LOGGER.info("Registering compatibility callback for {}", modName);
 				runnable.run();

@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,7 +50,7 @@ abstract class EntityBoundSoundInstanceMixin extends AbstractTickableSoundInstan
 	@Unique
 	private void correctSoundPositionIfNecessary() {
 		if (IShoulderSurfing.getInstance().isShoulderSurfing() && Config.CLIENT.getAudioConfig().isPlayerSoundCentered()) {
-			Vec3 pos = SoundHelper.calcCameraCentricSoundPosition(this.entity);
+			var pos = SoundHelper.calcCameraCentricSoundPosition(this.entity);
 			this.x = pos.x();
 			this.y = pos.y();
 			this.z = pos.z();
