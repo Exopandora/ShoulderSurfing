@@ -7,6 +7,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCam
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,6 +59,13 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 		@Override
 		public void handle(TickEvent event) {
 			if (!Config.CLIENT.getPlayerConfig().isPlayerTransparentWhenClimbing()) {
+				ClientPacketListener connection = Minecraft.getInstance().getConnection();
+				//noinspection ConstantValue
+				if (connection == null || connection.getLevel() == null) {
+					// Guard against (Neo)Forge retrieving data from the server config when calling onClimbable,
+					// which might already be unloaded at this point, resulting in a crash.
+					return;
+				}
 				if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living && living.onClimbable()) {
 					this.opaqueTicks = OPAQUE_TICK_COUNT;
 				} else if (this.opaqueTicks > 0) {
