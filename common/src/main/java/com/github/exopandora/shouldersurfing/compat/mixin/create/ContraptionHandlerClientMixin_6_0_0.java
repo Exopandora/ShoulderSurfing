@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ContraptionHandlerClient.class)
-public class ContraptionHandlerClientMixin_6_0_0 {
+class ContraptionHandlerClientMixin_6_0_0 {
 	@Inject(
 		method = "getRayInputs",
 		at = @At("HEAD"),
