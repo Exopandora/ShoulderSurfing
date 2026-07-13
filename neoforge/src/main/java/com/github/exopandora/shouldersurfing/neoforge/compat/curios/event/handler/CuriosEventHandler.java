@@ -19,9 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-public enum CuriosEventHandler implements ICuriosEventHandler {
-	INSTANCE;
-	
+public class CuriosEventHandler implements ICuriosEventHandler {
 	@Override
 	public void handle(ComputePlayerAimStateEvent event) {
 		Optional<ICuriosItemHandler> optionalInventory = CuriosApi.getCuriosInventory(event.getEntity());
