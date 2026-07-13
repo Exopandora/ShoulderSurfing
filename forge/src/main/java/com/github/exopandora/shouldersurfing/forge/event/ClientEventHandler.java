@@ -9,7 +9,6 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.joml.Matrix4f;
 
 public class ClientEventHandler {
 	@SubscribeEvent
@@ -22,11 +21,11 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void renderLevelStageEvent(RenderLevelStageEvent event) {
 		if (RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage())) {
-			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
-			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			var partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+			var instance = ShoulderSurfing.getInstance();
 			instance.getCamera().renderTick(event.getCamera().getEntity(), partialTick);
-			Matrix4f modelViewMatrix = event.getPoseStack();
-			Matrix4f projectionMatrix = RenderSystem.getProjectionMatrix();
+			var modelViewMatrix = event.getPoseStack();
+			var projectionMatrix = RenderSystem.getProjectionMatrix();
 			instance.getCrosshairRenderer().renderTick(event.getCamera(), modelViewMatrix, projectionMatrix, partialTick);
 		}
 	}

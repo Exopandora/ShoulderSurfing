@@ -25,7 +25,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	}
 	
 	private static void addShaderMixins(List<String> mixins) {
-		ArtifactVersion version = highestShaderVersion();
+		var version = highestShaderVersion();
 		if (version != null) {
 			if (parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version)) {
 				mixins.add("iris.SheetsMixin_1_7_0");
@@ -36,7 +36,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	}
 	
 	private static void addCreateModMixins(List<String> mixins) {
-		String createModVersion = Mods.CREATE.getModVersion();
+		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
@@ -48,7 +48,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	}
 	
 	private static void addCobblemonMixins(List<String> mixins) {
-		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
+		var cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(cobblemonVersion);
 			if (parseVersionRangeSilent("[1.7.0,)").containsVersion(version)) {

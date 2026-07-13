@@ -28,9 +28,9 @@ class PlayerExtensionsKtMixin_1_6 {
 		ClipContext.Fluid collideBlock,
 		CallbackInfoReturnable<Object> ci
 	) {
-		Minecraft minecraft = Minecraft.getInstance();
+		var minecraft = Minecraft.getInstance();
 		if (player == minecraft.player && player == minecraft.getCameraEntity()) {
-			ShoulderSurfing instance = ShoulderSurfing.getInstance();
+			var instance = ShoulderSurfing.getInstance();
 			if (instance.isShoulderSurfing() && !instance.getCrosshairRenderer().isCrosshairDynamic()) {
 				instance.lookAtCrosshairTarget();
 			}

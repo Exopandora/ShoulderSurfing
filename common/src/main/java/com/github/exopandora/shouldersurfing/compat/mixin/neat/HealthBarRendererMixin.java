@@ -2,10 +2,8 @@ package com.github.exopandora.shouldersurfing.compat.mixin.neat;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.EntityHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,15 +20,15 @@ class HealthBarRendererMixin {
 		cancellable = true
 	)
 	private static void getEntityLookedAt(Entity cameraEntity, CallbackInfoReturnable<Entity> cir) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Camera camera = minecraft.gameRenderer.getMainCamera();
-			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
-			PickContext pickContext = new PickContext.Builder(camera)
+			var minecraft = Minecraft.getInstance();
+			var camera = minecraft.gameRenderer.getMainCamera();
+			var partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+			var pickContext = new PickContext.Builder(camera)
 				.withEntity(cameraEntity)
 				.build();
-			EntityHitResult result = instance.getObjectPicker().pickEntities(pickContext, 32, partialTick);
+			var result = instance.getObjectPicker().pickEntities(pickContext, 32, partialTick);
 			cir.setReturnValue(result != null ? result.getEntity() : null);
 		}
 	}

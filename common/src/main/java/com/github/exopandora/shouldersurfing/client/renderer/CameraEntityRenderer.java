@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.api.client.renderer.ICameraEntityRe
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.client.EventHooks;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.FastColor.ABGR32;
@@ -40,7 +39,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 		if (!this.instance.isShoulderSurfing() || cameraEntity.isSpectator()) {
 			return false;
 		}
-		ShoulderSurfingCamera camera = this.instance.getCamera();
+		var camera = this.instance.getCamera();
 		if (camera.isInsideEntity(cameraEntity)) {
 			return true;
 		} else if (camera.isLookingUp()) {
@@ -54,8 +53,8 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 	}
 	
 	public int applyCameraEntityAlpha(int color) {
-		int cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
-		int alpha = ABGR32.alpha(color);
+		var cameraEntityAlpha = this.getCameraEntityAlphaAsInt();
+		var alpha = ABGR32.alpha(color);
 		if (cameraEntityAlpha < alpha) {
 			return ABGR32.transparent(color) + (cameraEntityAlpha << 24);
 		}

@@ -1,8 +1,6 @@
 package com.github.exopandora.shouldersurfing.compat.cobblemon.event.handler;
 
 import com.cobblemon.mod.common.OrientationControllable;
-import com.cobblemon.mod.common.api.orientation.OrientationController;
-import com.cobblemon.mod.common.api.riding.behaviour.ActiveRidingContext;
 import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.BoatBehaviour;
 import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.DolphinBehaviour;
 import com.cobblemon.mod.common.api.riding.behaviour.types.liquid.SubmarineBehaviour;
@@ -59,7 +57,7 @@ public enum CobblemonEventHandler {
 	
 	public void preSetupCameraRotation(SetupCameraRotationEvent event) {
 		if (event.getPlayer().getVehicle() instanceof OrientationControllable controllableVehicle) {
-			OrientationController vehicleController = controllableVehicle.getOrientationController();
+			var vehicleController = controllableVehicle.getOrientationController();
 			if (vehicleController.isActive()) {
 				event.setResult(new Vec2f(vehicleController.getPitch(), vehicleController.getYaw()));
 			}
@@ -68,11 +66,11 @@ public enum CobblemonEventHandler {
 	
 	public void postSetupCameraRotation(SetupCameraRotationEvent event) {
 		if (hasActiveBoatBehaviour(event.getPlayer().getVehicle())) {
-			Entity vehicle = event.getPlayer().getVehicle();
-			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
-			float yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
-			float delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
-			float clamped = Mth.clamp(delta, -105.0F, 105.0F);
+			var vehicle = event.getPlayer().getVehicle();
+			var partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+			var yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
+			var delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
+			var clamped = Mth.clamp(delta, -105.0F, 105.0F);
 			event.setResult(event.getResult().add(0, clamped - delta));
 		}
 	}
@@ -91,7 +89,7 @@ public enum CobblemonEventHandler {
 	
 	private static boolean hasActiveBehaviour(@Nullable Entity entity, ResourceLocation behavior) {
 		if (entity instanceof PokemonEntity pokemon && pokemon.getRidingController() != null) {
-			ActiveRidingContext ridingContext = pokemon.getRidingController().getContext();
+			var ridingContext = pokemon.getRidingController().getContext();
 			return ridingContext != null && ridingContext.getSettings().getKey().equals(behavior);
 		}
 		return false;

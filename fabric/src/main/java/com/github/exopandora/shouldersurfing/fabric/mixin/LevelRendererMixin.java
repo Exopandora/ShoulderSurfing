@@ -28,8 +28,8 @@ class LevelRendererMixin {
 		Matrix4f projectionMatrix,
 		CallbackInfo ci
 	) {
-		float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
-		ShoulderSurfing instance = ShoulderSurfing.getInstance();
+		var partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
+		var instance = ShoulderSurfing.getInstance();
 		instance.getCamera().renderTick(camera.getEntity(), partialTick);
 		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}

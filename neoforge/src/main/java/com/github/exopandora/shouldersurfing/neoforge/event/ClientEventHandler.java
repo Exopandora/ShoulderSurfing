@@ -3,8 +3,6 @@ package com.github.exopandora.shouldersurfing.neoforge.event;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.renderer.CrosshairRenderer;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,7 +12,6 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import org.joml.Matrix4f;
 
 public class ClientEventHandler {
 	@SubscribeEvent
@@ -39,7 +36,7 @@ public class ClientEventHandler {
 			VanillaGuiLayers.CROSSHAIR,
 			ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pre_crosshair"),
 			(guiGraphics, deltaTracker) -> {
-				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+				var crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 				if (crosshairRenderer.isCrosshairVisible()) {
 					crosshairRenderer.preRenderCrosshair(guiGraphics);
 				}
@@ -49,7 +46,7 @@ public class ClientEventHandler {
 			VanillaGuiLayers.CROSSHAIR,
 			ResourceLocation.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "post_crosshair"),
 			(guiGraphics, deltaTracker) -> {
-				CrosshairRenderer crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
+				var crosshairRenderer = ShoulderSurfing.getInstance().getCrosshairRenderer();
 				if (crosshairRenderer.isCrosshairVisible()) {
 					crosshairRenderer.postRenderCrosshair(guiGraphics);
 				}
@@ -60,11 +57,11 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void renderLevelStageEvent(RenderLevelStageEvent event) {
 		if (RenderLevelStageEvent.Stage.AFTER_SKY.equals(event.getStage())) {
-			float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
-			Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-			ShoulderSurfing instance = ShoulderSurfing.getInstance();
-			Matrix4f modelViewMatrix = event.getModelViewMatrix();
-			Matrix4f projectionMatrix = event.getProjectionMatrix();
+			var partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(true);
+			var camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+			var instance = ShoulderSurfing.getInstance();
+			var modelViewMatrix = event.getModelViewMatrix();
+			var projectionMatrix = event.getProjectionMatrix();
 			instance.getCamera().renderTick(camera.getEntity(), partialTick);
 			instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
 		}

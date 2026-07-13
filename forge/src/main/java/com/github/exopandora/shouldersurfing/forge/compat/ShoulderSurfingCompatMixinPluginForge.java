@@ -31,7 +31,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	}
 	
 	private static void addOculusMixins(List<String> mixins) {
-		String oculusModVersion = Mods.OCULUS.getModVersion();
+		var oculusModVersion = Mods.OCULUS.getModVersion();
 		if (oculusModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(oculusModVersion);
 			if (parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version)) {
@@ -43,7 +43,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	}
 	
 	private static void addCreateModMixins(List<String> mixins) {
-		String createModVersion = Mods.CREATE.getModVersion();
+		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
@@ -55,7 +55,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	}
 	
 	private static void addCobblemonMixins(List<String> mixins) {
-		String cobblemonVersion = Mods.COBBLEMON.getModVersion();
+		var cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
 			ArtifactVersion version = new DefaultArtifactVersion(cobblemonVersion);
 			if (parseVersionRangeSilent("[1.7.0,)").containsVersion(version)) {

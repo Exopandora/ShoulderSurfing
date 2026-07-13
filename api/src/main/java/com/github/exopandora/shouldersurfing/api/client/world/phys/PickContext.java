@@ -1,8 +1,6 @@
 package com.github.exopandora.shouldersurfing.api.client.world.phys;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
-import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRenderer;
-import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.api.util.Couple;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import net.minecraft.client.Camera;
@@ -35,7 +33,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 	public abstract Couple<Vec3> blockTrace(double interactionRange, float partialTick);
 	
 	public ClipContext toClipContext(double interactionRange, float partialTick) {
-		Couple<Vec3> blockTrace = this.blockTrace(interactionRange, partialTick);
+		var blockTrace = this.blockTrace(interactionRange, partialTick);
 		return new ClipContext(blockTrace.left(), blockTrace.right(), this.blockContext(), this.fluidContext(), this.entity());
 	}
 	
@@ -116,27 +114,23 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		}
 		
 		public PickContext build() {
-			Entity entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
-			ClipContext.Fluid fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
-			Predicate<Entity> entityFilter = this.entityFilter == null ? ENTITY_IS_PICKABLE : this.entityFilter;
-			
+			var entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
+			var fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
+			var entityFilter = this.entityFilter == null ? ENTITY_IS_PICKABLE : this.entityFilter;
 			if (EntityHelper.isPlayerSpectatingEntity()) {
 				return new DynamicPickContext(this.camera, fluidContext, Minecraft.getInstance().getCameraEntity(), entityFilter, PickVector.PLAYER);
 			} else if (this.endPos != null) {
 				return new ObstructionPickContext(this.camera, fluidContext, entity, entityFilter, this.endPos);
 			}
-			
-			ICrosshairRenderer crosshairRenderer = IShoulderSurfing.getInstance().getCrosshairRenderer();
-			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic() : this.offsetTrace;
-			IObjectPickerConfig config = IShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
-			
+			var crosshairRenderer = IShoulderSurfing.getInstance().getCrosshairRenderer();
+			var offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic() : this.offsetTrace;
+			var config = IShoulderSurfing.getInstance().getClientConfig().getObjectPickerConfig();
 			if (offsetTrace) {
-				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
-				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
+				var blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
+				var entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;
 				return new OffsetPickContext(this.camera, fluidContext, entity, entityFilter, blockPickOrigin, entityPickOrigin);
 			}
-			
-			PickVector pickVector = this.pickVector == null ? config.getPickVector() : this.pickVector;
+			var pickVector = this.pickVector == null ? config.getPickVector() : this.pickVector;
 			return new DynamicPickContext(this.camera, fluidContext, entity, entityFilter, pickVector);
 		}
 	}

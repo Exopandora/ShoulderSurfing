@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.client.event.handler;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.CrosshairConfig;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,18 +17,18 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 	
 	@Override
 	public void handle(ComputePlayerAimStateEvent event) {
-		ItemStack useStack = event.getEntity().getUseItem();
-		CrosshairConfig crosshairConfig = Config.CLIENT.getCrosshairConfig();
-		List<? extends String> useItems = crosshairConfig.getAdaptiveCrosshairUseItems();
-		List<? extends String> useItemProperties = crosshairConfig.getAdaptiveCrosshairUseItemProperties();
+		var useStack = event.getEntity().getUseItem();
+		var crosshairConfig = Config.CLIENT.getCrosshairConfig();
+		var useItems = crosshairConfig.getAdaptiveCrosshairUseItems();
+		var useItemProperties = crosshairConfig.getAdaptiveCrosshairUseItemProperties();
 		if (isAdaptiveItemStack(useStack, useItems, useItemProperties)) {
 			event.setResult(true);
 			return;
 		}
-		List<? extends String> holdItems = crosshairConfig.getAdaptiveCrosshairHoldItems();
-		List<? extends String> holdItemProperties = crosshairConfig.getAdaptiveCrosshairHoldItemProperties();
-		ItemStack[] handItems = {event.getEntity().getMainHandItem(), event.getEntity().getOffhandItem()};
-		for (ItemStack handStack : handItems) {
+		var holdItems = crosshairConfig.getAdaptiveCrosshairHoldItems();
+		var holdItemProperties = crosshairConfig.getAdaptiveCrosshairHoldItemProperties();
+		var handItems = new ItemStack[]{event.getEntity().getMainHandItem(), event.getEntity().getOffhandItem()};
+		for (var handStack : handItems) {
 			if (isAdaptiveItemStack(handStack, holdItems, holdItemProperties)) {
 				event.setResult(true);
 				return;
@@ -38,11 +37,11 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 	}
 	
 	public static boolean isAdaptiveItemStack(ItemStack stack, List<? extends String> expressions, List<? extends String> itemProperties) {
-		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+		var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		if (expressions.stream().map(ComputePlayerAimStateEventHandlerImpl::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId))) {
 			return true;
 		}
-		for (String itemProperty : itemProperties) {
+		for (var itemProperty : itemProperties) {
 			if (ItemProperties.getProperty(stack, ResourceLocation.parse(itemProperty)) != null) {
 				return true;
 			}

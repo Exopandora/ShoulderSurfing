@@ -10,7 +10,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
@@ -28,13 +27,12 @@ import net.minecraftforge.forgespi.language.IModInfo;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Mod(ShoulderSurfingCommon.MOD_ID)
 public class ShoulderSurfingForge {
 	public ShoulderSurfingForge() {
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModLoadingContext modLoadingContext = ModLoadingContext.get();
+		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		var modLoadingContext = ModLoadingContext.get();
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 			modEventBus.addListener(this::clientSetup);
 			modEventBus.addListener(this::registerKeyMappingsEvent);
@@ -53,8 +51,8 @@ public class ShoulderSurfingForge {
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, ClientEventHandler::movementInputUpdateEvent);
 		MinecraftForge.EVENT_BUS.addListener(ClientEventHandler::computeCameraAnglesEvent);
 		
-		Map<String, Object> modProperties = ModLoadingContext.get().getActiveContainer().getModInfo().getModProperties();
-		List<?> incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
+		var modProperties = ModLoadingContext.get().getActiveContainer().getModInfo().getModProperties();
+		var incompatibleModIds = (List<?>) modProperties.getOrDefault("incompatibleMods", Collections.emptyList());
 		FMLLoader.getLoadingModList().getMods().stream()
 			.filter(info -> incompatibleModIds.contains(info.getModId()))
 			.map(ShoulderSurfingForge::createIncompatibleModWarning)
@@ -97,9 +95,9 @@ public class ShoulderSurfingForge {
 	}
 	
 	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod) {
-		String translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
-		String modId = incompatibleMod.getModId();
-		String modVersion = incompatibleMod.getVersion().toString();
+		var translationKey = ShoulderSurfingCommon.MOD_ID + ".modloadingissue.incompatiblemod";
+		var modId = incompatibleMod.getModId();
+		var modVersion = incompatibleMod.getVersion().toString();
 		return new ModLoadingWarning(null, ModLoadingStage.VALIDATE, translationKey, ShoulderSurfingCommon.MOD_ID, modId, modVersion);
 	}
 }

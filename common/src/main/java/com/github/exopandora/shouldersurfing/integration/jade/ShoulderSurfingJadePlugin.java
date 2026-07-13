@@ -3,13 +3,7 @@ package com.github.exopandora.shouldersurfing.integration.jade;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -38,25 +32,25 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 		
 		@Override
 		public @Nullable Accessor<?> onRayTrace(HitResult hitResult, @Nullable Accessor<?> accessor, @Nullable Accessor<?> originalAccessor) {
-			IShoulderSurfing instance = IShoulderSurfing.getInstance();
-			Minecraft minecraft = Minecraft.getInstance();
+			var instance = IShoulderSurfing.getInstance();
+			var minecraft = Minecraft.getInstance();
 			if (instance.isShoulderSurfing() && minecraft.player != null && minecraft.level != null) {
-				Player player = minecraft.player;
-				Camera camera = minecraft.gameRenderer.getMainCamera();
-				ClipContext.Fluid fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
-				double interactionRangeOverride = IObjectPicker.maxInteractionRange(player) + IWailaConfig.get().getGeneral().getExtendedReach();
-				float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
-				PickContext pickContext = new PickContext.Builder(camera)
+				var player = minecraft.player;
+				var camera = minecraft.gameRenderer.getMainCamera();
+				var fluidContext = IWailaConfig.get().getGeneral().getDisplayFluids().ctx;
+				var interactionRangeOverride = IObjectPicker.maxInteractionRange(player) + IWailaConfig.get().getGeneral().getExtendedReach();
+				var partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+				var pickContext = new PickContext.Builder(camera)
 					.withFluidContext(fluidContext)
 					.build();
-				HitResult target = instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
-				Level level = minecraft.level;
-				if (Type.MISS.equals(target.getType())) {
+				var target = instance.getObjectPicker().pick(pickContext, interactionRangeOverride, partialTick, player);
+				var level = minecraft.level;
+				if (target.getType() == Type.MISS) {
 					return null;
 				}
 				if (target instanceof BlockHitResult blockTarget) {
-					BlockState state = level.getBlockState(blockTarget.getBlockPos());
-					BlockEntity tileEntity = level.getBlockEntity(blockTarget.getBlockPos());
+					var state = level.getBlockState(blockTarget.getBlockPos());
+					var tileEntity = level.getBlockEntity(blockTarget.getBlockPos());
 					return this.registration.blockAccessor()
 						.blockState(state)
 						.blockEntity(tileEntity)

@@ -34,13 +34,13 @@ abstract class GameRendererMixin implements GameRendererAccessor {
 		)
 	)
 	private EntityHitResult getEntityHitResult(Entity shooter, Vec3 startPos, Vec3 endPos, AABB boundingBox, Predicate<Entity> filter, double interactionRangeSq) {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		var instance = IShoulderSurfing.getInstance();
 		if (instance.isShoulderSurfing()) {
-			PickContext pickContext = new PickContext.Builder(this.getMainCamera())
+			var pickContext = new PickContext.Builder(this.getMainCamera())
 				.withEntity(shooter)
 				.build();
-			double interactionRange = Math.sqrt(interactionRangeSq);
-			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+			var interactionRange = Math.sqrt(interactionRangeSq);
+			var partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 			return instance.getObjectPicker().pickEntities(pickContext, interactionRange, partialTick);
 		}
 		return ProjectileUtil.getEntityHitResult(shooter, startPos, endPos, boundingBox, filter, interactionRangeSq);
