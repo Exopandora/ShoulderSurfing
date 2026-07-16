@@ -117,7 +117,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	private static Vec2f computeCrosshairOffset(
 		IShoulderSurfing instance,
 		Camera camera,
-			Matrix4f modelViewMatrix,
+		Matrix4f modelViewMatrix,
 		Matrix4f projectionMatrix,
 		boolean isCrosshairDynamic,
 		float partialTick
