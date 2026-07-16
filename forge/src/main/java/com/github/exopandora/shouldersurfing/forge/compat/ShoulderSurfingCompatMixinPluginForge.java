@@ -33,7 +33,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	private static void addCreateModMixins(List<String> mixins) {
 		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
+			var version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
 				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
 			} else if (parseVersionRangeSilent("(,6.0.0)").containsVersion(version)) {
