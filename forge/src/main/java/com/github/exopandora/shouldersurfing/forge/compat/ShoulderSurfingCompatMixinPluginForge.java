@@ -3,7 +3,6 @@ package com.github.exopandora.shouldersurfing.forge.compat;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
-import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -16,7 +15,7 @@ import static com.github.exopandora.shouldersurfing.forge.Platform.parseVersionR
 public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin {
 	@Override
 	public List<String> getMixins() {
-		List<String> mixins = new ArrayList<String>();
+		var mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
@@ -33,7 +32,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	private static void addCreateModMixins(List<String> mixins) {
 		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
+			var version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
 				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
 			} else if (parseVersionRangeSilent("(,6.0.0)").containsVersion(version)) {
