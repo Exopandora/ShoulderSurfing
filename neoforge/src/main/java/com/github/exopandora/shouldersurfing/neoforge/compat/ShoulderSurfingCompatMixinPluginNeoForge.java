@@ -17,7 +17,7 @@ import static com.github.exopandora.shouldersurfing.neoforge.Platform.parseVersi
 public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCompatMixinPlugin {
 	@Override
 	public List<String> getMixins() {
-		List<String> mixins = new ArrayList<String>();
+		var mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
@@ -38,7 +38,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	private static void addCreateModMixins(List<String> mixins) {
 		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
+			var version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
 				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
 			} else if (parseVersionRangeSilent("(,6.0.0)").containsVersion(version)) {
@@ -50,7 +50,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	private static void addCobblemonMixins(List<String> mixins) {
 		var cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(cobblemonVersion);
+			var version = new DefaultArtifactVersion(cobblemonVersion);
 			if (parseVersionRangeSilent("[1.7.0,)").containsVersion(version)) {
 				mixins.add("cobblemon.LocalPlayerMixin");
 				mixins.add("cobblemon.PlayerExtensionsKtMixin_1_7");
@@ -72,7 +72,7 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 	}
 	
 	private static @Nullable ArtifactVersion highestShaderVersion() {
-		List<String> shaderVersions = new ArrayList<String>();
+		var shaderVersions = new ArrayList<String>();
 		shaderVersions.add(Mods.OCULUS.getModVersion());
 		shaderVersions.add(Mods.IRIS.getModVersion());
 		shaderVersions.removeIf(Objects::isNull);

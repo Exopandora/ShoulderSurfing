@@ -2,7 +2,6 @@ package com.github.exopandora.shouldersurfing.forge.compat;
 
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.ShoulderSurfingCompatMixinPlugin;
-import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -15,7 +14,7 @@ import static com.github.exopandora.shouldersurfing.forge.Platform.parseVersionR
 public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin {
 	@Override
 	public List<String> getMixins() {
-		List<String> mixins = new ArrayList<String>();
+		var mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
@@ -33,7 +32,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	private static void addOculusMixins(List<String> mixins) {
 		var oculusModVersion = Mods.OCULUS.getModVersion();
 		if (oculusModVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(oculusModVersion);
+			var version = new DefaultArtifactVersion(oculusModVersion);
 			if (parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version)) {
 				mixins.add("iris.SheetsMixin_1_7_0");
 			} else if (parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version)) {
@@ -45,7 +44,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	private static void addCreateModMixins(List<String> mixins) {
 		var createModVersion = Mods.CREATE.getModVersion();
 		if (createModVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(createModVersion);
+			var version = new DefaultArtifactVersion(createModVersion);
 			if (parseVersionRangeSilent("[6.0.0,)").containsVersion(version)) {
 				mixins.add("create.ContraptionHandlerClientMixin_6_0_0");
 			} else if (parseVersionRangeSilent("(,6.0.0)").containsVersion(version)) {
@@ -57,7 +56,7 @@ public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompat
 	private static void addCobblemonMixins(List<String> mixins) {
 		var cobblemonVersion = Mods.COBBLEMON.getModVersion();
 		if (cobblemonVersion != null) {
-			ArtifactVersion version = new DefaultArtifactVersion(cobblemonVersion);
+			var version = new DefaultArtifactVersion(cobblemonVersion);
 			if (parseVersionRangeSilent("[1.7.0,)").containsVersion(version)) {
 				mixins.add("cobblemon.LocalPlayerMixin");
 				mixins.add("cobblemon.PlayerExtensionsKtMixin_1_7");
