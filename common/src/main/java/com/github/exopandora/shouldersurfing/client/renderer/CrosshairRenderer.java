@@ -1,6 +1,5 @@
 package com.github.exopandora.shouldersurfing.client.renderer;
 
-import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.client.renderer.ICrosshairRenderer;
@@ -173,9 +172,9 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 			return false;
 		}
 		return switch (Config.CLIENT.getCrosshairConfig().getCrosshairType()) {
-			case CrosshairType.ADAPTIVE -> instance.isAiming();
-			case CrosshairType.DYNAMIC,
-			     CrosshairType.DYNAMIC_WITH_1PP -> cameraEntity instanceof Player player && !player.isScoping();
+			case ADAPTIVE -> instance.isAiming();
+			case DYNAMIC,
+			     DYNAMIC_WITH_1PP -> cameraEntity instanceof Player player && !player.isScoping();
 			default -> false;
 		};
 	}
