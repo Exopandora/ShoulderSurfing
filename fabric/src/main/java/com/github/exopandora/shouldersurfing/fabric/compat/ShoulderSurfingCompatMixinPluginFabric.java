@@ -15,7 +15,7 @@ import static com.github.exopandora.shouldersurfing.fabric.Platform.parseVersion
 public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompatMixinPlugin {
 	@Override
 	public List<String> getMixins() {
-		List<String> mixins = new ArrayList<String>();
+		var mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);

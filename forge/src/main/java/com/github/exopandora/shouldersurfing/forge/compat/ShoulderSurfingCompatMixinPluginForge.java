@@ -16,7 +16,7 @@ import static com.github.exopandora.shouldersurfing.forge.Platform.parseVersionR
 public class ShoulderSurfingCompatMixinPluginForge extends ShoulderSurfingCompatMixinPlugin {
 	@Override
 	public List<String> getMixins() {
-		List<String> mixins = new ArrayList<String>();
+		var mixins = new ArrayList<String>();
 		addCobblemonMixins(mixins);
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
