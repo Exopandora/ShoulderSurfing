@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed dynamic crosshair remaining active after switching perspective
+
 # 5.0.6
 - Fixed curios compatibility plugin loading
 - Fixed a crash on (neo)forge when un(loading) worlds
