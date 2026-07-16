@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.7
 - Fixed dynamic crosshair remaining active after switching perspective
 
 # 5.0.6
