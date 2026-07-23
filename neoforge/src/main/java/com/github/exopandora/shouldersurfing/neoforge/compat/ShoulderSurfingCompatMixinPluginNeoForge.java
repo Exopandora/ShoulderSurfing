@@ -29,9 +29,9 @@ public class ShoulderSurfingCompatMixinPluginNeoForge extends ShoulderSurfingCom
 		var version = highestShaderVersion();
 		if (version != null) {
 			if (parseVersionRangeSilent("[1.7.0-snapshot,)").containsVersion(version)) {
-				mixins.add("iris.MixinSheets_1_7_0");
+				mixins.add("iris.SheetsMixin_1_7_0");
 			} else if (parseVersionRangeSilent("[1.6.15,1.7.0)").containsVersion(version)) {
-				mixins.add("iris.MixinSheets_1_6_15");
+				mixins.add("iris.SheetsMixin_1_6_15");
 			}
 		}
 	}
