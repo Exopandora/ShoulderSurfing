@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed a crash when iris is installed
+
 # 5.0.8
 - Added back missing iris/oculus shader compatibility code for NeoForge
 
