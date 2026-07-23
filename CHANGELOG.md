@@ -1,3 +1,6 @@
+# Unreleased
+- Added back missing iris/oculus shader compatibility code for NeoForge
+
 # 5.0.7
 - Fixed dynamic crosshair remaining active after switching perspective
 
