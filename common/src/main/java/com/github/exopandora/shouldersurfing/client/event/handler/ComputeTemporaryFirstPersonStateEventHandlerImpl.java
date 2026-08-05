@@ -7,7 +7,6 @@ import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTemporaryFirstPersonStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.PerspectiveConfig;
 
 public class ComputeTemporaryFirstPersonStateEventHandlerImpl {
 	public enum WhenAiming implements ComputeTemporaryFirstPersonStateEventHandler {
