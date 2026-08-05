@@ -12,10 +12,13 @@ import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.event.EventBus;
 import com.github.exopandora.shouldersurfing.mixinduck.OptionsDuck;
 import com.github.exopandora.shouldersurfing.plugin.PluginLoader;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 
 public class ShoulderSurfing implements IShoulderSurfing {
 	private final ShoulderSurfingCamera camera = new ShoulderSurfingCamera(this);
@@ -56,23 +59,9 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		if (minecraft.gui.screen() == null) {
 			this.inputHandler.tick();
 		}
-		var isFirstPerson = Perspective.FIRST_PERSON == Perspective.current();
-		if (!isFirstPerson) {
-			this.isTemporaryFirstPerson = false;
-		}
 		var cameraEntity = minecraft.getCameraEntity();
-		this.isAiming = computeIsAiming(cameraEntity);
-		if (this.isShoulderSurfing) {
-			if (EventHooks.isTemporaryFirstPerson()) {
-				this.changePerspective(Perspective.FIRST_PERSON);
-				this.isTemporaryFirstPerson = true;
-			}
-		} else if (this.isTemporaryFirstPerson && isFirstPerson) {
-			if (!EventHooks.isTemporaryFirstPerson()) {
-				this.changePerspective(Perspective.SHOULDER_SURFING);
-			}
-		}
 		var player = minecraft.player;
+		this.isAiming = computeIsAiming(cameraEntity);
 		this.updatePlayerRotations = false;
 		this.isCameraDecoupled = computeIsCameraDecoupled(cameraEntity, this.isShoulderSurfing, this.isAiming);
 		if (this.isShoulderSurfing && player != null) {
@@ -90,10 +79,28 @@ public class ShoulderSurfing implements IShoulderSurfing {
 					player.setYRot(this.camera.getYRot());
 				}
 			}
-		} else if (this.isTemporaryFirstPerson && isFirstPerson) {
+		} else if (this.isTemporaryFirstPerson && Perspective.current() == Perspective.FIRST_PERSON) {
 			this.camera.tick();
 		}
 		EventHooks.tick();
+	}
+	
+	public void renderTick(Camera camera, Matrix4fc modelViewMatrix, Matrix4f projectionMatrix, float partialTick) {
+		if (Perspective.current() != Perspective.FIRST_PERSON) {
+			this.isTemporaryFirstPerson = false;
+		}
+		if (this.isShoulderSurfing) {
+			if (EventHooks.isTemporaryFirstPerson()) {
+				this.changePerspective(Perspective.FIRST_PERSON, false);
+				this.isTemporaryFirstPerson = true;
+			}
+		} else if (this.isTemporaryFirstPerson) {
+			if (!EventHooks.isTemporaryFirstPerson()) {
+				this.changePerspective(Perspective.SHOULDER_SURFING);
+			}
+		}
+		this.camera.renderTick(camera.entity(), partialTick);
+		this.crosshairRenderer.renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}
 	
 	private static boolean computeIsAiming(Entity cameraEntity) {
