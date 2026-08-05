@@ -191,6 +191,10 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	
 	@Override
 	public void changePerspective(Perspective perspective) {
+		this.changePerspective(perspective, true);
+	}
+	
+	public void changePerspective(Perspective perspective, boolean lookAtCrosshairTarget) {
 		var minecraft = Minecraft.getInstance();
 		var player = minecraft.player;
 		var wasShoulderSurfing = this.isShoulderSurfing;
@@ -199,7 +203,12 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		var isExitingShoulderSurfing = wasShoulderSurfing && !isShoulderSurfing;
 		var cameraEntity = minecraft.getCameraEntity();
 		if (isExitingShoulderSurfing && player != null && cameraEntity == player) {
-			this.lookAtCrosshairTargetInternal();
+			if (lookAtCrosshairTarget) {
+				this.lookAtCrosshairTargetInternal();
+			} else {
+				player.setXRot(this.camera.getXRot());
+				player.setYRot(this.camera.getYRot());
+			}
 		}
 		((OptionsDuck) minecraft.options).shouldersurfing$setCameraTypeDirect(perspective.getCameraType());
 		this.isShoulderSurfing = isShoulderSurfing;
