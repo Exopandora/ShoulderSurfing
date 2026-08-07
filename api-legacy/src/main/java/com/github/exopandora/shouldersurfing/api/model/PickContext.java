@@ -2,7 +2,7 @@ package com.github.exopandora.shouldersurfing.api.model;
 
 import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.client.ICrosshairRenderer;
-import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.legacy.mixinduck.IShoulderSurfingLegacy;
 import net.minecraft.client.Camera;
@@ -124,9 +124,9 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			} else if (this.endPos != null) {
 				return new ObstructionPickContext(this.camera, fluidContext, entity, entityFilter, this.endPos);
 			}
-			ICrosshairRenderer crosshairRenderer = ((IShoulderSurfingLegacy) IShoulderSurfing.getInstance()).getCrosshairRenderer();
+			ICrosshairRenderer crosshairRenderer = ((IShoulderSurfingLegacy) ShoulderSurfing.getInstance()).getCrosshairRenderer();
 			boolean offsetTrace = this.offsetTrace == null ? !crosshairRenderer.isCrosshairDynamic(entity) : this.offsetTrace;
-			IClientConfig config = ((IShoulderSurfingLegacy) IShoulderSurfing.getInstance()).getClientConfig();
+			IClientConfig config = ((IShoulderSurfingLegacy) ShoulderSurfing.getInstance()).getClientConfig();
 			if (offsetTrace) {
 				PickOrigin blockPickOrigin = this.blockPickOrigin == null ? config.getBlockPickOrigin() : this.blockPickOrigin;
 				PickOrigin entityPickOrigin = this.entityPickOrigin == null ? config.getEntityPickOrigin() : this.entityPickOrigin;

@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.model;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.legacy.mixinduck.IShoulderSurfingLegacy;
 import net.minecraft.client.Camera;
 import net.minecraft.util.Mth;
@@ -22,7 +23,7 @@ public final class OffsetPickContext extends PickContext {
 	
 	@Override
 	public ClipContext.Block blockContext() {
-		IShoulderSurfing instance = IShoulderSurfing.getInstance();
+		IShoulderSurfing instance = ShoulderSurfing.getInstance();
 		
 		if (instance.isAiming() || ((IShoulderSurfingLegacy) instance).getCrosshairRenderer().isCrosshairDynamic(this.entity())) {
 			return ClipContext.Block.COLLIDER;
@@ -45,7 +46,7 @@ public final class OffsetPickContext extends PickContext {
 		Vec3 eyePosition = entity.getEyePosition(partialTick);
 		Vec3 cameraPos = camera.position();
 		Vec3 cameraOffset = cameraPos.subtract(eyePosition);
-		Vec3 renderOffset = IShoulderSurfing.getInstance().getCamera().getRenderOffset();
+		Vec3 renderOffset = ShoulderSurfing.getInstance().getCamera().getRenderOffset();
 		Vec3 rayTraceStartOffset = new Vec3(camera.leftVector()).scale(renderOffset.x()).add(new Vec3(camera.upVector()).scale(renderOffset.y()));
 		Vec3 viewVector = new Vec3(camera.forwardVector());
 		double interactionRangeSq = Mth.square(interactionRange);
