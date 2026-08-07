@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed legacy API adapters calling the wrong API version in some cases, leading to potential crashes when other mods use the legacy API
+
 # 5.0.7
 - Fixed dynamic crosshair remaining active after switching perspective
 
