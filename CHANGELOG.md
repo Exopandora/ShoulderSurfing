@@ -1,3 +1,6 @@
+# 5.0.10
+- Trigger new release build
+
 # 5.0.7
 - Fixed dynamic crosshair remaining active after switching perspective
 
