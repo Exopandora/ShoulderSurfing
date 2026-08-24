@@ -110,7 +110,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		if (this.isCameraTurningWithPlayer()) {
 			var easeIn = 1F - Mth.lerp(partialTick, this.turnCameraWithPlayerEaseInO, this.turnCameraWithPlayerEaseIn);
 			var f = partialTick * (float) Config.CLIENT.getCameraConfig().getCameraTransitionSpeedMultiplier() * easeIn;
-			var dy = Mth.degreesDifference(this.rotation.y(), EntityHelper.getLerpedXRot(cameraEntity, partialTick));
+			var dy = Mth.degreesDifference(this.rotation.y(), EntityHelper.getLerpedYRot(cameraEntity, partialTick));
 			this.rotation = this.rotationO.add(new Vec2f(0, dy).scale(f));
 		}
 		if (!this.instance.isCameraDecoupled() && EntityHelper.isPlayerSpectatingEntity() && cameraEntity instanceof LivingEntity living) {
