@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.11
 - Fixed a regression in the backport that caused the camera turning with player option to not work correctly.
 
 # 5.0.10
