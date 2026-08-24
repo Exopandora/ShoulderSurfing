@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed a regression in the backport that caused the camera turning with player option to not work correctly.
+
 # 5.0.10
 - Fixed legacy API adapters calling the wrong API version in some cases, leading to potential crashes when other mods use the legacy API
 
