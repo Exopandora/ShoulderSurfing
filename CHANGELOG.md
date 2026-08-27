@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed compatibility with neat
+
 # 5.0.10
 - Trigger new release build
 
