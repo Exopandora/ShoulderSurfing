@@ -1,4 +1,4 @@
-# Unreleased
+# 5.0.11
 - Fixed compatibility with neat
 
 # 5.0.10
