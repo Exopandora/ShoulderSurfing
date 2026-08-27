@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
-@Mixin(targets = "vazkii.neat.HealthBarRenderer")
-class HealthBarRendererMixin {
+@Mixin(targets = "vazkii.neat.NeatRenderStateHandler")
+class NeatRenderStateHandlerMixin {
 	@Inject(
 		method = "getEntityLookedAt",
 		at = @At("HEAD"),

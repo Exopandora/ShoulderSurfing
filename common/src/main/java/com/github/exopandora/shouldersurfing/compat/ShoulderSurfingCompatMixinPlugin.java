@@ -42,7 +42,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	
 	private static void addNeatMixins(List<String> mixins) {
 		if (Mods.NEAT.isLoaded()) {
-			mixins.add("neat.HealthBarRendererMixin");
+			mixins.add("neat.NeatRenderStateHandlerMixin");
 		}
 	}
 	
