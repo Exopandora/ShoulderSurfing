@@ -1,3 +1,6 @@
+# Unreleased
+- Fixed compatibility with neat
+
 # 5.0.10
 - Fixed legacy API adapters calling the wrong API version in some cases, leading to potential crashes when other mods use the legacy API
 
