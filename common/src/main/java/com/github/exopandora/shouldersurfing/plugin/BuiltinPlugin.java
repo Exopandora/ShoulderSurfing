@@ -1,9 +1,7 @@
 package com.github.exopandora.shouldersurfing.plugin;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
-import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraDragEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
-import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraSwayEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.api.event.IEventBus;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
@@ -20,6 +18,7 @@ import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerU
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeTargetCameraOffsetEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeTemporaryFirstPersonStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.SetupCameraRotationEventHandlerImpl;
+import com.github.exopandora.shouldersurfing.client.event.handler.CameraEntityDeltaMovementTickEventHandler;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.cobblemon.event.handler.CobblemonEventHandler;
 import com.github.exopandora.shouldersurfing.compat.create.event.handler.CreateModEventHandler;
@@ -60,10 +59,9 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(3000, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
 		eventBus.register(4000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
 		eventBus.register(ComputeTemporaryFirstPersonStateEventHandlerImpl.INSTANCE);
-		eventBus.register((ComputeCameraSwayEventHandler) ComputeCameraSwayEventHandlerImpl.INSTANCE);
-		eventBus.register((TickEventHandler) ComputeCameraSwayEventHandlerImpl.INSTANCE);
-		eventBus.register((ComputeCameraDragEventHandler) ComputeCameraDragEventHandlerImpl.INSTANCE);
-		eventBus.register((TickEventHandler) ComputeCameraDragEventHandlerImpl.INSTANCE);
+		eventBus.register(ComputeCameraSwayEventHandlerImpl.INSTANCE);
+		eventBus.register(ComputeCameraDragEventHandlerImpl.INSTANCE);
+		eventBus.register(CameraEntityDeltaMovementTickEventHandler.INSTANCE);
 		registerCompatibilityEventHandlers(Mods.CREATE, () ->
 			eventBus.register(2000, CreateModEventHandler.INSTANCE)
 		);
