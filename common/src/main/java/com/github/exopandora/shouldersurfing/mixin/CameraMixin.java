@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import net.minecraft.client.Camera;
@@ -105,8 +106,10 @@ abstract class CameraMixin implements CameraDuck {
 			camera.setup(cameraIn, level, partialTick, cameraEntity);
 			var cameraOffset = camera.getRenderOffset();
 			this.move((float) -cameraOffset.z(), (float) cameraOffset.y(), (float) -cameraOffset.x());
-			var sway = camera.calcSway(cameraEntity, partialTick);
-			this.shouldersurfing$rotate(sway.x(), 0, sway.y());
+			var sway = camera.calcCameraSway(cameraEntity, partialTick);
+			if (!Vec2f.ZERO.equals(sway)) {
+				this.shouldersurfing$rotate(sway.x(), 0, sway.y());
+			}
 		} else {
 			this.move(x, y, z);
 		}

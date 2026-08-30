@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraCouplingEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraEntityTransparencyEvent;
+import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraSwayEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAttackStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerInteractionStateEvent;
@@ -80,6 +81,11 @@ public class EventHooks {
 	
 	public static boolean isTemporaryFirstPerson() {
 		var event = new ComputeTemporaryFirstPersonStateEvent();
+		return ShoulderSurfing.getInstance().getEventBus().fire(event).getResult();
+	}
+	
+	public static Vec2f getCameraSway(Entity cameraEntity, float partialTick) {
+		var event = new ComputeCameraSwayEvent(cameraEntity, partialTick);
 		return ShoulderSurfing.getInstance().getEventBus().fire(event).getResult();
 	}
 	
