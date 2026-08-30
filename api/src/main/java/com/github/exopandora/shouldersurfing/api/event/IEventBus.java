@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.api.event;
 
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraCouplingEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraDragEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraSwayEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
@@ -93,6 +94,12 @@ public interface IEventBus {
 	void register(int priority, ComputeCameraSwayEventHandler handler);
 	
 	default void register(ComputeCameraSwayEventHandler handler) {
+		this.register(DEFAULT_PRIORITY, handler);
+	}
+	
+	void register(int priority, ComputeCameraDragEventHandler handler);
+	
+	default void register(ComputeCameraDragEventHandler handler) {
 		this.register(DEFAULT_PRIORITY, handler);
 	}
 	
