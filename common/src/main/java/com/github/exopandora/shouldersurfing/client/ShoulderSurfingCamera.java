@@ -24,7 +24,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 	private Vec3 offsetO;
 	private Vec3 renderOffset;
 	private Vec3 targetOffset;
-	private Vec3 deltaMovementO;
 	private double cameraDistance;
 	private double maxCameraDistance;
 	private double maxCameraDistanceO;
@@ -50,10 +49,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		if (cameraEntity != null) {
 			this.offset = this.offset.scale(EntityHelper.getScale(cameraEntity));
 			this.rotation = new Vec2f(cameraEntity.getXRot(), cameraEntity.getYRot());
-			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
 		} else {
 			this.rotation = new Vec2f(0F, -180F);
-			this.deltaMovementO = Vec3.ZERO;
 		}
 		this.rotationO = this.rotation;
 		this.offsetO = this.offset;
@@ -95,9 +92,6 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			this.turnCameraWithPlayerDelay--;
 		}
 		this.rotation = this.applyPassengerRotations(this.rotation, cameraEntity, 1.0F);
-		if (cameraEntity != null) {
-			this.deltaMovementO = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
-		}
 		if (!this.instance.isFreeLooking()) {
 			this.rotationOffset = this.rotationOffset.scale(0.5F);
 		}
@@ -187,13 +181,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		return distance;
 	}
 	
-	private Vec3 calcCameraDrag(Camera cameraIn, Entity cameraEntity, float partialTick) {
-		var deltaMovement = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
-		var deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
-			.multiply(Config.CLIENT.getCameraConfig().getCameraDragMultipliers())
-			.yRot(cameraIn.yRot() * Mth.DEG_TO_RAD)
-			.xRot(cameraIn.xRot() * Mth.DEG_TO_RAD);
-		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
+	private Vec3 calcCameraDrag(Camera camera, Entity cameraEntity, float partialTick) {
+		return EventHooks.getCameraDrag(camera, cameraEntity, partialTick);
 	}
 	
 	public Vec2f calcCameraSway(Entity cameraEntity, float partialTick) {
