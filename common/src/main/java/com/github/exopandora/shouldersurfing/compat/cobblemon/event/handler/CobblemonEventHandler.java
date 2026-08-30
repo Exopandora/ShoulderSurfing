@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.compat.cobblemon.event.handler;
 import com.cobblemon.mod.common.OrientationControllable;
 import com.cobblemon.mod.common.item.PokeBallItem;
 import com.cobblemon.mod.common.item.interactive.PokerodItem;
+import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraSwayEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerRideBoatStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ForceVanillaPlayerInputEvent;
@@ -70,9 +71,16 @@ public enum CobblemonEventHandler {
 			var vehicle = event.getPlayer().getVehicle();
 			var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 			var yRotLerped = Mth.rotLerp(partialTick, vehicle.yRotO, vehicle.getYRot());
-			var delta = Mth.wrapDegrees(event.getResult().y()- yRotLerped);
+			var delta = Mth.wrapDegrees(event.getResult().y() - yRotLerped);
 			var clamped = Mth.clamp(delta, -105.0F, 105.0F);
 			event.setResult(event.getResult().add(0, clamped - delta));
+		}
+	}
+	
+	public void computeCameraSway(ComputeCameraSwayEvent event) {
+		var cameraEntity = Minecraft.getInstance().getCameraEntity();
+		if (cameraEntity != null && cameraEntity.getVehicle() instanceof OrientationControllable) {
+			event.cancel();
 		}
 	}
 	
