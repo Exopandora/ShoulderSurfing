@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.event;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraCouplingEvent;
+import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraDragEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraEntityTransparencyEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraSwayEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
@@ -16,6 +17,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.ForceVanillaPlayer
 import com.github.exopandora.shouldersurfing.api.client.event.SetupCameraRotationEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraCouplingEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraDragEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraSwayEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
@@ -112,6 +114,11 @@ public class EventBus implements IEventBus {
 	@Override
 	public void register(int priority, ComputeCameraSwayEventHandler handler) {
 		this.registerHandler(priority, handler::handle, ComputeCameraSwayEvent.class);
+	}
+	
+	@Override
+	public void register(int priority, ComputeCameraDragEventHandler handler) {
+		this.registerHandler(priority, handler::handle, ComputeCameraDragEvent.class);
 	}
 	
 	@Override
