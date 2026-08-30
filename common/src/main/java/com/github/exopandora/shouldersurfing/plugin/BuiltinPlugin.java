@@ -2,11 +2,13 @@ package com.github.exopandora.shouldersurfing.plugin;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraSwayEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.api.event.IEventBus;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraCouplingEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraEntityTransparencyEventHandlerImpl;
+import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraSwayEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerAimStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerAttackStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerInteractionStateEventHandlerImpl;
@@ -56,6 +58,8 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(3000, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
 		eventBus.register(4000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
 		eventBus.register(ComputeTemporaryFirstPersonStateEventHandlerImpl.INSTANCE);
+		eventBus.register((ComputeCameraSwayEventHandler) ComputeCameraSwayEventHandlerImpl.INSTANCE);
+		eventBus.register((TickEventHandler) ComputeCameraSwayEventHandlerImpl.INSTANCE);
 		registerCompatibilityEventHandlers(Mods.CREATE, () ->
 			eventBus.register(2000, CreateModEventHandler.INSTANCE)
 		);
