@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
+import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
@@ -107,8 +108,10 @@ abstract class CameraMixin implements CameraDuck {
 			camera.setup(cameraIn, this.level, partialTick, this.entity);
 			var cameraOffset = camera.getRenderOffset();
 			this.move((float) -cameraOffset.z(), (float) cameraOffset.y(), (float) -cameraOffset.x());
-			var sway = camera.calcSway(this.entity, partialTick);
-			this.shouldersurfing$rotate(sway.x(), 0, sway.y());
+			var sway = camera.calcCameraSway(this.entity, partialTick);
+			if (!Vec2f.ZERO.equals(sway)) {
+				this.shouldersurfing$rotate(sway.x(), 0, sway.y());
+			}
 		} else {
 			this.move(x, y, z);
 		}

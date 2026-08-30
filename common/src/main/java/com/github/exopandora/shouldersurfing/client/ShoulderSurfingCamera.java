@@ -196,19 +196,8 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		return new Vec3(-deltaMovementLerped.x, -deltaMovementLerped.y, deltaMovementLerped.z);
 	}
 	
-	public Vec2f calcSway(Entity cameraEntity, float partialTick) {
-		var deltaMovement = EntityHelper.getDeltaMovementWithoutGravity(cameraEntity);
-		var deltaMovementLerped = this.deltaMovementO.lerp(deltaMovement, partialTick)
-			.yRot(this.getYRot() * Mth.DEG_TO_RAD)
-			.xRot(this.getXRot() * Mth.DEG_TO_RAD);
-		var cameraConfig = Config.CLIENT.getCameraConfig();
-		var maxVelocityX = cameraConfig.getCameraSwayXMaxVelocity() / 20;
-		var maxVelocityZ = cameraConfig.getCameraSwayZMaxVelocity() / 20;
-		var maxAngleX = cameraConfig.getCameraSwayXMaxAngle();
-		var maxAngleZ = cameraConfig.getCameraSwayZMaxAngle();
-		var swayX = Math.min(Math.abs(deltaMovementLerped.y), maxVelocityX) / maxVelocityX * maxAngleX * Math.signum(deltaMovementLerped.y);
-		var swayZ = Math.min(Math.abs(deltaMovementLerped.x), maxVelocityZ) / maxVelocityZ * maxAngleZ * Math.signum(deltaMovementLerped.x);
-		return new Vec2f((float) swayX, (float) swayZ);
+	public Vec2f calcCameraSway(Entity cameraEntity, float partialTick) {
+		return EventHooks.getCameraSway(cameraEntity, partialTick);
 	}
 	
 	public boolean turn(LocalPlayer player, double yRot, double xRot) {
