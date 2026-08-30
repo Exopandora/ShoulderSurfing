@@ -2,10 +2,10 @@ package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
-import com.github.exopandora.shouldersurfing.client.world.phys.ObjectPicker;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -182,7 +182,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			var to = eyePosition.add(toOffset).add(worldOffset);
 			var context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, cameraEntity);
-			var hitResult = ObjectPicker.clip(level, context, blockState -> !blockState.is(BlockItemTags.LEAVES.block()));
+			var hitResult = IObjectPicker.clip(level, context, blockState -> !blockState.is(BlockItemTags.LEAVES.block()));
 			if (hitResult.getType() != HitResult.Type.MISS) {
 				var newDistance = hitResult.getLocation().distanceTo(eyePosition);
 				if (newDistance < distance) {

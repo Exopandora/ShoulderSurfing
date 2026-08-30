@@ -3,9 +3,9 @@ package com.github.exopandora.shouldersurfing.client.event.handler;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.IObjectPicker;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
-import com.github.exopandora.shouldersurfing.client.world.phys.ObjectPicker;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Camera;
 import net.minecraft.tags.BlockItemTags;
@@ -199,7 +199,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 				var startPos = cameraPosition.add(worldOffset.scale(scale));
 				var endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
 				var context = new ClipContext(startPos, endPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, cameraEntity);
-				var hitResult = ObjectPicker.clip(level, context, blockState -> !blockState.is(BlockItemTags.LEAVES.block()));
+				var hitResult = IObjectPicker.clip(level, context, blockState -> !blockState.is(BlockItemTags.LEAVES.block()));
 				if (hitResult.getType() != HitResult.Type.MISS) {
 					var distance = hitResult.getLocation().distanceTo(startPos);
 					var newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
