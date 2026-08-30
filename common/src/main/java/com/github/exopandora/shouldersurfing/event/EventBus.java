@@ -116,7 +116,7 @@ public class EventBus implements IEventBus {
 	private  <T extends Event> void registerHandler(int priority, Consumer<T> consumer, Class<T> eventType) {
 		this.checkState();
 		var handlerList = this.handlerLists.computeIfAbsent(eventType, (type) ->
-			new HandlerList(type.isAssignableFrom(CancellableEvent.class))
+			new HandlerList(CancellableEvent.class.isAssignableFrom(type))
 		);
 		handlerList.add(priority, (Consumer<Event>) consumer, this.activePluginContainer);
 	}
