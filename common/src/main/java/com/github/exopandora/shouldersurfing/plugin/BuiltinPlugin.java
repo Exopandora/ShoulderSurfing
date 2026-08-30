@@ -71,6 +71,7 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 				eventBus.register(1500, CobblemonEventHandler.INSTANCE::postSetupCameraRotation);
 				eventBus.register(CobblemonEventHandler.INSTANCE::forceVanillaPlayerInput);
 				eventBus.register(CobblemonEventHandler.INSTANCE::computePlayerRideBoatState);
+				eventBus.register(Integer.MIN_VALUE, CobblemonEventHandler.INSTANCE::computeCameraSway);
 			}
 		});
 	}
