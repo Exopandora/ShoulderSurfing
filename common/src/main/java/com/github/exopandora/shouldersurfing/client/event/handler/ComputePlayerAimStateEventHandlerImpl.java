@@ -3,13 +3,12 @@ package com.github.exopandora.shouldersurfing.client.event.handler;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerAimStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePlayerAimStateEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.util.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimStateEventHandler {
 	INSTANCE;
@@ -47,7 +46,7 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 		List<? extends String> itemAnimations
 	) {
 		var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-		if (expressions.stream().map(ComputePlayerAimStateEventHandlerImpl::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId))) {
+		if (expressions.stream().map(Util::expressionToMatchPredicate).anyMatch(pattern -> pattern.test(itemId))) {
 			return true;
 		}
 		if (!stack.getComponentsPatch().isEmpty()) {
@@ -82,13 +81,5 @@ public enum ComputePlayerAimStateEventHandlerImpl implements ComputePlayerAimSta
 			}
 		}
 		return false;
-	}
-	
-	private static Predicate<String> expressionToMatchPredicate(String expression) {
-		try {
-			return Pattern.compile(expression).asMatchPredicate();
-		} catch (Exception e) {
-			return expression::equals;
-		}
 	}
 }
