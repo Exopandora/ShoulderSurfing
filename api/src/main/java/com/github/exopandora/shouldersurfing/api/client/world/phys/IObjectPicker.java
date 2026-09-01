@@ -1,6 +1,8 @@
 package com.github.exopandora.shouldersurfing.api.client.world.phys;
 
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -11,4 +13,6 @@ public interface IObjectPicker {
 	EntityHitResult pickEntities(PickContext context, double interactionRange, float partialTick);
 	
 	BlockHitResult pickBlocks(PickContext context, double interactionRange, float partialTick);
+	
+	BlockHitResult clip(BlockGetter level, ClipContext clipContext, BlockCollisionPredicate blockCollisionPredicate);
 }
