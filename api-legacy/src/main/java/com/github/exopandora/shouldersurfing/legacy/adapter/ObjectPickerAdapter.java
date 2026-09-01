@@ -1,8 +1,11 @@
 package com.github.exopandora.shouldersurfing.legacy.adapter;
 
 import com.github.exopandora.shouldersurfing.api.client.IObjectPicker;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.BlockCollisionPredicate;
 import com.github.exopandora.shouldersurfing.api.model.PickContext;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -42,5 +45,10 @@ class ObjectPickerAdapter implements IObjectPicker {
 	@Override
 	public BlockHitResult pickBlocks(com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext context, double interactionRange, float partialTick) {
 		return this.objectPicker.pickBlocks(context, interactionRange, partialTick);
+	}
+	
+	@Override
+	public BlockHitResult clip(BlockGetter level, ClipContext clipContext, BlockCollisionPredicate blockCollisionPredicate) {
+		return this.objectPicker.clip(level, clipContext, blockCollisionPredicate);
 	}
 }
