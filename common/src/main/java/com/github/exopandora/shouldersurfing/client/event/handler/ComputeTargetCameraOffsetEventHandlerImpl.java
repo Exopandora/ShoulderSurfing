@@ -205,7 +205,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 				var startPos = cameraPosition.add(worldOffset.scale(scale));
 				var endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
 				var context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
-				HitResult hitResult = level.clip(context);
+				var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, (_, _, _) -> false);
 				if (hitResult.getType() != HitResult.Type.MISS) {
 					var distance = hitResult.getLocation().distanceTo(startPos);
 					var newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
