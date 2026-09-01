@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.client;
 
 import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
@@ -170,7 +171,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			var to = eyePosition.add(toOffset).add(worldOffset);
 			var context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
-			var hitResult = level.clip(context);
+			var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, (_, _, _) -> false);
 			if (hitResult.getType() != HitResult.Type.MISS) {
 				var newDistance = hitResult.getLocation().distanceTo(eyePosition);
 				if (newDistance < distance) {
