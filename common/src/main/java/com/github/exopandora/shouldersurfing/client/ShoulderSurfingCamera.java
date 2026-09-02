@@ -7,14 +7,18 @@ import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -171,7 +175,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			var to = eyePosition.add(toOffset).add(worldOffset);
 			var context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
-			var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, (_, _, _) -> false);
+			var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, ShoulderSurfingCamera::hasNoCollision);
 			if (hitResult.getType() != HitResult.Type.MISS) {
 				var newDistance = hitResult.getLocation().distanceTo(eyePosition);
 				if (newDistance < distance) {
@@ -266,6 +270,19 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			return false;
 		}
 		return EventHooks.isRidingBoat((LivingEntity) entity, vehicle);
+	}
+	
+	public static boolean hasNoCollision(BlockState state, BlockGetter level, BlockPos pos) {
+		for (var expression : Config.CLIENT.getCameraConfig().getNonCollidableBlocks()) {
+			if (!state.canOcclude() || !state.isCollisionShapeFullBlock(level, pos)) {
+				var predicate = Util.expressionToMatchPredicate(expression);
+				var identifier = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
+				if (predicate.test(identifier)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public void resetState() {
