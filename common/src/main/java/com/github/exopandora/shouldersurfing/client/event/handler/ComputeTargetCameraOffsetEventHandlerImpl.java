@@ -5,6 +5,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCamer
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -205,7 +206,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 				var startPos = cameraPosition.add(worldOffset.scale(scale));
 				var endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
 				var context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
-				var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, (_, _, _) -> false);
+				var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, ShoulderSurfingCamera::hasNoCollision);
 				if (hitResult.getType() != HitResult.Type.MISS) {
 					var distance = hitResult.getLocation().distanceTo(startPos);
 					var newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);

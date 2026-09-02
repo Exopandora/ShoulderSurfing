@@ -12,10 +12,12 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class CameraConfig implements ICameraConfig {
+	
 	private final DoubleValue offsetX;
 	private final DoubleValue offsetY;
 	private final DoubleValue offsetZ;
@@ -90,6 +92,7 @@ public class CameraConfig implements ICameraConfig {
 	private final ConfigValue<ViewBobbingMode> viewBobbingMode;
 	private final BooleanValue isCameraTurningWithPlayer;
 	private final IntValue cameraTurningWithPlayerDelay;
+	private final ConfigValue<List<? extends String>> nonCollidableBlocks;
 	
 	private final DoubleValue cameraDragXMultiplier;
 	private final DoubleValue cameraDragYMultiplier;
@@ -447,6 +450,11 @@ public class CameraConfig implements ICameraConfig {
 			.translation(MOD_ID + ".configuration.camera.turn_with_player_delay")
 			.defineInRange("turn_with_player_delay", 40, 1, Integer.MAX_VALUE);
 		
+		this.nonCollidableBlocks = builder
+			.comment("The list of blocks that do not collide with the camera. Must be transparent blocks or blocks that do not take up a full block. This config option supports regular expressions. Example: 'minecraft:.*leaves' matches 'minecraft:oak_leaves' and 'minecraft:spruce_leaves'.")
+			.translation(MOD_ID + ".configuration.camera.non_collidable_blocks")
+			.defineList("non_collidable_blocks", ArrayList::new, String::new, Objects::nonNull);
+		
 		builder.push("camera_drag");
 		
 		this.cameraDragXMultiplier = builder
@@ -779,6 +787,11 @@ public class CameraConfig implements ICameraConfig {
 	@Override
 	public int getCameraTurningWithPlayerDelay() {
 		return this.cameraTurningWithPlayerDelay.get();
+	}
+	
+	@Override
+	public List<? extends String> getNonCollidableBlocks() {
+		return this.nonCollidableBlocks.get();
 	}
 	
 	@Override

@@ -216,6 +216,8 @@ public interface ICameraConfig {
 	
 	int getCameraTurningWithPlayerDelay();
 	
+	List<? extends String> getNonCollidableBlocks();
+	
 	double getCameraDragXMultiplier();
 	
 	double getCameraDragYMultiplier();

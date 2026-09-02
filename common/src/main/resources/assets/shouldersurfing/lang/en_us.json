@@ -26,6 +26,10 @@
   "${modId}.configuration.camera.turn_with_player_delay": "Turn camera with player delay",
   "${modId}.configuration.camera.turn_with_player_delay.tooltip": "The delay in ticks after which the camera will turn with the player.",
 
+  "${modId}.configuration.camera.non_collidable_blocks.button": "Edit",
+  "${modId}.configuration.camera.non_collidable_blocks": "Non-collidable blocks",
+  "${modId}.configuration.camera.non_collidable_blocks.tooltip": "The list of blocks that do not collide with the camera. Must be transparent blocks or blocks that do not take up a full block. This config option supports regular expressions. Example: 'minecraft:.*leaves' matches 'minecraft:oak_leaves' and 'minecraft:spruce_leaves'.",
+
   "${modId}.configuration.fov.button": "Edit",
   "${modId}.configuration.fov": "Camera FOV",
   "${modId}.configuration.fov.tooltip": "Camera FOV settings.",
