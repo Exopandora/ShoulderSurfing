@@ -174,7 +174,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				.xRot(-camera.xRot() * Mth.DEG_TO_RAD)
 				.yRot(-camera.yRot() * Mth.DEG_TO_RAD);
 			var to = eyePosition.add(toOffset).add(worldOffset);
-			var context = new ClipContext(from, to, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
+			var context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, cameraEntity);
 			var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, ShoulderSurfingCamera::hasNoCollision);
 			if (hitResult.getType() != HitResult.Type.MISS) {
 				var newDistance = hitResult.getLocation().distanceTo(eyePosition);
