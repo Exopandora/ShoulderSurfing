@@ -197,7 +197,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 				var scale = dz / offsetZAbs;
 				var startPos = cameraPosition.add(worldOffset.scale(scale));
 				var endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
-				var context = new ClipContext(startPos, endPos, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, cameraEntity);
+				var context = new ClipContext(startPos, endPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, cameraEntity);
 				var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, ShoulderSurfingCamera::hasNoCollision);
 				if (hitResult.getType() != HitResult.Type.MISS) {
 					var distance = hitResult.getLocation().distanceTo(startPos);
