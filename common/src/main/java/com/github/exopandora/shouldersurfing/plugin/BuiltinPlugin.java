@@ -2,9 +2,11 @@ package com.github.exopandora.shouldersurfing.plugin;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeCameraEntityTransparencyEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTemporaryFirstPersonStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.api.event.IEventBus;
 import com.github.exopandora.shouldersurfing.api.plugin.IShoulderSurfingPlugin;
+import com.github.exopandora.shouldersurfing.client.event.handler.CameraEntityDeltaMovementTickEventHandler;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraCouplingEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraDragEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeCameraEntityTransparencyEventHandlerImpl;
@@ -18,7 +20,6 @@ import com.github.exopandora.shouldersurfing.client.event.handler.ComputePlayerU
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeTargetCameraOffsetEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.ComputeTemporaryFirstPersonStateEventHandlerImpl;
 import com.github.exopandora.shouldersurfing.client.event.handler.SetupCameraRotationEventHandlerImpl;
-import com.github.exopandora.shouldersurfing.client.event.handler.CameraEntityDeltaMovementTickEventHandler;
 import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.github.exopandora.shouldersurfing.compat.cobblemon.event.handler.CobblemonEventHandler;
 import com.github.exopandora.shouldersurfing.compat.create.event.handler.CreateModEventHandler;
@@ -58,7 +59,9 @@ public class BuiltinPlugin implements IShoulderSurfingPlugin {
 		eventBus.register(2000, ComputeTargetCameraOffsetEventHandlerImpl.DynamicOffsets.INSTANCE);
 		eventBus.register(3000, ComputeTargetCameraOffsetEventHandlerImpl.EntityScale.INSTANCE);
 		eventBus.register(4000, ComputeTargetCameraOffsetEventHandlerImpl.OffsetLimits.INSTANCE);
-		eventBus.register(ComputeTemporaryFirstPersonStateEventHandlerImpl.INSTANCE);
+		eventBus.register(ComputeTemporaryFirstPersonStateEventHandlerImpl.WhenAiming.INSTANCE);
+		eventBus.register((ComputeTemporaryFirstPersonStateEventHandler) ComputeTemporaryFirstPersonStateEventHandlerImpl.ConstrainedSpace.INSTANCE);
+		eventBus.register((TickEventHandler) ComputeTemporaryFirstPersonStateEventHandlerImpl.ConstrainedSpace.INSTANCE);
 		eventBus.register(ComputeCameraSwayEventHandlerImpl.INSTANCE);
 		eventBus.register(ComputeCameraDragEventHandlerImpl.INSTANCE);
 		eventBus.register(CameraEntityDeltaMovementTickEventHandler.INSTANCE);
