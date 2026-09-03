@@ -233,13 +233,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		var isPickingFromPlayerWithDynamicCrosshair = Config.CLIENT.getObjectPickerConfig().getPickVector() == PickVector.PLAYER &&
 			Config.CLIENT.getCrosshairConfig().getCrosshairType() == CrosshairType.DYNAMIC;
 		if (playerConfig.isPlayerXRotTurningWithCamera() || isPickingFromPlayerWithDynamicCrosshair) {
+			player.xRotO = this.rotation.x();
 			player.setXRot(this.rotation.x());
-			player.xRotO += Mth.degreesDifference(this.rotation.x(), this.rotation.x());
 		}
 		if ((playerConfig.isPlayerYRotTurningWithCamera() || isPickingFromPlayerWithDynamicCrosshair) && !isMoving) {
 			var maxFollowAngle = (float) playerConfig.getPlayerYRotTurnAngleLimit();
 			var playerYRot = Mth.approachDegrees(this.lastMovedYRot, player.getYRot() + scaledRot.y(), maxFollowAngle);
-			player.yRotO = player.getYRot();
+			player.yRotO = playerYRot;
 			player.setYRot(playerYRot);
 		}
 	}
