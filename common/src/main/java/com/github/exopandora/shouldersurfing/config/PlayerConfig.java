@@ -24,6 +24,7 @@ public class PlayerConfig implements IPlayerConfig {
 	private final IntValue turningLockTime;
 	private final DoubleValue turningSpeedMultiplier;
 	private final BooleanValue isPlayerXRotTurningWithCamera;
+	private final BooleanValue isPlayerXRotTurningToCamera;
 	private final BooleanValue isPlayerYRotTurningWithCamera;
 	private final DoubleValue playerYRotTurnAngleLimit;
 	
@@ -90,6 +91,11 @@ public class PlayerConfig implements IPlayerConfig {
 			.comment("Whether the x-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
 			.translation(MOD_ID + ".configuration.player.turning.turn_player_x_rot_with_camera")
 			.define("turn_player_x_rot_with_camera", true);
+		
+		this.isPlayerXRotTurningToCamera = builder
+			.comment("Whether the x-rot of the player turns such that it is always facing the camera. This config option only applies when camera is decoupled and player x-rot turning with camera is enabled.")
+			.translation(MOD_ID + ".configuration.player.turning.turn_player_x_rot_to_camera")
+			.define("turn_player_x_rot_to_camera", false);
 		
 		this.isPlayerYRotTurningWithCamera = builder
 			.comment("Whether the y-rot of the player turns with the camera. This config option only applies when camera is decoupled.")
@@ -158,6 +164,11 @@ public class PlayerConfig implements IPlayerConfig {
 	@Override
 	public boolean isPlayerXRotTurningWithCamera() {
 		return this.isPlayerXRotTurningWithCamera.get();
+	}
+	
+	@Override
+	public boolean isPlayerXRotTurningToCamera() {
+		return this.isPlayerXRotTurningToCamera.get();
 	}
 	
 	@Override

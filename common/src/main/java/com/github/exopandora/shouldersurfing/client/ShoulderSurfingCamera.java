@@ -233,8 +233,13 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		var isPickingFromPlayerWithDynamicCrosshair = Config.CLIENT.getObjectPickerConfig().getPickVector() == PickVector.PLAYER &&
 			Config.CLIENT.getCrosshairConfig().getCrosshairType() == CrosshairType.DYNAMIC;
 		if (playerConfig.isPlayerXRotTurningWithCamera() || isPickingFromPlayerWithDynamicCrosshair) {
-			player.xRotO = this.rotation.x();
-			player.setXRot(this.rotation.x());
+			var playerXRot = this.rotation.x();
+			if (playerConfig.isPlayerXRotTurningToCamera() && !isPickingFromPlayerWithDynamicCrosshair) {
+				var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
+				playerXRot *= (Mth.degreesDifferenceAbs(this.rotation.y(), player.getYRot(partialTick)) - 90F) / -90F;
+			}
+			player.xRotO = playerXRot;
+			player.setXRot(playerXRot);
 		}
 		if ((playerConfig.isPlayerYRotTurningWithCamera() || isPickingFromPlayerWithDynamicCrosshair) && !isMoving) {
 			var maxFollowAngle = (float) playerConfig.getPlayerYRotTurnAngleLimit();
