@@ -25,6 +25,8 @@ public interface IPlayerConfig {
 	
 	boolean isPlayerXRotTurningWithCamera();
 	
+	boolean isPlayerXRotTurningToCamera();
+	
 	boolean isPlayerYRotTurningWithCamera();
 	
 	double getPlayerYRotTurnAngleLimit();
