@@ -13,6 +13,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputePla
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTemporaryFirstPersonStateEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ForceVanillaPlayerInputEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.event.handler.PerspectiveChangedEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.SetupCameraRotationEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 
@@ -100,6 +101,12 @@ public interface IEventBus {
 	void register(int priority, ComputeCameraDragEventHandler handler);
 	
 	default void register(ComputeCameraDragEventHandler handler) {
+		this.register(DEFAULT_PRIORITY, handler);
+	}
+	
+	void register(int priority, PerspectiveChangedEventHandler handler);
+	
+	default void register(PerspectiveChangedEventHandler handler) {
 		this.register(DEFAULT_PRIORITY, handler);
 	}
 	
