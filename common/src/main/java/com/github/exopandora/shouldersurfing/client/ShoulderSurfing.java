@@ -204,6 +204,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		if (isEnteringShoulderSurfing) {
 			this.resetState();
 		}
+		EventHooks.onPerspectiveChanged(perspective);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.client;
 
+import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraCouplingEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraDragEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeCameraEntityTransparencyEvent;
@@ -13,6 +14,7 @@ import com.github.exopandora.shouldersurfing.api.client.event.ComputePlayerUseIt
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTemporaryFirstPersonStateEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.ForceVanillaPlayerInputEvent;
+import com.github.exopandora.shouldersurfing.api.client.event.PerspectiveChangedEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.SetupCameraRotationEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.TickEvent;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
@@ -93,6 +95,11 @@ public class EventHooks {
 	public static Vec3 getCameraDrag(Camera camera, Entity cameraEntity, float partialTick) {
 		var event = new ComputeCameraDragEvent(camera, cameraEntity, partialTick);
 		return ShoulderSurfing.getInstance().getEventBus().fire(event).getResult();
+	}
+	
+	public static void onPerspectiveChanged(Perspective perspective) {
+		var event = new PerspectiveChangedEvent(perspective);
+		ShoulderSurfing.getInstance().getEventBus().fire(event);
 	}
 	
 	public static void tick() {
