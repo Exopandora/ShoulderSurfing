@@ -34,6 +34,7 @@ class LevelRendererMixin {
 		var partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
 		var camera = Minecraft.getInstance().gameRenderer.mainCamera();
 		var instance = ShoulderSurfing.getInstance();
-		instance.renderTick(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
+		instance.getCamera().renderTick(camera.entity(), partialTick);
+		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
 	}
 }

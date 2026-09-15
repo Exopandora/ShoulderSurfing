@@ -54,14 +54,8 @@ abstract class LocalPlayerMixin extends AbstractClientPlayer {
 	
 	@Override
 	public void turn(double yRot, double xRot) {
-		var instance = ShoulderSurfing.getInstance();
-		var camera = instance.getCamera();
-		if (!camera.turn((LocalPlayer) (Object) this, yRot, xRot)) {
+		if (!ShoulderSurfing.getInstance().getCamera().turn((LocalPlayer) (Object) this, yRot, xRot)) {
 			super.turn(yRot, xRot);
-			if (instance.isTemporaryFirstPerson()) {
-				camera.setXRot(this.getXRot());
-				camera.setYRot(this.getYRot());
-			}
 		}
 	}
 }
