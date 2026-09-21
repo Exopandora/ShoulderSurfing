@@ -10,6 +10,7 @@ val modContributors: String = project.property("modContributors")!!.toString()
 val modVersion: String = project.property("modVersion")!!.toString()
 val modDescription: String = project.property("modDescription")!!.toString()
 val modUrl: String = project.property("modUrl")!!.toString()
+val modIssueUrl: String = project.property("modIssueUrl")!!.toString()
 val jarName: String = project.property("jarName")!!.toString()
 val fabricCompatibleMinecraftVersions: String = project.property("fabricCompatibleMinecraftVersions")!!.toString()
 
@@ -60,6 +61,7 @@ tasks.withType<ProcessResources> {
         "modContributors" to contributors,
         "modDescription" to modDescription,
         "modUrl" to modUrl,
+        "modIssueUrl" to modIssueUrl,
         "minecraftVersion" to libs.versions.minecraft.get()
     )
     

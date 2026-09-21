@@ -12,6 +12,7 @@ val modContributors: String = project.property("modContributors")!!.toString()
 val modVersion: String = project.property("modVersion")!!.toString()
 val modDescription: String = project.property("modDescription")!!.toString()
 val modUrl: String = project.property("modUrl")!!.toString()
+val modIssueUrl: String = project.property("modIssueUrl")!!.toString()
 val forgeCompatibleMinecraftVersions: String = project.property("forgeCompatibleMinecraftVersions")!!.toString()
 val jarName: String = project.property("jarName")!!.toString()
 
@@ -84,6 +85,7 @@ tasks.named<ProcessResources>("processResources") {
         "modContributors" to modContributors,
         "modDescription" to modDescription,
         "modUrl" to modUrl,
+        "modIssueUrl" to modIssueUrl,
         "minecraftVersion" to libs.versions.minecraft.get()
     )
     
