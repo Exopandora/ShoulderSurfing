@@ -12,6 +12,7 @@
   ],
   "contact": {
     "homepage": "${modUrl}",
+    "issues": "${modIssueUrl}",
     "sources": "${modUrl}"
   },
   "license": "MIT",
