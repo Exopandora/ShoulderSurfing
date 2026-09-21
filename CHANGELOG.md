@@ -1,4 +1,4 @@
-# Unreleased
+# 5.1.0
 - Updated to 26.3
   - Partially disabled integrations for curios until curios updates to 26.3
 - Added options to automatically switch to temporary first person in constrained spaced
