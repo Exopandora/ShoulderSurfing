@@ -1,3 +1,21 @@
+# Unreleased
+- Added options to automatically switch to temporary first person in constrained spaced
+  - Added the option to configure whether to switch to temporary first person in constrained spaced
+  - Added options to configure offset thresholds for each axis
+  - Added the option to configure the cooldown time before temporary first person can be entered again
+  - Added the option to configure the addition time to stay in temporary first person
+  - Added the option to configure the minimum time to stay in temporary first person
+- Added the option to turn the player x-rotation towards the camera when facing it
+- Added the option to define non collidable blocks for the camera
+  - Glass bocks now collide with the camera by default
+- Added issue url to mod metadata
+- Fixed cancellable event handlers not working correctly
+- Fixed camera rotations when flying Cobblemon rides (Cobblemon 1.7)
+- Fixed a rare config related crash on (neo-)forge
+- API: Added ComputeCameraDrag event
+- API: Added ComputeCameraSway event
+- API: Added PerspectiveChanged event
+
 # 5.0.11
 - Fixed compatibility with neat
 
