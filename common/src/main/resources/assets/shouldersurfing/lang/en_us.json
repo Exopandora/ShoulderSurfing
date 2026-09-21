@@ -237,6 +237,30 @@
   "${modId}.configuration.perspective.third_person_back_enabled": "Third person back enabled",
   "${modId}.configuration.perspective.third_person_back_enabled.tooltip": "Whether the third person back perspective is enabled.",
 
+  "${modId}.configuration.temporary_first_person_in_constrained_spaces.button": "Edit",
+  "${modId}.configuration.temporary_first_person_in_constrained_spaces": "Temporary first person in constrained spaces",
+  "${modId}.configuration.temporary_first_person_in_constrained_spaces.tooltip": "Temporary first person in constrained spaces settings.",
+
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.enabled": "Enabled",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.enabled.tooltip": "Whether to switch to first person perspective temporarily when entering areas with limited height. For example, small buildings or caves.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.minimum_time": "Minimum time",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.minimum_time.tooltip": "The minium time in ticks the temporary first will be active when entering a constrained space.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.additional_time": "Additional time",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.additional_time.tooltip": "The additional time in ticks the perspective will stay in temporary first person after leaving a constrained space.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.cooldown_time": "Cooldown time",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.cooldown_time.tooltip": "The time in ticks the temporary first will be on cooldown before it can be entered again.",
+
+  "${modId}.configuration.offset_threshold.button": "Edit",
+  "${modId}.configuration.offset_threshold": "Offset thresholds",
+  "${modId}.configuration.offset_threshold.tooltip": "Temporary first person offset threshold settings.",
+
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_x": "x-offset threshold",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_x.tooltip": "The x-axis camera offset threshold. When the x-axis camera offset falls below the configured threshold, the perspective will switch to temporary first person.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_y": "y-offset threshold",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_y.tooltip": "The y-axis camera offset threshold. When the y-axis camera offset falls below the configured threshold, the perspective will switch to temporary first person.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_z": "z-offset threshold",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_z.tooltip": "The z-axis camera offset threshold. When the z-axis camera offset falls below the configured threshold, the perspective will switch to temporary first person.",
+
   "${modId}.configuration.player.button": "Edit",
   "${modId}.configuration.player": "Player",
   "${modId}.configuration.player.tooltip": "Player settings.",

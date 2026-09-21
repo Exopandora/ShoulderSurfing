@@ -61,8 +61,7 @@ public class ClientEventHandler {
 		var instance = ShoulderSurfing.getInstance();
 		var modelViewMatrix = event.getCameraState().viewRotationMatrix;
 		var projectionMatrix = event.getCameraState().projectionMatrix;
-		instance.getCamera().renderTick(camera.entity(), partialTick);
-		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
+		instance.renderTick(camera, modelViewMatrix, projectionMatrix, partialTick);
 	}
 	
 	@SubscribeEvent
