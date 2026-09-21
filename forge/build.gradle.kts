@@ -11,6 +11,7 @@ val modContributors: String by project
 val modVersion: String by project
 val modDescription: String by project
 val modUrl: String by project
+val modIssueUrl: String by project
 val forgeCompatibleMinecraftVersions: String by project
 val jarName: String by project
 
@@ -85,6 +86,7 @@ tasks.named<ProcessResources>("processResources") {
 		"modContributors" to modContributors,
 		"modDescription" to modDescription,
 		"modUrl" to modUrl,
+		"modIssueUrl" to modIssueUrl,
 		"minecraftVersion" to libs.versions.minecraft.get()
 	)
 	
