@@ -10,6 +10,7 @@ val modContributors: String by project
 val modVersion: String by project
 val modDescription: String by project
 val modUrl: String by project
+val modIssueUrl: String by project
 val jarName: String by project
 val fabricCompatibleMinecraftVersions: String by project
 
@@ -59,6 +60,7 @@ tasks.withType<ProcessResources> {
         "modContributors" to contributors,
         "modDescription" to modDescription,
         "modUrl" to modUrl,
+        "modIssueUrl" to modIssueUrl,
         "minecraftVersion" to libs.versions.minecraft.get()
     )
     

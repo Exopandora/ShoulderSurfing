@@ -23,6 +23,7 @@ credits = "${modContributors}"
 description = "${modDescription}"
 logoFile = "logo.png"
 displayURL = "${modUrl}"
+issueTrackerURL = "${modIssueUrl}"
 displayTest = "NONE"
 
 [[dependencies.${modId}]]
