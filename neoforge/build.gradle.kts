@@ -3,15 +3,15 @@ plugins {
     alias(libs.plugins.moddevgradle)
 }
 
-val modId: String by project
-val modName: String by project
-val modAuthor: String by project
-val modContributors: String by project
-val modVersion: String by project
-val modDescription: String by project
-val modUrl: String by project
-val jarName: String by project
-val neoForgeCompatibleMinecraftVersions: String by project
+val modId: String = project.property("modId")!!.toString()
+val modName: String = project.property("modName")!!.toString()
+val modAuthor: String = project.property("modAuthor")!!.toString()
+val modContributors: String = project.property("modContributors")!!.toString()
+val modVersion: String = project.property("modVersion")!!.toString()
+val modDescription: String = project.property("modDescription")!!.toString()
+val modUrl: String = project.property("modUrl")!!.toString()
+val jarName: String = project.property("jarName")!!.toString()
+val neoForgeCompatibleMinecraftVersions: String = project.property("neoForgeCompatibleMinecraftVersions")!!.toString()
 
 base {
     archivesName.set("$jarName-NeoForge")

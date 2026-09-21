@@ -5,12 +5,12 @@ plugins {
 
 val versionCatalog = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
-val modName: String by project
-val modId: String by project
-val modAuthor: String by project
-val modVersion: String by project
-val javaVersion: String by project
-val javaToolchainVersion: String by project
+val modName: String = project.property("modName")!!.toString()
+val modId: String = project.property("modId")!!.toString()
+val modAuthor: String = project.property("modAuthor")!!.toString()
+val modVersion: String = project.property("modVersion")!!.toString()
+val javaVersion: String = project.property("javaVersion")!!.toString()
+val javaToolchainVersion: String = project.property("javaToolchainVersion")!!.toString()
 val minecraftVersion = versionCatalog.findVersion("minecraft").get().toString()
 
 version = "$minecraftVersion-$modVersion"

@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.moddevgradle)
 }
 
-val jarName: String by project
+val jarName: String = project.property("jarName")!!.toString()
 
 base {
     archivesName.set("$jarName-Common")

@@ -3,9 +3,9 @@ plugins {
     id("me.modmuss50.mod-publish-plugin")
 }
 
-val javaVersion: String by project
-val curseProjectId: String by project
-val modrinthProjectId: String by project
+val javaVersion: String = project.property("javaVersion")!!.toString()
+val curseProjectId: String = project.property("curseProjectId")!!.toString()
+val modrinthProjectId: String = project.property("modrinthProjectId")!!.toString()
 
 dependencies {
     compileOnly(project(":api"))
