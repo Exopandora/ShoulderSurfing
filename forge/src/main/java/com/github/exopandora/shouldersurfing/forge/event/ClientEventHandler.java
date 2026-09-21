@@ -26,7 +26,7 @@ public class ClientEventHandler {
 			instance.getCamera().renderTick(event.getCamera().getEntity(), partialTick);
 			var modelViewMatrix = event.getPoseStack();
 			var projectionMatrix = RenderSystem.getProjectionMatrix();
-			instance.getCrosshairRenderer().renderTick(event.getCamera(), modelViewMatrix, projectionMatrix, partialTick);
+			instance.renderTick(event.getCamera(), modelViewMatrix, projectionMatrix, partialTick);
 		}
 	}
 	
