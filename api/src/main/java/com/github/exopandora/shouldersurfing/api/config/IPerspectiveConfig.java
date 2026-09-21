@@ -14,4 +14,18 @@ public interface IPerspectiveConfig {
 	Perspective getDefaultPerspective();
 	
 	boolean isPerspectivePersistent();
+	
+	boolean isTemporaryFirstPersonInConstrainedSpacesEnabled();
+	
+	int getTemporaryFirstPersonInConstrainedSpacesMinimumTime();
+	
+	int getTemporaryFirstPersonInConstrainedSpacesAdditionalTime();
+	
+	int getTemporaryFirstPersonInConstrainedSpacesCooldownTime();
+	
+	double getTemporaryFirstPersonOffsetXThreshold();
+	
+	double getTemporaryFirstPersonOffsetYThreshold();
+	
+	double getTemporaryFirstPersonOffsetZThreshold();
 }

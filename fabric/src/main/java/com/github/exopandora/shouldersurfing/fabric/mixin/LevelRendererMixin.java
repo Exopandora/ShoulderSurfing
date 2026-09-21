@@ -30,7 +30,6 @@ class LevelRendererMixin {
 		CallbackInfo ci
 	) {
 		var instance = ShoulderSurfing.getInstance();
-		instance.getCamera().renderTick(camera.getEntity(), partialTick);
-		instance.getCrosshairRenderer().renderTick(camera, poseStack.last().pose(), projectionMatrix, partialTick);
+		instance.renderTick(camera, poseStack.last().pose(), projectionMatrix, partialTick);
 	}
 }
