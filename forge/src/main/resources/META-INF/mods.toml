@@ -11,6 +11,7 @@ credits = "${modContributors}"
 description = "${modDescription}"
 logoFile = "logo.png"
 displayURL = "${modUrl}"
+issueTrackerURL = "${modIssueUrl}"
 
 [modproperties.${modId}]
 incompatibleMods = ["betterthirdperson", "customcameraview", "nimble"]
