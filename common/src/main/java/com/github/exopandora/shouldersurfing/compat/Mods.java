@@ -22,6 +22,7 @@ public enum Mods {
 		}
 	},
 	CURIOS,
+	IRIS,
 	MTS,
 	NEAT,
 	THE_ONE_PROBE,

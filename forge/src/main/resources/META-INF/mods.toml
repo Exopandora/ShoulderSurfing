@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[65,)"
+loaderVersion = "[66,)"
 license = "MIT"
 clientSideOnly = true
 
@@ -19,13 +19,13 @@ incompatibleMods = ["betterthirdperson", "customcameraview", "nimble"]
 [[dependencies.${modId}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[26.2,)"
+versionRange = "[26.3,)"
 ordering = "NONE"
 side = "CLIENT"
 
-#[[dependencies.${modId}]]
-#modId = "forgeconfigapiport"
-#mandatory = true
-#versionRange = "[26.2,)"
-#ordering = "NONE"
-#side = "CLIENT"
+[[dependencies.${modId}]]
+modId = "forgeconfigapiport"
+mandatory = true
+versionRange = "[26.3,)"
+ordering = "NONE"
+side = "CLIENT"

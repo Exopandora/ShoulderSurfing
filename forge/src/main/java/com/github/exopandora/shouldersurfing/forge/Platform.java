@@ -11,7 +11,7 @@ public class Platform implements IPlatform {
 	@Override
 	public @Nullable String getModVersion(Mods mod) {
 		return switch (mod) {
-			case CREATE_FLY, CURIOS, WILDFIRE_GENDER -> null;
+			case CREATE_FLY, CURIOS, IRIS, WILDFIRE_GENDER -> null;
 			case CGM -> findModVersionForId("cgm");
 			case COBBLEMON -> findModVersionForId("cobblemon");
 			case CREATE -> findModVersionForId("create");

@@ -28,6 +28,7 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	
 	protected static void addCommonCompatMixins(List<String> mixins) {
 		addCGMMixins(mixins);
+		addIrisMixins(mixins);
 		addNeatMixins(mixins);
 		addTheOneProbeMixins(mixins);
 		addTslatEntityStatusMixins(mixins);
@@ -37,6 +38,12 @@ public abstract class ShoulderSurfingCompatMixinPlugin implements IMixinConfigPl
 	private static void addCGMMixins(List<String> mixins) {
 		if (Mods.CGM.isLoaded()) {
 			mixins.add("cgm.RecoilHandlerMixin");
+		}
+	}
+	
+	private static void addIrisMixins(List<String> mixins) {
+		if (Mods.IRIS.isLoaded()) {
+			mixins.add("iris.IrisPipelinesMixin");
 		}
 	}
 	

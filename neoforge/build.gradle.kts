@@ -49,6 +49,7 @@ dependencies {
     compileOnly(libs.jade.neoforge)
     compileOnly(variantOf(libs.curios.neoforge) { classifier("api") })
     compileOnly(libs.cobblemon.neoforge)
+    compileOnly(libs.iris.neoforge)
 }
 
 tasks.withType<ProcessResources> {

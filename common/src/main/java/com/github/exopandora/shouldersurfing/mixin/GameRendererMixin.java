@@ -31,17 +31,10 @@ abstract class GameRendererMixin {
 	}
 	
 	@Redirect(
-		method = "renderLevel",
+		method = "render3dHud",
 		at = @At(
 			value = "INVOKE",
 			target = "net/minecraft/client/CameraType.isFirstPerson()Z"
-		),
-		slice = @Slice(
-			from = @At(
-				value = "FIELD",
-				target = "net/minecraft/client/gui/components/debug/DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR:Lnet/minecraft/resources/Identifier;",
-				opcode = Opcodes.GETSTATIC
-			)
 		)
 	)
 	private boolean doRenderCrosshair(CameraType cameraType) {

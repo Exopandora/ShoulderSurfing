@@ -11,24 +11,23 @@ import net.minecraft.client.player.ClientInput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class InputHandler {
 	public static final KeyMapping.Category GENERAL = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "general"));
 	
-	public static final KeyMapping CAMERA_LEFT = createKeyMapping("adjust_camera_left", GLFW.GLFW_KEY_LEFT);
-	public static final KeyMapping CAMERA_RIGHT = createKeyMapping("adjust_camera_right", GLFW.GLFW_KEY_RIGHT);
-	public static final KeyMapping CAMERA_IN = createKeyMapping("adjust_camera_in", GLFW.GLFW_KEY_UP);
-	public static final KeyMapping CAMERA_OUT = createKeyMapping("adjust_camera_out", GLFW.GLFW_KEY_DOWN);
-	public static final KeyMapping CAMERA_UP = createKeyMapping("adjust_camera_up", GLFW.GLFW_KEY_PAGE_UP);
-	public static final KeyMapping CAMERA_DOWN = createKeyMapping("adjust_camera_down", GLFW.GLFW_KEY_PAGE_DOWN);
-	public static final KeyMapping SWAP_SHOULDER = createKeyMapping("swap_shoulder", GLFW.GLFW_KEY_U);
+	public static final KeyMapping CAMERA_LEFT = createKeyMapping("adjust_camera_left", InputConstants.KEY_LEFT);
+	public static final KeyMapping CAMERA_RIGHT = createKeyMapping("adjust_camera_right", InputConstants.KEY_RIGHT);
+	public static final KeyMapping CAMERA_IN = createKeyMapping("adjust_camera_in", InputConstants.KEY_UP);
+	public static final KeyMapping CAMERA_OUT = createKeyMapping("adjust_camera_out", InputConstants.KEY_DOWN);
+	public static final KeyMapping CAMERA_UP = createKeyMapping("adjust_camera_up", InputConstants.KEY_PAGEUP);
+	public static final KeyMapping CAMERA_DOWN = createKeyMapping("adjust_camera_down", InputConstants.KEY_PAGEDOWN);
+	public static final KeyMapping SWAP_SHOULDER = createKeyMapping("swap_shoulder", InputConstants.KEY_U);
 	public static final KeyMapping TOGGLE_FIRST_PERSON = createKeyMapping("toggle_first_person", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping TOGGLE_THIRD_PERSON_FRONT = createKeyMapping("toggle_third_person_front", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping TOGGLE_THIRD_PERSON_BACK = createKeyMapping("toggle_third_person_back", InputConstants.UNKNOWN.getValue());
-	public static final KeyMapping FREE_LOOK = createKeyMapping("free_look", GLFW.GLFW_KEY_LEFT_ALT);
+	public static final KeyMapping FREE_LOOK = createKeyMapping("free_look", InputConstants.KEY_LALT);
 	public static final KeyMapping TOGGLE_CAMERA_COUPLING = createKeyMapping("toggle_camera_coupling", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping TOGGLE_X_OFFSET_PRESETS = createKeyMapping("toggle_x_offset_presets", InputConstants.UNKNOWN.getValue());
 	public static final KeyMapping TOGGLE_Y_OFFSET_PRESETS = createKeyMapping("toggle_y_offset_presets", InputConstants.UNKNOWN.getValue());

@@ -1,24 +1,27 @@
 [versions]
-minecraft = "26.2"
-forge = "26.2-65.0.0"
-neoforge = "26.2.0.0-beta"
-neoform = "26.2-1"
-fabric-loader = "0.19.3"
-fabric-api = "0.152.1+26.2"
-mixin = "0.17.3+mixin.0.8.7"
-forgeconfigapiport = "26.2.1"
-wthit-common = "mojmap-19.0.1"
-wthit-forge = "mojmap-19.0.1"
-wthit-neoforge = "mojmap-19.0.1"
-wthit-fabric = "fabric-19.0.1"
-jade-common = "8265965" # 26.1.x-26.0.9-neoforge
-jade-forge = "8265965" # 26.1.x-26.0.9-neoforge
-jade-neoforge = "8265965" # 26.2.x-26.2.2-neoforge
-jade-fabric = "8285136" # 26.2.x-26.2.5-fabric
-curios = "15.0.0-beta.1+26.1"
+minecraft = "26.3"
+forge = "26.3-66.0.2"
+neoforge = "26.3.0.7-beta"
+neoform = "26.3-1"
+fabric-loader = "0.19.5"
+fabric-api = "0.160.6+26.3"
+mixin = "0.17.4+mixin.0.8.7"
+forgeconfigapiport = "26.3.1"
+wthit-common = "mojmap-20.0.0"
+wthit-forge = "mojmap-20.0.0"
+wthit-neoforge = "mojmap-20.0.0"
+wthit-fabric = "fabric-20.0.0"
+jade-common = "8892782" # 26.3.x-26.3.1-neoforge
+jade-forge = "8892782" # 26.3.x-26.3.1-neoforge
+jade-neoforge = "8892782" # 26.3.x-26.3.1-neoforge
+jade-fabric = "8892530" # 26.3.x-26.3.1-fabric
+curios = "16.0.0+26.2"
 cobblemon-common = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
 cobblemon-neoforge = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
 cobblemon-fabric = "s64m1opn" # fabric-1.7.1+1.21.1
+iris-common = "1.11.6+26.3-fabric"
+iris-fabric = "1.11.6+26.3-fabric"
+iris-neoforge = "1.11.6+26.3-fabric"
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
@@ -39,14 +42,17 @@ jade-forge = { module = "curse.maven:jade-324717", version.ref = "jade-forge" }
 jade-neoforge = { module = "curse.maven:jade-324717", version.ref = "jade-neoforge" }
 jade-fabric = { module = "curse.maven:jade-324717", version.ref = "jade-fabric" }
 curios-neoforge = { module = "top.theillusivec4.curios:curios-neoforge", version.ref = "curios" }
-eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0.1" }
+eventbus-validator = { module = "net.minecraftforge:eventbus-validator", version = "7.0.6" }
 cobblemon-common = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-common" }
 cobblemon-neoforge = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-neoforge" }
 cobblemon-fabric = { module = "maven.modrinth:cobblemon", version.ref = "cobblemon-fabric" }
+iris-common = { module = "maven.modrinth:iris", version.ref = "iris-common" }
+iris-neoforge = { module = "maven.modrinth:iris", version.ref = "iris-neoforge" }
+iris-fabric = { module = "maven.modrinth:iris", version.ref = "iris-fabric" }
 
 [plugins]
-modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "2.0.0" }
-forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.28" }
+modpublishplugin = { id = "me.modmuss50.mod-publish-plugin", version = "2.2.1" }
+forgegradle = { id = "net.minecraftforge.gradle", version = "7.0.40" }
 fabricloom = { id = "net.fabricmc.fabric-loom", version = "1.17-SNAPSHOT" }
-moddevgradle = { id = "net.neoforged.moddev", version = "2.0.141" }
+moddevgradle = { id = "net.neoforged.moddev", version = "2.0.147" }
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.4.1" }

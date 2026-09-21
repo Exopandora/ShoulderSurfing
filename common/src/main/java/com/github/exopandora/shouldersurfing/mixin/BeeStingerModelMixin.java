@@ -1,9 +1,9 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.client.renderer.rendertype.ShoulderSurfingRenderTypes;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.model.animal.bee.BeeStingerModel;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,7 +23,7 @@ class BeeStingerModelMixin {
 	)
 	private static Function<Identifier, RenderType> init(Function<Identifier, RenderType> renderType) {
 		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
-			return RenderTypes::armorTranslucent;
+			return ShoulderSurfingRenderTypes::armorTranslucentNoCull;
 		}
 		return renderType;
 	}

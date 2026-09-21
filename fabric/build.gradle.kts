@@ -29,6 +29,7 @@ dependencies {
     compileOnly(libs.wthit.fabric)
     compileOnly(libs.jade.fabric)
     compileOnly(libs.cobblemon.fabric)
+    compileOnly(libs.iris.fabric)
 }
 
 loom {

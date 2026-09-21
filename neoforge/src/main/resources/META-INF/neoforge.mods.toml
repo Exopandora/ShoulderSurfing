@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[11,)"
+loaderVersion = "[12,)"
 license = "MIT"
 
 [[mixins]]
@@ -21,21 +21,21 @@ displayName = "${modName}"
 authors = "${modAuthor}"
 credits = "${modContributors}"
 description = "${modDescription}"
-logoFile = "logo.png"
+iconFile = "logo.png"
 displayURL = "${modUrl}"
 displayTest = "NONE"
 
 [[dependencies.${modId}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.2,)"
+versionRange = "[26.3,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${modId}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.2.0.0-beta,)"
+versionRange = "[26.3.0.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 

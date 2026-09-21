@@ -21,7 +21,7 @@ class CapeLayerMixin {
 	)
 	private RenderType entitySolid(Identifier texture) {
 		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
-			return RenderTypes.entityTranslucentCullItemTarget(texture);
+			return RenderTypes.entityTranslucent(texture);
 		}
 		return RenderTypes.entitySolid(texture);
 	}

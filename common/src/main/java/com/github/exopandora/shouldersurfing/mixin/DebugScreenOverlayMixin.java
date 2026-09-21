@@ -16,7 +16,7 @@ class DebugScreenOverlayMixin {
 		method = "extractLines",
 		at = @At("HEAD")
 	)
-	private void render(GuiGraphicsExtractor graphics, List<String> lines, boolean alignLeft, CallbackInfo ci) {
+	private void render(GuiGraphicsExtractor graphics, List<String> lines, boolean alignLeft, int scaledScreenWidth, CallbackInfo ci) {
 		DebugScreenOverlayHandler.appendDebugText(lines);
 	}
 }

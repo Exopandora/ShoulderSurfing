@@ -141,6 +141,7 @@ The binaries for each platform can be found in the following directories:
 - Create
 - Create-Fly
 - Curios
+- Iris (tested with 1.11.6+26.3)
 - Neat (tested with 26.2-49)
 - TslatEntityStatus
 - Wildfire Gender

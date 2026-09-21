@@ -46,5 +46,5 @@ include(
     ":compat",
     ":forge",
     ":neoforge",
-    ":fabric"
+    ":fabric",
 )

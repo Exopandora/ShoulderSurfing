@@ -1,13 +1,13 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.renderer.rendertype.ShoulderSurfingRenderTypes;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -25,7 +25,8 @@ abstract class AvatarRendererMixin extends LivingEntityRenderer<LivingEntity, Li
 	) {
 		var instance = ShoulderSurfing.getInstance();
 		if (instance.getCameraEntityRenderer().isEntityTransparentPlayer(state)) {
-			return ShoulderSurfingRenderTypes.entityTranslucentItemTarget(this.getTextureLocation(state));
+			// prevent player model culling
+			return RenderTypes.entityTranslucent(this.getTextureLocation(state));
 		}
 		return super.getRenderType(state, isBodyVisible, forceTransparent, appearGlowing);
 	}

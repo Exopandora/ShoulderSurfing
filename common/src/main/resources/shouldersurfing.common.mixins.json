@@ -28,6 +28,8 @@
     "OptionsMixin",
     "PlayerMixin",
     "ProjectileUtilMixin",
+    "RenderPipelinesAccessor",
+    "RenderPipelinesMixin",
     "RenderTypeAccessor",
     "RenderTypesMixin",
     "SubmitNodeCollectionMixin"

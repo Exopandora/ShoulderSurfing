@@ -18,6 +18,7 @@ dependencies {
     compileOnly(libs.wthit.common)
     compileOnly(libs.jade.common)
     compileOnly(libs.cobblemon.common)
+    compileOnly(libs.iris.common)
 }
 
 neoForge {

@@ -2,24 +2,16 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.client.renderer.rendertype.ShoulderSurfingRenderTypes;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.util.Util;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.function.Function;
-
 @Mixin(RenderTypes.class)
 class RenderTypesMixin {
-	@Shadow
-	private static @Final Function<Identifier, RenderType> ARMOR_TRANSLUCENT;
-	
 	@Inject(
 		at = @At("HEAD"),
 		method = "armorCutoutNoCull",
@@ -27,24 +19,40 @@ class RenderTypesMixin {
 	)
 	private static void armorCutoutNoCull(Identifier texture, CallbackInfoReturnable<RenderType> cir) {
 		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
-			if (Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat()) {
-				cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentItemTarget(texture));
-			} else {
-				cir.setReturnValue(ARMOR_TRANSLUCENT.apply(texture));
-			}
+			cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentNoCull(texture));
 		}
 	}
 	
 	@Inject(
 		at = @At("HEAD"),
-		method = "armorEntityGlint",
+		method = "armorCutoutNoCullGlint",
 		cancellable = true
 	)
-	private static void armorEntityGlint(CallbackInfoReturnable<RenderType> cir) {
+	private static void armorCutoutNoCullGlint(Identifier texture, CallbackInfoReturnable<RenderType> cir) {
 		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
-			if (Util.isImprovedTransparencyEnabled() && !Util.isCameraEntityRidingBoat()) {
-				cir.setReturnValue(ShoulderSurfingRenderTypes.armorEntityGlintItemTarget());
-			}
+			cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentNoCullGlint(texture));
+		}
+	}
+	
+	@Inject(
+		at = @At("HEAD"),
+		method = "armorTrim",
+		cancellable = true
+	)
+	private static void armorTrim(Identifier texture, boolean decal, CallbackInfoReturnable<RenderType> cir) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+			cir.setReturnValue(ShoulderSurfingRenderTypes.armorTrimTranslucent(texture, decal));
+		}
+	}
+	
+	@Inject(
+		at = @At("HEAD"),
+		method = "trimmedArmorGlint",
+		cancellable = true
+	)
+	private static void trimmedArmorGlint(CallbackInfoReturnable<RenderType> cir) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+			cir.setReturnValue(ShoulderSurfingRenderTypes.trimmedArmorGlint());
 		}
 	}
 }

@@ -56,7 +56,7 @@ public class ClientEventHandler {
 	
 	@SubscribeEvent
 	public static void frameGraphSetupEvent(FrameGraphSetupEvent event) {
-		var partialTick = event.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+		var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 		var camera = Minecraft.getInstance().gameRenderer.mainCamera();
 		var instance = ShoulderSurfing.getInstance();
 		var modelViewMatrix = event.getCameraState().viewRotationMatrix;

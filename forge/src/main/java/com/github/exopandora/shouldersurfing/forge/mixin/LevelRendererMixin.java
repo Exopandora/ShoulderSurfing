@@ -1,13 +1,10 @@
 package com.github.exopandora.shouldersurfing.forge.mixin;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import org.joml.Matrix4fc;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,20 +18,19 @@ class LevelRendererMixin {
 		at = @At("TAIL")
 	)
 	private void render(
-		GraphicsResourceAllocator resourceAllocator,
-		DeltaTracker deltaTracker,
-		boolean renderOutline,
-		CameraRenderState cameraState,
-		Matrix4fc modelViewMatrix,
-		GpuBufferSlice terrainFog,
-		Vector4f fogColor,
-		boolean shouldRenderSky,
+		final GraphicsResourceAllocator resourceAllocator,
+		final boolean renderOutline,
+		final CameraRenderState cameraState,
+		final com.mojang.renderpearl.api.buffers.GpuBufferSlice terrainFog,
+		final Vector4f fogColor,
+		final boolean shouldRenderSky,
+		final boolean consistentDepthRequired,
 		CallbackInfo ci
 	) {
-		var partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
+		var partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
 		var camera = Minecraft.getInstance().gameRenderer.mainCamera();
 		var instance = ShoulderSurfing.getInstance();
 		instance.getCamera().renderTick(camera.entity(), partialTick);
-		instance.getCrosshairRenderer().renderTick(camera, modelViewMatrix, cameraState.projectionMatrix, partialTick);
+		instance.getCrosshairRenderer().renderTick(camera, cameraState.viewRotationMatrix, cameraState.projectionMatrix, partialTick);
 	}
 }
