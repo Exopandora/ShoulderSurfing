@@ -109,7 +109,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 		if (!this.instance.isShoulderSurfing()) {
 			return;
 		}
-		if (this.isCameraTurningWithPlayer()) {
+		if (this.isCameraTurningWithPlayer() && !Minecraft.getInstance().isPaused()) {
 			var easeIn = 1F - Mth.lerp(partialTick, this.turnCameraWithPlayerEaseInO, this.turnCameraWithPlayerEaseIn);
 			var f = partialTick * (float) Config.CLIENT.getCameraConfig().getCameraTransitionSpeedMultiplier() * easeIn;
 			var dy = Mth.degreesDifference(this.rotation.y(), EntityHelper.getLerpedYRot(cameraEntity, partialTick));
