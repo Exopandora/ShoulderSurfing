@@ -1,4 +1,4 @@
-# Unreleased
+# 5.1.1
 - Improved compatibility with iris
 - Fixed a rare config related crash on (neo-)forge
 
