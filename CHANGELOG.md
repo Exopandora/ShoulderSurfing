@@ -1,4 +1,4 @@
-# Unreleased
+# 5.1.1
 - Added options to automatically switch to temporary first person in constrained spaced
     - Added the option to configure whether to switch to temporary first person in constrained spaced
     - Added options to configure offset thresholds for each axis
