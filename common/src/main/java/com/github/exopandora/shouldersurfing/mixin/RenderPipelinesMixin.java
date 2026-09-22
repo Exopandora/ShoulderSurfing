@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.renderer.ShoulderSurfingRenderPipelines;
+import com.github.exopandora.shouldersurfing.compat.Mods;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.renderpearl.api.GpuFormat;
 import com.mojang.renderpearl.api.pipeline.BlendFunction;
@@ -10,6 +11,8 @@ import com.mojang.renderpearl.api.pipeline.CompareOp;
 import com.mojang.renderpearl.api.pipeline.DepthStencilState;
 import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import net.irisshaders.iris.pipeline.IrisPipelines;
+import net.irisshaders.iris.pipeline.programs.ShaderKey;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.oit.OitPipelineSet;
@@ -45,7 +48,7 @@ class RenderPipelinesMixin {
 		
 		ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL = RenderPipelinesAccessor.invokeRegister(
 			RenderPipeline.builder(RenderPipelinesAccessor.getEntitySnippet())
-				.withLocation("pipeline/shouldersurfing_armor_translucent_no_cull")
+				.withLocation(Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pipeline/armor_translucent_no_cull"))
 				.withShaderDefine("ALPHA_CUTOUT", 0.1F)
 				.withShaderDefine("NO_OVERLAY")
 				.withShaderDefine("PER_FACE_LIGHTING")
@@ -56,7 +59,7 @@ class RenderPipelinesMixin {
 		ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL_GLINT = RenderPipelinesAccessor.invokeRegister(
 			RenderPipeline.builder(RenderPipelinesAccessor.getEntitySnippet(), GLINT_SNIPPET)
 				.withFragmentShader(Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "core/entity_translucent"))
-				.withLocation("pipeline/shouldersurfing_armor_translucent_no_cull_glint")
+				.withLocation(Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pipeline/armor_translucent_no_cull_glint"))
 				.withShaderDefine("ALPHA_CUTOUT", 0.1F)
 				.withShaderDefine("NO_OVERLAY")
 				.withShaderDefine("PER_FACE_LIGHTING")
@@ -66,7 +69,7 @@ class RenderPipelinesMixin {
 		);
 		ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT = RenderPipelinesAccessor.invokeRegister(
 			RenderPipeline.builder(RenderPipelinesAccessor.getEntitySnippet())
-				.withLocation("pipeline/shouldersurfing_armor_trim_translucent")
+				.withLocation(Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pipeline/armor_trim_translucent"))
 				.withShaderDefine("ALPHA_CUTOUT", 0.1F)
 				.withShaderDefine("NO_OVERLAY")
 				.withShaderDefine("PER_FACE_LIGHTING")
@@ -76,7 +79,7 @@ class RenderPipelinesMixin {
 		);
 		ShoulderSurfingRenderPipelines.ARMOR_DECAL_TRANSLUCENT_NO_CULL = RenderPipelinesAccessor.invokeRegister(
 			RenderPipeline.builder(RenderPipelinesAccessor.getEntitySnippet())
-				.withLocation("pipeline/shouldersurfing_armor_decal_translucent_no_cull")
+				.withLocation(Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pipeline/armor_decal_translucent_no_cull"))
 				.withShaderDefine("ALPHA_CUTOUT", 0.1F)
 				.withShaderDefine("NO_OVERLAY")
 				.withShaderDefine("PER_FACE_LIGHTING")
@@ -87,7 +90,7 @@ class RenderPipelinesMixin {
 		);
 		ShoulderSurfingRenderPipelines.GLINT_TRANSLUCENT = RenderPipelinesAccessor.invokeRegister(
 			RenderPipeline.builder(trimmedArmorGlintTranslucentSnippet)
-				.withLocation("pipeline/shouldersurfing_glint_translucent")
+				.withLocation(Identifier.fromNamespaceAndPath(ShoulderSurfingCommon.MOD_ID, "pipeline/glint_translucent"))
 				.withColorTargetState(new ColorTargetState(BlendFunction.GLINT))
 				.build()
 		);
@@ -141,5 +144,15 @@ class RenderPipelinesMixin {
 				)
 				.build()
 		);
+		
+		if (Mods.IRIS.isLoaded()) {
+			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.ENTITIES_TRANSLUCENT);
+			IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.SHADOW_TRANSLUCENT);
+			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL_GLINT, ShaderKey.ENTITIES_TRANSLUCENT_GLINT);
+			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.ENTITIES_TRANSLUCENT);
+			IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.ENTITIES_TRANSLUCENT);
+			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_DECAL_TRANSLUCENT_NO_CULL, ShaderKey.ENTITIES_TRANSLUCENT);
+			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.GLINT_TRANSLUCENT, ShaderKey.SHADOW_TRANSLUCENT);
+		}
 	}
 }
