@@ -7,12 +7,6 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public class Util {
-	public static boolean isImprovedTransparencyEnabled() {
-		var instance = Minecraft.getInstance();
-		//noinspection ConstantValue
-		return instance != null && instance.options != null && instance.options.improvedTransparency().get();
-	}
-	
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean isCameraEntityRidingBoat() {
 		var instance = Minecraft.getInstance();
