@@ -101,7 +101,7 @@ class RenderPipelinesMixin {
 					RenderPipeline.builder(RenderPipelinesAccessor.getOitEntitySnippet()).withCull(false)
 				)
 				.withAccumulateModifier(
-					accumulate -> accumulate.withSnippet(GLINT_SNIPPET)
+					builder -> builder.withSnippet(GLINT_SNIPPET)
 						.withBindGroupLayout(BindGroupLayouts.GLOBALS)
 						.withBindGroupLayout(BindGroupLayouts.SAMPLER1)
 						.withBindGroupLayout(BindGroupLayouts.SAMPLER2)
@@ -114,15 +114,15 @@ class RenderPipelinesMixin {
 					RenderPipeline.builder(trimmedArmorGlintTranslucentSnippet).withCull(false)
 				)
 				.withTransmittanceModifier(
-					accumulate -> accumulate
+					builder -> builder
 						.withDepthStencilState(new DepthStencilState(CompareOp.EQUAL, false))
 				)
 				.withDepthBoundsModifier(
-					depthBounds -> depthBounds
+					builder -> builder
 						.withDepthStencilState(new DepthStencilState(CompareOp.EQUAL, false))
 				)
 				.withAccumulateModifier(
-					accumulate -> accumulate
+					builder -> builder
 						.withDepthStencilState(new DepthStencilState(CompareOp.EQUAL, false))
 						.withColorTargetState(new ColorTargetState(Optional.of(BlendFunction.GLINT), GpuFormat.RGBA16_FLOAT, 15))
 						.withBindGroupLayout(BindGroupLayouts.SAMPLER1)
@@ -136,7 +136,7 @@ class RenderPipelinesMixin {
 					RenderPipeline.builder(RenderPipelinesAccessor.getOitEntitySnippet()).withCull(false)
 				)
 				.withAccumulateModifier(
-					accumulate -> accumulate
+					builder -> builder
 						.withShaderDefine("PER_FACE_LIGHTING")
 						.withColorTargetState(new ColorTargetState(Optional.of(BlendFunction.TRANSLUCENT), GpuFormat.RGBA16_FLOAT, 15))
 						.withBindGroupLayout(BindGroupLayouts.SAMPLER1)
