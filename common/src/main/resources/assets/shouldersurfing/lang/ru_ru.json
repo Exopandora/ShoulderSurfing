@@ -26,6 +26,10 @@
   "${modId}.configuration.camera.turn_with_player_delay": "Задержка поворота камеры за игроком",
   "${modId}.configuration.camera.turn_with_player_delay.tooltip": "Задержка в тактах, после которой камера начнёт поворачиваться вслед за игроком.",
 
+  "${modId}.configuration.camera.non_collidable_blocks.button": "Изменить",
+  "${modId}.configuration.camera.non_collidable_blocks": "Блоки без столкновений",
+  "${modId}.configuration.camera.non_collidable_blocks.tooltip": "Список блоков, которые не сталкиваются с камерой. Должны быть прозрачными блоками или блоками, не занимающими полный блок. Эта настройка поддерживает регулярные выражения. Пример: 'minecraft:.*leaves' соответствует 'minecraft:oak_leaves' и 'minecraft:spruce_leaves'.",
+
   "${modId}.configuration.fov.button": "Изменить",
   "${modId}.configuration.fov": "Поле зрения камеры",
   "${modId}.configuration.fov.tooltip": "Настройки поля зрения камеры.",
@@ -233,6 +237,30 @@
   "${modId}.configuration.perspective.third_person_back_enabled": "Вид от третьего лица сзади",
   "${modId}.configuration.perspective.third_person_back_enabled.tooltip": "Доступен ли для переключения стандартный режим вида от третьего лица сзади (F5).",
 
+  "${modId}.configuration.temporary_first_person_in_constrained_spaces.button": "Изменить",
+  "${modId}.configuration.temporary_first_person_in_constrained_spaces": "Временный вид от первого лица в ограниченном пространстве",
+  "${modId}.configuration.temporary_first_person_in_constrained_spaces.tooltip": "Настройки временного перехода в вид от первого лица в ограниченном пространстве.",
+
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.enabled": "Включено",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.enabled.tooltip": "Переключаться ли временно в вид от первого лица при входе в области с ограниченной высотой. Например, в небольшие строения или пещеры.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.minimum_time": "Минимальное время",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.minimum_time.tooltip": "Минимальное время в тактах, в течение которого временный вид от первого лица будет активен при входе в ограниченное пространство.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.additional_time": "Дополнительное время",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.additional_time.tooltip": "Дополнительное время в тактах, в течение которого перспектива останется в режиме временного вида от первого лица после выхода из ограниченного пространства.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.cooldown_time": "Время восстановления",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.cooldown_time.tooltip": "Время в тактах, в течение которого временный вид от первого лица будет на перезарядке, прежде чем его можно будет активировать снова.",
+
+  "${modId}.configuration.offset_threshold.button": "Изменить",
+  "${modId}.configuration.offset_threshold": "Пороги смещения",
+  "${modId}.configuration.offset_threshold.tooltip": "Настройки порогов смещения для временного вида от первого лица.",
+
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_x": "Порог смещения по X",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_x.tooltip": "Порог смещения камеры по оси X. Когда смещение камеры по оси X опускается ниже заданного порога, перспектива переключается в режим временного вида от первого лица.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_y": "Порог смещения по Y",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_y.tooltip": "Порог смещения камеры по оси Y. Когда смещение камеры по оси Y опускается ниже заданного порога, перспектива переключается в режим временного вида от первого лица.",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_z": "Порог смещения по Z",
+  "${modId}.configuration.perspective.temporary_first_person_in_constrained_spaces.offset_threshold.offset_z.tooltip": "Порог смещения камеры по оси Z. Когда смещение камеры по оси Z опускается ниже заданного порога, перспектива переключается в режим временного вида от первого лица.",
+
   "${modId}.configuration.player.button": "Изменить",
   "${modId}.configuration.player": "Модель игрока",
   "${modId}.configuration.player.tooltip": "Настройки отображения модели игрока.",
@@ -269,6 +297,8 @@
   "${modId}.configuration.player.turning.turning_speed_multiplier.tooltip": "Множитель скорости, с которой поворот игрока стремится к направлению его движения.",
   "${modId}.configuration.player.turning.turn_player_x_rot_with_camera": "Наклон игрока за камерой",
   "${modId}.configuration.player.turning.turn_player_x_rot_with_camera.tooltip": "Следовать ли наклону головы игрока (ось X) за наклоном камеры. Работает только с отделённой камерой.",
+  "${modId}.configuration.player.turning.turn_player_x_rot_to_camera": "Поворот игрока на камеру по оси X",
+  "${modId}.configuration.player.turning.turn_player_x_rot_to_camera.tooltip": "Поворачивать ли игрока по оси X так, чтобы он всегда смотрел в сторону камеры. Эта настройка применяется только при включённой отделённой камере и включённом следовании наклона игрока за камерой.",
   "${modId}.configuration.player.turning.turn_player_y_rot_with_camera": "Поворот игрока за камерой",
   "${modId}.configuration.player.turning.turn_player_y_rot_with_camera.tooltip": "Следовать ли горизонтальному повороту игрока (ось Y) за поворотом камеры. Работает только с отделённой камерой.",
   "${modId}.configuration.player.turning.turn_player_y_rot_angle_limit": "Предел поворота игрока за камерой",
