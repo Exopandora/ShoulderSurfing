@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.renderer.ShoulderSurfingRenderPipelines;
 import com.github.exopandora.shouldersurfing.compat.Mods;
+import com.github.exopandora.shouldersurfing.compat.iris.IrisCompat;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.renderpearl.api.GpuFormat;
 import com.mojang.renderpearl.api.pipeline.BlendFunction;
@@ -11,8 +12,6 @@ import com.mojang.renderpearl.api.pipeline.CompareOp;
 import com.mojang.renderpearl.api.pipeline.DepthStencilState;
 import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import com.mojang.renderpearl.api.pipeline.RenderPipeline;
-import net.irisshaders.iris.pipeline.IrisPipelines;
-import net.irisshaders.iris.pipeline.programs.ShaderKey;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.oit.OitPipelineSet;
@@ -146,13 +145,7 @@ class RenderPipelinesMixin {
 		);
 		
 		if (Mods.IRIS.isLoaded()) {
-			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.ENTITIES_TRANSLUCENT);
-			IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.SHADOW_TRANSLUCENT);
-			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL_GLINT, ShaderKey.ENTITIES_TRANSLUCENT_GLINT);
-			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.ENTITIES_TRANSLUCENT);
-			IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.ENTITIES_TRANSLUCENT);
-			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_DECAL_TRANSLUCENT_NO_CULL, ShaderKey.ENTITIES_TRANSLUCENT);
-			IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.GLINT_TRANSLUCENT, ShaderKey.SHADOW_TRANSLUCENT);
+			IrisCompat.assignPipelines();
 		}
 	}
 }
