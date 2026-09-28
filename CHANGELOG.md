@@ -1,3 +1,7 @@
+# Unreleased
+- Fixed startup crash on forge
+- Fixed resource pack format version
+
 # 5.1.1
 - Improved compatibility with iris
 - Fixed a rare config related crash on (neo-)forge
