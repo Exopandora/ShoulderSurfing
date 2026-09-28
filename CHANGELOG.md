@@ -1,4 +1,4 @@
-# Unreleased
+# 5.1.2
 - Fixed startup crash on forge
 - Fixed resource pack format version
 
