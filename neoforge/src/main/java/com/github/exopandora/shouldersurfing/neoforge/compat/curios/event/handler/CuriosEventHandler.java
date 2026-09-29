@@ -37,17 +37,17 @@ public class CuriosEventHandler implements ICuriosEventHandler {
 			if (items.isEmpty() && defaultComponentIds.isEmpty() && componentIds.isEmpty()) {
 				continue;
 			}
-//			var stackHandler = entry.getValue().getStacks();
-//			for (var x = 0; x < stackHandler.getSlots(); x++) {
-//				var stack = stackHandler.getStackInSlot(x);
-//				var isAdaptiveItemStack = ComputePlayerAimStateEventHandlerImpl.isAdaptiveItemStack(
-//					stack, items, componentIds, defaultComponentIds, Collections.emptyList()
-//				);
-//				if (isAdaptiveItemStack) {
-//					event.setResult(true);
-//					return;
-//				}
-//			}
+			var stackHandler = entry.getValue().getStacks();
+			for (var x = 0; x < stackHandler.getSlots(); x++) {
+				var stack = stackHandler.getStackInSlot(x);
+				var isAdaptiveItemStack = ComputePlayerAimStateEventHandlerImpl.isAdaptiveItemStack(
+					stack, items, componentIds, defaultComponentIds, Collections.emptyList()
+				);
+				if (isAdaptiveItemStack) {
+					event.setResult(true);
+					return;
+				}
+			}
 		}
 	}
 	
