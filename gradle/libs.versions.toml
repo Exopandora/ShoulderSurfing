@@ -16,9 +16,9 @@ jade-forge = "8265965" # 26.1.x-26.0.9-neoforge
 jade-neoforge = "8265965" # 26.2.x-26.2.2-neoforge
 jade-fabric = "8285136" # 26.2.x-26.2.5-fabric
 curios = "15.0.0-beta.1+26.1"
-cobblemon-common = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
-cobblemon-neoforge = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
-cobblemon-fabric = "s64m1opn" # fabric-1.7.1+1.21.1
+cobblemon-common = "7otgw3aH" # neoforge-1.8.1+1.21.1
+cobblemon-neoforge = "7otgw3aH" # neoforge-1.8.1+1.21.1
+cobblemon-fabric = "gBW3vLC7" # fabric-1.8.1+1.21.1
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
