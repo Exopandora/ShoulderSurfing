@@ -311,6 +311,10 @@
   "${modId}.configuration.object_picker.use_custom_raytrace_distance": "Use custom raytrace distance",
   "${modId}.configuration.object_picker.use_custom_raytrace_distance.tooltip": "Whether to use the custom raytrace distance used for the dynamic crosshair.",
 
+  "${modId}.configuration.object_picker.unpickable_invisible_entities.button" : "Edit",
+  "${modId}.configuration.object_picker.unpickable_invisible_entities": "Unpickable invisible entities",
+  "${modId}.configuration.object_picker.unpickable_invisible_entities.tooltip": "The list of invisible entities to ignore while picking. This config option supports regular expressions. Example: 'minecraft:oak_.*' matches 'minecraft:oak_boat' and 'minecraft:oak_chest_boat'.",
+
   "${modId}.configuration.pick_origin.button": "Edit",
   "${modId}.configuration.pick_origin": "Pick Origin",
   "${modId}.configuration.pick_origin.tooltip": "Pick Origin settings.",
