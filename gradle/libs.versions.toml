@@ -19,9 +19,9 @@ badpackets-forge = "forge-0.11.1"
 badpackets-neoforge = "neo-0.11.1"
 badpackets-fabric = "fabric-0.11.1"
 curios = "11.0.1+1.21.5"
-cobblemon-common = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
-cobblemon-neoforge = "Uz1QF4Md" # neoforge-1.7.1+1.21.1
-cobblemon-fabric = "s64m1opn" # fabric-1.7.1+1.21.1
+cobblemon-common = "7otgw3aH" # neoforge-1.8.1+1.21.1
+cobblemon-neoforge = "7otgw3aH" # neoforge-1.8.1+1.21.1
+cobblemon-fabric = "gBW3vLC7" # fabric-1.8.1+1.21.1
 
 [libraries]
 minecraft-forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
