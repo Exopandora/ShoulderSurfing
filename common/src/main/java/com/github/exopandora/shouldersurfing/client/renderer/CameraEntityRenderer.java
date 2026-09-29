@@ -5,7 +5,6 @@ import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.client.EventHooks;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.util.Util;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.ARGB;
@@ -79,10 +78,7 @@ public class CameraEntityRenderer implements ICameraEntityRenderer {
 		if (!this.instance.isShoulderSurfing() || !Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
 			return false;
 		}
-		if (state != this.cameraEntityRenderState) {
-			return false;
-		}
-		return !Util.isCameraEntityRidingBoat();
+		return state == this.cameraEntityRenderState;
 	}
 	
 	@Override
