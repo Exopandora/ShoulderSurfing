@@ -3,9 +3,6 @@ package com.github.exopandora.shouldersurfing.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
-
 public class Util {
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean isCameraEntityRidingBoat() {
@@ -13,13 +10,5 @@ public class Util {
 		//noinspection ConstantValue
 		return instance != null && instance.gameRenderer != null && instance.gameRenderer.mainCamera() != null
 			&& instance.getCameraEntity() != null && instance.getCameraEntity().getVehicle() instanceof AbstractBoat;
-	}
-	
-	public static Predicate<String> expressionToMatchPredicate(String expression) {
-		try {
-			return Pattern.compile(expression).asMatchPredicate();
-		} catch (Exception e) {
-			return expression::equals;
-		}
 	}
 }
