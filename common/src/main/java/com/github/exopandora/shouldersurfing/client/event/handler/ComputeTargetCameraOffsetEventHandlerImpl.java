@@ -4,7 +4,6 @@ import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.BlockCollisionPredicate;
-import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.config.Config;
@@ -247,7 +246,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 		
 		@Override
 		public void handle(ComputeTargetCameraOffsetEvent event) {
-			ICameraConfig cameraConfig = Config.CLIENT.getCameraConfig();
+			var cameraConfig = Config.CLIENT.getCameraConfig();
 			var targetOffsetX = cameraConfig.isOffsetXUnlimited()
 				? event.getResult().x()
 				: Mth.clamp(event.getResult().x(), cameraConfig.getMinOffsetX(), cameraConfig.getMaxOffsetX());
