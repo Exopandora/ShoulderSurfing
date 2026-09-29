@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class ShoulderSurfingRenderTypes {
 	private static final Function<Identifier, RenderType> ARMOR_TRANSLUCENT_NO_CULL = Util.memoize(
 		texture -> {
-			RenderSetup state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL)
+			var state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL)
 				.setOitPipelines(ShoulderSurfingRenderPipelines.OIT_ENTITY_TRANSLUCENT)
 				.withTexture("Sampler0", texture)
 				.useLightmap()
@@ -31,7 +31,7 @@ public class ShoulderSurfingRenderTypes {
 	
 	private static final Function<Identifier, RenderType> ARMOR_TRANSLUCENT_NO_CULL_GLINT = Util.memoize(
 		texture -> {
-			RenderSetup state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL_GLINT)
+			var state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL_GLINT)
 				.setOitPipelines(ShoulderSurfingRenderPipelines.OIT_ENTITY_TRANSLUCENT_GLINT)
 				.withTexture("Sampler0", texture)
 				.withTexture("GlintSampler", ItemFeatureRenderer.ENCHANTED_GLINT_ARMOR)
@@ -48,7 +48,7 @@ public class ShoulderSurfingRenderTypes {
 	
 	private static final Function<Identifier, RenderType> ARMOR_TRIM_TRANSLUCENT = Util.memoize(
 		texture -> {
-			RenderSetup state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT)
+			var state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT)
 				.setOitPipelines(ShoulderSurfingRenderPipelines.OIT_ENTITY_TRANSLUCENT)
 				.withTexture("Sampler0", texture)
 				.useLightmap()
@@ -64,7 +64,7 @@ public class ShoulderSurfingRenderTypes {
 	
 	private static final Function<Identifier, RenderType> ARMOR_TRIM_TRANSLUCENT_DECAL = Util.memoize(
 		texture -> {
-			RenderSetup state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_DECAL_TRANSLUCENT_NO_CULL)
+			var state = RenderSetup.builder(ShoulderSurfingRenderPipelines.ARMOR_DECAL_TRANSLUCENT_NO_CULL)
 				.setOitPipelines(RenderPipelines.OIT_ENTITY)
 				.withTexture("Sampler0", texture)
 				.useLightmap()
