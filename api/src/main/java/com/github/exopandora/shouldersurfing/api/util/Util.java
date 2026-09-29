@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.util;
+package com.github.exopandora.shouldersurfing.api.util;
 
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
