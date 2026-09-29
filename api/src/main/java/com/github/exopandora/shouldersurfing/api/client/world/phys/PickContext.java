@@ -3,8 +3,10 @@ package com.github.exopandora.shouldersurfing.api.client.world.phys;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.util.Couple;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
+import com.github.exopandora.shouldersurfing.api.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
@@ -12,8 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Predicate;
 
 public sealed abstract class PickContext permits OffsetPickContext, DynamicPickContext, ObstructionPickContext {
-	private static final Predicate<Entity> ENTITY_IS_PICKABLE = entity -> !entity.isSpectator() && entity.isPickable();
-	
 	private final Camera camera;
 	private final ClipContext.Fluid fluidContext;
 	private final Entity entity;
@@ -116,7 +116,7 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 		public PickContext build() {
 			var entity = this.entity == null ? Minecraft.getInstance().getCameraEntity() : this.entity;
 			var fluidContext = this.fluidContext == null ? ClipContext.Fluid.NONE : this.fluidContext;
-			var entityFilter = this.entityFilter == null ? ENTITY_IS_PICKABLE : this.entityFilter;
+			Predicate<Entity> entityFilter = this.entityFilter == null ? PickContext::isEntityPickable : this.entityFilter;
 			if (EntityHelper.isPlayerSpectatingEntity()) {
 				return new DynamicPickContext(this.camera, fluidContext, Minecraft.getInstance().getCameraEntity(), entityFilter, PickVector.PLAYER);
 			} else if (this.endPos != null) {
@@ -133,5 +133,24 @@ public sealed abstract class PickContext permits OffsetPickContext, DynamicPickC
 			var pickVector = this.pickVector == null ? config.getPickVector() : this.pickVector;
 			return new DynamicPickContext(this.camera, fluidContext, entity, entityFilter, pickVector);
 		}
+	}
+	
+	private static boolean isEntityPickable(Entity entity) {
+		if (entity.isPickable()) {
+			if (entity.isInvisible()) {
+				var instance = IShoulderSurfing.getInstance();
+				var objectPickerConfig = instance.getClientConfig().getObjectPickerConfig();
+				var unpickableInvisibleEntities = objectPickerConfig.getUnpickableInvisibleEntities();
+				if (unpickableInvisibleEntities.isEmpty()) {
+					return true;
+				}
+				var entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
+				return unpickableInvisibleEntities.stream()
+					.map(Util::expressionToMatchPredicate)
+					.noneMatch(pattern -> pattern.test(entityId));
+			}
+			return true;
+		}
+		return false;
 	}
 }
