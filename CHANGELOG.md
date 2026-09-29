@@ -1,3 +1,9 @@
+# Unreleased
+- Added config option to define unpickable invisible entities
+- Added config option to ignore block pillars when calculating camera offsets
+- Updated Russian translations (thanks to mpustovoi)
+- Fixed typo in mod description
+
 # 5.1.1
 - Added options to automatically switch to temporary first person in constrained spaced
   - Added the option to configure whether to switch to temporary first person in constrained spaced
