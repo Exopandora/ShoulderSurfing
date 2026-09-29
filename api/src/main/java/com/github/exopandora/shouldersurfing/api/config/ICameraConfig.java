@@ -199,6 +199,8 @@ public interface ICameraConfig {
 	
 	boolean isOffsetDynamic();
 	
+	boolean isIgnoringPillars();
+	
 	boolean isCameraDecoupled();
 	
 	boolean isCameraOrientedOnTeleport();

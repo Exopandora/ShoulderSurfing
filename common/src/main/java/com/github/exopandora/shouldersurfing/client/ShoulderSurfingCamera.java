@@ -3,11 +3,13 @@ package com.github.exopandora.shouldersurfing.client;
 import com.github.exopandora.shouldersurfing.api.client.CrosshairType;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfingCamera;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.BlockCollisionPredicate;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.api.math.Vec2f;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.api.util.Util;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.util.BlockHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -179,7 +182,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 				.yRot(-camera.getYRot() * Mth.DEG_TO_RAD);
 			var to = eyePosition.add(toOffset).add(worldOffset);
 			var context = new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, cameraEntity);
-			var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, ShoulderSurfingCamera::hasNoCollision);
+			var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, getBlockCollisionPredicate(to));
 			if (hitResult.getType() != HitResult.Type.MISS) {
 				var newDistance = hitResult.getLocation().distanceTo(eyePosition);
 				if (newDistance < distance) {
@@ -188,6 +191,18 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			}
 		}
 		return distance;
+	}
+	
+	private static BlockCollisionPredicate getBlockCollisionPredicate(Vec3 endPos) {
+		return (BlockState state, BlockGetter level, BlockPos pos) -> {
+			if (hasNoCollision(state, level, pos)) {
+				return true;
+			}
+			if (Config.CLIENT.getCameraConfig().isIgnoringPillars()) {
+				return !AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(pos)).contains(endPos) && BlockHelper.isPillarPart(level, pos);
+			}
+			return false;
+		};
 	}
 	
 	private Vec3 calcCameraDrag(Camera camera, Entity cameraEntity, float partialTick) {
