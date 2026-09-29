@@ -10,8 +10,6 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTem
 import com.github.exopandora.shouldersurfing.api.client.event.handler.PerspectiveChangedEventHandler;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventHandler;
 import com.github.exopandora.shouldersurfing.config.Config;
-import com.github.exopandora.shouldersurfing.config.PerspectiveConfig;
-import net.minecraft.client.Minecraft;
 
 public class ComputeTemporaryFirstPersonStateEventHandlerImpl {
 	public enum WhenAiming implements ComputeTemporaryFirstPersonStateEventHandler {
