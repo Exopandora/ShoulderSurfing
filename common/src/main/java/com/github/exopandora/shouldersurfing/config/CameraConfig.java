@@ -82,7 +82,7 @@ public class CameraConfig implements ICameraConfig {
 	private final DoubleValue cameraTransitionSpeedMultiplier;
 	private final DoubleValue centerCameraWhenLookingDownAngle;
 	private final BooleanValue isOffsetDynamic;
-	private final BooleanValue isIgnoringPillars;
+	private final BooleanValue isIgnoringBlockPillars;
 	private final BooleanValue isCameraDecoupled;
 	private final BooleanValue isCameraOrientedOnTeleport;
 	private final BooleanValue isFovOverrideEnabled;
@@ -387,10 +387,10 @@ public class CameraConfig implements ICameraConfig {
 			.translation(MOD_ID + ".configuration.camera.offset.step_size")
 			.defineInRange("step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
 		
-		this.isIgnoringPillars = builder
-			.comment("Whether to ignore block pillars when calculating camera offsets. This improves overall immersion at the cost of block targeting accessibility.")
-			.translation(MOD_ID + ".configuration.camera.offset.ignore_pillars")
-			.define("ignore_pillars", false);
+		this.isIgnoringBlockPillars = builder
+			.comment("Whether to ignore block pillars, such as tree trunks, when calculating camera offsets. This improves overall immersion at the cost of block targeting accessibility.")
+			.translation(MOD_ID + ".configuration.camera.offset.ignore_block_pillars")
+			.define("ignore_block_pillars", false);
 		
 		builder.pop();
 		
@@ -748,8 +748,8 @@ public class CameraConfig implements ICameraConfig {
 	}
 	
 	@Override
-	public boolean isIgnoringPillars() {
-		return this.isIgnoringPillars.get();
+	public boolean isIgnoringBlockPillars() {
+		return this.isIgnoringBlockPillars.get();
 	}
 	
 	@Override

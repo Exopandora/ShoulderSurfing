@@ -197,7 +197,7 @@ public class ShoulderSurfingCamera implements IShoulderSurfingCamera {
 			if (hasNoCollision(state, level, pos)) {
 				return true;
 			}
-			if (Config.CLIENT.getCameraConfig().isIgnoringPillars()) {
+			if (Config.CLIENT.getCameraConfig().isIgnoringBlockPillars()) {
 				return !AABB.unitCubeFromLowerCorner(Vec3.atBottomCenterOf(pos)).contains(endPos) && BlockHelper.isPillarPart(level, pos);
 			}
 			return false;
