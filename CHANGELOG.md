@@ -1,3 +1,11 @@
+# Unreleased
+- Added config option to define unpickable invisible entities
+- Added config option to ignore block pillars when calculating camera offsets
+- Updated Russian translations (thanks to mpustovoi)
+- Updated curios compatibility
+- Fixed typo in mod description
+- Removed obsolete boat riding check for transparent player entity rendering
+
 # 5.1.2
 - Fixed startup crash on forge
 - Fixed resource pack format version
