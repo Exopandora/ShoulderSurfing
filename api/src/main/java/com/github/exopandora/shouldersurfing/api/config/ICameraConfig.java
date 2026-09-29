@@ -199,7 +199,7 @@ public interface ICameraConfig {
 	
 	boolean isOffsetDynamic();
 	
-	boolean isIgnoringPillars();
+	boolean isIgnoringBlockPillars();
 	
 	boolean isCameraDecoupled();
 	
