@@ -1,4 +1,4 @@
-# Unreleased
+# 5.2.0
 - Added config option to define unpickable invisible entities
 - Added config option to ignore block pillars when calculating camera offsets
 - Updated Russian translations (thanks to mpustovoi)
