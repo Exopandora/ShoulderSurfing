@@ -217,6 +217,8 @@
   "${modId}.configuration.camera.offset.dynamic_offsets.tooltip": "Whether to dynamically adjust camera offsets depending on space constraints.",
   "${modId}.configuration.camera.offset.step_size": "Offset step size",
   "${modId}.configuration.camera.offset.step_size.tooltip": "Size of the offset adjustment per step.",
+  "${modId}.configuration.camera.offset.ignore_pillars": "Ignore pillars",
+  "${modId}.configuration.camera.offset.ignore_pillars.tooltip": "Whether to ignore block pillars when calculating camera offsets. This improves overall immersion at the cost of block targeting accessibility.",
 
   "${modId}.configuration.perspective.button": "Edit",
   "${modId}.configuration.perspective": "Perspective",

@@ -82,6 +82,7 @@ public class CameraConfig implements ICameraConfig {
 	private final DoubleValue cameraTransitionSpeedMultiplier;
 	private final DoubleValue centerCameraWhenLookingDownAngle;
 	private final BooleanValue isOffsetDynamic;
+	private final BooleanValue isIgnoringPillars;
 	private final BooleanValue isCameraDecoupled;
 	private final BooleanValue isCameraOrientedOnTeleport;
 	private final BooleanValue isFovOverrideEnabled;
@@ -385,6 +386,11 @@ public class CameraConfig implements ICameraConfig {
 			.comment("Size of the offset adjustment per step.")
 			.translation(MOD_ID + ".configuration.camera.offset.step_size")
 			.defineInRange("step_size", 0.025D, -Double.MAX_VALUE, Double.MAX_VALUE);
+		
+		this.isIgnoringPillars = builder
+			.comment("Whether to ignore block pillars when calculating camera offsets. This improves overall immersion at the cost of block targeting accessibility.")
+			.translation(MOD_ID + ".configuration.camera.offset.ignore_pillars")
+			.define("ignore_pillars", false);
 		
 		builder.pop();
 		
@@ -739,6 +745,11 @@ public class CameraConfig implements ICameraConfig {
 	@Override
 	public boolean isOffsetDynamic() {
 		return this.isOffsetDynamic.get();
+	}
+	
+	@Override
+	public boolean isIgnoringPillars() {
+		return this.isIgnoringPillars.get();
 	}
 	
 	@Override
