@@ -3,16 +3,23 @@ package com.github.exopandora.shouldersurfing.config;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickOrigin;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickVector;
 import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.github.exopandora.shouldersurfing.ShoulderSurfingCommon.MOD_ID;
 
 public class ObjectPickerConfig implements IObjectPickerConfig {
 	private final DoubleValue customRaytraceDistance;
 	private final BooleanValue isCustomRaytraceDistanceEnabled;
+	private final ConfigValue<List<? extends String>> unpickableInvisibleEntities;
 	private final ConfigValue<PickOrigin> entityPickOrigin;
 	private final ConfigValue<PickOrigin> blockPickOrigin;
 	private final ConfigValue<PickVector> pickVector;
@@ -29,6 +36,18 @@ public class ObjectPickerConfig implements IObjectPickerConfig {
 			.comment("Whether to use the custom raytrace distance used for the dynamic crosshair.")
 			.translation(MOD_ID + ".configuration.object_picker.use_custom_raytrace_distance")
 			.define("use_custom_raytrace_distance", true);
+		
+		this.unpickableInvisibleEntities = builder
+			.comment("The list of invisible entities to ignore while picking. This config option supports regular expressions. Example: 'minecraft:oak_.*' matches 'minecraft:oak_boat' and 'minecraft:oak_chest_boat'.")
+			.translation(MOD_ID + ".configuration.object_picker.unpickable_invisible_entities")
+			.defineList("unpickable_invisible_entities", () -> {
+				var entities = new ArrayList<String>();
+				entities.add(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.ARMOR_STAND).toString());
+				entities.add(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.BLOCK_DISPLAY).toString());
+				entities.add(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.ITEM_DISPLAY).toString());
+				entities.add(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.TEXT_DISPLAY).toString());
+				return entities;
+			}, Objects::nonNull);
 		
 		builder.push("pick_origin");
 		
@@ -62,6 +81,11 @@ public class ObjectPickerConfig implements IObjectPickerConfig {
 	@Override
 	public boolean isCustomRaytraceDistanceEnabled() {
 		return this.isCustomRaytraceDistanceEnabled.get();
+	}
+	
+	@Override
+	public List<? extends String> getUnpickableInvisibleEntities() {
+		return this.unpickableInvisibleEntities.get();
 	}
 	
 	@Override
