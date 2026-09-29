@@ -225,7 +225,7 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 				if (ShoulderSurfingCamera.hasNoCollision(state, level, pos)) {
 					return true;
 				}
-				if (Config.CLIENT.getCameraConfig().isIgnoringPillars()) {
+				if (Config.CLIENT.getCameraConfig().isIgnoringBlockPillars()) {
 					return BlockHelper.isPillarPart(level, pos);
 				}
 				return false;
