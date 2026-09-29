@@ -3,17 +3,21 @@ package com.github.exopandora.shouldersurfing.client.event.handler;
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.event.ComputeTargetCameraOffsetEvent;
 import com.github.exopandora.shouldersurfing.api.client.event.handler.ComputeTargetCameraOffsetEventHandler;
+import com.github.exopandora.shouldersurfing.api.client.world.phys.BlockCollisionPredicate;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.util.EntityHelper;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingCamera;
 import com.github.exopandora.shouldersurfing.config.Config;
+import com.github.exopandora.shouldersurfing.util.BlockHelper;
 import net.minecraft.client.Camera;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -193,12 +197,13 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 			var targetY = offsetYAbs;
 			var clearance = cameraEntity.getBbWidth() / 3.0D;
 			var cameraPosition = camera.position();
+			var blockCollisionPredicate = getBlockCollisionPredicate();
 			for (double dz = 0; dz <= offsetZAbs; dz += 0.03125D) {
 				var scale = dz / offsetZAbs;
 				var startPos = cameraPosition.add(worldOffset.scale(scale));
 				var endPos = cameraPosition.add(worldXYOffset).add(lookVector.scale(-dz));
 				var context = new ClipContext(startPos, endPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, cameraEntity);
-				var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, ShoulderSurfingCamera::hasNoCollision);
+				var hitResult = IShoulderSurfing.getInstance().getObjectPicker().clip(level, context, blockCollisionPredicate);
 				if (hitResult.getType() != HitResult.Type.MISS) {
 					var distance = hitResult.getLocation().distanceTo(startPos);
 					var newTargetX = Math.max(distance + offsetXAbs * scale - clearance, 0);
@@ -214,6 +219,18 @@ public class ComputeTargetCameraOffsetEventHandlerImpl {
 			var targetXOffset = Math.signum(targetOffset.x()) * targetX;
 			var targetYOffset = Math.signum(targetOffset.y()) * targetY;
 			return new Vec3(targetXOffset, targetYOffset, targetOffset.z());
+		}
+		
+		private static BlockCollisionPredicate getBlockCollisionPredicate() {
+			return (BlockState state, BlockGetter level, BlockPos pos) -> {
+				if (ShoulderSurfingCamera.hasNoCollision(state, level, pos)) {
+					return true;
+				}
+				if (Config.CLIENT.getCameraConfig().isIgnoringPillars()) {
+					return BlockHelper.isPillarPart(level, pos);
+				}
+				return false;
+			};
 		}
 	}
 	
