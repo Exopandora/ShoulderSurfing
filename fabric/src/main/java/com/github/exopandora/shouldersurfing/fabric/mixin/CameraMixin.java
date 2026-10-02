@@ -9,6 +9,13 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Camera.class)
 abstract class CameraMixin implements CameraDuck {
+	// OptiFabric Reforged applies OptiFine, which moves the rotationYXZ call out of setRotation(FF)V into an
+	// additional setRotation(FFF)V overload. setRotation(FF)V still exists on that setup, it is just a plain
+	// forwarder, so this injector still runs but finds no call site, which defaultRequire: 1 would turn into a
+	// hard failure. require = 0 is what keeps the injection optional there. It cannot move to the compat mixin,
+	// because it is a property of this injection point and vanilla has to keep working without OptiFabric; the
+	// OptiFine counterpart that applies the roll on that setup lives in
+	// compat/mixin/optifabricreloaded/CameraMixin.
 	@ModifyArg(
 		method = "setRotation(FF)V",
 		at = @At(
@@ -20,27 +27,6 @@ abstract class CameraMixin implements CameraDuck {
 		require = 0
 	)
 	private float rotationYXZ(float zRot) {
-		return this.shouldersurfing$getZRot() * -Mth.DEG_TO_RAD + zRot;
-	}
-	
-	// OptiFine moves the rotationYXZ call out of setRotation(FF)V into an additional setRotation(FFF)V
-	// overload, which leaves setRotation(FF)V as a plain forwarder and the injection above without a call
-	// site. The overload is an OptiFine addition, so it is absent on vanilla and it has no obfuscation
-	// mapping in any namespace, hence remap = false on the selector. Both counters are 0 so that the
-	// injector is a no-op instead of an error wherever the overload does not exist.
-	@ModifyArg(
-		method = "setRotation(FFF)V",
-		at = @At(
-			value = "INVOKE",
-			target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;",
-			remap = false
-		),
-		remap = false,
-		index = 2,
-		require = 0,
-		expect = 0
-	)
-	private float rotationYXZOptiFine(float zRot) {
 		return this.shouldersurfing$getZRot() * -Mth.DEG_TO_RAD + zRot;
 	}
 }
