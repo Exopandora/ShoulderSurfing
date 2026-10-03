@@ -20,6 +20,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		addCommonCompatMixins(mixins);
 		addCreateModMixins(mixins);
 		addCreateFlyMixins(mixins);
+		addOptiFabricReforgedMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
@@ -47,6 +48,12 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 			mixins.add("cobblemon.LocalPlayerMixin");
 			mixins.add("cobblemon.PlayerExtensionsKtMixin");
 			mixins.add("cobblemon.PokemonRendererMixin");
+		}
+	}
+	
+	private static void addOptiFabricReforgedMixins(List<String> mixins) {
+		if (Mods.OPTIFABRIC_REFORGED.isLoaded()) {
+			mixins.add("optifabricreloaded.CameraMixin");
 		}
 	}
 	

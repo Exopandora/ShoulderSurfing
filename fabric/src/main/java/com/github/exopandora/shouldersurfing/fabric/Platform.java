@@ -16,6 +16,7 @@ public class Platform implements IPlatform {
 			case CREATE, CREATE_FLY -> findModVersionForId("create");
 			case IRIS ->  findModVersionForId("iris");
 			case NEAT -> findModVersionForId("neat");
+			case OPTIFABRIC_REFORGED -> findModVersionForId("optifabric_reforged");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
 			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");
 			case WILDFIRE_GENDER -> findModVersionForId("wildfire_gender");
