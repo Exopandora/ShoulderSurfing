@@ -17,6 +17,7 @@ public class Platform implements IPlatform {
 			case EMF -> findModVersionForId("entity_model_features");
 			case IRIS -> findModVersionForId("iris");
 			case NEAT -> findModVersionForId("neat");
+			case OPTIFABRIC_REFORGED -> findModVersionForId("optifabric_reforged");
 			case SKIN_LAYERS -> findModVersionForId("skinlayers3d");
 			case THE_ONE_PROBE -> findModVersionForId("theoneprobe");
 			case TSLAT_ENTITY_STATUS -> findModVersionForId("tslatentitystatus");

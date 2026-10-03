@@ -19,6 +19,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 		addCreateModMixins(mixins);
 		addIrisMixins(mixins);
 		addSkinLayersMixins(mixins);
+		addOptiFabricReforgedMixins(mixins);
 		return mixins.isEmpty() ? null : mixins;
 	}
 	
@@ -55,6 +56,12 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 			} else if (parseVersionPredicateSilent("<1.6.6").test(version)) {
 				mixins.add("skinlayers.CustomizableModelPartMixin_1_6_5");
 			}
+		}
+	}
+	
+	private static void addOptiFabricReforgedMixins(List<String> mixins) {
+		if (Mods.OPTIFABRIC_REFORGED.isLoaded()) {
+			mixins.add("optifabricreloaded.CameraMixin");
 		}
 	}
 	
