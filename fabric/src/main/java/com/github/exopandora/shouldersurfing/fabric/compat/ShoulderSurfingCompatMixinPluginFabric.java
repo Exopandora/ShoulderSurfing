@@ -63,7 +63,7 @@ public class ShoulderSurfingCompatMixinPluginFabric extends ShoulderSurfingCompa
 	
 	private static void addOptiFabricReforgedMixins(List<String> mixins) {
 		if (Mods.OPTIFABRIC_REFORGED.isLoaded()) {
-			mixins.add("optifabricreloaded.CameraMixin");
+			mixins.add("optifabricreforged.CameraMixin");
 		}
 	}
 	
