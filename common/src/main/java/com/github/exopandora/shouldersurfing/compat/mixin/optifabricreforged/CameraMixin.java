@@ -1,4 +1,4 @@
-package com.github.exopandora.shouldersurfing.compat.mixin.optifabricreloaded;
+package com.github.exopandora.shouldersurfing.compat.mixin.optifabricreforged;
 
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import net.minecraft.client.Camera;
