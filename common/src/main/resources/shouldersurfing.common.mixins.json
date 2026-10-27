@@ -24,6 +24,7 @@
     "ModelPart$CubeMixin",
     "ModelPartMixin",
     "MouseHandlerMixin",
+    "MultiPlayerGameModeMixin",
     "OptionsMixin",
     "PlayerMixin",
     "RenderTypeMixin"
