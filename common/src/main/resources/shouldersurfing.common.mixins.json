@@ -26,6 +26,7 @@
     "LocalPlayerMixin",
     "MinecartMixin",
     "MouseHandlerMixin",
+    "MultiPlayerGameModeMixin",
     "OptionsMixin",
     "PlayerMixin",
     "ProjectileUtilMixin",
