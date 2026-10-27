@@ -2,42 +2,43 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.client.world.phys.PickContext;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
 class ItemMixin {
-	@Redirect(
+	@Inject(
 		method = "getPlayerPOVHitResult",
-		at = @At(
-			value = "NEW",
-			target = "Lnet/minecraft/world/level/ClipContext;"
-		)
+		at = @At("HEAD"),
+		cancellable = true
 	)
-	private static ClipContext initClipContext(
-		Vec3 start,
-		Vec3 end,
-		ClipContext.Block blockContext,
-		ClipContext.Fluid fluidContext,
-		@NotNull Entity entity
+	private static void getPlayerPOVHitResult(
+		Level level,
+		Player player,
+		ClipContext.Fluid fluid,
+		CallbackInfoReturnable<BlockHitResult> cir
 	) {
-		if (IShoulderSurfing.getInstance().isShoulderSurfing() && entity == Minecraft.getInstance().player && entity.level().isClientSide()) {
+		var instance = IShoulderSurfing.getInstance();
+		if (instance.isShoulderSurfing() && player == Minecraft.getInstance().player && player.level().isClientSide()) {
 			var minecraft = Minecraft.getInstance();
 			var camera = minecraft.gameRenderer.mainCamera();
 			var pickContext = new PickContext.Builder(camera)
-				.withFluidContext(fluidContext)
-				.withEntity(entity)
+				.withFluidContext(fluid)
+				.withEntity(player)
 				.build();
-			var partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-			return pickContext.toClipContext(start.distanceTo(end), partialTick);
+			var interactionRange = player.blockInteractionRange();
+			var result = instance.getObjectPicker().pickBlocks(pickContext, interactionRange, 1.0F);
+			ShoulderSurfing.getInstance().lookAtPosition(result.getLocation());
+			cir.setReturnValue(result);
 		}
-		return new ClipContext(start, end, blockContext, fluidContext, entity);
 	}
 }
