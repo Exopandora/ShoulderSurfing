@@ -16,6 +16,8 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -32,7 +34,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	private boolean isCameraDecoupled;
 	private boolean isFreeLooking;
 	private int turningLockTime;
-	private boolean updatePlayerRotations;
+	private boolean isPlayerRotationUpdateRequired;
 	private float playerXRotO;
 	private float playerYRotO;
 	private boolean isLookFollowingCrosshairTarget;
@@ -62,7 +64,7 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		var cameraEntity = minecraft.getCameraEntity();
 		var player = minecraft.player;
 		this.isAiming = computeIsAiming(cameraEntity);
-		this.updatePlayerRotations = false;
+		this.isPlayerRotationUpdateRequired = false;
 		this.isCameraDecoupled = computeIsCameraDecoupled(cameraEntity, this.isShoulderSurfing, this.isAiming);
 		if (this.isShoulderSurfing && player != null) {
 			this.isLookFollowingCrosshairTarget = computeIsLookFollowingCrosshairTarget(cameraEntity, this.isAiming);
@@ -123,18 +125,26 @@ public class ShoulderSurfing implements IShoulderSurfing {
 		var interactionRange = Config.CLIENT.getCrosshairConfig().getCrosshairType().isAimingDecoupled()
 			? 400
 			: Config.CLIENT.getObjectPickerConfig().getCustomRaytraceDistance();
-		var pickContext = new PickContext.Builder(camera).build();
+		var pickContext = new PickContext.Builder(camera)
+			.withFluidContext(ClipContext.Fluid.SOURCE_ONLY)
+			.build();
 		var hitResult = this.objectPicker.pick(pickContext, interactionRange, 1.0F, player);
+		this.lookAtPosition(hitResult.getLocation());
+	}
+	
+	public void lookAtPosition(Vec3 position) {
+		var player = Minecraft.getInstance().player;
+		assert player != null;
 		this.playerXRotO = player.getXRot();
 		this.playerYRotO = player.getYRot();
-		this.updatePlayerRotations = true;
-		EntityHelper.lookAtTarget(player, hitResult.getLocation());
+		this.isPlayerRotationUpdateRequired = true;
+		EntityHelper.lookAtTarget(player, position);
 		this.camera.setLastMovedYRot(player.getYRot());
 	}
 	
 	public void updatePlayerRotations() {
 		var player = Minecraft.getInstance().player;
-		if (this.updatePlayerRotations && player != null) {
+		if (this.isPlayerRotationUpdateRequired && player != null) {
 			player.xRotO = this.playerXRotO;
 			player.yRotO = this.playerYRotO;
 		}
@@ -324,6 +334,10 @@ public class ShoulderSurfing implements IShoulderSurfing {
 	
 	public EventBus getEventBus() {
 		return this.eventBus;
+	}
+	
+	public boolean isPlayerRotationUpdateRequired() {
+		return this.isPlayerRotationUpdateRequired;
 	}
 	
 	@Override
