@@ -1,4 +1,9 @@
 # Unreleased
+- Added map item overlay rendering when in shoulder surfing perspective
+  - Added config option for map item overlay rendering (default: enabled)
+  - Added config option for map item overlay scaling (default: 40)
+  - Added config option for map item overlay anchor (default: BOTTOM)
+  - Added config options for map item overlay insets (default: 1, 1, 1, 1)
 - Fixed compatibility with OptiFabric Reforged (thanks to Kynarain)
 
 # 5.2.0
