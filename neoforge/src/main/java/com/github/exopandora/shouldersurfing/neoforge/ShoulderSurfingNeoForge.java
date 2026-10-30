@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.neoforge;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.neoforge.event.ClientEventHandler;
 import net.neoforged.api.distmarker.Dist;
@@ -15,9 +16,11 @@ import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(value = ShoulderSurfingCommon.MOD_ID, dist = Dist.CLIENT)
@@ -28,6 +31,7 @@ public class ShoulderSurfingNeoForge {
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
+			modEventBus.addListener(this::registerGuiLayersEvent);
 			modEventBus.addListener(ClientEventHandler::registerGuiOverlaysEvent);
 			modContainer.registerConfig(Type.CLIENT, Config.CLIENT_SPEC);
 			modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
@@ -75,5 +79,14 @@ public class ShoulderSurfingNeoForge {
 		event.register(InputHandler.ENTER_THIRD_PERSON_FRONT);
 		event.register(InputHandler.ENTER_THIRD_PERSON_BACK);
 		event.register(InputHandler.ENTER_SHOULDER_SURFING);
+	}
+	
+	@SubscribeEvent
+	public void registerGuiLayersEvent(RegisterGuiLayersEvent event) {
+		event.registerBelow(
+			VanillaGuiLayers.DEMO_OVERLAY,
+			MapOverlayRenderer.IDENTIFIER,
+			MapOverlayRenderer::extractMapOverlay
+		);
 	}
 }

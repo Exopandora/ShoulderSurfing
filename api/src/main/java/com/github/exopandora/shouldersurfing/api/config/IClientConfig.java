@@ -11,6 +11,8 @@ public interface IClientConfig {
 	
 	ICrosshairConfig getCrosshairConfig();
 	
+	IGuiConfig getGuiConfig();
+	
 	IAudioConfig getAudioConfig();
 	
 	IIntegrationsConfig getIntegrationsConfig();

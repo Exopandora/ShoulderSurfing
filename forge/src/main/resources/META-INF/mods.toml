@@ -26,6 +26,6 @@ side = "CLIENT"
 [[dependencies.${modId}]]
 modId = "forge"
 mandatory = true
-versionRange = "[52.0.23,)"
+versionRange = "[52.1.2,)"
 ordering = "NONE"
 side = "CLIENT"

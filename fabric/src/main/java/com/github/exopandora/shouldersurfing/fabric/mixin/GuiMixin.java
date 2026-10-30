@@ -1,6 +1,7 @@
 package com.github.exopandora.shouldersurfing.fabric.mixin;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,6 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
 class GuiMixin {
+	@Inject(
+		method = "renderDemoOverlay",
+		at = @At("HEAD")
+	)
+	private void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+		MapOverlayRenderer.extractMapOverlay(guiGraphics, deltaTracker);
+	}
+	
 	@Inject(
 		method = "renderCrosshair",
 		at = @At("HEAD"),

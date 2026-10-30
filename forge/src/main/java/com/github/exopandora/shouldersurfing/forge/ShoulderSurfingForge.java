@@ -3,11 +3,14 @@ package com.github.exopandora.shouldersurfing.forge;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 import fuzs.forgeconfigapiport.forge.api.neoforge.v4.NeoForgeConfigRegistry;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.gui.overlay.ForgeLayeredDraw;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,6 +41,7 @@ public class ShoulderSurfingForge {
 			modEventBus.addListener(this::registerKeyMappingsEvent);
 			modEventBus.addListener(this::modConfigLoadingEvent);
 			modEventBus.addListener(this::modConfigReloadingEvent);
+			modEventBus.addListener(this::addGuiOverlayLayersEvent);
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 		});
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (remote, isServer) -> true));
@@ -92,6 +96,16 @@ public class ShoulderSurfingForge {
 		event.register(InputHandler.ENTER_THIRD_PERSON_FRONT);
 		event.register(InputHandler.ENTER_THIRD_PERSON_BACK);
 		event.register(InputHandler.ENTER_SHOULDER_SURFING);
+	}
+	
+	@SubscribeEvent
+	public void addGuiOverlayLayersEvent(AddGuiOverlayLayersEvent event) {
+		event.getLayeredDraw().addBelow(
+			ForgeLayeredDraw.POST_SLEEP_STACK,
+			MapOverlayRenderer.IDENTIFIER,
+			ForgeLayeredDraw.DEMO_OVERLAY,
+			MapOverlayRenderer::extractMapOverlay
+		);
 	}
 	
 	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod) {
