@@ -2,11 +2,13 @@ package com.github.exopandora.shouldersurfing.fabric;
 
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import fuzs.forgeconfigapiport.fabric.api.v5.client.ConfigScreenFactoryRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 
@@ -34,5 +36,6 @@ public class ShoulderSurfingFabric implements ClientModInitializer {
 		KeyBindingHelper.registerKeyBinding(InputHandler.ENTER_THIRD_PERSON_FRONT);
 		KeyBindingHelper.registerKeyBinding(InputHandler.ENTER_THIRD_PERSON_BACK);
 		KeyBindingHelper.registerKeyBinding(InputHandler.ENTER_SHOULDER_SURFING);
+		HudElementRegistry.addFirst(MapOverlayRenderer.IDENTIFIER, MapOverlayRenderer::extractMapOverlay);
 	}
 }

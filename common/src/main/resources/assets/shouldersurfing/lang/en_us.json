@@ -406,6 +406,34 @@
   "${modId}.configuration.audio.center_player_sounds": "Center player sounds",
   "${modId}.configuration.audio.center_player_sounds.tooltip": "Whether to center sounds made by the player.",
 
+  "${modId}.configuration.gui.button": "Edit",
+  "${modId}.configuration.gui": "Gui",
+  "${modId}.configuration.gui.tooltip": "Gui settings.",
+
+  "${modId}.configuration.maps.button": "Edit",
+  "${modId}.configuration.maps": "Maps",
+  "${modId}.configuration.maps.tooltip": "Map settings.",
+
+  "${modId}.configuration.gui.maps.map_item_overlay_enabled": "Map item overlay enabled",
+  "${modId}.configuration.gui.maps.map_item_overlay_enabled.tooltip": "Whether to render map previews in the hud when a map item is held.",
+  "${modId}.configuration.gui.maps.map_item_overlay_anchor": "Map item overlay anchor",
+  "${modId}.configuration.gui.maps.map_item_overlay_anchor.tooltip": "The directional anchor to use for map item overlay rendering.",
+  "${modId}.configuration.gui.maps.map_item_overlay_scale": "Map item overlay scale",
+  "${modId}.configuration.gui.maps.map_item_overlay_scale.tooltip": "The scale to use for map item overlay rendering.",
+
+  "${modId}.configuration.insets.button": "Edit",
+  "${modId}.configuration.insets": "Map item overlay insets",
+  "${modId}.configuration.insets.tooltip": "Map item overlay inset settings.",
+
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.top": "Top inset",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.top.tooltip": "The inset in scaled pixels from the top of the screen.",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.right": "Right inset",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.right.tooltip": "The inset in scaled pixels from the right of the screen.",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.bottom": "Bottom inset",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.bottom.tooltip": "The insets in scaled pixels from the bottom of the screen.",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.left": "Left inset",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.left.tooltip": "The inset in scaled pixels from the left of the screen.",
+
   "${modId}.configuration.integrations.button": "Edit",
   "${modId}.configuration.integrations": "Integrations",
   "${modId}.configuration.integrations.tooltip": "Integration settings.",

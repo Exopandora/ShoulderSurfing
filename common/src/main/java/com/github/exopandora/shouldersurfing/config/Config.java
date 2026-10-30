@@ -25,6 +25,7 @@ public class Config {
 		private final PlayerConfig playerConfig;
 		private final ObjectPickerConfig objectPickerConfig;
 		private final CrosshairConfig crosshairConfig;
+		private final GuiConfig guiConfig;
 		private final AudioConfig audioConfig;
 		private final IntegrationsConfig integrationsConfig;
 		private boolean requiresSaving = false;
@@ -33,6 +34,7 @@ public class Config {
 			this.audioConfig = new AudioConfig(builder);
 			this.cameraConfig = new CameraConfig(builder);
 			this.crosshairConfig = new CrosshairConfig(builder);
+			this.guiConfig = new GuiConfig(builder);
 			this.integrationsConfig = new IntegrationsConfig(builder);
 			this.objectPickerConfig = new ObjectPickerConfig(builder);
 			this.perspectiveConfig = new PerspectiveConfig(builder);
@@ -62,6 +64,11 @@ public class Config {
 		@Override
 		public CrosshairConfig getCrosshairConfig() {
 			return this.crosshairConfig;
+		}
+		
+		@Override
+		public GuiConfig getGuiConfig() {
+			return this.guiConfig;
 		}
 		
 		@Override
