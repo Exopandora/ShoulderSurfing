@@ -3,6 +3,7 @@ package com.github.exopandora.shouldersurfing.forge;
 import com.github.exopandora.shouldersurfing.ShoulderSurfingCommon;
 import com.github.exopandora.shouldersurfing.client.InputHandler;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import com.github.exopandora.shouldersurfing.config.Config;
 import com.github.exopandora.shouldersurfing.forge.event.ClientEventHandler;
 import fuzs.forgeconfigapiport.forge.api.v5.NeoForgeConfigRegistry;
@@ -10,6 +11,7 @@ import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.gui.overlay.ForgeLayeredDraw;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.listener.Priority;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
@@ -43,6 +45,7 @@ public class ShoulderSurfingForge {
 			NeoForgeConfigRegistry.INSTANCE.register(ShoulderSurfingCommon.MOD_ID, Type.CLIENT, Config.CLIENT_SPEC);
 			AddGuiOverlayLayersEvent.BUS.addListener(ClientEventHandler::modifyCrosshairPosition);
 			RegisterKeyMappingsEvent.BUS.addListener(this::registerKeyMappingsEvent);
+			AddGuiOverlayLayersEvent.BUS.addListener(this::addGuiOverlayLayersEvent);
 		}
 		modLoadingContext.registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> "ANY", (_, _) -> true));
 	}
@@ -94,6 +97,16 @@ public class ShoulderSurfingForge {
 		event.register(InputHandler.ENTER_THIRD_PERSON_FRONT);
 		event.register(InputHandler.ENTER_THIRD_PERSON_BACK);
 		event.register(InputHandler.ENTER_SHOULDER_SURFING);
+	}
+	
+	@SubscribeEvent
+	public void addGuiOverlayLayersEvent(AddGuiOverlayLayersEvent event) {
+		event.getLayeredDraw().addBelow(
+			ForgeLayeredDraw.POST_SLEEP_STACK,
+			MapOverlayRenderer.IDENTIFIER,
+			ForgeLayeredDraw.DEMO_OVERLAY,
+			MapOverlayRenderer::extractMapOverlay
+		);
 	}
 	
 	private static ModLoadingWarning createIncompatibleModWarning(IModInfo incompatibleMod) {
