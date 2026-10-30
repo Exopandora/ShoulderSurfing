@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.fabric.mixin;
 
 import com.github.exopandora.shouldersurfing.api.client.Perspective;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -18,6 +19,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 class GuiMixin {
 	@Shadow
 	private @Final Minecraft minecraft;
+	
+	@Inject(
+		method = "render",
+		at = @At(
+			value = "INVOKE",
+			target = "net/minecraft/client/gui/Gui.renderEffects(Lnet/minecraft/client/gui/GuiGraphics;)V",
+			shift = At.Shift.BEFORE
+		)
+	)
+	private void render(GuiGraphics guiGraphics, float partialTick, CallbackInfo ci) {
+		MapOverlayRenderer.extractMapOverlay(guiGraphics);
+	}
 	
 	@Inject(
 		method = "renderCrosshair",

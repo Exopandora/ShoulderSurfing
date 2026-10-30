@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.forge.event;
 
 import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.gui.MapOverlayRenderer;
 import com.github.exopandora.shouldersurfing.mixinduck.CameraDuck;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -47,6 +48,11 @@ public class ClientEventHandler {
 					crosshairRenderer.postRenderCrosshair(guiGraphics);
 				}
 			}
+		);
+		event.registerBelow(
+			VanillaGuiOverlay.POTION_ICONS.id(),
+			"map_item_overlay",
+			(gui, guiGraphics, partialTick, screenWidth, screenHeight) -> MapOverlayRenderer.extractMapOverlay(guiGraphics)
 		);
 	}
 	

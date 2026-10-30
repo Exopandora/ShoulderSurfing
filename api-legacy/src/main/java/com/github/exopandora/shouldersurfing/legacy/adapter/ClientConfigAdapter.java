@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.IClientConfig;
 import com.github.exopandora.shouldersurfing.api.config.IAudioConfig;
 import com.github.exopandora.shouldersurfing.api.config.ICameraConfig;
 import com.github.exopandora.shouldersurfing.api.config.ICrosshairConfig;
+import com.github.exopandora.shouldersurfing.api.config.IGuiConfig;
 import com.github.exopandora.shouldersurfing.api.config.IIntegrationsConfig;
 import com.github.exopandora.shouldersurfing.api.config.IObjectPickerConfig;
 import com.github.exopandora.shouldersurfing.api.config.IPerspectiveConfig;
@@ -548,6 +549,11 @@ class ClientConfigAdapter implements IClientConfig {
 	@Override
 	public ICrosshairConfig getCrosshairConfig() {
 		return this.config.getCrosshairConfig();
+	}
+	
+	@Override
+	public IGuiConfig getGuiConfig() {
+		return this.config.getGuiConfig();
 	}
 	
 	@Override
