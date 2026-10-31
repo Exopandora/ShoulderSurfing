@@ -29,3 +29,10 @@ mandatory = true
 versionRange = "[52.1.2,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "forgeconfigapiport"
+mandatory = true
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "CLIENT"
