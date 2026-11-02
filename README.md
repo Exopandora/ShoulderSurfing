@@ -81,14 +81,28 @@ Download Shoulder Surfing Reloaded from [CurseForge](https://www.curseforge.com/
 </details>
 
 # Configuration
-≥ 1.21: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing-client.cfg`)  
-≤ 1.20: Install Forge Config Screens ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/config-menus-forge), [Modrinth](https://modrinth.com/mod/forge-config-screens)) (Manual: `.minecraft/config/shouldersurfing-client.cfg`)
+### In-game (Fabric and NeoForge only)
+> [!NOTE]
+> In-game configuration for Minecraft 1.20.x requires Forge Config Screens ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/config-menus-forge), [Modrinth](https://modrinth.com/mod/forge-config-screens))
+1. Navigate to mods
+2. Select "Shoulder Surfing Reloaded"
+3. Click on the config button
+
+### Manual
+1. Edit `.minecraft/config/shouldersurfing-client.toml`
 
 <details>
-  <summary>Version 2.9.7 and older</summary>
+  <summary>Shoulder Surfing Reloaded 2.9.7 and older</summary>
 
-≥ 1.13: Manual: `.minecraft/config/shouldersurfing.toml`  
-≤ 1.12: Ingame: Mods → ShoulderSurfing → Config (Manual: `.minecraft/config/shouldersurfing.cfg`)
+### In-game
+> [!NOTE]
+> In-game configuration is only available on 1.12.x and older
+1. Navigate to mods
+2. Select "Shoulder Surfing Reloaded"
+3. Click on the config button
+
+### Manual
+1. Edit `.minecraft/config/shouldersurfing.toml`
 
 </details>
 
