@@ -10,7 +10,7 @@ public class IrisCompat {
 		IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.SHADOW_TRANSLUCENT);
 		IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL_GLINT, ShaderKey.ENTITIES_TRANSLUCENT_GLINT);
 		IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.ENTITIES_TRANSLUCENT);
-		IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.ENTITIES_TRANSLUCENT);
+		IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRIM_TRANSLUCENT, ShaderKey.SHADOW_ENTITIES_CUTOUT);
 		IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_DECAL_TRANSLUCENT_NO_CULL, ShaderKey.ENTITIES_TRANSLUCENT);
 		IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.GLINT_TRANSLUCENT, ShaderKey.SHADOW_TRANSLUCENT);
 	}
