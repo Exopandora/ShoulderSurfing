@@ -15,6 +15,7 @@ import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.callback.JadeRayTraceCallback;
 import snownee.jade.api.config.IWailaConfig;
+import snownee.jade.impl.WailaCommonRegistration;
 
 @WailaPlugin
 public class ShoulderSurfingJadePlugin implements IWailaPlugin {
@@ -50,6 +51,9 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 				}
 				if (target instanceof BlockHitResult blockTarget) {
 					var state = level.getBlockState(blockTarget.getBlockPos());
+					if (WailaCommonRegistration.instance().blockOperations().shouldHide(state)) {
+						return null;
+					}
 					var tileEntity = level.getBlockEntity(blockTarget.getBlockPos());
 					return this.registration.blockAccessor()
 						.blockState(state)
@@ -62,6 +66,9 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 						.serversideRep(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
 						.build();
 				} else if (target instanceof EntityHitResult entityTarget) {
+					if (WailaCommonRegistration.instance().entityTypeOperations().shouldHide(entityTarget.getEntity())) {
+						return null;
+					}
 					return this.registration.entityAccessor()
 						.level(level)
 						.player(player)
