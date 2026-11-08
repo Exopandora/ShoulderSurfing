@@ -50,6 +50,9 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 				}
 				if (target instanceof BlockHitResult blockTarget) {
 					var state = level.getBlockState(blockTarget.getBlockPos());
+					if (this.registration.shouldHide(state)) {
+						return null;
+					}
 					var tileEntity = level.getBlockEntity(blockTarget.getBlockPos());
 					return this.registration.blockAccessor()
 						.blockState(state)
@@ -62,6 +65,9 @@ public class ShoulderSurfingJadePlugin implements IWailaPlugin {
 						.fakeBlock(this.registration.getBlockCamouflage(level, blockTarget.getBlockPos()))
 						.build();
 				} else if (target instanceof EntityHitResult entityTarget) {
+					if (this.registration.shouldHide(entityTarget.getEntity())) {
+						return null;
+					}
 					return this.registration.entityAccessor()
 						.level(level)
 						.player(player)
