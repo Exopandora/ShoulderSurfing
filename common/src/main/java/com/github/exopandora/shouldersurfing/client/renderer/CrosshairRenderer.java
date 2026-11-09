@@ -109,7 +109,7 @@ public class CrosshairRenderer implements ICrosshairRenderer {
 	
 	private void renderCustomCrosshair(GuiGraphicsExtractor guiGraphics, Identifier sprite, RenderPipeline renderPipeline) {
 		var minecraft = Minecraft.getInstance();
-		if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((HudAccessor) minecraft.gui).invokeCanRenderCrosshairForSpectator(minecraft.hitResult)) {
+		if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((HudAccessor) minecraft.gui.hud).invokeCanRenderCrosshairForSpectator(minecraft.hitResult)) {
 			guiGraphics.blitSprite(renderPipeline, sprite, (guiGraphics.guiWidth() - 15) / 2, (guiGraphics.guiHeight() - 15) / 2, 15, 15);
 		}
 	}
