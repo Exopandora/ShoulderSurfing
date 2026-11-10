@@ -1,3 +1,9 @@
+# Unreleased
+- Improved player transparency calculation
+- Fixed a crash when using spectator mode
+- Fixed ignore lists not working for Jade integration
+- Removed mixin refmap references
+
 # 5.3.0
 - Added map item overlay rendering when in shoulder surfing perspective
   - Added config option for map item overlay rendering (default: enabled)
