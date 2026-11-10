@@ -8,7 +8,6 @@ import com.github.exopandora.shouldersurfing.api.client.event.handler.TickEventH
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCameraEntityTransparencyEventHandler {
@@ -18,34 +17,32 @@ public enum ComputeCameraEntityTransparencyEventHandlerImpl implements ComputeCa
 	
 	@Override
 	public void handle(ComputeCameraEntityTransparencyEvent event) {
-		var instance = IShoulderSurfing.getInstance();
 		var entity = event.getCameraEntity();
-		if (isCameraEntityTransparent(instance, entity)) {
+		if (!entity.isSpectator()) {
+			var instance = IShoulderSurfing.getInstance();
 			var renderOffset = instance.getCamera().getRenderOffset();
-			var xAlpha = (float) Mth.clamp(Math.abs(renderOffset.x()) / (entity.getBbWidth() / 2.0D), 0, 1.0F);
-			float yAlpha = 0;
+			var offset = instance.getClientConfig().getCameraConfig().getOffset();
+			var alphaX = (float) Mth.clamp(Math.abs(renderOffset.x()) / Math.min(Math.abs(offset.x()), entity.getBbWidth() / 2.0D), 0, 1.0F);
+			float alphaY = 0;
 			if (renderOffset.y() > 0) {
-				yAlpha = (float) Mth.clamp(renderOffset.y() / (entity.getBbHeight() - entity.getEyeHeight()), 0, 1.0F);
+				alphaY = (float) Mth.clamp(renderOffset.y() / Math.min(offset.y(), entity.getBbHeight() - entity.getEyeHeight()), 0, 1.0F);
 			} else if (renderOffset.y() < 0) {
-				yAlpha = (float) Mth.clamp(-renderOffset.y() / -entity.getEyeHeight(), 0, 1.0F);
+				alphaY = (float) Mth.clamp(renderOffset.y() / Math.min(offset.y(), entity.getEyeHeight()), 0, 1.0F);
 			}
-			var result = Mth.clamp((float) Math.sqrt(xAlpha * xAlpha + yAlpha * yAlpha), MIN_CAMERA_ENTITY_ALPHA, 1.0F);
+			var alphaXY = 1.0F;
+			if (alphaX < 1.0F || alphaY < 1.0F) {
+				alphaXY = (float) Math.sqrt(alphaX * alphaX + alphaY * alphaY);
+			}
+			var alphaZ = 1.0F - easeOutCirc((float) Mth.clamp(1 - Math.abs(renderOffset.z()) / Math.min(entity.getBbHeight(), offset.z()), 0, 1.0F));
+			var result = Mth.clamp(Math.min(alphaXY, alphaZ), MIN_CAMERA_ENTITY_ALPHA, 1.0F);
 			if (result < event.getResult()) {
 				event.setResult(result);
 			}
 		}
 	}
 	
-	private static boolean isCameraEntityTransparent(IShoulderSurfing instance, Entity entity) {
-		if (entity.isSpectator()) {
-			return false;
-		}
-		var renderOffset = instance.getCamera().getRenderOffset();
-		if (Math.abs(renderOffset.x()) >= (entity.getBbWidth() / 2.0D)) {
-			return false;
-		}
-		return (renderOffset.y() >= 0 && renderOffset.y() < entity.getBbHeight() - entity.getEyeHeight()) ||
-			(renderOffset.y() <= 0 && -renderOffset.y() < entity.getEyeHeight());
+	private static float easeOutCirc(float x) {
+		return (float) Math.sqrt(1.0D - Math.pow(x - 1.0D, 2.0D));
 	}
 	
 	public enum Climbing implements ComputeCameraEntityTransparencyEventHandler, TickEventHandler {
