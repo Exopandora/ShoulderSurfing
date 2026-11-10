@@ -1,4 +1,4 @@
-# Unreleased
+# 5.3.1
 - Improved player transparency calculation
 - Fixed a crash when using spectator mode
 - Fixed lightmap color not being applied to armor and elytra when improved transparency is disabled
