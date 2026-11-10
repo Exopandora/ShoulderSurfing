@@ -1,4 +1,4 @@
-# Unreleased
+# 5.3.1
 - Improved player transparency calculation
 - Fixed ignore lists not working for Jade integration
 
