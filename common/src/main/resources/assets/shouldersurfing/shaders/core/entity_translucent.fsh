@@ -45,6 +45,10 @@ layout(location = 0) out vec4 fragColor;
 #endif
 
 vec4 calculateFinalColor(vec4 color) {
+    #ifndef EMISSIVE
+    color *= lightMapColor;
+    #endif
+
     #ifdef GLINT
     vec4 glintColor = GlintAlpha * texture(GlintSampler, texCoordGlint);
     // Matches BlendFunction.GLINT
