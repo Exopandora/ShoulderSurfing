@@ -1,3 +1,11 @@
+# Unreleased
+- Improved player transparency calculation
+- Fixed a crash when using spectator mode
+- Fixed lightmap color not being applied to armor and elytra when improved transparency is disabled
+- Fixed ignore lists not working for Jade integration
+- Fixed incorrect iris shader pipeline assignment (thanks to IMS)
+- Removed mixin refmap references
+
 # 5.3.0
 - Added map item overlay rendering when in shoulder surfing perspective
   - Added config option for map item overlay rendering (default: enabled)
