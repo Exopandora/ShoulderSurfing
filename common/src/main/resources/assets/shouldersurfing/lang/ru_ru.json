@@ -219,6 +219,8 @@
   "${modId}.configuration.camera.offset.dynamic_offsets.tooltip": "Динамически подстраивать смещение камеры в зависимости от свободного пространства.",
   "${modId}.configuration.camera.offset.step_size": "Шаг смещения",
   "${modId}.configuration.camera.offset.step_size.tooltip": "Величина изменения смещения за один шаг.",
+  "${modId}.configuration.camera.offset.ignore_block_pillars": "Игнорировать столбы из блоков",
+  "${modId}.configuration.camera.offset.ignore_block_pillars.tooltip": "Игнорировать ли столбы из блоков, например стволы деревьев, при расчёте смещения камеры. Это улучшает общее погружение за счёт удобства наведения на блоки.",
 
   "${modId}.configuration.perspective.button": "Изменить",
   "${modId}.configuration.perspective": "Перспектива",
@@ -313,6 +315,10 @@
   "${modId}.configuration.object_picker.use_custom_raytrace_distance": "Своя дальность трассировки",
   "${modId}.configuration.object_picker.use_custom_raytrace_distance.tooltip": "Использовать указанное выше расстояние для луча вместо стандартного.",
 
+  "${modId}.configuration.object_picker.unpickable_invisible_entities.button": "Изменить",
+  "${modId}.configuration.object_picker.unpickable_invisible_entities": "Невыбираемые невидимые сущности",
+  "${modId}.configuration.object_picker.unpickable_invisible_entities.tooltip": "Список невидимых сущностей, игнорируемых при выборе цели. Эта настройка поддерживает регулярные выражения. Пример: 'minecraft:oak_.*' соответствует дубовым лодкам 'minecraft:oak_boat' и 'minecraft:oak_chest_boat'.",
+
   "${modId}.configuration.pick_origin.button": "Изменить",
   "${modId}.configuration.pick_origin": "Точка испускания луча",
   "${modId}.configuration.pick_origin.tooltip": "Настройки точки испускания луча для выбора.",
@@ -399,6 +405,34 @@
 
   "${modId}.configuration.audio.center_player_sounds": "Центрировать звуки игрока",
   "${modId}.configuration.audio.center_player_sounds.tooltip": "Перемещать ли источник звуков игрока (шаги, удары) в центр экрана для лучшей пространственной ориентации.",
+
+  "${modId}.configuration.gui.button": "Изменить",
+  "${modId}.configuration.gui": "Интерфейс",
+  "${modId}.configuration.gui.tooltip": "Настройки интерфейса.",
+
+  "${modId}.configuration.maps.button": "Изменить",
+  "${modId}.configuration.maps": "Карты",
+  "${modId}.configuration.maps.tooltip": "Настройки карт.",
+
+  "${modId}.configuration.gui.maps.map_item_overlay_enabled": "Наложение предмета карты",
+  "${modId}.configuration.gui.maps.map_item_overlay_enabled.tooltip": "Отображать ли предпросмотр карты на экране интерфейса, когда в руке есть карта.",
+  "${modId}.configuration.gui.maps.map_item_overlay_anchor": "Привязка наложения карты",
+  "${modId}.configuration.gui.maps.map_item_overlay_anchor.tooltip": "Направление привязки для отображения наложения предмета карты.",
+  "${modId}.configuration.gui.maps.map_item_overlay_scale": "Масштаб наложения карты",
+  "${modId}.configuration.gui.maps.map_item_overlay_scale.tooltip": "Масштаб для отображения наложения предмета карты.",
+
+  "${modId}.configuration.insets.button": "Изменить",
+  "${modId}.configuration.insets": "Отступы наложения карты",
+  "${modId}.configuration.insets.tooltip": "Настройки отступов наложения предмета карты.",
+
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.top": "Верхний отступ",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.top.tooltip": "Отступ в масштабированных пикселях от верхнего края экрана.",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.right": "Правый отступ",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.right.tooltip": "Отступ в масштабированных пикселях от правого края экрана.",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.bottom": "Нижний отступ",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.bottom.tooltip": "Отступ в масштабированных пикселях от нижнего края экрана.",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.left": "Левый отступ",
+  "${modId}.configuration.gui.maps.map_item_overlay.insets.left.tooltip": "Отступ в масштабированных пикселях от левого края экрана.",
 
   "${modId}.configuration.integrations.button": "Изменить",
   "${modId}.configuration.integrations": "Интеграции",
