@@ -2,6 +2,7 @@ package com.github.exopandora.shouldersurfing.mixin;
 
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.rendertype.ShoulderSurfingRenderTypes;
+import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -75,6 +76,7 @@ class EquipmentLayerRendererMixin {
 	@Unique
 	private static boolean useTranslucentArmor() {
 		var renderer = ShoulderSurfing.getInstance().getCameraEntityRenderer();
-		return renderer.isRenderingCameraEntity() && renderer.getCameraEntityAlphaAsInt() < 255;
+		// Keep camera equipment in the same render pass as its opacity changes.
+		return renderer.isRenderingCameraEntity() && Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled();
 	}
 }
