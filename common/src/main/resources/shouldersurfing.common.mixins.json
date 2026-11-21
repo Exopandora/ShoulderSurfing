@@ -17,6 +17,7 @@
     "EntityBoundSoundInstanceMixin",
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",
+    "EquipmentLayerRendererMixin",
     "GameRendererMixin",
     "HudAccessor",
     "HudMixin",
@@ -31,7 +32,6 @@
     "RenderPipelinesAccessor",
     "RenderPipelinesMixin",
     "RenderTypeAccessor",
-    "RenderTypesMixin",
     "SubmitNodeCollectionMixin"
   ],
   "injectors": {
