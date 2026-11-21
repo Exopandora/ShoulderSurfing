@@ -1,10 +1,15 @@
 package com.github.exopandora.shouldersurfing.compat.iris;
 
 import com.github.exopandora.shouldersurfing.client.renderer.ShoulderSurfingRenderPipelines;
+import net.irisshaders.iris.api.v0.IrisApi;
 import net.irisshaders.iris.pipeline.IrisPipelines;
 import net.irisshaders.iris.pipeline.programs.ShaderKey;
 
 public class IrisCompat {
+	public static boolean isShaderPackInUse() {
+		return IrisApi.getInstance().isShaderPackInUse();
+	}
+
 	public static void assignPipelines() {
 		IrisPipelines.assignPipeline(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.ENTITIES_TRANSLUCENT);
 		IrisPipelines.assignPipelineShadow(ShoulderSurfingRenderPipelines.ARMOR_TRANSLUCENT_NO_CULL, ShaderKey.SHADOW_TRANSLUCENT);
