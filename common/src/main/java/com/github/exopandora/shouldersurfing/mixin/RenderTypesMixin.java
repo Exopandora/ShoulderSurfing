@@ -1,5 +1,6 @@
 package com.github.exopandora.shouldersurfing.mixin;
 
+import com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.renderer.rendertype.ShoulderSurfingRenderTypes;
 import com.github.exopandora.shouldersurfing.config.Config;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -18,7 +19,7 @@ class RenderTypesMixin {
 		cancellable = true
 	)
 	private static void armorCutoutNoCull(Identifier texture, CallbackInfoReturnable<RenderType> cir) {
-		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && IShoulderSurfing.getInstance().getCameraEntityRenderer().isRenderingCameraEntity()) {
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentNoCull(texture));
 		}
 	}
@@ -29,7 +30,7 @@ class RenderTypesMixin {
 		cancellable = true
 	)
 	private static void armorCutoutNoCullGlint(Identifier texture, CallbackInfoReturnable<RenderType> cir) {
-		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && IShoulderSurfing.getInstance().getCameraEntityRenderer().isRenderingCameraEntity()) {
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorTranslucentNoCullGlint(texture));
 		}
 	}
@@ -40,7 +41,7 @@ class RenderTypesMixin {
 		cancellable = true
 	)
 	private static void armorTrim(Identifier texture, boolean decal, CallbackInfoReturnable<RenderType> cir) {
-		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && IShoulderSurfing.getInstance().getCameraEntityRenderer().isRenderingCameraEntity()) {
 			cir.setReturnValue(ShoulderSurfingRenderTypes.armorTrimTranslucent(texture, decal));
 		}
 	}
@@ -51,7 +52,7 @@ class RenderTypesMixin {
 		cancellable = true
 	)
 	private static void trimmedArmorGlint(CallbackInfoReturnable<RenderType> cir) {
-		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled()) {
+		if (Config.CLIENT.getPlayerConfig().isPlayerTransparencyEnabled() && IShoulderSurfing.getInstance().getCameraEntityRenderer().isRenderingCameraEntity()) {
 			cir.setReturnValue(ShoulderSurfingRenderTypes.trimmedArmorGlint());
 		}
 	}
